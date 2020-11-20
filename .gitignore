@@ -1,0 +1,8 @@
+# Game assets (excluding images)
+.data/media/assets/_gluonresources/resources/images
+
+# Test cache
+.pytest_cache
+
+# IntelliJ project files
+.idea

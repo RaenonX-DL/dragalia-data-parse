@@ -1,0 +1,28 @@
+name: DL Data Parser - CQA
+
+on: [push]
+
+jobs:
+  cqa:
+    name: CQA
+
+    runs-on: windows-latest
+
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+
+      - name: Install required packages
+        run: |
+          pip install -r requirements-dev.txt
+
+      - name: pydocstyle checks (`dlparse`)
+        run: |
+          pydocstyle dlparse --count
+
+      - name: pylint checks (`dlparse`)
+        run: |
+          pylint dlparse
