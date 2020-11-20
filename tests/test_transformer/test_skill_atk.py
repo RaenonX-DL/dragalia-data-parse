@@ -129,54 +129,6 @@ def test_has_dummy_hits(transformer_skill: SkillTransformer):
     assert skill_data.max_available_level == 4
 
 
-def test_has_punisher(transformer_skill: SkillTransformer):
-    # Veronica S1
-    # https://dragalialost.gamepedia.com/Veronica
-    skill_data_base = transformer_skill.transform_attacking(107505011)
-
-    # Base data
-    skill_data = skill_data_base.under_condition()
-
-    assert skill_data.hit_count == [4, 4, 4, 4]
-    assert skill_data.hit_count_at_max == 4
-    assert skill_data.total_mod == pytest.approx([
-        2.69 * 3 + 3.37,
-        2.99 * 3 + 3.73,
-        3.32 * 3 + 4.15,
-        5.97 * 3 + 6.86,
-    ])
-    assert skill_data.total_mod_at_max == pytest.approx(5.97 * 3 + 6.86)
-    assert skill_data.mods == [
-        [2.69] * 3 + [3.37],
-        [2.99] * 3 + [3.73],
-        [3.32] * 3 + [4.15],
-        [5.97] * 3 + [6.86],
-    ]
-    assert skill_data.mods_at_max == [5.97] * 3 + [6.86]
-    assert skill_data.max_available_level == 4
-
-    # Poison Punisher
-    skill_data = skill_data_base.under_condition()
-
-    assert skill_data.hit_count == [4, 4, 4, 4]
-    assert skill_data.hit_count_at_max == 4
-    assert skill_data.total_mod == pytest.approx([
-        (2.69 * 3 + 3.37) * 1.2,
-        (2.99 * 3 + 3.73) * 1.2,
-        (3.32 * 3 + 4.15) * 1.2,
-        (5.97 * 3 + 6.86) * 1.2,
-    ])
-    assert skill_data.total_mod_at_max == pytest.approx((5.97 * 3 + 6.86) * 1.2)
-    assert skill_data.mods == [
-        [2.69 * 1.2] * 3 + [3.37 * 1.2],
-        [2.99 * 1.2] * 3 + [3.73 * 1.2],
-        [3.32 * 1.2] * 3 + [4.15 * 1.2],
-        [5.97 * 1.2] * 3 + [6.86 * 1.2],
-    ]
-    assert skill_data.mods_at_max == [5.97 * 1.2] * 3 + [6.86 * 1.2]
-    assert skill_data.max_available_level == 4
-
-
 def test_buff_related(transformer_skill: SkillTransformer):
     # Karina S1
     # https://dragalialost.gamepedia.com/Karina
