@@ -2,7 +2,7 @@
 import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Type, Optional, Callable, Union, ClassVar
+from typing import Type, Optional, Callable, Union
 
 from .asset import AssetBase
 from .entry import EntryBase
@@ -75,7 +75,7 @@ class ActionComponentBase(EntryBase, ABC):
 
     @classmethod
     def get_base_kwargs(cls, raw_data: dict[str, Union[str, int, float, dict[str, Union[int, float]]]]) \
-            -> dict[str, Union[int, float, Optional[ActionComponentCondition], Optional[ActionComponentLoop]]]:
+            -> dict[str, Union[int, float, ActionComponentCondition, ActionComponentLoop, list[str], None]]:
         """Get the base kwargs for constructing the component."""
         return {
             "command_type_id": raw_data["commandType"],
@@ -94,11 +94,6 @@ class ActionComponentDamageDealerMixin(EntryBase, ABC):
 
     A damage dealing component should have hit label(s) assigned.
     """
-
-    # pylint: disable=invalid-name
-    NON_DAMAGE_DEALING_LABELS: ClassVar[set[str]] = {
-        "CMN_AVOID"
-    }
 
     hit_labels: list[str]
 

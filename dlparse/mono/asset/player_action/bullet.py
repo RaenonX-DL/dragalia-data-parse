@@ -4,6 +4,8 @@ from typing import Union
 
 from dlparse.mono.asset.base import ActionComponentBase, ActionComponentDamageDealerMixin
 
+__all__ = ("ActionBullet",)
+
 
 @dataclass
 class ActionBullet(ActionComponentBase, ActionComponentDamageDealerMixin):

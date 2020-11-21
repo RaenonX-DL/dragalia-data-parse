@@ -35,4 +35,8 @@ max-line-length=119
 # TODO: `unsubscriptable-object` generates false positives for python 3.9 and pylint==2.6.
 #   https://github.com/PyCQA/pylint/issues/3882
 #   Re-enable it when the issue is fixed.
-disable=unsubscriptable-object
+disable=unsubscriptable-object,
+        # Search for todo tags and manually manage them instead
+        fixme,
+        # Data class usually will have a lot of attributes which should not be grouped
+        too-many-instance-attributes

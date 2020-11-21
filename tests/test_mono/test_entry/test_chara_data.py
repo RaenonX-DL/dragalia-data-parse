@@ -1,4 +1,4 @@
-from dlparse.mono.asset import CharaDataEntry
+from dlparse.mono.asset import CharaDataEntry, CharaModeAsset, TextAsset
 
 
 def create_dummy(**kwargs) -> CharaDataEntry:
@@ -34,10 +34,10 @@ def create_dummy(**kwargs) -> CharaDataEntry:
         "mc_full_bonus_atk": -1,
         "def_coef": -1,
         "mode_change_id": -1,
-        "mode_1_id": -1,
-        "mode_2_id": -1,
-        "mode_3_id": -1,
-        "mode_4_id": -1,
+        "mode_1_id": 0,
+        "mode_2_id": 0,
+        "mode_3_id": 0,
+        "mode_4_id": 0,
         "keep_mode_on_revive": False,
         "combo_original_id": -1,
         "combo_mode_1_id": -1,
@@ -151,3 +151,48 @@ def test_max_atk_70():
     assert entry.max_atk_at_50 == 191
     assert entry.max_atk_at_70 == 510
     assert entry.max_atk_current == 510
+
+
+def test_mode_ids():
+    entry = create_dummy(mode_1_id=1, mode_2_id=2, mode_3_id=3, mode_4_id=4)
+    assert entry.mode_ids == [1, 2, 3, 4]
+
+    entry = create_dummy(mode_1_id=0, mode_2_id=2, mode_3_id=0, mode_4_id=0)
+    assert entry.mode_ids == [2]
+
+    entry = create_dummy(mode_1_id=0, mode_2_id=0, mode_3_id=0, mode_4_id=0)
+    assert entry.mode_ids == []
+
+
+def test_custom_id():
+    entry = create_dummy(chara_base_id=100002, chara_variation_id=6)
+    assert entry.custom_id == "100002/6"
+
+    entry = create_dummy(chara_base_id=100007, chara_variation_id=1)
+    assert entry.custom_id == "100007/1"
+
+    entry = create_dummy(chara_base_id=100011, chara_variation_id=11)
+    assert entry.custom_id == "100011/11"
+
+
+def test_get_chara_name_use_main(text_asset: TextAsset):
+    entry = create_dummy(name_label="CHARA_NAME_10840301", second_name_label="CHARA_NAME_COMMENT_10840301")
+    assert entry.get_chara_name(text_asset) == "路恩"
+
+
+def test_get_chara_name_use_second(text_asset: TextAsset):
+    entry = create_dummy(name_label="CHARA_NAME_10150302", second_name_label="CHARA_NAME_COMMENT_10150302")
+    assert entry.get_chara_name(text_asset) == "耶魯菲莉絲（花嫁Ver.）"
+
+
+def test_get_skill_id_names(chara_mode_asset: CharaModeAsset, text_asset: TextAsset):
+    entry = create_dummy(skill_1_id=1, skill_2_id=2)
+    assert entry.get_skill_identifiers(chara_mode_asset, text_asset) == [(1, "S1"), (2, "S2")]
+
+
+def test_get_skill_id_names_with_mode(chara_mode_asset: CharaModeAsset, text_asset: TextAsset):
+    entry = create_dummy(skill_1_id=1, skill_2_id=2, mode_2_id=12)
+    assert entry.get_skill_identifiers(chara_mode_asset, text_asset) == [
+        (1, "S1"), (2, "S2"),
+        (103505033, "S1 (不羈伴侶)"), (103505034, "S2 (不羈伴侶)")
+    ]

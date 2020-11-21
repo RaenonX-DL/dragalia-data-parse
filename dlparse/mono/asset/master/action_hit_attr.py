@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from typing import Union, Optional
 
+from dlparse.enums import Affliction, HitExecType
 from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
 
 __all__ = ("HitAttrEntry", "HitAttrAsset", "HitAttrParser")
@@ -11,16 +12,47 @@ __all__ = ("HitAttrEntry", "HitAttrAsset", "HitAttrParser")
 class HitAttrEntry(MasterEntryBase):
     """Single entry of a hit attribute data."""
 
-    id: str
+    hit_exec_type: HitExecType
 
     damage_modifier: float
 
+    punisher_states: set[Affliction]  # Rate will be applied when the target has any of the punisher states
+    punisher_rate: float
+
+    crisis_limit_rate: float  # 0 = not applicable
+
+    rate_boost_by_buff: float  # 0 = not applicable
+    """Damage modifier boosting rate for each buff."""
+
     @staticmethod
     def parse_raw(data: dict[str, Union[str, float, int]]) -> "HitAttrEntry":
+        punisher_states = {data["_KillerState1"], data["_KillerState2"], data["_KillerState3"]} - {0}
+        punisher_states = {Affliction(state) for state in punisher_states} - {Affliction.UNKNOWN}
+
         return HitAttrEntry(
             id=data["_Id"],
+            hit_exec_type=HitExecType(data["_HitExecType"]),
             damage_modifier=data["_DamageAdjustment"],
+            punisher_states=punisher_states,
+            punisher_rate=data["_KillerStateDamageRate"],
+            crisis_limit_rate=data["_CrisisLimitRate"],
+            rate_boost_by_buff=data["_DamageUpRateByBuffCount"]
         )
+
+    @property
+    def has_punisher(self) -> bool:
+        """Check if the skill has punisher boosts."""
+        return len(self.punisher_states) > 0
+
+    @property
+    def boost_by_buff_count(self) -> bool:
+        """Check if the damage modifier will be boosted by the count of buffs."""
+        return self.rate_boost_by_buff != 0
+
+    @property
+    def change_by_hp(self) -> bool:
+        """Check if the mods will be changed based on the character's HP."""
+        return self.crisis_limit_rate != 0
 
     @property
     def deal_damage(self) -> bool:

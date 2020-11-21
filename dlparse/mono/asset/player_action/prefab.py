@@ -5,6 +5,7 @@ from dlparse.mono.asset.base import (
     ActionAssetBase, ActionParserBase, ActionComponentBase, ActionComponentDamageDealerMixin
 )
 from .bullet import ActionBullet
+from .bullet_stock import ActionBulletStock
 from .hit import ActionHit
 
 __all__ = ("PlayerActionPrefab",)
@@ -17,7 +18,8 @@ class PlayerActionParser(ActionParserBase):
 
     SCRIPT_CLASS: dict[str, Type[ActionComponentBase]] = {
         "ActionPartsHit": ActionHit,
-        "ActionPartsBullet": ActionBullet
+        "ActionPartsBullet": ActionBullet,
+        "ActionPartsFireStockBullet": ActionBulletStock
     }
 
     @classmethod
@@ -40,6 +42,11 @@ class PlayerActionParser(ActionParserBase):
 class PlayerActionPrefab(ActionAssetBase):
     """Class representing a single player action prefab file."""
 
+    # pylint: disable=invalid-name
+    OMITTED_HIT_LABELS: set[str] = {
+        "CMN_AVOID"
+    }
+
     def __init__(self, file_path: str):
         super().__init__(PlayerActionParser, file_path)
 
@@ -51,14 +58,14 @@ class PlayerActionPrefab(ActionAssetBase):
                 self._damaging_hits.append(component)
 
     @property
-    def damage_dealing_hit_labels(self) -> list[str]:
+    def effective_hit_labels(self) -> list[str]:
         """
-        Get a :class:`list` of damage dealing hit labels.
+        Get a :class:`list` of effective hit labels.
 
-        Note that the damage dealing hit here may not actually deal damage. The hit could attack
+        Each hit label corresponds to an entry in the hit attribute asset.
         """
         return [
             hit_label for action_hit in sorted(self._damaging_hits, key=lambda component: component.time_start)
             for hit_label in action_hit.hit_labels
-            if hit_label not in ActionComponentDamageDealerMixin.NON_DAMAGE_DEALING_LABELS
+            if hit_label not in self.OMITTED_HIT_LABELS
         ]

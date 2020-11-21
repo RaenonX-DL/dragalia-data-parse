@@ -1,6 +1,6 @@
 """Classes for handling the skill data asset."""
 from dataclasses import dataclass
-from typing import Union, Optional
+from typing import Union, Optional, ClassVar
 
 from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
 
@@ -11,7 +11,7 @@ __all__ = ("SkillDataEntry", "SkillDataAsset", "SkillDataParser")
 class SkillDataEntry(MasterEntryBase):
     """Single entry of a skill data."""
 
-    # pylint: disable=too-many-instance-attributes
+    MAX_LEVEL: ClassVar[int] = 4  # pylint: disable=invalid-name
 
     name_label: str
 
@@ -134,6 +134,20 @@ class SkillDataEntry(MasterEntryBase):
             is_affected_by_tension_lv3=bool(data["_IsAffectedByTensionLv3"]),
             is_affected_by_tension_lv4=bool(data["_IsAffectedByTensionLv4"]),
         )
+
+    @property
+    def action_id_1_by_level(self) -> list[int]:
+        """
+        Get the 1st (main) action IDs for each level.
+
+        Note that the action ID for skill lv. 1 will be located at index 0.
+        """
+        return [
+            self.adv_skill_lv1_action_id
+            if self.adv_skill_lv1_action_id and level + 1 >= self.adv_skill_lv1
+            else self.action_1_id
+            for level in range(self.MAX_LEVEL)
+        ]
 
     @property
     def is_attacking_skill(self):

@@ -40,7 +40,7 @@ class CheatDetectionAsset(MasterAssetBase):
 
 
 class CheatDetectionParser(MasterParserBase):
-    """Class to parse the cheat detection file."""
+    """Class to parse the cheat detection parameter file."""
 
     @classmethod
     def parse_file(cls, file_path: str) -> dict[int, CheatDetectionEntry]:

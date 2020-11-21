@@ -13,6 +13,19 @@ Single attacking projectile of a skill.
 A single component corresponds to a single attack.
 
 
+### ``ActionPartsFireStockBullet``
+
+Fire the same bullet multiple times.
+
+#### Apperance notes
+
+- Nefaria S1 (`106505011`) 
+
+#### Attribute notes
+
+- `_bulletNum`: count of bullets. This seems to share the same hit label (`_hitAttrLabel`).
+
+
 ### ``ActionPartsHit``
 
 An attacking action that comes from the player of a skill.
@@ -74,6 +87,13 @@ May be used for calculating camera duration.
 Needs investigation. Frozen action after ``ActionPartsHit``.
 
 May be used for calculating camera duration.
+
+
+### ``ActionPartsHeadText``
+
+Seems to be the texts appear above the head.
+
+This appears in Karina S1 (`104402011`), which could be the text of **boost x N**.
 
 
 ## Miscellaneous / Unknown

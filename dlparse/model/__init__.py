@@ -1,2 +1,2 @@
 """Various data models to be output."""
-from .skill import AttackingSkillData
+from .skill import AttackingSkillData, AttackingSkillDataEntry

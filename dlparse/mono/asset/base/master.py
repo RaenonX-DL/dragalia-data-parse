@@ -2,7 +2,7 @@
 import json
 from abc import ABC
 from dataclasses import dataclass
-from typing import Type, Optional, Any, Callable, Union
+from typing import Type, Optional, Any, Callable, Union, TypeVar
 
 from .asset import AssetBase
 from .entry import EntryBase
@@ -15,7 +15,10 @@ __all__ = ("MasterEntryBase", "MasterAssetBase", "MasterParserBase")
 class MasterEntryBase(EntryBase, ABC):
     """Base class for the entries in the master mono behavior asset."""
 
-    id: int  # pylint: disable=invalid-name
+    id: Union[int, str]  # pylint: disable=invalid-name
+
+
+T = TypeVar("T", bound=MasterEntryBase)
 
 
 class MasterParserBase(ParserBase, ABC):
@@ -24,7 +27,7 @@ class MasterParserBase(ParserBase, ABC):
     @staticmethod
     def get_entries(file_path: str) -> dict[int, dict]:
         """Get a dict of data entries which value needs to be further parsed."""
-        with open(file_path) as f:
+        with open(file_path, encoding="utf-8") as f:
             data = json.load(f)
 
         if "dict" not in data:
@@ -61,7 +64,6 @@ class MasterAssetBase(AssetBase, ABC):
         """Get a list of data which matches the ``condition``."""
         return [data for data in self if condition(data)]
 
-    def get_data_by_id(self, data_id: Union[int, str], default: Optional[MasterEntryBase] = None) \
-            -> Optional[MasterEntryBase]:
+    def get_data_by_id(self, data_id: Union[int, str], default: Optional[MasterEntryBase] = None) -> Optional[T]:
         """Get a data by its ``data_id``. Returns ``default`` if not found."""
         return self._data.get(data_id, default)

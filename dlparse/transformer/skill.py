@@ -1,10 +1,11 @@
 """Skill data transformer."""
 from typing import Optional
 
-from dlparse.errors import SkillDataNotFound, ActionDataNotFound
+from dlparse.enums import HitExecType
+from dlparse.errors import SkillDataNotFound
 from dlparse.model import AttackingSkillData
-from dlparse.mono.asset import SkillDataAsset, SkillDataEntry, HitAttrEntry, HitAttrAsset, PlayerActionPrefab
-from dlparse.mono.path import PlayerActionFilePathFinder
+from dlparse.mono.asset import SkillDataAsset, SkillDataEntry, HitAttrEntry, HitAttrAsset
+from dlparse.mono.loader import PlayerActionFileLoader
 
 __all__ = ("SkillTransformer",)
 
@@ -12,48 +13,76 @@ __all__ = ("SkillTransformer",)
 class SkillTransformer:
     """Class to transform the skill data."""
 
-    SKILL_MAX_LV_ATK = 4
-    """Currently known max level for attacking skills."""
-
     def __init__(self, skill_data_asset: SkillDataAsset, hit_attr_asset: HitAttrAsset,
-                 action_path_finder: PlayerActionFilePathFinder):
+                 action_loader: PlayerActionFileLoader):
         self._skill_data = skill_data_asset
         self._hit_attr = hit_attr_asset
-        self._action_path = action_path_finder
+        self._action_loader = action_loader
 
     def transform_supportive(self, skill_id: int):
         """Transform skill of ``skill_id`` to :class:`SupportiveSkillData`."""
+        # TODO: TBA - Supportive
         raise NotImplementedError()
 
-    def transform_attacking(self, skill_id: int) -> AttackingSkillData:
+    def get_hit_attr_matrix(self, skill_id: int, hit_exec_type: Optional[HitExecType] = None)\
+            -> tuple[SkillDataEntry, list[list[HitAttrEntry]]]:
         """
-        Transform skill of ``skill_id`` to :class:`AttackingSkillData`.
+        Get a matrix of the hit attributes.
 
-        :raises SkillDataNotFound: if the skill data is not found
-        :raises ActionDataNotFound: if the action data file of the skill is not found
+        The first index of the matrix is the skill level (Skill level 1 = index 0).
+
+        If ``hit_exec_type`` is given, only the hit attributes that matches the given exec type will return.
+        If the type does not match, the entry will be taken out.
+
+        :raises SkillDataNotFound: skill data not found
         """
         # Get the skill data
         skill_data: Optional[SkillDataEntry] = self._skill_data.get_data_by_id(skill_id)
         if not skill_data:
             raise SkillDataNotFound(skill_id)
 
-        # Get the skill action data
-        action_id = skill_data.action_1_id
-        action_file_path = self._action_path.get_file_path(action_id)
+        # Get hit attribute data
+        hit_attr_mtx: list[list[HitAttrEntry]] = []
 
-        if not action_file_path:
-            raise ActionDataNotFound(action_id, skill_id)
+        for skill_lv, action_id in enumerate(skill_data.action_id_1_by_level, start=1):
+            action_prefab = self._action_loader.get_prefab(action_id)
 
-        # Get the skill action prefab data
-        action_prefab = PlayerActionPrefab(action_file_path)
+            for hit_label_root in action_prefab.effective_hit_labels:
+                hit_label = self._hit_attr.get_hit_label(hit_label_root, skill_lv)
 
-        # Get skill data
-        hits: list[int] = []
+                hit_attr_data: Optional[HitAttrEntry] = self._hit_attr.get_data_by_id(hit_label)
+                if not hit_attr_data:
+                    # No further skill data available
+                    break
+
+                # Create an empty array for the corresonding skill level
+                if skill_lv > len(hit_attr_mtx):
+                    hit_attr_mtx.append([])
+
+                if not hit_exec_type or (hit_exec_type and hit_attr_data.hit_exec_type == hit_exec_type):
+                    hit_attr_mtx[skill_lv - 1].append(hit_attr_data)
+
+        return skill_data, hit_attr_mtx
+
+    def transform_attacking(self, skill_id: int) -> AttackingSkillData:
+        """
+        Transform skill of ``skill_id`` to :class:`AttackingSkillDataEntry`.
+
+        :raises SkillDataNotFound: if the skill data is not found
+        :raises ActionDataNotFound: if the action data file of the skill is not found
+        """
+        skill_data, hit_attr_mtx = self.get_hit_attr_matrix(skill_id, HitExecType.DAMAGE)
+
+        skill_data: SkillDataEntry
+        hit_attr_mtx: list[list[HitAttrEntry]]
+
         mods: list[list[float]] = []
-        dmg_label: list[list[HitAttrEntry]] = []
+        hits: list[int] = []
 
-        for hit_label_root in action_prefab.damage_dealing_hit_labels:
-            for skill_lv in range(1, self.SKILL_MAX_LV_ATK + 1):
+        for skill_lv, action_id in enumerate(skill_data.action_id_1_by_level, start=1):
+            action_prefab = self._action_loader.get_prefab(action_id)
+
+            for hit_label_root in action_prefab.effective_hit_labels:
                 hit_label = self._hit_attr.get_hit_label(hit_label_root, skill_lv)
 
                 hit_attr_data: Optional[HitAttrEntry] = self._hit_attr.get_data_by_id(hit_label)
@@ -63,21 +92,20 @@ class SkillTransformer:
 
                 mod = hit_attr_data.damage_modifier
 
+                if skill_lv > len(mods):
+                    mods.append([])
+                    hits.append(0)
+
                 # Data to be attached to the model
                 if hit_attr_data.deal_damage:
-                    if skill_lv > len(mods):
-                        mods.append([mod])
-                        hits.append(1)
-                        dmg_label.append([hit_attr_data])
-                    else:
-                        lv_index = skill_lv - 1
+                    lv_index = skill_lv - 1
 
-                        mods[lv_index].append(mod)
-                        hits[lv_index] += 1
-                        dmg_label[lv_index].append(hit_attr_data)
+                    mods[lv_index].append(mod)
+                    hits[lv_index] += 1
 
         return AttackingSkillData(
+            skill_data_raw=skill_data,
             hit_count=hits,
             mods=mods,
-            damage_hit_attrs=dmg_label
+            hit_attr_mtx=hit_attr_mtx
         )

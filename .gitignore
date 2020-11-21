@@ -1,3 +1,6 @@
+# Default file export directory
+exported/
+
 # Game assets (excluding images)
 .data/media/assets/_gluonresources/resources/images
 
