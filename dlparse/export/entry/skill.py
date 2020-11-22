@@ -1,13 +1,15 @@
 """Skill data entry classes for export."""
+import hashlib
 from dataclasses import dataclass
 
 from dlparse.enums import SkillCondition, Element
+from .base import ExportEntryBase
 
 __all__ = ("CharaAttackingSkillEntry",)
 
 
 @dataclass
-class CharaAttackingSkillEntry:
+class CharaAttackingSkillEntry(ExportEntryBase):
     """
     A single entry of an attacking skill.
 
@@ -78,9 +80,18 @@ class CharaAttackingSkillEntry:
     skill_total_hits_max: int
     skill_max_lv: int
 
+    @property
+    def unique_id(self):
+        # Concatenate the ``repr()`` of Character Internal ID, Skill Internal ID and the Skill Conditions,
+        # then hash it.
+        return hashlib.sha256(
+            f"{self.character_internal_id}{self.skill_internal_id}{self.skill_conditions}".encode("utf-8")
+        ).hexdigest()
+
     def to_csv_entry(self) -> list[str]:
         """Convert the current data to a csv entry."""
         return [
+            self.unique_id,
             self.character_custom_id,
             self.character_name,
             self.character_internal_id,
@@ -94,10 +105,11 @@ class CharaAttackingSkillEntry:
             self.skill_max_lv
         ]
 
-    @staticmethod
-    def csv_header() -> list[str]:
+    @classmethod
+    def csv_header(cls) -> list[str]:
         """Get the header for CSV file."""
         return [
+            "Entry ID",
             "Character ID",
             "Character Name",
             "Character Internal ID",
