@@ -36,6 +36,10 @@ class CharaAttackingSkillEntry:
 
     Skill Info
     ==========
+    ``skill_internal_id``
+
+        ID used in ``SkillData.json``. For example: 101503021 for S1; 101503022 for S2.
+
     ``skill_identifier``
 
         Identifier (not the name) of the skill.
@@ -66,6 +70,7 @@ class CharaAttackingSkillEntry:
     character_internal_id: int
     character_element: Element
 
+    skill_internal_id: int
     skill_identifier: str
     skill_name: str
     skill_conditions: tuple[SkillCondition]
@@ -80,6 +85,7 @@ class CharaAttackingSkillEntry:
             self.character_name,
             self.character_internal_id,
             self.character_element,
+            self.skill_internal_id,
             self.skill_identifier,
             self.skill_name,
             self.skill_conditions,
@@ -96,6 +102,7 @@ class CharaAttackingSkillEntry:
             "Character Name",
             "Character Internal ID",
             "Character Element",
+            "Skill Internal ID",
             "Skill Identifier",
             "Skill Name",
             "Skill Conditions",
