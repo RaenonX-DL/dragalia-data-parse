@@ -97,6 +97,10 @@ class ActionComponentDamageDealerMixin(EntryBase, ABC):
 
     hit_labels: list[str]
 
+    def __post_init__(self):
+        # Xander S2, check the doc of the test ``test_label_has_whitespaces()``
+        self.hit_labels = [label.strip() for label in self.hit_labels]
+
 
 class ActionParserBase(ParserBase, ABC):
     """Base parser class for parsing the player action asset files."""

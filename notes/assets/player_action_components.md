@@ -136,3 +136,9 @@ SE of the action.
 ### ``ActionPartsSendSignal``
 
 Needs investigation.
+
+-----
+
+## Additional Resources
+
+- [Command Type Enum (from DL DPS sim by Mushymato)](https://github.com/dl-stuff/dl-datamine/blob/master/loader/Actions.py)
