@@ -1,0 +1,22 @@
+[
+  {
+    "_Id": "TEST_TEXT_LABEL",
+    "_Text": "Test"
+  },
+  {
+    "_Id": "CUSTOM_CHARA_MODE_0026",
+    "_Text": "0 層 / 做為共享"
+  },
+  {
+    "_Id": "CUSTOM_CHARA_MODE_0027",
+    "_Text": "1 層"
+  },
+  {
+    "_Id": "CUSTOM_CHARA_MODE_0028",
+    "_Text": "2 層"
+  },
+  {
+    "_Id": "CUSTOM_CHARA_MODE_0029",
+    "_Text": "3 層"
+  }
+]

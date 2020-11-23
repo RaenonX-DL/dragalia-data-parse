@@ -39,9 +39,18 @@ class CharaModeAsset(MasterAssetBase):
 
     asset_file_name = "CharaModeData.json"
 
+    def _init_fill_name_label(self):
+        # Auto fill custom mode name text label
+
+        for data in self:
+            if not data.text_label:  # Only fill if no label exists
+                data.text_label = f"CUSTOM_CHARA_MODE_{data.id:04}"
+
     def __init__(self, file_path: Optional[str] = None, /,
                  asset_dir: Optional[str] = None):
         super().__init__(CharaModeParser, file_path, asset_dir=asset_dir)
+
+        self._init_fill_name_label()
 
 
 class CharaModeParser(MasterParserBase):

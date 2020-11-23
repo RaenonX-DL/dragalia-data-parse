@@ -16,7 +16,7 @@ class AssetBase(ABC):
 
     def __init__(self, parser_cls: Type[ParserBase], file_path: Optional[str] = None, /,
                  asset_dir: Optional[str] = None):
-        file_path = file_path or (asset_dir and os.path.join(asset_dir, self.asset_file_name))
+        file_path = self.get_file_path(file_path=file_path, asset_dir=asset_dir)
 
         if not file_path:
             raise ConfigError("Either `file_path` or "
@@ -26,6 +26,22 @@ class AssetBase(ABC):
 
     def __len__(self):
         return len(self._data)
+
+    @classmethod
+    def get_file_path(cls, *, file_path: Optional[str] = None, asset_dir: Optional[str] = None):
+        """
+        Get the file path.
+
+        If ``file_path`` is provided, ``file_path`` will be returned.
+
+        If ``asset_dir`` is provided, ``asset_dir`` will be used as the folder of the asset,
+        with a file named ``asset_file_name``.
+
+        If both are provided, ``asset_dir`` will be ignored.
+
+        If nothing is provided, ``None`` will be returned.
+        """
+        return file_path or (asset_dir and os.path.join(asset_dir, cls.asset_file_name))
 
     @abstractmethod
     def __iter__(self):

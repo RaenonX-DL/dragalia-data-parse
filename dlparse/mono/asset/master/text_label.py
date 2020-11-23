@@ -3,9 +3,9 @@ from dataclasses import dataclass
 from typing import Optional
 
 from dlparse.errors import TextLabelNotFoundError
-from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
+from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase, CustomParserBase
 
-__all__ = ("TextEntry", "TextAsset", "TextParser")
+__all__ = ("TextEntry", "TextAsset", "MasterTextParser")
 
 
 @dataclass
@@ -23,13 +23,23 @@ class TextEntry(MasterEntryBase):
 
 
 class TextAsset(MasterAssetBase):
-    """Text label asset class."""
+    """
+    Text label asset class.
+
+    If custom asset is provided, entries in the original asset will be overwritten by the entries in the custom asset,
+    if exist.
+    """
 
     asset_file_name = "TextLabel.json"
 
     def __init__(self, file_path: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None):
-        super().__init__(TextParser, file_path, asset_dir=asset_dir)
+                 asset_dir: Optional[str] = None,
+                 asset_dir_custom: Optional[str] = None, file_path_custom: Optional[str] = None):
+        super().__init__(MasterTextParser, file_path, asset_dir=asset_dir)
+
+        # Read in and overwrite the data by custom assets
+        if custom_file_path := self.get_file_path(file_path=file_path_custom, asset_dir=asset_dir_custom):
+            self._data.update(CustomTextParser.parse_file(custom_file_path))
 
     def to_text(self, label: str, /, silent_fail: bool = True) -> str:
         """
@@ -50,8 +60,18 @@ class TextAsset(MasterAssetBase):
         raise TextLabelNotFoundError(label)
 
 
-class TextParser(MasterParserBase):
-    """Class to parse the text label file."""
+class MasterTextParser(MasterParserBase):
+    """Class to parse the master text label file."""
+
+    @classmethod
+    def parse_file(cls, file_path: str) -> dict[int, TextEntry]:
+        entries = cls.get_entries(file_path)
+
+        return {key: TextEntry.parse_raw(value) for key, value in entries.items()}
+
+
+class CustomTextParser(CustomParserBase):
+    """Class to parse the custom text label file."""
 
     @classmethod
     def parse_file(cls, file_path: str) -> dict[int, TextEntry]:

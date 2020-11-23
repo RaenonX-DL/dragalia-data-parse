@@ -1,9 +1,10 @@
 import os
 
-__all__ = ("PATH_MASTER_ASSET_DIR", "PATH_PLAYER_ACTION_ASSET_ROOT")
+__all__ = ("PATH_DIR_MASTER_ASSET", "PATH_DIR_CUSTOM_ASSET", "PATH_ROOT_ASSET_PLAYER_ACTION")
 
+PATH_ROOT_DATA = ".data"
+PATH_ROOT_ASSET = os.path.join(PATH_ROOT_DATA, "media", "assets", "_gluonresources", "resources")
 
-PATH_ASSET_ROOT = os.path.join(".data", "media", "assets", "_gluonresources", "resources")
-
-PATH_PLAYER_ACTION_ASSET_ROOT = os.path.join(PATH_ASSET_ROOT, "actions", "playeraction")
-PATH_MASTER_ASSET_DIR = os.path.join(PATH_ASSET_ROOT, "master")
+PATH_ROOT_ASSET_PLAYER_ACTION = os.path.join(PATH_ROOT_ASSET, "actions", "playeraction")
+PATH_DIR_MASTER_ASSET = os.path.join(PATH_ROOT_ASSET, "master")
+PATH_DIR_CUSTOM_ASSET = os.path.join(PATH_ROOT_DATA, "custom")
