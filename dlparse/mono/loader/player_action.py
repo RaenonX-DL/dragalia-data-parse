@@ -1,6 +1,7 @@
 """Classes for getting the player action file path."""
 import os
 
+from dlparse.errors import ActionDataNotFoundError
 from dlparse.mono.asset import PlayerActionPrefab
 
 __all__ = ("PlayerActionFileLoader",)
@@ -26,12 +27,12 @@ class PlayerActionFileLoader:
         """
         Get the file path for ``action_id``.
 
-        :raises FileNotFoundError: action file not found
+        :raises ActionDataNotFoundError: action file not found
         """
         file_path = self._path_index.get(action_id, None)
 
         if not file_path:
-            raise FileNotFoundError(f"File for action ID {action_id} not found")
+            raise ActionDataNotFoundError(action_id)
 
         return file_path
 
@@ -41,7 +42,7 @@ class PlayerActionFileLoader:
 
         The return will be cached for performance improvement.
 
-        :raises FileNotFoundError: action file not found
+        :raises ActionDataNotFoundError: action file not found
         """
         file_path = self.get_file_path(action_id)
 

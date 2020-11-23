@@ -15,9 +15,9 @@ class ExportEntryBase(ABC):
 
     def to_csv_entry(self) -> list[str]:
         """Convert the current data to a csv entry."""
-        raise RuntimeError(f"Entry `{self.__class__.__name__}` cannot be converted to a csv entry")
+        raise NotImplementedError(f"Entry `{self.__class__.__name__}` cannot be converted to a csv entry")
 
     @classmethod
     def csv_header(cls) -> list[str]:
         """Get the header for CSV file containing this entry."""
-        raise RuntimeError(f"Entry `{cls.__name__}` does not implement a csv header")
+        raise NotImplementedError(f"Entry `{cls.__name__}` does not implement a csv header")

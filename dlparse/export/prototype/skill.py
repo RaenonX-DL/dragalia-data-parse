@@ -1,6 +1,7 @@
 """Functions to export the skill data."""
 import csv
 
+from dlparse.errors import ActionDataNotFoundError
 from dlparse.export.entry import CharaAttackingSkillEntry
 from dlparse.mono.asset import CharaDataAsset, CharaDataEntry, CharaModeAsset, TextAsset
 from dlparse.transformer import SkillTransformer
@@ -31,7 +32,7 @@ def export_skill_atk_csv(file_path: str, /,
             for skill_id, identifier in chara_data.get_skill_identifiers(chara_mode_asset, text_asset):
                 try:
                     skill_data = skill_transformer.transform_attacking(skill_id)
-                except (ValueError, FileNotFoundError) as ex:
+                except (ValueError, ActionDataNotFoundError) as ex:
                     # May be unknown enum (ValueError) or action file not found (FileNotFoundError)
 
                     if skip_unparsable:

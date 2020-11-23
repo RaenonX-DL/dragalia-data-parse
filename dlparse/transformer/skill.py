@@ -2,7 +2,7 @@
 from typing import Optional
 
 from dlparse.enums import HitExecType
-from dlparse.errors import SkillDataNotFound
+from dlparse.errors import SkillDataNotFoundError
 from dlparse.model import AttackingSkillData
 from dlparse.mono.asset import SkillDataAsset, SkillDataEntry, HitAttrEntry, HitAttrAsset
 from dlparse.mono.loader import PlayerActionFileLoader
@@ -34,12 +34,12 @@ class SkillTransformer:
         If ``hit_exec_type`` is given, only the hit attributes that matches the given exec type will return.
         If the type does not match, the entry will be taken out.
 
-        :raises SkillDataNotFound: skill data not found
+        :raises SkillDataNotFoundError: skill data not found
         """
         # Get the skill data
         skill_data: Optional[SkillDataEntry] = self._skill_data.get_data_by_id(skill_id)
         if not skill_data:
-            raise SkillDataNotFound(skill_id)
+            raise SkillDataNotFoundError(skill_id)
 
         # Get hit attribute data
         hit_attr_mtx: list[list[HitAttrEntry]] = []
@@ -68,8 +68,8 @@ class SkillTransformer:
         """
         Transform skill of ``skill_id`` to :class:`AttackingSkillDataEntry`.
 
-        :raises SkillDataNotFound: if the skill data is not found
-        :raises ActionDataNotFound: if the action data file of the skill is not found
+        :raises SkillDataNotFoundError: if the skill data is not found
+        :raises ActionDataNotFoundError: if the action data file of the skill is not found
         """
         skill_data, hit_attr_mtx = self.get_hit_attr_matrix(skill_id, HitExecType.DAMAGE)
 

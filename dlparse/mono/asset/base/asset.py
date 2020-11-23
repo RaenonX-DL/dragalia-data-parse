@@ -3,6 +3,7 @@ import os
 from abc import ABC, abstractmethod
 from typing import Type, Optional
 
+from dlparse.errors import ConfigError
 from .parser import ParserBase
 
 __all__ = ("AssetBase",)
@@ -18,8 +19,8 @@ class AssetBase(ABC):
         file_path = file_path or (asset_dir and os.path.join(asset_dir, self.asset_file_name))
 
         if not file_path:
-            raise ValueError("Either `file_path` or "
-                             "`asset_dir` and `asset_file_name` (class attribute) must be given.")
+            raise ConfigError("Either `file_path` or "
+                              "`asset_dir` and `asset_file_name` (class attribute) must be given.")
 
         self._data = parser_cls.parse_file(file_path)
 

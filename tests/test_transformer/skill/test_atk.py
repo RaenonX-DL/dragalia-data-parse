@@ -1,13 +1,13 @@
 import pytest
 
 from dlparse.enums import SkillCondition
-from dlparse.errors import SkillDataNotFound
+from dlparse.errors import SkillDataNotFoundError
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
 
 
 def test_skill_not_found(transformer_skill: SkillTransformer):
-    with pytest.raises(SkillDataNotFound) as error:
+    with pytest.raises(SkillDataNotFoundError) as error:
         transformer_skill.transform_attacking(87)
 
         assert error.value.skill_id == 87

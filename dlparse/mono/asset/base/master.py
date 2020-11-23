@@ -4,6 +4,7 @@ from abc import ABC
 from dataclasses import dataclass
 from typing import Type, Optional, Any, Callable, Union, TypeVar
 
+from dlparse.errors import AssetKeyMissingError
 from .asset import AssetBase
 from .entry import EntryBase
 from .parser import ParserBase
@@ -31,13 +32,13 @@ class MasterParserBase(ParserBase, ABC):
             data = json.load(f)
 
         if "dict" not in data:
-            raise ValueError("Key `dict` not in the data")
+            raise AssetKeyMissingError("dict")
         data = data["dict"]
 
         if "entriesValue" not in data:
-            raise ValueError("Key `dict.entriesValue` not in the data")
+            raise AssetKeyMissingError("dict.entriesValue")
         if "entriesKey" not in data:
-            raise ValueError("Key `dict.entriesKey` not in the data")
+            raise AssetKeyMissingError("dict.entriesKey")
 
         entry_keys = filter(lambda key: key != 0, data["entriesKey"])  # Only the entries with key != 0 is valid
         entry_values = data["entriesValue"]

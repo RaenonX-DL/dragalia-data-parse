@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from dlparse.errors import TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
 
 __all__ = ("TextEntry", "TextAsset", "TextParser")
@@ -36,7 +37,7 @@ class TextAsset(MasterAssetBase):
 
         If ``silent_fail``, ``label`` will be the return if not found. Otherwise, raises :class:`ValueError`.
 
-        :raises ValueError: if silent fail is set to false, and the label is not found
+        :raises TextLabelNotFoundError: if silent fail is set to false, and the label is not found
         """
         text: TextEntry = self.get_data_by_id(label)
 
@@ -46,7 +47,7 @@ class TextAsset(MasterAssetBase):
         if silent_fail:
             return label
 
-        raise ValueError(f"Text of label `{label}` not found")
+        raise TextLabelNotFoundError(label)
 
 
 class TextParser(MasterParserBase):

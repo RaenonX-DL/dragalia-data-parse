@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Type, Optional, Callable, Union
 
+from dlparse.errors import AssetKeyMissingError
 from .asset import AssetBase
 from .entry import EntryBase
 from .parser import ParserBase
@@ -107,12 +108,16 @@ class ActionParserBase(ParserBase, ABC):
 
     @staticmethod
     def get_components(file_path: str) -> list[dict]:
-        """Get a list of components as raw data, which needs to be further parsed."""
+        """
+        Get a list of components as raw data, which needs to be further parsed.
+
+        :raises AssetKeyMissingError: if key `Components` is not in the data
+        """
         with open(file_path) as f:
             data = json.load(f)
 
         if "Components" not in data:
-            raise ValueError("Key `Components` not in the data")
+            raise AssetKeyMissingError("Components")
 
         return data["Components"]
 

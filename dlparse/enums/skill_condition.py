@@ -1,6 +1,7 @@
 """Conditions for the skill data entries."""
 from enum import Enum
 
+from dlparse.errors import EnumConversionError
 from .affliction import Affliction
 
 __all__ = ("SkillCondition",)
@@ -53,10 +54,10 @@ class SkillCondition(Enum):
         """
         Convert this :class:`SkillCondition` to :class:`Affliction`.
 
-        :raises ValueError: skill condition cannot be converted to affliction
+        :raises EnumConversionError: skill condition cannot be converted to affliction
         """
         if self not in TRANS_DICT_TO_AFFLICTION:
-            raise ValueError(f"Skill condition `{repr(self)}` cannot be converted to affliction")
+            raise EnumConversionError(self, self.__class__, Affliction)
 
         return TRANS_DICT_TO_AFFLICTION[self]
 
@@ -64,10 +65,10 @@ class SkillCondition(Enum):
         """
         Convert this :class:`SkillCondition` to the actual count of buffs.
 
-        :raises ValueError: skill condition cannot be converted to buff count
+        :raises EnumConversionError: skill condition cannot be converted to buff count
         """
         if self not in TRANS_DICT_TO_BUFF_COUNT:
-            raise ValueError(f"Skill condition `{repr(self)}` cannot be converted to buff count")
+            raise EnumConversionError(self, self.__class__, "buff count")
 
         return TRANS_DICT_TO_BUFF_COUNT[self]
 
@@ -91,10 +92,10 @@ class SkillCondition(Enum):
         """
         Convert ``affliction`` to :class:`SkillCondition`.
 
-        :raises ValueError: affliction cannot be converted to skill condition
+        :raises EnumConversionError: affliction cannot be converted to skill condition
         """
         if affliction not in TRANS_DICT_FROM_AFFLICTION:
-            raise ValueError(f"Affliction `{repr(affliction)}` cannot be converted to skill condition")
+            raise EnumConversionError(affliction, Affliction, SkillCondition)
 
         return TRANS_DICT_FROM_AFFLICTION[affliction]
 

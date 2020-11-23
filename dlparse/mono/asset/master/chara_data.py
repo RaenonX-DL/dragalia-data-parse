@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Union, Optional
 
 from dlparse.enums import Element
+from dlparse.errors import TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
 from .chara_mode_data import CharaModeAsset
 from .text_label import TextAsset
@@ -264,7 +265,7 @@ class CharaDataEntry(MasterEntryBase):
         """Get the name of the character."""
         try:
             return text_asset.to_text(self.second_name_label, silent_fail=False)
-        except ValueError:
+        except TextLabelNotFoundError:
             return text_asset.to_text(self.name_label)
 
     @classmethod
