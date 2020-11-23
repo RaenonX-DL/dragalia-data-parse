@@ -21,7 +21,7 @@ class SkillTransformer:
 
     def transform_supportive(self, skill_id: int):
         """Transform skill of ``skill_id`` to :class:`SupportiveSkillData`."""
-        # TODO: TBA - Supportive
+        # TODO: TBA - Supportive / Buffing
         raise NotImplementedError()
 
     def get_hit_attr_matrix(self, skill_id: int, hit_exec_type: Optional[HitExecType] = None)\

@@ -9,3 +9,7 @@ exported/
 
 # IntelliJ project files
 .idea
+
+# Compiled Python
+__pycache__
+*.pyc
