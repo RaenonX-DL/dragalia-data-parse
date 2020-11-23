@@ -1,7 +1,7 @@
 """Mono behavior asset error classes."""
 from abc import ABC
 
-from dlparse.errors import AssetParsingError
+from .base import AssetParsingError
 
 __all__ = ("AssetKeyMissingError",)
 

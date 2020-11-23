@@ -2,4 +2,4 @@
 from .affliction import Affliction
 from .element import Element
 from .hit_exec_type import HitExecType
-from .skill_condition import SkillCondition
+from .skill_condition import SkillCondition, SkillConditionCheckResult

@@ -4,6 +4,7 @@ from itertools import combinations, product
 from typing import Optional, Union, Sequence
 
 from dlparse.enums import SkillCondition, Affliction
+from dlparse.errors import ConditionValidationFailedError
 from dlparse.mono.asset import HitAttrEntry, SkillDataEntry
 
 __all__ = ("AttackingSkillDataEntry", "AttackingSkillData")
@@ -132,8 +133,17 @@ class AttackingSkillData:
         self.possible_conditions = set()
         self._init_all_possible_conditions()
 
+    @staticmethod
+    def _validate_conditions(conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]] = None):
+        # Validate the condition combinations
+        # https://github.com/PyCQA/pylint/issues/3249
+        if not (result := SkillCondition.validate_conditions(conditions)):  # pylint: disable=superfluous-parens
+            raise ConditionValidationFailedError(result)
+
     def get_base_entry(self) -> AttackingSkillDataEntry:
         """Get the base skill data entry."""
+        self._validate_conditions()
+
         return AttackingSkillDataEntry(
             hit_count=self.hit_count,
             mods=self.mods,
@@ -146,6 +156,8 @@ class AttackingSkillData:
         Get the skill data when all ``conditions`` match.
 
         If ``conditions`` are not given, return the base data.
+
+        :raises ConditionValidationFailedError: if the condition combination is invalid
 
         .. note::
             If there are duplicated buff count ``conditions``, only the first one will be used.
@@ -163,6 +175,8 @@ class AttackingSkillData:
         elif isinstance(conditions, list):
             # Cast the condition to be a tuple (might be :class:`list` when passed in)
             conditions = tuple(conditions)
+
+        self._validate_conditions(conditions)
 
         new_mods: list[list[float]] = []
 

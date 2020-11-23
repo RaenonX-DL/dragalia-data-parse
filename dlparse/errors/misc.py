@@ -2,7 +2,7 @@
 from enum import Enum
 from typing import Type, Union
 
-from dlparse.errors import AppValueError
+from .base import AppValueError
 
 __all__ = ("EnumConversionError",)
 

@@ -1,10 +1,28 @@
 """Conditions for the skill data entries."""
-from enum import Enum
+from enum import Enum, auto
+from typing import Optional, Iterable
 
 from dlparse.errors import EnumConversionError
 from .affliction import Affliction
 
-__all__ = ("SkillCondition",)
+__all__ = ("SkillCondition", "SkillConditionCheckResult")
+
+
+class SkillConditionCheckResult(Enum):
+    """Skill conditions validating result."""
+
+    PASS = auto()
+
+    MULTIPLE_HP = auto()
+    MULTIPLE_BUFF = auto()
+
+    def __bool__(self):
+        return self.passed
+
+    @property
+    def passed(self):
+        """If the check result means the check has passed."""
+        return self == self.PASS
 
 
 class SkillCondition(Enum):
@@ -28,6 +46,7 @@ class SkillCondition(Enum):
 
     SELF_HP_1 = 201
     SELF_HP_FULL = 202
+
     SELF_BUFF_0 = 251
     SELF_BUFF_10 = 252
     SELF_BUFF_20 = 253
@@ -45,7 +64,12 @@ class SkillCondition(Enum):
         return 100 <= self.value <= 199  # pylint: disable=comparison-with-callable
 
     @property
-    def is_buff_boost(self):
+    def is_hp_condition(self) -> bool:
+        """If the condition is a HP condition."""
+        return self in (self.SELF_HP_1, self.SELF_HP_FULL)
+
+    @property
+    def is_buff_boost(self) -> bool:
         """If the condition is a buff boosted condition."""
         # https://github.com/PyCQA/pylint/issues/2306
         return 250 <= self.value <= 269  # pylint: disable=comparison-with-callable
@@ -98,6 +122,31 @@ class SkillCondition(Enum):
             raise EnumConversionError(affliction, Affliction, SkillCondition)
 
         return TRANS_DICT_FROM_AFFLICTION[affliction]
+
+    @staticmethod
+    def validate_conditions(conditions: Optional[Iterable["SkillCondition"]] = None) -> SkillConditionCheckResult:
+        """
+        Check the validity of ``conditions``.
+
+        If any of the following holds, conditions are considered invalid.
+
+        - Multiple HP conditions exist.
+
+        - Multiple buff count exist.
+        """
+        # No conditions given
+        if not conditions:
+            return SkillConditionCheckResult.PASS
+
+        # Multiple HP check
+        if sum(condition.is_hp_condition for condition in conditions) > 1:
+            return SkillConditionCheckResult.MULTIPLE_HP
+
+        # Multiple buff check
+        if sum(condition.is_buff_boost for condition in conditions) > 1:
+            return SkillConditionCheckResult.MULTIPLE_BUFF
+
+        return SkillConditionCheckResult.PASS
 
 
 TRANS_DICT_TO_AFFLICTION: dict[SkillCondition, Affliction] = {
