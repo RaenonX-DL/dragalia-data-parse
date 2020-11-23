@@ -1,7 +1,7 @@
 [
   {
-    "_Id": "TEST_TEXT_LABEL",
-    "_Text": "Test"
+    "_Id": "SKILL_IDENTIFIER_HELPER",
+    "_Text": "戰友"
   },
   {
     "_Id": "CUSTOM_CHARA_MODE_0026",
@@ -18,5 +18,9 @@
   {
     "_Id": "CUSTOM_CHARA_MODE_0029",
     "_Text": "3 層"
+  },
+  {
+    "_Id": "TEST_TEXT_LABEL",
+    "_Text": "Test"
   }
 ]
