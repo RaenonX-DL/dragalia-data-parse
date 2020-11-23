@@ -29,7 +29,7 @@ def export_skill_atk_csv(file_path: str, /,
             chara_name = chara_data.get_chara_name(text_asset)
             print(f"Exporting skill data... ({idx} / {chara_count} - {idx / chara_count:.2%})")
 
-            for skill_id, identifier in chara_data.get_skill_identifiers(chara_mode_asset, text_asset):
+            for skill_id, identifier in chara_data.get_skill_identifiers(chara_mode_asset, text_asset=text_asset):
                 try:
                     skill_data = skill_transformer.transform_attacking(skill_id)
                 except (ValueError, ActionDataNotFoundError) as ex:
@@ -60,7 +60,7 @@ def export_skill_atk_csv(file_path: str, /,
                             skill_max_lv=skill_entry.max_available_level,
                         )
                     except IndexError as ex:
-                        # TODO: Remove after Eugene S1 is handled properly
+                        # REMOVE: after Eugene S1 is handled properly
 
                         if skip_unparsable:
                             skipped_messages.append(f"[Entry] {identifier} ({skill_id}) "

@@ -7,6 +7,7 @@ from dlparse.enums import Element
 from dlparse.errors import TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
 from .chara_mode_data import CharaModeAsset
+from .skill_data import SkillDataEntry, SkillDataAsset
 from .text_label import TextAsset
 
 __all__ = ("CharaDataEntry", "CharaDataAsset", "CharaDataParser")
@@ -218,7 +219,15 @@ class CharaDataEntry(MasterEntryBase):
 
     @property
     def mode_ids(self) -> list[int]:
-        """Get a list of effective mode IDs."""
+        """
+        Get a list of effective mode IDs.
+
+        This could include but not limited to:
+
+        - Enhance mode (Bellina)
+
+        - Buff stacks (Catherine)
+        """
         return [mode_id for mode_id in (self.mode_1_id, self.mode_2_id, self.mode_3_id, self.mode_4_id)
                 if mode_id != 0]
 
@@ -236,9 +245,16 @@ class CharaDataEntry(MasterEntryBase):
         """Get the element of the character."""
         return Element(self.element_id)
 
-    def get_skill_identifiers(self, chara_mode_asset: CharaModeAsset, text_asset: TextAsset) -> list[tuple[int, str]]:
+    def get_skill_identifiers(self, chara_mode_asset: CharaModeAsset, /,
+                              text_asset: Optional[TextAsset] = None,
+                              skill_asset: Optional[SkillDataAsset] = None) \
+            -> list[tuple[int, str]]:
         """
         Get skill IDs and its identifier of a character.
+
+        If ``text_asset`` is not provided, mode name (if any) will not be able to convert to text.
+
+        If ``skill_asset`` is not provided, support skill variant (if any) will not be included.
 
         The identifier is not the name of the skill. Instead, it's a name commonly used in between players.
         For skill 1, the identifier will be ``S1``, etc.
@@ -251,13 +267,24 @@ class CharaDataEntry(MasterEntryBase):
         # Attach skill IDs in different mode from mode asset
         for mode_id in self.mode_ids:
             if mode_data := chara_mode_asset.get_data_by_id(mode_id):
-                mode_name = text_asset.to_text(mode_data.text_label) or f"Mode #{mode_id}"
+                mode_name = f"Mode #{mode_id}"
+                if text_asset:
+                    mode_name = text_asset.to_text(mode_data.text_label) or mode_name
 
                 if model_skill_1_id := mode_data.skill_id_1:
                     ret.append((model_skill_1_id, f"S1 ({mode_name})"))
 
                 if model_skill_2_id := mode_data.skill_id_2:
                     ret.append((model_skill_2_id, f"S2 ({mode_name})"))
+
+        # Attach helper skill variant if given (currently only S1 will be used as helper skill)
+        if skill_asset:
+            skill_1_data: SkillDataEntry = skill_asset.get_data_by_id(self.skill_1_id)
+            if skill_1_data.has_helper_variant:
+                ret.append((
+                    skill_1_data.as_helper_skill_id,
+                    text_asset.to_text("SKILL_IDENTIFIER_HELPER") if text_asset else "Helper"
+                ))
 
         return ret
 
@@ -362,17 +389,19 @@ class CharaDataAsset(MasterAssetBase):
                  asset_dir: Optional[str] = None):
         super().__init__(CharaDataParser, file_path, asset_dir=asset_dir)
 
-    def get_all_skill_ids(self, chara_mode_asset: CharaModeAsset) -> list[int]:
-        """Get all skill IDs of all characters."""
+    def get_all_skill_ids(self, chara_mode_asset: CharaModeAsset, /,
+                          skill_asset: Optional[SkillDataAsset] = None) -> list[int]:
+        """
+        Get all skill IDs of all characters.
+
+        If ``skill_asset`` is not provided, skills that has helper variant will not be included.
+        """
         ret: list[int] = []
 
         for chara_data in self:
-            ret.extend([chara_data.skill_1_id, chara_data.skill_2_id])
-
-            # Attach skill IDs in different mode from mode asset
-            for mode_id in chara_data.mode_ids:
-                if mode_data := chara_mode_asset.get_data_by_id(mode_id):
-                    ret.extend(mode_data.skill_ids)
+            skill_ids = [skill_id for skill_id, identifier
+                         in chara_data.get_skill_identifiers(chara_mode_asset, skill_asset=skill_asset)]
+            ret.extend(skill_ids)
 
         return ret
 

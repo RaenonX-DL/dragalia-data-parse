@@ -3,11 +3,6 @@ import pytest
 from dlparse.transformer import SkillTransformer
 
 
-def test_catherine_s2(transformer_skill: SkillTransformer):
-    # Catherine S2
-    pass
-
-
 def test_yukata_curran_s1(transformer_skill: SkillTransformer):
     # Yukata Curran S1
     pass
@@ -38,6 +33,7 @@ def test_elisanne_s1(transformer_skill: SkillTransformer):
 def test_eugene_s1(transformer_skill: SkillTransformer):
     # Eugene S1
     # https://dragalialost.gamepedia.com/Eugene
+    # One todo tag affiliated, check list after completion
     pass
 
 

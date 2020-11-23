@@ -23,7 +23,13 @@ def transformer_skill() -> SkillTransformer:
 
 
 @pytest.fixture
-def asset_chara_data() -> CharaDataAsset:
+def asset_skill() -> SkillDataAsset:
+    """Get the skill data asset."""
+    return _skill_data
+
+
+@pytest.fixture
+def asset_chara() -> CharaDataAsset:
     """Get the character data asset."""
     return _chara_data
 

@@ -32,8 +32,8 @@ max-line-length=119
 
 [MESSAGES CONTROL]
 
-# TODO: `unsubscriptable-object` generates false positives for python 3.9 and pylint==2.6.
-#   https://github.com/PyCQA/pylint/issues/3882
+# REMOVE: `unsubscriptable-object` generates false positives for python 3.9 and pylint==2.6.
+#   https://github.com/PyCQA/pylint/pull/3890 - Expected to be fixed in the next version
 #   Re-enable it when the issue is fixed.
 disable=unsubscriptable-object,
         # Search for todo tags and manually manage them instead

@@ -150,13 +150,18 @@ class SkillDataEntry(MasterEntryBase):
         ]
 
     @property
-    def is_attacking_skill(self):
+    def is_attacking_skill(self) -> bool:
         """
         Check if the skill is an attacking skill.
 
         Currently, ``is_affected_by_tension_lv1`` is used to perform the check.
         """
         return self.is_affected_by_tension_lv1
+
+    @property
+    def has_helper_variant(self) -> bool:
+        """Check if the skill will be different if used as helper skill."""
+        return self.as_helper_skill_id != 0
 
 
 class SkillDataAsset(MasterAssetBase):

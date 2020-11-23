@@ -177,22 +177,22 @@ def test_custom_id():
 
 def test_get_chara_name_use_main(text_asset: TextAsset):
     entry = create_dummy(name_label="CHARA_NAME_10840301", second_name_label="CHARA_NAME_COMMENT_10840301")
-    assert entry.get_chara_name(text_asset) == "路恩"
+    assert entry.get_chara_name(text_asset) == "ルーエン"
 
 
 def test_get_chara_name_use_second(text_asset: TextAsset):
     entry = create_dummy(name_label="CHARA_NAME_10150302", second_name_label="CHARA_NAME_COMMENT_10150302")
-    assert entry.get_chara_name(text_asset) == "耶魯菲莉絲（花嫁Ver.）"
+    assert entry.get_chara_name(text_asset) == "エルフィリス（ウエディングVer.）"
 
 
 def test_get_skill_id_names(chara_mode_asset: CharaModeAsset, text_asset: TextAsset):
     entry = create_dummy(skill_1_id=1, skill_2_id=2)
-    assert entry.get_skill_identifiers(chara_mode_asset, text_asset) == [(1, "S1"), (2, "S2")]
+    assert entry.get_skill_identifiers(chara_mode_asset, text_asset=text_asset) == [(1, "S1"), (2, "S2")]
 
 
 def test_get_skill_id_names_with_mode(chara_mode_asset: CharaModeAsset, text_asset: TextAsset):
     entry = create_dummy(skill_1_id=1, skill_2_id=2, mode_2_id=12)
-    assert entry.get_skill_identifiers(chara_mode_asset, text_asset) == [
+    assert entry.get_skill_identifiers(chara_mode_asset, text_asset=text_asset) == [
         (1, "S1"), (2, "S2"),
-        (103505033, "S1 (不羈伴侶)"), (103505034, "S2 (不羈伴侶)")
+        (103505033, "S1 (服わざる伴侶)"), (103505034, "S2 (服わざる伴侶)")
     ]
