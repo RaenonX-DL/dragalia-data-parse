@@ -24,6 +24,8 @@ class HitAttrEntry(MasterEntryBase):
     rate_boost_by_buff: float  # 0 = not applicable
     """Damage modifier boosting rate for each buff."""
 
+    break_dmg_rate: float  # Searching regex: "_ToBreakDmgRate": (?!1\.0|0\.0)
+
     @staticmethod
     def parse_raw(data: dict[str, Union[str, float, int]]) -> "HitAttrEntry":
         punisher_states = {data["_KillerState1"], data["_KillerState2"], data["_KillerState3"]} - {0}
@@ -36,7 +38,8 @@ class HitAttrEntry(MasterEntryBase):
             punisher_states=punisher_states,
             punisher_rate=data["_KillerStateDamageRate"],
             crisis_limit_rate=data["_CrisisLimitRate"],
-            rate_boost_by_buff=data["_DamageUpRateByBuffCount"]
+            rate_boost_by_buff=data["_DamageUpRateByBuffCount"],
+            break_dmg_rate=data["_ToBreakDmgRate"]
         )
 
     @property
@@ -48,6 +51,11 @@ class HitAttrEntry(MasterEntryBase):
     def boost_by_buff_count(self) -> bool:
         """Check if the damage modifier will be boosted by the count of buffs."""
         return self.rate_boost_by_buff != 0
+
+    @property
+    def boost_in_break(self) -> bool:
+        """Check if the damage modifier will be boosted during break."""
+        return self.break_dmg_rate != 1
 
     @property
     def change_by_hp(self) -> bool:
