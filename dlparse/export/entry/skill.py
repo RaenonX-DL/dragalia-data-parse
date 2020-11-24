@@ -2,7 +2,7 @@
 import hashlib
 from dataclasses import dataclass
 
-from dlparse.enums import SkillCondition, Element
+from dlparse.enums import SkillConditionComposite, Element
 from .base import ExportEntryBase
 
 __all__ = ("CharaAttackingSkillEntry",)
@@ -50,9 +50,9 @@ class CharaAttackingSkillEntry(ExportEntryBase):
 
         Actual in-game name of the skill.
 
-    ``skill_conditions``
+    ``skill_condition_comp``
 
-        Conditions of the skill.
+        Condition composite of the skill entry.
 
     ``skill_total_mods_max``
 
@@ -75,21 +75,15 @@ class CharaAttackingSkillEntry(ExportEntryBase):
     skill_internal_id: int
     skill_identifier: str
     skill_name: str
-    skill_conditions: tuple[SkillCondition]
+    skill_condition_comp: SkillConditionComposite
     skill_total_mods_max: float
     skill_total_hits_max: int
     skill_max_lv: int
 
     @property
     def unique_id(self):
-        # Concatenate the ``repr()`` of Character Internal ID, Skill Internal ID and the Skill Conditions,
-        # then hash it.
-
-        # FIXME: [PRIO] Generate with skill composite - for skill composite,
-        #  same condition should return the same hash,
-        #  regardless its order (then match with G Sheet, get mods corresponds to ID)
         return hashlib.sha256(
-            f"{self.character_internal_id}{self.skill_internal_id}{self.skill_conditions}".encode("utf-8")
+            f"{self.character_internal_id}{self.skill_internal_id}{hash(self.skill_condition_comp)}".encode("utf-8")
         ).hexdigest()
 
     def to_csv_entry(self) -> list[str]:
@@ -103,7 +97,7 @@ class CharaAttackingSkillEntry(ExportEntryBase):
             self.skill_internal_id,
             self.skill_identifier,
             self.skill_name,
-            self.skill_conditions,
+            self.skill_condition_comp,
             self.skill_total_mods_max,
             self.skill_total_hits_max,
             self.skill_max_lv

@@ -21,14 +21,14 @@ class AttackingSkillDataEntry:
     For example, if skill level 1 has 1 hit and 100% mods while skill level 2 has 2 hits and 150% + 200% mods,
     ``hit_count`` should be ``[1, 2]`` and ``mods`` should be ``[[1.0], [1.5, 2.0]]``.
 
-    To apply the data of the entry, **all** ``conditions`` must be true.
+    The relationship between the ``conditions`` are **AND**, which means that all conditions must be true.
     """
 
     mods: list[list[float]]
 
     damage_hit_attrs: list[list[DamagingHitData]]
 
-    conditions: tuple[SkillCondition] = field(default_factory=tuple)
+    condition_comp: SkillConditionComposite = field(default_factory=tuple)
 
     hit_count: list[int] = field(init=False)
     total_mod: list[float] = field(init=False)
@@ -103,7 +103,7 @@ class AttackingSkillData:
         # Check availabilities
         for hit_data_lv in self.hit_data_mtx:
             for hit_data in hit_data_lv:
-                punishers_available.update(hit_data.hit_attr.punisher_states)
+                punishers_available |= hit_data.hit_attr.punisher_states
                 crisis_available = crisis_available or hit_data.hit_attr.change_by_hp
                 buff_up_available = buff_up_available or hit_data.hit_attr.boost_by_buff_count
                 will_deteriorate = will_deteriorate or hit_data.will_deteriorate
@@ -192,7 +192,7 @@ class AttackingSkillData:
         return AttackingSkillDataEntry(
             mods=self.calculate_mods_matrix(condition_comp),
             damage_hit_attrs=self.hit_data_mtx,
-            conditions=condition_comp.conditions_sorted
+            condition_comp=condition_comp
         )
 
     def get_all_possible_entries(self) -> list[AttackingSkillDataEntry]:

@@ -39,7 +39,7 @@ class TextAsset(MasterAssetBase):
 
         # Read in and overwrite the data by custom assets
         if custom_file_path := self.get_file_path(file_path=file_path_custom, asset_dir=asset_dir_custom):
-            self._data.update(CustomTextParser.parse_file(custom_file_path))
+            self._data |= CustomTextParser.parse_file(custom_file_path)
 
     def to_text(self, label: str, /, silent_fail: bool = True) -> str:
         """

@@ -173,3 +173,11 @@ def test_composite_mix():
     assert composite.buff_count == SkillCondition.SELF_BUFF_10
     assert composite.bullet_hit_count == SkillCondition.BULLET_HIT_8
     assert composite.hp_condition == SkillCondition.SELF_HP_1
+
+
+def test_composite_eq():
+    assert SkillConditionComposite() == SkillConditionComposite()
+    assert SkillConditionComposite(SkillCondition.SELF_HP_1) == SkillConditionComposite(SkillCondition.SELF_HP_1)
+    assert SkillConditionComposite(SkillCondition.SELF_HP_1) != SkillConditionComposite(SkillCondition.SELF_HP_FULL)
+    assert SkillConditionComposite([SkillCondition.SELF_HP_1, SkillCondition.BULLET_HIT_8]) \
+           == SkillConditionComposite([SkillCondition.BULLET_HIT_8, SkillCondition.SELF_HP_1])

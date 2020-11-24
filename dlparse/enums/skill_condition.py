@@ -260,6 +260,12 @@ class SkillConditionComposite:
         if not (result := SkillCondition.validate_conditions(conditions)):  # pylint: disable=superfluous-parens
             raise ConditionValidationFailedError(result)
 
+    def __hash__(self):
+        return hash(tuple(sorted(condition.value for condition in self.conditions_sorted)))
+
+    def __eq__(self, other):
+        return hash(self) == hash(other)
+
     def _init_validate(self):
         # Check `self.afflictions_condition`
         if any(not condition.is_target_afflicted for condition in self.afflictions_condition):

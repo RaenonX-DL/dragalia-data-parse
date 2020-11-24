@@ -41,7 +41,7 @@ def test_nevin_s2(transformer_skill: SkillTransformer):
     # # Base data
     # skill_data = skill_data_base.with_conditions()
     #
-    # # FIXME: To be investigated
+    # # TODO: To be investigated
     # #   Seems that Sigil locked and Sigil released are using the same action file with different bullet? (10 / 10+1)
     #
     # assert skill_data.hit_count == [2, 2, 2, 2]

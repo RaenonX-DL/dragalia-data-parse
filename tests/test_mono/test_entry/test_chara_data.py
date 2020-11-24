@@ -84,7 +84,7 @@ def create_dummy(**kwargs) -> CharaDataEntry:
         "grow_material_id": -1,
     }
 
-    params.update(kwargs)
+    params |= kwargs
 
     return CharaDataEntry(**params)
 

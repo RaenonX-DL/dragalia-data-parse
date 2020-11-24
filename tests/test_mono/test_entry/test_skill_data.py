@@ -54,7 +54,7 @@ def create_dummy(**kwargs) -> SkillDataEntry:
         "is_affected_by_tension_lv4": False,
     }
 
-    params.update(kwargs)
+    params |= kwargs
 
     return SkillDataEntry(**params)
 
