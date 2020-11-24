@@ -266,6 +266,9 @@ class SkillConditionComposite:
     def __eq__(self, other):
         return hash(self) == hash(other)
 
+    def __repr__(self):
+        return f"{{{', '.join({condition.name for condition in self.conditions_sorted})}}}"
+
     def _init_validate(self):
         # Check `self.afflictions_condition`
         if any(not condition.is_target_afflicted for condition in self.afflictions_condition):

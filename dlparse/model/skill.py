@@ -4,6 +4,7 @@ from itertools import combinations, product
 from typing import Optional, Union, Sequence
 
 from dlparse.enums import SkillCondition, SkillConditionComposite, Affliction
+from dlparse.errors import BulletEndOfLifeError
 from dlparse.mono.asset import SkillDataEntry
 from dlparse.utils import calculate_damage_modifier
 from .hit import DamagingHitData
@@ -197,4 +198,13 @@ class AttackingSkillData:
 
     def get_all_possible_entries(self) -> list[AttackingSkillDataEntry]:
         """Get all possible skill mod entries."""
-        return [self.with_conditions(conditions) for conditions in self.possible_conditions]
+        entries = []
+
+        for conditions in self.possible_conditions:
+            try:
+                entries.append(self.with_conditions(conditions))
+            except BulletEndOfLifeError:
+                # bullet count in conditions > actual max bullet count
+                pass
+
+        return entries
