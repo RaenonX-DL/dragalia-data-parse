@@ -248,9 +248,9 @@ class CharaDataEntry(MasterEntryBase):
     def get_skill_identifiers(self, chara_mode_asset: CharaModeAsset, /,
                               text_asset: Optional[TextAsset] = None,
                               skill_asset: Optional[SkillDataAsset] = None) \
-            -> list[tuple[int, str]]:
+            -> list[tuple[int, str, str]]:
         """
-        Get skill IDs and its identifier of a character.
+        Get the skill IDs, its identifier and a string as an unique ID of a character.
 
         If ``text_asset`` is not provided, mode name (if any) will not be able to convert to text.
 
@@ -262,7 +262,7 @@ class CharaDataEntry(MasterEntryBase):
         For skills that comes from a mode, the name of the mode will be appended at the end of the identifier.
         For example, the identifier of Bellina's S2 in enhanced mode will be ``S2 (不羈伴侶)``.
         """
-        ret: list[tuple[int, str]] = [(self.skill_1_id, "S1"), (self.skill_2_id, "S2")]
+        ret: list[tuple[int, str, str]] = [(self.skill_1_id, "S1", "S1/NA"), (self.skill_2_id, "S2", "S2/NA")]
 
         # Attach skill IDs in different mode from mode asset
         for mode_id in self.mode_ids:
@@ -272,10 +272,10 @@ class CharaDataEntry(MasterEntryBase):
                     mode_name = text_asset.to_text(mode_data.text_label) or mode_name
 
                 if model_skill_1_id := mode_data.skill_id_1:
-                    ret.append((model_skill_1_id, f"S1 ({mode_name})"))
+                    ret.append((model_skill_1_id, f"S1 ({mode_name})", f"S1/{mode_data.id}"))
 
                 if model_skill_2_id := mode_data.skill_id_2:
-                    ret.append((model_skill_2_id, f"S2 ({mode_name})"))
+                    ret.append((model_skill_2_id, f"S2 ({mode_name})", f"S2/{mode_data.id}"))
 
         # Attach helper skill variant if given (currently only S1 will be used as helper skill)
         if skill_asset:
@@ -283,7 +283,8 @@ class CharaDataEntry(MasterEntryBase):
             if skill_1_data.has_helper_variant:
                 ret.append((
                     skill_1_data.as_helper_skill_id,
-                    text_asset.to_text("SKILL_IDENTIFIER_HELPER") if text_asset else "Helper"
+                    text_asset.to_text("SKILL_IDENTIFIER_HELPER") if text_asset else "Helper",
+                    "S1/HELPER"
                 ))
 
         return ret
@@ -399,7 +400,7 @@ class CharaDataAsset(MasterAssetBase):
         ret: list[int] = []
 
         for chara_data in self:
-            skill_ids = [skill_id for skill_id, identifier
+            skill_ids = [skill_id for skill_id, _, _
                          in chara_data.get_skill_identifiers(chara_mode_asset, skill_asset=skill_asset)]
             ret.extend(skill_ids)
 

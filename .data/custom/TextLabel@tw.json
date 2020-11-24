@@ -1,23 +1,23 @@
 [
   {
     "_Id": "SKILL_IDENTIFIER_HELPER",
-    "_Text": "戦友"
+    "_Text": "戰友"
   },
   {
     "_Id": "CUSTOM_CHARA_MODE_0026",
-    "_Text": "0 ガード / シェア"
+    "_Text": "0 層 / 做為共享"
   },
   {
     "_Id": "CUSTOM_CHARA_MODE_0027",
-    "_Text": "1 ガード"
+    "_Text": "1 層"
   },
   {
     "_Id": "CUSTOM_CHARA_MODE_0028",
-    "_Text": "2 ガード"
+    "_Text": "2 層"
   },
   {
     "_Id": "CUSTOM_CHARA_MODE_0029",
-    "_Text": "3 ガード"
+    "_Text": "3 層"
   },
   {
     "_Id": "TEST_TEXT_LABEL",

@@ -46,6 +46,10 @@ class CharaAttackingSkillEntry(ExportEntryBase):
 
         Identifier (not the name) of the skill.
 
+    ``skill_unique_id``
+
+        An unique ID identifies the skill and mode combined.
+
     ``skill_name``
 
         Actual in-game name of the skill.
@@ -74,6 +78,7 @@ class CharaAttackingSkillEntry(ExportEntryBase):
 
     skill_internal_id: int
     skill_identifier: str
+    skill_unique_id: str
     skill_name: str
     skill_condition_comp: SkillConditionComposite
     skill_total_mods_max: float
@@ -83,7 +88,8 @@ class CharaAttackingSkillEntry(ExportEntryBase):
     @property
     def unique_id(self):
         return hashlib.sha256(
-            f"{self.character_internal_id}{self.skill_internal_id}{hash(self.skill_condition_comp)}".encode("utf-8")
+            f"{self.character_internal_id}{self.skill_internal_id}{self.skill_unique_id}"
+            f"{hash(self.skill_condition_comp)}".encode("utf-8")
         ).hexdigest()
 
     def to_csv_entry(self) -> list[str]:

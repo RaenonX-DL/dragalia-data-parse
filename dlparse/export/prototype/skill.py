@@ -29,7 +29,8 @@ def export_skill_atk_csv(file_path: str, /,
             chara_name = chara_data.get_chara_name(text_asset)
             print(f"Exporting skill data... ({idx} / {chara_count} - {idx / chara_count:.2%})")
 
-            for skill_id, identifier in chara_data.get_skill_identifiers(chara_mode_asset, text_asset=text_asset):
+            skill_identifiers = chara_data.get_skill_identifiers(chara_mode_asset, text_asset=text_asset)
+            for skill_id, identifier, unique_id in skill_identifiers:
                 try:
                     skill_data = skill_transformer.transform_attacking(skill_id)
                 except (ValueError, ActionDataNotFoundError) as ex:
@@ -53,6 +54,7 @@ def export_skill_atk_csv(file_path: str, /,
                             character_element=chara_data.element,
                             skill_internal_id=skill_id,
                             skill_identifier=identifier,
+                            skill_unique_id=unique_id,
                             skill_name=skill_name,
                             skill_condition_comp=skill_entry.condition_comp,
                             skill_total_mods_max=skill_entry.total_mod_at_max,
@@ -73,7 +75,7 @@ def export_skill_atk_csv(file_path: str, /,
 
     if skipped_messages:
         print()
-        print("Some items were skipped:")
+        print(f"Some ({len(skipped_messages)}) items were skipped:")
 
         for msg in skipped_messages:
             print(msg)

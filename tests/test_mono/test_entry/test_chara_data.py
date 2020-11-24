@@ -187,12 +187,13 @@ def test_get_chara_name_use_second(text_asset: TextAsset):
 
 def test_get_skill_id_names(chara_mode_asset: CharaModeAsset, text_asset: TextAsset):
     entry = create_dummy(skill_1_id=1, skill_2_id=2)
-    assert entry.get_skill_identifiers(chara_mode_asset, text_asset=text_asset) == [(1, "S1"), (2, "S2")]
+    assert entry.get_skill_identifiers(chara_mode_asset, text_asset=text_asset) == [(1, "S1", "S1/NA"),
+                                                                                    (2, "S2", "S2/NA")]
 
 
 def test_get_skill_id_names_with_mode(chara_mode_asset: CharaModeAsset, text_asset: TextAsset):
     entry = create_dummy(skill_1_id=1, skill_2_id=2, mode_2_id=12)
     assert entry.get_skill_identifiers(chara_mode_asset, text_asset=text_asset) == [
-        (1, "S1"), (2, "S2"),
-        (103505033, "S1 (服わざる伴侶)"), (103505034, "S2 (服わざる伴侶)")
+        (1, "S1", "S1/NA"), (2, "S2", "S2/NA"),
+        (103505033, "S1 (服わざる伴侶)", "S1/12"), (103505034, "S2 (服わざる伴侶)", "S2/12")
     ]

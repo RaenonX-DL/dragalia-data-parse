@@ -29,7 +29,7 @@ class AttackingSkillDataEntry:
 
     damage_hit_attrs: list[list[DamagingHitData]]
 
-    condition_comp: SkillConditionComposite = field(default_factory=tuple)
+    condition_comp: SkillConditionComposite = field(default_factory=SkillConditionComposite)
 
     hit_count: list[int] = field(init=False)
     total_mod: list[float] = field(init=False)
