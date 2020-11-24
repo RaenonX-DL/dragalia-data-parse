@@ -1,17 +1,17 @@
 """Classes for handling the skill data asset."""
 from dataclasses import dataclass
-from typing import Union, Optional, ClassVar
+from typing import Union, Optional
 
 from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
 
 __all__ = ("SkillDataEntry", "SkillDataAsset", "SkillDataParser")
 
+SKILL_MAX_LEVEL = 4
+
 
 @dataclass
 class SkillDataEntry(MasterEntryBase):
     """Single entry of a skill data."""
-
-    MAX_LEVEL: ClassVar[int] = 4  # pylint: disable=invalid-name
 
     name_label: str
 
@@ -146,7 +146,7 @@ class SkillDataEntry(MasterEntryBase):
             self.adv_skill_lv1_action_id
             if self.adv_skill_lv1_action_id and level + 1 >= self.adv_skill_lv1
             else self.action_1_id
-            for level in range(self.MAX_LEVEL)
+            for level in range(SKILL_MAX_LEVEL)
         ]
 
     @property

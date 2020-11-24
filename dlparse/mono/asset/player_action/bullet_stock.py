@@ -2,13 +2,14 @@
 from dataclasses import dataclass
 from typing import Union
 
-from dlparse.mono.asset.base import ActionComponentBase, ActionComponentDamageDealerMixin
+from .bullet import ActionBullet
+from .bullet_arrange import ActionBulletArranged
 
 __all__ = ("ActionBulletStock",)
 
 
 @dataclass
-class ActionBulletStock(ActionComponentBase, ActionComponentDamageDealerMixin):
+class ActionBulletStock(ActionBullet):
     """Class of ``ActionPartsFireStockBullet`` component in the player action asset."""
 
     @classmethod
@@ -21,7 +22,7 @@ class ActionBulletStock(ActionComponentBase, ActionComponentDamageDealerMixin):
 
         # Labels in arrange bullet
         if "_arrangeBullet" in data:
-            labels_possible.append(data["_arrangeBullet"]["_abHitAttrLabel"])
+            labels_possible.extend(ActionBulletArranged.parse_raw(data["_arrangeBullet"]).hit_labels)
 
         return ActionBulletStock(
             hit_labels=[label for label in labels_possible if label],

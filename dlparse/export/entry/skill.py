@@ -84,6 +84,10 @@ class CharaAttackingSkillEntry(ExportEntryBase):
     def unique_id(self):
         # Concatenate the ``repr()`` of Character Internal ID, Skill Internal ID and the Skill Conditions,
         # then hash it.
+
+        # FIXME: [PRIO] Generate with skill composite - for skill composite,
+        #  same condition should return the same hash,
+        #  regardless its order (then match with G Sheet, get mods corresponds to ID)
         return hashlib.sha256(
             f"{self.character_internal_id}{self.skill_internal_id}{self.skill_conditions}".encode("utf-8")
         ).hexdigest()

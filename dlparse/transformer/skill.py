@@ -3,7 +3,7 @@ from typing import Optional
 
 from dlparse.enums import HitExecType
 from dlparse.errors import SkillDataNotFoundError
-from dlparse.model import AttackingSkillData
+from dlparse.model import AttackingSkillData, DamagingHitData
 from dlparse.mono.asset import SkillDataAsset, SkillDataEntry, HitAttrEntry, HitAttrAsset
 from dlparse.mono.loader import PlayerActionFileLoader
 
@@ -24,10 +24,11 @@ class SkillTransformer:
         # TODO: TBA - Supportive / Buffing
         raise NotImplementedError()
 
-    def get_hit_attr_matrix(self, skill_id: int, hit_exec_type: Optional[HitExecType] = None)\
-            -> tuple[SkillDataEntry, list[list[HitAttrEntry]]]:
+    def get_hit_data_matrix(self, skill_id: int, hit_exec_type: Optional[HitExecType] = None, /,
+                            damage_hit_only: bool = True) \
+            -> tuple[SkillDataEntry, list[list[DamagingHitData]]]:
         """
-        Get a matrix of the hit attributes.
+        Get a matrix of the single hit data.
 
         The first index of the matrix is the skill level (Skill level 1 = index 0).
 
@@ -35,6 +36,7 @@ class SkillTransformer:
         If the type does not match, the entry will be taken out.
 
         :raises SkillDataNotFoundError: skill data not found
+        :raises ActionDataNotFoundError: action file not found
         """
         # Get the skill data
         skill_data: Optional[SkillDataEntry] = self._skill_data.get_data_by_id(skill_id)
@@ -42,27 +44,34 @@ class SkillTransformer:
             raise SkillDataNotFoundError(skill_id)
 
         # Get hit attribute data
-        hit_attr_mtx: list[list[HitAttrEntry]] = []
+        hit_data_mtx: list[list[DamagingHitData]] = []
 
         for skill_lv, action_id in enumerate(skill_data.action_id_1_by_level, start=1):
             action_prefab = self._action_loader.get_prefab(action_id)
 
-            for hit_label_root in action_prefab.effective_hit_labels:
-                hit_label = self._hit_attr.get_hit_label(hit_label_root, skill_lv)
-
-                hit_attr_data: Optional[HitAttrEntry] = self._hit_attr.get_data_by_id(hit_label)
-                if not hit_attr_data:
+            for hit_label, action_component in action_prefab.get_hit_actions(skill_lv):
+                # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
+                # pylint: disable=superfluous-parens
+                hit_attr_data: Optional[HitAttrEntry]
+                if not (hit_attr_data := self._hit_attr.get_data_by_id(hit_label)):
                     # No further skill data available
                     break
 
+                hit_data = DamagingHitData(hit_attr=hit_attr_data, action_component=action_component)
+
                 # Create an empty array for the corresonding skill level
-                if skill_lv > len(hit_attr_mtx):
-                    hit_attr_mtx.append([])
+                if skill_lv > len(hit_data_mtx):
+                    hit_data_mtx.append([])
 
-                if not hit_exec_type or (hit_exec_type and hit_attr_data.hit_exec_type == hit_exec_type):
-                    hit_attr_mtx[skill_lv - 1].append(hit_attr_data)
+                # Check if exec type limitation meets
+                meet_exec_type = not hit_exec_type or (hit_exec_type and hit_attr_data.hit_exec_type == hit_exec_type)
+                # Check if damage dealing hits limitation meets
+                meet_damage_only = not damage_hit_only or (damage_hit_only and hit_data.hit_attr.deal_damage)
 
-        return skill_data, hit_attr_mtx
+                if meet_exec_type and meet_damage_only:
+                    hit_data_mtx[skill_lv - 1].append(hit_data)
+
+        return skill_data, hit_data_mtx
 
     def transform_attacking(self, skill_id: int) -> AttackingSkillData:
         """
@@ -71,41 +80,9 @@ class SkillTransformer:
         :raises SkillDataNotFoundError: if the skill data is not found
         :raises ActionDataNotFoundError: if the action data file of the skill is not found
         """
-        skill_data, hit_attr_mtx = self.get_hit_attr_matrix(skill_id, HitExecType.DAMAGE)
-
-        skill_data: SkillDataEntry
-        hit_attr_mtx: list[list[HitAttrEntry]]
-
-        mods: list[list[float]] = []
-        hits: list[int] = []
-
-        for skill_lv, action_id in enumerate(skill_data.action_id_1_by_level, start=1):
-            action_prefab = self._action_loader.get_prefab(action_id)
-
-            for hit_label_root in action_prefab.effective_hit_labels:
-                hit_label = self._hit_attr.get_hit_label(hit_label_root, skill_lv)
-
-                hit_attr_data: Optional[HitAttrEntry] = self._hit_attr.get_data_by_id(hit_label)
-                if not hit_attr_data:
-                    # No further skill data available
-                    break
-
-                mod = hit_attr_data.damage_modifier
-
-                if skill_lv > len(mods):
-                    mods.append([])
-                    hits.append(0)
-
-                # Data to be attached to the model
-                if hit_attr_data.deal_damage:
-                    lv_index = skill_lv - 1
-
-                    mods[lv_index].append(mod)
-                    hits[lv_index] += 1
+        skill_data, hit_data_mtx = self.get_hit_data_matrix(skill_id, HitExecType.DAMAGE)
 
         return AttackingSkillData(
             skill_data_raw=skill_data,
-            hit_count=hits,
-            mods=mods,
-            hit_attr_mtx=hit_attr_mtx
+            hit_data_mtx=hit_data_mtx
         )

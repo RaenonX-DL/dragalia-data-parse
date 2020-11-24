@@ -1,11 +1,12 @@
 """Conditions for the skill data entries."""
+from dataclasses import dataclass, InitVar, field
 from enum import Enum, auto
-from typing import Optional, Iterable
+from typing import Optional, Iterable, Sequence, Union
 
-from dlparse.errors import EnumConversionError
+from dlparse.errors import EnumConversionError, ConditionValidationFailedError
 from .affliction import Affliction
 
-__all__ = ("SkillCondition", "SkillConditionCheckResult")
+__all__ = ("SkillCondition", "SkillConditionCheckResult", "SkillConditionComposite")
 
 
 class SkillConditionCheckResult(Enum):
@@ -15,6 +16,12 @@ class SkillConditionCheckResult(Enum):
 
     MULTIPLE_HP = auto()
     MULTIPLE_BUFF = auto()
+    MULTIPLE_BULLET_HIT = auto()
+
+    INTERNAL_NOT_AFFLICTION_ONLY = auto()
+    INTERNAL_NOT_BUFF_COUNT = auto()
+    INTERNAL_NOT_BULLET_HIT_COUNT = auto()
+    INTERNAL_NOT_HP_CONDITION = auto()
 
     def __bool__(self):
         return self.passed
@@ -57,11 +64,22 @@ class SkillCondition(Enum):
     SELF_BUFF_45 = 258
     SELF_BUFF_50 = 259
 
+    BULLET_HIT_1 = 301
+    BULLET_HIT_2 = 302
+    BULLET_HIT_3 = 303
+    BULLET_HIT_4 = 304
+    BULLET_HIT_5 = 305
+    BULLET_HIT_6 = 306
+    BULLET_HIT_7 = 307
+    BULLET_HIT_8 = 308
+    BULLET_HIT_9 = 309
+    BULLET_HIT_10 = 310
+
     @property
     def is_target_afflicted(self) -> bool:
         """If the condition needs the target to be afflicted."""
         # https://github.com/PyCQA/pylint/issues/2306
-        return 100 <= self.value <= 199  # pylint: disable=comparison-with-callable
+        return 100 <= int(self.value) <= 199
 
     @property
     def is_hp_condition(self) -> bool:
@@ -72,7 +90,13 @@ class SkillCondition(Enum):
     def is_buff_boost(self) -> bool:
         """If the condition is a buff boosted condition."""
         # https://github.com/PyCQA/pylint/issues/2306
-        return 250 <= self.value <= 269  # pylint: disable=comparison-with-callable
+        return 250 <= int(self.value) <= 269
+
+    @property
+    def is_bullet_hit_count(self):
+        """If the condition is bullet hit count."""
+        # https://github.com/PyCQA/pylint/issues/2306
+        return 301 <= int(self.value) <= 310
 
     def to_affliction(self) -> Affliction:
         """
@@ -96,20 +120,68 @@ class SkillCondition(Enum):
 
         return TRANS_DICT_TO_BUFF_COUNT[self]
 
+    def to_bullet_hit_count(self) -> int:
+        """
+        Convert this :class:`SkillCondition` to the actual count of bullet hits.
+
+        :raises EnumConversionError: skill condition cannot be converted to bullet hit count
+        """
+        if self not in TRANS_DICT_TO_BULLET_HIT_COUNT:
+            raise EnumConversionError(self, self.__class__, "bullet hit count")
+
+        return TRANS_DICT_TO_BULLET_HIT_COUNT[self]
+
     @staticmethod
     def get_all_buff_count_conditions() -> list["SkillCondition"]:
         """Get a list of all buff count conditions."""
-        return [
-            SkillCondition.SELF_BUFF_0,
-            SkillCondition.SELF_BUFF_10,
-            SkillCondition.SELF_BUFF_20,
-            SkillCondition.SELF_BUFF_25,
-            SkillCondition.SELF_BUFF_30,
-            SkillCondition.SELF_BUFF_35,
-            SkillCondition.SELF_BUFF_40,
-            SkillCondition.SELF_BUFF_45,
-            SkillCondition.SELF_BUFF_50,
-        ]
+        return list(TRANS_DICT_TO_BUFF_COUNT.keys())
+
+    @staticmethod
+    def get_all_bullet_hit_count_conditions() -> list["SkillCondition"]:
+        """Get a list of all bullet hit count conditions."""
+        return list(TRANS_DICT_TO_BULLET_HIT_COUNT.keys())
+
+    @staticmethod
+    def extract_afflictions(conditions: Sequence["SkillCondition"]) -> set["SkillCondition"]:
+        """
+        Get a list of affliction conditions from ``conditions``.
+
+        Returns an empty set if not found.
+        """
+        return {condition for condition in conditions if condition.is_target_afflicted}
+
+    @staticmethod
+    def extract_buff_count(conditions: Sequence["SkillCondition"]) -> Optional["SkillCondition"]:
+        """
+        Get the first buff count condition from ``conditions``, if found.
+
+        Returns ``None`` instead if not found.
+
+        This will **NOT** throw an error if there are multiple buff conditions found.
+        """
+        return next((condition for condition in conditions if condition.is_buff_boost), None)
+
+    @staticmethod
+    def extract_bullet_hit_count(conditions: Sequence["SkillCondition"]) -> Optional["SkillCondition"]:
+        """
+        Get the first bullet hit count condition from ``conditions``, if found.
+
+        Returns ``None`` instead if not found.
+
+        This will **NOT** throw an error if there are multiple bullet count conditions found.
+        """
+        return next((condition for condition in conditions if condition.is_bullet_hit_count), None)
+
+    @staticmethod
+    def extract_hp_condition(conditions: Sequence["SkillCondition"]) -> Optional["SkillCondition"]:
+        """
+        Get the first HP condition from ``conditions``, if found.
+
+        Returns ``None`` instead if not found.
+
+        This will **NOT** throw an error if there are multiple HP conditions found.
+        """
+        return next((condition for condition in conditions if condition.is_hp_condition), None)
 
     @staticmethod
     def from_affliction(affliction: Affliction) -> "SkillCondition":
@@ -133,6 +205,8 @@ class SkillCondition(Enum):
         - Multiple HP conditions exist.
 
         - Multiple buff count exist.
+
+        - Multiple bullet hit count exist.
         """
         # No conditions given
         if not conditions:
@@ -146,7 +220,100 @@ class SkillCondition(Enum):
         if sum(condition.is_buff_boost for condition in conditions) > 1:
             return SkillConditionCheckResult.MULTIPLE_BUFF
 
+        # Multiple bullet hit count check
+        if sum(condition.is_bullet_hit_count for condition in conditions) > 1:
+            return SkillConditionCheckResult.MULTIPLE_BULLET_HIT
+
         return SkillConditionCheckResult.PASS
+
+
+@dataclass
+class SkillConditionComposite:
+    """Composite class of various skill conditions."""
+
+    conditions: InitVar[Optional[Union[Sequence[SkillCondition], SkillCondition]]] = None
+
+    afflictions_condition: set[SkillCondition] = field(init=False)
+    afflictions_converted: set[Affliction] = field(init=False)
+    buff_count: Optional[SkillCondition] = field(init=False)
+    bullet_hit_count: Optional[SkillCondition] = field(init=False)
+    hp_condition: Optional[SkillCondition] = field(init=False)
+
+    @staticmethod
+    def _init_process_conditions(conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]]):
+        if isinstance(conditions, SkillCondition):
+            # Cast the condition to be a list to generalize the data type
+            conditions = (conditions,)
+        elif isinstance(conditions, list):
+            # Cast the condition to be a tuple (might be :class:`list` when passed in)
+            conditions = tuple(conditions)
+        elif not conditions:
+            # Conditions is either empty sequence or ``None``
+            conditions = ()
+
+        return conditions
+
+    @staticmethod
+    def _init_validate_conditions(conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]]):
+        # Validate the condition combinations
+        # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
+        if not (result := SkillCondition.validate_conditions(conditions)):  # pylint: disable=superfluous-parens
+            raise ConditionValidationFailedError(result)
+
+    def _init_validate(self):
+        # Check `self.afflictions_condition`
+        if any(not condition.is_target_afflicted for condition in self.afflictions_condition):
+            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_AFFLICTION_ONLY)
+
+        # Check `self.buff_count`
+        if self.buff_count and not self.buff_count.is_buff_boost:
+            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BUFF_COUNT)
+
+        # Check `self.bullet_hit_count`
+        if self.bullet_hit_count and not self.bullet_hit_count.is_bullet_hit_count:
+            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BULLET_HIT_COUNT)
+
+        # Check `self.hp_condition`
+        if self.hp_condition and not self.hp_condition.is_hp_condition:
+            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_HP_CONDITION)
+
+    def __post_init__(self, conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]]):
+        conditions = self._init_process_conditions(conditions)
+        self._init_validate_conditions(conditions)
+
+        self.afflictions_condition = SkillCondition.extract_afflictions(conditions)
+        self.buff_count = SkillCondition.extract_buff_count(conditions)
+        self.bullet_hit_count = SkillCondition.extract_bullet_hit_count(conditions)
+        self.hp_condition = SkillCondition.extract_hp_condition(conditions)
+
+        self._init_validate()
+
+        self.afflictions_converted = {condition.to_affliction() for condition in self.afflictions_condition}
+
+    @property
+    def conditions_sorted(self) -> tuple[SkillCondition]:
+        """
+        Get the sorted conditions as a tuple.
+
+        Conditions will be sorted in the following order:
+
+        - Afflictions
+        - HP
+        - Buff count
+        - Bullet hit count
+        """
+        ret: tuple[SkillCondition] = tuple(self.afflictions_condition)
+
+        if self.hp_condition:
+            ret += (self.hp_condition,)
+
+        if self.buff_count:
+            ret += (self.buff_count,)
+
+        if self.bullet_hit_count:
+            ret += (self.bullet_hit_count,)
+
+        return ret
 
 
 TRANS_DICT_TO_AFFLICTION: dict[SkillCondition, Affliction] = {
@@ -195,3 +362,17 @@ TRANS_DICT_TO_BUFF_COUNT: dict[SkillCondition, int] = {
     SkillCondition.SELF_BUFF_50: 50,
 }
 """A :class:`dict` to convert :class:`SkillCondition` to the number of buff counts."""
+
+TRANS_DICT_TO_BULLET_HIT_COUNT: dict[SkillCondition, int] = {
+    SkillCondition.BULLET_HIT_1: 1,
+    SkillCondition.BULLET_HIT_2: 2,
+    SkillCondition.BULLET_HIT_3: 3,
+    SkillCondition.BULLET_HIT_4: 4,
+    SkillCondition.BULLET_HIT_5: 5,
+    SkillCondition.BULLET_HIT_6: 6,
+    SkillCondition.BULLET_HIT_7: 7,
+    SkillCondition.BULLET_HIT_8: 8,
+    SkillCondition.BULLET_HIT_9: 9,
+    SkillCondition.BULLET_HIT_10: 10,
+}
+"""A :class:`dict` to convert :class:`SkillCondition` to the number of bullet hit counts."""

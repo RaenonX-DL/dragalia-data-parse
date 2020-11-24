@@ -3,7 +3,7 @@ import pytest
 from dlparse.transformer import SkillTransformer
 
 
-def test_catherine_s2_0_stack_and_as_shared(transformer_skill: SkillTransformer):
+def test_s2_0_stack_and_as_shared(transformer_skill: SkillTransformer):
     # Catherine S2
     # https://dragalialost.gamepedia.com/Catherine
     skill_data_base = transformer_skill.transform_attacking(105502042)
@@ -20,7 +20,7 @@ def test_catherine_s2_0_stack_and_as_shared(transformer_skill: SkillTransformer)
     assert skill_data.max_available_level == 3
 
 
-def test_catherine_s2_1_stack(transformer_skill: SkillTransformer):
+def test_s2_1_stack(transformer_skill: SkillTransformer):
     # Catherine S2
     # https://dragalialost.gamepedia.com/Catherine
     skill_data_base = transformer_skill.transform_attacking(105502043)
@@ -37,7 +37,7 @@ def test_catherine_s2_1_stack(transformer_skill: SkillTransformer):
     assert skill_data.max_available_level == 3
 
 
-def test_catherine_s2_2_stack(transformer_skill: SkillTransformer):
+def test_s2_2_stack(transformer_skill: SkillTransformer):
     # Catherine S2
     # https://dragalialost.gamepedia.com/Catherine
     skill_data_base = transformer_skill.transform_attacking(105502044)
@@ -54,7 +54,7 @@ def test_catherine_s2_2_stack(transformer_skill: SkillTransformer):
     assert skill_data.max_available_level == 3
 
 
-def test_catherine_s2_3_stack(transformer_skill: SkillTransformer):
+def test_s2_3_stack(transformer_skill: SkillTransformer):
     # Catherine S2
     # https://dragalialost.gamepedia.com/Catherine
     skill_data_base = transformer_skill.transform_attacking(105502045)
@@ -71,7 +71,7 @@ def test_catherine_s2_3_stack(transformer_skill: SkillTransformer):
     assert skill_data.max_available_level == 3
 
 
-def test_catherine_s2_as_helper(transformer_skill: SkillTransformer):
+def test_s2_as_helper(transformer_skill: SkillTransformer):
     # Catherine S2
     # https://dragalialost.gamepedia.com/Catherine
     skill_data_base = transformer_skill.transform_attacking(105502046)

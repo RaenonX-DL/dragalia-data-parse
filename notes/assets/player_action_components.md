@@ -21,6 +21,8 @@ Fire the same bullet multiple times.
 
 - Nefaria S1 (`106505011`) 
 
+- Yukata Curran S1 (`103504041` for unmasked, `103504043` for masked, with damage deterioration effect)
+
 #### Attribute notes
 
 - `_bulletNum`: count of bullets. This seems to share the same hit label (`_hitAttrLabel`).
@@ -40,6 +42,19 @@ A single component corresponds to a single attack.
 ### ``ActionPartsPivotBullet``
 
 Needs investigation. Should relate to ``ActionPartsBullet``.
+
+
+### ``ActionPartsFormationBullet``
+
+Another type of bullets. Distinction unknown.
+
+#### Apperance notes
+
+- Yukata Curran S2 Masked (`103504044`)
+
+- OG!Zena S2 (`107505042`)
+
+> Only these skills use this component. (as of 2020/11/23)
 
 
 ## Active Components

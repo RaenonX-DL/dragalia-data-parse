@@ -12,8 +12,8 @@ def test_has_crisis_and_punisher(transformer_skill: SkillTransformer):
     expected_max_total_mods = {
         (SkillCondition.SELF_HP_FULL,): 6.98 * 3,
         (SkillCondition.SELF_HP_1,): 3.49 * 3,
-        (SkillCondition.SELF_HP_FULL, SkillCondition.TARGET_POISONED): 10.47 * 3,
-        (SkillCondition.SELF_HP_1, SkillCondition.TARGET_POISONED): 5.235 * 3,
+        (SkillCondition.TARGET_POISONED, SkillCondition.SELF_HP_FULL): 10.47 * 3,
+        (SkillCondition.TARGET_POISONED, SkillCondition.SELF_HP_1): 5.235 * 3,
     }
 
     assert set(expected_max_total_mods.keys()) == {entry.conditions for entry in possible_entries}

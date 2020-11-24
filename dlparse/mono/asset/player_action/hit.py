@@ -1,11 +1,11 @@
 """Class for ``ActionPartsHit`` action component."""
 from dataclasses import dataclass
 
-from dlparse.mono.asset.base import ActionComponentBase, ActionComponentDamageDealerMixin
+from dlparse.mono.asset.base import ActionComponentDamageDealer
 
 
 @dataclass
-class ActionHit(ActionComponentBase, ActionComponentDamageDealerMixin):
+class ActionHit(ActionComponentDamageDealer):
     """Class of ``ActionPartsHit`` component in the player action asset."""
 
     @classmethod

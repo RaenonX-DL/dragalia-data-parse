@@ -10,7 +10,7 @@ from .entry import EntryBase
 from .parser import ParserBase
 
 __all__ = (
-    "ActionComponentBase", "ActionComponentDamageDealerMixin",
+    "ActionComponentBase", "ActionComponentDamageDealer",
     "ActionAssetBase",
     "ActionParserBase"
 )
@@ -68,6 +68,28 @@ class ActionComponentBase(EntryBase, ABC):
     condition_data: Optional[ActionComponentCondition]
     loop_data: Optional[ActionComponentLoop]
 
+    use_same_component: bool
+    """
+    This indicates if the hit labels of the action component is shared across the levels.
+
+    That is, if this is ``True``, only the hit label which ends with ``LV01`` will be used.
+    For skill level 2, the same action component will be used.
+
+    To get the hit label for level 2, just let the label ends with ``LV02``.
+
+    If this is ``False``, then hit label = ``DAG_131_04_PLUS_H02_LV01`` is for only level 1.
+
+    For example, if this is ``True``, tags like ``DAG_131_04_PLUS_H02_LV01``
+    will appear in the component to represent all hit labels across the levels
+    (we can say that label root = ``DAG_131_04_PLUS_H02``);
+    if this is ``False``, ``DAG_131_04_PLUS_H02_LV01`` only works for level 1.
+
+    .. note::
+        Currently known case of this being ``False``:
+
+        - :class:`ActionBulletFormation`
+    """
+
     @staticmethod
     @abstractmethod
     def parse_raw(data: dict[str, Union[str, int, float]]) -> "ActionComponentBase":
@@ -84,14 +106,16 @@ class ActionComponentBase(EntryBase, ABC):
             "time_start": raw_data["_seconds"],
             "time_duration": raw_data["_duration"],
             "condition_data": ActionComponentCondition.parse_raw(raw_data["_conditionData"]),
-            "loop_data": ActionComponentLoop.parse_raw(raw_data["_loopData"])
+            "loop_data": ActionComponentLoop.parse_raw(raw_data["_loopData"]),
+            # Sometimes missing, for example, arranged bullet (type 37)
+            "use_same_component": bool(raw_data.get("_useSameComponent", 1))
         }
 
 
 @dataclass
-class ActionComponentDamageDealerMixin(EntryBase, ABC):
+class ActionComponentDamageDealer(ActionComponentBase, ABC):
     """
-    Mixin class for damage dealing components.
+    Base class for damage dealing components.
 
     A damage dealing component should have hit label(s) assigned.
     """

@@ -81,16 +81,6 @@ class HitAttrAsset(MasterAssetBase):
                  asset_dir: Optional[str] = None):
         super().__init__(HitAttrParser, file_path, asset_dir=asset_dir)
 
-    @staticmethod
-    def get_hit_label(original_label: str, level: int) -> str:
-        """
-        Get the hit label at ``level``.
-
-        For example, if ``original_label`` is ``SWD_110_04_H01_LV02`` and ``level`` is ``3``,
-        the return will be ``SWD_110_04_H01_LV03``.
-        """
-        return original_label[:-1] + str(level)
-
 
 class HitAttrParser(MasterParserBase):
     """Class to parse the player action hit attribute file."""

@@ -3,11 +3,6 @@ import pytest
 from dlparse.transformer import SkillTransformer
 
 
-def test_yukata_curran_s1(transformer_skill: SkillTransformer):
-    # Yukata Curran S1
-    pass
-
-
 def test_lapis_s2(transformer_skill: SkillTransformer):
     # Lapis S2
     pass

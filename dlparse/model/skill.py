@@ -3,9 +3,10 @@ from dataclasses import dataclass, field
 from itertools import combinations, product
 from typing import Optional, Union, Sequence
 
-from dlparse.enums import SkillCondition, Affliction
-from dlparse.errors import ConditionValidationFailedError
-from dlparse.mono.asset import HitAttrEntry, SkillDataEntry
+from dlparse.enums import SkillCondition, SkillConditionComposite, Affliction
+from dlparse.mono.asset import SkillDataEntry
+from dlparse.utils import calculate_damage_modifier
+from .hit import DamagingHitData
 
 __all__ = ("AttackingSkillDataEntry", "AttackingSkillData")
 
@@ -23,17 +24,18 @@ class AttackingSkillDataEntry:
     To apply the data of the entry, **all** ``conditions`` must be true.
     """
 
-    hit_count: list[int]
     mods: list[list[float]]
 
-    damage_hit_attrs: list[list[HitAttrEntry]]
+    damage_hit_attrs: list[list[DamagingHitData]]
 
     conditions: tuple[SkillCondition] = field(default_factory=tuple)
 
+    hit_count: list[int] = field(init=False)
     total_mod: list[float] = field(init=False)
 
     def __post_init__(self):
         self.total_mod = [sum(mods) for mods in self.mods]
+        self.hit_count = [len(mods) for mods in self.mods]
 
     @property
     def hit_count_at_max(self) -> int:
@@ -71,12 +73,11 @@ class AttackingSkillData:
 
     skill_data_raw: SkillDataEntry
 
-    hit_count: list[int]
-    mods: list[list[float]]
+    hit_data_mtx: list[list[DamagingHitData]]
 
-    hit_attr_mtx: list[list[HitAttrEntry]]
+    mods: list[list[float]] = field(init=False)
 
-    possible_conditions: set[tuple[SkillCondition]] = field(init=False)
+    possible_conditions: set[tuple[SkillCondition]] = field(init=False, default_factory=set)
     """
     All possible combination of the conditions.
 
@@ -84,6 +85,7 @@ class AttackingSkillData:
 
     - HP
     - Buff count
+    - Bullet hit count
     - Affliction punishers
 
     .. note::
@@ -96,13 +98,15 @@ class AttackingSkillData:
         punishers_available: set[Affliction] = set()  # Punishers available for each skill
         crisis_available: bool = False
         buff_up_available: bool = False
+        will_deteriorate: bool = False
 
         # Check availabilities
-        for hit_attrs in self.hit_attr_mtx:
-            for hit_attr in hit_attrs:
-                punishers_available.update(hit_attr.punisher_states)
-                crisis_available = crisis_available or hit_attr.change_by_hp
-                buff_up_available = buff_up_available or hit_attr.boost_by_buff_count
+        for hit_data_lv in self.hit_data_mtx:
+            for hit_data in hit_data_lv:
+                punishers_available.update(hit_data.hit_attr.punisher_states)
+                crisis_available = crisis_available or hit_data.hit_attr.change_by_hp
+                buff_up_available = buff_up_available or hit_data.hit_attr.boost_by_buff_count
+                will_deteriorate = will_deteriorate or hit_data.will_deteriorate
 
         cond_elems: list[set[tuple[SkillCondition, ...]]] = []
 
@@ -113,6 +117,10 @@ class AttackingSkillData:
         # Buff boosts available, attach buff counts
         if buff_up_available:
             cond_elems.append({(buff_cond,) for buff_cond in SkillCondition.get_all_buff_count_conditions()})
+
+        # Deterioration available, attach bullet hit counts
+        if will_deteriorate:
+            cond_elems.append({(bullet_hit,) for bullet_hit in SkillCondition.get_all_bullet_hit_count_conditions()})
 
         # Punishers available, attach punisher conditions
         if punishers_available:
@@ -130,24 +138,33 @@ class AttackingSkillData:
                                     for item_combination in product(*cond_elems)}
 
     def __post_init__(self):
-        self.possible_conditions = set()
         self._init_all_possible_conditions()
+        self.mods = self.calculate_mods_matrix()
 
-    @staticmethod
-    def _validate_conditions(conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]] = None):
-        # Validate the condition combinations
-        # https://github.com/PyCQA/pylint/issues/3249
-        if not (result := SkillCondition.validate_conditions(conditions)):  # pylint: disable=superfluous-parens
-            raise ConditionValidationFailedError(result)
+    def calculate_mods_matrix(self, condition_comp: Optional[SkillConditionComposite] = None) -> list[list[float]]:
+        """Calculate the damage modifier matrix."""
+        mods: list[list[float]] = []
+
+        if not condition_comp:
+            condition_comp = SkillConditionComposite()  # Dummy empty condition composite
+
+        for hit_data_lv in self.hit_data_mtx:
+            new_mods_level = []  # Array of the mods at the same level
+
+            for hit_data in hit_data_lv:
+                # Add the calculated mod(s)
+                new_mods_level.append(calculate_damage_modifier(hit_data, condition_comp))
+
+            # [[1, 0.5, 0.2], [1, 0.5, 0.2]] needs to be transformed to [1, 1, 0.5, 0.5, 0.2, 0.2]
+            mods.append([subitem for item in zip(*new_mods_level) for subitem in item])
+
+        return mods
 
     def get_base_entry(self) -> AttackingSkillDataEntry:
         """Get the base skill data entry."""
-        self._validate_conditions()
-
         return AttackingSkillDataEntry(
-            hit_count=self.hit_count,
             mods=self.mods,
-            damage_hit_attrs=self.hit_attr_mtx,
+            damage_hit_attrs=self.hit_data_mtx,
         )
 
     def with_conditions(self, conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]] = None) \
@@ -158,6 +175,7 @@ class AttackingSkillData:
         If ``conditions`` are not given, return the base data.
 
         :raises ConditionValidationFailedError: if the condition combination is invalid
+        :raises BulletEndOfLifeError: if the bullet hit count condition is beyond the limit
 
         .. note::
             If there are duplicated buff count ``conditions``, only the first one will be used.
@@ -169,47 +187,12 @@ class AttackingSkillData:
             # Return the base entry if the conditions are not given, or the conditions will not cause differences
             return self.get_base_entry()
 
-        if isinstance(conditions, SkillCondition):
-            # Cast the condition to be a list to generalize the data type
-            conditions = (conditions,)
-        elif isinstance(conditions, list):
-            # Cast the condition to be a tuple (might be :class:`list` when passed in)
-            conditions = tuple(conditions)
-
-        self._validate_conditions(conditions)
-
-        new_mods: list[list[float]] = []
-
-        # Pre-check conditions
-        afflictions = {condition.to_affliction() for condition in conditions if condition.is_target_afflicted}
-        in_crisis = SkillCondition.SELF_HP_1 in conditions
-        buff_count_cond = next((condition for condition in conditions if condition.is_buff_boost), None)
-
-        for og_mods, hit_attrs in zip(self.mods, self.hit_attr_mtx):
-            new_mods_level = []  # Array of the mods at the same level
-
-            for mod, hit_attr in zip(og_mods, hit_attrs):
-                # Apply punisher boosts
-                if hit_attr.has_punisher and afflictions & hit_attr.punisher_states:
-                    mod *= hit_attr.punisher_rate
-
-                # Apply crisis boosts
-                if hit_attr.change_by_hp and in_crisis:
-                    mod *= hit_attr.crisis_limit_rate
-
-                # Apply buff boosts
-                if hit_attr.boost_by_buff_count and buff_count_cond:
-                    mod *= (1 + hit_attr.rate_boost_by_buff * buff_count_cond.to_buff_count())
-
-                new_mods_level.append(mod)  # Add the calculated mod
-
-            new_mods.append(new_mods_level)  # Add the mods of the level
+        condition_comp = SkillConditionComposite(conditions)
 
         return AttackingSkillDataEntry(
-            hit_count=self.hit_count,
-            mods=new_mods,
-            damage_hit_attrs=self.hit_attr_mtx,
-            conditions=conditions
+            mods=self.calculate_mods_matrix(condition_comp),
+            damage_hit_attrs=self.hit_data_mtx,
+            conditions=condition_comp.conditions_sorted
         )
 
     def get_all_possible_entries(self) -> list[AttackingSkillDataEntry]:
