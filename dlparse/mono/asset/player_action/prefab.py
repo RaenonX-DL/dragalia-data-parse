@@ -7,6 +7,8 @@ from dlparse.mono.asset.base import (
 )
 from .bullet import ActionBullet
 from .bullet_format import ActionBulletFormation
+from .bullet_multi import ActionBulletMulti
+from .bullet_parabola import ActionBulletParabola
 from .bullet_stock import ActionBulletStock
 from .hit import ActionHit
 
@@ -21,8 +23,10 @@ class PlayerActionParser(ActionParserBase):
     SCRIPT_CLASS: dict[str, Type[ActionComponentBase]] = {
         "ActionPartsHit": ActionHit,
         "ActionPartsBullet": ActionBullet,
+        "ActionPartsMultiBullet": ActionBulletMulti,
         "ActionPartsFireStockBullet": ActionBulletStock,
-        "ActionPartsFormationBullet": ActionBulletFormation
+        "ActionPartsFormationBullet": ActionBulletFormation,
+        "ActionPartsParabolaBullet": ActionBulletParabola
     }
 
     @classmethod

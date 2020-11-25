@@ -57,6 +57,25 @@ Another type of bullets. Distinction unknown.
 > Only these skills use this component. (as of 2020/11/23)
 
 
+### ``ActionPartsMultiBullet``
+
+Another type of bullets. Distinction unknown.
+
+#### Apperance notes
+
+- Bellina S1 Enhanced (`103505033`)
+
+
+### ``ActionPartsParabolaBullet``
+
+Another type of bullets. Distinction unknown.
+
+#### Apperance notes
+
+- Ilia S2 @ Alchemy (`103505033`)
+
+
+
 ## Active Components
 
 > Components that users can actively trigger whenever it's possible.

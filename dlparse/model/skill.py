@@ -23,6 +23,23 @@ class AttackingSkillDataEntry:
     ``hit_count`` should be ``[1, 2]`` and ``mods`` should be ``[[1.0], [1.5, 2.0]]``.
 
     The relationship between the ``conditions`` are **AND**, which means that all conditions must be true.
+
+    .. note::
+        The implementation of the max level is to get the level which has the highest total mods.
+        If 2 levels sharing the same total damage, the higher level will be considered as "max" level.
+
+        The reason of such implmentation is due to the fact that
+        the game may have inserted some dummy data for a higher level.
+
+        For example, OG!Zena S2 has label with "LV03" detected. However, she does not have Lv.3 S2 yet
+        (as of 2020/11/24). Containing the info of Lv.3 usually gives wrong result
+        because the implementation is incomplete.
+
+        Note that this still does **NOT** reflect the actual in-game max level.
+        The data of Templar Hope S2 at Lv.3 has been already inserted (and it's the highest damage output level).
+        However, he does not have 70 MC yet.
+
+        To get the actual max skill level in-game, character data is needed.
     """
 
     mods: list[list[float]]
@@ -33,33 +50,47 @@ class AttackingSkillDataEntry:
 
     hit_count: list[int] = field(init=False)
     total_mod: list[float] = field(init=False)
+    max_level: int = field(init=False)
 
     def __post_init__(self):
         self.total_mod = [sum(mods) for mods in self.mods]
         self.hit_count = [len(mods) for mods in self.mods]
 
+        if self.total_mod:
+            self.max_level = max(zip(reversed(self.total_mod), range(len(self.total_mod), 0, -1)),
+                                 key=lambda item: item[0])[1]
+        else:
+            self.max_level = len(self.total_mod)
+
     @property
     def hit_count_at_max(self) -> int:
         """Get the skill hit count at the max level."""
-        return self.hit_count[-1]
+        return self.hit_count[self.max_level - 1]
 
     @property
     def total_mod_at_max(self) -> float:
         """Get the total skill modifier at the max level."""
-        return self.total_mod[-1]
+        return self.total_mod[self.max_level - 1]
 
     @property
     def mods_at_max(self) -> list[float]:
         """Get the skill modifiers at the max level."""
-        return self.mods[-1]
+        return self.mods[self.max_level - 1]
 
     @property
     def max_available_level(self) -> int:
         """
         Get the max available level of a skill.
 
-        This max level does **NOT** reflect the actual max level in-game.
-        To get such, character data is needed.
+        This max level does **NOT** reflect the actual max level in-game. To get such, character data is needed.
+
+        .. note::
+            The distinction between this and ``max_level`` is that
+            this gives the max level available, regardless its completeness.
+            If the skill data is incomplete, it usually yields lower total mods.
+
+            However, ``max_level`` gives the reasonable (usually actual) max level by checking the level
+            which has the highest mods.
         """
         return len(self.hit_count)
 

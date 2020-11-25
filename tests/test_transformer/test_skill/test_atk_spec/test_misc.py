@@ -25,10 +25,39 @@ def test_elisanne_s1(transformer_skill: SkillTransformer):
     assert skill_data.max_available_level == 4
 
 
+def test_bellina_s1(transformer_skill: SkillTransformer):
+    # Bellina S1
+    # https://dragalialost.gamepedia.com/Bellina
+    skill_data_base = transformer_skill.transform_attacking(103505033)
+
+    # Base data
+    skill_data = skill_data_base.with_conditions()
+
+    assert skill_data.hit_count == [5, 5, 5]
+    assert skill_data.hit_count_at_max == 5
+    assert skill_data.total_mod == pytest.approx([1.63 * 5, 1.81 * 5, 2.02 * 5])
+    assert skill_data.total_mod_at_max == pytest.approx(2.02 * 5)
+    assert skill_data.mods == [[1.63] * 5, [1.81] * 5, [2.02] * 5]
+    assert skill_data.mods_at_max == [2.02] * 5
+    assert skill_data.max_available_level == 3
+
+
 def test_eugene_s1(transformer_skill: SkillTransformer):
     # Eugene S1
     # https://dragalialost.gamepedia.com/Eugene
     # One todo tag affiliated, check list after completion
+    pass
+
+
+def test_formal_joachim_s1_explosion(transformer_skill: SkillTransformer):
+    # Formal Joachim S1 Explosion (S2-S1)
+    # https://dragalialost.gamepedia.com/Formal_Joachim
+    pass
+
+
+def test_summer_mikoto_s1_celestial(transformer_skill: SkillTransformer):
+    # Summer Mikoto S1 (Celestial)
+    # https://dragalialost.gamepedia.com/Summer_Mikoto
     pass
 
 

@@ -9,7 +9,7 @@ __all__ = ("ActionBulletArranged",)
 
 @dataclass
 class ActionBulletArranged(ActionBullet):
-    """Class arranged bullet component (command type = 37) in the player action asset."""
+    """Class of arranged bullet component (command type = 37) in the player action asset."""
 
     @classmethod
     def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBulletArranged":

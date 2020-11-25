@@ -32,7 +32,7 @@ class ActionBullet(asset.ActionComponentDamageDealer):
     @property
     def max_hit_count(self) -> int:
         """Maximum count of hits possible. ``0`` means not applicable."""
-        if self.collision_interval == COLLISION_INTERVAL_INEFFECTIVE:
+        if not self.collision_interval or self.collision_interval == COLLISION_INTERVAL_INEFFECTIVE:
             return 0
 
         return int(self.bullet_duration // self.collision_interval)

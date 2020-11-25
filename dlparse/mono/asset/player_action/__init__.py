@@ -5,5 +5,6 @@ Check the document at ``notes/assets/player_action_components.md`` for details o
 """
 from .bullet import ActionBullet
 from .bullet_arrange import ActionBulletArranged
+from .bullet_multi import ActionBulletMulti
 from .bullet_stock import ActionBulletStock
 from .prefab import PlayerActionPrefab
