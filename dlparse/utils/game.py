@@ -31,15 +31,15 @@ def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: Skill
     # --- Apply boosts
 
     # Crisis (low HP) boosts
-    if hit_attr.change_by_hp and condition_comp.hp_condition == SkillCondition.SELF_HP_1:
-        mods = multiply_vector(mods, hit_attr.crisis_limit_rate)
+    if hit_attr.boost_by_hp and condition_comp.hp_condition == SkillCondition.SELF_HP_1:
+        mods = multiply_vector(mods, hit_attr.rate_boost_on_crisis)
 
     # Buff boosts
     if hit_attr.boost_by_buff_count and condition_comp.buff_count:
         mods = multiply_vector(mods, (1 + hit_attr.rate_boost_by_buff * condition_comp.buff_count.to_buff_count()))
 
     # Punisher boosts
-    if hit_attr.has_punisher and condition_comp.afflictions_converted & hit_attr.punisher_states:
+    if hit_attr.boost_on_target_afflicted and condition_comp.afflictions_converted & hit_attr.punisher_states:
         mods = multiply_vector(mods, hit_attr.punisher_rate)
 
     return mods

@@ -5,7 +5,12 @@ __all__ = ("Affliction",)
 
 
 class Affliction(IntEnum):
-    """Affliction enums used in the assets."""
+    """
+    Affliction enums used in the assets.
+
+    This corresponds to the field ``_KillerState1``, ``_KillerState2`` and ``_KillerState3`` in
+    the hit attribute asset.
+    """
 
     UNKNOWN = -1
 

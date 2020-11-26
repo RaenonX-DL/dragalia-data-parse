@@ -22,7 +22,7 @@ class TextEntry(MasterEntryBase):
         )
 
 
-class TextAsset(MasterAssetBase):
+class TextAsset(MasterAssetBase[TextEntry]):
     """
     Text label asset class.
 
@@ -60,7 +60,7 @@ class TextAsset(MasterAssetBase):
         raise TextLabelNotFoundError(label)
 
 
-class MasterTextParser(MasterParserBase):
+class MasterTextParser(MasterParserBase[TextEntry]):
     """Class to parse the master text label file."""
 
     @classmethod

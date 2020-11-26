@@ -26,7 +26,7 @@ def test_s1_normal(transformer_skill: SkillTransformer):
         [1.88] * 10
     ])
     assert skill_data.mods_at_max == pytest.approx([1.88] * 10)
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_s1_alchemy(transformer_skill: SkillTransformer):
@@ -51,7 +51,7 @@ def test_s1_alchemy(transformer_skill: SkillTransformer):
         [3.48] * 6
     ])
     assert skill_data.mods_at_max == pytest.approx([3.48] * 6)
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_s2_alchemy(transformer_skill: SkillTransformer):
@@ -76,5 +76,4 @@ def test_s2_alchemy(transformer_skill: SkillTransformer):
         []
     ])
     assert skill_data.mods_at_max == pytest.approx([2.35, 23.54])
-    assert skill_data.max_available_level == 3
     assert skill_data.max_level == 2

@@ -22,7 +22,7 @@ def test_elisanne_s1(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == pytest.approx(7.5)
     assert skill_data.mods == [[], [], [], [1.5] * 5]
     assert skill_data.mods_at_max == [1.5] * 5
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_bellina_s1(transformer_skill: SkillTransformer):
@@ -39,7 +39,7 @@ def test_bellina_s1(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == pytest.approx(2.02 * 5)
     assert skill_data.mods == [[1.63] * 5, [1.81] * 5, [2.02] * 5]
     assert skill_data.mods_at_max == [2.02] * 5
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_eugene_s1(transformer_skill: SkillTransformer):

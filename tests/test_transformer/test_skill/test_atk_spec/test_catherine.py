@@ -17,7 +17,7 @@ def test_s2_0_stack_and_as_shared(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == pytest.approx(0.54 * 46)
     assert skill_data.mods == [[0.44] * 46, [0.54] * 46, [0.54] * 46]
     assert skill_data.mods_at_max == [0.54] * 46
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_s2_1_stack(transformer_skill: SkillTransformer):
@@ -34,7 +34,7 @@ def test_s2_1_stack(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == pytest.approx(0.54 * 58)
     assert skill_data.mods == [[0.44] * 58, [0.54] * 58, [0.54] * 58]
     assert skill_data.mods_at_max == [0.54] * 58
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_s2_2_stack(transformer_skill: SkillTransformer):
@@ -51,7 +51,7 @@ def test_s2_2_stack(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == pytest.approx(0.54 * 66)
     assert skill_data.mods == [[0.44] * 66, [0.54] * 66, [0.54] * 66]
     assert skill_data.mods_at_max == [0.54] * 66
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_s2_3_stack(transformer_skill: SkillTransformer):
@@ -68,7 +68,7 @@ def test_s2_3_stack(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == pytest.approx(0.54 * 37 + 1.22 * 37)
     assert skill_data.mods == [[0.44, 1.1] * 37, [0.54, 1.22] * 37, [0.54, 1.22] * 37]
     assert skill_data.mods_at_max == [0.54, 1.22] * 37
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_s2_as_helper(transformer_skill: SkillTransformer):
@@ -85,4 +85,4 @@ def test_s2_as_helper(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == pytest.approx(0.54 * 46)
     assert skill_data.mods == [[0.44] * 46, [0.54] * 46, [0.54] * 46]
     assert skill_data.mods_at_max == [0.54] * 46
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3

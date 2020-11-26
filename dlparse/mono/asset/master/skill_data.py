@@ -77,9 +77,13 @@ class SkillDataEntry(MasterEntryBase):
     """Currently only used on Mega Man (S2)."""
 
     is_affected_by_tension_lv1: bool
+    """If the skill will be affected by energizing at Lv.1."""
     is_affected_by_tension_lv2: bool
+    """If the skill will be affected by energizing at Lv.2."""
     is_affected_by_tension_lv3: bool
+    """If the skill will be affected by energizing at Lv.3."""
     is_affected_by_tension_lv4: bool
+    """If the skill will be affected by energizing at Lv.4."""
 
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "SkillDataEntry":
@@ -150,21 +154,12 @@ class SkillDataEntry(MasterEntryBase):
         ]
 
     @property
-    def is_attacking_skill(self) -> bool:
-        """
-        Check if the skill is an attacking skill.
-
-        Currently, ``is_affected_by_tension_lv1`` is used to perform the check.
-        """
-        return self.is_affected_by_tension_lv1
-
-    @property
     def has_helper_variant(self) -> bool:
         """Check if the skill will be different if used as helper skill."""
         return self.as_helper_skill_id != 0
 
 
-class SkillDataAsset(MasterAssetBase):
+class SkillDataAsset(MasterAssetBase[SkillDataEntry]):
     """Skill data asset class."""
 
     asset_file_name = "SkillData.json"
@@ -174,7 +169,7 @@ class SkillDataAsset(MasterAssetBase):
         super().__init__(SkillDataParser, file_path, asset_dir=asset_dir)
 
 
-class SkillDataParser(MasterParserBase):
+class SkillDataParser(MasterParserBase[SkillDataEntry]):
     """Class to parse the skill data."""
 
     @classmethod

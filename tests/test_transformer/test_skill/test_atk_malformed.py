@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition
+from dlparse.enums import SkillCondition, SkillConditionComposite
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
 
@@ -25,7 +25,7 @@ def test_label_has_whitespaces(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == pytest.approx(5.566 * 3)
     assert skill_data.mods == [[4.906] * 3, [5.456] * 3, [5.566] * 3]
     assert skill_data.mods_at_max == [5.566] * 3
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
     # With buffs
     condition_to_dmg_up_rate = {
@@ -41,7 +41,7 @@ def test_label_has_whitespaces(transformer_skill: SkillTransformer):
     }
 
     for conditions, boost_rate in condition_to_dmg_up_rate.items():
-        skill_data = skill_data_base.with_conditions(*conditions)
+        skill_data = skill_data_base.with_conditions(SkillConditionComposite(conditions))
 
         assert skill_data.hit_count == [3, 3, 3]
         assert skill_data.hit_count_at_max == 3
@@ -57,4 +57,4 @@ def test_label_has_whitespaces(transformer_skill: SkillTransformer):
             [5.566 * boost_rate] * 3
         ])
         assert skill_data.mods_at_max == [5.566 * boost_rate] * 3
-        assert skill_data.max_available_level == 3
+        assert skill_data.max_level == 3

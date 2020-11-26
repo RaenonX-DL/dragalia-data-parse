@@ -381,7 +381,7 @@ class CharaDataEntry(MasterEntryBase):
         )
 
 
-class CharaDataAsset(MasterAssetBase):
+class CharaDataAsset(MasterAssetBase[CharaDataEntry]):
     """Character data asset class."""
 
     asset_file_name = "CharaData.json"
@@ -407,7 +407,7 @@ class CharaDataAsset(MasterAssetBase):
         return ret
 
 
-class CharaDataParser(MasterParserBase):
+class CharaDataParser(MasterParserBase[CharaDataEntry]):
     """Class to parse the character data file."""
 
     @classmethod

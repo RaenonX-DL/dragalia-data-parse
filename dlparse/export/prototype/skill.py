@@ -59,7 +59,7 @@ def export_skill_atk_csv(file_path: str, /,
                             skill_condition_comp=skill_entry.condition_comp,
                             skill_total_mods_max=skill_entry.total_mod_at_max,
                             skill_total_hits_max=skill_entry.hit_count_at_max,
-                            skill_max_lv=skill_entry.max_available_level,
+                            skill_max_lv=skill_entry.max_level,
                         )
                     except IndexError as ex:
                         # REMOVE: after Eugene S1 is handled properly

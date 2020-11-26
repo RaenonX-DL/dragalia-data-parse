@@ -1,15 +1,16 @@
 """Conditions for the skill data entries."""
-from dataclasses import dataclass, InitVar, field
+from dataclasses import dataclass, field
 from enum import Enum, auto
 from typing import Optional, Iterable, Sequence, Union
 
 from dlparse.errors import EnumConversionError, ConditionValidationFailedError
 from .affliction import Affliction
+from .condition_base import ConditionCompositeBase, ConditionCheckResultMixin
 
 __all__ = ("SkillCondition", "SkillConditionCheckResult", "SkillConditionComposite")
 
 
-class SkillConditionCheckResult(Enum):
+class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     """Skill conditions validating result."""
 
     PASS = auto()
@@ -17,19 +18,17 @@ class SkillConditionCheckResult(Enum):
     MULTIPLE_HP = auto()
     MULTIPLE_BUFF = auto()
     MULTIPLE_BULLET_HIT = auto()
+    MULTIPLE_TEAMMATE_COVERAGE = auto()
 
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
     INTERNAL_NOT_BUFF_COUNT = auto()
     INTERNAL_NOT_BULLET_HIT_COUNT = auto()
     INTERNAL_NOT_HP_CONDITION = auto()
+    INTERNAL_NOT_TEAMMATE_COVERAGE = auto()
 
-    def __bool__(self):
-        return self.passed
-
-    @property
-    def passed(self):
-        """If the check result means the check has passed."""
-        return self == self.PASS
+    @classmethod
+    def passing_enums(cls) -> set["SkillConditionCheckResult"]:
+        return {cls.PASS}
 
 
 class SkillCondition(Enum):
@@ -37,6 +36,7 @@ class SkillCondition(Enum):
 
     NONE = 0
 
+    # Target
     TARGET_POISONED = 101
     TARGET_BURNED = 102
     TARGET_FROZEN = 103
@@ -75,6 +75,11 @@ class SkillCondition(Enum):
     BULLET_HIT_9 = 309
     BULLET_HIT_10 = 310
 
+    COVER_TEAMMATE_0 = 401
+    COVER_TEAMMATE_1 = 402
+    COVER_TEAMMATE_2 = 403
+    COVER_TEAMMATE_3 = 404
+
     @property
     def is_target_afflicted(self) -> bool:
         """If the condition needs the target to be afflicted."""
@@ -97,6 +102,12 @@ class SkillCondition(Enum):
         """If the condition is bullet hit count."""
         # https://github.com/PyCQA/pylint/issues/2306
         return 301 <= int(self.value) <= 310
+
+    @property
+    def is_teammate_coverage(self):
+        """If the condition is teammate coverage."""
+        # https://github.com/PyCQA/pylint/issues/2306
+        return 401 <= int(self.value) <= 410
 
     def to_affliction(self) -> Affliction:
         """
@@ -131,15 +142,37 @@ class SkillCondition(Enum):
 
         return TRANS_DICT_TO_BULLET_HIT_COUNT[self]
 
+    def to_teammate_coverage_count(self) -> int:
+        """
+        Convert this :class:`SkillCondition` to the actual count of teammates covered.
+
+        :raises EnumConversionError: skill condition cannot be converted to count of teammates covered
+        """
+        if self not in TRANS_DICT_TO_TEAMMATE_COUNT:
+            raise EnumConversionError(self, self.__class__, "count of teammates covered")
+
+        return TRANS_DICT_TO_TEAMMATE_COUNT[self]
+
     @staticmethod
-    def get_all_buff_count_conditions() -> list["SkillCondition"]:
+    def get_buff_count_conditions() -> list["SkillCondition"]:
         """Get a list of all buff count conditions."""
         return list(TRANS_DICT_TO_BUFF_COUNT.keys())
 
     @staticmethod
-    def get_all_bullet_hit_count_conditions() -> list["SkillCondition"]:
-        """Get a list of all bullet hit count conditions."""
-        return list(TRANS_DICT_TO_BULLET_HIT_COUNT.keys())
+    def get_bullet_hit_count_conditions(max_count: int) -> list["SkillCondition"]:
+        """Get a list of bullet hit count conditions which is <= ``max_count``."""
+        return [cond_enum for cond_enum, hit_count in TRANS_DICT_TO_BULLET_HIT_COUNT.items()
+                if hit_count <= max_count]
+
+    @staticmethod
+    def get_teammate_coverage_conditions() -> list["SkillCondition"]:
+        """Get all teammate coverage conditions."""
+        return list(TRANS_DICT_TO_TEAMMATE_COUNT.keys())
+
+    @staticmethod
+    def get_teammate_coverage_counts() -> list[int]:
+        """Get all available teammate coverage counts."""
+        return list(TRANS_DICT_TO_TEAMMATE_COUNT.values())
 
     @staticmethod
     def extract_afflictions(conditions: Sequence["SkillCondition"]) -> set["SkillCondition"]:
@@ -184,6 +217,17 @@ class SkillCondition(Enum):
         return next((condition for condition in conditions if condition.is_hp_condition), None)
 
     @staticmethod
+    def extract_teammate_coverage(conditions: Sequence["SkillCondition"]) -> Optional["SkillCondition"]:
+        """
+        Get the teammate coverage condition from ``conditions``, if found.
+
+        Returns ``None`` instead if not found.
+
+        This will **NOT** throw an error if there are multiple teammate coverage conditions found.
+        """
+        return next((condition for condition in conditions if condition.is_teammate_coverage), None)
+
+    @staticmethod
     def from_affliction(affliction: Affliction) -> "SkillCondition":
         """
         Convert ``affliction`` to :class:`SkillCondition`.
@@ -224,52 +268,32 @@ class SkillCondition(Enum):
         if sum(condition.is_bullet_hit_count for condition in conditions) > 1:
             return SkillConditionCheckResult.MULTIPLE_BULLET_HIT
 
+        # Teammate coverage condition check
+        if sum(condition.is_teammate_coverage for condition in conditions) > 1:
+            return SkillConditionCheckResult.MULTIPLE_TEAMMATE_COVERAGE
+
         return SkillConditionCheckResult.PASS
 
 
-@dataclass
-class SkillConditionComposite:
-    """Composite class of various skill conditions."""
-
-    conditions: InitVar[Optional[Union[Sequence[SkillCondition], SkillCondition]]] = None
+@dataclass(eq=False)  # ``eq=False`` to keep the superclass ``__hash__``
+class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
+    """Composite class of various attacking skill conditions."""
 
     afflictions_condition: set[SkillCondition] = field(init=False)
     afflictions_converted: set[Affliction] = field(init=False)
     buff_count: Optional[SkillCondition] = field(init=False)
     bullet_hit_count: Optional[SkillCondition] = field(init=False)
     hp_condition: Optional[SkillCondition] = field(init=False)
+    teammate_coverage: Optional[SkillCondition] = field(init=False)
 
     @staticmethod
-    def _init_process_conditions(conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]]):
-        if isinstance(conditions, SkillCondition):
-            # Cast the condition to be a list to generalize the data type
-            conditions = (conditions,)
-        elif isinstance(conditions, list):
-            # Cast the condition to be a tuple (might be :class:`list` when passed in)
-            conditions = tuple(conditions)
-        elif not conditions:
-            # Conditions is either empty sequence or ``None``
-            conditions = ()
-
-        return conditions
-
-    @staticmethod
-    def _init_validate_conditions(conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]]):
+    def _init_validate_conditions(conditions: tuple[SkillCondition]):
         # Validate the condition combinations
         # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
         if not (result := SkillCondition.validate_conditions(conditions)):  # pylint: disable=superfluous-parens
             raise ConditionValidationFailedError(result)
 
-    def __hash__(self):
-        return hash(tuple(sorted(condition.value for condition in self.conditions_sorted)))
-
-    def __eq__(self, other):
-        return hash(self) == hash(other)
-
-    def __repr__(self):
-        return f"{{{', '.join({condition.name for condition in self.conditions_sorted})}}}"
-
-    def _init_validate(self):
+    def _init_validate_fields(self):
         # Check `self.afflictions_condition`
         if any(not condition.is_target_afflicted for condition in self.afflictions_condition):
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_AFFLICTION_ONLY)
@@ -286,16 +310,20 @@ class SkillConditionComposite:
         if self.hp_condition and not self.hp_condition.is_hp_condition:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_HP_CONDITION)
 
+        # Check `self.teammate_coverage`
+        if self.teammate_coverage and not self.teammate_coverage.is_teammate_coverage:
+            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_TEAMMATE_COVERAGE)
+
     def __post_init__(self, conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]]):
         conditions = self._init_process_conditions(conditions)
-        self._init_validate_conditions(conditions)
 
         self.afflictions_condition = SkillCondition.extract_afflictions(conditions)
         self.buff_count = SkillCondition.extract_buff_count(conditions)
         self.bullet_hit_count = SkillCondition.extract_bullet_hit_count(conditions)
         self.hp_condition = SkillCondition.extract_hp_condition(conditions)
+        self.teammate_coverage = SkillCondition.extract_teammate_coverage(conditions)
 
-        self._init_validate()
+        self._init_validate_fields()
 
         self.afflictions_converted = {condition.to_affliction() for condition in self.afflictions_condition}
 
@@ -310,6 +338,7 @@ class SkillConditionComposite:
         - HP
         - Buff count
         - Bullet hit count
+        - Teammate coverage
         """
         ret: tuple[SkillCondition] = tuple(self.afflictions_condition)
 
@@ -321,6 +350,9 @@ class SkillConditionComposite:
 
         if self.bullet_hit_count:
             ret += (self.bullet_hit_count,)
+
+        if self.teammate_coverage:
+            ret += (self.teammate_coverage,)
 
         return ret
 
@@ -385,3 +417,11 @@ TRANS_DICT_TO_BULLET_HIT_COUNT: dict[SkillCondition, int] = {
     SkillCondition.BULLET_HIT_10: 10,
 }
 """A :class:`dict` to convert :class:`SkillCondition` to the number of bullet hit counts."""
+
+TRANS_DICT_TO_TEAMMATE_COUNT: dict[SkillCondition, int] = {
+    SkillCondition.COVER_TEAMMATE_0: 0,
+    SkillCondition.COVER_TEAMMATE_1: 1,
+    SkillCondition.COVER_TEAMMATE_2: 2,
+    SkillCondition.COVER_TEAMMATE_3: 3,
+}
+"""A :class:`dict` to convert :class:`SkillCondition` to the number of teammates covered."""

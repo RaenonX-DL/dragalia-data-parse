@@ -34,7 +34,7 @@ class CharaModeEntry(MasterEntryBase):
         return [skill_id for skill_id in (self.skill_id_1, self.skill_id_2) if skill_id != 0]
 
 
-class CharaModeAsset(MasterAssetBase):
+class CharaModeAsset(MasterAssetBase[CharaModeEntry]):
     """Character mode data asset class."""
 
     asset_file_name = "CharaModeData.json"
@@ -53,7 +53,7 @@ class CharaModeAsset(MasterAssetBase):
         self._init_fill_name_label()
 
 
-class CharaModeParser(MasterParserBase):
+class CharaModeParser(MasterParserBase[CharaModeEntry]):
     """Class to parse the character mode data file."""
 
     @classmethod

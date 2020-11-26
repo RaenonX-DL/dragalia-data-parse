@@ -29,7 +29,7 @@ class CheatDetectionEntry(MasterEntryBase):
         )
 
 
-class CheatDetectionAsset(MasterAssetBase):
+class CheatDetectionAsset(MasterAssetBase[CheatDetectionEntry]):
     """Cheat detection parameter asset class."""
 
     asset_file_name = "CheatDetectionParam.json"
@@ -39,7 +39,7 @@ class CheatDetectionAsset(MasterAssetBase):
         super().__init__(CheatDetectionParser, file_path, asset_dir=asset_dir)
 
 
-class CheatDetectionParser(MasterParserBase):
+class CheatDetectionParser(MasterParserBase[CheatDetectionEntry]):
     """Class to parse the cheat detection parameter file."""
 
     @classmethod

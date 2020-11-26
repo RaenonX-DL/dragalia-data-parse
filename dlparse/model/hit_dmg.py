@@ -2,17 +2,15 @@
 from dataclasses import dataclass, field
 
 from dlparse.errors import BulletEndOfLifeError, DamagingHitValidationFailedError
-from dlparse.mono.asset import HitAttrEntry, ActionComponentDamageDealer, ActionBullet
+from dlparse.mono.asset import ActionComponentDamageDealer, ActionBullet
+from .hit_base import HitData
 
 __all__ = ("DamagingHitData",)
 
 
 @dataclass
-class DamagingHitData:
+class DamagingHitData(HitData[ActionComponentDamageDealer]):
     """Class for the data of a single damaging hit."""
-
-    hit_attr: HitAttrEntry
-    action_component: ActionComponentDamageDealer
 
     will_deteriorate: bool = field(init=False)
     deterioration_rate: float = 0
@@ -44,7 +42,7 @@ class DamagingHitData:
         """
         # Early termination on non-deteriorating hits
         if not self.will_deteriorate:
-            return 1
+            return self.hit_attr.damage_modifier
 
         # Raise error if beyond max hit count (if applicable)
         if self.max_hit_count and hit_count > self.max_hit_count:

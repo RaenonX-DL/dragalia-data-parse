@@ -1,4 +1,5 @@
 """Classes for the master assets."""
+from .action_condition import ActionConditionAsset, ActionConditionEntry
 from .action_hit_attr import HitAttrAsset, HitAttrEntry
 from .chara_data import CharaDataAsset, CharaDataEntry
 from .chara_mode_data import CharaModeAsset, CharaModeEntry

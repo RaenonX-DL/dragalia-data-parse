@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition
+from dlparse.enums import SkillCondition, SkillConditionComposite
 from dlparse.errors import BulletEndOfLifeError
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
@@ -13,10 +13,10 @@ def test_s1_over_bullet_count(transformer_skill: SkillTransformer):
 
     # 7 Bullets (already ended)
     with pytest.raises(BulletEndOfLifeError):
-        skill_data_base.with_conditions(SkillCondition.BULLET_HIT_7)
+        skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.BULLET_HIT_7))
     # 8 Bullets (already ended)
     with pytest.raises(BulletEndOfLifeError):
-        skill_data_base.with_conditions(SkillCondition.BULLET_HIT_8)
+        skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.BULLET_HIT_8))
 
 
 def test_s1_unmasked_no_affliction(transformer_skill: SkillTransformer):
@@ -47,7 +47,7 @@ def test_s1_unmasked_no_affliction(transformer_skill: SkillTransformer):
         [level_3_base_expected] * hits_expected
     ]
     assert skill_data.mods_at_max == [level_3_base_expected] * hits_expected
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
     # Different bullet hit count
     dmg_up_rate = {
@@ -60,7 +60,7 @@ def test_s1_unmasked_no_affliction(transformer_skill: SkillTransformer):
     }
 
     for condition, up_rate in dmg_up_rate.items():
-        skill_data = skill_data_base.with_conditions(condition)
+        skill_data = skill_data_base.with_conditions(SkillConditionComposite(condition))
 
         hits_conditioned = hits_expected * condition.to_bullet_hit_count()
 
@@ -90,7 +90,7 @@ def test_s1_unmasked_no_affliction(transformer_skill: SkillTransformer):
             level_3_base_expected * 0.55 ** deterioration
             for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
         ]
-        assert skill_data.max_available_level == 3
+        assert skill_data.max_level == 3
 
 
 def test_s1_unmasked_paralyzed(transformer_skill: SkillTransformer):
@@ -105,7 +105,7 @@ def test_s1_unmasked_paralyzed(transformer_skill: SkillTransformer):
     hits_expected = 3
 
     # Base data - (1 hit for each bullets)
-    skill_data = skill_data_base.with_conditions(SkillCondition.TARGET_PARALYZED)
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_PARALYZED))
 
     assert skill_data.hit_count == [hits_expected, hits_expected, hits_expected]
     assert skill_data.hit_count_at_max == hits_expected
@@ -121,7 +121,7 @@ def test_s1_unmasked_paralyzed(transformer_skill: SkillTransformer):
         [level_3_base_expected] * hits_expected
     ])
     assert skill_data.mods_at_max == pytest.approx([level_3_base_expected] * hits_expected)
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
     # Different bullet hit count
     dmg_up_rate = {
@@ -134,7 +134,8 @@ def test_s1_unmasked_paralyzed(transformer_skill: SkillTransformer):
     }
 
     for condition, up_rate in dmg_up_rate.items():
-        skill_data = skill_data_base.with_conditions((SkillCondition.TARGET_PARALYZED, condition))
+        skill_data = skill_data_base.with_conditions(
+            SkillConditionComposite((SkillCondition.TARGET_PARALYZED, condition)))
 
         hits_conditioned = hits_expected * condition.to_bullet_hit_count()
 
@@ -164,7 +165,7 @@ def test_s1_unmasked_paralyzed(transformer_skill: SkillTransformer):
             level_3_base_expected * 0.55 ** deterioration
             for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
         ])
-        assert skill_data.max_available_level == 3
+        assert skill_data.max_level == 3
 
 
 def test_s1_masked_no_affliction(transformer_skill: SkillTransformer):
@@ -195,7 +196,7 @@ def test_s1_masked_no_affliction(transformer_skill: SkillTransformer):
         [level_3_base_expected] * hits_expected
     ])
     assert skill_data.mods_at_max == pytest.approx([level_3_base_expected] * hits_expected)
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
     # Different bullet hit count
     dmg_up_rate = {
@@ -208,7 +209,7 @@ def test_s1_masked_no_affliction(transformer_skill: SkillTransformer):
     }
 
     for condition, up_rate in dmg_up_rate.items():
-        skill_data = skill_data_base.with_conditions(condition)
+        skill_data = skill_data_base.with_conditions(SkillConditionComposite(condition))
 
         hits_conditioned = hits_expected * condition.to_bullet_hit_count()
 
@@ -238,7 +239,7 @@ def test_s1_masked_no_affliction(transformer_skill: SkillTransformer):
             level_3_base_expected * 0.55 ** deterioration
             for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
         ])
-        assert skill_data.max_available_level == 3
+        assert skill_data.max_level == 3
 
 
 def test_s1_masked_paralyzed(transformer_skill: SkillTransformer):
@@ -253,7 +254,7 @@ def test_s1_masked_paralyzed(transformer_skill: SkillTransformer):
     hits_expected = 5
 
     # Base data - (1 hit for each bullets)
-    skill_data = skill_data_base.with_conditions(SkillCondition.TARGET_PARALYZED)
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_PARALYZED))
 
     assert skill_data.hit_count == [hits_expected, hits_expected, hits_expected]
     assert skill_data.hit_count_at_max == hits_expected
@@ -269,7 +270,7 @@ def test_s1_masked_paralyzed(transformer_skill: SkillTransformer):
         [level_3_base_expected] * hits_expected
     ])
     assert skill_data.mods_at_max == pytest.approx([level_3_base_expected] * hits_expected)
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
     # Different bullet hit count
     dmg_up_rate = {
@@ -282,7 +283,8 @@ def test_s1_masked_paralyzed(transformer_skill: SkillTransformer):
     }
 
     for condition, up_rate in dmg_up_rate.items():
-        skill_data = skill_data_base.with_conditions((SkillCondition.TARGET_PARALYZED, condition))
+        skill_data = skill_data_base.with_conditions(
+            SkillConditionComposite((SkillCondition.TARGET_PARALYZED, condition)))
 
         hits_conditioned = hits_expected * condition.to_bullet_hit_count()
 
@@ -312,7 +314,7 @@ def test_s1_masked_paralyzed(transformer_skill: SkillTransformer):
             level_3_base_expected * 0.55 ** deterioration
             for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
         ])
-        assert skill_data.max_available_level == 3
+        assert skill_data.max_level == 3
 
 
 def test_s2_masked_no_affliction(transformer_skill: SkillTransformer):
@@ -340,7 +342,7 @@ def test_s2_masked_no_affliction(transformer_skill: SkillTransformer):
         [level_2_base_expected] * hits_expected,
     ])
     assert skill_data.mods_at_max == pytest.approx([level_2_base_expected] * hits_expected)
-    assert skill_data.max_available_level == 2
+    assert skill_data.max_level == 2
 
 
 def test_s2_masked_paralyzed(transformer_skill: SkillTransformer):
@@ -354,7 +356,7 @@ def test_s2_masked_paralyzed(transformer_skill: SkillTransformer):
     hits_expected = 27
 
     # Base data - (1 hit for each bullets)
-    skill_data = skill_data_base.with_conditions(SkillCondition.TARGET_PARALYZED)
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_PARALYZED))
 
     assert skill_data.hit_count == [hits_expected, hits_expected]
     assert skill_data.hit_count_at_max == hits_expected
@@ -368,4 +370,4 @@ def test_s2_masked_paralyzed(transformer_skill: SkillTransformer):
         [level_2_base_expected] * hits_expected
     ])
     assert skill_data.mods_at_max == pytest.approx([level_2_base_expected] * hits_expected)
-    assert skill_data.max_available_level == 2
+    assert skill_data.max_level == 2

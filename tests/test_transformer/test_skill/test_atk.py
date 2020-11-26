@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition
+from dlparse.enums import SkillCondition, SkillConditionComposite
 from dlparse.errors import SkillDataNotFoundError
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
@@ -24,7 +24,7 @@ def test_single_hit_1(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == 14.85
     assert skill_data.mods == [[12.03], [13.38], [14.85]]
     assert skill_data.mods_at_max == [14.85]
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_single_hit_2(transformer_skill: SkillTransformer):
@@ -38,7 +38,7 @@ def test_single_hit_2(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == 10.515
     assert skill_data.mods == [[10.02], [10.515]]
     assert skill_data.mods_at_max == [10.515]
-    assert skill_data.max_available_level == 2
+    assert skill_data.max_level == 2
 
 
 def test_single_projectile(transformer_skill: SkillTransformer):
@@ -52,7 +52,7 @@ def test_single_projectile(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == 14.74
     assert skill_data.mods == [[11.94], [13.27], [14.74]]
     assert skill_data.mods_at_max == [14.74]
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_multi_hits_same_damage_1(transformer_skill: SkillTransformer):
@@ -67,7 +67,7 @@ def test_multi_hits_same_damage_1(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == 28.0
     assert skill_data.mods == [[11.35, 11.35], [13.24, 13.24], [14.0, 14.0]]
     assert skill_data.mods_at_max == [14.0, 14.0]
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_multi_hits_same_damage_2(transformer_skill: SkillTransformer):
@@ -81,7 +81,7 @@ def test_multi_hits_same_damage_2(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == 28.912
     assert skill_data.mods == [[4.68] * 4, [5.2] * 4, [5.78] * 4, [7.228] * 4]
     assert skill_data.mods_at_max == [7.228] * 4
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_multi_hits_different_damage_1(transformer_skill: SkillTransformer):
@@ -97,7 +97,7 @@ def test_multi_hits_different_damage_1(transformer_skill: SkillTransformer):
         [11.176, 3.344, 7.832], [11.726, 3.52, 8.206], [12.32, 3.696, 8.624], [13.552, 4.048, 9.482]
     ]
     assert skill_data.mods_at_max == [13.552, 4.048, 9.482]
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_multi_hits_different_damage_2(transformer_skill: SkillTransformer):
@@ -114,7 +114,7 @@ def test_multi_hits_different_damage_2(transformer_skill: SkillTransformer):
         [1.34] + [4] + [1.34] * 2 + [4] * 9,
     ]
     assert skill_data.mods_at_max == [1.34] + [4] + [1.34] * 2 + [4] * 9
-    assert skill_data.max_available_level == 2
+    assert skill_data.max_level == 2
 
 
 def test_has_dummy_hits(transformer_skill: SkillTransformer):
@@ -128,7 +128,7 @@ def test_has_dummy_hits(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == pytest.approx(18.78)
     assert skill_data.mods == [[2.83] * 6, [2.97] * 6, [3.11] * 6, [3.13] * 6]
     assert skill_data.mods_at_max == [3.13] * 6
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_has_punisher_1_1(transformer_skill: SkillTransformer):
@@ -155,7 +155,7 @@ def test_has_punisher_1_1(transformer_skill: SkillTransformer):
         [5.97] * 3 + [6.86],
     ]
     assert skill_data.mods_at_max == [5.97] * 3 + [6.86]
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_has_punisher_1_2(transformer_skill: SkillTransformer):
@@ -164,7 +164,7 @@ def test_has_punisher_1_2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(107505011)
 
     # Poisoned Punisher
-    skill_data = skill_data_base.with_conditions(SkillCondition.TARGET_POISONED)
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_POISONED))
 
     assert skill_data.hit_count == [4, 4, 4, 4]
     assert skill_data.hit_count_at_max == 4
@@ -182,7 +182,7 @@ def test_has_punisher_1_2(transformer_skill: SkillTransformer):
         [7.164] * 3 + [8.232],
     ]
     assert skill_data.mods_at_max == [7.164] * 3 + [8.232]
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_has_punisher_2_1(transformer_skill: SkillTransformer):
@@ -209,7 +209,7 @@ def test_has_punisher_2_1(transformer_skill: SkillTransformer):
         [4.74] * 2
     ]
     assert skill_data.mods_at_max == [4.74] * 2
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_has_punisher_2_2(transformer_skill: SkillTransformer):
@@ -218,7 +218,7 @@ def test_has_punisher_2_2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503021)
 
     # Poisoned Punisher
-    skill_data = skill_data_base.with_conditions(SkillCondition.TARGET_POISONED)
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_POISONED))
 
     assert skill_data.hit_count == [1, 1, 1, 2]
     assert skill_data.hit_count_at_max == 2
@@ -236,7 +236,7 @@ def test_has_punisher_2_2(transformer_skill: SkillTransformer):
         [4.74, 14.22]
     ]
     assert skill_data.mods_at_max == [4.74, 14.22]
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_has_punisher_2_3(transformer_skill: SkillTransformer):
@@ -245,7 +245,7 @@ def test_has_punisher_2_3(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503021)
 
     # Stunned Punisher
-    skill_data = skill_data_base.with_conditions(SkillCondition.TARGET_STUNNED)
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_STUNNED))
 
     assert skill_data.hit_count == [1, 1, 1, 2]
     assert skill_data.hit_count_at_max == 2
@@ -263,7 +263,7 @@ def test_has_punisher_2_3(transformer_skill: SkillTransformer):
         [20.382, 4.74]
     ])
     assert skill_data.mods_at_max == [20.382, 4.74]
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_has_punisher_2_4(transformer_skill: SkillTransformer):
@@ -272,7 +272,8 @@ def test_has_punisher_2_4(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503021)
 
     # Poisoned & Stunned Punisher
-    skill_data = skill_data_base.with_conditions([SkillCondition.TARGET_STUNNED, SkillCondition.TARGET_POISONED])
+    skill_data = skill_data_base.with_conditions(
+        SkillConditionComposite([SkillCondition.TARGET_STUNNED, SkillCondition.TARGET_POISONED]))
 
     assert skill_data.hit_count == [1, 1, 1, 2]
     assert skill_data.hit_count_at_max == 2
@@ -290,7 +291,7 @@ def test_has_punisher_2_4(transformer_skill: SkillTransformer):
         [20.382, 14.22]
     ])
     assert skill_data.mods_at_max == [20.382, 14.22]
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_has_punisher_3_1(transformer_skill: SkillTransformer):
@@ -317,7 +318,7 @@ def test_has_punisher_3_1(transformer_skill: SkillTransformer):
         [1.144] * 8,
     ]
     assert skill_data.mods_at_max == [1.144] * 8
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_has_punisher_3_2(transformer_skill: SkillTransformer):
@@ -326,7 +327,7 @@ def test_has_punisher_3_2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106505011)
 
     # Blinded Punisher
-    skill_data = skill_data_base.with_conditions(SkillCondition.TARGET_BLINDED)
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_BLINDED))
 
     assert skill_data.hit_count == [8, 8, 8, 8]
     assert skill_data.hit_count_at_max == 8
@@ -344,7 +345,7 @@ def test_has_punisher_3_2(transformer_skill: SkillTransformer):
         [1.99056] * 8,
     ])
     assert skill_data.mods_at_max == pytest.approx([1.99056] * 8)
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_has_punisher_3_3(transformer_skill: SkillTransformer):
@@ -353,7 +354,7 @@ def test_has_punisher_3_3(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106505011)
 
     # Poisoned Punisher
-    skill_data = skill_data_base.with_conditions(SkillCondition.TARGET_POISONED)
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_POISONED))
 
     assert skill_data.hit_count == [8, 8, 8, 8]
     assert skill_data.hit_count_at_max == 8
@@ -371,7 +372,7 @@ def test_has_punisher_3_3(transformer_skill: SkillTransformer):
         [1.99056] * 8,
     ])
     assert skill_data.mods_at_max == pytest.approx([1.99056] * 8)
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_has_punisher_3_4(transformer_skill: SkillTransformer):
@@ -380,7 +381,8 @@ def test_has_punisher_3_4(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106505011)
 
     # Blinded or Poisoned Punisher
-    skill_data = skill_data_base.with_conditions([SkillCondition.TARGET_BLINDED, SkillCondition.TARGET_POISONED])
+    skill_data = skill_data_base.with_conditions(
+        SkillConditionComposite([SkillCondition.TARGET_BLINDED, SkillCondition.TARGET_POISONED]))
 
     assert skill_data.hit_count == [8, 8, 8, 8]
     assert skill_data.hit_count_at_max == 8
@@ -398,7 +400,7 @@ def test_has_punisher_3_4(transformer_skill: SkillTransformer):
         [1.99056] * 8,
     ])
     assert skill_data.mods_at_max == pytest.approx([1.99056] * 8)
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_hp_related_1_1(transformer_skill: SkillTransformer):
@@ -407,7 +409,7 @@ def test_hp_related_1_1(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(107505011)
 
     # 1 HP
-    skill_data = skill_data_base.with_conditions(SkillCondition.SELF_HP_1)
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_1))
 
     assert skill_data.hit_count == [4, 4, 4, 4]
     assert skill_data.hit_count_at_max == 4
@@ -425,7 +427,7 @@ def test_hp_related_1_1(transformer_skill: SkillTransformer):
         [8.955] * 3 + [10.29],
     ])
     assert skill_data.mods_at_max == pytest.approx([8.955] * 3 + [10.29])
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_hp_related_1_2(transformer_skill: SkillTransformer):
@@ -434,7 +436,8 @@ def test_hp_related_1_2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(107505011)
 
     # 1 HP & Poisoned Punisher
-    skill_data = skill_data_base.with_conditions([SkillCondition.TARGET_POISONED, SkillCondition.SELF_HP_1])
+    skill_data = skill_data_base.with_conditions(
+        SkillConditionComposite([SkillCondition.TARGET_POISONED, SkillCondition.SELF_HP_1]))
 
     assert skill_data.hit_count == [4, 4, 4, 4]
     assert skill_data.hit_count_at_max == 4
@@ -452,7 +455,7 @@ def test_hp_related_1_2(transformer_skill: SkillTransformer):
         [10.746] * 3 + [12.348],
     ])
     assert skill_data.mods_at_max == pytest.approx([10.746] * 3 + [12.348])
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
 
 def test_hp_related_2_1(transformer_skill: SkillTransformer):
@@ -477,7 +480,7 @@ def test_hp_related_2_1(transformer_skill: SkillTransformer):
         [6.98] * 3
     ])
     assert skill_data.mods_at_max == pytest.approx([6.98] * 3)
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_hp_related_2_2(transformer_skill: SkillTransformer):
@@ -486,7 +489,7 @@ def test_hp_related_2_2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503012)
 
     # Base data (Full HP)
-    skill_data = skill_data_base.with_conditions(SkillCondition.SELF_HP_FULL)
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_FULL))
 
     assert skill_data.hit_count == [3, 3, 3]
     assert skill_data.hit_count_at_max == 3
@@ -502,7 +505,7 @@ def test_hp_related_2_2(transformer_skill: SkillTransformer):
         [6.98] * 3
     ])
     assert skill_data.mods_at_max == pytest.approx([6.98] * 3)
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_hp_related_2_3(transformer_skill: SkillTransformer):
@@ -511,7 +514,8 @@ def test_hp_related_2_3(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503012)
 
     # Poisoned Punisher (Full HP)
-    skill_data = skill_data_base.with_conditions([SkillCondition.TARGET_POISONED, SkillCondition.SELF_HP_FULL])
+    skill_data = skill_data_base.with_conditions(
+        SkillConditionComposite([SkillCondition.TARGET_POISONED, SkillCondition.SELF_HP_FULL]))
 
     assert skill_data.hit_count == [3, 3, 3]
     assert skill_data.hit_count_at_max == 3
@@ -527,7 +531,7 @@ def test_hp_related_2_3(transformer_skill: SkillTransformer):
         [10.47] * 3
     ])
     assert skill_data.mods_at_max == pytest.approx([10.47] * 3)
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_hp_related_2_4(transformer_skill: SkillTransformer):
@@ -536,7 +540,7 @@ def test_hp_related_2_4(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503012)
 
     # Base data (1 HP)
-    skill_data = skill_data_base.with_conditions(SkillCondition.SELF_HP_1)
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_1))
 
     assert skill_data.hit_count == [3, 3, 3]
     assert skill_data.hit_count_at_max == 3
@@ -552,7 +556,7 @@ def test_hp_related_2_4(transformer_skill: SkillTransformer):
         [3.49] * 3
     ])
     assert skill_data.mods_at_max == pytest.approx([3.49] * 3)
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_hp_related_2_5(transformer_skill: SkillTransformer):
@@ -561,7 +565,8 @@ def test_hp_related_2_5(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503012)
 
     # Poisoned Punisher (1 HP)
-    skill_data = skill_data_base.with_conditions([SkillCondition.TARGET_POISONED, SkillCondition.SELF_HP_1])
+    skill_data = skill_data_base.with_conditions(
+        SkillConditionComposite([SkillCondition.TARGET_POISONED, SkillCondition.SELF_HP_1]))
 
     assert skill_data.hit_count == [3, 3, 3]
     assert skill_data.hit_count_at_max == 3
@@ -577,7 +582,7 @@ def test_hp_related_2_5(transformer_skill: SkillTransformer):
         [5.235] * 3
     ])
     assert skill_data.mods_at_max == pytest.approx([5.235] * 3)
-    assert skill_data.max_available_level == 3
+    assert skill_data.max_level == 3
 
 
 def test_buff_related_1(transformer_skill: SkillTransformer):
@@ -594,7 +599,7 @@ def test_buff_related_1(transformer_skill: SkillTransformer):
     assert skill_data.total_mod_at_max == pytest.approx(16.36)
     assert skill_data.mods == [[5.96] * 2, [6.63] * 2, [7.36] * 2, [8.18] * 2]
     assert skill_data.mods_at_max == [8.18] * 2
-    assert skill_data.max_available_level == 4
+    assert skill_data.max_level == 4
 
     # With buffs
     condition_to_dmg_up_rate = {
@@ -610,7 +615,7 @@ def test_buff_related_1(transformer_skill: SkillTransformer):
     }
 
     for conditions, boost_rate in condition_to_dmg_up_rate.items():
-        skill_data = skill_data_base.with_conditions(*conditions)
+        skill_data = skill_data_base.with_conditions(SkillConditionComposite(conditions))
 
         assert skill_data.hit_count == [2, 2, 2, 2]
         assert skill_data.hit_count_at_max == 2
@@ -628,7 +633,7 @@ def test_buff_related_1(transformer_skill: SkillTransformer):
             [8.18 * boost_rate] * 2
         ])
         assert skill_data.mods_at_max == [8.18 * boost_rate] * 2
-        assert skill_data.max_available_level == 4
+        assert skill_data.max_level == 4
 
 
 def test_fs_atk():

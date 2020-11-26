@@ -33,5 +33,4 @@ def test_s2(transformer_skill: SkillTransformer):
         [level_2_hit]
     ])
     assert skill_data.mods_at_max == pytest.approx([level_2_hit] + [level_2_bullet] * hits_expected)
-    assert skill_data.max_available_level == 3
     assert skill_data.max_level == 2

@@ -3,25 +3,27 @@ from abc import ABC
 
 from .base import AppValueError
 
-__all__ = ("ConditionValidationFailedError", "BulletEndOfLifeError", "DamagingHitValidationFailedError")
+__all__ = ("ConditionValidationFailedError", "BulletEndOfLifeError", "DamagingHitValidationFailedError",
+           "HitDataUnavailableError")
 
 
 class ConditionValidationFailedError(AppValueError):
     """Error to be raised if the given condition combination is invalid."""
 
     def __init__(self, result):
-        super().__init__(f"Skill combination validation failed. Reason: {result}")
-
-        self._result = result
-
-    @property
-    def result(self):
-        """Get the validation result that causes this error."""
-        return self._result
+        super().__init__(f"Skill condition validation failed. Check result: {result}")
 
 
 class DamagingHitValidationFailedError(AppValueError):
     """Error to be raised if the initialization of a damaging hit failed."""
+
+
+class HitDataUnavailableError(AppValueError):
+    """Error to be raised if no hit data is available."""
+
+    def __init__(self):
+        super().__init__("No hit data available. This is likely due to a wrong skill type choice. "
+                         "For example, a supportive skill transformed as an attacking skill.")
 
 
 class DamagaCalculationError(AppValueError, ABC):

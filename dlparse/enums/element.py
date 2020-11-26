@@ -6,7 +6,11 @@ __all__ = ("Element",)
 
 
 class Element(IntEnum):
-    """Element enums used in the assets."""
+    """
+    Element enums used in the assets.
+
+    This corresponds to the field ``_ElementalType`` in the character data asset.
+    """
 
     UNKNOWN = -1
 
