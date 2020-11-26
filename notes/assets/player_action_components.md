@@ -75,6 +75,15 @@ Another type of bullets. Distinction unknown.
 - Ilia S2 @ Alchemy (`103505033`)
 
 
+### ``ActionSettingHit``
+
+An action which sets an area.
+
+#### Apperance notes
+
+- Wedding Elisanne S1 (`101503021`)
+
+
 
 ## Active Components
 

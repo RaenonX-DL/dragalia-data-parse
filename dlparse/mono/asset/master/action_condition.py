@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from typing import Union, Optional
 
+from dlparse.enums import ElementFlag
 from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
 
 __all__ = ("ActionConditionEntry", "ActionConditionAsset", "ActionConditionParser")
@@ -21,6 +22,8 @@ class ActionConditionEntry(MasterEntryBase):
     buff_skill_damage: float
     buff_sp_rate: float
 
+    elemental_target: ElementFlag
+
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "ActionConditionEntry":
         return ActionConditionEntry(
@@ -32,8 +35,14 @@ class ActionConditionEntry(MasterEntryBase):
             buff_crt_rate=data["_RateCritical"],
             buff_crt_damage=data["_EnhancedCritical"],
             buff_skill_damage=data["_RateSkill"],
-            buff_sp_rate=data["_RateRecoverySp"]
+            buff_sp_rate=data["_RateRecoverySp"],
+            elemental_target=ElementFlag(data["_TargetElemental"])
         )
+
+    @property
+    def target_limited_by_element(self):
+        """Check if the action condition will be limited by the element of the target."""
+        return self.elemental_target.is_effective
 
 
 class ActionConditionAsset(MasterAssetBase[ActionConditionEntry]):

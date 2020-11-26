@@ -22,6 +22,7 @@ class HitTargetSimple(Enum):
     SELF = 1
     SELF_SURROUNDING = 2
     ENEMY = 3
+    AREA = 4
     TEAM = 6
 
 
@@ -35,7 +36,13 @@ class HitTarget(Enum):
     UNKNOWN = -1
 
     SELF = 1
-    SELF_SURROUNDING = 2
+    SELF_SKILL_AREA = 2
+    """
+    The effect will be applied to every ally who stays within the skill effect range.
+    
+    This includes some skills that centers at the user (for example, Summer Cleo S2 ``106504012``),
+    and the skills that creates an area (for example, Wedding Elisanne S1 ``101503021``).
+    """
     ENEMY = 3
     TEAM = 6
 
@@ -62,7 +69,7 @@ class HitTarget(Enum):
 TRANS_DICT_TO_SIMPLE: dict[HitTarget, HitTargetSimple] = {
     HitTarget.UNKNOWN: HitTargetSimple.UNKNOWN,
     HitTarget.SELF: HitTargetSimple.SELF,
-    HitTarget.SELF_SURROUNDING: HitTargetSimple.SELF_SURROUNDING,
+    HitTarget.SELF_SKILL_AREA: HitTargetSimple.SELF_SURROUNDING,
     HitTarget.ENEMY: HitTargetSimple.ENEMY,
     HitTarget.TEAM: HitTargetSimple.TEAM,
     HitTarget.SELF_HIT_DEPENDENT: HitTargetSimple.SELF

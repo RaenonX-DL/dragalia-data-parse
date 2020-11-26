@@ -78,7 +78,7 @@ class HitAttrEntry(MasterEntryBase):
         )
 
     @property
-    def has_condition(self):
+    def has_action_condition(self):
         """
         Check if this hit attribute has action condition labeled.
 

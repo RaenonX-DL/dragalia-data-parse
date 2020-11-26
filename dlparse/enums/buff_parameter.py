@@ -50,3 +50,8 @@ class BuffParameter(Enum):
     A value of 0.15 means to refill 15% SP of S2.
     """
     # endregion
+
+    # Recovery
+    HEAL_RP = 301
+    """Heal the target using Recovery Potency. A value of 0.12 means that the target will be healed with 12% RP."""
+    # endregion

@@ -4,7 +4,8 @@ from itertools import product
 from typing import Optional
 
 from dlparse.enums import (
-    SkillConditionComposite, SkillCondition, HitTargetSimple, BuffParameter, SkillIndex
+    SkillConditionComposite, SkillCondition, HitTargetSimple, BuffParameter, SkillIndex,
+    Element
 )
 from dlparse.mono.asset import ActionConditionAsset, ActionConditionEntry, HitAttrEntry
 from .hit_buff import BuffingHitData
@@ -27,7 +28,14 @@ class SupportiveSkillUnit:
     action_cond_id: int
 
     def __hash__(self):
-        return hash((self.hit_attr_label, self.action_cond_id))
+        return hash((self.target, self.parameter, self.rate, self.duration_time, self.duration_count,
+                     self.hit_attr_label, self.action_cond_id))
+
+    def __eq__(self, other):
+        if not isinstance(other, SupportiveSkillUnit):
+            return False
+
+        return hash(self) == hash(other)
 
 
 @dataclass
@@ -138,8 +146,13 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
     Calling ``buffs_teammate_coverage[skill_lv][teammate_count]`` will return a set of buffs at ``skill_lv``
     when ``teammate_count`` covered.
-
-    If no buff will be granted, returns an empty :class:`set`.
+    """
+    buffs_elemental: list[dict[Element, set[SupportiveSkillUnit]]] = field(init=False)
+    """
+    Buffs to be granted ont if the target element matches.
+    
+    Calling ``buffs_elemental[skill_lv][element_enum]`` will return a set of buffs at ``skill_lv``
+    when the target element is ``element_enum``.
     """
 
     def _init_all_possible_conditions(self):
@@ -175,6 +188,12 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                 if hit_attr.has_hit_condition:
                     # Skip conditions that require teammate coverage, let ``buffs_teammate_coverage`` handles this
                     continue
+
+                if hit_attr.has_action_condition:
+                    action_condition = action_condition_asset.get_data_by_id(hit_attr.action_condition_id)
+                    if action_condition.target_limited_by_element:
+                        # Skip conditions that require certain elements, let ``buffs_elemental`` handles this
+                        continue
 
                 if skill_entries := SupportiveSkillConverter.convert_to_units(hit_attr, action_condition_asset):
                     buff_lv |= skill_entries
@@ -213,11 +232,36 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
             self.buffs_teammate_coverage.append(buff_lv)
 
+    def _init_elemental_buffs(self, action_condition_asset: ActionConditionAsset):
+        self.buffs_elemental: list[dict[Element, set[SupportiveSkillUnit]]] = []
+
+        for hit_data_lv in self.hit_data_mtx:
+            buff_lv: dict[Element, set[SupportiveSkillUnit]] = {elem: set()
+                                                                for elem in Element.get_all_valid_elements()}
+
+            for hit_data in hit_data_lv:
+                hit_attr = hit_data.hit_attr
+
+                if not hit_attr.has_action_condition:
+                    continue  # No action condition assigned
+
+                action_condition = action_condition_asset.get_data_by_id(hit_attr.action_condition_id)
+
+                if not action_condition.target_limited_by_element:
+                    continue  # Action condition not limited by element
+
+                for elem in Element.get_all_valid_elements():
+                    if elem.to_flag() in action_condition.elemental_target:
+                        buff_lv[elem] |= SupportiveSkillConverter.convert_to_units(hit_attr, action_condition_asset)
+
+            self.buffs_elemental.append(buff_lv)
+
     def __post_init__(self, action_condition_asset: ActionConditionAsset):  # pylint: disable=arguments-differ
         super().__post_init__()
 
         self._init_base_buffs(action_condition_asset)
         self._init_teammate_coverage_buffs(action_condition_asset)
+        self._init_elemental_buffs(action_condition_asset)
 
     def with_conditions(self, condition_comp: SkillConditionComposite = None) -> SupportiveSkillEntry:
         if not condition_comp:
@@ -232,6 +276,11 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
             for skill_lv in range(self.max_level):
                 buffs[skill_lv] |= self.buffs_teammate_coverage[skill_lv][teammate_count]
+
+        # Attach elemental buffs
+        if condition_comp.target_elemental:
+            for skill_lv in range(self.max_level):
+                buffs[skill_lv] |= self.buffs_elemental[skill_lv][condition_comp.target_elemental.to_element()]
 
         return SupportiveSkillEntry(condition_comp=condition_comp, buffs=buffs)
 

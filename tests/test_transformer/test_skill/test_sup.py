@@ -24,18 +24,96 @@ def test_single_effect_to_team(transformer_skill: SkillTransformer):
 def test_single_effect_to_team_limited(transformer_skill: SkillTransformer):
     # Emma S1
     # https://dragalialost.gamepedia.com/Emma
-    skill_data = transformer_skill.transform_supportive(105401031)
+    skill_data_base = transformer_skill.transform_supportive(105401031)
 
-    # TEST: TBA - Emma S1
+    assert skill_data_base.max_level == 3
+
+    expected_buffs_lv_1 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.ATK,
+            rate=0.15,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_160_ATK_FIRE_LV01",
+            action_cond_id=165
+        ),
+    }
+    expected_buffs_lv_2 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.ATK,
+            rate=0.20,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_160_ATK_FIRE_LV02",
+            action_cond_id=166
+        ),
+    }
+    expected_buffs_lv_3 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.ATK,
+            rate=0.25,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_160_ATK_FIRE_LV03",
+            action_cond_id=167
+        ),
+    }
+    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
+
+    # No element given
+
+    skill_data = skill_data_base.with_conditions()
+
+    assert skill_data.buffs == [set()] * skill_data_base.max_level
+
+    # Fire element given
+
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_ELEM_FLAME))
+
+    for skill_lv in range(skill_data_base.max_level):
+        expected_buffs = expected_base_buffs[skill_lv]
+        actual_buffs = skill_data.buffs[skill_lv]
+
+        assert actual_buffs == expected_buffs, expected_buffs.symmetric_difference(actual_buffs)
+
+    # Wrong element given
+
+    skill_data = skill_data_base.with_conditions()
+
+    assert skill_data.buffs == [set()] * skill_data_base.max_level
 
 
 def test_single_effect_area(transformer_skill: SkillTransformer):
-    # Wedding Elisanne S1
-    # https://dragalialost.gamepedia.com/Wedding_Elisanne
-    # skill_data = transformer_skill.transform_supportive(101503021)
-    pass
-
-    # TEST: TBA - W!Elisanne S1
+    # Gala Cleo S1-FS
+    # https://dragalialost.gamepedia.com/Gala_Cleo
+    # skill_data_base = transformer_skill.transform_supportive(101503021)
+    #
+    # assert skill_data_base.max_level == 3
+    #
+    # expected_buffs_lv_1 = {
+    #     SupportiveSkillUnit(
+    #         target=HitTargetSimple.AREA,
+    #         parameter=BuffParameter.HEAL_RP,
+    #         rate=0.16,
+    #         duration_time=10,
+    #         duration_count=0,
+    #         hit_attr_label="SWD_110_04_REJENE_FLD_LV01",
+    #         action_cond_id=110
+    #     ),
+    # }
+    # expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
+    #
+    # for skill_lv in range(skill_data_base.max_level):
+    #     skill_data = skill_data_base.with_conditions()
+    #
+    #     expected_buffs = expected_base_buffs[skill_lv]
+    #     actual_buffs = skill_data.buffs[skill_lv]
+    #
+    #     assert actual_buffs == expected_buffs, expected_buffs.symmetric_difference(actual_buffs)
+    pass  # FIXME
 
 
 def test_multi_effect_to_team(transformer_skill: SkillTransformer):
