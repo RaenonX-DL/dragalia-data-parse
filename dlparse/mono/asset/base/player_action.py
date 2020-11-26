@@ -10,7 +10,7 @@ from .entry import EntryBase
 from .parser import ParserBase
 
 __all__ = (
-    "ActionComponentBase", "ActionComponentDamageDealer",
+    "ActionComponentBase", "ActionComponentHasHitLabels",
     "ActionAssetBase",
     "ActionParserBase"
 )
@@ -113,17 +113,13 @@ class ActionComponentBase(EntryBase, ABC):
 
 
 @dataclass
-class ActionComponentDamageDealer(ActionComponentBase, ABC):
-    """
-    Base class for damage dealing components.
-
-    A damage dealing component should have hit label(s) assigned.
-    """
+class ActionComponentHasHitLabels(ActionComponentBase, ABC):
+    """Base class for action components which have hit labels assigned."""
 
     hit_labels: list[str]
 
     def __post_init__(self):
-        # Xander S2, check the doc of the test ``test_label_has_whitespaces()``
+        # Some labels contain whitespaces, check the doc of the test ``test_label_has_whitespaces()``
         self.hit_labels = [label.strip() for label in self.hit_labels]
 
 

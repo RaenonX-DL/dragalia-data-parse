@@ -39,7 +39,7 @@ class HitTarget(Enum):
     SELF_SKILL_AREA = 2
     """
     The effect will be applied to every ally who stays within the skill effect range.
-    
+
     This includes some skills that centers at the user (for example, Summer Cleo S2 ``106504012``),
     and the skills that creates an area (for example, Wedding Elisanne S1 ``101503021``).
     """

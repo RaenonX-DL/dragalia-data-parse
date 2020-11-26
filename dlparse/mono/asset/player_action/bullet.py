@@ -11,7 +11,7 @@ COLLISION_INTERVAL_INEFFECTIVE = 50
 
 
 @dataclass
-class ActionBullet(asset.ActionComponentDamageDealer):
+class ActionBullet(asset.ActionComponentHasHitLabels):
     """Class of ``ActionPartsBullet`` component in the player action asset."""
 
     bullet_duration: float

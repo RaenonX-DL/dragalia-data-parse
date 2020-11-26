@@ -308,29 +308,27 @@ class SkillCondition(Enum):
 
         - Multiple bullet hit count exist.
         """
+        check_dict = {
+            SkillConditionCheckResult.MULTIPLE_HP:
+                lambda: sum(condition.is_hp_condition for condition in conditions) > 1,
+            SkillConditionCheckResult.MULTIPLE_BUFF:
+                lambda: sum(condition.is_buff_boost for condition in conditions) > 1,
+            SkillConditionCheckResult.MULTIPLE_BULLET_HIT:
+                lambda: sum(condition.is_bullet_hit_count for condition in conditions) > 1,
+            SkillConditionCheckResult.MULTIPLE_TEAMMATE_COVERAGE:
+                lambda: sum(condition.is_teammate_coverage for condition in conditions) > 1,
+            SkillConditionCheckResult.MULTIPLE_TARGET_ELEMENT:
+                lambda: sum(condition.is_target_elemental for condition in conditions) > 1,
+        }
+
         # No conditions given
         if not conditions:
             return SkillConditionCheckResult.PASS
 
-        # Multiple HP check
-        if sum(condition.is_hp_condition for condition in conditions) > 1:
-            return SkillConditionCheckResult.MULTIPLE_HP
-
-        # Multiple buff check
-        if sum(condition.is_buff_boost for condition in conditions) > 1:
-            return SkillConditionCheckResult.MULTIPLE_BUFF
-
-        # Multiple bullet hit count check
-        if sum(condition.is_bullet_hit_count for condition in conditions) > 1:
-            return SkillConditionCheckResult.MULTIPLE_BULLET_HIT
-
-        # Teammate coverage condition check
-        if sum(condition.is_teammate_coverage for condition in conditions) > 1:
-            return SkillConditionCheckResult.MULTIPLE_TEAMMATE_COVERAGE
-
-        # Target element condition check
-        if sum(condition.is_target_elemental for condition in conditions) > 1:
-            return SkillConditionCheckResult.MULTIPLE_TARGET_ELEMENT
+        # Check for conditions
+        for result, check_fn in check_dict.items():
+            if check_fn():
+                return result
 
         return SkillConditionCheckResult.PASS
 

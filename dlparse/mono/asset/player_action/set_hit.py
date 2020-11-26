@@ -2,11 +2,11 @@
 from dataclasses import dataclass
 from typing import Union
 
-from dlparse.mono.asset.base import ActionComponentDamageDealer
+from dlparse.mono.asset.base import ActionComponentHasHitLabels
 
 
 @dataclass
-class ActionSettingHit(ActionComponentDamageDealer):
+class ActionSettingHit(ActionComponentHasHitLabels):
     """Class of ``ActionPartsSettingHit`` component in the player action asset."""
 
     area_lifetime: float
@@ -16,7 +16,7 @@ class ActionSettingHit(ActionComponentDamageDealer):
         kwargs = cls.get_base_kwargs(data)
 
         return ActionSettingHit(
-            hit_labels=[data["_hitLabel"]],
+            hit_labels=[data["_hitAttrLabel"]],
             area_lifetime=data["_lifetime"],
             **kwargs
         )

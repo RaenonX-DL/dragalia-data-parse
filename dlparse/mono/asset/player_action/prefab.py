@@ -3,7 +3,7 @@ import re
 from typing import Type
 
 from dlparse.mono.asset.base import (
-    ActionAssetBase, ActionParserBase, ActionComponentBase, ActionComponentDamageDealer
+    ActionAssetBase, ActionParserBase, ActionComponentBase, ActionComponentHasHitLabels
 )
 from .bullet import ActionBullet
 from .bullet_format import ActionBulletFormation
@@ -11,6 +11,7 @@ from .bullet_multi import ActionBulletMulti
 from .bullet_parabola import ActionBulletParabola
 from .bullet_stock import ActionBulletStock
 from .hit import ActionHit
+from .set_hit import ActionSettingHit
 
 __all__ = ("PlayerActionPrefab",)
 
@@ -26,7 +27,8 @@ class PlayerActionParser(ActionParserBase):
         "ActionPartsMultiBullet": ActionBulletMulti,
         "ActionPartsFireStockBullet": ActionBulletStock,
         "ActionPartsFormationBullet": ActionBulletFormation,
-        "ActionPartsParabolaBullet": ActionBulletParabola
+        "ActionPartsParabolaBullet": ActionBulletParabola,
+        "ActionPartsSettingHit": ActionSettingHit
     }
 
     @classmethod
@@ -58,20 +60,20 @@ class PlayerActionPrefab(ActionAssetBase):
         super().__init__(PlayerActionParser, file_path)
 
         # Pre-categorize components for faster access
-        self._damaging_hits: list[ActionComponentDamageDealer] = []
+        self._damaging_hits: list[ActionComponentHasHitLabels] = []
 
         for component in self:
-            if isinstance(component, ActionComponentDamageDealer):
+            if isinstance(component, ActionComponentHasHitLabels):
                 self._damaging_hits.append(component)
 
-    def get_hit_actions(self, skill_lv: int) -> list[tuple[str, ActionComponentDamageDealer]]:
+    def get_hit_actions(self, skill_lv: int) -> list[tuple[str, ActionComponentHasHitLabels]]:
         """
         Get a list of effective hitting actions in tuple ``(label name, action component)``.
 
         .. note::
             Each component contains hit label(s) which each of them corresponds to a hit attribute.
         """
-        hit_actions: list[tuple[str, ActionComponentDamageDealer]] = []
+        hit_actions: list[tuple[str, ActionComponentHasHitLabels]] = []
 
         # Sort hitting components by its starting time
         for action_hit in sorted(self._damaging_hits, key=lambda component: component.time_start):

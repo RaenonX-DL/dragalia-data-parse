@@ -2,14 +2,14 @@
 from dataclasses import dataclass, field
 
 from dlparse.errors import BulletEndOfLifeError, DamagingHitValidationFailedError
-from dlparse.mono.asset import ActionComponentDamageDealer, ActionBullet
+from dlparse.mono.asset import ActionComponentHasHitLabels, ActionBullet
 from .hit_base import HitData
 
 __all__ = ("DamagingHitData",)
 
 
 @dataclass
-class DamagingHitData(HitData[ActionComponentDamageDealer]):
+class DamagingHitData(HitData[ActionComponentHasHitLabels]):
     """Class for the data of a single damaging hit."""
 
     will_deteriorate: bool = field(init=False)

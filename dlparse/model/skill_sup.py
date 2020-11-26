@@ -150,7 +150,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
     buffs_elemental: list[dict[Element, set[SupportiveSkillUnit]]] = field(init=False)
     """
     Buffs to be granted ont if the target element matches.
-    
+
     Calling ``buffs_elemental[skill_lv][element_enum]`` will return a set of buffs at ``skill_lv``
     when the target element is ``element_enum``.
     """

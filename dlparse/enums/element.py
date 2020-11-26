@@ -22,7 +22,7 @@ class ElementFlag(Flag):
     @property
     def is_effective(self) -> bool:
         """Check if the elemental flag is in effect."""
-        return self.value != 0
+        return int(self.value) != 0
 
 
 class Element(Enum):
@@ -55,7 +55,7 @@ class Element(Enum):
         return TRANS_DICT_TO_FLAG[self]
 
     @classmethod
-    def _missing_(cls, value):
+    def _missing_(cls, _):
         return cls.UNKNOWN
 
     @staticmethod
