@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.enums import SkillCondition, SkillConditionComposite, SkillConditionCategories
 from dlparse.errors import BulletEndOfLifeError
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
@@ -62,7 +62,8 @@ def test_s1_unmasked_no_affliction(transformer_skill: SkillTransformer):
     for condition, up_rate in dmg_up_rate.items():
         skill_data = skill_data_base.with_conditions(SkillConditionComposite(condition))
 
-        hits_conditioned = hits_expected * condition.to_bullet_hit_count()
+        bullet_hit_count = SkillConditionCategories.skill_bullet_hit.convert(condition)
+        hits_conditioned = hits_expected * bullet_hit_count
 
         assert skill_data.hit_count == [hits_conditioned, hits_conditioned, hits_conditioned]
         assert skill_data.hit_count_at_max == hits_conditioned
@@ -75,20 +76,20 @@ def test_s1_unmasked_no_affliction(transformer_skill: SkillTransformer):
         assert skill_data.mods == approx_matrix([
             [
                 level_1_base_expected * 0.55 ** deterioration
-                for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+                for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
             [
                 level_2_base_expected * 0.55 ** deterioration
-                for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+                for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
             [
                 level_3_base_expected * 0.55 ** deterioration
-                for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+                for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
         ])
         assert skill_data.mods_at_max == [
             level_3_base_expected * 0.55 ** deterioration
-            for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+            for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
         ]
         assert skill_data.max_level == 3
 
@@ -137,7 +138,8 @@ def test_s1_unmasked_paralyzed(transformer_skill: SkillTransformer):
         skill_data = skill_data_base.with_conditions(
             SkillConditionComposite((SkillCondition.TARGET_PARALYZED, condition)))
 
-        hits_conditioned = hits_expected * condition.to_bullet_hit_count()
+        bullet_hit_count = SkillConditionCategories.skill_bullet_hit.convert(condition)
+        hits_conditioned = hits_expected * bullet_hit_count
 
         assert skill_data.hit_count == [hits_conditioned, hits_conditioned, hits_conditioned]
         assert skill_data.hit_count_at_max == hits_conditioned
@@ -150,20 +152,20 @@ def test_s1_unmasked_paralyzed(transformer_skill: SkillTransformer):
         assert skill_data.mods == approx_matrix([
             [
                 level_1_base_expected * 0.55 ** deterioration
-                for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+                for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
             [
                 level_2_base_expected * 0.55 ** deterioration
-                for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+                for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
             [
                 level_3_base_expected * 0.55 ** deterioration
-                for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+                for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
         ])
         assert skill_data.mods_at_max == pytest.approx([
             level_3_base_expected * 0.55 ** deterioration
-            for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+            for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
         ])
         assert skill_data.max_level == 3
 
@@ -211,7 +213,8 @@ def test_s1_masked_no_affliction(transformer_skill: SkillTransformer):
     for condition, up_rate in dmg_up_rate.items():
         skill_data = skill_data_base.with_conditions(SkillConditionComposite(condition))
 
-        hits_conditioned = hits_expected * condition.to_bullet_hit_count()
+        bullet_hit_count = SkillConditionCategories.skill_bullet_hit.convert(condition)
+        hits_conditioned = hits_expected * bullet_hit_count
 
         assert skill_data.hit_count == [hits_conditioned, hits_conditioned, hits_conditioned]
         assert skill_data.hit_count_at_max == hits_conditioned
@@ -224,20 +227,20 @@ def test_s1_masked_no_affliction(transformer_skill: SkillTransformer):
         assert skill_data.mods == approx_matrix([
             [
                 level_1_base_expected * 0.55 ** deterioration
-                for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+                for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
             [
                 level_2_base_expected * 0.55 ** deterioration
-                for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+                for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
             [
                 level_3_base_expected * 0.55 ** deterioration
-                for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+                for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
         ])
         assert skill_data.mods_at_max == pytest.approx([
             level_3_base_expected * 0.55 ** deterioration
-            for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+            for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
         ])
         assert skill_data.max_level == 3
 
@@ -286,7 +289,8 @@ def test_s1_masked_paralyzed(transformer_skill: SkillTransformer):
         skill_data = skill_data_base.with_conditions(
             SkillConditionComposite((SkillCondition.TARGET_PARALYZED, condition)))
 
-        hits_conditioned = hits_expected * condition.to_bullet_hit_count()
+        bullet_hit_count = SkillConditionCategories.skill_bullet_hit.convert(condition)
+        hits_conditioned = hits_expected * bullet_hit_count
 
         assert skill_data.hit_count == [hits_conditioned, hits_conditioned, hits_conditioned]
         assert skill_data.hit_count_at_max == hits_conditioned
@@ -299,20 +303,20 @@ def test_s1_masked_paralyzed(transformer_skill: SkillTransformer):
         assert skill_data.mods == approx_matrix([
             [
                 level_1_base_expected * 0.55 ** deterioration
-                for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+                for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
             [
                 level_2_base_expected * 0.55 ** deterioration
-                for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+                for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
             [
                 level_3_base_expected * 0.55 ** deterioration
-                for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+                for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
         ])
         assert skill_data.mods_at_max == pytest.approx([
             level_3_base_expected * 0.55 ** deterioration
-            for deterioration in range(condition.to_bullet_hit_count()) for _ in range(hits_expected)
+            for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
         ])
         assert skill_data.max_level == 3
 

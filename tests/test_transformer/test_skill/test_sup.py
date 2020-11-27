@@ -1,6 +1,8 @@
 import pytest
 
-from dlparse.enums import BuffParameter, HitTargetSimple, SkillCondition, SkillConditionComposite
+from dlparse.enums import (
+    BuffParameter, HitTargetSimple, SkillCondition, SkillConditionComposite, SkillConditionCategories
+)
 from dlparse.errors import SkillDataNotFoundError
 from dlparse.model import SupportiveSkillUnit
 from dlparse.transformer import SkillTransformer
@@ -303,7 +305,7 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 3
 
     for skill_lv in range(skill_data_base.max_level):
-        for teammate_count, cond_enum in enumerate(SkillCondition.get_teammate_coverage_conditions()):
+        for cond_enum, teammate_count in SkillConditionCategories.skill_teammates_covered.conversion_dict.items():
             skill_data = skill_data_base.with_conditions(SkillConditionComposite(cond_enum))
 
             expected_buffs = expected_base_buffs[skill_lv] | expected_additional_buffs[skill_lv][teammate_count]

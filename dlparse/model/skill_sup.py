@@ -4,8 +4,8 @@ from itertools import product
 from typing import Optional
 
 from dlparse.enums import (
-    SkillConditionComposite, SkillCondition, HitTargetSimple, BuffParameter, SkillIndex,
-    Element
+    SkillConditionComposite, SkillCondition, SkillConditionCategories,
+    HitTargetSimple, BuffParameter, SkillIndex, Element
 )
 from dlparse.mono.asset import ActionConditionAsset, ActionConditionEntry, HitAttrEntry
 from .hit_buff import BuffingHitData
@@ -168,7 +168,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
         # Teammate coverage conditions available, attach it
         if has_teammate_coverage:
             cond_elems.append({(teammate_coverage_cond,) for teammate_coverage_cond
-                               in SkillCondition.get_teammate_coverage_conditions()})
+                               in SkillConditionCategories.skill_teammates_covered.members})
 
         # Add combinations
         self.possible_conditions = {
@@ -203,7 +203,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
     def _init_teammate_coverage_buffs(self, action_condition_asset: ActionConditionAsset):
         self.buffs_teammate_coverage: list[list[set[SupportiveSkillUnit]]] = []
 
-        teammate_coverage_counts = SkillCondition.get_teammate_coverage_counts()
+        teammate_coverage_counts = SkillConditionCategories.skill_teammates_covered.targets
 
         for hit_data_lv in self.hit_data_mtx:
             buff_lv: list[set[SupportiveSkillUnit]] = [set() for _ in teammate_coverage_counts]
@@ -272,15 +272,13 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
         # Attach teammate coverage only buffs
         if condition_comp.teammate_coverage:
-            teammate_count = condition_comp.teammate_coverage.to_teammate_coverage_count()
-
             for skill_lv in range(self.max_level):
-                buffs[skill_lv] |= self.buffs_teammate_coverage[skill_lv][teammate_count]
+                buffs[skill_lv] |= self.buffs_teammate_coverage[skill_lv][condition_comp.teammate_coverage_converted]
 
         # Attach elemental buffs
         if condition_comp.target_elemental:
             for skill_lv in range(self.max_level):
-                buffs[skill_lv] |= self.buffs_elemental[skill_lv][condition_comp.target_elemental.to_element()]
+                buffs[skill_lv] |= self.buffs_elemental[skill_lv][condition_comp.target_elemental_converted]
 
         return SupportiveSkillEntry(condition_comp=condition_comp, buffs=buffs)
 

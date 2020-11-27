@@ -23,7 +23,7 @@ def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: Skill
     if hit_data.will_deteriorate and condition_comp.bullet_hit_count:
         # Deteriorating bullets
         mods = [hit_data.damage_modifier_at_hit(hit_count)
-                for hit_count in range(1, condition_comp.bullet_hit_count.to_bullet_hit_count() + 1)]
+                for hit_count in range(1, condition_comp.bullet_hit_count_converted + 1)]
     else:
         # Normal cases
         mods = [hit_attr.damage_modifier]
@@ -36,7 +36,7 @@ def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: Skill
 
     # Buff boosts
     if hit_attr.boost_by_buff_count and condition_comp.buff_count:
-        mods = multiply_vector(mods, (1 + hit_attr.rate_boost_by_buff * condition_comp.buff_count.to_buff_count()))
+        mods = multiply_vector(mods, (1 + hit_attr.rate_boost_by_buff * condition_comp.buff_count_converted))
 
     # Punisher boosts
     if hit_attr.boost_on_target_afflicted and condition_comp.afflictions_converted & hit_attr.punisher_states:

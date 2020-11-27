@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from itertools import combinations, product
 from typing import Optional
 
-from dlparse.enums import SkillCondition, SkillConditionComposite, Affliction
+from dlparse.enums import SkillCondition, SkillConditionComposite, SkillConditionCategories, Affliction
 from dlparse.utils import calculate_damage_modifier
 from .hit_dmg import DamagingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
@@ -112,16 +112,16 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         # Buff boosts available, attach buff counts
         if buff_up_available:
-            cond_elems.append({(buff_cond,) for buff_cond in SkillCondition.get_buff_count_conditions()})
+            cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_buff_count.members})
 
         # Deterioration available, attach bullet hit counts
         if will_deteriorate:
             cond_elems.append({(bullet_hit,) for bullet_hit
-                               in SkillCondition.get_bullet_hit_count_conditions(max_bullet_hit)})
+                               in SkillConditionCategories.skill_bullet_hit.get_members_lte(max_bullet_hit)})
 
         # Punishers available, attach punisher conditions
         if punishers_available:
-            conditions: set[SkillCondition] = {SkillCondition.from_affliction(affliction)
+            conditions: set[SkillCondition] = {SkillConditionCategories.target_affliction.convert_reversed(affliction)
                                                for affliction in punishers_available}
             # noinspection PyTypeChecker
             affliction_combinations: set[tuple[SkillCondition, ...]] = set()
