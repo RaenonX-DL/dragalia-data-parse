@@ -48,6 +48,11 @@ class SupportiveSkillEntry(SkillEntryBase):
 
     buffs: list[set[SupportiveSkillUnit]]
 
+    @property
+    def max_lv_buffs(self) -> set[SupportiveSkillUnit]:
+        """Get the buffs at the max level."""
+        return self.buffs[-1]
+
 
 class SupportiveSkillConverter:
     """Class for converting a supportive skill to a single buff entry."""
@@ -155,13 +160,20 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
     when the target element is ``element_enum``.
     """
 
-    def _init_all_possible_conditions(self):
+    def _init_all_possible_conditions(self, action_condition_asset: ActionConditionAsset):
         has_teammate_coverage: bool = False
+        has_elemental_restriction: bool = False
 
         # Check availabilities
         for hit_data_lv in self.hit_data_mtx:
             for hit_data in hit_data_lv:
                 has_teammate_coverage = has_teammate_coverage or hit_data.hit_attr.has_hit_condition
+                if (
+                        hit_data.hit_attr.has_action_condition
+                        and (entry := action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id))
+                ):
+                    # noinspection PyUnboundLocalVariable
+                    has_elemental_restriction = has_elemental_restriction or entry.target_limited_by_element
 
         cond_elems: list[set[tuple[SkillCondition, ...]]] = []
 
@@ -169,6 +181,13 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
         if has_teammate_coverage:
             cond_elems.append({(teammate_coverage_cond,) for teammate_coverage_cond
                                in SkillConditionCategories.skill_teammates_covered.members})
+
+        # Elemental restriction available, attach it
+        if has_elemental_restriction:
+            cond_elems.append({(target_element_cond,)
+                               for target_element_cond in SkillConditionCategories.target_elemental.members
+                               if any(buffs_lv[SkillConditionCategories.target_elemental.convert(target_element_cond)]
+                                      for buffs_lv in self.buffs_elemental)})
 
         # Add combinations
         self.possible_conditions = {
@@ -218,7 +237,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                     # Currently, only Nadine S1, S!Cleo S2 and Laranoa S2 uses teammate coverage condition.
                     # This calculation allows us to get the offset of the conditions,
                     # then subtract the offset with the boundaries to get the teammates coverage count.
-                    hit_cond_offset = min(hit_attr.hit_condition_lower_bound, hit_attr.hit_condition_upper_bound)
+                    hit_cond_offset = min(hit_attr.hit_condition_lower_bound, hit_attr.hit_condition_upper_bound) + 1
                     if teammate_count < hit_attr.hit_condition_lower_bound - hit_cond_offset:
                         continue  # Teammate # lower than the boundary
                     if (
@@ -256,12 +275,12 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
             self.buffs_elemental.append(buff_lv)
 
-    def __post_init__(self, action_condition_asset: ActionConditionAsset):  # pylint: disable=arguments-differ
-        super().__post_init__()
-
+    def __post_init__(self, action_condition_asset: ActionConditionAsset):
         self._init_base_buffs(action_condition_asset)
         self._init_teammate_coverage_buffs(action_condition_asset)
         self._init_elemental_buffs(action_condition_asset)
+
+        super().__post_init__(action_condition_asset)
 
     def with_conditions(self, condition_comp: SkillConditionComposite = None) -> SupportiveSkillEntry:
         if not condition_comp:

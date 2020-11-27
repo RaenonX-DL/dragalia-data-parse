@@ -22,9 +22,8 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
             raise DamagingHitValidationFailedError("Deterioration rate not set, but the hit `will_deteriorate`")
 
     def __post_init__(self):
-        self.will_deteriorate = (
-                isinstance(self.action_component, ActionBullet) and self.action_component.will_deteriorate
-        )
+        self.will_deteriorate = \
+            isinstance(self.action_component, ActionBullet) and self.action_component.will_deteriorate
 
         if isinstance(self.action_component, ActionBullet):
             self.deterioration_rate = self.action_component.attenuation_rate

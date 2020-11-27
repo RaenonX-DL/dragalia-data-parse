@@ -20,6 +20,9 @@ run_cmd_exit_on_err() {
 echo "${CLR_CYN}Checking with pydocstyle (dlparse)...${CLR_NC}"
 run_cmd_exit_on_err "pydocstyle dlparse --count" "pydocstyle check (dlparse)"
 
+echo "${CLR_CYN}Checking with flake8 (dlparse)...${CLR_NC}"
+run_cmd_exit_on_err "flake8 dlparse --count" "flake8 check (dlparse)"
+
 echo "${CLR_CYN}Checking with pylint (dlparse)...${CLR_NC}"
 run_cmd_exit_on_err "pylint dlparse" "pylint check (dlparse)"
 

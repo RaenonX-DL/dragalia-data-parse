@@ -1,5 +1,6 @@
 # CQA check
 pydocstyle
+flake8
 pylint
 
 # CI

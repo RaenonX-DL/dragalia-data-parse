@@ -41,4 +41,6 @@ disable=unsubscriptable-object,
         # Data class usually will have a lot of attributes which should not be grouped
         too-many-instance-attributes,
         # Just let it emit during runtime
-        cyclic-import
+        cyclic-import,
+        # Let it checked by IDE or flake8
+        arguments-differ

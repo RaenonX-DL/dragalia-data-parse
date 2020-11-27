@@ -32,12 +32,12 @@ class SkillDataBase(Generic[HT, ET], ABC):
     possible_conditions: set[SkillConditionComposite] = field(init=False, default_factory=SkillConditionComposite)
 
     @abstractmethod
-    def _init_all_possible_conditions(self):
+    def _init_all_possible_conditions(self, *args, **kwargs):
         """Find all possible conditions and set it to ``self.possible_conditions``."""
         raise NotImplementedError()
 
-    def __post_init__(self):
-        self._init_all_possible_conditions()
+    def __post_init__(self, *args, **kwargs):
+        self._init_all_possible_conditions(*args, **kwargs)
 
     def get_all_possible_entries(self) -> list[ET]:
         """Get all possible skill mod entries."""

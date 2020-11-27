@@ -196,10 +196,10 @@ class CharaDataEntry(MasterEntryBase):
         with the bonus given from mana circle and the additional bonus after 50 MC.
         """
         base = self.max_atk_1
-        mc_plus = (
-                self.plus_atk_0 + self.plus_atk_1 + self.plus_atk_2
-                + self.plus_atk_3 + self.plus_atk_4 + self.plus_atk_5
-        )
+        mc_plus = sum((
+            self.plus_atk_0, self.plus_atk_1, self.plus_atk_2,
+            self.plus_atk_3, self.plus_atk_4, self.plus_atk_5
+        ))
         full_bonus = self.mc_full_bonus_atk
 
         return base + mc_plus + full_bonus

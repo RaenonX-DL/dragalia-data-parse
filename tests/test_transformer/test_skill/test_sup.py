@@ -18,9 +18,56 @@ def test_skill_not_found(transformer_skill: SkillTransformer):
 def test_single_effect_to_team(transformer_skill: SkillTransformer):
     # Kirsty S2
     # https://dragalialost.gamepedia.com/Kirsty
-    skill_data = transformer_skill.transform_supportive(105503022)
+    skill_data_base = transformer_skill.transform_supportive(105503022)
 
-    # TEST: TBA - Kirsty S2
+    assert skill_data_base.max_level == 3
+
+    expected_buffs_lv_1 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.ATK,
+            rate=0.15,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_ALL_ATK_SSR_30_LV01",
+            action_cond_id=302030301
+        ),
+    }
+    expected_buffs_lv_2 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.ATK,
+            rate=0.20,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_ALL_ATK_SSR_30_LV02",
+            action_cond_id=302030401
+        ),
+    }
+    expected_buffs_lv_3 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.ATK,
+            rate=0.25,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_ALL_ATK_SSR_30_LV03",
+            action_cond_id=302030501
+        ),
+    }
+    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
+
+    # No element given
+
+    skill_data = skill_data_base.with_conditions()
+
+    assert skill_data.max_lv_buffs == expected_buffs_lv_3
+
+    for skill_lv in range(skill_data_base.max_level):
+        expected_buffs = expected_base_buffs[skill_lv]
+        actual_buffs = skill_data.buffs[skill_lv]
+
+        assert actual_buffs == expected_buffs, expected_buffs.symmetric_difference(actual_buffs)
 
 
 def test_single_effect_to_team_limited(transformer_skill: SkillTransformer):
@@ -69,12 +116,14 @@ def test_single_effect_to_team_limited(transformer_skill: SkillTransformer):
 
     skill_data = skill_data_base.with_conditions()
 
+    assert skill_data.max_lv_buffs == set()
     assert skill_data.buffs == [set()] * skill_data_base.max_level
 
     # Fire element given
 
     skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_ELEM_FLAME))
 
+    assert skill_data.max_lv_buffs == expected_buffs_lv_3
     for skill_lv in range(skill_data_base.max_level):
         expected_buffs = expected_base_buffs[skill_lv]
         actual_buffs = skill_data.buffs[skill_lv]
@@ -85,6 +134,7 @@ def test_single_effect_to_team_limited(transformer_skill: SkillTransformer):
 
     skill_data = skill_data_base.with_conditions()
 
+    assert skill_data.max_lv_buffs == set()
     assert skill_data.buffs == [set()] * skill_data_base.max_level
 
 
@@ -121,17 +171,125 @@ def test_single_effect_area(transformer_skill: SkillTransformer):
 def test_multi_effect_to_team(transformer_skill: SkillTransformer):
     # Patia S1
     # https://dragalialost.gamepedia.com/Patia
-    skill_data = transformer_skill.transform_supportive(105405021)
+    skill_data_base = transformer_skill.transform_supportive(105405021)
 
-    # TEST: TBA - S!Patia S1
+    assert skill_data_base.max_level == 4
+
+    expected_buffs_lv_1 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.DEF,
+            rate=0.15,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_184_DEF_LV01",
+            action_cond_id=303030201
+        ),
+    }
+    expected_buffs_lv_2 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.DEF,
+            rate=0.20,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_184_DEF_LV02",
+            action_cond_id=303030301
+        ),
+    }
+    expected_buffs_lv_3 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.DEF,
+            rate=0.25,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_184_DEF_LV03",
+            action_cond_id=303030401
+        ),
+    }
+    expected_buffs_lv_4 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.DEF,
+            rate=0.25,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_184_DEF_LV04",
+            action_cond_id=303030401
+        ),
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.ATK,
+            rate=0.15,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_184_ATK_LV04",
+            action_cond_id=302030301
+        ),
+    }
+    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3, expected_buffs_lv_4]
+
+    skill_data = skill_data_base.with_conditions()
+
+    assert skill_data.max_lv_buffs == expected_buffs_lv_4
+    for skill_lv in range(skill_data_base.max_level):
+        expected_buffs = expected_base_buffs[skill_lv]
+        actual_buffs = skill_data.buffs[skill_lv]
+
+        assert actual_buffs == expected_buffs, expected_buffs.symmetric_difference(actual_buffs)
 
 
 def test_multi_effect_to_nearby_1(transformer_skill: SkillTransformer):
     # Halloween Odetta S2
     # https://dragalialost.gamepedia.com/Halloween_Odetta
-    skill_data = transformer_skill.transform_supportive(101402012)
+    skill_data_base = transformer_skill.transform_supportive(101402012)
 
-    # TEST: TBA - H!Odetta S2
+    assert skill_data_base.max_level == 3
+
+    expected_buffs_lv_1 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.SELF_SURROUNDING,
+            parameter=BuffParameter.ATK,
+            rate=0.15,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_166_ATK_LV01",
+            action_cond_id=302030301
+        ),
+    }
+    expected_buffs_lv_2 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.SELF_SURROUNDING,
+            parameter=BuffParameter.ATK,
+            rate=0.20,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_166_ATK_LV02",
+            action_cond_id=302030401
+        ),
+    }
+    expected_buffs_lv_3 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.SELF_SURROUNDING,
+            parameter=BuffParameter.ATK,
+            rate=0.25,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_166_ATK_LV03",
+            action_cond_id=302030501
+        ),
+    }
+    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
+
+    skill_data = skill_data_base.with_conditions()
+
+    assert skill_data.max_lv_buffs == expected_buffs_lv_3
+    for skill_lv in range(skill_data_base.max_level):
+        expected_buffs = expected_base_buffs[skill_lv]
+        actual_buffs = skill_data.buffs[skill_lv]
+
+        assert actual_buffs == expected_buffs, expected_buffs.symmetric_difference(actual_buffs)
 
 
 def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
@@ -265,7 +423,7 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
             action_cond_id=303020101
         )
     }
-    on_1_plus_buffs = {
+    on_1_plus_buffs = on_0_plus_buffs | {
         SupportiveSkillUnit(
             target=HitTargetSimple.SELF,
             parameter=BuffParameter.CRT_DAMAGE,
@@ -276,7 +434,7 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
             action_cond_id=1176
         )
     }
-    on_2_plus_buffs = {
+    on_2_plus_buffs = on_1_plus_buffs | {
         SupportiveSkillUnit(
             target=HitTargetSimple.SELF,
             parameter=BuffParameter.SP_CHARGE_PCT_S1,
@@ -294,20 +452,16 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
     expected_additional_buffs = [
         [set(), set(), set(), set()],
         [set(), set(), set(), set()],
-        [
-            set(),
-            on_0_plus_buffs,
-            on_0_plus_buffs | on_1_plus_buffs,
-            on_0_plus_buffs | on_1_plus_buffs | on_2_plus_buffs
-        ]
+        [on_0_plus_buffs, on_1_plus_buffs, on_2_plus_buffs, on_2_plus_buffs]
     ]
 
     assert skill_data_base.max_level == 3
 
-    for skill_lv in range(skill_data_base.max_level):
-        for cond_enum, teammate_count in SkillConditionCategories.skill_teammates_covered.conversion_dict.items():
-            skill_data = skill_data_base.with_conditions(SkillConditionComposite(cond_enum))
+    for cond_enum, teammate_count in SkillConditionCategories.skill_teammates_covered.conversion_dict.items():
+        skill_data = skill_data_base.with_conditions(SkillConditionComposite(cond_enum))
 
+        assert skill_data.max_lv_buffs == expected_base_buffs_lv_3 | expected_additional_buffs[-1][teammate_count]
+        for skill_lv in range(skill_data_base.max_level):
             expected_buffs = expected_base_buffs[skill_lv] | expected_additional_buffs[skill_lv][teammate_count]
             actual_buffs = skill_data.buffs[skill_lv]
 

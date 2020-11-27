@@ -9,7 +9,7 @@ from dlparse.transformer import SkillTransformer
 __all__ = ("export_skill_atk_csv",)
 
 
-def export_skill_atk_csv(file_path: str, /,
+def export_skill_atk_csv(file_path: str, /,  # noqa: C901
                          chara_asset: CharaDataAsset, chara_mode_asset: CharaModeAsset, text_asset: TextAsset,
                          skill_transformer: SkillTransformer,
                          skip_unparsable: bool = True):
