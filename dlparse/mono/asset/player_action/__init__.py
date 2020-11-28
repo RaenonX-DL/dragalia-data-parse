@@ -8,3 +8,4 @@ from .bullet_arrange import ActionBulletArranged
 from .bullet_multi import ActionBulletMulti
 from .bullet_stock import ActionBulletStock
 from .prefab import PlayerActionPrefab
+from .set_hit import ActionSettingHit

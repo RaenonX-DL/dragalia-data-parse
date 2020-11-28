@@ -7,7 +7,7 @@ from dlparse.enums import (
     SkillConditionComposite, SkillCondition, SkillConditionCategories,
     HitTargetSimple, BuffParameter, SkillIndex, Element
 )
-from dlparse.mono.asset import ActionConditionAsset, ActionConditionEntry, HitAttrEntry
+from dlparse.mono.asset import ActionConditionAsset, ActionConditionEntry
 from .hit_buff import BuffingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
 
@@ -59,7 +59,7 @@ class SupportiveSkillConverter:
 
     @staticmethod
     def to_param_up(param_enum: BuffParameter, param_rate: float,
-                    hit_attr: HitAttrEntry, cond_entry: Optional[ActionConditionEntry]) \
+                    hit_data: BuffingHitData, cond_entry: Optional[ActionConditionEntry]) \
             -> Optional[SupportiveSkillUnit]:
         """
         Create a buff unit (if applicable) based on the given data.
@@ -72,56 +72,56 @@ class SupportiveSkillConverter:
             return None
 
         return SupportiveSkillUnit(
-            target=hit_attr.target_group.to_simple(),
+            target=hit_data.target_simple,
             parameter=param_enum,
             rate=param_rate,
-            duration_time=cond_entry.duration_sec if cond_entry else 0,
+            duration_time=hit_data.get_duration(cond_entry),
             duration_count=cond_entry.duration_count if cond_entry else 0,
-            hit_attr_label=hit_attr.id,
-            action_cond_id=hit_attr.action_condition_id
+            hit_attr_label=hit_data.hit_attr.id,
+            action_cond_id=hit_data.hit_attr.action_condition_id
         )
 
     @staticmethod
-    def convert_to_units(hit_attr: HitAttrEntry, action_condition_asset: ActionConditionAsset) \
+    def convert_to_units(hit_data: BuffingHitData, action_condition_asset: ActionConditionAsset) \
             -> set[SupportiveSkillUnit]:
-        """Convert ``hit_attr`` to a set of :class:`SupportiveSkillUnit`."""
+        """Convert ``hit_data`` to a set of :class:`SupportiveSkillUnit`."""
         entries: set[Optional[SupportiveSkillUnit]] = set()
 
         # Get the action condition entry
-        cond_entry: ActionConditionEntry = action_condition_asset.get_data_by_id(hit_attr.action_condition_id)
+        cond_entry: ActionConditionEntry = action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id)
 
         # --- General buffs
 
         if cond_entry:
             # ATK buff
             entries.add(SupportiveSkillConverter.to_param_up(
-                BuffParameter.ATK, cond_entry.buff_atk, hit_attr, cond_entry))
+                BuffParameter.ATK, cond_entry.buff_atk, hit_data, cond_entry))
             # DEF buff
             entries.add(SupportiveSkillConverter.to_param_up(
-                BuffParameter.DEF, cond_entry.buff_def, hit_attr, cond_entry))
+                BuffParameter.DEF, cond_entry.buff_def, hit_data, cond_entry))
             # CRT rate
             entries.add(SupportiveSkillConverter.to_param_up(
-                BuffParameter.CRT_RATE, cond_entry.buff_crt_rate, hit_attr, cond_entry))
+                BuffParameter.CRT_RATE, cond_entry.buff_crt_rate, hit_data, cond_entry))
             # CRT damage
             entries.add(SupportiveSkillConverter.to_param_up(
-                BuffParameter.CRT_DAMAGE, cond_entry.buff_crt_damage, hit_attr, cond_entry))
+                BuffParameter.CRT_DAMAGE, cond_entry.buff_crt_damage, hit_data, cond_entry))
             # Skill damage
             entries.add(SupportiveSkillConverter.to_param_up(
-                BuffParameter.SKILL_DAMAGE, cond_entry.buff_skill_damage, hit_attr, cond_entry))
+                BuffParameter.SKILL_DAMAGE, cond_entry.buff_skill_damage, hit_data, cond_entry))
             # SP rate
             entries.add(SupportiveSkillConverter.to_param_up(
-                BuffParameter.SP_RATE, cond_entry.buff_sp_rate, hit_attr, cond_entry))
+                BuffParameter.SP_RATE, cond_entry.buff_sp_rate, hit_data, cond_entry))
 
         # --- Instant gauge refill
 
         # SP charge %
-        if skill_idx := SkillIndex(hit_attr.sp_recov_skill_idx_2):  # idx 2 always give more accurate result
+        if skill_idx := SkillIndex(hit_data.hit_attr.sp_recov_skill_idx_2):  # idx 2 always give more accurate result
             if skill_idx == SkillIndex.S1:
                 entries.add(SupportiveSkillConverter.to_param_up(
-                    BuffParameter.SP_CHARGE_PCT_S1, hit_attr.sp_recov_ratio, hit_attr, cond_entry))
+                    BuffParameter.SP_CHARGE_PCT_S1, hit_data.hit_attr.sp_recov_ratio, hit_data, cond_entry))
             if skill_idx == SkillIndex.S2:
                 entries.add(SupportiveSkillConverter.to_param_up(
-                    BuffParameter.SP_CHARGE_PCT_S2, hit_attr.sp_recov_ratio, hit_attr, cond_entry))
+                    BuffParameter.SP_CHARGE_PCT_S2, hit_data.hit_attr.sp_recov_ratio, hit_data, cond_entry))
 
         # Pop off the ``None`` element (``None`` will be added on entry ineffective)
         entries.discard(None)
@@ -202,19 +202,17 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
             buff_lv = set()
 
             for hit_data in hit_data_lv:
-                hit_attr = hit_data.hit_attr
-
-                if hit_attr.has_hit_condition:
+                if hit_data.hit_attr.has_hit_condition:
                     # Skip conditions that require teammate coverage, let ``buffs_teammate_coverage`` handles this
                     continue
 
-                if hit_attr.has_action_condition:
-                    action_condition = action_condition_asset.get_data_by_id(hit_attr.action_condition_id)
+                if hit_data.hit_attr.has_action_condition:
+                    action_condition = action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id)
                     if action_condition.target_limited_by_element:
                         # Skip conditions that require certain elements, let ``buffs_elemental`` handles this
                         continue
 
-                if skill_entries := SupportiveSkillConverter.convert_to_units(hit_attr, action_condition_asset):
+                if skill_entries := SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset):
                     buff_lv |= skill_entries
 
             self.buffs_base.append(buff_lv)
@@ -246,7 +244,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                     ):
                         continue  # Teammate # higher than the boundary
 
-                    if skill_entries := SupportiveSkillConverter.convert_to_units(hit_attr, action_condition_asset):
+                    if skill_entries := SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset):
                         buff_lv[teammate_count] |= skill_entries
 
             self.buffs_teammate_coverage.append(buff_lv)
@@ -259,19 +257,17 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                                                                 for elem in Element.get_all_valid_elements()}
 
             for hit_data in hit_data_lv:
-                hit_attr = hit_data.hit_attr
-
-                if not hit_attr.has_action_condition:
+                if not hit_data.hit_attr.has_action_condition:
                     continue  # No action condition assigned
 
-                action_condition = action_condition_asset.get_data_by_id(hit_attr.action_condition_id)
+                action_condition = action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id)
 
                 if not action_condition.target_limited_by_element:
                     continue  # Action condition not limited by element
 
                 for elem in Element.get_all_valid_elements():
                     if elem.to_flag() in action_condition.elemental_target:
-                        buff_lv[elem] |= SupportiveSkillConverter.convert_to_units(hit_attr, action_condition_asset)
+                        buff_lv[elem] |= SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset)
 
             self.buffs_elemental.append(buff_lv)
 

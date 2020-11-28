@@ -10,6 +10,7 @@ skill_ids_atk: dict[int, str] = {
     101403022: "Templar Hope S2",
     104502011: "Summer Julietta S1",
     104403011: "Ranzal S1",
+    101504031: "Gala Euden S1",
     101504032: "Gala Euden S2",
     104402011: "Karina S1",
     107505011: "Yukata Curran S1",
