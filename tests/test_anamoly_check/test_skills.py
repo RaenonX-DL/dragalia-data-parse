@@ -34,7 +34,9 @@ skill_ids_sup: dict[int, str] = {
     105401031: "Emma S1",
     105405021: "Patia S1",
     101402012: "Halloween Odetta S2",
-    104502012: "Summer Julietta S2",
+    104502012: "Summer Julietta S2 P1",
+    # 104502013: "Summer Julietta S2 P2",
+    # 104502014: "Summer Julietta S2 P3",
     106504012: "Summer Cleo S2",
     101501022: "Marth S2",
     # Special tests

@@ -14,28 +14,55 @@ class ActionConditionEntry(MasterEntryBase):
 
     duration_sec: float
     duration_count: float
+    duration_count_max: int
+    """
+    Maximum count of the buffs stackable.
+
+    ``0`` means not applicable (``duration_count`` = 0, most likely is a buff limited by time duration).
+
+    ``1`` means unstackable.
+
+    Any positive number means the maximum count of stacks possible.
+    """
+
+    probability: float
 
     buff_atk: float
     buff_def: float
     buff_crt_rate: float
     buff_crt_damage: float
     buff_skill_damage: float
+    buff_fs_damage: float
+    buff_atk_spd: float
     buff_sp_rate: float
+
+    shield_dmg: float
 
     elemental_target: ElementFlag
 
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "ActionConditionEntry":
+        duration_count_max = (
+            data["_MaxDurationNum"] if data["_IsAddDurationNum"] else 1
+            if data["_DurationNum"]
+            else 0
+        )
+
         return ActionConditionEntry(
             id=data["_Id"],
             duration_sec=data["_DurationSec"],
             duration_count=data["_DurationNum"],
+            duration_count_max=duration_count_max,
+            probability=data["_Rate"],
             buff_atk=data["_RateAttack"],
             buff_def=data["_RateDefense"],
             buff_crt_rate=data["_RateCritical"],
             buff_crt_damage=data["_EnhancedCritical"],
             buff_skill_damage=data["_RateSkill"],
+            buff_fs_damage=data["_RateBurst"],
+            buff_atk_spd=data["_RateAttackSpeed"],
             buff_sp_rate=data["_RateRecoverySp"],
+            shield_dmg=data["_RateDamageShield"],
             elemental_target=ElementFlag(data["_TargetElemental"])
         )
 

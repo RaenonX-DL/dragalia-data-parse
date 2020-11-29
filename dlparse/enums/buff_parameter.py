@@ -24,9 +24,13 @@ class BuffParameter(Enum):
     """Critical damage up. A value of 0.12 means CRT DMG +12%."""
     SKILL_DAMAGE = 105
     """Skill damage up. A value of 0.12 means SDMG +12%."""
+    ATK_SPD = 106
+    """Attack speed up. A value of 0.12 means ASPD +12%."""
+    FS_DAMAGE = 107
+    """Force Strike damage up. A value of 0.12 means FS DMG +12%."""
     # endregion
 
-    # SP Control
+    # region SP Control
     SP_RATE = 201
     """Rate of SP gain. A value of 0.12 means SP +12%."""
     SP_GAIN = 202
@@ -51,7 +55,17 @@ class BuffParameter(Enum):
     """
     # endregion
 
-    # Recovery
+    # region Recovery
     HEAL_RP = 301
     """Heal the target using Recovery Potency. A value of 0.12 means that the target will be healed with 12% RP."""
+    # endregion
+
+    # region Shield
+    SHIELD_DMG = 401
+    """Shield that nullfies a damage according to the user's max HP once.
+
+    A value of 0.12 means that the shield nullfies a damage which is less than 12% of the user's max HP.
+
+    Note that this shield is unstackable and will disappear once the user got hit.
+    """
     # endregion

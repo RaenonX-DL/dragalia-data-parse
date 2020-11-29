@@ -27,6 +27,17 @@ class SupportiveSkillUnit:
     hit_attr_label: str
     action_cond_id: int
 
+    max_stack_count: int
+    """
+    Maximum count of the buffs stackable.
+
+    ``0`` means not applicable (``duration_count`` = 0, most likely is a buff limited by time duration).
+
+    ``1`` means unstackable.
+
+    Any positive number means the maximum count of stacks possible.
+    """
+
     def __hash__(self):
         return hash((self.target, self.parameter, self.rate, self.duration_time, self.duration_count,
                      self.hit_attr_label, self.action_cond_id))
@@ -78,7 +89,8 @@ class SupportiveSkillConverter:
             duration_time=hit_data.get_duration(cond_entry),
             duration_count=cond_entry.duration_count if cond_entry else 0,
             hit_attr_label=hit_data.hit_attr.id,
-            action_cond_id=hit_data.hit_attr.action_condition_id
+            action_cond_id=hit_data.hit_attr.action_condition_id,
+            max_stack_count=cond_entry.duration_count_max if cond_entry else -1
         )
 
     @staticmethod
@@ -92,11 +104,13 @@ class SupportiveSkillConverter:
 
         # --- General buffs
 
+        # FIXME: add all buffs from action condition and check
+
         if cond_entry:
-            # ATK buff
+            # ATK
             entries.add(SupportiveSkillConverter.to_param_up(
                 BuffParameter.ATK, cond_entry.buff_atk, hit_data, cond_entry))
-            # DEF buff
+            # DEF
             entries.add(SupportiveSkillConverter.to_param_up(
                 BuffParameter.DEF, cond_entry.buff_def, hit_data, cond_entry))
             # CRT rate
@@ -108,9 +122,19 @@ class SupportiveSkillConverter:
             # Skill damage
             entries.add(SupportiveSkillConverter.to_param_up(
                 BuffParameter.SKILL_DAMAGE, cond_entry.buff_skill_damage, hit_data, cond_entry))
+            # FS damage
+            entries.add(SupportiveSkillConverter.to_param_up(
+                BuffParameter.FS_DAMAGE, cond_entry.buff_fs_damage, hit_data, cond_entry))
+            # ATK SPD
+            entries.add(SupportiveSkillConverter.to_param_up(
+                BuffParameter.ATK_SPD, cond_entry.buff_atk_spd, hit_data, cond_entry))
             # SP rate
             entries.add(SupportiveSkillConverter.to_param_up(
                 BuffParameter.SP_RATE, cond_entry.buff_sp_rate, hit_data, cond_entry))
+
+            # Damage Shield
+            entries.add(SupportiveSkillConverter.to_param_up(
+                BuffParameter.SHIELD_DMG, cond_entry.shield_dmg, hit_data, cond_entry))
 
         # --- Instant gauge refill
 
@@ -123,7 +147,7 @@ class SupportiveSkillConverter:
                 entries.add(SupportiveSkillConverter.to_param_up(
                     BuffParameter.SP_CHARGE_PCT_S2, hit_data.hit_attr.sp_recov_ratio, hit_data, cond_entry))
 
-        # Pop off the ``None`` element (``None`` will be added on entry ineffective)
+        # Pop off the ``None`` element (``None`` will be added if the entry ineffective)
         entries.discard(None)
 
         return entries
@@ -278,7 +302,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
         super().__post_init__(action_condition_asset)
 
-    def with_conditions(self, condition_comp: SkillConditionComposite = None) -> SupportiveSkillEntry:
+    def with_conditions(self, condition_comp: Optional[SkillConditionComposite] = None) -> SupportiveSkillEntry:
         if not condition_comp:
             condition_comp = SkillConditionComposite()  # Dummy empty condition composite
 

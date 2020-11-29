@@ -18,7 +18,8 @@ def test_partial_attacking(transformer_skill: SkillTransformer):
             duration_time=15,
             duration_count=0,
             hit_attr_label="BUF_ALL_ATK_SR_30_LV01",
-            action_cond_id=302030201
+            action_cond_id=302030201,
+            max_stack_count=0
         ),
     }
     expected_buffs_lv_2 = {
@@ -29,7 +30,8 @@ def test_partial_attacking(transformer_skill: SkillTransformer):
             duration_time=15,
             duration_count=0,
             hit_attr_label="BUF_ALL_ATK_SR_30_LV02",
-            action_cond_id=302030301
+            action_cond_id=302030301,
+            max_stack_count=0
         ),
     }
     expected_buffs_lv_3 = {
@@ -40,7 +42,8 @@ def test_partial_attacking(transformer_skill: SkillTransformer):
             duration_time=15,
             duration_count=0,
             hit_attr_label="BUF_ALL_ATK_SR_30_LV03",
-            action_cond_id=302030401
+            action_cond_id=302030401,
+            max_stack_count=0
         ),
     }
     expected_buffs_lv_4 = {
@@ -51,7 +54,8 @@ def test_partial_attacking(transformer_skill: SkillTransformer):
             duration_time=15,
             duration_count=0,
             hit_attr_label="BUF_ALL_ATK_SR_30_LV04",
-            action_cond_id=302030501
+            action_cond_id=302030501,
+            max_stack_count=0
         ),
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3, expected_buffs_lv_4]

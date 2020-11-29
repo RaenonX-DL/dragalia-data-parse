@@ -19,7 +19,8 @@ def test_no_condition(transformer_skill: SkillTransformer):
                 duration_time=15,
                 duration_count=0,
                 hit_attr_label="BUF_ALL_ATK_SSR_30_LV03",
-                action_cond_id=302030501
+                action_cond_id=302030501,
+                max_stack_count=0
             ),
         },
     }
@@ -49,7 +50,8 @@ def test_element_restricted(transformer_skill: SkillTransformer):
                 duration_time=15,
                 duration_count=0,
                 hit_attr_label="BUF_160_ATK_FIRE_LV03",
-                action_cond_id=167
+                action_cond_id=167,
+                max_stack_count=0
             ),
         },
     }
@@ -78,7 +80,8 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
             duration_time=10,
             duration_count=0,
             hit_attr_label="BOW_108_04_ATK_LV03",
-            action_cond_id=76
+            action_cond_id=76,
+            max_stack_count=0
         ),
         SupportiveSkillUnit(
             target=HitTargetSimple.SELF_SURROUNDING,
@@ -87,7 +90,8 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
             duration_time=10,
             duration_count=0,
             hit_attr_label="BOW_108_04_CRT_LV03",
-            action_cond_id=38
+            action_cond_id=38,
+            max_stack_count=0
         ),
         SupportiveSkillUnit(
             target=HitTargetSimple.SELF_SURROUNDING,
@@ -96,7 +100,8 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
             duration_time=10,
             duration_count=99,
             hit_attr_label="BOW_108_04_SKILL_LV03",
-            action_cond_id=197
+            action_cond_id=197,
+            max_stack_count=0
         ),
         SupportiveSkillUnit(
             target=HitTargetSimple.SELF_SURROUNDING,
@@ -105,7 +110,8 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
             duration_time=10,
             duration_count=0,
             hit_attr_label="BOW_108_04_SPB_LV03",
-            action_cond_id=194
+            action_cond_id=194,
+            max_stack_count=0
         ),
     }
     on_0_plus_buffs = {
@@ -116,7 +122,8 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
             duration_time=10,
             duration_count=0,
             hit_attr_label="BOW_108_04_DEF_LV03",
-            action_cond_id=303020101
+            action_cond_id=303020101,
+            max_stack_count=0
         )
     }
     on_1_plus_buffs = on_0_plus_buffs | {
@@ -127,7 +134,8 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
             duration_time=10,
             duration_count=0,
             hit_attr_label="BOW_108_04_CRTDMG_LV03",
-            action_cond_id=1176
+            action_cond_id=1176,
+            max_stack_count=0
         )
     }
     on_2_plus_buffs = on_1_plus_buffs | {
@@ -138,7 +146,8 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
             duration_time=0,
             duration_count=0,
             hit_attr_label="BOW_108_04_SP_LV03",
-            action_cond_id=0
+            action_cond_id=0,
+            max_stack_count=0
         )
     }
 

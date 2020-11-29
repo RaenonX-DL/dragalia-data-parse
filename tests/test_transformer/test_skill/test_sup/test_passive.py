@@ -6,6 +6,16 @@ def test_single_effect_area(transformer_skill: SkillTransformer):
     # https://dragalialost.gamepedia.com/Gala_Cleo
     skill_data_base = transformer_skill.transform_supportive(101503021)
 
+    # AB ID - 279
+    # - Ab Type 14
+    # - Var 1A - 131
+    #
+    # AC ID - 131
+    # - EFS ID - 709017
+    #
+    # PA ID - 709017
+    # - Placement Hit Label - ROD_CHR_04_H01_LV01
+
     # assert skill_data_base.max_level == 3
     #
     # expected_buffs_lv_1 = {
