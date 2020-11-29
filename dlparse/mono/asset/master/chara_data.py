@@ -10,7 +10,19 @@ from .chara_mode_data import CharaModeAsset
 from .skill_data import SkillDataEntry, SkillDataAsset
 from .text_label import TextAsset
 
-__all__ = ("CharaDataEntry", "CharaDataAsset", "CharaDataParser")
+__all__ = ("SkillIdEntry", "CharaDataEntry", "CharaDataAsset", "CharaDataParser")
+
+
+@dataclass
+class SkillIdEntry:
+    """Class for a skill ID entry."""
+
+    skill_id: int
+    """Skill."""
+    skill_identifier: str
+    """Skill identifier. This is not unique. The purpose of this is for easier skill identification."""
+    skill_unique_id: str
+    """A unique ID for identifying the skill. The purpose of this is for indexing at the website."""
 
 
 @dataclass
@@ -248,21 +260,29 @@ class CharaDataEntry(MasterEntryBase):
     def get_skill_identifiers(self, chara_mode_asset: CharaModeAsset, /,
                               text_asset: Optional[TextAsset] = None,
                               skill_asset: Optional[SkillDataAsset] = None) \
-            -> list[tuple[int, str, str]]:
+            -> list[SkillIdEntry]:
         """
-        Get the skill IDs, its identifier and a string as an unique ID of a character.
+        Get the skill ID entries of a character.
+
+        This includes different skills in different modes, helper variants, and phase changed IDs, if any.
 
         If ``text_asset`` is not provided, mode name (if any) will not be able to convert to text.
 
-        If ``skill_asset`` is not provided, support skill variant (if any) will not be included.
+        If ``skill_asset`` is not provided, support skill variant (if any) and the phase changing variant (if any)
+        will not be included.
 
         The identifier is not the name of the skill. Instead, it's a name commonly used in between players.
         For skill 1, the identifier will be ``S1``, etc.
 
+        The main purpose of unique
+
         For skills that comes from a mode, the name of the mode will be appended at the end of the identifier.
         For example, the identifier of Bellina's S2 in enhanced mode will be ``S2 (不羈伴侶)``.
         """
-        ret: list[tuple[int, str, str]] = [(self.skill_1_id, "S1", "S1/NA"), (self.skill_2_id, "S2", "S2/NA")]
+        ret: list[SkillIdEntry] = [
+            SkillIdEntry(self.skill_1_id, "S1", "S1/BASE"),
+            SkillIdEntry(self.skill_2_id, "S2", "S2/BASE")
+        ]
 
         # Attach skill IDs in different mode from mode asset
         for mode_id in self.mode_ids:
@@ -272,20 +292,58 @@ class CharaDataEntry(MasterEntryBase):
                     mode_name = text_asset.to_text(mode_data.text_label) or mode_name
 
                 if model_skill_1_id := mode_data.skill_id_1:
-                    ret.append((model_skill_1_id, f"S1 ({mode_name})", f"S1/{mode_data.id}"))
+                    ret.append(SkillIdEntry(model_skill_1_id, f"S1 ({mode_name})", f"S1/{mode_data.id}"))
 
                 if model_skill_2_id := mode_data.skill_id_2:
-                    ret.append((model_skill_2_id, f"S2 ({mode_name})", f"S2/{mode_data.id}"))
+                    ret.append(SkillIdEntry(model_skill_2_id, f"S2 ({mode_name})", f"S2/{mode_data.id}"))
 
-        # Attach helper skill variant if given (currently only S1 will be used as helper skill)
         if skill_asset:
             skill_1_data: SkillDataEntry = skill_asset.get_data_by_id(self.skill_1_id)
-            if skill_1_data.has_helper_variant:
-                ret.append((
+            skill_2_data: SkillDataEntry = skill_asset.get_data_by_id(self.skill_2_id)
+
+            # Attach helper skill variant if given (currently only S1 will be used as helper skill)
+            if skill_1_data and skill_1_data.has_helper_variant:
+                ret.append(SkillIdEntry(
                     skill_1_data.as_helper_skill_id,
                     text_asset.to_text("SKILL_IDENTIFIER_HELPER") if text_asset else "Helper",
                     "S1/HELPER"
                 ))
+
+            if skill_1_data and skill_1_data.has_phase_changing:
+                ret.extend(self._get_phase_skill_ids(skill_1_data, skill_asset, 1))
+
+            if skill_2_data and skill_2_data.has_phase_changing:
+                ret.extend(self._get_phase_skill_ids(skill_2_data, skill_asset, 2))
+
+        return ret
+
+    def _get_phase_skill_ids(self, source_skill_data: SkillDataEntry, skill_asset: SkillDataAsset, skill_num: int) -> \
+            list[SkillIdEntry]:
+        """Get a list of skills containing skills in all possible phases."""
+        ret: list[SkillIdEntry] = []
+        added_skill_id: set[int] = set()
+        current_source: SkillDataEntry = source_skill_data
+
+        if not source_skill_data.has_phase_changing:
+            return ret
+
+        while trans_skill_data := skill_asset.get_data_by_id(current_source.trans_skill_id):
+            if trans_skill_data.id == source_skill_data.id:
+                break  # Changed to source skill data
+
+            if trans_skill_data.id in added_skill_id:
+                break  # Phase looped back
+
+            phase_num = len(ret) + 2
+
+            ret.append(SkillIdEntry(
+                trans_skill_data.id,
+                f"S{skill_num} P{phase_num}",
+                f"S{skill_num}/P{phase_num}"
+            ))
+            added_skill_id.add(trans_skill_data.id)
+
+            current_source = trans_skill_data
 
         return ret
 
@@ -400,7 +458,7 @@ class CharaDataAsset(MasterAssetBase[CharaDataEntry]):
         ret: list[int] = []
 
         for chara_data in self:
-            skill_ids = [skill_id for skill_id, _, _
+            skill_ids = [skill_id_entry.skill_id for skill_id_entry
                          in chara_data.get_skill_identifiers(chara_mode_asset, skill_asset=skill_asset)]
             ret.extend(skill_ids)
 

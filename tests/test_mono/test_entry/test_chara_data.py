@@ -1,4 +1,4 @@
-from dlparse.mono.asset import CharaDataEntry, CharaModeAsset, TextAsset
+from dlparse.mono.asset import CharaDataEntry, CharaModeAsset, CharaDataAsset, TextAsset, SkillDataAsset, SkillIdEntry
 
 
 def create_dummy(**kwargs) -> CharaDataEntry:
@@ -187,13 +187,32 @@ def test_get_chara_name_use_second(text_asset: TextAsset):
 
 def test_get_skill_id_names(chara_mode_asset: CharaModeAsset, text_asset: TextAsset):
     entry = create_dummy(skill_1_id=1, skill_2_id=2)
-    assert entry.get_skill_identifiers(chara_mode_asset, text_asset=text_asset) == [(1, "S1", "S1/NA"),
-                                                                                    (2, "S2", "S2/NA")]
+    assert entry.get_skill_identifiers(chara_mode_asset, text_asset=text_asset) == [SkillIdEntry(1, "S1", "S1/BASE"),
+                                                                                    SkillIdEntry(2, "S2", "S2/BASE")]
 
 
 def test_get_skill_id_names_with_mode(chara_mode_asset: CharaModeAsset, text_asset: TextAsset):
     entry = create_dummy(skill_1_id=1, skill_2_id=2, mode_2_id=12)
     assert entry.get_skill_identifiers(chara_mode_asset, text_asset=text_asset) == [
-        (1, "S1", "S1/NA"), (2, "S2", "S2/NA"),
-        (103505033, "S1 (服わざる伴侶)", "S1/12"), (103505034, "S2 (服わざる伴侶)", "S2/12")
+        SkillIdEntry(1, "S1", "S1/BASE"), SkillIdEntry(2, "S2", "S2/BASE"),
+        SkillIdEntry(103505033, "S1 (服わざる伴侶)", "S1/12"), SkillIdEntry(103505034, "S2 (服わざる伴侶)", "S2/12")
     ]
+
+
+def test_get_all_skill_identifiers(chara_asset: CharaDataAsset, chara_mode_asset: CharaModeAsset,
+                                   text_asset: TextAsset, skill_asset: SkillDataAsset):
+    # Summer Julietta S2
+    # https://dragalialost.gamepedia.com/Summer_Julietta
+    skill_data = chara_asset.get_data_by_id(10450201)
+
+    actual_identifiers = skill_data.get_skill_identifiers(chara_mode_asset,
+                                                          text_asset=text_asset, skill_asset=skill_asset)
+
+    expected_identifiers = [
+        SkillIdEntry(104502011, "S1", "S1/BASE"),
+        SkillIdEntry(104502012, "S2", "S2/BASE"),
+        SkillIdEntry(104502013, "S2 P2", "S2/P2"),
+        SkillIdEntry(104502014, "S2 P3", "S2/P3")
+    ]
+
+    assert actual_identifiers == expected_identifiers

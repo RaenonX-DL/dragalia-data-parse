@@ -35,8 +35,8 @@ skill_ids_sup: dict[int, str] = {
     105405021: "Patia S1",
     101402012: "Halloween Odetta S2",
     104502012: "Summer Julietta S2 P1",
-    # 104502013: "Summer Julietta S2 P2",
-    # 104502014: "Summer Julietta S2 P3",
+    104502013: "Summer Julietta S2 P2",
+    104502014: "Summer Julietta S2 P3",
     106504012: "Summer Cleo S2",
     101501022: "Marth S2",
     # Special tests
@@ -103,7 +103,7 @@ def test_get_catherine_skill_ids(asset_chara: CharaDataAsset, asset_chara_mode: 
     }
 
     catherine: CharaDataEntry = asset_chara.get_data_by_id(10550204)
-    catherine_skill_ids = {skill_id for skill_id, _, _
+    catherine_skill_ids = {entry.skill_id for entry
                            in catherine.get_skill_identifiers(asset_chara_mode, skill_asset=asset_skill)}
 
     for skill_id in catherine_skill_ids:

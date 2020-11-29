@@ -158,6 +158,11 @@ class SkillDataEntry(MasterEntryBase):
         """Check if the skill will be different if used as helper skill."""
         return self.as_helper_skill_id != 0
 
+    @property
+    def has_phase_changing(self) -> bool:
+        """Check if the skill has phase changing available."""
+        return self.trans_skill_id != 0
+
 
 class SkillDataAsset(MasterAssetBase[SkillDataEntry]):
     """Skill data asset class."""
