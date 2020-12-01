@@ -4,9 +4,27 @@ from typing import Union, Optional
 
 from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
 
-__all__ = ("SkillDataEntry", "SkillDataAsset", "SkillDataParser")
+__all__ = ("SkillIdEntry", "SkillDataEntry", "SkillDataAsset", "SkillDataParser")
 
 SKILL_MAX_LEVEL = 4
+
+
+@dataclass
+class SkillIdEntry:
+    """Class for a skill ID entry."""
+
+    skill_id: int
+    """Skill ID."""
+    skill_identifier: str
+    """Skill identifier. This is not unique. The purpose of this is for easier skill identification."""
+    skill_unique_id: str
+    """
+    A unique ID for identifying the skill. The purpose of this is for indexing at the website.
+
+    S1/BASE, S2/BASE: Base S1 and S2.
+    S1/HELPER: S1 helper variant.
+    S1/P2, S1/P3, ...: S1 at phase 2 or phase 3, etc.
+    """
 
 
 @dataclass
@@ -56,10 +74,10 @@ class SkillDataEntry(MasterEntryBase):
     adv_skill_lv1_action_id: int
     """Action ID to be used after skill enhancement."""
 
-    ability_1_id: int
-    ability_2_id: int
-    ability_3_id: int
-    ability_4_id: int
+    ability_lv1_id: int
+    ability_lv2_id: int
+    ability_lv3_id: int
+    ability_lv4_id: int
 
     trans_skill_id: int
     """Phase change. The skill ID of the next phase."""
@@ -120,10 +138,10 @@ class SkillDataEntry(MasterEntryBase):
             action_4_id=data["_ActionId4"],
             adv_skill_lv1=data["_AdvancedSkillLv1"],
             adv_skill_lv1_action_id=data["_AdvancedActionId1"],
-            ability_1_id=data["_Ability1"],
-            ability_2_id=data["_Ability2"],
-            ability_3_id=data["_Ability3"],
-            ability_4_id=data["_Ability4"],
+            ability_lv1_id=data["_Ability1"],
+            ability_lv2_id=data["_Ability2"],
+            ability_lv3_id=data["_Ability3"],
+            ability_lv4_id=data["_Ability4"],
             trans_skill_id=data["_TransSkill"],
             trans_condition_id=data["_TransCondition"],
             trans_hit_count=data["_TransHitCount"],
@@ -154,6 +172,15 @@ class SkillDataEntry(MasterEntryBase):
         ]
 
     @property
+    def ability_id_by_level(self) -> list[int]:
+        """
+        Get the ability ID list for each level. If the ability is not applicable at the certain level, returns 0.
+
+        Note that the ability ID for skill lv. 1 will be located at index 0.
+        """
+        return [self.ability_lv1_id, self.ability_lv2_id, self.ability_lv3_id, self.ability_lv4_id]
+
+    @property
     def has_helper_variant(self) -> bool:
         """Check if the skill will be different if used as helper skill."""
         return self.as_helper_skill_id != 0
@@ -162,6 +189,36 @@ class SkillDataEntry(MasterEntryBase):
     def has_phase_changing(self) -> bool:
         """Check if the skill has phase changing available."""
         return self.trans_skill_id != 0
+
+    def get_phase_changed_skills(self, skill_asset: "SkillDataAsset", skill_num: int) -> \
+            list[SkillIdEntry]:
+        """Get a list of skills of all possible transitioned skills, excluding the source skill."""
+        ret: list[SkillIdEntry] = []
+        added_skill_id: set[int] = set()
+        current_source: SkillDataEntry = self
+
+        if not self.has_phase_changing:
+            return ret
+
+        while trans_skill_data := skill_asset.get_data_by_id(current_source.trans_skill_id):
+            if trans_skill_data.id == self.id:
+                break  # Changed to source skill data
+
+            if trans_skill_data.id in added_skill_id:
+                break  # Phase looped back
+
+            phase_num = len(ret) + 2
+
+            ret.append(SkillIdEntry(
+                trans_skill_data.id,
+                f"S{skill_num} P{phase_num}",
+                f"S{skill_num}/P{phase_num}"
+            ))
+            added_skill_id.add(trans_skill_data.id)
+
+            current_source = trans_skill_data
+
+        return ret
 
 
 class SkillDataAsset(MasterAssetBase[SkillDataEntry]):

@@ -29,7 +29,7 @@ def export_skill_atk_csv(file_path: str, /,  # noqa: C901
             chara_name = chara_data.get_chara_name(text_asset)
             print(f"Exporting skill data... ({idx} / {chara_count} - {idx / chara_count:.2%})")
 
-            skill_identifiers = chara_data.get_skill_identifiers(chara_mode_asset, text_asset=text_asset)
+            skill_identifiers = chara_data.get_skill_identifiers(chara_mode_asset, asset_text=text_asset)
             for skill_id, identifier, unique_id in skill_identifiers:
                 try:
                     skill_data = skill_transformer.transform_attacking(skill_id)

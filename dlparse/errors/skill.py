@@ -1,5 +1,6 @@
 """Errors related to skill parsing / transforming."""
 from abc import ABC
+from typing import Any
 
 from .base import AppValueError
 
@@ -10,8 +11,8 @@ __all__ = ("ConditionValidationFailedError", "BulletEndOfLifeError", "DamagingHi
 class ConditionValidationFailedError(AppValueError):
     """Error to be raised if the given condition combination is invalid."""
 
-    def __init__(self, result):
-        super().__init__(f"Skill condition validation failed. Check result: {result}")
+    def __init__(self, result, additional: Any = None):
+        super().__init__(f"Skill condition validation failed. Check result: {result} - {additional}")
 
 
 class DamagingHitValidationFailedError(AppValueError):

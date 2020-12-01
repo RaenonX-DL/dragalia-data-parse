@@ -35,7 +35,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         if not (result := validate_skill_conditions(conditions)):  # pylint: disable=superfluous-parens
             raise ConditionValidationFailedError(result)
 
-    def _init_validate_fields(self):
+    def _init_validate_fields(self, conditions: tuple[SkillCondition]):
         # Check `self.afflictions_condition`
         if any(condition not in SkillConditionCategories.target_affliction
                for condition in self.afflictions_condition):
@@ -61,6 +61,9 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         if self.target_elemental and self.target_elemental not in SkillConditionCategories.target_elemental:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_TARGET_ELEMENTAL)
 
+        if cond_not_categorized := (set(conditions) - set(self.conditions_sorted)):
+            raise ConditionValidationFailedError(SkillConditionCheckResult.HAS_CONDITIONS_LEFT, cond_not_categorized)
+
     def __post_init__(self, conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]]):
         conditions = self._init_process_conditions(conditions)
 
@@ -71,7 +74,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.teammate_coverage = SkillConditionCategories.skill_teammates_covered.extract(conditions)
         self.target_elemental = SkillConditionCategories.target_elemental.extract(conditions)
 
-        self._init_validate_fields()
+        self._init_validate_fields(conditions)
 
         self.afflictions_converted = \
             {SkillConditionCategories.target_affliction.convert(condition) for condition in self.afflictions_condition}
@@ -116,3 +119,6 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
             ret += (self.teammate_coverage,)
 
         return ret
+
+    def __iter__(self):
+        return iter(self.conditions_sorted)

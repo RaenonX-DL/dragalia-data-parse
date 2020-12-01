@@ -7,22 +7,10 @@ from dlparse.enums import Element
 from dlparse.errors import TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
 from .chara_mode_data import CharaModeAsset
-from .skill_data import SkillDataEntry, SkillDataAsset
+from .skill_data import SkillDataEntry, SkillDataAsset, SkillIdEntry
 from .text_label import TextAsset
 
-__all__ = ("SkillIdEntry", "CharaDataEntry", "CharaDataAsset", "CharaDataParser")
-
-
-@dataclass
-class SkillIdEntry:
-    """Class for a skill ID entry."""
-
-    skill_id: int
-    """Skill."""
-    skill_identifier: str
-    """Skill identifier. This is not unique. The purpose of this is for easier skill identification."""
-    skill_unique_id: str
-    """A unique ID for identifying the skill. The purpose of this is for indexing at the website."""
+__all__ = ("CharaDataEntry", "CharaDataAsset", "CharaDataParser")
 
 
 @dataclass
@@ -258,17 +246,17 @@ class CharaDataEntry(MasterEntryBase):
         return Element(self.element_id)
 
     def get_skill_identifiers(self, chara_mode_asset: CharaModeAsset, /,
-                              text_asset: Optional[TextAsset] = None,
-                              skill_asset: Optional[SkillDataAsset] = None) \
+                              asset_text: Optional[TextAsset] = None,
+                              asset_skill: Optional[SkillDataAsset] = None) \
             -> list[SkillIdEntry]:
         """
         Get the skill ID entries of a character.
 
         This includes different skills in different modes, helper variants, and phase changed IDs, if any.
 
-        If ``text_asset`` is not provided, mode name (if any) will not be able to convert to text.
+        If ``asset_text`` is not provided, mode name (if any) will not be able to convert to text.
 
-        If ``skill_asset`` is not provided, support skill variant (if any) and the phase changing variant (if any)
+        If ``asset_skill`` is not provided, support skill variant (if any) and the phase changing variant (if any)
         will not be included.
 
         The identifier is not the name of the skill. Instead, it's a name commonly used in between players.
@@ -288,8 +276,8 @@ class CharaDataEntry(MasterEntryBase):
         for mode_id in self.mode_ids:
             if mode_data := chara_mode_asset.get_data_by_id(mode_id):
                 mode_name = f"Mode #{mode_id}"
-                if text_asset:
-                    mode_name = text_asset.to_text(mode_data.text_label) or mode_name
+                if asset_text:
+                    mode_name = asset_text.to_text(mode_data.text_label) or mode_name
 
                 if model_skill_1_id := mode_data.skill_id_1:
                     ret.append(SkillIdEntry(model_skill_1_id, f"S1 ({mode_name})", f"S1/{mode_data.id}"))
@@ -297,53 +285,23 @@ class CharaDataEntry(MasterEntryBase):
                 if model_skill_2_id := mode_data.skill_id_2:
                     ret.append(SkillIdEntry(model_skill_2_id, f"S2 ({mode_name})", f"S2/{mode_data.id}"))
 
-        if skill_asset:
-            skill_1_data: SkillDataEntry = skill_asset.get_data_by_id(self.skill_1_id)
-            skill_2_data: SkillDataEntry = skill_asset.get_data_by_id(self.skill_2_id)
+        if asset_skill:
+            skill_1_data: SkillDataEntry = asset_skill.get_data_by_id(self.skill_1_id)
+            skill_2_data: SkillDataEntry = asset_skill.get_data_by_id(self.skill_2_id)
 
             # Attach helper skill variant if given (currently only S1 will be used as helper skill)
             if skill_1_data and skill_1_data.has_helper_variant:
                 ret.append(SkillIdEntry(
                     skill_1_data.as_helper_skill_id,
-                    text_asset.to_text("SKILL_IDENTIFIER_HELPER") if text_asset else "Helper",
+                    asset_text.to_text("SKILL_IDENTIFIER_HELPER") if asset_text else "Helper",
                     "S1/HELPER"
                 ))
 
             if skill_1_data and skill_1_data.has_phase_changing:
-                ret.extend(self._get_phase_skill_ids(skill_1_data, skill_asset, 1))
+                ret.extend(skill_1_data.get_phase_changed_skills(asset_skill, 1))
 
             if skill_2_data and skill_2_data.has_phase_changing:
-                ret.extend(self._get_phase_skill_ids(skill_2_data, skill_asset, 2))
-
-        return ret
-
-    def _get_phase_skill_ids(self, source_skill_data: SkillDataEntry, skill_asset: SkillDataAsset, skill_num: int) -> \
-            list[SkillIdEntry]:
-        """Get a list of skills containing skills in all possible phases."""
-        ret: list[SkillIdEntry] = []
-        added_skill_id: set[int] = set()
-        current_source: SkillDataEntry = source_skill_data
-
-        if not source_skill_data.has_phase_changing:
-            return ret
-
-        while trans_skill_data := skill_asset.get_data_by_id(current_source.trans_skill_id):
-            if trans_skill_data.id == source_skill_data.id:
-                break  # Changed to source skill data
-
-            if trans_skill_data.id in added_skill_id:
-                break  # Phase looped back
-
-            phase_num = len(ret) + 2
-
-            ret.append(SkillIdEntry(
-                trans_skill_data.id,
-                f"S{skill_num} P{phase_num}",
-                f"S{skill_num}/P{phase_num}"
-            ))
-            added_skill_id.add(trans_skill_data.id)
-
-            current_source = trans_skill_data
+                ret.extend(skill_2_data.get_phase_changed_skills(asset_skill, 2))
 
         return ret
 
@@ -449,17 +407,17 @@ class CharaDataAsset(MasterAssetBase[CharaDataEntry]):
         super().__init__(CharaDataParser, file_path, asset_dir=asset_dir)
 
     def get_all_skill_ids(self, chara_mode_asset: CharaModeAsset, /,
-                          skill_asset: Optional[SkillDataAsset] = None) -> list[int]:
+                          asset_skill: Optional[SkillDataAsset] = None) -> list[int]:
         """
         Get all skill IDs of all characters.
 
-        If ``skill_asset`` is not provided, skills that has helper variant will not be included.
+        If ``asset_skill`` is not provided, skills that has helper variant will not be included.
         """
         ret: list[int] = []
 
         for chara_data in self:
             skill_ids = [skill_id_entry.skill_id for skill_id_entry
-                         in chara_data.get_skill_identifiers(chara_mode_asset, skill_asset=skill_asset)]
+                         in chara_data.get_skill_identifiers(chara_mode_asset, asset_skill=asset_skill)]
             ret.extend(skill_ids)
 
         return ret

@@ -48,7 +48,7 @@ skill_ids_sup: dict[int, str] = {
 
 
 def test_get_all_skill_ids(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset, asset_skill: SkillDataAsset):
-    skill_ids = asset_chara.get_all_skill_ids(asset_chara_mode, skill_asset=asset_skill)
+    skill_ids = asset_chara.get_all_skill_ids(asset_chara_mode, asset_skill=asset_skill)
 
     for sid, note in skill_ids_atk.items():
         assert sid in skill_ids, f"Skill ID `{sid}` ({note}) not in the skill ID list (Attacking)"
@@ -59,7 +59,7 @@ def test_get_all_skill_ids(asset_chara: CharaDataAsset, asset_chara_mode: CharaM
 
 def test_transform_all_attack_skills(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset,
                                      asset_skill: SkillDataAsset, transformer_skill: SkillTransformer):
-    skill_ids = asset_chara.get_all_skill_ids(asset_chara_mode, skill_asset=asset_skill)
+    skill_ids = asset_chara.get_all_skill_ids(asset_chara_mode, asset_skill=asset_skill)
 
     skill_ids_atk_missing: dict[int, str] = skill_ids_atk.copy()
     skill_ids_zero_mods: set[int] = set()
@@ -104,7 +104,7 @@ def test_get_catherine_skill_ids(asset_chara: CharaDataAsset, asset_chara_mode: 
 
     catherine: CharaDataEntry = asset_chara.get_data_by_id(10550204)
     catherine_skill_ids = {entry.skill_id for entry
-                           in catherine.get_skill_identifiers(asset_chara_mode, skill_asset=asset_skill)}
+                           in catherine.get_skill_identifiers(asset_chara_mode, asset_skill=asset_skill)}
 
     for skill_id in catherine_skill_ids:
         skill_ids_expected.pop(skill_id, None)

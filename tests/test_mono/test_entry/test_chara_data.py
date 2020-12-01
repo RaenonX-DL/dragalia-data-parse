@@ -175,38 +175,38 @@ def test_custom_id():
     assert entry.custom_id == "100011/11"
 
 
-def test_get_chara_name_use_main(text_asset: TextAsset):
+def test_get_chara_name_use_main(asset_text: TextAsset):
     entry = create_dummy(name_label="CHARA_NAME_10840301", second_name_label="CHARA_NAME_COMMENT_10840301")
-    assert entry.get_chara_name(text_asset) == "ルーエン"
+    assert entry.get_chara_name(asset_text) == "ルーエン"
 
 
-def test_get_chara_name_use_second(text_asset: TextAsset):
+def test_get_chara_name_use_second(asset_text: TextAsset):
     entry = create_dummy(name_label="CHARA_NAME_10150302", second_name_label="CHARA_NAME_COMMENT_10150302")
-    assert entry.get_chara_name(text_asset) == "エルフィリス（ウエディングVer.）"
+    assert entry.get_chara_name(asset_text) == "エルフィリス（ウエディングVer.）"
 
 
-def test_get_skill_id_names(chara_mode_asset: CharaModeAsset, text_asset: TextAsset):
+def test_get_skill_id_names(asset_chara_mode: CharaModeAsset, asset_text: TextAsset):
     entry = create_dummy(skill_1_id=1, skill_2_id=2)
-    assert entry.get_skill_identifiers(chara_mode_asset, text_asset=text_asset) == [SkillIdEntry(1, "S1", "S1/BASE"),
+    assert entry.get_skill_identifiers(asset_chara_mode, asset_text=asset_text) == [SkillIdEntry(1, "S1", "S1/BASE"),
                                                                                     SkillIdEntry(2, "S2", "S2/BASE")]
 
 
-def test_get_skill_id_names_with_mode(chara_mode_asset: CharaModeAsset, text_asset: TextAsset):
+def test_get_skill_id_names_with_mode(asset_chara_mode: CharaModeAsset, asset_text: TextAsset):
     entry = create_dummy(skill_1_id=1, skill_2_id=2, mode_2_id=12)
-    assert entry.get_skill_identifiers(chara_mode_asset, text_asset=text_asset) == [
+    assert entry.get_skill_identifiers(asset_chara_mode, asset_text=asset_text) == [
         SkillIdEntry(1, "S1", "S1/BASE"), SkillIdEntry(2, "S2", "S2/BASE"),
         SkillIdEntry(103505033, "S1 (服わざる伴侶)", "S1/12"), SkillIdEntry(103505034, "S2 (服わざる伴侶)", "S2/12")
     ]
 
 
-def test_get_all_skill_identifiers(chara_asset: CharaDataAsset, chara_mode_asset: CharaModeAsset,
-                                   text_asset: TextAsset, skill_asset: SkillDataAsset):
+def test_get_all_skill_identifiers(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset,
+                                   asset_text: TextAsset, asset_skill: SkillDataAsset):
     # Summer Julietta S2
     # https://dragalialost.gamepedia.com/Summer_Julietta
-    skill_data = chara_asset.get_data_by_id(10450201)
+    skill_data = asset_chara.get_data_by_id(10450201)
 
-    actual_identifiers = skill_data.get_skill_identifiers(chara_mode_asset,
-                                                          text_asset=text_asset, skill_asset=skill_asset)
+    actual_identifiers = skill_data.get_skill_identifiers(asset_chara_mode,
+                                                          asset_text=asset_text, asset_skill=asset_skill)
 
     expected_identifiers = [
         SkillIdEntry(104502011, "S1", "S1/BASE"),

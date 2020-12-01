@@ -24,6 +24,9 @@ class HitAttrEntry(MasterEntryBase):
 
     damage_modifier: float
 
+    is_damage_self: bool
+    fix_hp_rate: float
+
     punisher_states: set[Affliction]  # Rate will be applied when the target has any of the punisher states
     punisher_rate: float
 
@@ -63,6 +66,8 @@ class HitAttrEntry(MasterEntryBase):
             hit_exec_type=HitExecType(data["_HitExecType"]),
             target_group=HitTarget(data["_TargetGroup"]),
             damage_modifier=data["_DamageAdjustment"],
+            is_damage_self=bool(data["_IsDamageMyself"]),
+            fix_hp_rate=data["_SetCurrentHpRate"],
             punisher_states=punisher_states,
             punisher_rate=data["_KillerStateDamageRate"],
             rate_boost_on_crisis=data["_CrisisLimitRate"],

@@ -28,6 +28,8 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_TEAMMATE_COVERAGE = auto()
     INTERNAL_NOT_TARGET_ELEMENTAL = auto()
 
+    HAS_CONDITIONS_LEFT = auto()
+
     @classmethod
     def passing_enums(cls) -> set["SkillConditionCheckResult"]:
         return {cls.PASS}
@@ -185,6 +187,8 @@ class SkillConditionCategories:
         {
             SkillCondition.SELF_HP_1: 0,
             SkillCondition.SELF_HP_FULL: 1,
+            SkillCondition.SELF_HP_LT_40: 1,
+            SkillCondition.SELF_HP_GTE_40: 1,
         },
         SkillConditionMaxCount.SINGLE,
         "Self HP %",

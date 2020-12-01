@@ -34,9 +34,11 @@ class ActionConditionEntry(MasterEntryBase):
     buff_skill_damage: float
     buff_fs_damage: float
     buff_atk_spd: float
+    buff_fs_spd: float
     buff_sp_rate: float
 
     shield_dmg: float
+    shield_hp: float
 
     elemental_target: ElementFlag
 
@@ -62,7 +64,9 @@ class ActionConditionEntry(MasterEntryBase):
             buff_fs_damage=data["_RateBurst"],
             buff_atk_spd=data["_RateAttackSpeed"],
             buff_sp_rate=data["_RateRecoverySp"],
+            buff_fs_spd=data["_RateChargeSpeed"],
             shield_dmg=data["_RateDamageShield"],
+            shield_hp=data["_RateSacrificeShield"],
             elemental_target=ElementFlag(data["_TargetElemental"])
         )
 

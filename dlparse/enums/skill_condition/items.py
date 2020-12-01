@@ -45,6 +45,12 @@ class SkillCondition(Enum):
     # region HP
     SELF_HP_1 = 201
     SELF_HP_FULL = 202
+    SELF_HP_GTE_40 = 203
+    """User's HP >= 40% max."""
+    SELF_HP_LT_40 = 204
+    """User's HP < 40% max."""
+    SELF_HP_GTE_50 = 205
+    """User's HP >= 50% max."""
     # endregion
 
     # region Buff count
@@ -82,3 +88,6 @@ class SkillCondition(Enum):
 
     # endregion
     # endregion
+
+    def __bool__(self):
+        return self != SkillCondition.NONE

@@ -27,7 +27,9 @@ class BuffParameter(Enum):
     ATK_SPD = 106
     """Attack speed up. A value of 0.12 means ASPD +12%."""
     FS_DAMAGE = 107
-    """Force Strike damage up. A value of 0.12 means FS DMG +12%."""
+    """Force strike damage up. A value of 0.12 means FS DMG +12%."""
+    FS_SPD = 108
+    """Force strike charging speed up. A value of 0.12 means FS SPD +12%."""
     # endregion
 
     # region SP Control
@@ -62,10 +64,28 @@ class BuffParameter(Enum):
 
     # region Shield
     SHIELD_DMG = 401
-    """Shield that nullfies a damage according to the user's max HP once.
+    """
+    Shield that nullfies a damage according to the user's max HP once.
 
     A value of 0.12 means that the shield nullfies a damage which is less than 12% of the user's max HP.
 
     Note that this shield is unstackable and will disappear once the user got hit.
+    """
+    SHIELD_HP = 402
+    """
+    Shield that nullifies a damage equal to the amount of HP that should lost.
+
+    A value of 0.3 means that the user will lost their HP until 30% of the max. The lost HP will become the shield.
+
+    Check https://dragalialost.gamepedia.com/Life_Shield for more details.
+    """
+    # endregion
+
+    # region Miscellaneous
+    FIX_HP_MAX = 901
+    """
+    Directly fixes the user's HP by specifying the desired HP rate.
+
+    A value of 0.12 means the user's HP will be set to 12% of the max.
     """
     # endregion

@@ -1,4 +1,5 @@
 """Class for a single supportive skill entry."""
+from collections import defaultdict
 from dataclasses import dataclass, field, InitVar
 from itertools import product
 from typing import Optional
@@ -7,7 +8,7 @@ from dlparse.enums import (
     SkillConditionComposite, SkillCondition, SkillConditionCategories,
     HitTargetSimple, BuffParameter, SkillIndex, Element
 )
-from dlparse.mono.asset import ActionConditionAsset, ActionConditionEntry
+from dlparse.mono.asset import ActionConditionAsset, ActionConditionEntry, HitAttrEntry
 from .hit_buff import BuffingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
 
@@ -90,7 +91,28 @@ class SupportiveSkillConverter:
             duration_count=cond_entry.duration_count if cond_entry else 0,
             hit_attr_label=hit_data.hit_attr.id,
             action_cond_id=hit_data.hit_attr.action_condition_id,
-            max_stack_count=cond_entry.duration_count_max if cond_entry else -1
+            max_stack_count=cond_entry.duration_count_max if cond_entry else 0
+        )
+
+    @staticmethod
+    def to_damage_self(hit_attr: HitAttrEntry) -> Optional[SupportiveSkillUnit]:
+        """
+        Returns the corresponding :class:`SupportiveSkillUnit` if the hit attribute will self damage.
+
+        Returns ``None`` if not self damaging.
+        """
+        if not hit_attr.is_damage_self:
+            return None
+
+        return SupportiveSkillUnit(
+            target=HitTargetSimple.SELF,
+            parameter=BuffParameter.FIX_HP_MAX,
+            rate=hit_attr.fix_hp_rate,
+            duration_time=0,
+            duration_count=0,
+            hit_attr_label=hit_attr.id,
+            action_cond_id=hit_attr.action_condition_id,
+            max_stack_count=-1
         )
 
     @staticmethod
@@ -101,6 +123,10 @@ class SupportiveSkillConverter:
 
         # Get the action condition entry
         cond_entry: ActionConditionEntry = action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id)
+
+        # --- Conditions in action condition
+
+        entries.add(SupportiveSkillConverter.to_damage_self(hit_data.hit_attr))
 
         # --- General buffs
 
@@ -128,6 +154,9 @@ class SupportiveSkillConverter:
             # ATK SPD
             entries.add(SupportiveSkillConverter.to_param_up(
                 BuffParameter.ATK_SPD, cond_entry.buff_atk_spd, hit_data, cond_entry))
+            # FS SPD
+            entries.add(SupportiveSkillConverter.to_param_up(
+                BuffParameter.FS_SPD, cond_entry.buff_fs_spd, hit_data, cond_entry))
             # SP rate
             entries.add(SupportiveSkillConverter.to_param_up(
                 BuffParameter.SP_RATE, cond_entry.buff_sp_rate, hit_data, cond_entry))
@@ -135,6 +164,9 @@ class SupportiveSkillConverter:
             # Damage Shield
             entries.add(SupportiveSkillConverter.to_param_up(
                 BuffParameter.SHIELD_DMG, cond_entry.shield_dmg, hit_data, cond_entry))
+            # HP Shield
+            entries.add(SupportiveSkillConverter.to_param_up(
+                BuffParameter.SHIELD_HP, cond_entry.shield_hp, hit_data, cond_entry))
 
         # --- Instant gauge refill
 
@@ -178,26 +210,39 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
     """
     buffs_elemental: list[dict[Element, set[SupportiveSkillUnit]]] = field(init=False)
     """
-    Buffs to be granted ont if the target element matches.
+    Buffs to be granted only if the target element matches.
 
     Calling ``buffs_elemental[skill_lv][element_enum]`` will return a set of buffs at ``skill_lv``
     when the target element is ``element_enum``.
+    """
+    buffs_preconditioned: list[dict[SkillCondition, set[SupportiveSkillUnit]]] = field(init=False)
+    """
+    Buffs to be granted only if the condition matches.
+
+    Calling ``buffs_hp_condition[skill_lv][skill_condition]`` will return a set of buffs at ``skill_lv``
+    when the target condition matches ``skill_condition``.
     """
 
     def _init_all_possible_conditions(self, action_condition_asset: ActionConditionAsset):
         has_teammate_coverage: bool = False
         has_elemental_restriction: bool = False
 
+        preconditions: set[tuple[SkillCondition]] = set()
+
         # Check availabilities
         for hit_data_lv in self.hit_data_mtx:
             for hit_data in hit_data_lv:
                 has_teammate_coverage = has_teammate_coverage or hit_data.hit_attr.has_hit_condition
+
                 if (
                         hit_data.hit_attr.has_action_condition
                         and (entry := action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id))
                 ):
                     # noinspection PyUnboundLocalVariable
                     has_elemental_restriction = has_elemental_restriction or entry.target_limited_by_element
+
+                if precondition := hit_data.pre_condition:
+                    preconditions.add((precondition,))
 
         cond_elems: list[set[tuple[SkillCondition, ...]]] = []
 
@@ -212,6 +257,10 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                                for target_element_cond in SkillConditionCategories.target_elemental.members
                                if any(buffs_lv[SkillConditionCategories.target_elemental.convert(target_element_cond)]
                                       for buffs_lv in self.buffs_elemental)})
+
+        # Skill precondition available, attach it
+        if preconditions:
+            cond_elems.append(preconditions)
 
         # Add combinations
         self.possible_conditions = {
@@ -235,6 +284,10 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                     if action_condition.target_limited_by_element:
                         # Skip conditions that require certain elements, let ``buffs_elemental`` handles this
                         continue
+
+                if hit_data.pre_condition:
+                    # Skip conditions that has pre condition, let ``buffs_preconditioned`` handles this
+                    continue
 
                 if skill_entries := SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset):
                     buff_lv |= skill_entries
@@ -295,10 +348,23 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
             self.buffs_elemental.append(buff_lv)
 
+    def _init_preconditioned_buffs(self, action_condition_asset: ActionConditionAsset):
+        self.buffs_preconditioned: list[dict[SkillCondition, set[SupportiveSkillUnit]]] = []
+
+        for hit_data_lv in self.hit_data_mtx:
+            buff_lv: dict[SkillCondition, set[SupportiveSkillUnit]] = defaultdict(set)
+
+            for hit_data in hit_data_lv:
+                buff_lv[hit_data.pre_condition] |= \
+                    SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset)
+
+            self.buffs_preconditioned.append(dict(buff_lv))
+
     def __post_init__(self, action_condition_asset: ActionConditionAsset):
         self._init_base_buffs(action_condition_asset)
         self._init_teammate_coverage_buffs(action_condition_asset)
         self._init_elemental_buffs(action_condition_asset)
+        self._init_preconditioned_buffs(action_condition_asset)
 
         super().__post_init__(action_condition_asset)
 
@@ -318,6 +384,12 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
         if condition_comp.target_elemental:
             for skill_lv in range(self.max_level):
                 buffs[skill_lv] |= self.buffs_elemental[skill_lv][condition_comp.target_elemental_converted]
+
+        # Attach preconditioned buffs, if matches
+        for skill_lv in range(self.max_level):
+            for condition in condition_comp:
+                # Conditions in ``condition_comp`` could be non-precondition
+                buffs[skill_lv] |= self.buffs_preconditioned[skill_lv].get(condition, set())
 
         return SupportiveSkillEntry(condition_comp=condition_comp, buffs=buffs)
 

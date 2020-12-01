@@ -29,12 +29,10 @@ class Affliction(IntEnum):
     CRASHWIND = 13
     SHADOWBLIGHT = 14
 
-    UNKNOWN_1 = 99
-    UNKNOWN_2 = 103
-    UNKNOWN_3 = 198
-    UNKNOWN_4 = 199
-    UNKNOWN_5 = 201
+    AFFLICTED = 99
 
-    @classmethod
-    def _missing_(cls, value):
-        return cls.UNKNOWN
+    DEF_DOWNED = 103
+    BUFFED = 198
+    DEBUFFED = 199
+
+    BREAK_STATE = 201

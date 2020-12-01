@@ -1,4 +1,6 @@
 """Various in-asset enums."""
+from .ability_condition import AbilityCondition
+from .ability_type import AbilityType
 from .action_type import ActionCommandType
 from .affliction import Affliction
 from .buff_parameter import BuffParameter
