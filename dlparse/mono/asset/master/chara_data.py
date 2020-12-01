@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Union, Optional
 
 from dlparse.enums import Element
-from dlparse.errors import TextLabelNotFoundError
+from dlparse.errors import TextLabelNotFoundError, InvalidSkillNumError
 from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
 from .chara_mode_data import CharaModeAsset
 from .skill_data import SkillDataEntry, SkillDataAsset, SkillIdEntry
@@ -245,6 +245,22 @@ class CharaDataEntry(MasterEntryBase):
         """Get the element of the character."""
         return Element(self.element_id)
 
+    def max_skill_level(self, skill_num: int):
+        """
+        Get the maximum skill level of a skill.
+
+        To get the max level of S1, set ``skill_num`` to ``1``.
+
+        :raises InvalidSkillNumError: if `skill_num` is invalid
+        """
+        if skill_num == 1:
+            return 4 if self.is_70_mc else 3
+
+        if skill_num == 2:
+            return 3 if self.is_70_mc else 2
+
+        raise InvalidSkillNumError(skill_num)
+
     def get_skill_identifiers(self, chara_mode_asset: CharaModeAsset, /,
                               asset_text: Optional[TextAsset] = None,
                               asset_skill: Optional[SkillDataAsset] = None) \
@@ -268,8 +284,8 @@ class CharaDataEntry(MasterEntryBase):
         For example, the identifier of Bellina's S2 in enhanced mode will be ``S2 (不羈伴侶)``.
         """
         ret: list[SkillIdEntry] = [
-            SkillIdEntry(self.skill_1_id, "S1", "S1/BASE"),
-            SkillIdEntry(self.skill_2_id, "S2", "S2/BASE")
+            SkillIdEntry(self.skill_1_id, 1, "S1", "S1/BASE"),
+            SkillIdEntry(self.skill_2_id, 2, "S2", "S2/BASE")
         ]
 
         # Attach skill IDs in different mode from mode asset
@@ -280,10 +296,10 @@ class CharaDataEntry(MasterEntryBase):
                     mode_name = asset_text.to_text(mode_data.text_label) or mode_name
 
                 if model_skill_1_id := mode_data.skill_id_1:
-                    ret.append(SkillIdEntry(model_skill_1_id, f"S1 ({mode_name})", f"S1/{mode_data.id}"))
+                    ret.append(SkillIdEntry(model_skill_1_id, 1, f"S1 ({mode_name})", f"S1/{mode_data.id}"))
 
                 if model_skill_2_id := mode_data.skill_id_2:
-                    ret.append(SkillIdEntry(model_skill_2_id, f"S2 ({mode_name})", f"S2/{mode_data.id}"))
+                    ret.append(SkillIdEntry(model_skill_2_id, 2, f"S2 ({mode_name})", f"S2/{mode_data.id}"))
 
         if asset_skill:
             skill_1_data: SkillDataEntry = asset_skill.get_data_by_id(self.skill_1_id)
@@ -293,6 +309,7 @@ class CharaDataEntry(MasterEntryBase):
             if skill_1_data and skill_1_data.has_helper_variant:
                 ret.append(SkillIdEntry(
                     skill_1_data.as_helper_skill_id,
+                    1,
                     asset_text.to_text("SKILL_IDENTIFIER_HELPER") if asset_text else "Helper",
                     "S1/HELPER"
                 ))

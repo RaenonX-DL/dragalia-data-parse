@@ -67,10 +67,13 @@ class SkillTransformer:
         return ret
 
     def get_hit_data_matrix(self, skill_id: int, hit_data_cls: Type[T], /,
-                            deals_damage: bool = True) \
+                            deals_damage: bool = True, max_lv: int = 0) \
             -> tuple[SkillDataEntry, list[list[T]]]:
         """
         Get a matrix of the hit data.
+
+        ``max_lv`` limits max skill level to be returned.
+        If set to ``0``, all possible levels (max 4) will be returned.
 
         The first index of the matrix is the skill level (Skill level 1 = index 0).
 
@@ -87,7 +90,13 @@ class SkillTransformer:
         hit_data_mtx: list[list[T]] = []
 
         # Get all hit labels at different skill level
-        zipped_ids = zip(skill_data.action_id_1_by_level, skill_data.ability_id_by_level)
+        if max_lv:
+            # Limit the count of IDs can be zipped if ``max_lv`` is given
+            zipped_ids = list(zip(skill_data.action_id_1_by_level, skill_data.ability_id_by_level))[:max_lv]
+        else:
+            # No ``max_lv`` given, returning all possiblities
+            zipped_ids = zip(skill_data.action_id_1_by_level, skill_data.ability_id_by_level)
+
         for skill_lv, (action_id, ability_id) in enumerate(zipped_ids, start=1):
             hit_data_list: HitDataList = self._get_hit_attrs_lv(hit_data_cls, skill_lv, action_id, ability_id)
 
@@ -120,15 +129,18 @@ class SkillTransformer:
             action_condition_asset=self._action_cond
         )
 
-    def transform_attacking(self, skill_id: int) -> AttackingSkillData:
+    def transform_attacking(self, skill_id: int, /, max_lv: int = 0) -> AttackingSkillData:
         """
         Transform skill of ``skill_id`` to :class:`AttackingSkillDataEntry`.
+
+        ``max_lv`` limits max skill level to be returned.
+        If set to ``0``, all possible levels (max 4) will be returned.
 
         :raises SkillDataNotFoundError: if the skill data is not found
         :raises ActionDataNotFoundError: if the action data file of the skill is not found
         :raises HitDataUnavailableError: if no hit data available
         """
-        skill_data, hit_data_mtx = self.get_hit_data_matrix(skill_id, DamagingHitData)
+        skill_data, hit_data_mtx = self.get_hit_data_matrix(skill_id, DamagingHitData, max_lv=max_lv)
 
         return AttackingSkillData(
             skill_data_raw=skill_data,

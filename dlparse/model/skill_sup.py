@@ -148,8 +148,6 @@ class SupportiveSkillConverter:
 
         # --- General buffs
 
-        # FIXME: add all buffs from action condition and check
-
         if cond_entry:
             # ATK
             entries.add(SupportiveSkillConverter.to_param_up(

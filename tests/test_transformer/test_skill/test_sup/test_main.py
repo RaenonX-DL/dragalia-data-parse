@@ -937,3 +937,9 @@ def test_with_attack_one_time_use(transformer_skill: SkillTransformer):
         actual_buffs = skill_data.buffs[skill_lv]
 
         assert actual_buffs == expected_buffs, expected_buffs.symmetric_difference(actual_buffs)
+
+
+def test_hp_drain(transformer_skill: SkillTransformer):
+    # Yue S2
+    # https://dragalialost.gamepedia.com/Yue
+    pass  # TEST: Yue S2

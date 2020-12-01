@@ -15,6 +15,8 @@ class SkillIdEntry:
 
     skill_id: int
     """Skill ID."""
+    skill_num: int
+    """Number of the skill. ``1`` for S1; ``2`` for S2."""
     skill_identifier: str
     """Skill identifier. This is not unique. The purpose of this is for easier skill identification."""
     skill_unique_id: str
@@ -211,6 +213,7 @@ class SkillDataEntry(MasterEntryBase):
 
             ret.append(SkillIdEntry(
                 trans_skill_data.id,
+                skill_num,
                 f"S{skill_num} P{phase_num}",
                 f"S{skill_num}/P{phase_num}"
             ))

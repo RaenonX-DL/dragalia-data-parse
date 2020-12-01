@@ -44,9 +44,6 @@ skill_ids_sup: dict[int, str] = {
 }
 
 
-# TEST: Don't export skills that are not yet released (Templar hope S2 lv.3, Zena S2 lv.3)
-
-
 def test_get_all_skill_ids(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset, asset_skill: SkillDataAsset):
     skill_ids = asset_chara.get_all_skill_ids(asset_chara_mode, asset_skill=asset_skill)
 
