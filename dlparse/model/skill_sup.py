@@ -8,6 +8,7 @@ from dlparse.enums import (
     SkillConditionComposite, SkillCondition, SkillConditionCategories,
     HitTargetSimple, BuffParameter, SkillIndex, Element
 )
+from dlparse.errors import UnhandledSelfDamageError
 from dlparse.mono.asset import ActionConditionAsset, ActionConditionEntry, HitAttrEntry
 from .hit_buff import BuffingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
@@ -100,20 +101,37 @@ class SupportiveSkillConverter:
         Returns the corresponding :class:`SupportiveSkillUnit` if the hit attribute will self damage.
 
         Returns ``None`` if not self damaging.
+
+        :raises UnhandledSelfDamageError: if the self damage ability is unhandled
         """
         if not hit_attr.is_damage_self:
             return None
 
-        return SupportiveSkillUnit(
-            target=HitTargetSimple.SELF,
-            parameter=BuffParameter.FIX_HP_MAX,
-            rate=hit_attr.fix_hp_rate,
-            duration_time=0,
-            duration_count=0,
-            hit_attr_label=hit_attr.id,
-            action_cond_id=hit_attr.action_condition_id,
-            max_stack_count=-1
-        )
+        if hit_attr.hp_fix_rate:
+            return SupportiveSkillUnit(
+                target=HitTargetSimple.SELF,
+                parameter=BuffParameter.HP_FIX_BY_MAX,
+                rate=hit_attr.hp_fix_rate,
+                duration_time=0,
+                duration_count=0,
+                hit_attr_label=hit_attr.id,
+                action_cond_id=hit_attr.action_condition_id,
+                max_stack_count=0
+            )
+
+        if hit_attr.hp_consumption_rate:
+            return SupportiveSkillUnit(
+                target=HitTargetSimple.SELF,
+                parameter=BuffParameter.HP_DECREASE_BY_MAX,
+                rate=hit_attr.hp_consumption_rate,
+                duration_time=0,
+                duration_count=0,
+                hit_attr_label=hit_attr.id,
+                action_cond_id=hit_attr.action_condition_id,
+                max_stack_count=0
+            )
+
+        raise UnhandledSelfDamageError(hit_attr.id)
 
     @staticmethod
     def convert_to_units(hit_data: BuffingHitData, action_condition_asset: ActionConditionAsset) \
@@ -171,15 +189,19 @@ class SupportiveSkillConverter:
         # --- Instant gauge refill
 
         # SP charge %
-        if skill_idx := SkillIndex(hit_data.hit_attr.sp_recov_skill_idx_2):  # idx 2 always give more accurate result
+        # idx 2 always give more accurate result (at least S!Cleo is giving the correct one)
+        if skill_idx := SkillIndex(hit_data.hit_attr.sp_recov_skill_idx_2):
             if skill_idx == SkillIndex.S1:
                 entries.add(SupportiveSkillConverter.to_param_up(
                     BuffParameter.SP_CHARGE_PCT_S1, hit_data.hit_attr.sp_recov_ratio, hit_data, cond_entry))
-            if skill_idx == SkillIndex.S2:
+            elif skill_idx == SkillIndex.S2:
                 entries.add(SupportiveSkillConverter.to_param_up(
                     BuffParameter.SP_CHARGE_PCT_S2, hit_data.hit_attr.sp_recov_ratio, hit_data, cond_entry))
+            elif skill_idx == SkillIndex.USED_SKILL:
+                entries.add(SupportiveSkillConverter.to_param_up(
+                    BuffParameter.SP_CHARGE_PCT_USED, hit_data.hit_attr.sp_recov_ratio, hit_data, cond_entry))
 
-        # Pop off the ``None`` element (``None`` will be added if the entry ineffective)
+        # Pop off the ``None`` element (``None`` will be added if the entry is ineffective)
         entries.discard(None)
 
         return entries

@@ -58,13 +58,13 @@ class AbilityVariantEntry:
         return self.id_str if self.type_enum == AbilityType.TO_HIT_ATTR_ON_MATCH else None
 
     @property
-    def ability_id_on_mismatch(self) -> Optional[int]:
+    def other_ability_id(self) -> Optional[int]:
         """
-        Get the ability ID variant on conditions mismatched.
+        Get the other ability ID assigned.
 
         If the type does not match, returns ``None`` instead.
         """
-        return self.id_a if self.type_enum == AbilityType.TO_ABILITY_ON_MISMATCH else None
+        return self.id_a if self.type_enum == AbilityType.TO_ABILITY_OTHER else None
 
 
 @dataclass
@@ -91,10 +91,10 @@ class AbilityEntry(MasterEntryBase):
                 if variant.assigned_hit_label]
 
     @property
-    def ability_ids_on_mismatch(self) -> list[int]:
+    def get_other_ability_ids(self) -> list[int]:
         """Get a list of ability ID variants on ability condition mismatched."""
-        return [variant.ability_id_on_mismatch for variant in (self.variant_1, self.variant_2, self.variant_3)
-                if variant.ability_id_on_mismatch]
+        return [variant.other_ability_id for variant in (self.variant_1, self.variant_2, self.variant_3)
+                if variant.other_ability_id]
 
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "AbilityEntry":

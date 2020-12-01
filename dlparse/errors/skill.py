@@ -5,7 +5,7 @@ from typing import Any
 from .base import AppValueError
 
 __all__ = ("ConditionValidationFailedError", "BulletEndOfLifeError", "DamagingHitValidationFailedError",
-           "HitDataUnavailableError")
+           "HitDataUnavailableError", "UnhandledSelfDamageError")
 
 
 class ConditionValidationFailedError(AppValueError):
@@ -25,6 +25,13 @@ class HitDataUnavailableError(AppValueError):
     def __init__(self):
         super().__init__("No hit data available. This is likely due to a wrong skill type choice. "
                          "For example, a supportive skill transformed as an attacking skill.")
+
+
+class UnhandledSelfDamageError(AppValueError):
+    """Error to be raised if the self damaging skill is unhandled."""
+
+    def __init__(self, hit_attr_id: str):
+        super().__init__(f"Unhandled self damage at hit attribute `{hit_attr_id}`")
 
 
 class DamagaCalculationError(AppValueError, ABC):

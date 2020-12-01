@@ -165,3 +165,44 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
         del expected_buffs_lv_max[entry.condition_comp]
 
     assert len(expected_buffs_lv_max) == 0, f"Conditions not tested: {set(expected_buffs_lv_max.keys())}"
+
+
+def test_has_precondition(transformer_skill: SkillTransformer):
+    # Veronica S1
+    # https://dragalialost.gamepedia.com/Veronica
+    skill_data = transformer_skill.transform_supportive(107505011)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_buffs_lv_max = {
+        SkillConditionComposite(SkillCondition.SELF_HP_GTE_50): {
+            SupportiveSkillUnit(
+                target=HitTargetSimple.SELF,
+                parameter=BuffParameter.HP_DECREASE_BY_MAX,
+                rate=0.1,
+                duration_time=0,
+                duration_count=0,
+                hit_attr_label="BUF_200_DMG_LV04",
+                action_cond_id=0,
+                max_stack_count=0
+            ),
+            SupportiveSkillUnit(
+                target=HitTargetSimple.SELF,
+                parameter=BuffParameter.SP_CHARGE_PCT_USED,
+                rate=0.2,
+                duration_time=0,
+                duration_count=0,
+                hit_attr_label="BUF_200_SPC_LV04",
+                action_cond_id=0,
+                max_stack_count=0
+            )
+        }
+    }
+
+    assert set(expected_buffs_lv_max.keys()) == {entry.condition_comp for entry in possible_entries}
+
+    for entry in possible_entries:
+        assert entry.max_lv_buffs == expected_buffs_lv_max[entry.condition_comp], entry.condition_comp
+        del expected_buffs_lv_max[entry.condition_comp]
+
+    assert len(expected_buffs_lv_max) == 0, f"Conditions not tested: {set(expected_buffs_lv_max.keys())}"

@@ -209,7 +209,7 @@ def test_shield_hp(transformer_skill: SkillTransformer):
         ),
         SupportiveSkillUnit(
             target=HitTargetSimple.SELF,
-            parameter=BuffParameter.FIX_HP_MAX,
+            parameter=BuffParameter.HP_FIX_BY_MAX,
             rate=0.3,
             duration_time=0,
             duration_count=0,
@@ -231,7 +231,7 @@ def test_shield_hp(transformer_skill: SkillTransformer):
         ),
         SupportiveSkillUnit(
             target=HitTargetSimple.SELF,
-            parameter=BuffParameter.FIX_HP_MAX,
+            parameter=BuffParameter.HP_FIX_BY_MAX,
             rate=0.3,
             duration_time=0,
             duration_count=0,
@@ -253,7 +253,7 @@ def test_shield_hp(transformer_skill: SkillTransformer):
         ),
         SupportiveSkillUnit(
             target=HitTargetSimple.SELF,
-            parameter=BuffParameter.FIX_HP_MAX,
+            parameter=BuffParameter.HP_FIX_BY_MAX,
             rate=0.3,
             duration_time=0,
             duration_count=0,

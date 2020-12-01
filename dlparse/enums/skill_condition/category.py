@@ -187,8 +187,9 @@ class SkillConditionCategories:
         {
             SkillCondition.SELF_HP_1: 0,
             SkillCondition.SELF_HP_FULL: 1,
-            SkillCondition.SELF_HP_LT_40: 1,
-            SkillCondition.SELF_HP_GTE_40: 1,
+            SkillCondition.SELF_HP_LT_40: 0.4,
+            SkillCondition.SELF_HP_GTE_40: 0.4,
+            SkillCondition.SELF_HP_GTE_50: 0.5,
         },
         SkillConditionMaxCount.SINGLE,
         "Self HP %",

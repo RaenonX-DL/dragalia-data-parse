@@ -118,7 +118,6 @@ def test_buff_count_only(transformer_skill: SkillTransformer):
 def test_partial_attacking(transformer_skill: SkillTransformer):
     # Elisanne S1
     # https://dragalialost.gamepedia.com/Elisanne
-
     skill_data = transformer_skill.transform_attacking(105402011)
 
     possible_entries = skill_data.get_all_possible_entries()

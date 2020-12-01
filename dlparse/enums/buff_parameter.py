@@ -55,6 +55,12 @@ class BuffParameter(Enum):
 
     A value of 0.15 means to refill 15% SP of S2.
     """
+    SP_CHARGE_PCT_USED = 206
+    """
+    Immediately charges the SP of the skill that was just used.
+
+    A value of 0.15 means to refill 15% SP of the skill used.
+    """
     # endregion
 
     # region Recovery
@@ -81,11 +87,17 @@ class BuffParameter(Enum):
     """
     # endregion
 
-    # region Miscellaneous
-    FIX_HP_MAX = 901
+    # region HP Control
+    HP_FIX_BY_MAX = 501
     """
-    Directly fixes the user's HP by specifying the desired HP rate.
+    Directly fixes HP by specifying the desired rate.
 
     A value of 0.12 means the user's HP will be set to 12% of the max.
+    """
+    HP_DECREASE_BY_MAX = 502
+    """
+    Decreases HP by a certain desired rate.
+
+    A value of 0.12 means to decrease 12% HP.
     """
     # endregion

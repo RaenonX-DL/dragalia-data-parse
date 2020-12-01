@@ -60,8 +60,8 @@ class SkillTransformer:
                     break  # If not all hit attribute data found, consider as an invalid level
 
                 # Add all ability data to be used upon condition mismatch to the ability data queue
-                for ab_id_mismatch in ability_data.ability_ids_on_mismatch:
-                    if new_frontier := self._ability_asset.get_data_by_id(ab_id_mismatch):
+                for other_ability_id in ability_data.get_other_ability_ids:
+                    if new_frontier := self._ability_asset.get_data_by_id(other_ability_id):
                         ability_data_queue.append(new_frontier)
 
         return ret

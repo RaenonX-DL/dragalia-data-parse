@@ -16,8 +16,8 @@ class AbilityType(Enum):
     TO_HIT_ATTR_ON_MATCH = 14
     """Link to the hit attribute label assigned (str field) if the condition holds."""
 
-    TO_ABILITY_ON_MISMATCH = 43
-    """Link to the ability assigned (id fields) if the condition fails."""
+    TO_ABILITY_OTHER = 43
+    """Link to the ability additionally assigned (id fields)."""
 
     @classmethod
     def _missing_(cls, _):
