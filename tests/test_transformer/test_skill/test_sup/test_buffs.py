@@ -123,7 +123,7 @@ def test_shield_dmg(transformer_skill: SkillTransformer):
         ),
         SupportiveSkillUnit(
             target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.SHIELD_DMG,
+            parameter=BuffParameter.SHIELD_SINGLE_DMG,
             rate=0.15,
             duration_time=0,
             duration_count=1,
@@ -155,7 +155,7 @@ def test_shield_dmg(transformer_skill: SkillTransformer):
         ),
         SupportiveSkillUnit(
             target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.SHIELD_DMG,
+            parameter=BuffParameter.SHIELD_SINGLE_DMG,
             rate=0.2,
             duration_time=0,
             duration_count=1,
@@ -199,7 +199,7 @@ def test_shield_hp(transformer_skill: SkillTransformer):
     expected_buffs_lv_1_gte_40 = {
         SupportiveSkillUnit(
             target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.SHIELD_HP,
+            parameter=BuffParameter.SHIELD_LIFE,
             rate=0.3,
             duration_time=0,
             duration_count=0,
@@ -221,7 +221,7 @@ def test_shield_hp(transformer_skill: SkillTransformer):
     expected_buffs_lv_2_gte_40 = {
         SupportiveSkillUnit(
             target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.SHIELD_HP,
+            parameter=BuffParameter.SHIELD_LIFE,
             rate=0.3,
             duration_time=0,
             duration_count=0,
@@ -243,7 +243,7 @@ def test_shield_hp(transformer_skill: SkillTransformer):
     expected_buffs_lv_3_gte_40 = {
         SupportiveSkillUnit(
             target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.SHIELD_HP,
+            parameter=BuffParameter.SHIELD_LIFE,
             rate=0.3,
             duration_time=0,
             duration_count=0,

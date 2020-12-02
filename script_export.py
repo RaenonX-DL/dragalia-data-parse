@@ -1,4 +1,4 @@
-from dlparse.export import export_atk_skill_as_csv
+from dlparse.export import export_atk_skill_as_csv, export_sup_skill_as_csv
 from dlparse.mono.asset import (
     CharaDataAsset, CharaModeAsset, TextAsset, SkillDataAsset, HitAttrAsset, ActionConditionAsset,
     AbilityAsset
@@ -22,32 +22,19 @@ _transformer_skill: SkillTransformer = SkillTransformer(_skill_data, _hit_attr, 
                                                         _ability_asset)
 
 
-def main():
+def export_atk():
     export_atk_skill_as_csv(
         "exported/skill_atk.csv",
         chara_asset=_chara_data, chara_mode_asset=_chara_mode, text_asset=_text, skill_transformer=_transformer_skill
     )
 
 
-def main2():
-    skill_id = 101504043
-    skill_name = "Peco S1-2"
-
-    skill_data = _transformer_skill.transform_attacking(skill_id)
-
-    print(f"{skill_name} ({skill_id})")
-    print("=" * 30)
-    for skill_entry in skill_data.get_all_possible_entries():
-        print(f"Conditions: {skill_entry.condition_comp.conditions_sorted}")
-        print()
-
-        for skill_level in range(skill_entry.max_level):
-            print(f"Lv.{skill_level + 1} {'(max)' if skill_entry.max_level == skill_level else ''}")
-            print()
-            print(f"Mods distribution: {skill_entry.mods[skill_level]}")
-            print(f"Total Mods: {skill_entry.total_mod[skill_level]:.0%} ({skill_entry.hit_count[skill_level]} hits)")
-            print()
+def export_sup():
+    export_sup_skill_as_csv(
+        "exported/skill_sup.csv",
+        chara_asset=_chara_data, chara_mode_asset=_chara_mode, text_asset=_text, skill_transformer=_transformer_skill
+    )
 
 
 if __name__ == '__main__':
-    main()
+    export_sup()

@@ -29,19 +29,22 @@ unplayable_chara_ids: list[int] = [
 
 def test_max_lv(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset, asset_text: TextAsset,
                 transformer_skill: SkillTransformer):
-    entries = export_atk_skills_as_entries(asset_chara, asset_chara_mode, asset_text, transformer_skill, True)
+    entries = export_atk_skills_as_entries(asset_chara, asset_chara_mode, asset_text, transformer_skill,
+                                           skip_unparsable=True)
 
     for entry in entries:
         if test_entry := skill_max_lv.get(entry.skill_internal_id):
             max_lv, description = test_entry
 
-            if max_lv != entry.skill_max_lv:
-                pytest.fail(f"Max level of {description} mismatch. Expected: {max_lv} / Actual: {entry.skill_max_lv}")
+            if max_lv != entry.skill_max_level:
+                pytest.fail(f"Max level of {description} mismatch. "
+                            f"Expected: {max_lv} / Actual: {entry.skill_max_level}")
 
 
 def test_no_unplayable(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset, asset_text: TextAsset,
                        transformer_skill: SkillTransformer):
-    entries = export_atk_skills_as_entries(asset_chara, asset_chara_mode, asset_text, transformer_skill, True)
+    entries = export_atk_skills_as_entries(asset_chara, asset_chara_mode, asset_text, transformer_skill,
+                                           skip_unparsable=True)
 
     for entry in entries:
         if entry.character_internal_id in unplayable_chara_ids:

@@ -69,7 +69,7 @@ class BuffParameter(Enum):
     # endregion
 
     # region Shield
-    SHIELD_DMG = 401
+    SHIELD_SINGLE_DMG = 401
     """
     Shield that nullfies a damage according to the user's max HP once.
 
@@ -77,7 +77,7 @@ class BuffParameter(Enum):
 
     Note that this shield is unstackable and will disappear once the user got hit.
     """
-    SHIELD_HP = 402
+    SHIELD_LIFE = 402
     """
     Shield that nullifies a damage equal to the amount of HP that should lost.
 

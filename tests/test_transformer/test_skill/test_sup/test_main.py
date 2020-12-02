@@ -718,7 +718,7 @@ def test_has_phase_3(transformer_skill: SkillTransformer):
         {
             SupportiveSkillUnit(
                 target=HitTargetSimple.SELF_SURROUNDING,
-                parameter=BuffParameter.SHIELD_DMG,
+                parameter=BuffParameter.SHIELD_SINGLE_DMG,
                 rate=0.2,
                 duration_time=0,
                 duration_count=1,
@@ -740,7 +740,7 @@ def test_has_phase_3(transformer_skill: SkillTransformer):
         {
             SupportiveSkillUnit(
                 target=HitTargetSimple.SELF_SURROUNDING,
-                parameter=BuffParameter.SHIELD_DMG,
+                parameter=BuffParameter.SHIELD_SINGLE_DMG,
                 rate=0.3,
                 duration_time=0,
                 duration_count=1,
@@ -762,7 +762,7 @@ def test_has_phase_3(transformer_skill: SkillTransformer):
         {
             SupportiveSkillUnit(
                 target=HitTargetSimple.SELF_SURROUNDING,
-                parameter=BuffParameter.SHIELD_DMG,
+                parameter=BuffParameter.SHIELD_SINGLE_DMG,
                 rate=0.4,
                 duration_time=0,
                 duration_count=1,

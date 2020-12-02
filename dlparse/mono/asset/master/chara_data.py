@@ -109,7 +109,7 @@ class CharaDataEntry(MasterEntryBase):
     ss_skill_level: int
     ss_skill_cost: int
     ss_skill_relation_id: int
-    """SS cost offset or similar. OG!Hawk and OG!Nefaria for now."""
+    """SS cost offset or similar. OG!Hawk and OG!Nefaria has this for now."""
     ss_release_item_id: int
     ss_release_item_quantity: int
     # endregion

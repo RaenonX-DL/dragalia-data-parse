@@ -5,7 +5,7 @@ from typing import Any
 from .base import AppValueError
 
 __all__ = ("ConditionValidationFailedError", "BulletEndOfLifeError", "DamagingHitValidationFailedError",
-           "HitDataUnavailableError", "UnhandledSelfDamageError", "InvalidSkillNumError")
+           "HitDataUnavailableError", "UnhandledSelfDamageError", "InvalidSkillNumError", "InvalidSkillLevelError")
 
 
 class ConditionValidationFailedError(AppValueError):
@@ -39,6 +39,13 @@ class InvalidSkillNumError(AppValueError):
 
     def __init__(self, skill_num: int):
         super().__init__(f"Skill number `{skill_num}` is invalid")
+
+
+class InvalidSkillLevelError(AppValueError):
+    """Error to be raised if the given skill level is invalid."""
+
+    def __init__(self, skill_level: int):
+        super().__init__(f"Skill level `{skill_level}` is invalid")
 
 
 class DamagaCalculationError(AppValueError, ABC):

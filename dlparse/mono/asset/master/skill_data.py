@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from typing import Union, Optional
 
+from dlparse.errors import InvalidSkillLevelError
 from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
 
 __all__ = ("SkillIdEntry", "SkillDataEntry", "SkillDataAsset", "SkillDataParser")
@@ -183,6 +184,40 @@ class SkillDataEntry(MasterEntryBase):
     def has_phase_changing(self) -> bool:
         """Check if the skill has phase changing available."""
         return self.trans_skill_id != 0
+
+    def get_sp_at_level(self, level: int) -> int:
+        """
+        Get SP at a certain skill ``level``.
+
+        :raises InvalidSkillLevelError: if the skill level is invalid
+        """
+        if level == 1:
+            return self.sp_lv1
+        if level == 2:
+            return self.sp_lv2
+        if level == 3:
+            return self.sp_lv3
+        if level == 4:
+            return self.sp_lv4
+
+        raise InvalidSkillLevelError(level)
+
+    def get_ss_sp_at_level(self, level: int) -> int:
+        """
+        Get SS SP at a certain skill ``level``.
+
+        :raises InvalidSkillLevelError: if the skill level is invalid
+        """
+        if level == 1:
+            return self.sp_ss_lv1
+        if level == 2:
+            return self.sp_ss_lv2
+        if level == 3:
+            return self.sp_ss_lv3
+        if level == 4:
+            return self.sp_ss_lv4
+
+        raise InvalidSkillLevelError(level)
 
     def get_phase_changed_skills(self, skill_asset: "SkillDataAsset", skill_num: int) -> \
             list[SkillIdEntry]:

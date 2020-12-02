@@ -29,6 +29,11 @@ class SkillTransformer:
         self._action_loader = action_loader
         self._ability_asset = ability_asset
 
+    @property
+    def skill_data_asset(self) -> SkillDataAsset:
+        """Get the skill data asset used by this transformer."""
+        return self._skill_data
+
     def _get_hit_attrs_lv(self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_id: int) -> HitDataList:
         """Get a list of hit attributes at a certain ``skill_lv``."""
         ret: HitDataList = []
@@ -119,9 +124,19 @@ class SkillTransformer:
 
         return skill_data, hit_data_mtx
 
-    def transform_supportive(self, skill_id: int) -> SupportiveSkillData:
-        """Transform skill of ``skill_id`` to :class:`SupportiveSkillData`."""
-        skill_data, hit_data_mtx = self.get_hit_data_matrix(skill_id, BuffingHitData, deals_damage=False)
+    def transform_supportive(self, skill_id: int, max_lv: int = 0) -> SupportiveSkillData:
+        """
+        Transform skill of ``skill_id`` to :class:`SupportiveSkillData`.
+
+        ``max_lv`` limits max skill level to be returned.
+        If set to ``0``, all possible levels (max 4) will be returned.
+
+        :raises SkillDataNotFoundError: if the skill data is not found
+        :raises ActionDataNotFoundError: if the action data file of the skill is not found
+        :raises HitDataUnavailableError: if no hit data available
+        """
+        skill_data, hit_data_mtx = self.get_hit_data_matrix(skill_id, BuffingHitData,
+                                                            deals_damage=False, max_lv=max_lv)
 
         return SupportiveSkillData(
             skill_data_raw=skill_data,
@@ -129,7 +144,7 @@ class SkillTransformer:
             action_condition_asset=self._action_cond
         )
 
-    def transform_attacking(self, skill_id: int, /, max_lv: int = 0) -> AttackingSkillData:
+    def transform_attacking(self, skill_id: int, max_lv: int = 0) -> AttackingSkillData:
         """
         Transform skill of ``skill_id`` to :class:`AttackingSkillDataEntry`.
 

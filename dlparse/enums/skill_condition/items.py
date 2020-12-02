@@ -57,25 +57,25 @@ class SkillCondition(Enum):
     SELF_HP_1 = 201
     SELF_HP_FULL = 202
 
-    SELF_HP_GT_30 = 211
-    """User's HP > 30% max."""
-
-    SELF_HP_GTE_40 = 221
-    """User's HP >= 40% max."""
-    SELF_HP_GTE_50 = 222
-    """User's HP >= 50% max."""
-    SELF_HP_GTE_60 = 223
-    """User's HP >= 60% max."""
-    SELF_HP_GTE_85 = 224
-    """User's HP >= 85% max."""
-
-    SELF_HP_LT_40 = 231
+    SELF_HP_LT_40 = 211
     """User's HP < 40% max."""
-    SELF_HP_LT_30 = 232
+    SELF_HP_LT_30 = 212
     """User's HP < 30% max."""
 
-    SELF_HP_LTE_40 = 241
+    SELF_HP_LTE_40 = 221
     """User's HP <= 40% max."""
+
+    SELF_HP_GT_30 = 231
+    """User's HP > 30% max."""
+
+    SELF_HP_GTE_40 = 241
+    """User's HP >= 40% max."""
+    SELF_HP_GTE_50 = 242
+    """User's HP >= 50% max."""
+    SELF_HP_GTE_60 = 243
+    """User's HP >= 60% max."""
+    SELF_HP_GTE_85 = 244
+    """User's HP >= 85% max."""
     # endregion
 
     # region Buff count

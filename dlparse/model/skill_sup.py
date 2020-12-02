@@ -179,10 +179,10 @@ class SupportiveSkillConverter:
 
             # Damage Shield
             entries.add(SupportiveSkillConverter.to_param_up(
-                BuffParameter.SHIELD_DMG, cond_entry.shield_dmg, hit_data, cond_entry))
+                BuffParameter.SHIELD_SINGLE_DMG, cond_entry.shield_dmg, hit_data, cond_entry))
             # HP Shield
             entries.add(SupportiveSkillConverter.to_param_up(
-                BuffParameter.SHIELD_HP, cond_entry.shield_hp, hit_data, cond_entry))
+                BuffParameter.SHIELD_LIFE, cond_entry.shield_hp, hit_data, cond_entry))
 
         # --- Instant gauge refill
 

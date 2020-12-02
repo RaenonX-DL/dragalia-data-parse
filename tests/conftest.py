@@ -14,7 +14,7 @@ _skill_data: SkillDataAsset = SkillDataAsset(asset_dir=PATH_DIR_MASTER_ASSET)
 _ability_data: AbilityAsset = AbilityAsset(asset_dir=PATH_DIR_MASTER_ASSET)
 _hit_attr: HitAttrAsset = HitAttrAsset(asset_dir=PATH_DIR_MASTER_ASSET)
 _action_cond: ActionConditionAsset = ActionConditionAsset(asset_dir=PATH_DIR_MASTER_ASSET)
-_text: TextAsset = TextAsset(asset_dir=PATH_DIR_MASTER_ASSET)
+_text: TextAsset = TextAsset(asset_dir=PATH_DIR_MASTER_ASSET, asset_dir_custom=PATH_DIR_CUSTOM_ASSET)
 _pa_loader: PlayerActionFileLoader = PlayerActionFileLoader(PATH_ROOT_ASSET_PLAYER_ACTION)
 
 # Transformers
