@@ -45,7 +45,6 @@ def test_bellina_s1(transformer_skill: SkillTransformer):
 def test_eugene_s1(transformer_skill: SkillTransformer):
     # Eugene S1
     # https://dragalialost.gamepedia.com/Eugene
-    # One todo tag affiliated, check list after completion
     pass  # TEST: Eugene S1
 
 

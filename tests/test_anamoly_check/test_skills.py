@@ -72,7 +72,7 @@ def test_transform_all_attack_skills(asset_chara: CharaDataAsset, asset_chara_mo
             if not any(sum(mods_lv) > 0 for mods_lv in skill_data.mods):
                 skill_ids_zero_mods.add(skill_id)
         except HitDataUnavailableError:
-            # No attacking data
+            # No attacking data found / skill is not an attacking skill
             pass
         except ActionDataNotFoundError:
             # Action ID found for higher level, but no related action data found yet

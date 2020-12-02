@@ -28,10 +28,10 @@ def export_atk_skills_of_chara(chara_data: CharaDataEntry, chara_mode_asset: Cha
                 max_lv=chara_data.max_skill_level(id_entry.skill_num)
             )
         except HitDataUnavailableError:
-            # No attacking data available, skipping that
+            # No attacking data available, skipping that / the skill is not an attacking skill
             continue
-        except (ValueError, ActionDataNotFoundError) as ex:
-            # May be unknown enum (ValueError) or action file not found (FileNotFoundError)
+        except ActionDataNotFoundError as ex:
+            # Action file not found (ActionDataNotFoundError)
 
             if skip_unparsable:
                 skipped_messages.append(f"[Skill] {id_entry.skill_identifier} ({id_entry.skill_id}) "
@@ -44,29 +44,19 @@ def export_atk_skills_of_chara(chara_data: CharaDataEntry, chara_mode_asset: Cha
 
         # Transform every skill entries
         for skill_entry in skill_data.get_all_possible_entries():
-            try:
-                ret.append(CharaAttackingSkillEntry(
-                    character_name=chara_name,
-                    character_internal_id=chara_data.id,
-                    character_custom_id=chara_data.custom_id,
-                    character_element=chara_data.element,
-                    skill_internal_id=id_entry.skill_id,
-                    skill_identifier=id_entry.skill_identifier,
-                    skill_name=skill_name,
-                    skill_condition_comp=skill_entry.condition_comp,
-                    skill_total_mods_max=skill_entry.total_mod_at_max,
-                    skill_total_hits_max=skill_entry.hit_count_at_max,
-                    skill_max_lv=skill_entry.max_level,
-                ))
-            except IndexError as ex:
-                # REMOVE: all skills can be handled properly (Eugene S1)
-
-                if skip_unparsable:
-                    skipped_messages.append(f"[Entry] {id_entry.skill_identifier} ({id_entry.skill_id}) "
-                                            f"of {chara_name} ({chara_data.id}): {ex}")
-                    continue
-
-                raise ex
+            ret.append(CharaAttackingSkillEntry(
+                character_name=chara_name,
+                character_internal_id=chara_data.id,
+                character_custom_id=chara_data.custom_id,
+                character_element=chara_data.element,
+                skill_internal_id=id_entry.skill_id,
+                skill_identifier=id_entry.skill_identifier,
+                skill_name=skill_name,
+                skill_condition_comp=skill_entry.condition_comp,
+                skill_total_mods_max=skill_entry.total_mod_at_max,
+                skill_total_hits_max=skill_entry.hit_count_at_max,
+                skill_max_lv=skill_entry.max_level,
+            ))
 
     return ret, skipped_messages
 
