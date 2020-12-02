@@ -321,7 +321,7 @@ def test_shield_hp(transformer_skill: SkillTransformer):
 
     # HP < 40%
 
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_LT_40))
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_LTE_40))
 
     assert skill_data.max_lv_buffs == expected_buffs_lv_3_lt_40
 

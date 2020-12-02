@@ -1,10 +1,7 @@
 """Mono behavior entry error classes."""
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 
 from .base import AppValueError, EntryNotFoundError
-
-if TYPE_CHECKING:
-    from dlparse.enums import AbilityCondition
 
 __all__ = ("SkillDataNotFoundError", "ActionDataNotFoundError", "TextLabelNotFoundError",
            "AbilityConditionUnconvertibleError")
@@ -41,6 +38,6 @@ class TextLabelNotFoundError(EntryNotFoundError):
 class AbilityConditionUnconvertibleError(AppValueError):
     """Error to be raised if the ability condition cannot be converted to skill condition."""
 
-    def __init__(self, ability_condition: "AbilityCondition", val_1: float, val_2: float):
+    def __init__(self, ability_condition: int, val_1: float, val_2: float):
         super().__init__(f"Unable to convert ability condition to skill condition "
-                         f"(ability condition: {ability_condition} / val 1: {val_1} / val 2: {val_2})")
+                         f"(ability condition code: {ability_condition} / val 1: {val_1} / val 2: {val_2})")

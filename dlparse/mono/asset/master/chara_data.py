@@ -284,8 +284,8 @@ class CharaDataEntry(MasterEntryBase):
         For example, the identifier of Bellina's S2 in enhanced mode will be ``S2 (不羈伴侶)``.
         """
         ret: list[SkillIdEntry] = [
-            SkillIdEntry(self.skill_1_id, 1, "S1", "S1/BASE"),
-            SkillIdEntry(self.skill_2_id, 2, "S2", "S2/BASE")
+            SkillIdEntry(self.skill_1_id, 1, "S1"),
+            SkillIdEntry(self.skill_2_id, 2, "S2")
         ]
 
         # Attach skill IDs in different mode from mode asset
@@ -296,10 +296,10 @@ class CharaDataEntry(MasterEntryBase):
                     mode_name = asset_text.to_text(mode_data.text_label) or mode_name
 
                 if model_skill_1_id := mode_data.skill_id_1:
-                    ret.append(SkillIdEntry(model_skill_1_id, 1, f"S1 ({mode_name})", f"S1/{mode_data.id}"))
+                    ret.append(SkillIdEntry(model_skill_1_id, 1, f"S1 ({mode_name})"))
 
                 if model_skill_2_id := mode_data.skill_id_2:
-                    ret.append(SkillIdEntry(model_skill_2_id, 2, f"S2 ({mode_name})", f"S2/{mode_data.id}"))
+                    ret.append(SkillIdEntry(model_skill_2_id, 2, f"S2 ({mode_name})"))
 
         if asset_skill:
             skill_1_data: SkillDataEntry = asset_skill.get_data_by_id(self.skill_1_id)
@@ -310,8 +310,7 @@ class CharaDataEntry(MasterEntryBase):
                 ret.append(SkillIdEntry(
                     skill_1_data.as_helper_skill_id,
                     1,
-                    asset_text.to_text("SKILL_IDENTIFIER_HELPER") if asset_text else "Helper",
-                    "S1/HELPER"
+                    asset_text.to_text("SKILL_IDENTIFIER_HELPER") if asset_text else "Helper"
                 ))
 
             if skill_1_data and skill_1_data.has_phase_changing:

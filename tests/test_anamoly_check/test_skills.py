@@ -1,3 +1,4 @@
+from dlparse.errors import HitDataUnavailableError, ActionDataNotFoundError
 from dlparse.model import AttackingSkillDataEntry
 from dlparse.mono.asset import CharaDataAsset, CharaDataEntry, CharaModeAsset, SkillDataAsset
 from dlparse.transformer import SkillTransformer
@@ -71,11 +72,12 @@ def test_transform_all_attack_skills(asset_chara: CharaDataAsset, asset_chara_mo
             skill_ids_atk_missing.pop(skill_id, None)
             if not any(sum(mods_lv) > 0 for mods_lv in skill_data.mods):
                 skill_ids_zero_mods.add(skill_id)
-        except ValueError:
-            # REMOVE: after all attacking skills can be parsed
+        except HitDataUnavailableError:
+            # No attacking data
             pass
-        except FileNotFoundError as ex:
-            print(f"Skill ID `{skill_id}` yielded file not found error:", ex)
+        except ActionDataNotFoundError:
+            # Action ID found for higher level, but no related action data found yet
+            pass
 
     assert len(skill_entries) > 0
 

@@ -2,7 +2,7 @@
 from enum import Enum, auto
 from typing import TypeVar, Generic, Iterable, Union
 
-from dlparse.enums import Affliction, Element
+from dlparse.enums import TargetStatus, Element
 from dlparse.enums.condition_base import ConditionCheckResultMixin
 from dlparse.errors import EnumConversionError
 from .items import SkillCondition
@@ -151,24 +151,32 @@ class SkillConditionCategories:
 
     # pylint: disable=too-few-public-methods
 
-    target_affliction = SkillConditionCategory[Affliction](
+    target_status = SkillConditionCategory[TargetStatus](
         {
-            SkillCondition.TARGET_POISONED: Affliction.POISON,
-            SkillCondition.TARGET_BURNED: Affliction.BURN,
-            SkillCondition.TARGET_FROZEN: Affliction.FREEZE,
-            SkillCondition.TARGET_PARALYZED: Affliction.PARALYZE,
-            SkillCondition.TARGET_BLINDED: Affliction.BLIND,
-            SkillCondition.TARGET_STUNNED: Affliction.STUN,
-            SkillCondition.TARGET_CURSED: Affliction.CURSE,
-            SkillCondition.TARGET_BOGGED: Affliction.BOG,
-            SkillCondition.TARGET_SLEPT: Affliction.SLEEP,
-            SkillCondition.TARGET_FROSTBITTEN: Affliction.FROSTBITE,
-            SkillCondition.TARGET_FLASHBURNED: Affliction.FLASHBURN,
-            SkillCondition.TARGET_CRASHWINDED: Affliction.CRASHWIND,
-            SkillCondition.TARGET_SHADOWBLIGHTED: Affliction.SHADOWBLIGHT,
+            # Abnormal statuses
+            SkillCondition.TARGET_POISONED: TargetStatus.POISON,
+            SkillCondition.TARGET_BURNED: TargetStatus.BURN,
+            SkillCondition.TARGET_FROZEN: TargetStatus.FREEZE,
+            SkillCondition.TARGET_PARALYZED: TargetStatus.PARALYZE,
+            SkillCondition.TARGET_BLINDED: TargetStatus.BLIND,
+            SkillCondition.TARGET_STUNNED: TargetStatus.STUN,
+            SkillCondition.TARGET_CURSED: TargetStatus.CURSE,
+            SkillCondition.TARGET_BOGGED: TargetStatus.BOG,
+            SkillCondition.TARGET_SLEPT: TargetStatus.SLEEP,
+            SkillCondition.TARGET_FROSTBITTEN: TargetStatus.FROSTBITE,
+            SkillCondition.TARGET_FLASHBURNED: TargetStatus.FLASHBURN,
+            SkillCondition.TARGET_CRASHWINDED: TargetStatus.CRASHWIND,
+            SkillCondition.TARGET_SHADOWBLIGHTED: TargetStatus.SHADOWBLIGHT,
+            # Special abnormal status
+            SkillCondition.TARGET_AFFLICTED: TargetStatus.AFFLICTED,
+            SkillCondition.TARGET_DEF_DOWN: TargetStatus.DEF_DOWNED,
+            SkillCondition.TARGET_BUFFED: TargetStatus.BUFFED,
+            SkillCondition.TARGET_DEBUFFED: TargetStatus.DEBUFFED,
+            # Enemy state
+            SkillCondition.TARGET_BREAK_STATE: TargetStatus.BREAK_STATE
         },
         SkillConditionMaxCount.MULTIPLE,
-        "Target Affliction",
+        "Target status",
         SkillConditionCheckResult.PASS  # Impossible to fail (current only invalid reason is multiple conditions)
     )
     target_elemental = SkillConditionCategory[Element](
@@ -187,7 +195,7 @@ class SkillConditionCategories:
         {
             SkillCondition.SELF_HP_1: 0,
             SkillCondition.SELF_HP_FULL: 1,
-            SkillCondition.SELF_HP_LT_40: 0.4,
+            SkillCondition.SELF_HP_LTE_40: 0.4,
             SkillCondition.SELF_HP_GTE_40: 0.4,
             SkillCondition.SELF_HP_GTE_50: 0.5,
         },

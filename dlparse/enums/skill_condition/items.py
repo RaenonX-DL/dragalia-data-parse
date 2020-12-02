@@ -39,18 +39,43 @@ class SkillCondition(Enum):
     TARGET_ELEM_LIGHT = 154
     TARGET_ELEM_SHADOW = 155
     # endregion
+
+    # region State
+    TARGET_BREAK_STATE = 181
+    # endregion
+
+    # region Abnormal
+    TARGET_AFFLICTED = 191
+    TARGET_DEF_DOWN = 192
+    TARGET_BUFFED = 193
+    TARGET_DEBUFFED = 194
+    # endregion
     # endregion
 
     # region Self status
     # region HP
     SELF_HP_1 = 201
     SELF_HP_FULL = 202
-    SELF_HP_GTE_40 = 203
+
+    SELF_HP_GT_30 = 211
+    """User's HP > 30% max."""
+
+    SELF_HP_GTE_40 = 221
     """User's HP >= 40% max."""
-    SELF_HP_LT_40 = 204
-    """User's HP < 40% max."""
-    SELF_HP_GTE_50 = 205
+    SELF_HP_GTE_50 = 222
     """User's HP >= 50% max."""
+    SELF_HP_GTE_60 = 223
+    """User's HP >= 60% max."""
+    SELF_HP_GTE_85 = 224
+    """User's HP >= 85% max."""
+
+    SELF_HP_LT_40 = 231
+    """User's HP < 40% max."""
+    SELF_HP_LT_30 = 232
+    """User's HP < 30% max."""
+
+    SELF_HP_LTE_40 = 241
+    """User's HP <= 40% max."""
     # endregion
 
     # region Buff count

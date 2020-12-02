@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from itertools import combinations, product
 from typing import Optional
 
-from dlparse.enums import SkillCondition, SkillConditionComposite, SkillConditionCategories, Affliction
+from dlparse.enums import SkillCondition, SkillConditionComposite, SkillConditionCategories, TargetStatus
 from dlparse.utils import calculate_damage_modifier
 from .hit_dmg import DamagingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
@@ -89,7 +89,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     _max_level: int = field(init=False)
 
     def _init_all_possible_conditions(self):
-        punishers_available: set[Affliction] = set()  # Punishers available for each skill
+        punishers_available: set[TargetStatus] = set()  # Punishers available for each skill
         crisis_available: bool = False
         buff_up_available: bool = False
         will_deteriorate: bool = False
@@ -121,7 +121,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         # Punishers available, attach punisher conditions
         if punishers_available:
-            conditions: set[SkillCondition] = {SkillConditionCategories.target_affliction.convert_reversed(affliction)
+            conditions: set[SkillCondition] = {SkillConditionCategories.target_status.convert_reversed(affliction)
                                                for affliction in punishers_available}
             # noinspection PyTypeChecker
             affliction_combinations: set[tuple[SkillCondition, ...]] = set()

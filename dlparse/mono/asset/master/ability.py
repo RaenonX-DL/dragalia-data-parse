@@ -1,5 +1,5 @@
 """Classes for handling the ability data."""
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Union, Optional
 
 from dlparse.enums import AbilityCondition, AbilityType, SkillCondition
@@ -13,9 +13,15 @@ __all__ = ("AbilityEntry", "AbilityAsset", "AbilityParser")
 class AbilityConditionEntry:
     """Entry class for an ability condition."""
 
-    condition_type: AbilityCondition
+    condition_code: int
+
     val_1: float
     val_2: float
+
+    condition_type: AbilityCondition = field(init=False)
+
+    def __post_init__(self):
+        self.condition_type = AbilityCondition(self.condition_code)
 
     def to_skill_condition(self) -> SkillCondition:
         """
@@ -23,20 +29,39 @@ class AbilityConditionEntry:
 
         :raises AbilityConditionUnconvertibleError: if the ability condition is unconvertible
         """
+        # No condition
         if self.condition_type == AbilityCondition.NONE:
             return SkillCondition.NONE
 
+        # Self HP >
+        if self.condition_type == AbilityCondition.SELF_HP_GT:
+            if self.val_1 == 30:
+                return SkillCondition.SELF_HP_GT_30
+
+        # Self HP >=
         if self.condition_type == AbilityCondition.SELF_HP_GTE:
             if self.val_1 == 40:
                 return SkillCondition.SELF_HP_GTE_40
             if self.val_1 == 50:
                 return SkillCondition.SELF_HP_GTE_50
+            if self.val_1 == 60:
+                return SkillCondition.SELF_HP_GTE_60
+            if self.val_1 == 85:
+                return SkillCondition.SELF_HP_GTE_85
 
+        # Self HP <
         if self.condition_type == AbilityCondition.SELF_HP_LT:
+            if self.val_1 == 30:
+                return SkillCondition.SELF_HP_LT_30
             if self.val_1 == 40:
                 return SkillCondition.SELF_HP_LT_40
 
-        raise AbilityConditionUnconvertibleError(self.condition_type, self.val_1, self.val_2)
+        # Self Hp <=
+        if self.condition_type == AbilityCondition.SELF_HP_LTE:
+            if self.val_1 == 40:
+                return SkillCondition.SELF_HP_LTE_40
+
+        raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
 
 @dataclass
@@ -102,7 +127,7 @@ class AbilityEntry(MasterEntryBase):
             id=data["_Id"],
             name_label=data["_Name"],
             details_label=data["_Details"],
-            condition=AbilityConditionEntry(AbilityCondition(data["_ConditionType"]),
+            condition=AbilityConditionEntry(data["_ConditionType"],
                                             data["_ConditionValue"], data["_ConditionValue2"]),
             variant_1=AbilityVariantEntry(AbilityType(data["_AbilityType1"]),
                                           data["_VariousId1a"], data["_VariousId1b"], data["_VariousId1c"],

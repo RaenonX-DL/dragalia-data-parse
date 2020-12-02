@@ -1,4 +1,4 @@
-from dlparse.export.prototype import export_skill_atk_csv
+from dlparse.export import export_atk_skill_as_csv
 from dlparse.mono.asset import (
     CharaDataAsset, CharaModeAsset, TextAsset, SkillDataAsset, HitAttrAsset, ActionConditionAsset,
     AbilityAsset
@@ -23,7 +23,7 @@ _transformer_skill: SkillTransformer = SkillTransformer(_skill_data, _hit_attr, 
 
 
 def main():
-    export_skill_atk_csv(
+    export_atk_skill_as_csv(
         "exported/skill_atk.csv",
         chara_asset=_chara_data, chara_mode_asset=_chara_mode, text_asset=_text, skill_transformer=_transformer_skill
     )
@@ -50,4 +50,4 @@ def main2():
 
 
 if __name__ == '__main__':
-    main2()
+    main()

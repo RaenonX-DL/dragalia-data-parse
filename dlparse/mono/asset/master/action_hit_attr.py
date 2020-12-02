@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Union, Optional
 
-from dlparse.enums import Affliction, HitExecType, HitTarget
+from dlparse.enums import TargetStatus, HitExecType, HitTarget
 from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
 
 __all__ = ("HitAttrEntry", "HitAttrAsset", "HitAttrParser")
@@ -28,7 +28,7 @@ class HitAttrEntry(MasterEntryBase):
     hp_fix_rate: float
     hp_consumption_rate: float
 
-    punisher_states: set[Affliction]  # Rate will be applied when the target has any of the punisher states
+    punisher_states: set[TargetStatus]  # Rate will be applied when the target has any of the punisher states
     punisher_rate: float
 
     rate_boost_on_crisis: float  # 0 = not applicable
@@ -60,7 +60,7 @@ class HitAttrEntry(MasterEntryBase):
     @staticmethod
     def parse_raw(data: dict[str, Union[str, float, int]]) -> "HitAttrEntry":
         punisher_states = {data["_KillerState1"], data["_KillerState2"], data["_KillerState3"]} - {0}
-        punisher_states = {Affliction(state) for state in punisher_states} - {Affliction.UNKNOWN}
+        punisher_states = {TargetStatus(state) for state in punisher_states} - {TargetStatus.UNKNOWN}
 
         return HitAttrEntry(
             id=data["_Id"],

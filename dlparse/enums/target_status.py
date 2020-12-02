@@ -1,12 +1,12 @@
-"""Affliction enums."""
+"""Target status enums."""
 from enum import IntEnum
 
-__all__ = ("Affliction",)
+__all__ = ("TargetStatus",)
 
 
-class Affliction(IntEnum):
+class TargetStatus(IntEnum):
     """
-    Affliction enums used in the assets.
+    Enums used in the assets to represent the target status.
 
     This corresponds to the field ``_KillerState1``, ``_KillerState2`` and ``_KillerState3`` in
     the hit attribute asset.

@@ -1,7 +1,7 @@
 """Functions to export the skill data."""
 import csv
 
-from dlparse.errors import ActionDataNotFoundError
+from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError
 from dlparse.export.entry import CharaAttackingSkillEntry
 from dlparse.mono.asset import CharaDataAsset, CharaDataEntry, CharaModeAsset, TextAsset
 from dlparse.transformer import SkillTransformer
@@ -21,12 +21,15 @@ def export_atk_skills_of_chara(chara_data: CharaDataEntry, chara_mode_asset: Cha
     for id_entry in skill_identifiers:
         chara_name = chara_data.get_chara_name(text_asset)
 
-        # Transform skill data
+        # Transform every skill data
         try:
             skill_data = skill_transformer.transform_attacking(
                 id_entry.skill_id,
                 max_lv=chara_data.max_skill_level(id_entry.skill_num)
             )
+        except HitDataUnavailableError:
+            # No attacking data available, skipping that
+            continue
         except (ValueError, ActionDataNotFoundError) as ex:
             # May be unknown enum (ValueError) or action file not found (FileNotFoundError)
 
@@ -49,7 +52,6 @@ def export_atk_skills_of_chara(chara_data: CharaDataEntry, chara_mode_asset: Cha
                     character_element=chara_data.element,
                     skill_internal_id=id_entry.skill_id,
                     skill_identifier=id_entry.skill_identifier,
-                    skill_unique_id=id_entry.skill_unique_id,
                     skill_name=skill_name,
                     skill_condition_comp=skill_entry.condition_comp,
                     skill_total_mods_max=skill_entry.total_mod_at_max,

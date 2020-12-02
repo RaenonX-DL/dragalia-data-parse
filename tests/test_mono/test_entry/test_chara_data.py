@@ -189,8 +189,8 @@ def test_get_skill_id_names(asset_chara_mode: CharaModeAsset, asset_text: TextAs
     entry = create_dummy(skill_1_id=1, skill_2_id=2)
 
     expected_identifiers = [
-        SkillIdEntry(1, 1, "S1", "S1/BASE"),
-        SkillIdEntry(2, 2, "S2", "S2/BASE")
+        SkillIdEntry(1, 1, "S1"),
+        SkillIdEntry(2, 2, "S2")
     ]
 
     assert entry.get_skill_identifiers(asset_chara_mode, asset_text=asset_text) == expected_identifiers
@@ -200,10 +200,10 @@ def test_get_skill_id_names_with_mode(asset_chara_mode: CharaModeAsset, asset_te
     entry = create_dummy(skill_1_id=1, skill_2_id=2, mode_2_id=12)
 
     expected_identifiers = [
-        SkillIdEntry(1, 1, "S1", "S1/BASE"),
-        SkillIdEntry(2, 2, "S2", "S2/BASE"),
-        SkillIdEntry(103505033, 1, "S1 (服わざる伴侶)", "S1/12"),
-        SkillIdEntry(103505034, 2, "S2 (服わざる伴侶)", "S2/12")
+        SkillIdEntry(1, 1, "S1"),
+        SkillIdEntry(2, 2, "S2"),
+        SkillIdEntry(103505033, 1, "S1 (服わざる伴侶)"),
+        SkillIdEntry(103505034, 2, "S2 (服わざる伴侶)")
     ]
 
     assert entry.get_skill_identifiers(asset_chara_mode, asset_text=asset_text) == expected_identifiers
@@ -219,10 +219,10 @@ def test_get_all_skill_identifiers(asset_chara: CharaDataAsset, asset_chara_mode
                                                           asset_text=asset_text, asset_skill=asset_skill)
 
     expected_identifiers = [
-        SkillIdEntry(104502011, 1, "S1", "S1/BASE"),
-        SkillIdEntry(104502012, 2, "S2", "S2/BASE"),
-        SkillIdEntry(104502013, 2, "S2 P2", "S2/P2"),
-        SkillIdEntry(104502014, 2, "S2 P3", "S2/P3")
+        SkillIdEntry(104502011, 1, "S1"),
+        SkillIdEntry(104502012, 2, "S2"),
+        SkillIdEntry(104502013, 2, "S2 P2"),
+        SkillIdEntry(104502014, 2, "S2 P3")
     ]
 
     assert actual_identifiers == expected_identifiers

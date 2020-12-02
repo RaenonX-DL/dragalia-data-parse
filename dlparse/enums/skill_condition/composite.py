@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 from typing import Optional, Sequence, Union
 
-from dlparse.enums import Affliction, Element
+from dlparse.enums import TargetStatus, Element
 from dlparse.enums.condition_base import ConditionCompositeBase
 from dlparse.errors import ConditionValidationFailedError
 from .category import SkillConditionCategories, SkillConditionCheckResult
@@ -12,12 +12,14 @@ from .validate import validate_skill_conditions
 __all__ = ("SkillConditionComposite",)
 
 
-@dataclass(eq=False)  # ``eq=False`` to keep the superclass ``__hash__``
+# ``eq=False`` to keep the ``__hash__`` of the superclass
+# ``repr=False`` to keep the ``__repr__`` of the superclass
+@dataclass(eq=False, repr=False)
 class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     """Composite class of various attacking skill conditions."""
 
     afflictions_condition: set[SkillCondition] = field(init=False)
-    afflictions_converted: set[Affliction] = field(init=False)
+    afflictions_converted: set[TargetStatus] = field(init=False)
     buff_count: Optional[SkillCondition] = field(init=False)
     buff_count_converted: int = field(init=False)
     bullet_hit_count: Optional[SkillCondition] = field(init=False)
@@ -37,7 +39,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
     def _init_validate_fields(self, conditions: tuple[SkillCondition]):
         # Check `self.afflictions_condition`
-        if any(condition not in SkillConditionCategories.target_affliction
+        if any(condition not in SkillConditionCategories.target_status
                for condition in self.afflictions_condition):
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_AFFLICTION_ONLY)
 
@@ -67,7 +69,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     def __post_init__(self, conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]]):
         conditions = self._init_process_conditions(conditions)
 
-        self.afflictions_condition = SkillConditionCategories.target_affliction.extract(conditions)
+        self.afflictions_condition = SkillConditionCategories.target_status.extract(conditions)
         self.buff_count = SkillConditionCategories.self_buff_count.extract(conditions)
         self.bullet_hit_count = SkillConditionCategories.skill_bullet_hit.extract(conditions)
         self.hp_condition = SkillConditionCategories.self_hp.extract(conditions)
@@ -77,7 +79,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self._init_validate_fields(conditions)
 
         self.afflictions_converted = \
-            {SkillConditionCategories.target_affliction.convert(condition) for condition in self.afflictions_condition}
+            {SkillConditionCategories.target_status.convert(condition) for condition in self.afflictions_condition}
         self.buff_count_converted = \
             self.buff_count and SkillConditionCategories.self_buff_count.convert(self.buff_count)
         self.bullet_hit_count_converted = \

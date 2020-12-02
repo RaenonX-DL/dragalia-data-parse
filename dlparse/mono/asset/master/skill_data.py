@@ -19,14 +19,6 @@ class SkillIdEntry:
     """Number of the skill. ``1`` for S1; ``2`` for S2."""
     skill_identifier: str
     """Skill identifier. This is not unique. The purpose of this is for easier skill identification."""
-    skill_unique_id: str
-    """
-    A unique ID for identifying the skill. The purpose of this is for indexing at the website.
-
-    S1/BASE, S2/BASE: Base S1 and S2.
-    S1/HELPER: S1 helper variant.
-    S1/P2, S1/P3, ...: S1 at phase 2 or phase 3, etc.
-    """
 
 
 @dataclass
@@ -214,8 +206,7 @@ class SkillDataEntry(MasterEntryBase):
             ret.append(SkillIdEntry(
                 trans_skill_data.id,
                 skill_num,
-                f"S{skill_num} P{phase_num}",
-                f"S{skill_num}/P{phase_num}"
+                f"S{skill_num} P{phase_num}"
             ))
             added_skill_id.add(trans_skill_data.id)
 

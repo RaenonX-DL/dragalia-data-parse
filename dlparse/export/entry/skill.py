@@ -78,7 +78,6 @@ class CharaAttackingSkillEntry(ExportEntryBase):
 
     skill_internal_id: int
     skill_identifier: str
-    skill_unique_id: str
     skill_name: str
     skill_condition_comp: SkillConditionComposite
     skill_total_mods_max: float
@@ -88,7 +87,7 @@ class CharaAttackingSkillEntry(ExportEntryBase):
     @property
     def unique_id(self):
         return hashlib.sha256(
-            f"{self.character_internal_id}{self.skill_internal_id}{self.skill_unique_id}"
+            f"{self.character_internal_id}{self.skill_internal_id}{self.skill_identifier}"
             f"{hash(self.skill_condition_comp)}".encode("utf-8")
         ).hexdigest()
 
@@ -101,7 +100,6 @@ class CharaAttackingSkillEntry(ExportEntryBase):
             self.character_internal_id,
             self.character_element,
             self.skill_internal_id,
-            self.skill_identifier,
             self.skill_name,
             self.skill_condition_comp,
             self.skill_total_mods_max,
@@ -119,7 +117,6 @@ class CharaAttackingSkillEntry(ExportEntryBase):
             "Character Internal ID",
             "Character Element",
             "Skill Internal ID",
-            "Skill Identifier",
             "Skill Name",
             "Skill Conditions",
             "Skill Total Mods",
