@@ -85,7 +85,7 @@ def export_atk_skills_as_entries(chara_asset: CharaDataAsset, chara_mode_asset: 
     for idx, chara_data in enumerate(chara_asset):
         chara_data: CharaDataEntry
         if not chara_data.is_playable:
-            print(f"Character ID: {chara_data.id} not playable, skipping")
+            print(f"Character ID: {chara_data.id} not playable, skipping.")
             continue
 
         print(f"Exporting skill data... ({idx} / {chara_count} - {idx / chara_count:.2%})")
