@@ -36,7 +36,7 @@ class AbilityCondition(Enum):
     ON_QUEST_START = 15
     """
     This ability only triggers once when the quest starts.
-    
+
     Condition value 1 and 2 are expected to be 0 since they are meaningless.
     """
     SELF_COMBO_COUNT = 21
@@ -45,7 +45,7 @@ class AbilityCondition(Enum):
 
     Condition value 1 is the combo count to match.
     Condition value 2 does not have any effect.
-    
+
     Condition value 1 = 30 means that the condition matches for every 30 combos.
     """
     SELF_HP_GTE = 60

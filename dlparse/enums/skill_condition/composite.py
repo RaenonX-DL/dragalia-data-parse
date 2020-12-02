@@ -2,12 +2,13 @@
 from dataclasses import dataclass, field
 from typing import Optional, Sequence, Union
 
-from dlparse.enums import TargetStatus, Element
 from dlparse.enums.condition_base import ConditionCompositeBase
 from dlparse.errors import ConditionValidationFailedError
 from .category import SkillConditionCategories, SkillConditionCheckResult
 from .items import SkillCondition
 from .validate import validate_skill_conditions
+from ..element import Element
+from ..target_status import TargetStatus
 
 __all__ = ("SkillConditionComposite",)
 

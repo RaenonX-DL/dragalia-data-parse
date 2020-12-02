@@ -23,6 +23,38 @@ class AbilityConditionEntry:
     def __post_init__(self):
         self.condition_type = AbilityCondition(self.condition_code)
 
+    def _skill_cond_self_hp_gt(self):
+        if self.val_1 == 30:
+            return SkillCondition.SELF_HP_GT_30
+
+        raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
+
+    def _skill_cond_self_hp_gte(self):
+        if self.val_1 == 40:
+            return SkillCondition.SELF_HP_GTE_40
+        if self.val_1 == 50:
+            return SkillCondition.SELF_HP_GTE_50
+        if self.val_1 == 60:
+            return SkillCondition.SELF_HP_GTE_60
+        if self.val_1 == 85:
+            return SkillCondition.SELF_HP_GTE_85
+
+        raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
+
+    def _skill_cond_self_hp_lt(self):
+        if self.val_1 == 30:
+            return SkillCondition.SELF_HP_LT_30
+        if self.val_1 == 40:
+            return SkillCondition.SELF_HP_LT_40
+
+        raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
+
+    def _skill_cond_self_hp_lte(self):
+        if self.val_1 == 40:
+            return SkillCondition.SELF_HP_LTE_40
+
+        raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
+
     def to_skill_condition(self) -> SkillCondition:
         """
         Convert the ability condition to skill condition.
@@ -35,31 +67,19 @@ class AbilityConditionEntry:
 
         # Self HP >
         if self.condition_type == AbilityCondition.SELF_HP_GT:
-            if self.val_1 == 30:
-                return SkillCondition.SELF_HP_GT_30
+            return self._skill_cond_self_hp_gt()
 
         # Self HP >=
         if self.condition_type == AbilityCondition.SELF_HP_GTE:
-            if self.val_1 == 40:
-                return SkillCondition.SELF_HP_GTE_40
-            if self.val_1 == 50:
-                return SkillCondition.SELF_HP_GTE_50
-            if self.val_1 == 60:
-                return SkillCondition.SELF_HP_GTE_60
-            if self.val_1 == 85:
-                return SkillCondition.SELF_HP_GTE_85
+            return self._skill_cond_self_hp_gte()
 
         # Self HP <
         if self.condition_type == AbilityCondition.SELF_HP_LT:
-            if self.val_1 == 30:
-                return SkillCondition.SELF_HP_LT_30
-            if self.val_1 == 40:
-                return SkillCondition.SELF_HP_LT_40
+            return self._skill_cond_self_hp_lt()
 
         # Self Hp <=
         if self.condition_type == AbilityCondition.SELF_HP_LTE:
-            if self.val_1 == 40:
-                return SkillCondition.SELF_HP_LTE_40
+            return self._skill_cond_self_hp_lte()
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 

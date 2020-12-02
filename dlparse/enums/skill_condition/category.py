@@ -2,10 +2,11 @@
 from enum import Enum, auto
 from typing import TypeVar, Generic, Iterable, Union
 
-from dlparse.enums import TargetStatus, Element
-from dlparse.enums.condition_base import ConditionCheckResultMixin
 from dlparse.errors import EnumConversionError
 from .items import SkillCondition
+from ..condition_base import ConditionCheckResultMixin
+from ..element import Element
+from ..target_status import TargetStatus
 
 __all__ = ("SkillConditionCheckResult", "SkillConditionCategories", "SkillConditionMaxCount")
 

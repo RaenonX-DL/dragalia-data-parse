@@ -422,22 +422,6 @@ class CharaDataAsset(MasterAssetBase[CharaDataEntry]):
                  asset_dir: Optional[str] = None):
         super().__init__(CharaDataParser, file_path, asset_dir=asset_dir)
 
-    def get_all_skill_ids(self, chara_mode_asset: CharaModeAsset, /,
-                          asset_skill: Optional[SkillDataAsset] = None) -> list[int]:
-        """
-        Get all skill IDs of all characters.
-
-        If ``asset_skill`` is not provided, skills that has helper variant will not be included.
-        """
-        ret: list[int] = []
-
-        for chara_data in self:
-            skill_ids = [skill_id_entry.skill_id for skill_id_entry
-                         in chara_data.get_skill_identifiers(chara_mode_asset, asset_skill=asset_skill)]
-            ret.extend(skill_ids)
-
-        return ret
-
 
 class CharaDataParser(MasterParserBase[CharaDataEntry]):
     """Class to parse the character data file."""

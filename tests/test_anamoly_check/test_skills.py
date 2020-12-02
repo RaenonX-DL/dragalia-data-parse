@@ -45,19 +45,18 @@ skill_ids_sup: dict[int, str] = {
 }
 
 
-def test_get_all_skill_ids(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset, asset_skill: SkillDataAsset):
-    skill_ids = asset_chara.get_all_skill_ids(asset_chara_mode, asset_skill=asset_skill)
-
-    for sid, note in skill_ids_atk.items():
-        assert sid in skill_ids, f"Skill ID `{sid}` ({note}) not in the skill ID list (Attacking)"
-
-    for sid, note in skill_ids_sup.items():
-        assert sid in skill_ids, f"Skill ID `{sid}` ({note}) not in the skill ID list (Supportive)"
-
-
 def test_transform_all_attack_skills(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset,
                                      asset_skill: SkillDataAsset, transformer_skill: SkillTransformer):
-    skill_ids = asset_chara.get_all_skill_ids(asset_chara_mode, asset_skill=asset_skill)
+    skill_ids: list[int] = []
+    for chara_data in asset_chara:
+        chara_data: CharaDataEntry
+
+        if not chara_data.is_playable:
+            continue  # Don't care about non-playable units
+
+        skill_ids.extend([skill_entry.skill_id
+                          for skill_entry
+                          in chara_data.get_skill_identifiers(asset_chara_mode, asset_skill=asset_skill)])
 
     skill_ids_atk_missing: dict[int, str] = skill_ids_atk.copy()
     skill_ids_zero_mods: set[int] = set()
@@ -85,6 +84,9 @@ def test_transform_all_attack_skills(asset_chara: CharaDataAsset, asset_chara_mo
         f"Missing attacking skills (could be more): {set(skill_ids_atk_missing.keys())}"
     assert len(skill_ids_zero_mods) == 0, \
         f"Skills without any modifiers included: {skill_ids_zero_mods}"
+
+
+# TEST: transform_all_supportive_skills
 
 
 def test_get_catherine_skill_ids(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset,
