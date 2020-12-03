@@ -20,14 +20,14 @@ class ActionBullet(asset.ActionComponentHasHitLabels):
 
     If this is ``0``, max hit count will be 0, indicating that max hitting count is not applicable.
     """
-    attenuation_rate: float
+    collision_interval: float
+    """Minimum interval for hitting the same enemy in seconds."""
+    attenuation_rate: float = 1
     """
     Damage rate change for each hit. A value of 0.55 (Yukata unmasked S1) means the next damage will be 0.55x.
 
     Hits that do not deteriorate will have this set to ``1``.
     """
-    collision_interval: float
-    """Minimum interval for hitting the same enemy in seconds."""
 
     @property
     def max_hit_count(self) -> int:

@@ -80,13 +80,19 @@ def test_s2_eden(transformer_skill: SkillTransformer):
 def test_s2_call_fig(transformer_skill: SkillTransformer):
     # Gala Laxi Fig
     # https://dragalialost.gamepedia.com/Gala_Laxi
-    skill_data_base = transformer_skill.transform_attacking(103501022)
+    # skill_data_base = transformer_skill.transform_attacking(103501022)
+
+    pass
 
     # TEST: TBA - GaLaxi S2 (Fig)
-    # AID 391270 (Main action) auto fires 391272 (Fig bullets)
+    #   AID 391270 (Main action) auto fires 391272 (Fig bullets)
     #   SID - 103501022
     #   Find how did the action canceled
     #   _autoFireInterval / _autoFireActionId
+    #   [Token(Token = "0x400D32E")] RemoveAllStockBullets, (Check AbilityConst.cs)
+    #   the correct way to read that ability would be
+    #   when buff at ConditionValue is removed
+    #   clear all bullets
 
     # Base data
     # skill_data = skill_data_base.with_conditions()

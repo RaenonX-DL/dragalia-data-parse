@@ -21,7 +21,6 @@ class ActionBulletArranged(ActionBullet):
         return ActionBulletArranged(
             hit_labels=[label for label in labels_possible if label],
             bullet_duration=data["_abDuration"],
-            attenuation_rate=1,  # no attenuation
             collision_interval=data["_abHitInterval"],
             **kwargs
         )

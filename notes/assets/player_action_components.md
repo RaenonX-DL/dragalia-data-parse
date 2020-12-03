@@ -56,7 +56,11 @@ A single component corresponds to a single attack.
 
 ### ``ActionPartsPivotBullet``
 
-Needs investigation. Should relate to ``ActionPartsBullet``.
+Another type of bullets. Distinction unknown.
+
+#### Appearance notes
+
+- Wedding Aoi S1 (`103503011`)
 
 
 ### ``ActionPartsFormationBullet``

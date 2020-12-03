@@ -10,6 +10,7 @@ from .bullet import ActionBullet
 from .bullet_format import ActionBulletFormation
 from .bullet_multi import ActionBulletMulti
 from .bullet_parabola import ActionBulletParabola
+from .bullet_pivot import ActionBulletPivot
 from .bullet_stock_fire import ActionBulletStockFire
 from .hit import ActionHit
 from .set_hit import ActionSettingHit
@@ -23,14 +24,18 @@ class PlayerActionParser(ActionParserBase):
     SCRIPT_KEY: str = "$Script"
 
     SCRIPT_CLASS: dict[str, Type[ActionComponentBase]] = {
-        "ActionPartsBuffFieldAttachment": ActionBuffField,
+        # Hits coming from the user themselves
         "ActionPartsHit": ActionHit,
+        # Projectile hits
         "ActionPartsBullet": ActionBullet,
+        "ActionPartsPivotBullet": ActionBulletPivot,
         "ActionPartsMultiBullet": ActionBulletMulti,
         "ActionPartsFireStockBullet": ActionBulletStockFire,
         "ActionPartsFormationBullet": ActionBulletFormation,
         "ActionPartsParabolaBullet": ActionBulletParabola,
-        "ActionPartsSettingHit": ActionSettingHit
+        # Any other hits / actions
+        "ActionPartsSettingHit": ActionSettingHit,
+        "ActionPartsBuffFieldAttachment": ActionBuffField,
     }
 
     @classmethod

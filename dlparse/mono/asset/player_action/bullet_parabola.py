@@ -31,6 +31,5 @@ class ActionBulletParabola(ActionBullet):
 
         return ActionBullet(
             hit_labels=[label for label in labels_possible if label],
-            attenuation_rate=1,  # Dummy value, the component actually does not have this field
             **kwargs
         )
