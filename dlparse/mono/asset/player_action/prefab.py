@@ -10,7 +10,7 @@ from .bullet import ActionBullet
 from .bullet_format import ActionBulletFormation
 from .bullet_multi import ActionBulletMulti
 from .bullet_parabola import ActionBulletParabola
-from .bullet_stock import ActionBulletStock
+from .bullet_stock_fire import ActionBulletStockFire
 from .hit import ActionHit
 from .set_hit import ActionSettingHit
 
@@ -27,7 +27,7 @@ class PlayerActionParser(ActionParserBase):
         "ActionPartsHit": ActionHit,
         "ActionPartsBullet": ActionBullet,
         "ActionPartsMultiBullet": ActionBulletMulti,
-        "ActionPartsFireStockBullet": ActionBulletStock,
+        "ActionPartsFireStockBullet": ActionBulletStockFire,
         "ActionPartsFormationBullet": ActionBulletFormation,
         "ActionPartsParabolaBullet": ActionBulletParabola,
         "ActionPartsSettingHit": ActionSettingHit

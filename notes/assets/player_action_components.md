@@ -28,6 +28,21 @@ Fire the same bullet multiple times.
 - `_bulletNum`: count of bullets. This seems to share the same hit label (`_hitAttrLabel`).
 
 
+### ``ActionPartsStockBullet``
+
+Fire the bullet which is actually an action.
+
+#### Apperance notes
+
+- Gala Laxi (`103501022`) 
+
+#### Attribute notes
+
+- `_autoFireActionId`: ID of the action to be fired.
+
+- `_autoFireInterval`: Action firing interval in seconds.
+
+
 ### ``ActionPartsHit``
 
 An attacking action that comes from the player of a skill.

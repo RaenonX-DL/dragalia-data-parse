@@ -942,4 +942,4 @@ def test_with_attack_one_time_use(transformer_skill: SkillTransformer):
 def test_hp_drain(transformer_skill: SkillTransformer):
     # Yue S2
     # https://dragalialost.gamepedia.com/Yue
-    pass  # TEST: Yue S2
+    pass  # TEST: TBA - Yue S2

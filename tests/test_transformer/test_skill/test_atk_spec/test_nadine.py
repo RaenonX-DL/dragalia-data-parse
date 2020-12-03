@@ -6,4 +6,4 @@ def test_s1():
     # "_HitConditionType": 2,
     # "_HitConditionP1": 3,
     # "_HitConditionP2": 3,
-    pass
+    pass  # TEST: TBA - Nadine S1

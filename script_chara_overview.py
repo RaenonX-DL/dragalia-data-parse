@@ -20,8 +20,6 @@ _pa_loader: PlayerActionFileLoader = PlayerActionFileLoader(PATH_ROOT_ASSET_PLAY
 _transformer_skill: SkillTransformer = SkillTransformer(_skill_data, _hit_attr, _action_cond, _pa_loader,
                                                         _ability_asset)
 
-CHARA_ID = 10150404
-
 
 def print_atk_data_entry(chara_data, skill_data, skill_entry):
     print(f"# Attacking effects - Conditions: {skill_entry.condition_comp.conditions_sorted}")
@@ -100,10 +98,10 @@ def print_skill_id_entry(chara_data, skill_id_entry):
         print("--- No supportive data available for the skill ---")
 
 
-def chara_skill_overview():
-    chara_data = _chara_data.get_data_by_id(CHARA_ID)
+def chara_skill_overview(chara_id):
+    chara_data = _chara_data.get_data_by_id(chara_id)
 
-    print(f"{chara_data.get_chara_name(_text)} ({CHARA_ID})")
+    print(f"{chara_data.get_chara_name(_text)} ({chara_id})")
     print("=" * 50)
 
     for skill_id_entry in chara_data.get_skill_identifiers(_chara_mode, asset_text=_text, asset_skill=_skill_data):
@@ -112,4 +110,4 @@ def chara_skill_overview():
 
 
 if __name__ == '__main__':
-    chara_skill_overview()
+    chara_skill_overview(10350102)

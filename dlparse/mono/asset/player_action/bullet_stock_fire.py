@@ -1,22 +1,20 @@
-"""Class for ``ActionPartsStockBullet`` action component."""
+"""Class for ``ActionPartsFireStockBullet`` action component."""
 from dataclasses import dataclass
 from typing import Union
 
 from .bullet import ActionBullet
 from .bullet_arrange import ActionBulletArranged
 
-__all__ = ("ActionBulletStock",)
+__all__ = ("ActionBulletStockFire",)
 
 
 @dataclass
-class ActionBulletStock(ActionBullet):
-    """Class of ``ActionPartsStockBullet`` component in the player action asset."""
+class ActionBulletStockFire(ActionBullet):
+    """Class of ``ActionPartsFireStockBullet`` component in the player action asset."""
 
     @classmethod
-    def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBulletStock":
+    def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBulletStockFire":
         kwargs = cls.get_base_kwargs(data)
-
-        # TEST: Check GaLaxi Fig Test
 
         # Attach hit labels of the stock bullets
         # This assumes ``_hitAttrLabel2nd`` is not duplicated by ``_bulletNum``
@@ -26,7 +24,7 @@ class ActionBulletStock(ActionBullet):
         if "_arrangeBullet" in data:
             labels_possible.extend(ActionBulletArranged.parse_raw(data["_arrangeBullet"]).hit_labels)
 
-        return ActionBulletStock(
+        return ActionBulletStockFire(
             hit_labels=[label for label in labels_possible if label],
             **kwargs
         )
