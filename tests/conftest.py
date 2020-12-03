@@ -1,7 +1,8 @@
 import pytest
 
 from dlparse.mono.asset import (
-    SkillDataAsset, HitAttrAsset, CharaDataAsset, CharaModeAsset, ActionConditionAsset, TextAsset, AbilityAsset
+    SkillDataAsset, HitAttrAsset, CharaDataAsset, CharaModeAsset, ActionConditionAsset, TextAsset, AbilityAsset,
+    PlayerActionInfoAsset
 )
 from dlparse.mono.loader import PlayerActionFileLoader
 from dlparse.transformer import SkillTransformer
@@ -16,10 +17,11 @@ _hit_attr: HitAttrAsset = HitAttrAsset(asset_dir=PATH_DIR_MASTER_ASSET)
 _action_cond: ActionConditionAsset = ActionConditionAsset(asset_dir=PATH_DIR_MASTER_ASSET)
 _text: TextAsset = TextAsset(asset_dir=PATH_DIR_MASTER_ASSET, asset_dir_custom=PATH_DIR_CUSTOM_ASSET)
 _pa_loader: PlayerActionFileLoader = PlayerActionFileLoader(PATH_ROOT_ASSET_PLAYER_ACTION)
+_pa_info: PlayerActionInfoAsset = PlayerActionInfoAsset(asset_dir=PATH_DIR_MASTER_ASSET)
 
 # Transformers
 _transformer_skill: SkillTransformer = SkillTransformer(_skill_data, _hit_attr, _action_cond, _pa_loader,
-                                                        _ability_data)
+                                                        _ability_data, _pa_info)
 
 
 # region Directory fixtures

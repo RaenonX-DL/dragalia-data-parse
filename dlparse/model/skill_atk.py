@@ -4,6 +4,7 @@ from itertools import combinations, product, zip_longest
 from typing import Optional
 
 from dlparse.enums import SkillCondition, SkillConditionComposite, SkillConditionCategories, TargetStatus
+from dlparse.mono.asset import PlayerActionInfoAsset
 from dlparse.utils import calculate_damage_modifier
 from .hit_dmg import DamagingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
@@ -83,6 +84,8 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         To get the actual max skill level in-game, character data is needed.
     """
+
+    action_info_asset: PlayerActionInfoAsset
 
     mods: list[list[float]] = field(init=False)
 
@@ -169,7 +172,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
                 # Add the calculated mod(s) only if the mod list is not empty
                 # Sometimes this could be an empty list
                 #   - hits that only available if inside a buff zone but the skill condition is not in any buff zone
-                if damage_mod := calculate_damage_modifier(hit_data, condition_comp):
+                if damage_mod := calculate_damage_modifier(hit_data, condition_comp, self.action_info_asset):
                     new_mods_level.append(damage_mod)
 
             # (Deteriorating bullets)

@@ -96,6 +96,15 @@ def test_buff_count_only(transformer_skill: SkillTransformer):
 
     expected_max_total_mods = {
         SkillConditionComposite(SkillCondition.SELF_BUFF_0): 16.36 * (1 + 0.05 * 0),
+        SkillConditionComposite(SkillCondition.SELF_BUFF_1): 16.36 * (1 + 0.05 * 1),
+        SkillConditionComposite(SkillCondition.SELF_BUFF_2): 16.36 * (1 + 0.05 * 2),
+        SkillConditionComposite(SkillCondition.SELF_BUFF_3): 16.36 * (1 + 0.05 * 3),
+        SkillConditionComposite(SkillCondition.SELF_BUFF_4): 16.36 * (1 + 0.05 * 4),
+        SkillConditionComposite(SkillCondition.SELF_BUFF_5): 16.36 * (1 + 0.05 * 5),
+        SkillConditionComposite(SkillCondition.SELF_BUFF_6): 16.36 * (1 + 0.05 * 6),
+        SkillConditionComposite(SkillCondition.SELF_BUFF_7): 16.36 * (1 + 0.05 * 7),
+        SkillConditionComposite(SkillCondition.SELF_BUFF_8): 16.36 * (1 + 0.05 * 8),
+        SkillConditionComposite(SkillCondition.SELF_BUFF_9): 16.36 * (1 + 0.05 * 9),
         SkillConditionComposite(SkillCondition.SELF_BUFF_10): 16.36 * (1 + 0.05 * 10),
         SkillConditionComposite(SkillCondition.SELF_BUFF_20): 16.36 * (1 + 0.05 * 20),
         SkillConditionComposite(SkillCondition.SELF_BUFF_25): 16.36 * (1 + 0.05 * 25),

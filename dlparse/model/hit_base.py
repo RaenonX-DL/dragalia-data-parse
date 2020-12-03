@@ -16,5 +16,6 @@ class HitData(Generic[T], ABC):
     """Class for the data of a single hit."""
 
     hit_attr: HitAttrEntry
+    action_id: int
     action_component: Optional[T]
     pre_condition: SkillCondition

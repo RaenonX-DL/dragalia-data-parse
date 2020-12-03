@@ -80,14 +80,23 @@ class SkillCondition(Enum):
 
     # region Buff count
     SELF_BUFF_0 = 251
-    SELF_BUFF_10 = 252
-    SELF_BUFF_20 = 253
-    SELF_BUFF_25 = 254
-    SELF_BUFF_30 = 255
-    SELF_BUFF_35 = 256
-    SELF_BUFF_40 = 257
-    SELF_BUFF_45 = 258
-    SELF_BUFF_50 = 259
+    SELF_BUFF_1 = 252
+    SELF_BUFF_2 = 253
+    SELF_BUFF_3 = 254
+    SELF_BUFF_4 = 255
+    SELF_BUFF_5 = 256
+    SELF_BUFF_6 = 257
+    SELF_BUFF_7 = 258
+    SELF_BUFF_8 = 259
+    SELF_BUFF_9 = 260
+    SELF_BUFF_10 = 261
+    SELF_BUFF_20 = 262
+    SELF_BUFF_25 = 263
+    SELF_BUFF_30 = 264
+    SELF_BUFF_35 = 265
+    SELF_BUFF_40 = 266
+    SELF_BUFF_45 = 267
+    SELF_BUFF_50 = 268
     # endregion
 
     # region In buff zone

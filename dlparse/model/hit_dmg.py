@@ -1,8 +1,8 @@
 """Class for a single damaging hit."""
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from dlparse.errors import BulletEndOfLifeError, DamagingHitValidationFailedError
-from dlparse.mono.asset import ActionComponentHasHitLabels, ActionBullet, ActionBuffField
+from dlparse.mono.asset import ActionComponentHasHitLabels, ActionBullet, ActionBuffField, ActionBulletStockFire
 from .hit_base import HitData
 
 __all__ = ("DamagingHitData",)
@@ -13,7 +13,7 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
     """Class for the data of a single damaging hit."""
 
     # region Bullet deterioration
-    will_deteriorate: bool = field(init=False)
+    will_deteriorate: bool = False
     deterioration_rate: float = 0
     max_hit_count: int = 0
     # endregion
@@ -21,6 +21,10 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
     # region Damage modifiers when inside the buff zones
     mod_on_self_buff_zone: float = 0
     mod_on_ally_buff_zone: float = 0
+    # endregion
+
+    # region Buff count dependent bullets
+    is_user_buff_count_dependent: bool = False
 
     # endregion
 
@@ -30,15 +34,20 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
             raise DamagingHitValidationFailedError("Deterioration rate not set, but the hit `will_deteriorate`")
 
     def __post_init__(self):
-        # Bullet deterioration
-        self.will_deteriorate = \
-            isinstance(self.action_component, ActionBullet) and self.action_component.will_deteriorate
-
+        # General bullet setting copy
         if isinstance(self.action_component, ActionBullet):
+            self.will_deteriorate = self.action_component.will_deteriorate
             self.deterioration_rate = self.action_component.attenuation_rate
-            self.max_hit_count = self.action_component.max_hit_count
 
-        # Buff zone bonus damage mod
+            if isinstance(self.action_component, ActionBulletStockFire):
+                # Check if the damaging hit depends on user buff count
+                self.is_user_buff_count_dependent = self.action_component.is_user_buff_count_dependent
+
+            # Set the max hit count except for buff depending hits which max hit count depends on the other conditions
+            if not self.is_user_buff_count_dependent:
+                self.max_hit_count = self.action_component.max_hit_count
+
+        # Buff zone specific damage mod
         if isinstance(self.action_component, ActionBuffField):
             if self.action_component.count_for_self_built:
                 self.mod_on_self_buff_zone = self.hit_attr.damage_modifier
@@ -49,7 +58,7 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
 
     @property
     def is_effective_inside_buff_zone(self) -> bool:
-        """Check if the hit will only being effective if the user is inside buff zones."""
+        """Check if the hit is only effective if the user is inside buff zones."""
         return bool(self.mod_on_self_buff_zone or self.mod_on_ally_buff_zone)
 
     def damage_modifier_at_hit(self, hit_count: int) -> float:

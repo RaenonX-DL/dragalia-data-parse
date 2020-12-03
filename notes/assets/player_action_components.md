@@ -19,13 +19,38 @@ Fire the same bullet multiple times.
 
 #### Apperance notes
 
-- Nefaria S1 (`106505011`) 
+- Nefaria S1 (`106505011`)
 
 - Yukata Curran S1 (`103504041` for unmasked, `103504043` for masked, with damage deterioration effect)
 
+- Gala Sarisse S1 (`106501011`, AID `691030`)
+  - `_fireStockPattern` = `2`
+  - Max count 7
+
+- Summer Cleo S1 Lv.1 ~ Lv.3 (`106504011`, AID `691070`)
+  - `_fireStockPattern` = `2`
+  - Max count 4
+
+- Summer Cleo S1 Lv.4 (`106504011`, AID `691071`)
+  - `_fireStockPattern` = `2`
+  - Max count 5
+
+- Chelle S2 (`106505032`, AID `691220`)
+  - `_fireStockPattern` = `2`
+  - Max count 8
+
+- Amane S1 Lv.4 (`107404011`, AID `722003`)
+  - `_fireStockPattern` = `2`
+  - Max count 2
+
 #### Attribute notes
 
-- `_bulletNum`: count of bullets. This seems to share the same hit label (`_hitAttrLabel`).
+- `_bulletNum`: count of bullets. This seems to use the same hit label (`_hitAttrLabel`).
+
+- `_fireStockPattern`: Usage pattern of the bullets.
+
+  - `2` means that the bullet will only fire according to the user buff count.
+    If the user does not have any buff, the bullet will **not** fire.
 
 
 ### ``ActionPartsStockBullet``
@@ -34,7 +59,7 @@ Fire the bullet which is actually an action.
 
 #### Apperance notes
 
-- Gala Laxi (`103501022`) 
+- Gala Laxi S2 (Fig) (`103501022`)
 
 #### Attribute notes
 

@@ -1,7 +1,9 @@
 """Functions for mimicking the in-game computations."""
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
+from warnings import warn
 
 from dlparse.enums import SkillConditionComposite, SkillCondition
+from dlparse.mono.asset import PlayerActionInfoAsset
 from .calc import multiply_vector
 
 if TYPE_CHECKING:
@@ -10,7 +12,8 @@ if TYPE_CHECKING:
 __all__ = ("calculate_damage_modifier",)
 
 
-def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: SkillConditionComposite) -> list[float]:
+def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: SkillConditionComposite,
+                              action_info_asset: Optional[PlayerActionInfoAsset] = None) -> list[float]:
     """
     Calculates the damage modifier of ``hit_data`` under ``condition_comp``.
 
@@ -35,6 +38,18 @@ def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: Skill
         # Damage mods inside buff zones i.e. no damage mod if not in buff zone
         mods = hit_data.mods_in_self_buff_zone(condition_comp.buff_zone_self_converted or 0)
         mods += hit_data.mods_in_ally_buff_zone(condition_comp.buff_zone_ally_converted or 0)
+    elif hit_data.is_user_buff_count_dependent:
+        # Damage dealt depends on the user's buff count
+        effective_buff_count: int = condition_comp.buff_count_converted or 0
+
+        if action_info_asset:
+            max_buff_hit_count = action_info_asset.get_data_by_id(hit_data.action_id).max_bullet_count
+            effective_buff_count = min(max_buff_hit_count, effective_buff_count)
+        else:
+            warn(f"Max hits by user buff count unobtainable. Result might be inaccurate. "
+                 f"(Hit attr ID: {hit_data.hit_attr.id})")
+
+        mods = [hit_attr.damage_modifier] * effective_buff_count
     else:
         # Normal cases
         mods = [hit_attr.damage_modifier]

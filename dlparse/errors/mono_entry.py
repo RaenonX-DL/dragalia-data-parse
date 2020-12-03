@@ -4,7 +4,7 @@ from typing import Optional
 from .base import AppValueError, EntryNotFoundError
 
 __all__ = ("SkillDataNotFoundError", "ActionDataNotFoundError", "TextLabelNotFoundError",
-           "AbilityConditionUnconvertibleError")
+           "AbilityConditionUnconvertibleError", "BulletMaxCountUnavailableError")
 
 
 class SkillDataNotFoundError(EntryNotFoundError):
@@ -41,3 +41,7 @@ class AbilityConditionUnconvertibleError(AppValueError):
     def __init__(self, ability_condition: int, val_1: float, val_2: float):
         super().__init__(f"Unable to convert ability condition to skill condition "
                          f"(ability condition code: {ability_condition} / val 1: {val_1} / val 2: {val_2})")
+
+
+class BulletMaxCountUnavailableError(AppValueError):
+    """Error to be raised if the bullet max count cannot be obtained solely from its action component."""

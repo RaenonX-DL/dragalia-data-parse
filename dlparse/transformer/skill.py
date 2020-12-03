@@ -4,7 +4,7 @@ from typing import Optional, TypeVar, Type
 from dlparse.errors import SkillDataNotFoundError, HitDataUnavailableError
 from dlparse.model import HitData, AttackingSkillData, SupportiveSkillData, DamagingHitData, BuffingHitData
 from dlparse.mono.asset import (
-    HitAttrAsset, SkillDataEntry, SkillDataAsset,
+    HitAttrAsset, SkillDataEntry, SkillDataAsset, PlayerActionInfoAsset,
     AbilityAsset, ActionConditionAsset
 )
 from dlparse.mono.loader import PlayerActionFileLoader
@@ -21,11 +21,12 @@ class SkillTransformer:
 
     def __init__(self, skill_data_asset: SkillDataAsset, hit_attr_asset: HitAttrAsset,
                  action_condition_asset: ActionConditionAsset, action_loader: PlayerActionFileLoader,
-                 ability_asset: AbilityAsset):
+                 ability_asset: AbilityAsset, action_info_asset: PlayerActionInfoAsset):
         self._skill_data = skill_data_asset
         self._hit_attr = hit_attr_asset
         self._action_cond = action_condition_asset
         self._action_loader = action_loader
+        self._action_info = action_info_asset
         self._ability_asset = ability_asset
 
     @property
@@ -33,15 +34,14 @@ class SkillTransformer:
         """Get the skill data asset used by this transformer."""
         return self._skill_data
 
-    def _get_hit_attrs_lv(self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_id: int) -> HitDataList:
+    def _get_hit_data_lv(self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_id: int) -> HitDataList:
         """Get a list of hit attributes at a certain ``skill_lv``."""
         ret: HitDataList = []
 
         # --- From action component
         for hit_label, action_component in self._action_loader.get_prefab(action_id).get_hit_actions(skill_lv):
             if hit_attr_data := self._hit_attr.get_data_by_id(hit_label):
-
-                ret.append(hit_data_cls(hit_attr=hit_attr_data, action_component=action_component,
+                ret.append(hit_data_cls(hit_attr=hit_attr_data, action_component=action_component, action_id=action_id,
                                         pre_condition=action_component.condition_data.skill_pre_condition))
                 continue
 
@@ -59,7 +59,7 @@ class SkillTransformer:
                 # Parse to :class:`HitData` and attach it to the hit attribute list to be returned
                 for hit_label in ability_data.assigned_hit_labels:
                     if hit_attr_data := self._hit_attr.get_data_by_id(hit_label):
-                        ret.append(hit_data_cls(hit_attr=hit_attr_data, action_component=None,
+                        ret.append(hit_data_cls(hit_attr=hit_attr_data, action_component=None, action_id=action_id,
                                                 pre_condition=ability_data.condition.to_skill_condition()))
                         continue
                     break  # If not all hit attribute data found, consider as an invalid level
@@ -103,7 +103,7 @@ class SkillTransformer:
             zipped_ids = zip(skill_data.action_id_1_by_level, skill_data.ability_id_by_level)
 
         for skill_lv, (action_id, ability_id) in enumerate(zipped_ids, start=1):
-            hit_data_list: HitDataList = self._get_hit_attrs_lv(hit_data_cls, skill_lv, action_id, ability_id)
+            hit_data_list: HitDataList = self._get_hit_data_lv(hit_data_cls, skill_lv, action_id, ability_id)
 
             if not hit_data_list:
                 # No hit attribute data available, terminate further discovery
@@ -159,5 +159,6 @@ class SkillTransformer:
 
         return AttackingSkillData(
             skill_data_raw=skill_data,
-            hit_data_mtx=hit_data_mtx
+            hit_data_mtx=hit_data_mtx,
+            action_info_asset=self._action_info
         )

@@ -218,6 +218,15 @@ class SkillConditionCategories:
     self_buff_count = SkillConditionCategoryTargetInt(
         {
             SkillCondition.SELF_BUFF_0: 0,
+            SkillCondition.SELF_BUFF_1: 1,
+            SkillCondition.SELF_BUFF_2: 2,
+            SkillCondition.SELF_BUFF_3: 3,
+            SkillCondition.SELF_BUFF_4: 4,
+            SkillCondition.SELF_BUFF_5: 5,
+            SkillCondition.SELF_BUFF_6: 6,
+            SkillCondition.SELF_BUFF_7: 7,
+            SkillCondition.SELF_BUFF_8: 8,
+            SkillCondition.SELF_BUFF_9: 9,
             SkillCondition.SELF_BUFF_10: 10,
             SkillCondition.SELF_BUFF_20: 20,
             SkillCondition.SELF_BUFF_25: 25,
