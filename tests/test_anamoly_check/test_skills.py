@@ -5,6 +5,10 @@ from dlparse.mono.asset import CharaDataAsset, CharaDataEntry, CharaModeAsset, S
 from dlparse.transformer import SkillTransformer
 from tests.expected_skills_lookup import skill_ids_atk, skill_ids_sup
 
+allowed_no_base_mods_sid = {
+    103505042  # Nevin S2, only has either sigil released or unlocked
+}
+
 
 def test_transform_all_attack_skills(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset,
                                      asset_skill: SkillDataAsset, transformer_skill: SkillTransformer):
@@ -42,7 +46,9 @@ def test_transform_all_attack_skills(asset_chara: CharaDataAsset, asset_chara_mo
     assert len(skill_entries) > 0
 
     assert len(skill_ids_missing) == 0, f"Missing attacking skills (could be more): {set(skill_ids_missing.keys())}"
-    assert len(skill_ids_zero_mods) == 0, f"Skills without any modifiers included: {skill_ids_zero_mods}"
+
+    no_base_mods_sid = skill_ids_zero_mods - allowed_no_base_mods_sid
+    assert len(no_base_mods_sid) == 0, f"Skills without any modifiers included: {no_base_mods_sid}"
 
 
 def transform_all_supportive_skills(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset,

@@ -1,6 +1,6 @@
 """Models for character skills."""
 from dataclasses import dataclass, field
-from itertools import combinations, product
+from itertools import combinations, product, zip_longest
 from typing import Optional
 
 from dlparse.enums import SkillCondition, SkillConditionComposite, SkillConditionCategories, TargetStatus
@@ -95,6 +95,8 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         will_deteriorate: bool = False
         max_bullet_hit: int = 0
 
+        preconditions: set[tuple[SkillCondition]] = set()
+
         # Check availabilities
         for hit_data_lv in self.hit_data_mtx:
             for hit_data in hit_data_lv:
@@ -103,8 +105,14 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
                 buff_up_available = buff_up_available or hit_data.hit_attr.boost_by_buff_count
                 will_deteriorate = will_deteriorate or hit_data.will_deteriorate
                 max_bullet_hit = max(max_bullet_hit, hit_data.max_hit_count)
+                if precondition := hit_data.pre_condition:
+                    preconditions.add((precondition,))
 
         cond_elems: list[set[tuple[SkillCondition, ...]]] = []
+
+        # Skill precondition available, attach it
+        if preconditions:
+            cond_elems.append(preconditions)
 
         # Crisis boosts available, attach HP conditions
         if crisis_available:
@@ -158,11 +166,18 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             new_mods_level = []  # Array of the mods at the same level
 
             for hit_data in hit_data_lv:
-                # Add the calculated mod(s)
-                new_mods_level.append(calculate_damage_modifier(hit_data, condition_comp))
+                # Add the calculated mod(s) only if the mod list is not empty
+                # Sometimes this could be an empty list
+                #   - hits that only available if inside a buff zone but the skill condition is not in any buff zone
+                if damage_mod := calculate_damage_modifier(hit_data, condition_comp):
+                    new_mods_level.append(damage_mod)
 
+            # (Deteriorating bullets)
             # [[1, 0.5, 0.2], [1, 0.5, 0.2]] needs to be transformed to [1, 1, 0.5, 0.5, 0.2, 0.2]
-            mods.append([subitem for item in zip(*new_mods_level) for subitem in item])
+            # (Nevin S2 @ Sigil Released)
+            # [[9], [0.9, 0.9]] needs to be transformed to [9, 0.9, 0.9]
+            mods.append([subitem for item in zip_longest(*new_mods_level, fillvalue=None)
+                         for subitem in item if subitem])
 
         return mods
 

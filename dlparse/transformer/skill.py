@@ -1,7 +1,6 @@
 """Skill data transformer."""
 from typing import Optional, TypeVar, Type
 
-from dlparse.enums import SkillCondition
 from dlparse.errors import SkillDataNotFoundError, HitDataUnavailableError
 from dlparse.model import HitData, AttackingSkillData, SupportiveSkillData, DamagingHitData, BuffingHitData
 from dlparse.mono.asset import (
@@ -41,8 +40,9 @@ class SkillTransformer:
         # --- From action component
         for hit_label, action_component in self._action_loader.get_prefab(action_id).get_hit_actions(skill_lv):
             if hit_attr_data := self._hit_attr.get_data_by_id(hit_label):
+
                 ret.append(hit_data_cls(hit_attr=hit_attr_data, action_component=action_component,
-                                        pre_condition=SkillCondition.NONE))
+                                        pre_condition=action_component.condition_data.skill_pre_condition))
                 continue
 
             break  # If not all hit attribute data found, consider as an invalid level

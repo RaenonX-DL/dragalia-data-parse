@@ -34,7 +34,7 @@ def test_catherine(transformer_skill: SkillTransformer):
         assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
 
 
-def test_yukata_curran(transformer_skill: SkillTransformer):
+def test_yukata_curran_unmasked(transformer_skill: SkillTransformer):
     # Yukata Curran S1 - Unmasked
     # https://dragalialost.gamepedia.com/Yukata_Curran
     skill_data = transformer_skill.transform_attacking(103504041)
@@ -72,6 +72,30 @@ def test_yukata_curran(transformer_skill: SkillTransformer):
             pytest.approx(lv_3_single_paralyzed * dmg_ups[4]),
         SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.BULLET_HIT_6]):
             pytest.approx(lv_3_single_paralyzed * dmg_ups[5]),
+    }
+
+    expected = set(expected_max_total_mods.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert entry.total_mod_at_max == expected_max_total_mods[entry.condition_comp]
+        del expected_max_total_mods[entry.condition_comp]
+
+    assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
+
+
+def test_nevin_s2_locked(transformer_skill: SkillTransformer):
+    # Nevin S2 @ Sigil locked
+    # https://dragalialost.gamepedia.com/Nevin
+    skill_data = transformer_skill.transform_attacking(103505042)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_max_total_mods = {
+        SkillConditionComposite(SkillCondition.SELF_SIGIL_RELEASED): 10,
+        SkillConditionComposite(SkillCondition.SELF_SIGIL_LOCKED): 10,
     }
 
     expected = set(expected_max_total_mods.keys())

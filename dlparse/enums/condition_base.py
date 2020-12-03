@@ -71,6 +71,9 @@ class ConditionCompositeBase(Generic[T], ABC):
     def __repr__(self):
         return f"{{{', '.join({condition.name for condition in self.conditions_sorted})}}}"
 
+    def __contains__(self, item):
+        return item in self.conditions_sorted
+
     @abstractmethod
     def __post_init__(self, conditions: Optional[Union[Sequence[T], T]]):
         raise NotImplementedError()

@@ -5,7 +5,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_lapis_s2(transformer_skill: SkillTransformer):
     # Lapis S2
-    pass
+    pass  # TEST: TBA - Lapis S2
 
 
 def test_elisanne_s1(transformer_skill: SkillTransformer):
@@ -58,24 +58,3 @@ def test_summer_mikoto_s1_celestial(transformer_skill: SkillTransformer):
     # Summer Mikoto S1 (Celestial)
     # https://dragalialost.gamepedia.com/Summer_Mikoto
     pass  # TEST: S!Mikoto S1 celestial wave
-
-
-def test_nevin_s2(transformer_skill: SkillTransformer):
-    # Nevin S2
-    # https://dragalialost.gamepedia.com/Nevin
-    pass
-    # skill_data_base = transformer_skill.transform_attacking(103505042)
-    #
-    # # Base data
-    # skill_data = skill_data_base.with_conditions()
-    #
-    # # TODO: To be investigated
-    # #   Seems that Sigil locked and Sigil released are using the same action file with different bullet? (10 / 10+1)
-    #
-    # assert skill_data.hit_count == [2, 2, 2, 2]
-    # assert skill_data.hit_count_at_max == 2
-    # assert skill_data.total_mod == pytest.approx([5.96 * 2, 6.63 * 2, 7.36 * 2, 8.18 * 2])
-    # assert skill_data.total_mod_at_max == pytest.approx(16.36)
-    # assert skill_data.mods == [[5.96] * 2, [6.63] * 2, [7.36] * 2, [8.18] * 2]
-    # assert skill_data.mods_at_max == [8.18] * 2
-    # assert skill_data.max_available_level == 4

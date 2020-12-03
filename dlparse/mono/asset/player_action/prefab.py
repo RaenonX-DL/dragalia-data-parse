@@ -5,6 +5,7 @@ from typing import Type
 from dlparse.mono.asset.base import (
     ActionAssetBase, ActionParserBase, ActionComponentBase, ActionComponentHasHitLabels
 )
+from .buff_field import ActionBuffField
 from .bullet import ActionBullet
 from .bullet_format import ActionBulletFormation
 from .bullet_multi import ActionBulletMulti
@@ -22,6 +23,7 @@ class PlayerActionParser(ActionParserBase):
     SCRIPT_KEY: str = "$Script"
 
     SCRIPT_CLASS: dict[str, Type[ActionComponentBase]] = {
+        "ActionPartsBuffFieldAttachment": ActionBuffField,
         "ActionPartsHit": ActionHit,
         "ActionPartsBullet": ActionBullet,
         "ActionPartsMultiBullet": ActionBulletMulti,

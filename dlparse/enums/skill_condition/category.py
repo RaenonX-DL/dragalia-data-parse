@@ -18,12 +18,18 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
 
     MULTIPLE_HP = auto()
     MULTIPLE_BUFF = auto()
+    MULTIPLE_BUFF_ZONE_SELF = auto()
+    MULTIPLE_BUFF_ZONE_ALLY = auto()
+    MULTIPLE_SELF_ACTION_CONDITION = auto()
     MULTIPLE_BULLET_HIT = auto()
     MULTIPLE_TEAMMATE_COVERAGE = auto()
     MULTIPLE_TARGET_ELEMENT = auto()
 
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
     INTERNAL_NOT_BUFF_COUNT = auto()
+    INTERNAL_NOT_BUFF_ZONE_SELF = auto()
+    INTERNAL_NOT_BUFF_ZONE_ALLY = auto()
+    INTERNAL_NOT_SELF_ACTION_CONDITION = auto()
     INTERNAL_NOT_BULLET_HIT_COUNT = auto()
     INTERNAL_NOT_HP_CONDITION = auto()
     INTERNAL_NOT_TEAMMATE_COVERAGE = auto()
@@ -224,6 +230,35 @@ class SkillConditionCategories:
         SkillConditionMaxCount.SINGLE,
         "Self buff count",
         SkillConditionCheckResult.MULTIPLE_BUFF
+    )
+    self_in_buff_zone_self = SkillConditionCategoryTargetInt(
+        {
+            SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_1: 1,
+            SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2: 2,
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Count of buff zone built by self inside",
+        SkillConditionCheckResult.MULTIPLE_BUFF_ZONE_SELF
+    )
+    self_in_buff_zone_ally = SkillConditionCategoryTargetInt(
+        {
+            SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_1: 1,
+            SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_2: 2,
+            SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_3: 3,
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Count of buff zone built by ally inside",
+        SkillConditionCheckResult.MULTIPLE_BUFF_ZONE_ALLY
+    )
+    self_action_condition = SkillConditionCategoryTargetInt(
+        {
+            # Value is the corresponding ACID (not necessary means that it needs to exist)
+            SkillCondition.SELF_SIGIL_LOCKED: 1152,
+            SkillCondition.SELF_SIGIL_RELEASED: 1152
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Self action condition status",
+        SkillConditionCheckResult.MULTIPLE_SELF_ACTION_CONDITION
     )
     skill_bullet_hit = SkillConditionCategoryTargetInt(
         {

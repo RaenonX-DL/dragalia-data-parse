@@ -75,6 +75,21 @@ Another type of bullets. Distinction unknown.
 - Ilia S2 @ Alchemy (`103505033`)
 
 
+### ``ActionPartsBuffFieldAttachment``
+
+Add a damaging hit if according to the buff field count.
+
+#### Apperance notes
+
+- Nevin S2 @ Sigil Released (`103505044`)
+
+#### Attribute notes
+
+- `_isAttachToSelfBuffField`: if the counting toward the buff field that the user built.
+  - `0` for the ally built
+  - `1` for the self built  
+
+
 ### ``ActionSettingHit``
 
 An action which sets an area.

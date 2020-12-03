@@ -62,19 +62,19 @@ class SkillCondition(Enum):
     SELF_HP_LT_30 = 212
     """User's HP < 30% max."""
 
-    SELF_HP_LTE_40 = 221
+    SELF_HP_LTE_40 = 216
     """User's HP <= 40% max."""
 
-    SELF_HP_GT_30 = 231
+    SELF_HP_GT_30 = 221
     """User's HP > 30% max."""
 
-    SELF_HP_GTE_40 = 241
+    SELF_HP_GTE_40 = 226
     """User's HP >= 40% max."""
-    SELF_HP_GTE_50 = 242
+    SELF_HP_GTE_50 = 227
     """User's HP >= 50% max."""
-    SELF_HP_GTE_60 = 243
+    SELF_HP_GTE_60 = 228
     """User's HP >= 60% max."""
-    SELF_HP_GTE_85 = 244
+    SELF_HP_GTE_85 = 229
     """User's HP >= 85% max."""
     # endregion
 
@@ -88,6 +88,19 @@ class SkillCondition(Enum):
     SELF_BUFF_40 = 257
     SELF_BUFF_45 = 258
     SELF_BUFF_50 = 259
+    # endregion
+
+    # region In buff zone
+    SELF_IN_BUFF_ZONE_BY_SELF_1 = 270
+    SELF_IN_BUFF_ZONE_BY_SELF_2 = 271
+    SELF_IN_BUFF_ZONE_BY_ALLY_1 = 272
+    SELF_IN_BUFF_ZONE_BY_ALLY_2 = 273
+    SELF_IN_BUFF_ZONE_BY_ALLY_3 = 274
+    # endregion
+
+    # region Action condition status (corresponds to specific action condition, for example, sigil locked)
+    SELF_SIGIL_LOCKED = 280  # ACID: 1152
+    SELF_SIGIL_RELEASED = 281
     # endregion
     # endregion
 
@@ -110,7 +123,6 @@ class SkillCondition(Enum):
     COVER_TEAMMATE_1 = 352
     COVER_TEAMMATE_2 = 353
     COVER_TEAMMATE_3 = 354
-
     # endregion
     # endregion
 

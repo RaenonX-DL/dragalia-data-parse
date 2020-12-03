@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Type, Optional, Callable, Union
 
+from dlparse.enums import SkillCondition
 from dlparse.errors import AssetKeyMissingError
 from .asset import AssetBase
 from .entry import EntryBase
@@ -25,13 +26,22 @@ class ActionComponentCondition(EntryBase):
 
     @staticmethod
     def parse_raw(data: dict[str, Union[int, list[int]]]) -> Optional["ActionComponentCondition"]:
-        if data.get("_conditionType", 0):
-            return None
-
         return ActionComponentCondition(
             type_id=data["_conditionType"],
             type_values=data["_conditionValue"]
         )
+
+    @property
+    def skill_pre_condition(self) -> SkillCondition:
+        """Get the action executing precondition."""
+        # Appears in Nevin S2 (103505042 - 391330)
+        if self.type_values[0] == 1152:
+            if self.type_values[2] == 1:
+                return SkillCondition.SELF_SIGIL_LOCKED
+            if self.type_values[2] == 0:
+                return SkillCondition.SELF_SIGIL_RELEASED
+
+        return SkillCondition.NONE
 
 
 @dataclass
