@@ -329,7 +329,7 @@ def test_s2_masked_no_affliction(transformer_skill: SkillTransformer):
     level_1_base_expected = 0.72
     level_2_base_expected = 0.9
 
-    hits_expected = 27
+    hits_expected = 30
 
     # Base data - (1 hit for each bullets)
     skill_data = skill_data_base.with_conditions()
@@ -357,7 +357,7 @@ def test_s2_masked_paralyzed(transformer_skill: SkillTransformer):
     level_1_base_expected = 0.864
     level_2_base_expected = 1.08
 
-    hits_expected = 27
+    hits_expected = 30
 
     # Base data - (1 hit for each bullets)
     skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_PARALYZED))

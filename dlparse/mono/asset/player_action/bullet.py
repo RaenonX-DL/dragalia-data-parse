@@ -35,7 +35,12 @@ class ActionBullet(asset.ActionComponentHasHitLabels):
         if not self.collision_interval or self.collision_interval == COLLISION_INTERVAL_INEFFECTIVE:
             return 0
 
-        return int(self.bullet_duration // self.collision_interval)
+        hit_count = int(self.bullet_duration // self.collision_interval)
+
+        if self.bullet_duration % self.collision_interval:
+            hit_count += 1
+
+        return hit_count
 
     @property
     def will_deteriorate(self) -> bool:

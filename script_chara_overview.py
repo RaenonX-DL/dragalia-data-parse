@@ -28,15 +28,15 @@ def print_atk_data_entry(chara_data, skill_data, skill_entry):
     for skill_level in range(skill_entry.max_level):
         skill_level_actual = skill_level + 1
 
-        print(f"Lv.{skill_level_actual} {'(max)' if skill_entry.max_level == skill_level else ''}")
+        sp_str = f"SP: {skill_data.skill_data_raw.get_sp_at_level(skill_level_actual)}"
+        if chara_data.ss_skill_id == skill_data.skill_data_raw.id:
+            sp_str += f" / SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(skill_level_actual)}"
+
+        print(f"Lv.{skill_level_actual} {'(max)' if skill_entry.max_level == skill_level else ''}| {sp_str}")
         print()
         print(f"Mods distribution: {skill_entry.mods[skill_level]}")
         print(f"Total Mods: {skill_entry.total_mod[skill_level]:.0%} "
               f"({skill_entry.hit_count[skill_level]} hits)")
-        print()
-        print(f"SP: {skill_data.skill_data_raw.get_sp_at_level(skill_level_actual)}")
-        if chara_data.ss_skill_id == skill_data.skill_data_raw.id:
-            print(f"SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(skill_level_actual)}")
         print()
 
 
@@ -110,4 +110,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10350102)
+    chara_skill_overview(10150402)
