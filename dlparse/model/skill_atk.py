@@ -119,7 +119,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         # Crisis boosts available, attach HP conditions
         if crisis_available:
-            cond_elems.append({(SkillCondition.SELF_HP_1,), (SkillCondition.SELF_HP_FULL,)})
+            cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_hp_status.members})
 
         # Buff boosts available, attach buff counts
         if buff_up_available:

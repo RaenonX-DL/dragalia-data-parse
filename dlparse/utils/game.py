@@ -2,14 +2,23 @@
 from typing import TYPE_CHECKING, Optional
 from warnings import warn
 
-from dlparse.enums import SkillConditionComposite, SkillCondition
+from dlparse.enums import SkillConditionComposite
 from dlparse.mono.asset import PlayerActionInfoAsset
 from .calc import multiply_vector
 
 if TYPE_CHECKING:
     from dlparse.model import DamagingHitData
 
-__all__ = ("calculate_damage_modifier",)
+__all__ = ("calculate_damage_modifier", "calculate_crisis_mod")
+
+
+def calculate_crisis_mod(mod: float, hp_rate: float, crisis_rate: float) -> float:
+    """
+    Calculate the ``mod``, which correlates to ``crisis_rate``, at ``hp_rate``.
+
+    In short, this is quadratic.
+    """
+    return mod * ((1 - hp_rate) ** 2 * (crisis_rate - 1) + 1)
 
 
 def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: SkillConditionComposite,
@@ -56,9 +65,10 @@ def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: Skill
 
     # --- Apply boosts
 
-    # Crisis (low HP) boosts
-    if hit_attr.boost_by_hp and condition_comp.hp_condition == SkillCondition.SELF_HP_1:
-        mods = multiply_vector(mods, hit_attr.rate_boost_on_crisis)
+    # HP boosts
+    if hit_attr.boost_by_hp:
+        mods = [calculate_crisis_mod(mod, condition_comp.hp_status_converted, hit_attr.rate_boost_on_crisis)
+                for mod in mods]
 
     # Buff boosts
     if hit_attr.boost_by_buff_count and condition_comp.buff_count:

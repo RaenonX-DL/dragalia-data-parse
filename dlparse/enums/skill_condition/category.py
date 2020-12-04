@@ -16,22 +16,24 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
 
     PASS = auto()
 
-    MULTIPLE_HP = auto()
+    MULTIPLE_TARGET_ELEMENT = auto()
+    MULTIPLE_HP_CONDITION = auto()
+    MULTIPLE_HP_STATUS = auto()
     MULTIPLE_BUFF = auto()
     MULTIPLE_BUFF_ZONE_SELF = auto()
     MULTIPLE_BUFF_ZONE_ALLY = auto()
     MULTIPLE_SELF_ACTION_CONDITION = auto()
     MULTIPLE_BULLET_HIT = auto()
     MULTIPLE_TEAMMATE_COVERAGE = auto()
-    MULTIPLE_TARGET_ELEMENT = auto()
 
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
+    INTERNAL_NOT_HP_STATUS = auto()
+    INTERNAL_NOT_HP_CONDITION = auto()
     INTERNAL_NOT_BUFF_COUNT = auto()
     INTERNAL_NOT_BUFF_ZONE_SELF = auto()
     INTERNAL_NOT_BUFF_ZONE_ALLY = auto()
     INTERNAL_NOT_SELF_ACTION_CONDITION = auto()
     INTERNAL_NOT_BULLET_HIT_COUNT = auto()
-    INTERNAL_NOT_HP_CONDITION = auto()
     INTERNAL_NOT_TEAMMATE_COVERAGE = auto()
     INTERNAL_NOT_TARGET_ELEMENTAL = auto()
 
@@ -145,10 +147,10 @@ class SkillConditionCategory(Generic[T]):
         return True
 
 
-class SkillConditionCategoryTargetInt(SkillConditionCategory[int]):
-    """A skill condition category which target is :class:`int`."""
+class SkillConditionCategoryTargetNumber(SkillConditionCategory[float]):
+    """A skill condition category which target is :class:`float`."""
 
-    def get_members_lte(self, threshold: int) -> list[SkillCondition]:
+    def get_members_lte(self, threshold: float) -> list[SkillCondition]:
         """Get the members which target is less than or equal to ``threshold``."""
         return [cond_enum for cond_enum, target in self._members.items() if target <= threshold]
 
@@ -198,10 +200,22 @@ class SkillConditionCategories:
         "Target element",
         SkillConditionCheckResult.MULTIPLE_TARGET_ELEMENT
     )
-    self_hp = SkillConditionCategoryTargetInt(
+    self_hp_status = SkillConditionCategoryTargetNumber(
         {
             SkillCondition.SELF_HP_1: 0,
+            SkillCondition.SELF_HP_EQ_10: 0.1,
+            SkillCondition.SELF_HP_EQ_20: 0.2,
+            SkillCondition.SELF_HP_EQ_30: 0.3,
+            SkillCondition.SELF_HP_EQ_50: 0.5,
+            SkillCondition.SELF_HP_EQ_70: 0.7,
             SkillCondition.SELF_HP_FULL: 1,
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Self HP status (of % max)",
+        SkillConditionCheckResult.MULTIPLE_HP_STATUS
+    )
+    self_hp_cond = SkillConditionCategoryTargetNumber(
+        {
             SkillCondition.SELF_HP_LT_30: 0.3,
             SkillCondition.SELF_HP_LT_40: 0.4,
             SkillCondition.SELF_HP_LTE_40: 0.4,
@@ -212,10 +226,10 @@ class SkillConditionCategories:
             SkillCondition.SELF_HP_GTE_85: 0.85,
         },
         SkillConditionMaxCount.SINGLE,
-        "Self HP %",
-        SkillConditionCheckResult.MULTIPLE_HP
+        "Self HP condition (of % max)",
+        SkillConditionCheckResult.MULTIPLE_HP_CONDITION
     )
-    self_buff_count = SkillConditionCategoryTargetInt(
+    self_buff_count = SkillConditionCategoryTargetNumber(
         {
             SkillCondition.SELF_BUFF_0: 0,
             SkillCondition.SELF_BUFF_1: 1,
@@ -240,7 +254,7 @@ class SkillConditionCategories:
         "Self buff count",
         SkillConditionCheckResult.MULTIPLE_BUFF
     )
-    self_in_buff_zone_self = SkillConditionCategoryTargetInt(
+    self_in_buff_zone_self = SkillConditionCategoryTargetNumber(
         {
             SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_1: 1,
             SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2: 2,
@@ -249,7 +263,7 @@ class SkillConditionCategories:
         "Count of buff zone built by self inside",
         SkillConditionCheckResult.MULTIPLE_BUFF_ZONE_SELF
     )
-    self_in_buff_zone_ally = SkillConditionCategoryTargetInt(
+    self_in_buff_zone_ally = SkillConditionCategoryTargetNumber(
         {
             SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_1: 1,
             SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_2: 2,
@@ -259,7 +273,7 @@ class SkillConditionCategories:
         "Count of buff zone built by ally inside",
         SkillConditionCheckResult.MULTIPLE_BUFF_ZONE_ALLY
     )
-    self_action_condition = SkillConditionCategoryTargetInt(
+    self_action_condition = SkillConditionCategoryTargetNumber(
         {
             # Value is the corresponding ACID (not necessary means that it needs to exist)
             SkillCondition.SELF_SIGIL_LOCKED: 1152,
@@ -269,7 +283,7 @@ class SkillConditionCategories:
         "Self action condition status",
         SkillConditionCheckResult.MULTIPLE_SELF_ACTION_CONDITION
     )
-    skill_bullet_hit = SkillConditionCategoryTargetInt(
+    skill_bullet_hit = SkillConditionCategoryTargetNumber(
         {
             SkillCondition.BULLET_HIT_1: 1,
             SkillCondition.BULLET_HIT_2: 2,
@@ -286,7 +300,7 @@ class SkillConditionCategories:
         "Skill bullet hit count",
         SkillConditionCheckResult.MULTIPLE_BULLET_HIT
     )
-    skill_teammates_covered = SkillConditionCategoryTargetInt(
+    skill_teammates_covered = SkillConditionCategoryTargetNumber(
         {
             SkillCondition.COVER_TEAMMATE_0: 0,
             SkillCondition.COVER_TEAMMATE_1: 1,

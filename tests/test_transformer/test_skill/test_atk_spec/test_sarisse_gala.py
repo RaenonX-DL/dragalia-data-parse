@@ -1,4 +1,3 @@
-# FIXME: TBA - Gala Sarisse
 import pytest
 
 from dlparse.enums import SkillConditionComposite, SkillConditionCategories

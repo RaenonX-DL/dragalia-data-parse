@@ -55,7 +55,19 @@ class SkillCondition(Enum):
     # region Self status
     # region HP
     SELF_HP_1 = 201
-    SELF_HP_FULL = 202
+    """User's HP = 1."""
+    SELF_HP_EQ_10 = 202
+    """User's HP = 10% max."""
+    SELF_HP_EQ_20 = 203
+    """User's HP = 20% max."""
+    SELF_HP_EQ_30 = 204
+    """User's HP = 30% max."""
+    SELF_HP_EQ_50 = 205
+    """User's HP = 50% max."""
+    SELF_HP_EQ_70 = 206
+    """User's HP = 70% max."""
+    SELF_HP_FULL = 207
+    """User's HP is full."""
 
     SELF_HP_LT_40 = 211
     """User's HP < 40% max."""

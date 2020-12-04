@@ -27,6 +27,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     # endregion
 
     # region Self status
+    hp_status: Optional[SkillCondition] = field(init=False)
+    hp_status_converted: float = field(init=False)
     hp_condition: Optional[SkillCondition] = field(init=False)
     buff_count: Optional[SkillCondition] = field(init=False)
     buff_count_converted: int = field(init=False)
@@ -43,7 +45,6 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     teammate_coverage_converted: int = field(init=False)
     bullet_hit_count: Optional[SkillCondition] = field(init=False)
     bullet_hit_count_converted: int = field(init=False)
-
     # endregion
 
     @staticmethod
@@ -64,8 +65,12 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_TARGET_ELEMENTAL)
 
     def _init_validate_self(self):
+        # Check `self.hp_status`
+        if self.hp_status and self.hp_status not in SkillConditionCategories.self_hp_status:
+            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_HP_STATUS)
+
         # Check `self.hp_condition`
-        if self.hp_condition and self.hp_condition not in SkillConditionCategories.self_hp:
+        if self.hp_condition and self.hp_condition not in SkillConditionCategories.self_hp_cond:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_HP_CONDITION)
 
         # Check `self.buff_count`
@@ -112,7 +117,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.afflictions_condition = SkillConditionCategories.target_status.extract(conditions)
         self.target_elemental = SkillConditionCategories.target_elemental.extract(conditions)
 
-        self.hp_condition = SkillConditionCategories.self_hp.extract(conditions)
+        self.hp_status = SkillConditionCategories.self_hp_status.extract(conditions)
+        self.hp_condition = SkillConditionCategories.self_hp_cond.extract(conditions)
         self.buff_count = SkillConditionCategories.self_buff_count.extract(conditions)
         self.buff_zone_self = SkillConditionCategories.self_in_buff_zone_self.extract(conditions)
         self.buff_zone_ally = SkillConditionCategories.self_in_buff_zone_ally.extract(conditions)
@@ -128,6 +134,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.target_elemental_converted = \
             self.target_elemental and SkillConditionCategories.target_elemental.convert(self.target_elemental)
 
+        self.hp_status_converted = \
+            SkillConditionCategories.self_hp_status.convert(self.hp_status) if self.hp_status else 1  # Default to 100%
         self.buff_count_converted = \
             self.buff_count and SkillConditionCategories.self_buff_count.convert(self.buff_count)
         self.buff_zone_self_converted = \
@@ -151,7 +159,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
         - Afflictions
         - Target element
-        - HP
+        - HP status / condition
         - Buff count
         - Buff zone built by self / ally
         - Self action condition
@@ -166,6 +174,9 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         # endregion
 
         # region Self status
+        if self.hp_status:
+            ret += (self.hp_status,)
+
         if self.hp_condition:
             ret += (self.hp_condition,)
 
