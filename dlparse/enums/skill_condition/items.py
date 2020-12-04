@@ -144,8 +144,15 @@ class SkillCondition(Enum):
     COVER_TEAMMATE_1 = 352
     COVER_TEAMMATE_2 = 353
     COVER_TEAMMATE_3 = 354
+
     # endregion
     # endregion
 
     def __bool__(self):
         return self != SkillCondition.NONE
+
+    def __lt__(self, other):
+        if not isinstance(other, SkillCondition):
+            raise TypeError(f"Cannot compare `SkillCondition` with type {type(other)}")
+
+        return int(self.value) < int(other.value)

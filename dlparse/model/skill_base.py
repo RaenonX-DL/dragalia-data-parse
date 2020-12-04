@@ -43,7 +43,7 @@ class SkillDataBase(Generic[HT, ET], ABC):
         """Get all possible skill mod entries."""
         entries = []
 
-        for conditions in self.possible_conditions:
+        for conditions in sorted(self.possible_conditions):
             entries.append(self.with_conditions(conditions))
 
         return entries

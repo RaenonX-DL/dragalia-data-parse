@@ -83,8 +83,8 @@ def print_skill_id_entry(chara_data, skill_id_entry):
 
         for skill_entry in data_atk.get_all_possible_entries():
             print_atk_data_entry(chara_data, data_atk, skill_entry)
-    except Exception:
-        print("--- No attacking data available for the skill ---")
+    except Exception as ex:
+        print(f"--- No attacking data available for the skill --- {ex}")
         print()
 
     try:
@@ -95,8 +95,8 @@ def print_skill_id_entry(chara_data, skill_id_entry):
 
         for skill_entry in data_sup.get_all_possible_entries():
             print_sup_data_entry(chara_data, data_sup, skill_entry, data_sup.max_level)
-    except Exception:
-        print("--- No supportive data available for the skill ---")
+    except Exception as ex:
+        print(f"--- No supportive data available for the skill --- {ex}")
 
 
 def chara_skill_overview(chara_id):

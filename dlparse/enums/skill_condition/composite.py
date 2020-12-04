@@ -211,3 +211,9 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
             raise TypeError(f"Cannot add `SkillConditionComposite` with type {type(other)}")
 
         return SkillConditionComposite(self.conditions_sorted + other.conditions_sorted)
+
+    def __lt__(self, other):
+        if not isinstance(other, SkillConditionComposite):
+            raise TypeError(f"Cannot compare `SkillConditionComposite` with type {type(other)}")
+
+        return self.conditions_sorted < other.conditions_sorted
