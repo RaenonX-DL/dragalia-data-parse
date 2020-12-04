@@ -1,6 +1,6 @@
 from dlparse.mono.asset import (
     CharaDataAsset, CharaModeAsset, TextAsset, SkillDataAsset, HitAttrAsset, ActionConditionAsset,
-    AbilityAsset
+    AbilityAsset, PlayerActionInfoAsset
 )
 from dlparse.mono.loader import PlayerActionFileLoader
 from dlparse.transformer import SkillTransformer
@@ -15,10 +15,11 @@ _hit_attr: HitAttrAsset = HitAttrAsset(asset_dir=PATH_DIR_MASTER_ASSET)
 _action_cond: ActionConditionAsset = ActionConditionAsset(asset_dir=PATH_DIR_MASTER_ASSET)
 _ability_asset: AbilityAsset = AbilityAsset(asset_dir=PATH_DIR_MASTER_ASSET)
 _pa_loader: PlayerActionFileLoader = PlayerActionFileLoader(PATH_ROOT_ASSET_PLAYER_ACTION)
+_pa_info: PlayerActionInfoAsset = PlayerActionInfoAsset(asset_dir=PATH_DIR_MASTER_ASSET)
 
 # Transformers
 _transformer_skill: SkillTransformer = SkillTransformer(_skill_data, _hit_attr, _action_cond, _pa_loader,
-                                                        _ability_asset)
+                                                        _ability_asset, _pa_info)
 
 
 def print_atk_data_entry(chara_data, skill_data, skill_entry):
@@ -110,4 +111,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10150402)
+    chara_skill_overview(10650503)

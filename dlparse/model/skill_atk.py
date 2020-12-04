@@ -105,7 +105,11 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             for hit_data in hit_data_lv:
                 punishers_available |= hit_data.hit_attr.punisher_states
                 crisis_available = crisis_available or hit_data.hit_attr.boost_by_hp
-                buff_up_available = buff_up_available or hit_data.hit_attr.boost_by_buff_count
+                buff_up_available = (
+                        buff_up_available
+                        or hit_data.hit_attr.boost_by_buff_count  # Direct buff boost
+                        or hit_data.is_user_buff_count_dependent  # Bonus bullet hit
+                )
                 will_deteriorate = will_deteriorate or hit_data.will_deteriorate
                 max_bullet_hit = max(max_bullet_hit, hit_data.max_hit_count)
                 if precondition := hit_data.pre_condition:

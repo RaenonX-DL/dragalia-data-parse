@@ -141,7 +141,7 @@ def test_crisis_only(transformer_skill: SkillTransformer):
     assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
 
 
-def test_buff_count_only(transformer_skill: SkillTransformer):
+def test_buff_count_direct(transformer_skill: SkillTransformer):
     # Karina S1
     # https://dragalialost.gamepedia.com/Karina
     skill_data = transformer_skill.transform_attacking(104402011)
@@ -173,6 +173,80 @@ def test_buff_count_only(transformer_skill: SkillTransformer):
 
     for entry in possible_entries:
         assert entry.total_mod_at_max == expected_max_total_mods[entry.condition_comp], entry.condition_comp
+        del expected_max_total_mods[entry.condition_comp]
+
+    assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
+
+
+def test_buff_count_bonus_bullet(transformer_skill: SkillTransformer):
+    # Summer Cleo S1
+    # https://dragalialost.gamepedia.com/Summer_Cleo
+    skill_data = transformer_skill.transform_attacking(106504011)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_max_total_mods = {
+        SkillConditionComposite(SkillCondition.SELF_BUFF_0): 1.07 * 3 + 5.4 + 1.07 * 0,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_1): 1.07 * 3 + 5.4 + 1.07 * 1,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_2): 1.07 * 3 + 5.4 + 1.07 * 2,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_3): 1.07 * 3 + 5.4 + 1.07 * 3,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_4): 1.07 * 3 + 5.4 + 1.07 * 4,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_5): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_6): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_7): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_8): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_9): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_10): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_20): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_25): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_30): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_35): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_40): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_45): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite(SkillCondition.SELF_BUFF_50): 1.07 * 3 + 5.4 + 1.07 * 5,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_0]):
+            (1.07 * 3 + 5.4 + 1.07 * 0) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_1]):
+            (1.07 * 3 + 5.4 + 1.07 * 1) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_2]):
+            (1.07 * 3 + 5.4 + 1.07 * 2) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_3]):
+            (1.07 * 3 + 5.4 + 1.07 * 3) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_4]):
+            (1.07 * 3 + 5.4 + 1.07 * 4) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_5]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_6]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_7]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_8]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_9]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_10]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_20]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_25]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_30]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_35]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_40]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_45]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_50]):
+            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
+    }
+
+    assert set(expected_max_total_mods.keys()) == {entry.condition_comp for entry in possible_entries}
+
+    for entry in possible_entries:
+        assert entry.total_mod_at_max == pytest.approx(expected_max_total_mods[entry.condition_comp]), \
+            entry.condition_comp
         del expected_max_total_mods[entry.condition_comp]
 
     assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
