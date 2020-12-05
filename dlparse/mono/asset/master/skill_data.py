@@ -21,6 +21,8 @@ class SkillIdEntry:
     skill_identifier: str
     """Skill identifier. This is not unique. The purpose of this is for easier skill identification."""
 
+    # FIXME: Skill identifier needs to be text label instead (then use custom text asset for overriding, possibly)
+
 
 @dataclass
 class SkillDataEntry(MasterEntryBase):

@@ -1,25 +1,7 @@
-from dlparse.mono.asset import (
-    AbilityAsset, ActionConditionAsset, CharaDataAsset, CharaModeAsset, HitAttrAsset, PlayerActionInfoAsset,
-    SkillDataAsset, TextAsset,
-)
-from dlparse.mono.loader import PlayerActionFileLoader
-from dlparse.transformer import SkillTransformer
+from dlparse.mono.manager import AssetManager
 from tests.static import PATH_DIR_MASTER_ASSET, PATH_ROOT_ASSET_PLAYER_ACTION
 
-# Asset instances
-_chara_data: CharaDataAsset = CharaDataAsset(asset_dir=PATH_DIR_MASTER_ASSET)
-_chara_mode: CharaModeAsset = CharaModeAsset(asset_dir=PATH_DIR_MASTER_ASSET)
-_text: TextAsset = TextAsset(asset_dir=PATH_DIR_MASTER_ASSET)
-_skill_data: SkillDataAsset = SkillDataAsset(asset_dir=PATH_DIR_MASTER_ASSET)
-_hit_attr: HitAttrAsset = HitAttrAsset(asset_dir=PATH_DIR_MASTER_ASSET)
-_action_cond: ActionConditionAsset = ActionConditionAsset(asset_dir=PATH_DIR_MASTER_ASSET)
-_ability_asset: AbilityAsset = AbilityAsset(asset_dir=PATH_DIR_MASTER_ASSET)
-_pa_loader: PlayerActionFileLoader = PlayerActionFileLoader(PATH_ROOT_ASSET_PLAYER_ACTION)
-_pa_info: PlayerActionInfoAsset = PlayerActionInfoAsset(asset_dir=PATH_DIR_MASTER_ASSET)
-
-# Transformers
-_transformer_skill: SkillTransformer = SkillTransformer(_skill_data, _hit_attr, _action_cond, _pa_loader,
-                                                        _ability_asset, _pa_info)
+_asset_manager: AssetManager = AssetManager(PATH_ROOT_ASSET_PLAYER_ACTION, PATH_DIR_MASTER_ASSET)
 
 
 def print_atk_data_entry(chara_data, skill_data, skill_entry):
@@ -69,14 +51,14 @@ def print_sup_data_entry(chara_data, skill_data, skill_entry, max_level):
 def print_skill_id_entry(chara_data, skill_id_entry):
     skill_id = skill_id_entry.skill_id
 
-    skill_data_sys = _skill_data.get_data_by_id(skill_id)
-    skill_name = _text.to_text(skill_data_sys.name_label)
+    skill_data_sys = _asset_manager.asset_skill.get_data_by_id(skill_id)
+    skill_name = _asset_manager.asset_text.to_text(skill_data_sys.name_label)
 
     print(f"{skill_id_entry.skill_identifier}: {skill_name} ({skill_id})")
     print("-" * 50)
 
     try:
-        data_atk = _transformer_skill.transform_attacking(
+        data_atk = _asset_manager.transformer_skill.transform_attacking(
             skill_id,
             max_lv=chara_data.max_skill_level(skill_id_entry.skill_num)
         )
@@ -88,7 +70,7 @@ def print_skill_id_entry(chara_data, skill_id_entry):
         print()
 
     try:
-        data_sup = _transformer_skill.transform_supportive(
+        data_sup = _asset_manager.transformer_skill.transform_supportive(
             skill_id,
             max_lv=chara_data.max_skill_level(skill_id_entry.skill_num)
         )
@@ -100,15 +82,15 @@ def print_skill_id_entry(chara_data, skill_id_entry):
 
 
 def chara_skill_overview(chara_id):
-    chara_data = _chara_data.get_data_by_id(chara_id)
+    chara_data = _asset_manager.asset_chara_data.get_data_by_id(chara_id)
 
-    print(f"{chara_data.get_chara_name(_text)} ({chara_id})")
+    print(f"{chara_data.get_chara_name(_asset_manager.asset_text)} ({chara_id})")
     print("=" * 50)
 
-    for skill_id_entry in chara_data.get_skill_identifiers(_chara_mode, asset_text=_text, asset_skill=_skill_data):
+    for skill_id_entry in chara_data.get_skill_identifiers(_asset_manager):
         print_skill_id_entry(chara_data, skill_id_entry)
         print("=" * 50)
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10650303)
+    chara_skill_overview(10450301)

@@ -3,7 +3,7 @@ from typing import Optional, TYPE_CHECKING
 from warnings import warn
 
 from dlparse.enums import SkillConditionCategories, SkillConditionComposite
-from dlparse.mono.asset import PlayerActionInfoAsset
+from dlparse.mono.asset import ActionBullet, PlayerActionInfoAsset
 from .calc import multiply_vector
 
 if TYPE_CHECKING:
@@ -50,6 +50,10 @@ def _calc_damage_mod_base(
     elif hit_data.is_depends_on_bullet_on_map:
         # Damage dealt depends on the bullets on the map
         mods = [hit_attr.damage_modifier] * (condition_comp.bullets_on_map_converted or 0)
+    elif type(hit_data.action_component) is ActionBullet:  # pylint: disable=unidiomatic-typecheck
+        # Action component is exactly `ActionPartsBullet`, max hit count may be in effect
+        # For example, Lin You S1 (`104503011`, AID `491040` and `491042`)
+        mods = [hit_attr.damage_modifier] * (hit_data.max_hit_count or 1)
     else:
         # Cases not handled above
         mods = [hit_attr.damage_modifier]

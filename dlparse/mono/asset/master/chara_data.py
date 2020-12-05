@@ -1,14 +1,16 @@
 """Classes for handling the character data asset."""
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional, Union
+from typing import Optional, TYPE_CHECKING, Union
 
 from dlparse.enums import Element
-from dlparse.errors import InvalidSkillNumError, TextLabelNotFoundError
+from dlparse.errors import ActionDataNotFoundError, InvalidSkillNumError, TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from .chara_mode_data import CharaModeAsset
-from .skill_data import SkillDataAsset, SkillDataEntry, SkillIdEntry
+from .skill_data import SkillDataEntry, SkillIdEntry
 from .text_label import TextAsset
+
+if TYPE_CHECKING:
+    from dlparse.mono.manager import AssetManager
 
 __all__ = ("CharaDataEntry", "CharaDataAsset", "CharaDataParser")
 
@@ -261,40 +263,20 @@ class CharaDataEntry(MasterEntryBase):
 
         raise InvalidSkillNumError(skill_num)
 
-    def get_skill_identifiers(
-            self, chara_mode_asset: CharaModeAsset, /,
-            asset_text: Optional[TextAsset] = None,
-            asset_skill: Optional[SkillDataAsset] = None
-    ) -> list[SkillIdEntry]:
-        """
-        Get the skill ID entries of a character.
-
-        This includes different skills in different modes, helper variants, and phase changed IDs, if any.
-
-        If ``asset_text`` is not provided, mode name (if any) will not be able to convert to text.
-
-        If ``asset_skill`` is not provided, support skill variant (if any) and the phase changing variant (if any)
-        will not be included.
-
-        The identifier is not the name of the skill. Instead, it's a name commonly used in between players.
-        For skill 1, the identifier will be ``S1``, etc.
-
-        The main purpose of unique
-
-        For skills that comes from a mode, the name of the mode will be appended at the end of the identifier.
-        For example, the identifier of Bellina's S2 in enhanced mode will be ``S2 (不羈伴侶)``.
-        """
-        ret: list[SkillIdEntry] = [
+    def _skill_id_base(self) -> list[SkillIdEntry]:
+        return [
             SkillIdEntry(self.skill_1_id, 1, "S1"),
             SkillIdEntry(self.skill_2_id, 2, "S2")
         ]
 
-        # Attach skill IDs in different mode from mode asset
+    def _skill_id_mode(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
+        ret: list[SkillIdEntry] = []
+
         for mode_id in self.mode_ids:
-            if mode_data := chara_mode_asset.get_data_by_id(mode_id):
+            if mode_data := asset_manager.asset_chara_mode.get_data_by_id(mode_id):
                 mode_name = f"Mode #{mode_id}"
-                if asset_text:
-                    mode_name = asset_text.to_text(mode_data.text_label) or mode_name
+                if asset_manager.asset_text:
+                    mode_name = asset_manager.asset_text.to_text(mode_data.text_label) or mode_name
 
                 if model_skill_1_id := mode_data.skill_id_1:
                     ret.append(SkillIdEntry(model_skill_1_id, 1, f"S1 ({mode_name})"))
@@ -302,23 +284,108 @@ class CharaDataEntry(MasterEntryBase):
                 if model_skill_2_id := mode_data.skill_id_2:
                     ret.append(SkillIdEntry(model_skill_2_id, 2, f"S2 ({mode_name})"))
 
-        if asset_skill:
-            skill_1_data: SkillDataEntry = asset_skill.get_data_by_id(self.skill_1_id)
-            skill_2_data: SkillDataEntry = asset_skill.get_data_by_id(self.skill_2_id)
+        return ret
 
-            # Attach helper skill variant if given (currently only S1 will be used as helper skill)
-            if skill_1_data and skill_1_data.has_helper_variant:
-                ret.append(SkillIdEntry(
-                    skill_1_data.as_helper_skill_id,
-                    1,
-                    asset_text.to_text("SKILL_IDENTIFIER_HELPER") if asset_text else "Helper"
-                ))
+    def _skill_id_hit_labels(
+            self, asset_manager: "AssetManager", skill_1_data: SkillDataEntry, skill_2_data: SkillDataEntry
+    ) -> dict[str, int]:
+        hit_labels: dict[str, int] = {}
 
-            if skill_1_data and skill_1_data.has_phase_changing:
-                ret.extend(skill_1_data.get_phase_changed_skills(asset_skill, 1))
+        for skill_num, skill_data in enumerate([skill_1_data, skill_2_data], start=1):
+            # Load all hit labels of the skill
+            for action_id in skill_data.action_id_1_by_level:
+                for skill_lv in range(1, self.max_skill_level(skill_num) + 1):
+                    try:
+                        prefab = asset_manager.loader_pa.get_prefab(action_id)
+                        for hit_label, _ in prefab.get_hit_actions(skill_lv):
+                            hit_labels[hit_label] = skill_num
+                    except ActionDataNotFoundError:
+                        pass  # If prefab file not found, nothing should happen
 
-            if skill_2_data and skill_2_data.has_phase_changing:
-                ret.extend(skill_2_data.get_phase_changed_skills(asset_skill, 2))
+        return hit_labels
+
+    def _skill_id_action_condition(
+            self, asset_manager: "AssetManager", skill_1_data: SkillDataEntry, skill_2_data: SkillDataEntry
+    ) -> list[SkillIdEntry]:
+        ret: list[SkillIdEntry] = []
+
+        hit_labels = self._skill_id_hit_labels(asset_manager, skill_1_data, skill_2_data)
+
+        # Get all action condition IDs of the hit labels
+        action_condition_ids = {
+            asset_manager.asset_hit_attr.get_data_by_id(hit_label).action_condition_id: src_skill_num
+            for hit_label, src_skill_num in hit_labels.items()
+            if hit_label in asset_manager.asset_hit_attr
+        }
+        action_condition_ids.pop(0, None)  # Discard non-effective action condition ID
+
+        # Get all enhance IDs in the action condition data entry
+        for action_condition_id, src_skill_num in action_condition_ids.items():
+            if action_condition := asset_manager.asset_action_cond.get_data_by_id(action_condition_id):
+                if action_condition.enhance_skill_1_id:
+                    ret.append(SkillIdEntry(action_condition.enhance_skill_1_id, 1,
+                                            f"S1 - Enhanced by S{src_skill_num}"))
+
+        return ret
+
+    @staticmethod
+    def _skill_id_helper_variant(asset_manager: "AssetManager", skill_1_data: SkillDataEntry) -> list[SkillIdEntry]:
+        ret: list[SkillIdEntry] = []
+
+        if skill_1_data and skill_1_data.has_helper_variant:
+            ret.append(SkillIdEntry(
+                skill_1_data.as_helper_skill_id,
+                1,
+                asset_manager.asset_text.to_text("SKILL_IDENTIFIER_HELPER") if asset_manager.asset_text else "Helper"
+            ))
+
+        return ret
+
+    @staticmethod
+    def _skill_id_phase_change(
+            asset_manager: "AssetManager", skill_1_data: SkillDataEntry, skill_2_data: SkillDataEntry
+    ) -> list[SkillIdEntry]:
+        ret: list[SkillIdEntry] = []
+
+        if skill_1_data and skill_1_data.has_phase_changing:
+            ret.extend(skill_1_data.get_phase_changed_skills(asset_manager.asset_skill, 1))
+
+        if skill_2_data and skill_2_data.has_phase_changing:
+            ret.extend(skill_2_data.get_phase_changed_skills(asset_manager.asset_skill, 2))
+
+        return ret
+
+    def _skill_id_from_skill_data(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
+        ret: list[SkillIdEntry] = []
+
+        skill_1_data: SkillDataEntry = asset_manager.asset_skill.get_data_by_id(self.skill_1_id)
+        skill_2_data: SkillDataEntry = asset_manager.asset_skill.get_data_by_id(self.skill_2_id)
+
+        ret.extend(self._skill_id_action_condition(asset_manager, skill_1_data, skill_2_data))
+        ret.extend(self._skill_id_helper_variant(asset_manager, skill_1_data))
+        ret.extend(self._skill_id_phase_change(asset_manager, skill_1_data, skill_2_data))
+
+        return ret
+
+    def get_skill_identifiers(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
+        """
+        Get the skill ID entries of a character.
+
+        This includes different skills in different modes, helper variants, and phase changed IDs, if any.
+
+        If ``asset_text`` is not provided, mode name (if any) will not be able to convert to text.
+        ``Mode #<MODE_ID>`` will be the identifier instead.
+
+        If ``asset_skill`` is not provided, support skill variant (if any) and the phase changing variant (if any)
+        will not be included.
+
+        If any of ``loader_action``, ``asset_skill``, ``asset_hit_attr`` or ``asset_action_condition``
+        are not provided, skills that can be enhanced by using another skill (if any) will not be included.
+        """
+        ret: list[SkillIdEntry] = self._skill_id_base()
+
+        ret.extend(self._skill_id_mode(asset_manager))
+        ret.extend(self._skill_id_from_skill_data(asset_manager))
 
         return ret
 

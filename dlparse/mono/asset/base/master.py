@@ -2,7 +2,7 @@
 import json
 from abc import ABC
 from dataclasses import dataclass
-from typing import Type, Optional, Callable, Union, TypeVar, Generic
+from typing import Callable, Generic, Optional, Type, TypeVar, Union
 
 from dlparse.errors import AssetKeyMissingError
 from .asset import AssetBase
@@ -60,6 +60,9 @@ class MasterAssetBase(Generic[T], AssetBase, ABC):
 
     def __iter__(self):
         return iter(self._data.values())
+
+    def __contains__(self, item):
+        return item in self._data.keys()
 
     def filter(self, condition: Callable[[T], bool]) -> list[T]:
         """Get a list of data which matches the ``condition``."""

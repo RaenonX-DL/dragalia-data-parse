@@ -141,10 +141,10 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         will_deteriorate: bool = any(
             hit_data.will_deteriorate for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         )
-        max_bullet_hit: int = max(
-            (hit_data.max_hit_count for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv)
-        )
         if will_deteriorate:
+            max_bullet_hit: int = max(
+                (hit_data.max_hit_count for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv)
+            )
             cond_elems.append({(bullet_hit,) for bullet_hit
                                in SkillConditionCategories.skill_bullet_hit.get_members_lte(max_bullet_hit)})
 

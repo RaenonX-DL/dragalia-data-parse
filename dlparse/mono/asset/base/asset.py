@@ -1,7 +1,7 @@
 """Base asset class."""
 import os
 from abc import ABC, abstractmethod
-from typing import Type, Optional
+from typing import Optional, Type
 
 from dlparse.errors import ConfigError
 from .parser import ParserBase
@@ -16,16 +16,26 @@ class AssetBase(ABC):
 
     def __init__(self, parser_cls: Type[ParserBase], file_path: Optional[str] = None, /,
                  asset_dir: Optional[str] = None):
-        file_path = self.get_file_path(file_path=file_path, asset_dir=asset_dir)
+        self._file_path = self.get_file_path(file_path=file_path, asset_dir=asset_dir)
 
-        if not file_path:
+        if not self._file_path:
             raise ConfigError("Either `file_path` or "
                               "`asset_dir` and `asset_file_name` (class attribute) must be given.")
 
-        self._data = parser_cls.parse_file(file_path)
+        self._data = parser_cls.parse_file(self._file_path)
 
     def __len__(self):
         return len(self._data)
+
+    def __str__(self):
+        return repr(self)
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} at {self._file_path}>"
+
+    @abstractmethod
+    def __iter__(self):
+        raise NotImplementedError()
 
     @classmethod
     def get_file_path(cls, *, file_path: Optional[str] = None, asset_dir: Optional[str] = None):
@@ -42,7 +52,3 @@ class AssetBase(ABC):
         If nothing is provided, ``None`` will be returned.
         """
         return file_path or (asset_dir and os.path.join(asset_dir, cls.asset_file_name))
-
-    @abstractmethod
-    def __iter__(self):
-        raise NotImplementedError()

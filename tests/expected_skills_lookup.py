@@ -14,6 +14,8 @@ skill_ids_atk: dict[int, str] = {
     107505011: "Yukata Curran S1",
     106503012: "Louise S2",
     101501022: "Marth S2",
+    104503011: "Lin You S1",
+    104503013: "Lin You S1 @ Heaven's Breath",
     # Special tests
     105402011: "Elisanne S1",
     103505033: "Bellina S1 in enhanced mode",
@@ -36,6 +38,7 @@ skill_ids_sup: dict[int, str] = {
     104502014: "Summer Julietta S2 P3",
     106504012: "Summer Cleo S2",
     101501022: "Marth S2",
+    104503012: "Lin You S2",
     # Special tests
     105402011: "Elisanne S1",
 }

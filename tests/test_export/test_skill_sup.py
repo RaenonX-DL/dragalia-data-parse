@@ -1,7 +1,6 @@
-from dlparse.enums import SkillCondition, SkillConditionComposite, HitTargetSimple, BuffParameter
+from dlparse.enums import BuffParameter, HitTargetSimple, SkillCondition, SkillConditionComposite
 from dlparse.export import export_sup_skills_as_entries
-from dlparse.mono.asset import CharaDataAsset, CharaModeAsset, TextAsset
-from dlparse.transformer import SkillTransformer
+from dlparse.mono.manager import AssetManager
 from tests.expected_skills_lookup import skill_ids_sup
 
 ExpectedInfoType = dict[tuple[int, SkillConditionComposite], set[tuple[HitTargetSimple, BuffParameter, float]]]
@@ -39,9 +38,8 @@ expected_contained_info: ExpectedInfoType = {
 }
 
 
-def test_exported_entries(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset, asset_text: TextAsset,
-                          transformer_skill: SkillTransformer):
-    entries = export_sup_skills_as_entries(asset_chara, asset_chara_mode, asset_text, transformer_skill)
+def test_exported_entries(asset_manager: AssetManager):
+    entries = export_sup_skills_as_entries(asset_manager)
 
     assert len(entries) > 0
 

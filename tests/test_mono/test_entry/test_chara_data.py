@@ -1,4 +1,5 @@
-from dlparse.mono.asset import CharaDataAsset, CharaDataEntry, CharaModeAsset, SkillDataAsset, SkillIdEntry, TextAsset
+from dlparse.mono.asset import CharaDataAsset, CharaDataEntry, SkillIdEntry, TextAsset
+from dlparse.mono.manager import AssetManager
 
 
 def create_dummy(**kwargs) -> CharaDataEntry:
@@ -185,38 +186,36 @@ def test_get_chara_name_use_second(asset_text: TextAsset):
     assert entry.get_chara_name(asset_text) == "エルフィリス（ウエディングVer.）"
 
 
-def test_get_skill_id_names(asset_chara_mode: CharaModeAsset, asset_text: TextAsset):
-    entry = create_dummy(skill_1_id=1, skill_2_id=2)
+def test_get_skill_id_names(asset_manager: AssetManager):
+    entry = create_dummy(skill_1_id=103505031, skill_2_id=103505032)
 
     expected_identifiers = [
-        SkillIdEntry(1, 1, "S1"),
-        SkillIdEntry(2, 2, "S2")
+        SkillIdEntry(103505031, 1, "S1"),
+        SkillIdEntry(103505032, 2, "S2")
     ]
 
-    assert entry.get_skill_identifiers(asset_chara_mode, asset_text=asset_text) == expected_identifiers
+    assert entry.get_skill_identifiers(asset_manager) == expected_identifiers
 
 
-def test_get_skill_id_names_with_mode(asset_chara_mode: CharaModeAsset, asset_text: TextAsset):
-    entry = create_dummy(skill_1_id=1, skill_2_id=2, mode_2_id=12)
+def test_get_skill_id_names_with_mode(asset_manager: AssetManager):
+    entry = create_dummy(skill_1_id=103505031, skill_2_id=103505032, mode_2_id=12)
 
     expected_identifiers = [
-        SkillIdEntry(1, 1, "S1"),
-        SkillIdEntry(2, 2, "S2"),
+        SkillIdEntry(103505031, 1, "S1"),
+        SkillIdEntry(103505032, 2, "S2"),
         SkillIdEntry(103505033, 1, "S1 (服わざる伴侶)"),
         SkillIdEntry(103505034, 2, "S2 (服わざる伴侶)")
     ]
 
-    assert entry.get_skill_identifiers(asset_chara_mode, asset_text=asset_text) == expected_identifiers
+    assert entry.get_skill_identifiers(asset_manager) == expected_identifiers
 
 
-def test_get_all_skill_identifiers(asset_chara: CharaDataAsset, asset_chara_mode: CharaModeAsset,
-                                   asset_text: TextAsset, asset_skill: SkillDataAsset):
+def test_get_all_skill_identifiers(asset_chara: CharaDataAsset, asset_manager: AssetManager):
     # Summer Julietta S2
     # https://dragalialost.gamepedia.com/Summer_Julietta
     skill_data = asset_chara.get_data_by_id(10450201)
 
-    actual_identifiers = skill_data.get_skill_identifiers(asset_chara_mode,
-                                                          asset_text=asset_text, asset_skill=asset_skill)
+    actual_identifiers = skill_data.get_skill_identifiers(asset_manager)
 
     expected_identifiers = [
         SkillIdEntry(104502011, 1, "S1"),

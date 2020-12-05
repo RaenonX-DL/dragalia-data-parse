@@ -1,13 +1,13 @@
 """Skill data transformer."""
-from typing import Optional, Type, TypeVar
+from typing import Optional, TYPE_CHECKING, Type, TypeVar
 
 from dlparse.enums import SkillCondition, SkillConditionCategories
 from dlparse.errors import ActionInfoNotFoundError, AppValueError, HitDataUnavailableError, SkillDataNotFoundError
 from dlparse.model import AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SupportiveSkillData
-from dlparse.mono.asset import (
-    AbilityAsset, ActionConditionAsset, HitAttrAsset, PlayerActionInfoAsset, SkillDataAsset, SkillDataEntry,
-)
-from dlparse.mono.loader import PlayerActionFileLoader
+from dlparse.mono.asset import SkillDataAsset, SkillDataEntry
+
+if TYPE_CHECKING:
+    from dlparse.mono.manager import AssetManager
 
 __all__ = ("SkillTransformer",)
 
@@ -19,15 +19,13 @@ HitDataList = list[T]
 class SkillTransformer:
     """Class to transform the skill data."""
 
-    def __init__(self, skill_data_asset: SkillDataAsset, hit_attr_asset: HitAttrAsset,
-                 action_condition_asset: ActionConditionAsset, action_loader: PlayerActionFileLoader,
-                 ability_asset: AbilityAsset, action_info_asset: PlayerActionInfoAsset):
-        self._skill_data = skill_data_asset
-        self._hit_attr = hit_attr_asset
-        self._action_cond = action_condition_asset
-        self._action_loader = action_loader
-        self._action_info = action_info_asset
-        self._ability_asset = ability_asset
+    def __init__(self, asset_manager: "AssetManager"):
+        self._skill_data = asset_manager.asset_skill
+        self._hit_attr = asset_manager.asset_hit_attr
+        self._action_cond = asset_manager.asset_action_cond
+        self._action_loader = asset_manager.loader_pa
+        self._action_info = asset_manager.asset_pa_info
+        self._ability_asset = asset_manager.asset_ability_data
 
     @property
     def skill_data_asset(self) -> SkillDataAsset:

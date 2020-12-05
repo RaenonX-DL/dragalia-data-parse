@@ -1,9 +1,9 @@
 """Classes for handling the action condition asset."""
 from dataclasses import dataclass
-from typing import Union, Optional
+from typing import Optional, Union
 
 from dlparse.enums import ElementFlag
-from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
+from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("ActionConditionEntry", "ActionConditionAsset", "ActionConditionParser")
 
@@ -40,6 +40,9 @@ class ActionConditionEntry(MasterEntryBase):
     shield_dmg: float
     shield_hp: float
 
+    enhance_skill_1_id: int
+    enhance_skill_2_id: int
+
     elemental_target: ElementFlag
 
     @staticmethod
@@ -67,6 +70,8 @@ class ActionConditionEntry(MasterEntryBase):
             buff_fs_spd=data["_RateChargeSpeed"],
             shield_dmg=data["_RateDamageShield"],
             shield_hp=data["_RateSacrificeShield"],
+            enhance_skill_1_id=data["_EnhancedSkill1"],
+            enhance_skill_2_id=data["_EnhancedSkill2"],
             elemental_target=ElementFlag(data["_TargetElemental"])
         )
 
