@@ -1,8 +1,8 @@
 # Default file export directory
 exported/
 
-# Game assets (excluding images)
-.data/media/assets/_gluonresources/resources/images
+# Wakatime
+.wakatime-project
 
 # Test cache
 .pytest_cache
