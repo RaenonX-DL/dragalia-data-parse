@@ -237,7 +237,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
     Calling ``buffs_elemental[skill_lv][element_enum]`` will return a set of buffs at ``skill_lv``
     when the target element is ``element_enum``.
     """
-    buffs_preconditioned: list[dict[SkillCondition, set[SupportiveSkillUnit]]] = field(init=False)
+    buffs_pre_conditioned: list[dict[SkillCondition, set[SupportiveSkillUnit]]] = field(init=False)
     """
     Buffs to be granted only if the condition matches.
 
@@ -298,7 +298,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                         continue
 
                 if hit_data.pre_condition:
-                    # Skip conditions that has pre condition, let ``buffs_preconditioned`` handles this
+                    # Skip conditions that has pre condition, let ``buffs_pre_conditioned`` handles this
                     continue
 
                 if skill_entries := SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset):
@@ -362,8 +362,8 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
             self.buffs_elemental.append(buff_lv)
 
-    def _init_preconditioned_buffs(self, action_condition_asset: ActionConditionAsset):
-        self.buffs_preconditioned: list[dict[SkillCondition, set[SupportiveSkillUnit]]] = []
+    def _init_pre_conditioned_buffs(self, action_condition_asset: ActionConditionAsset):
+        self.buffs_pre_conditioned: list[dict[SkillCondition, set[SupportiveSkillUnit]]] = []
 
         for hit_data_lv in self.hit_data_mtx:
             buff_lv: dict[SkillCondition, set[SupportiveSkillUnit]] = defaultdict(set)
@@ -372,13 +372,13 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                 sup_skill_unit = SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset)
                 buff_lv[hit_data.pre_condition].update(sup_skill_unit)
 
-            self.buffs_preconditioned.append(dict(buff_lv))
+            self.buffs_pre_conditioned.append(dict(buff_lv))
 
     def __post_init__(self, action_condition_asset: ActionConditionAsset):
         self._init_base_buffs(action_condition_asset)
         self._init_teammate_coverage_buffs(action_condition_asset)
         self._init_elemental_buffs(action_condition_asset)
-        self._init_preconditioned_buffs(action_condition_asset)
+        self._init_pre_conditioned_buffs(action_condition_asset)
 
         super().__post_init__(action_condition_asset)
 
@@ -401,11 +401,11 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
             for skill_lv in range(self.max_level):
                 buffs[skill_lv].update(self.buffs_elemental[skill_lv][condition_comp.target_elemental_converted])
 
-        # Attach preconditioned buffs, if matches
+        # Attach pre-conditioned buffs, if matches
         for skill_lv in range(self.max_level):
             for condition in condition_comp:
-                # Conditions in ``condition_comp`` could be non-precondition
-                buffs[skill_lv].update(self.buffs_preconditioned[skill_lv].get(condition, set()))
+                # Conditions in ``condition_comp`` could be non-pre-condition
+                buffs[skill_lv].update(self.buffs_pre_conditioned[skill_lv].get(condition, set()))
 
         return SupportiveSkillEntry(condition_comp=condition_comp, buffs=buffs)
 

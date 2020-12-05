@@ -1,7 +1,8 @@
 """Skill data transformer."""
 from typing import Optional, Type, TypeVar
 
-from dlparse.errors import HitDataUnavailableError, SkillDataNotFoundError
+from dlparse.enums import SkillCondition, SkillConditionCategories
+from dlparse.errors import ActionInfoNotFoundError, AppValueError, HitDataUnavailableError, SkillDataNotFoundError
 from dlparse.model import AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SupportiveSkillData
 from dlparse.mono.asset import (
     AbilityAsset, ActionConditionAsset, HitAttrAsset, PlayerActionInfoAsset, SkillDataAsset, SkillDataEntry,
@@ -33,18 +34,72 @@ class SkillTransformer:
         """Get the skill data asset used by this transformer."""
         return self._skill_data
 
-    def _get_hit_data_lv(self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_id: int) -> HitDataList:
-        """Get a list of hit attributes at a certain ``skill_lv``."""
+    def _get_hit_data_action_component(
+            self, hit_data_cls: Type[T], skill_lv: int, action_id: int, /,
+            additional_pre_condition: SkillCondition = SkillCondition.NONE
+    ) -> HitDataList:
         ret: HitDataList = []
 
-        # --- From action component
         for hit_label, action_component in self._action_loader.get_prefab(action_id).get_hit_actions(skill_lv):
+            # Check for multiple pre-conditions, raise error if needed
+            if additional_pre_condition and action_component.condition_data.skill_pre_condition:
+                raise AppValueError(f"Multiple pre-condition detected: "
+                                    f"{additional_pre_condition} "
+                                    f"& {action_component.condition_data.skill_pre_condition}")
+
+            pre_condition = additional_pre_condition or action_component.condition_data.skill_pre_condition
+
             # If the hit attribute is missing, just skip it; sometimes it's simply missing
             if hit_attr_data := self._hit_attr.get_data_by_id(hit_label):
-                ret.append(hit_data_cls(hit_attr=hit_attr_data, action_component=action_component, action_id=action_id,
-                                        pre_condition=action_component.condition_data.skill_pre_condition))
+                ret.append(hit_data_cls(hit_attr=hit_attr_data, action_component=action_component,
+                                        action_id=action_id, pre_condition=pre_condition))
 
-        # --- From ability
+        return ret
+
+    def _get_hit_data_next_action(self, hit_data_cls: Type[T], skill_lv: int, action_id: int) -> HitDataList:
+        # This currently handles additional inputs (Ramona S1, Lathna S1) only
+        ret: HitDataList = []
+
+        action_info = self._action_info.get_data_by_id(action_id)
+        if init_next_action_id := action_info.next_action_id:
+            action_id_queue = [init_next_action_id]
+            action_info_prev = [action_info]
+
+            while action_id_queue:
+                # Pop the next action ID to get the prefab and the info
+                curr_action_id = action_id_queue.pop(0)
+                curr_action_info = self._action_info.get_data_by_id(curr_action_id)
+                if not curr_action_info:
+                    raise ActionInfoNotFoundError(curr_action_id)
+
+                prev_action_info = action_info_prev.pop(0)
+
+                # Parse the actions and attach it to the hit data list to be returned
+                if prev_action_info.max_addl_input_count:
+                    # Additional inputs available, list them all
+                    pre_conditions = [
+                        SkillConditionCategories.skill_addl_inputs.convert_reversed(addl_input_count)
+                        for addl_input_count in range(1, prev_action_info.max_addl_input_count + 1)
+                    ]
+                else:
+                    # Additional inputs unavailable, have one dummy pre-condition to trigger the parse
+                    pre_conditions = [SkillCondition.NONE]
+
+                # Iterate through all possible pre-conditions
+                for pre_condition in pre_conditions:
+                    ret.extend(self._get_hit_data_action_component(hit_data_cls, skill_lv, curr_action_id,
+                                                                   additional_pre_condition=pre_condition))
+
+                # Add all next actions, if available
+                if curr_action_info.next_action_id:
+                    action_id_queue.append(curr_action_info.next_action_id)
+                    action_info_prev.append(curr_action_info)
+
+        return ret
+
+    def _get_hit_data_lv_ability(self, hit_data_cls: Type[T], action_id: int, ability_id: int) -> HitDataList:
+        ret: HitDataList = []
+
         if init_ability_data := self._ability_asset.get_data_by_id(ability_id):
             # Get all ability data from the condition chain
             ability_data_queue = [init_ability_data]
@@ -53,7 +108,7 @@ class SkillTransformer:
                 # Pop an ability data from the frontier
                 ability_data = ability_data_queue.pop(0)
 
-                # Parse to :class:`HitData` and attach it to the hit attribute list to be returned
+                # Parse to :class:`HitData` and attach it to the hit data list to be returned
                 for hit_label in ability_data.assigned_hit_labels:
                     # If the hit attribute is missing, just skip it; sometimes it's simply missing
                     if hit_attr_data := self._hit_attr.get_data_by_id(hit_label):
@@ -64,6 +119,16 @@ class SkillTransformer:
                 for other_ability_id in ability_data.get_other_ability_ids:
                     if new_frontier := self._ability_asset.get_data_by_id(other_ability_id):
                         ability_data_queue.append(new_frontier)
+
+        return ret
+
+    def _get_hit_data_lv(self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_id: int) -> HitDataList:
+        """Get a list of hit attributes at a certain ``skill_lv``."""
+        ret: HitDataList = []
+
+        ret.extend(self._get_hit_data_action_component(hit_data_cls, skill_lv, action_id))
+        ret.extend(self._get_hit_data_next_action(hit_data_cls, skill_lv, action_id))
+        ret.extend(self._get_hit_data_lv_ability(hit_data_cls, action_id, ability_id))
 
         return ret
 

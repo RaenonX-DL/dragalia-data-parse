@@ -47,6 +47,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     bullet_hit_count_converted: int = field(init=False)
     bullets_on_map: Optional[SkillCondition] = field(init=False)
     bullets_on_map_converted: int = field(init=False)
+    addl_inputs: Optional[SkillCondition] = field(init=False)
+    addl_inputs_converted: int = field(init=False)
 
     # endregion
 
@@ -101,13 +103,17 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         if self.teammate_coverage and self.teammate_coverage not in CondCat.skill_teammates_covered:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_TEAMMATE_COVERAGE)
 
-        # Check `self.teammate_coverage`
+        # Check `self.bullet_hit_count`
         if self.bullet_hit_count and self.bullet_hit_count not in CondCat.skill_bullet_hit:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BULLET_HIT_COUNT)
 
         # Check `self.bullets_on_map`
         if self.bullets_on_map and self.bullets_on_map not in CondCat.skill_bullets_on_map:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BULLETS_ON_MAP)
+
+        # Check `self.addl_inputs`
+        if self.addl_inputs and self.addl_inputs not in CondCat.skill_addl_inputs:
+            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_ADDL_INPUTS)
 
     def _init_validate_fields(self, conditions: tuple[SkillCondition]):
         self._init_validate_target()
@@ -132,8 +138,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
         self.teammate_coverage = CondCat.skill_teammates_covered.extract(conditions)
         self.bullet_hit_count = CondCat.skill_bullet_hit.extract(conditions)
-
         self.bullets_on_map = CondCat.skill_bullets_on_map.extract(conditions)
+        self.addl_inputs = CondCat.skill_addl_inputs.extract(conditions)
 
         self._init_validate_fields(conditions)
 
@@ -151,8 +157,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.teammate_coverage_converted = CondCat.skill_teammates_covered.convert(self.teammate_coverage,
                                                                                    on_missing=None)
         self.bullet_hit_count_converted = CondCat.skill_bullet_hit.convert(self.bullet_hit_count, on_missing=None)
-
         self.bullets_on_map_converted = CondCat.skill_bullets_on_map.convert(self.bullets_on_map, on_missing=None)
+        self.addl_inputs_converted = CondCat.skill_addl_inputs.convert(self.addl_inputs, on_missing=None)
 
     def _cond_sorted_target(self) -> tuple[SkillCondition]:
         ret: tuple[SkillCondition] = tuple(self.afflictions_condition)
@@ -197,6 +203,9 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         if self.bullets_on_map:
             ret += (self.bullets_on_map,)
 
+        if self.addl_inputs:
+            ret += (self.addl_inputs,)
+
         return ret
 
     @property
@@ -215,6 +224,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         - [Skill] Bullet hit count
         - [Skill] Teammate coverage
         - [Skill] Bullets on map
+        - [Skill] Additional inputs
         """
         return (self._cond_sorted_target()
                 + self._cond_sorted_self_status()

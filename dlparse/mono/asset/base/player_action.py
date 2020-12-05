@@ -33,7 +33,7 @@ class ActionComponentCondition(EntryBase):
 
     @property
     def skill_pre_condition(self) -> SkillCondition:
-        """Get the action executing precondition."""
+        """Get the action executing pre-condition."""
         # Appears in Nevin S2 (103505042 - 391330)
         if self.type_values[0] == 1152:
             if self.type_values[2] == 1:

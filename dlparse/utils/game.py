@@ -2,7 +2,7 @@
 from typing import Optional, TYPE_CHECKING
 from warnings import warn
 
-from dlparse.enums import SkillConditionComposite
+from dlparse.enums import SkillConditionCategories, SkillConditionComposite
 from dlparse.mono.asset import PlayerActionInfoAsset
 from .calc import multiply_vector
 
@@ -21,24 +21,12 @@ def calculate_crisis_mod(mod: float, hp_rate: float, crisis_rate: float) -> floa
     return mod * ((1 - hp_rate) ** 2 * (crisis_rate - 1) + 1)
 
 
-def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: SkillConditionComposite,
-                              action_info_asset: Optional[PlayerActionInfoAsset] = None) -> list[float]:
-    """
-    Calculates the damage modifier of ``hit_data`` under ``condition_comp``.
-
-    Usually, a single hit will have a single modifier only.
-    However, for deteriorating bullets, having multiple damage modifiers is possible.
-    """
-    # --- Early termination
-
-    if hit_data.pre_condition and hit_data.pre_condition not in condition_comp:
-        return []  # No damage mods because pre condition mismatched
-
+def _calc_damage_mod_base(
+        hit_data: "DamagingHitData", condition_comp: SkillConditionComposite, /,
+        action_info_asset: Optional[PlayerActionInfoAsset] = None
+) -> list[float]:
     hit_attr = hit_data.hit_attr
 
-    # --- Mod base
-
-    # Create modifier bases
     if hit_data.will_deteriorate and condition_comp.bullet_hit_count:
         # Deteriorating bullets
         mods = [hit_data.damage_modifier_at_hit(hit_count)
@@ -63,10 +51,49 @@ def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: Skill
         # Damage dealt depends on the bullets on the map
         mods = [hit_attr.damage_modifier] * (condition_comp.bullets_on_map_converted or 0)
     else:
-        # Cases that do not need specific handling
+        # Cases not handled above
         mods = [hit_attr.damage_modifier]
 
+    return mods
+
+
+def calculate_damage_modifier(
+        hit_data: "DamagingHitData", condition_comp: SkillConditionComposite, /,
+        action_info_asset: Optional[PlayerActionInfoAsset] = None
+) -> list[float]:
+    """
+    Calculates the damage modifier of ``hit_data`` under ``condition_comp``.
+
+    Usually, a single hit will have a single modifier.
+    However, under some special circumstances (for example, deteriorating bullets),
+    having multiple damage modifiers is possible.
+
+    ``action_info_asset`` will be used for special circumstance mods calculation.
+    If they are not provided, the mods may be uncalculatable or inaccurate.
+    If such happens, an error will be raised, or a warning will be emitted.
+    """
+    # --- Early terminations / checks
+
+    if hit_data.pre_condition:
+        # Pre-condition available, perform checks
+
+        if hit_data.pre_condition in SkillConditionCategories.skill_addl_inputs:
+            # Pre-condition is additional inputs, perform special check
+            pre_cond_addl_hit = SkillConditionCategories.skill_addl_inputs.convert(hit_data.pre_condition)
+            if pre_cond_addl_hit > (condition_comp.addl_inputs_converted or 0):
+                # Required pre-conditional additional inputs > additional inputs count in the condition, hit invalid
+                return []
+        elif hit_data.pre_condition not in condition_comp:
+            # Other pre-conditions & not listed in the given condition composite i.e. pre-condition mismatch
+            return []
+
+    # --- Mod base
+
+    mods = _calc_damage_mod_base(hit_data, condition_comp, action_info_asset=action_info_asset)
+
     # --- Apply boosts
+
+    hit_attr = hit_data.hit_attr
 
     # HP boosts
     if hit_attr.boost_by_hp:

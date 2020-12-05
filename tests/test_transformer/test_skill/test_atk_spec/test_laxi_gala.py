@@ -93,6 +93,8 @@ def test_s2_call_fig(transformer_skill: SkillTransformer):
     #   the correct way to read that ability would be
     #   when buff at ConditionValue is removed
     #   clear all bullets
+    #   ----------
+    #   Action component SendSignal?
 
     # Base data
     # skill_data = skill_data_base.with_conditions()

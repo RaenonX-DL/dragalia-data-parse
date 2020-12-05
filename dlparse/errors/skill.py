@@ -5,7 +5,8 @@ from typing import Any
 from .base import AppValueError
 
 __all__ = ("ConditionValidationFailedError", "BulletEndOfLifeError", "DamagingHitValidationFailedError",
-           "HitDataUnavailableError", "UnhandledSelfDamageError", "InvalidSkillNumError", "InvalidSkillLevelError")
+           "HitDataUnavailableError", "ActionInfoNotFoundError",
+           "UnhandledSelfDamageError", "InvalidSkillNumError", "InvalidSkillLevelError")
 
 
 class ConditionValidationFailedError(AppValueError):
@@ -25,6 +26,13 @@ class HitDataUnavailableError(AppValueError):
     def __init__(self):
         super().__init__("No hit data available. This is likely due to a wrong skill type choice. "
                          "For example, a supportive skill transformed as an attacking skill.")
+
+
+class ActionInfoNotFoundError(AppValueError):
+    """Error to be raised if the corresponding action info is not found."""
+
+    def __init__(self, action_id: int):
+        super().__init__(f"Action info for AID `{action_id}` not found")
 
 
 class UnhandledSelfDamageError(AppValueError):

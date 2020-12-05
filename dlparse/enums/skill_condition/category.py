@@ -26,6 +26,7 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_BULLET_HIT = auto()
     MULTIPLE_TEAMMATE_COVERAGE = auto()
     MULTIPLE_BULLETS_ON_MAP = auto()
+    MULTIPLE_ADDL_INPUTS = auto()
 
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
     INTERNAL_NOT_TARGET_ELEMENTAL = auto()
@@ -38,6 +39,7 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_BULLET_HIT_COUNT = auto()
     INTERNAL_NOT_TEAMMATE_COVERAGE = auto()
     INTERNAL_NOT_BULLETS_ON_MAP = auto()
+    INTERNAL_NOT_ADDL_INPUTS = auto()
 
     HAS_CONDITIONS_LEFT = auto()
 
@@ -196,7 +198,7 @@ class SkillConditionCategories:
             SkillCondition.TARGET_BREAK_STATE: TargetStatus.BREAK_STATE
         },
         SkillConditionMaxCount.MULTIPLE,
-        "Target status",
+        "Target - status",
         SkillConditionCheckResult.PASS  # Impossible to fail (current only invalid reason is multiple conditions)
     )
     target_elemental = SkillConditionCategory[Element](
@@ -208,7 +210,7 @@ class SkillConditionCategories:
             SkillCondition.TARGET_ELEM_SHADOW: Element.SHADOW,
         },
         SkillConditionMaxCount.SINGLE,
-        "Target element",
+        "Target - element",
         SkillConditionCheckResult.MULTIPLE_TARGET_ELEMENT
     )
     self_hp_status = SkillConditionCategoryTargetNumber(
@@ -222,7 +224,7 @@ class SkillConditionCategories:
             SkillCondition.SELF_HP_FULL: 1,
         },
         SkillConditionMaxCount.SINGLE,
-        "Self HP status (of % max)",
+        "Self - HP status (of % max)",
         SkillConditionCheckResult.MULTIPLE_HP_STATUS
     )
     self_hp_cond = SkillConditionCategoryTargetNumber(
@@ -237,7 +239,7 @@ class SkillConditionCategories:
             SkillCondition.SELF_HP_GTE_85: 0.85,
         },
         SkillConditionMaxCount.SINGLE,
-        "Self HP condition (of % max)",
+        "Self - HP condition (of % max)",
         SkillConditionCheckResult.MULTIPLE_HP_CONDITION
     )
     self_buff_count = SkillConditionCategoryTargetNumber(
@@ -262,7 +264,7 @@ class SkillConditionCategories:
             SkillCondition.SELF_BUFF_50: 50,
         },
         SkillConditionMaxCount.SINGLE,
-        "Self buff count",
+        "Self - buff count",
         SkillConditionCheckResult.MULTIPLE_BUFF
     )
     self_in_buff_zone_self = SkillConditionCategoryTargetNumber(
@@ -272,7 +274,7 @@ class SkillConditionCategories:
             SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2: 2,
         },
         SkillConditionMaxCount.SINGLE,
-        "Count of buff zone built by self inside",
+        "Self - count of self-built buff zones inside",
         SkillConditionCheckResult.MULTIPLE_BUFF_ZONE_SELF
     )
     self_in_buff_zone_ally = SkillConditionCategoryTargetNumber(
@@ -283,7 +285,7 @@ class SkillConditionCategories:
             SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_3: 3,
         },
         SkillConditionMaxCount.SINGLE,
-        "Count of buff zone built by ally inside",
+        "Self - count of ally-built buff zones inside",
         SkillConditionCheckResult.MULTIPLE_BUFF_ZONE_ALLY
     )
     self_action_condition = SkillConditionCategoryTargetNumber(
@@ -293,7 +295,7 @@ class SkillConditionCategories:
             SkillCondition.SELF_SIGIL_RELEASED: 1152
         },
         SkillConditionMaxCount.SINGLE,
-        "Self action condition status",
+        "Self - action condition status",
         SkillConditionCheckResult.MULTIPLE_SELF_ACTION_CONDITION
     )
     skill_bullet_hit = SkillConditionCategoryTargetNumber(
@@ -310,7 +312,7 @@ class SkillConditionCategories:
             SkillCondition.BULLET_HIT_10: 10,
         },
         SkillConditionMaxCount.SINGLE,
-        "Skill bullet hit count",
+        "Skill - bullet hit count",
         SkillConditionCheckResult.MULTIPLE_BULLET_HIT
     )
     skill_teammates_covered = SkillConditionCategoryTargetNumber(
@@ -321,7 +323,7 @@ class SkillConditionCategories:
             SkillCondition.COVER_TEAMMATE_3: 3,
         },
         SkillConditionMaxCount.SINGLE,
-        "Skill effect teammates covered",
+        "Skill - teammates covered by effect",
         SkillConditionCheckResult.MULTIPLE_TEAMMATE_COVERAGE
     )
     skill_bullets_on_map = SkillConditionCategoryTargetNumber(
@@ -340,6 +342,20 @@ class SkillConditionCategories:
         SkillConditionMaxCount.SINGLE,
         "Skill - bullets on map",
         SkillConditionCheckResult.MULTIPLE_BULLETS_ON_MAP
+    )
+    skill_addl_inputs = SkillConditionCategoryTargetNumber(
+        {
+            SkillCondition.ADDL_INPUT_0: 0,
+            SkillCondition.ADDL_INPUT_1: 1,
+            SkillCondition.ADDL_INPUT_2: 2,
+            SkillCondition.ADDL_INPUT_3: 3,
+            SkillCondition.ADDL_INPUT_4: 4,
+            SkillCondition.ADDL_INPUT_5: 5,
+            SkillCondition.ADDL_INPUT_6: 6,
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Skill - additional input",
+        SkillConditionCheckResult.MULTIPLE_ADDL_INPUTS
     )
 
     @classmethod

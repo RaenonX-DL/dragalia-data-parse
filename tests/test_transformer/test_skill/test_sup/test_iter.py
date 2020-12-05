@@ -1,4 +1,4 @@
-from dlparse.enums import SkillCondition, HitTargetSimple, BuffParameter, SkillConditionComposite
+from dlparse.enums import BuffParameter, HitTargetSimple, SkillCondition, SkillConditionComposite
 from dlparse.model import SupportiveSkillUnit
 from dlparse.transformer import SkillTransformer
 
@@ -167,7 +167,7 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
     assert len(expected_buffs_lv_max) == 0, f"Conditions not tested: {set(expected_buffs_lv_max.keys())}"
 
 
-def test_has_precondition(transformer_skill: SkillTransformer):
+def test_has_pre_condition(transformer_skill: SkillTransformer):
     # Veronica S1
     # https://dragalialost.gamepedia.com/Veronica
     skill_data = transformer_skill.transform_supportive(107505011)
