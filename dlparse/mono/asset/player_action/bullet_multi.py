@@ -34,7 +34,7 @@ class ActionBulletMulti(ActionBullet):
 
         # Labels in arrange bullet
         if "_arrangeBullet" in data:
-            labels_possible.extend(ActionBulletArranged.parse_raw(data["_arrangeBullet"]).hit_labels)
+            labels_possible.extend(ActionBulletArranged.parse_raw(data["_arrangeBullet"]).hit_labels * bullet_count)
 
         # Attach collsion data
         kwargs |= {
