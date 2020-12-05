@@ -104,11 +104,14 @@ def test_fs_spd(transformer_skill: SkillTransformer):
 
 
 def test_shield_dmg(transformer_skill: SkillTransformer):
-    # Yuya
+    # Yuya S2
     # https://dragalialost.gamepedia.com/Yuya
     skill_data_base = transformer_skill.transform_supportive(103401022)
 
-    assert skill_data_base.max_level == 2
+    # Despite Yuya S2 only has 2 levels, no indicator can be used to limit the level discovery
+    # while ATK effect can be discovered until level 4.
+    # Therefore, the returned max level is 4 instead of 2.
+    assert skill_data_base.max_level == 4
 
     expected_buffs_lv_1 = {
         SupportiveSkillUnit(
@@ -174,11 +177,35 @@ def test_shield_dmg(transformer_skill: SkillTransformer):
             max_stack_count=0
         ),
     }
-    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2]
+    expected_buffs_lv_3 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.ATK,
+            rate=0.2,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_ALL_ATK_SR_30_LV03",
+            action_cond_id=302030401,
+            max_stack_count=0
+        ),
+    }
+    expected_buffs_lv_4 = {
+        SupportiveSkillUnit(
+            target=HitTargetSimple.TEAM,
+            parameter=BuffParameter.ATK,
+            rate=0.25,
+            duration_time=15,
+            duration_count=0,
+            hit_attr_label="BUF_ALL_ATK_SR_30_LV04",
+            action_cond_id=302030501,
+            max_stack_count=0
+        ),
+    }
+    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3, expected_buffs_lv_4]
 
     skill_data = skill_data_base.with_conditions()
 
-    assert skill_data.max_lv_buffs == expected_buffs_lv_2
+    assert skill_data.max_lv_buffs == expected_buffs_lv_4
 
     for skill_lv in range(skill_data_base.max_level):
         expected_buffs = expected_base_buffs[skill_lv]

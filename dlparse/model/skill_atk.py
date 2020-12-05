@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from itertools import combinations, product, zip_longest
 from typing import Optional
 
-from dlparse.enums import SkillCondition, SkillConditionComposite, SkillConditionCategories, TargetStatus
+from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite, TargetStatus
 from dlparse.mono.asset import PlayerActionInfoAsset
 from dlparse.utils import calculate_damage_modifier
 from .hit_dmg import DamagingHitData
@@ -104,13 +104,9 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         for hit_data_lv in self.hit_data_mtx:
             for hit_data in hit_data_lv:
                 punishers_available |= hit_data.hit_attr.punisher_states
-                crisis_available = crisis_available or hit_data.hit_attr.boost_by_hp
-                buff_up_available = (
-                        buff_up_available
-                        or hit_data.hit_attr.boost_by_buff_count  # Direct buff boost
-                        or hit_data.is_user_buff_count_dependent  # Bonus bullet hit
-                )
-                will_deteriorate = will_deteriorate or hit_data.will_deteriorate
+                crisis_available |= hit_data.hit_attr.boost_by_hp
+                buff_up_available |= hit_data.hit_attr.boost_by_buff_count or hit_data.is_user_buff_count_dependent
+                will_deteriorate |= hit_data.will_deteriorate
                 max_bullet_hit = max(max_bullet_hit, hit_data.max_hit_count)
                 if precondition := hit_data.pre_condition:
                     preconditions.add((precondition,))

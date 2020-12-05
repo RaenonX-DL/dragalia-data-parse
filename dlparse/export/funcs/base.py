@@ -1,11 +1,11 @@
 """Base exporting functions."""
 import csv
-from typing import TypeVar, Callable
+from typing import Callable, TypeVar
 
-from dlparse.errors import HitDataUnavailableError, ActionDataNotFoundError
+from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError
 from dlparse.export.entry import ExportEntryBase
 from dlparse.model import SkillDataBase, SkillEntryBase
-from dlparse.mono.asset import CharaDataAsset, CharaDataEntry, CharaModeAsset, TextAsset, SkillIdEntry, SkillDataAsset
+from dlparse.mono.asset import CharaDataAsset, CharaDataEntry, CharaModeAsset, SkillDataAsset, SkillIdEntry, TextAsset
 from dlparse.transformer import SkillTransformer
 
 __all__ = ("export_as_csv", "export_skill_entries", "export_transform_skill_entries")
@@ -27,10 +27,10 @@ TransformFunction = Callable[
 SkillEntriesReturn = list[tuple[SkillIdEntry, SkillDataBase, list[ET]]]
 
 
-def export_transform_skill_entries(transform_fn: TransformFunction, chara_data: CharaDataEntry,
-                                   chara_mode_asset: CharaModeAsset, text_asset: TextAsset,
-                                   skill_asset: SkillDataAsset, skip_unparsable: bool = True) \
-        -> tuple[SkillEntriesReturn, list[str]]:
+def export_transform_skill_entries(
+        transform_fn: TransformFunction, chara_data: CharaDataEntry, chara_mode_asset: CharaModeAsset,
+        text_asset: TextAsset, skill_asset: SkillDataAsset, skip_unparsable: bool = True
+) -> tuple[SkillEntriesReturn, list[str]]:
     """Get a list of skill entries to be parsed to exported data entries."""
     ret: SkillEntriesReturn = []
     skipped_messages: list[str] = []

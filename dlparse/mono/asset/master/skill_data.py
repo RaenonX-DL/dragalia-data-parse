@@ -1,9 +1,9 @@
 """Classes for handling the skill data asset."""
 from dataclasses import dataclass
-from typing import Union, Optional
+from typing import Optional, Union
 
 from dlparse.errors import InvalidSkillLevelError
-from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
+from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("SkillIdEntry", "SkillDataEntry", "SkillDataAsset", "SkillDataParser")
 
@@ -219,8 +219,7 @@ class SkillDataEntry(MasterEntryBase):
 
         raise InvalidSkillLevelError(level)
 
-    def get_phase_changed_skills(self, skill_asset: "SkillDataAsset", skill_num: int) -> \
-            list[SkillIdEntry]:
+    def get_phase_changed_skills(self, skill_asset: "SkillDataAsset", skill_num: int) -> list[SkillIdEntry]:
         """Get a list of skills of all possible transitioned skills, excluding the source skill."""
         ret: list[SkillIdEntry] = []
         added_skill_id: set[int] = set()

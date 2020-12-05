@@ -1,12 +1,12 @@
 """Class for a single supportive skill entry."""
 from collections import defaultdict
-from dataclasses import dataclass, field, InitVar
+from dataclasses import InitVar, dataclass, field
 from itertools import product
 from typing import Optional
 
 from dlparse.enums import (
-    SkillConditionComposite, SkillCondition, SkillConditionCategories,
-    HitTargetSimple, BuffParameter, SkillIndex, Element
+    BuffParameter, Element, HitTargetSimple, SkillCondition, SkillConditionCategories, SkillConditionComposite,
+    SkillIndex,
 )
 from dlparse.errors import UnhandledSelfDamageError
 from dlparse.mono.asset import ActionConditionAsset, ActionConditionEntry, HitAttrEntry
@@ -71,9 +71,10 @@ class SupportiveSkillConverter:
     """Class for converting a supportive skill to a single buff entry."""
 
     @staticmethod
-    def to_param_up(param_enum: BuffParameter, param_rate: float,
-                    hit_data: BuffingHitData, cond_entry: Optional[ActionConditionEntry]) \
-            -> Optional[SupportiveSkillUnit]:
+    def to_param_up(
+            param_enum: BuffParameter, param_rate: float,
+            hit_data: BuffingHitData, cond_entry: Optional[ActionConditionEntry]
+    ) -> Optional[SupportiveSkillUnit]:
         """
         Create a buff unit (if applicable) based on the given data.
 
@@ -134,8 +135,9 @@ class SupportiveSkillConverter:
         raise UnhandledSelfDamageError(hit_attr.id)
 
     @staticmethod
-    def convert_to_units(hit_data: BuffingHitData, action_condition_asset: ActionConditionAsset) \
-            -> set[SupportiveSkillUnit]:
+    def convert_to_units(
+            hit_data: BuffingHitData, action_condition_asset: ActionConditionAsset
+    ) -> set[SupportiveSkillUnit]:
         """Convert ``hit_data`` to a set of :class:`SupportiveSkillUnit`."""
         entries: set[Optional[SupportiveSkillUnit]] = set()
 
@@ -252,7 +254,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
         # Check availabilities
         for hit_data_lv in self.hit_data_mtx:
             for hit_data in hit_data_lv:
-                has_teammate_coverage = has_teammate_coverage or hit_data.hit_attr.has_hit_condition
+                has_teammate_coverage |= hit_data.hit_attr.has_hit_condition
 
                 if (
                         hit_data.hit_attr.has_action_condition
@@ -375,8 +377,9 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
             buff_lv: dict[SkillCondition, set[SupportiveSkillUnit]] = defaultdict(set)
 
             for hit_data in hit_data_lv:
-                buff_lv[hit_data.pre_condition] |= \
+                buff_lv[hit_data.pre_condition] |= (
                     SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset)
+                )
 
             self.buffs_preconditioned.append(dict(buff_lv))
 

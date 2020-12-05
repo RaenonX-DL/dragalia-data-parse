@@ -1,6 +1,6 @@
 """Classes for skill condition categories."""
 from enum import Enum, auto
-from typing import TypeVar, Generic, Iterable, Union
+from typing import Any, Generic, Iterable, TypeVar, Union
 
 from dlparse.errors import EnumConversionError
 from .items import SkillCondition
@@ -57,6 +57,8 @@ T = TypeVar("T")
 class SkillConditionCategory(Generic[T]):
     """A skill condition category."""
 
+    RAISE_ERROR = object()  # Dummy object for conversion on missing
+
     def __init__(self, data: dict[SkillCondition, T], max_count: SkillConditionMaxCount, name: str,
                  result_on_invalid: SkillConditionCheckResult):
         self._members = data
@@ -100,14 +102,21 @@ class SkillConditionCategory(Generic[T]):
         """Get the :class:`SkillConditionCheckResult` to return if the validation failed."""
         return self._result_on_invalid
 
-    def convert(self, item: SkillCondition) -> T:
+    def convert(self, item: SkillCondition, /, on_missing: Any = RAISE_ERROR) -> T:
         """
         Convert ``item`` to :class:`T`.
 
-        :raises EnumConversionError: if `item` is unconvertible
+        ``on_missing`` will be returned if unconvertible.
+        If this is not given or specified as ``RAISE_ERROR`` (default) and ``item`` in unconvertible,
+        :class:`EnumConversionError` will be raised.
+
+        :raises EnumConversionError: if `item` is unconvertible is `on_missing` is `RAISE_ERROR`
         """
         if item not in self:
-            raise EnumConversionError(item, SkillCondition, self._name)
+            if on_missing is self.RAISE_ERROR:
+                raise EnumConversionError(item, SkillCondition, self._name)
+
+            return on_missing
 
         return self._members[item]
 

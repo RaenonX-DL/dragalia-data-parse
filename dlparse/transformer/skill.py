@@ -1,11 +1,10 @@
 """Skill data transformer."""
-from typing import Optional, TypeVar, Type
+from typing import Optional, Type, TypeVar
 
-from dlparse.errors import SkillDataNotFoundError, HitDataUnavailableError
-from dlparse.model import HitData, AttackingSkillData, SupportiveSkillData, DamagingHitData, BuffingHitData
+from dlparse.errors import HitDataUnavailableError, SkillDataNotFoundError
+from dlparse.model import AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SupportiveSkillData
 from dlparse.mono.asset import (
-    HitAttrAsset, SkillDataEntry, SkillDataAsset, PlayerActionInfoAsset,
-    AbilityAsset, ActionConditionAsset
+    AbilityAsset, ActionConditionAsset, HitAttrAsset, PlayerActionInfoAsset, SkillDataAsset, SkillDataEntry,
 )
 from dlparse.mono.loader import PlayerActionFileLoader
 
@@ -40,12 +39,10 @@ class SkillTransformer:
 
         # --- From action component
         for hit_label, action_component in self._action_loader.get_prefab(action_id).get_hit_actions(skill_lv):
+            # If the hit attribute is missing, just skip it; sometimes it's simply missing
             if hit_attr_data := self._hit_attr.get_data_by_id(hit_label):
                 ret.append(hit_data_cls(hit_attr=hit_attr_data, action_component=action_component, action_id=action_id,
                                         pre_condition=action_component.condition_data.skill_pre_condition))
-                continue
-
-            break  # If not all hit attribute data found, consider as an invalid level
 
         # --- From ability
         if init_ability_data := self._ability_asset.get_data_by_id(ability_id):
@@ -58,11 +55,10 @@ class SkillTransformer:
 
                 # Parse to :class:`HitData` and attach it to the hit attribute list to be returned
                 for hit_label in ability_data.assigned_hit_labels:
+                    # If the hit attribute is missing, just skip it; sometimes it's simply missing
                     if hit_attr_data := self._hit_attr.get_data_by_id(hit_label):
                         ret.append(hit_data_cls(hit_attr=hit_attr_data, action_component=None, action_id=action_id,
                                                 pre_condition=ability_data.condition.to_skill_condition()))
-                        continue
-                    break  # If not all hit attribute data found, consider as an invalid level
 
                 # Add all ability data to be used upon condition mismatch to the ability data queue
                 for other_ability_id in ability_data.get_other_ability_ids:
@@ -71,9 +67,10 @@ class SkillTransformer:
 
         return ret
 
-    def get_hit_data_matrix(self, skill_id: int, hit_data_cls: Type[T], /,
-                            deals_damage: bool = True, max_lv: int = 0) \
-            -> tuple[SkillDataEntry, list[list[T]]]:
+    def get_hit_data_matrix(
+            self, skill_id: int, hit_data_cls: Type[T], /,
+            deals_damage: bool = True, max_lv: int = 0
+    ) -> tuple[SkillDataEntry, list[list[T]]]:
         """
         Get a matrix of the hit data.
 

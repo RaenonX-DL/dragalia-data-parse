@@ -1,13 +1,13 @@
 """Classes for handling the character data asset."""
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Union, Optional
+from typing import Optional, Union
 
 from dlparse.enums import Element
-from dlparse.errors import TextLabelNotFoundError, InvalidSkillNumError
-from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
+from dlparse.errors import InvalidSkillNumError, TextLabelNotFoundError
+from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 from .chara_mode_data import CharaModeAsset
-from .skill_data import SkillDataEntry, SkillDataAsset, SkillIdEntry
+from .skill_data import SkillDataAsset, SkillDataEntry, SkillIdEntry
 from .text_label import TextAsset
 
 __all__ = ("CharaDataEntry", "CharaDataAsset", "CharaDataParser")
@@ -261,10 +261,11 @@ class CharaDataEntry(MasterEntryBase):
 
         raise InvalidSkillNumError(skill_num)
 
-    def get_skill_identifiers(self, chara_mode_asset: CharaModeAsset, /,
-                              asset_text: Optional[TextAsset] = None,
-                              asset_skill: Optional[SkillDataAsset] = None) \
-            -> list[SkillIdEntry]:
+    def get_skill_identifiers(
+            self, chara_mode_asset: CharaModeAsset, /,
+            asset_text: Optional[TextAsset] = None,
+            asset_skill: Optional[SkillDataAsset] = None
+    ) -> list[SkillIdEntry]:
         """
         Get the skill ID entries of a character.
 

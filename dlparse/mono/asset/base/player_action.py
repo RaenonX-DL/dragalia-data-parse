@@ -2,7 +2,7 @@
 import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Type, Optional, Callable, Union
+from typing import Callable, Optional, Type, Union
 
 from dlparse.enums import SkillCondition
 from dlparse.errors import AssetKeyMissingError
@@ -107,8 +107,9 @@ class ActionComponentBase(EntryBase, ABC):
         raise NotImplementedError()
 
     @classmethod
-    def get_base_kwargs(cls, raw_data: dict[str, Union[str, int, float, dict[str, Union[int, float]]]]) \
-            -> dict[str, Union[int, float, ActionComponentCondition, ActionComponentLoop, list[str], None]]:
+    def get_base_kwargs(
+            cls, raw_data: dict[str, Union[str, int, float, dict[str, Union[int, float]]]]
+    ) -> dict[str, Union[int, float, ActionComponentCondition, ActionComponentLoop, list[str], None]]:
         """Get the base kwargs for constructing the component."""
         return {
             "command_type_id": raw_data["commandType"],
