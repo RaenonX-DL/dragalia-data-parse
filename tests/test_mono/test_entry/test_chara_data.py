@@ -1,4 +1,4 @@
-from dlparse.mono.asset import CharaDataEntry, CharaModeAsset, CharaDataAsset, TextAsset, SkillDataAsset, SkillIdEntry
+from dlparse.mono.asset import CharaDataAsset, CharaDataEntry, CharaModeAsset, SkillDataAsset, SkillIdEntry, TextAsset
 
 
 def create_dummy(**kwargs) -> CharaDataEntry:
@@ -84,7 +84,7 @@ def create_dummy(**kwargs) -> CharaDataEntry:
         "grow_material_id": -1,
     }
 
-    params |= kwargs
+    params.update(kwargs)
 
     return CharaDataEntry(**params)
 

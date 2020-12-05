@@ -37,11 +37,11 @@ class ActionBulletMulti(ActionBullet):
             labels_possible.extend(ActionBulletArranged.parse_raw(data["_arrangeBullet"]).hit_labels * bullet_count)
 
         # Attach collsion data
-        kwargs |= {
+        kwargs.update({
             "collision_interval": data["_generateDelay"],
             # Kind of reversing the data structure to match the base signature
             "bullet_duration": bullet_count * data["_generateDelay"]
-        }
+        })
 
         return ActionBulletMulti(
             hit_labels=[label for label in labels_possible if label],

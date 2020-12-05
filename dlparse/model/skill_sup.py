@@ -246,43 +246,33 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
     """
 
     def _init_all_possible_conditions(self, action_condition_asset: ActionConditionAsset):
-        has_teammate_coverage: bool = False
-        has_elemental_restriction: bool = False
-
-        preconditions: set[tuple[SkillCondition]] = set()
-
         # Check availabilities
-        for hit_data_lv in self.hit_data_mtx:
-            for hit_data in hit_data_lv:
-                has_teammate_coverage |= hit_data.hit_attr.has_hit_condition
+        has_teammate_coverage: bool = any(
+            hit_data.hit_attr.has_hit_condition
+            for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+        )
+        # noinspection PyUnboundLocalVariable
+        has_elemental_restriction: bool = any(
+            entry.target_limited_by_element
+            for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+            if (hit_data.hit_attr.has_action_condition
+                and (entry := action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id)))
+        )
 
-                if (
-                        hit_data.hit_attr.has_action_condition
-                        and (entry := action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id))
-                ):
-                    # noinspection PyUnboundLocalVariable
-                    has_elemental_restriction = has_elemental_restriction or entry.target_limited_by_element
+        # Initialization
+        cond_elems: list[set[tuple[SkillCondition, ...]]] = self._init_possible_conditions_base_elems()
 
-                if precondition := hit_data.pre_condition:
-                    preconditions.add((precondition,))
-
-        cond_elems: list[set[tuple[SkillCondition, ...]]] = []
-
-        # Teammate coverage conditions available, attach it
+        # Teammate coverage conditions available
         if has_teammate_coverage:
             cond_elems.append({(teammate_coverage_cond,) for teammate_coverage_cond
                                in SkillConditionCategories.skill_teammates_covered.members})
 
-        # Elemental restriction available, attach it
+        # Elemental restriction available
         if has_elemental_restriction:
             cond_elems.append({(target_element_cond,)
                                for target_element_cond in SkillConditionCategories.target_elemental.members
                                if any(buffs_lv[SkillConditionCategories.target_elemental.convert(target_element_cond)]
                                       for buffs_lv in self.buffs_elemental)})
-
-        # Skill precondition available, attach it
-        if preconditions:
-            cond_elems.append(preconditions)
 
         # Add combinations
         self.possible_conditions = {
@@ -312,7 +302,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                     continue
 
                 if skill_entries := SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset):
-                    buff_lv |= skill_entries
+                    buff_lv.update(skill_entries)
 
             self.buffs_base.append(buff_lv)
 
@@ -344,7 +334,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                         continue  # Teammate # higher than the boundary
 
                     if skill_entries := SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset):
-                        buff_lv[teammate_count] |= skill_entries
+                        buff_lv[teammate_count].update(skill_entries)
 
             self.buffs_teammate_coverage.append(buff_lv)
 
@@ -366,7 +356,9 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
                 for elem in Element.get_all_valid_elements():
                     if elem.to_flag() in action_condition.elemental_target:
-                        buff_lv[elem] |= SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset)
+                        buff_lv[elem].update(
+                            SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset)
+                        )
 
             self.buffs_elemental.append(buff_lv)
 
@@ -377,9 +369,8 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
             buff_lv: dict[SkillCondition, set[SupportiveSkillUnit]] = defaultdict(set)
 
             for hit_data in hit_data_lv:
-                buff_lv[hit_data.pre_condition] |= (
-                    SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset)
-                )
+                sup_skill_unit = SupportiveSkillConverter.convert_to_units(hit_data, action_condition_asset)
+                buff_lv[hit_data.pre_condition].update(sup_skill_unit)
 
             self.buffs_preconditioned.append(dict(buff_lv))
 
@@ -401,18 +392,20 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
         # Attach teammate coverage only buffs
         if condition_comp.teammate_coverage:
             for skill_lv in range(self.max_level):
-                buffs[skill_lv] |= self.buffs_teammate_coverage[skill_lv][condition_comp.teammate_coverage_converted]
+                buffs[skill_lv].update(
+                    self.buffs_teammate_coverage[skill_lv][condition_comp.teammate_coverage_converted]
+                )
 
         # Attach elemental buffs
         if condition_comp.target_elemental:
             for skill_lv in range(self.max_level):
-                buffs[skill_lv] |= self.buffs_elemental[skill_lv][condition_comp.target_elemental_converted]
+                buffs[skill_lv].update(self.buffs_elemental[skill_lv][condition_comp.target_elemental_converted])
 
         # Attach preconditioned buffs, if matches
         for skill_lv in range(self.max_level):
             for condition in condition_comp:
                 # Conditions in ``condition_comp`` could be non-precondition
-                buffs[skill_lv] |= self.buffs_preconditioned[skill_lv].get(condition, set())
+                buffs[skill_lv].update(self.buffs_preconditioned[skill_lv].get(condition, set()))
 
         return SupportiveSkillEntry(condition_comp=condition_comp, buffs=buffs)
 

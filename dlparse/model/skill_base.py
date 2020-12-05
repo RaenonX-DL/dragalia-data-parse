@@ -1,9 +1,9 @@
 """Base classes for a skill data."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import TypeVar, Generic
+from typing import Generic, TypeVar, final
 
-from dlparse.enums import SkillConditionComposite
+from dlparse.enums import SkillCondition, SkillConditionComposite
 from dlparse.model import HitData
 from dlparse.mono.asset import SkillDataEntry
 
@@ -30,6 +30,21 @@ class SkillDataBase(Generic[HT, ET], ABC):
     hit_data_mtx: list[list[HT]]
 
     possible_conditions: set[SkillConditionComposite] = field(init=False, default_factory=SkillConditionComposite)
+
+    @final
+    def _init_possible_conditions_base_elems(self):
+        preconditions: set[tuple[SkillCondition]] = {
+            (hit_data.pre_condition,)
+            for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+            if hit_data.pre_condition
+        }
+
+        cond_elems: list[set[tuple[SkillCondition, ...]]] = []
+
+        if preconditions:
+            cond_elems.append(preconditions)
+
+        return cond_elems
 
     @abstractmethod
     def _init_all_possible_conditions(self, *args, **kwargs):

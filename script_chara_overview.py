@@ -1,6 +1,6 @@
 from dlparse.mono.asset import (
-    CharaDataAsset, CharaModeAsset, TextAsset, SkillDataAsset, HitAttrAsset, ActionConditionAsset,
-    AbilityAsset, PlayerActionInfoAsset
+    AbilityAsset, ActionConditionAsset, CharaDataAsset, CharaModeAsset, HitAttrAsset, PlayerActionInfoAsset,
+    SkillDataAsset, TextAsset,
 )
 from dlparse.mono.loader import PlayerActionFileLoader
 from dlparse.transformer import SkillTransformer
@@ -111,4 +111,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10650102)
+    chara_skill_overview(10350504)

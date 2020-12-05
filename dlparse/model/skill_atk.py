@@ -92,45 +92,53 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     _max_level: int = field(init=False)
 
     def _init_all_possible_conditions(self):
-        punishers_available: set[TargetStatus] = set()  # Punishers available for each skill
-        crisis_available: bool = False
-        buff_up_available: bool = False
-        will_deteriorate: bool = False
-        max_bullet_hit: int = 0
-
-        preconditions: set[tuple[SkillCondition]] = set()
-
         # Check availabilities
-        for hit_data_lv in self.hit_data_mtx:
-            for hit_data in hit_data_lv:
-                punishers_available |= hit_data.hit_attr.punisher_states
-                crisis_available |= hit_data.hit_attr.boost_by_hp
-                buff_up_available |= hit_data.hit_attr.boost_by_buff_count or hit_data.is_user_buff_count_dependent
-                will_deteriorate |= hit_data.will_deteriorate
-                max_bullet_hit = max(max_bullet_hit, hit_data.max_hit_count)
-                if precondition := hit_data.pre_condition:
-                    preconditions.add((precondition,))
+        punishers_available: set[TargetStatus] = {
+            punisher_state
+            for hit_data_lv in self.hit_data_mtx
+            for hit_data in hit_data_lv
+            for punisher_state in hit_data.hit_attr.punisher_states
+        }
+        crisis_available: bool = any(
+            hit_data.hit_attr.boost_by_hp for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+        )
+        buff_up_available: bool = any(
+            hit_data.hit_attr.boost_by_buff_count or hit_data.is_user_buff_count_dependent
+            for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+        )
+        in_buff_zone_available: bool = any(
+            hit_data.is_effective_inside_buff_zone
+            for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+        )
+        will_deteriorate: bool = any(
+            hit_data.will_deteriorate for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+        )
+        max_bullet_hit: int = max(
+            (hit_data.max_hit_count for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv)
+        )
 
-        cond_elems: list[set[tuple[SkillCondition, ...]]] = []
+        # Initialization
+        cond_elems: list[set[tuple[SkillCondition, ...]]] = self._init_possible_conditions_base_elems()
 
-        # Skill precondition available, attach it
-        if preconditions:
-            cond_elems.append(preconditions)
-
-        # Crisis boosts available, attach HP conditions
+        # Crisis boosts available
         if crisis_available:
             cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_hp_status.members})
 
-        # Buff boosts available, attach buff counts
+        # Buff boosts available
         if buff_up_available:
             cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_buff_count.members})
 
-        # Deterioration available, attach bullet hit counts
+        # In buff zone boosts available
+        if in_buff_zone_available:
+            cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_in_buff_zone_self.members})
+            cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_in_buff_zone_ally.members})
+
+        # Deterioration available
         if will_deteriorate:
             cond_elems.append({(bullet_hit,) for bullet_hit
                                in SkillConditionCategories.skill_bullet_hit.get_members_lte(max_bullet_hit)})
 
-        # Punishers available, attach punisher conditions
+        # Punishers available
         if punishers_available:
             conditions: set[SkillCondition] = {SkillConditionCategories.target_status.convert_reversed(affliction)
                                                for affliction in punishers_available}
