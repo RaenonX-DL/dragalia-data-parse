@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 from dlparse.errors import BulletEndOfLifeError, DamagingHitValidationFailedError
-from dlparse.mono.asset import ActionComponentHasHitLabels, ActionBullet, ActionBuffField, ActionBulletStockFire
+from dlparse.mono.asset import ActionBuffField, ActionBullet, ActionBulletStockFire, ActionComponentHasHitLabels
 from .hit_base import HitData
 
 __all__ = ("DamagingHitData",)
@@ -25,7 +25,6 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
 
     # region Buff count dependent bullets
     is_user_buff_count_dependent: bool = False
-
     # endregion
 
     def _init_validity_check(self):

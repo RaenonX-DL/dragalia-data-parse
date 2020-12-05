@@ -112,11 +112,13 @@ class SkillCondition(Enum):
     # endregion
 
     # region In buff zone
-    SELF_IN_BUFF_ZONE_BY_SELF_1 = 270
-    SELF_IN_BUFF_ZONE_BY_SELF_2 = 271
-    SELF_IN_BUFF_ZONE_BY_ALLY_1 = 272
-    SELF_IN_BUFF_ZONE_BY_ALLY_2 = 273
-    SELF_IN_BUFF_ZONE_BY_ALLY_3 = 274
+    SELF_IN_BUFF_ZONE_BY_SELF_0 = 270
+    SELF_IN_BUFF_ZONE_BY_SELF_1 = 271
+    SELF_IN_BUFF_ZONE_BY_SELF_2 = 272
+    SELF_IN_BUFF_ZONE_BY_ALLY_0 = 273
+    SELF_IN_BUFF_ZONE_BY_ALLY_1 = 274
+    SELF_IN_BUFF_ZONE_BY_ALLY_2 = 275
+    SELF_IN_BUFF_ZONE_BY_ALLY_3 = 276
     # endregion
 
     # region Action condition status (corresponds to specific action condition, for example, sigil locked)

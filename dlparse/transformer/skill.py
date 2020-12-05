@@ -111,7 +111,7 @@ class SkillTransformer:
                 if skill_lv > len(hit_data_mtx):
                     hit_data_mtx.append([])
 
-                # Check if damage dealing hits limitation meets
+                # Check if the criteria of getting the damaging hits or not meets
                 if hit_data.hit_attr.deals_damage == deals_damage:
                     hit_data_mtx[skill_lv - 1].append(hit_data)
 

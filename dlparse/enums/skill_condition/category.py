@@ -265,6 +265,7 @@ class SkillConditionCategories:
     )
     self_in_buff_zone_self = SkillConditionCategoryTargetNumber(
         {
+            SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_0: 0,
             SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_1: 1,
             SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2: 2,
         },
@@ -274,6 +275,7 @@ class SkillConditionCategories:
     )
     self_in_buff_zone_ally = SkillConditionCategoryTargetNumber(
         {
+            SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_0: 0,
             SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_1: 1,
             SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_2: 2,
             SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_3: 3,

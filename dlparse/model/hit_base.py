@@ -1,10 +1,10 @@
 """Base class for a single hit."""
 from abc import ABC
 from dataclasses import dataclass
-from typing import TypeVar, Generic, Optional
+from typing import Generic, Optional, TypeVar
 
 from dlparse.enums import SkillCondition
-from dlparse.mono.asset import HitAttrEntry, ActionComponentBase
+from dlparse.mono.asset import ActionComponentBase, HitAttrEntry
 
 __all__ = ("HitData",)
 
@@ -19,3 +19,10 @@ class HitData(Generic[T], ABC):
     action_id: int
     action_component: Optional[T]
     pre_condition: SkillCondition
+    """
+    Condition for the hits to be effective.
+
+    This may come from:
+    - Condition from the action component
+    - Ability condition embedded on the skill data
+    """
