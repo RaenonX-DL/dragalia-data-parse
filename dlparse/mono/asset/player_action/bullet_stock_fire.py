@@ -14,7 +14,8 @@ __all__ = ("ActionBulletStockFire",)
 class ActionBulletStockFire(ActionBullet):
     """Class of ``ActionPartsFireStockBullet`` component in the player action asset."""
 
-    is_user_buff_count_dependent: bool = False
+    is_depends_on_user_buff_count: bool = False
+    is_depends_on_bullet_on_map: bool = False
 
     @classmethod
     def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBulletStockFire":
@@ -25,8 +26,8 @@ class ActionBulletStockFire(ActionBullet):
 
         # Attach hit labels of the stock bullets
         labels_possible: list[str]
-        if pattern == FireStockPattern.USER_BUFF_COUNT_DEPENDENT:
-            # -- Hit is buff dependent, do **NOT** expand the hit labels
+        if pattern in (FireStockPattern.USER_BUFF_COUNT_DEPENDENT, FireStockPattern.BULLET_TRANSFORM_TO_SKILL):
+            # -- Hit count is independent, do **NOT** expand the hit labels
             # Handle hit count during skill data processing instead,
             # because player action info and skill condition are required to get the actual mods
             labels_possible = [data["_hitAttrLabel"]]
@@ -41,13 +42,24 @@ class ActionBulletStockFire(ActionBullet):
 
         return ActionBulletStockFire(
             hit_labels=[label for label in labels_possible if label],
-            is_user_buff_count_dependent=pattern == FireStockPattern.USER_BUFF_COUNT_DEPENDENT,
+            is_depends_on_user_buff_count=pattern == FireStockPattern.USER_BUFF_COUNT_DEPENDENT,
+            is_depends_on_bullet_on_map=pattern == FireStockPattern.BULLET_TRANSFORM_TO_SKILL,
             **kwargs
         )
 
     @property
+    def is_special_pattern(self) -> bool:
+        """Check if the bullet stock has a special pattern to fire."""
+        return self.is_depends_on_user_buff_count or self.is_depends_on_bullet_on_map
+
+    @property
     def max_hit_count(self) -> int:
-        if self.is_user_buff_count_dependent:
-            raise BulletMaxCountUnavailableError("Action data info is needed to get the actual max bullet count")
+        if self.is_depends_on_user_buff_count:
+            raise BulletMaxCountUnavailableError("This bullet is user buff count dependent. "
+                                                 "Action data info is needed to get the actual max bullet count")
+
+        if self.is_depends_on_bullet_on_map:
+            raise BulletMaxCountUnavailableError("This depends on the count of bullets on the map. "
+                                                 "Additional info is needed to get the actual max hit count.")
 
         return super().max_hit_count

@@ -45,6 +45,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     teammate_coverage_converted: int = field(init=False)
     bullet_hit_count: Optional[SkillCondition] = field(init=False)
     bullet_hit_count_converted: int = field(init=False)
+    bullets_on_map: Optional[SkillCondition] = field(init=False)
+    bullets_on_map_converted: int = field(init=False)
 
     # endregion
 
@@ -103,6 +105,10 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         if self.bullet_hit_count and self.bullet_hit_count not in CondCat.skill_bullet_hit:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BULLET_HIT_COUNT)
 
+        # Check `self.bullets_on_map`
+        if self.bullets_on_map and self.bullets_on_map not in CondCat.skill_bullets_on_map:
+            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BULLETS_ON_MAP)
+
     def _init_validate_fields(self, conditions: tuple[SkillCondition]):
         self._init_validate_target()
         self._init_validate_self()
@@ -127,6 +133,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.teammate_coverage = CondCat.skill_teammates_covered.extract(conditions)
         self.bullet_hit_count = CondCat.skill_bullet_hit.extract(conditions)
 
+        self.bullets_on_map = CondCat.skill_bullets_on_map.extract(conditions)
+
         self._init_validate_fields(conditions)
 
         self.afflictions_converted = {
@@ -144,30 +152,19 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
                                                                                    on_missing=None)
         self.bullet_hit_count_converted = CondCat.skill_bullet_hit.convert(self.bullet_hit_count, on_missing=None)
 
-    @property
-    def conditions_sorted(self) -> tuple[SkillCondition]:
-        """
-        Get the sorted conditions as a tuple.
+        self.bullets_on_map_converted = CondCat.skill_bullets_on_map.convert(self.bullets_on_map, on_missing=None)
 
-        Conditions will be sorted in the following order:
-
-        - Afflictions
-        - Target element
-        - HP status / condition
-        - Buff count
-        - Buff zone built by self / ally
-        - Self action condition
-        - Bullet hit count
-        - Teammate coverage
-        """
-        # region Target
+    def _cond_sorted_target(self) -> tuple[SkillCondition]:
         ret: tuple[SkillCondition] = tuple(self.afflictions_condition)
 
         if self.target_elemental:
             ret += (self.target_elemental,)
-        # endregion
 
-        # region Self status
+        return ret
+
+    def _cond_sorted_self_status(self) -> tuple[SkillCondition]:
+        ret: tuple[SkillCondition] = tuple()
+
         if self.hp_status:
             ret += (self.hp_status,)
 
@@ -185,17 +182,43 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
         if self.self_action_cond:
             ret += (self.self_action_cond,)
-        # endregion
 
-        # region Skill
+        return ret
+
+    def _cond_sorted_skill(self) -> tuple[SkillCondition]:
+        ret: tuple[SkillCondition] = tuple()
+
         if self.bullet_hit_count:
             ret += (self.bullet_hit_count,)
 
         if self.teammate_coverage:
             ret += (self.teammate_coverage,)
-        # endregion
+
+        if self.bullets_on_map:
+            ret += (self.bullets_on_map,)
 
         return ret
+
+    @property
+    def conditions_sorted(self) -> tuple[SkillCondition, ...]:
+        """
+        Get the sorted conditions as a tuple.
+
+        Conditions will be sorted in the following order:
+
+        - [Target] Afflictions
+        - [Target] Target element
+        - [Self] HP status / condition
+        - [Self] Buff count
+        - [Self] Buff zone built by self / ally
+        - [Self] Self action condition
+        - [Skill] Bullet hit count
+        - [Skill] Teammate coverage
+        - [Skill] Bullets on map
+        """
+        return (self._cond_sorted_target()
+                + self._cond_sorted_self_status()
+                + self._cond_sorted_skill())
 
     def __iter__(self):
         return iter(self.conditions_sorted)

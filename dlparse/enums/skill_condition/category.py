@@ -25,8 +25,10 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_SELF_ACTION_CONDITION = auto()
     MULTIPLE_BULLET_HIT = auto()
     MULTIPLE_TEAMMATE_COVERAGE = auto()
+    MULTIPLE_BULLETS_ON_MAP = auto()
 
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
+    INTERNAL_NOT_TARGET_ELEMENTAL = auto()
     INTERNAL_NOT_HP_STATUS = auto()
     INTERNAL_NOT_HP_CONDITION = auto()
     INTERNAL_NOT_BUFF_COUNT = auto()
@@ -35,7 +37,7 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_SELF_ACTION_CONDITION = auto()
     INTERNAL_NOT_BULLET_HIT_COUNT = auto()
     INTERNAL_NOT_TEAMMATE_COVERAGE = auto()
-    INTERNAL_NOT_TARGET_ELEMENTAL = auto()
+    INTERNAL_NOT_BULLETS_ON_MAP = auto()
 
     HAS_CONDITIONS_LEFT = auto()
 
@@ -321,6 +323,23 @@ class SkillConditionCategories:
         SkillConditionMaxCount.SINGLE,
         "Skill effect teammates covered",
         SkillConditionCheckResult.MULTIPLE_TEAMMATE_COVERAGE
+    )
+    skill_bullets_on_map = SkillConditionCategoryTargetNumber(
+        {
+            SkillCondition.BULLETS_ON_MAP_0: 0,
+            SkillCondition.BULLETS_ON_MAP_1: 1,
+            SkillCondition.BULLETS_ON_MAP_2: 2,
+            SkillCondition.BULLETS_ON_MAP_3: 3,
+            SkillCondition.BULLETS_ON_MAP_4: 4,
+            SkillCondition.BULLETS_ON_MAP_5: 5,
+            SkillCondition.BULLETS_ON_MAP_6: 6,
+            SkillCondition.BULLETS_ON_MAP_7: 7,
+            SkillCondition.BULLETS_ON_MAP_8: 8,
+            SkillCondition.BULLETS_ON_MAP_9: 9,
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Skill - bullets on map",
+        SkillConditionCheckResult.MULTIPLE_BULLETS_ON_MAP
     )
 
     @classmethod

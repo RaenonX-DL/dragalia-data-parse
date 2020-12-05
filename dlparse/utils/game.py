@@ -47,7 +47,7 @@ def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: Skill
         # Damage mods inside buff zones i.e. no damage mod if not in buff zone
         mods = hit_data.mods_in_self_buff_zone(condition_comp.buff_zone_self_converted or 0)
         mods += hit_data.mods_in_ally_buff_zone(condition_comp.buff_zone_ally_converted or 0)
-    elif hit_data.is_user_buff_count_dependent:
+    elif hit_data.is_depends_on_user_buff_count:
         # Damage dealt depends on the user's buff count
         effective_buff_count: int = condition_comp.buff_count_converted or 0
 
@@ -59,6 +59,9 @@ def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: Skill
                  f"(Hit attr ID: {hit_data.hit_attr.id})")
 
         mods = [hit_attr.damage_modifier] * effective_buff_count
+    elif hit_data.is_depends_on_bullet_on_map:
+        # Damage dealt depends on the bullets on the map
+        mods = [hit_attr.damage_modifier] * (condition_comp.bullets_on_map_converted or 0)
     else:
         # Cases that do not need specific handling
         mods = [hit_attr.damage_modifier]

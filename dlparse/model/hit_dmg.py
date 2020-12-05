@@ -23,8 +23,10 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
     mod_on_ally_buff_zone: float = 0
     # endregion
 
-    # region Buff count dependent bullets
-    is_user_buff_count_dependent: bool = False
+    # region Flags of bullets having special patterns
+    is_depends_on_user_buff_count: bool = False
+    is_depends_on_bullet_on_map: bool = False
+
     # endregion
 
     def _init_validity_check(self):
@@ -39,11 +41,13 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
             self.deterioration_rate = self.action_component.attenuation_rate
 
             if isinstance(self.action_component, ActionBulletStockFire):
-                # Check if the damaging hit depends on user buff count
-                self.is_user_buff_count_dependent = self.action_component.is_user_buff_count_dependent
+                # Check if the damaging hit depends on special pattern
+                self.is_depends_on_user_buff_count = self.action_component.is_depends_on_user_buff_count
+                self.is_depends_on_bullet_on_map = self.action_component.is_depends_on_bullet_on_map
 
-            # Set the max hit count except for buff depending hits which max hit count depends on the other conditions
-            if not self.is_user_buff_count_dependent:
+            # Set the max hit count except for special pattern bullets
+            if not (isinstance(self.action_component, ActionBulletStockFire)
+                    and self.action_component.is_special_pattern):
                 self.max_hit_count = self.action_component.max_hit_count
 
         # Buff zone specific damage mod

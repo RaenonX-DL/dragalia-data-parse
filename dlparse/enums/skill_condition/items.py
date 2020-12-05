@@ -146,6 +146,22 @@ class SkillCondition(Enum):
     COVER_TEAMMATE_1 = 352
     COVER_TEAMMATE_2 = 353
     COVER_TEAMMATE_3 = 354
+    # endregion
+
+    # region Bullets left on the map
+    # Note:
+    # - Only Meene uses this implementation for now, may be more in the future.
+    # - Meene can only summon up to 9 butterflies on the map. This info has not yet been discovered by this parser.
+    BULLETS_ON_MAP_0 = 401
+    BULLETS_ON_MAP_1 = 402
+    BULLETS_ON_MAP_2 = 403
+    BULLETS_ON_MAP_3 = 404
+    BULLETS_ON_MAP_4 = 405
+    BULLETS_ON_MAP_5 = 406
+    BULLETS_ON_MAP_6 = 407
+    BULLETS_ON_MAP_7 = 408
+    BULLETS_ON_MAP_8 = 409
+    BULLETS_ON_MAP_9 = 410
 
     # endregion
     # endregion
