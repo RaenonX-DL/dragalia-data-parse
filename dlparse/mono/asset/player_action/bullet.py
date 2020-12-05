@@ -1,6 +1,6 @@
 """Class for ``ActionPartsBullet`` action component."""
 from dataclasses import dataclass
-from typing import Union, Any
+from typing import Any, Union
 
 import dlparse.mono.asset as asset
 
@@ -70,7 +70,10 @@ class ActionBullet(asset.ActionComponentHasHitLabels):
 
         # Labels in arrange bullet
         if "_arrangeBullet" in data:
-            labels_possible.extend(asset.ActionBulletArranged.parse_raw(data["_arrangeBullet"]).hit_labels)
+            arrange_bullet: asset.ActionBulletArranged = asset.ActionBulletArranged.parse_raw(data["_arrangeBullet"])
+
+            # If max hit count available (arrange bullet has duration), extend hit labels to match the hit count
+            labels_possible.extend(arrange_bullet.hit_labels * (arrange_bullet.max_hit_count or 1))
 
         return ActionBullet(
             hit_labels=[label for label in labels_possible if label],

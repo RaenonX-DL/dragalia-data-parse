@@ -1,5 +1,5 @@
 """Functions for mimicking the in-game computations."""
-from typing import TYPE_CHECKING, Optional
+from typing import Optional, TYPE_CHECKING
 from warnings import warn
 
 from dlparse.enums import SkillConditionComposite
@@ -60,7 +60,7 @@ def calculate_damage_modifier(hit_data: "DamagingHitData", condition_comp: Skill
 
         mods = [hit_attr.damage_modifier] * effective_buff_count
     else:
-        # Normal cases
+        # Cases that do not need specific handling
         mods = [hit_attr.damage_modifier]
 
     # --- Apply boosts
