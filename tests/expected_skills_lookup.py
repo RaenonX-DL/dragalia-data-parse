@@ -16,6 +16,7 @@ skill_ids_atk: dict[int, str] = {
     101501022: "Marth S2",
     104503011: "Lin You S1",
     104503013: "Lin You S1 @ Heaven's Breath",
+    105503032: "Halloween Melsa S2",
     # Special tests
     105402011: "Elisanne S1",
     103505033: "Bellina S1 in enhanced mode",
