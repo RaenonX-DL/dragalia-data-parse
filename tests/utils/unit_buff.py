@@ -1,15 +1,16 @@
-"""Implementations for checking the buff effects."""
+"""Implementations for checking the buffing effects."""
 from dataclasses import dataclass
 from typing import Any
 
 from dlparse.enums import BuffParameter, HitTargetSimple
 from dlparse.model import ActionConditionEffectUnit
+from .unit_base import BuffInfoBase
 
 __all__ = ("BuffEffectInfo", "check_buff_unit_match")
 
 
 @dataclass
-class BuffEffectInfo:
+class BuffEffectInfo(BuffInfoBase):
     """A single buff effect info entry."""
 
     target: HitTargetSimple
@@ -17,25 +18,12 @@ class BuffEffectInfo:
     rate: float
     duration_time: float
     duration_count: float
-    hit_label: str
 
     max_stack_count: int = 0
 
     def __hash__(self):
         return hash((self.target, self.param, self.rate, self.duration_time, self.duration_count, self.hit_label,
                      self.max_stack_count))
-
-    def __eq__(self, other):
-        if not isinstance(other, BuffEffectInfo):
-            return False
-
-        return hash(self) == hash(other)
-
-    def __lt__(self, other):
-        if not isinstance(other, BuffEffectInfo):
-            raise TypeError(f"Unable to compare `BuffEffectInfo` with {type(other)}")
-
-        return self.hit_label < other.hit_label
 
 
 def check_buff_unit_match(
@@ -44,8 +32,8 @@ def check_buff_unit_match(
 ):
     """Check if the info of the buff units match."""
     actual_info = {
-        BuffEffectInfo(unit.target, unit.parameter, unit.rate, unit.duration_time, unit.duration_count,
-                       unit.hit_attr_label, unit.max_stack_count if check_stack_count else 0)
+        BuffEffectInfo(unit.hit_attr_label, unit.target, unit.parameter, unit.rate, unit.duration_time,
+                       unit.duration_count, unit.max_stack_count if check_stack_count else 0)
         for unit in actual_units
     }
 

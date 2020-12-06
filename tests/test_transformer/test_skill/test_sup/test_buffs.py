@@ -11,13 +11,13 @@ def test_fs_dmg_up(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 3
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.FS_DAMAGE, 0.6, 0, 1, "BOW_112_04_BA_LV01", 1)
+        BuffEffectInfo("BOW_112_04_BA_LV01", HitTargetSimple.SELF, BuffParameter.FS_DAMAGE, 0.6, 0, 1, 1)
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.FS_DAMAGE, 0.8, 0, 1, "BOW_112_04_BA_LV02", 1)
+        BuffEffectInfo("BOW_112_04_BA_LV02", HitTargetSimple.SELF, BuffParameter.FS_DAMAGE, 0.8, 0, 1, 1)
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.FS_DAMAGE, 1, 0, 1, "BOW_112_04_BA_LV03", 1)
+        BuffEffectInfo("BOW_112_04_BA_LV03", HitTargetSimple.SELF, BuffParameter.FS_DAMAGE, 1, 0, 1, 1)
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
 
@@ -40,10 +40,10 @@ def test_fs_spd(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 2
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.FS_SPD, 0.2, 15, 0, "BUF_205_BAC_LV01"),
+        BuffEffectInfo("BUF_205_BAC_LV01", HitTargetSimple.SELF, BuffParameter.FS_SPD, 0.2, 15, 0),
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.FS_SPD, 0.3, 15, 0, "BUF_205_BAC_LV02"),
+        BuffEffectInfo("BUF_205_BAC_LV02", HitTargetSimple.SELF, BuffParameter.FS_SPD, 0.3, 15, 0),
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2]
 
@@ -69,20 +69,20 @@ def test_shield_dmg(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 4
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.DEF, 0.1, 15, 0, "BUF_165_DEF_LV01"),
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.SHIELD_SINGLE_DMG, 0.15, 0, 1, "BUF_165_SIELD_LV01"),
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.1, 15, 0, "BUF_ALL_ATK_SR_30_LV01"),
+        BuffEffectInfo("BUF_165_DEF_LV01", HitTargetSimple.TEAM, BuffParameter.DEF, 0.1, 15, 0),
+        BuffEffectInfo("BUF_165_SIELD_LV01", HitTargetSimple.TEAM, BuffParameter.SHIELD_SINGLE_DMG, 0.15, 0, 1),
+        BuffEffectInfo("BUF_ALL_ATK_SR_30_LV01", HitTargetSimple.TEAM, BuffParameter.ATK, 0.1, 15, 0),
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.DEF, 0.1, 15, 0, "BUF_165_DEF_LV02"),
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.SHIELD_SINGLE_DMG, 0.2, 0, 1, "BUF_165_SIELD_LV02"),
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.15, 15, 0, "BUF_ALL_ATK_SR_30_LV02"),
+        BuffEffectInfo("BUF_165_DEF_LV02", HitTargetSimple.TEAM, BuffParameter.DEF, 0.1, 15, 0),
+        BuffEffectInfo("BUF_165_SIELD_LV02", HitTargetSimple.TEAM, BuffParameter.SHIELD_SINGLE_DMG, 0.2, 0, 1),
+        BuffEffectInfo("BUF_ALL_ATK_SR_30_LV02", HitTargetSimple.TEAM, BuffParameter.ATK, 0.15, 15, 0),
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.2, 15, 0, "BUF_ALL_ATK_SR_30_LV03"),
+        BuffEffectInfo("BUF_ALL_ATK_SR_30_LV03", HitTargetSimple.TEAM, BuffParameter.ATK, 0.2, 15, 0),
     }
     expected_buffs_lv_4 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0, "BUF_ALL_ATK_SR_30_LV04"),
+        BuffEffectInfo("BUF_ALL_ATK_SR_30_LV04", HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0),
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3, expected_buffs_lv_4]
 
@@ -107,25 +107,25 @@ def test_shield_hp(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 3
 
     expected_buffs_lv_1_gte_40 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.SHIELD_LIFE, 0.3, 0, 0, "BUF_189_BARRIER_LV03"),
-        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.HP_FIX_BY_MAX, 0.3, 0, 0, "BUF_189_DMG_LV03"),
+        BuffEffectInfo("BUF_189_BARRIER_LV03", HitTargetSimple.TEAM, BuffParameter.SHIELD_LIFE, 0.3, 0, 0),
+        BuffEffectInfo("BUF_189_DMG_LV03", HitTargetSimple.SELF, BuffParameter.HP_FIX_BY_MAX, 0.3, 0, 0),
     }
     expected_buffs_lv_2_gte_40 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.SHIELD_LIFE, 0.3, 0, 0, "BUF_189_BARRIER_LV03"),
-        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.HP_FIX_BY_MAX, 0.3, 0, 0, "BUF_189_DMG_LV03"),
+        BuffEffectInfo("BUF_189_BARRIER_LV03", HitTargetSimple.TEAM, BuffParameter.SHIELD_LIFE, 0.3, 0, 0),
+        BuffEffectInfo("BUF_189_DMG_LV03", HitTargetSimple.SELF, BuffParameter.HP_FIX_BY_MAX, 0.3, 0, 0),
     }
     expected_buffs_lv_3_gte_40 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.SHIELD_LIFE, 0.3, 0, 0, "BUF_189_BARRIER_LV03"),
-        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.HP_FIX_BY_MAX, 0.3, 0, 0, "BUF_189_DMG_LV03"),
+        BuffEffectInfo("BUF_189_BARRIER_LV03", HitTargetSimple.TEAM, BuffParameter.SHIELD_LIFE, 0.3, 0, 0),
+        BuffEffectInfo("BUF_189_DMG_LV03", HitTargetSimple.SELF, BuffParameter.HP_FIX_BY_MAX, 0.3, 0, 0),
     }
     expected_buffs_lv_1_lt_40 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.DEF, 0.2, 15, 0, "BUF_ALL_DEF_SSR_30_LV01"),
+        BuffEffectInfo("BUF_ALL_DEF_SSR_30_LV01", HitTargetSimple.TEAM, BuffParameter.DEF, 0.2, 15, 0),
     }
     expected_buffs_lv_2_lt_40 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.DEF, 0.25, 15, 0, "BUF_ALL_DEF_SSR_30_LV02"),
+        BuffEffectInfo("BUF_ALL_DEF_SSR_30_LV02", HitTargetSimple.TEAM, BuffParameter.DEF, 0.25, 15, 0),
     }
     expected_buffs_lv_3_lt_40 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.DEF, 0.3, 15, 0, "BUF_ALL_DEF_SSR_30_LV03"),
+        BuffEffectInfo("BUF_ALL_DEF_SSR_30_LV03", HitTargetSimple.TEAM, BuffParameter.DEF, 0.3, 15, 0),
     }
     expected_base_buffs_gte_40 = [expected_buffs_lv_1_gte_40, expected_buffs_lv_2_gte_40, expected_buffs_lv_3_gte_40]
     expected_base_buffs_lt_40 = [expected_buffs_lv_1_lt_40, expected_buffs_lv_2_lt_40, expected_buffs_lv_3_lt_40]

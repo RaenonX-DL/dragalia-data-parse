@@ -39,6 +39,11 @@ class ActionConditionEffectUnit:
     Any positive number means the maximum count of stacks possible.
     """
 
+    @property
+    def stackable(self):
+        """Check if the effect unit is stackable."""
+        return self.max_stack_count != 1
+
     def __hash__(self):
         # Same hit attribute label may be used multiple times at different time
         # Action condition ID not included because it's bound with hit attribute label

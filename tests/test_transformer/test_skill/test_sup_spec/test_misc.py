@@ -11,16 +11,16 @@ def test_partial_attacking(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 4
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.1, 15, 0, "BUF_ALL_ATK_SR_30_LV01")
+        BuffEffectInfo("BUF_ALL_ATK_SR_30_LV01", HitTargetSimple.TEAM, BuffParameter.ATK, 0.1, 15, 0)
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.15, 15, 0, "BUF_ALL_ATK_SR_30_LV02")
+        BuffEffectInfo("BUF_ALL_ATK_SR_30_LV02", HitTargetSimple.TEAM, BuffParameter.ATK, 0.15, 15, 0)
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.20, 15, 0, "BUF_ALL_ATK_SR_30_LV03")
+        BuffEffectInfo("BUF_ALL_ATK_SR_30_LV03", HitTargetSimple.TEAM, BuffParameter.ATK, 0.20, 15, 0)
     }
     expected_buffs_lv_4 = {
-        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0, "BUF_ALL_ATK_SR_30_LV04")
+        BuffEffectInfo("BUF_ALL_ATK_SR_30_LV04", HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0)
     }
 
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3, expected_buffs_lv_4]

@@ -12,7 +12,7 @@ def test_no_condition(transformer_skill: SkillTransformer):
 
     expected_buffs_lv_max = {
         SkillConditionComposite(): {
-            BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0, "BUF_ALL_ATK_SSR_30_LV03")
+            BuffEffectInfo("BUF_ALL_ATK_SSR_30_LV03", HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0)
         },
     }
 
@@ -37,7 +37,7 @@ def test_element_restricted(transformer_skill: SkillTransformer):
 
     expected_buffs_lv_max = {
         SkillConditionComposite(SkillCondition.TARGET_ELEM_FLAME): {
-            BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0, "BUF_160_ATK_FIRE_LV03")
+            BuffEffectInfo("BUF_160_ATK_FIRE_LV03", HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0)
         },
     }
 
@@ -60,20 +60,20 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     base_buffs_at_max = {
-        BuffEffectInfo(HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.05, 10, 0, "BOW_108_04_ATK_LV03"),
-        BuffEffectInfo(HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.03, 10, 0, "BOW_108_04_CRT_LV03"),
-        BuffEffectInfo(HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE,
-                       0.1, 10, 99, "BOW_108_04_SKILL_LV03"),
-        BuffEffectInfo(HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0, "BOW_108_04_SPB_LV03")
+        BuffEffectInfo("BOW_108_04_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.05, 10, 0),
+        BuffEffectInfo("BOW_108_04_CRT_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.03, 10, 0),
+        BuffEffectInfo("BOW_108_04_SKILL_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE,
+                       0.1, 10, 99),
+        BuffEffectInfo("BOW_108_04_SPB_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0)
     }
     on_0_plus_buffs = {
-        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.DEF, 0.1, 10, 0, "BOW_108_04_DEF_LV03")
+        BuffEffectInfo("BOW_108_04_DEF_LV03", HitTargetSimple.SELF, BuffParameter.DEF, 0.1, 10, 0)
     }
     on_1_plus_buffs = on_0_plus_buffs | {
-        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.CRT_DAMAGE, 0.1, 10, 0, "BOW_108_04_CRTDMG_LV03")
+        BuffEffectInfo("BOW_108_04_CRTDMG_LV03", HitTargetSimple.SELF, BuffParameter.CRT_DAMAGE, 0.1, 10, 0)
     }
     on_2_plus_buffs = on_1_plus_buffs | {
-        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.SP_CHARGE_PCT_S1, 1, 0, 0, "BOW_108_04_SP_LV03")
+        BuffEffectInfo("BOW_108_04_SP_LV03", HitTargetSimple.SELF, BuffParameter.SP_CHARGE_PCT_S1, 1, 0, 0)
     }
 
     expected_buffs_lv_max = {
@@ -103,8 +103,8 @@ def test_has_pre_condition(transformer_skill: SkillTransformer):
 
     expected_buffs_lv_max = {
         SkillConditionComposite(SkillCondition.SELF_HP_GTE_50): {
-            BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.HP_DECREASE_BY_MAX, 0.1, 0, 0, "BUF_200_DMG_LV04"),
-            BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.SP_CHARGE_PCT_USED, 0.2, 0, 0, "BUF_200_SPC_LV04")
+            BuffEffectInfo("BUF_200_DMG_LV04", HitTargetSimple.SELF, BuffParameter.HP_DECREASE_BY_MAX, 0.1, 0, 0),
+            BuffEffectInfo("BUF_200_SPC_LV04", HitTargetSimple.SELF, BuffParameter.SP_CHARGE_PCT_USED, 0.2, 0, 0)
         }
     }
 
