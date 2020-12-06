@@ -19,7 +19,7 @@ def test_single_effect_area(transformer_skill: SkillTransformer):
     # assert skill_data_base.max_level == 3
     #
     # expected_buffs_lv_1 = {
-    #     SupportiveSkillUnit(
+    #     ActionConditionEffectUnit(
     #         target=HitTargetSimple.AREA,
     #         parameter=BuffParameter.HEAL_RP,
     #         rate=0.16,

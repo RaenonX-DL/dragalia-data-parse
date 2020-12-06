@@ -231,7 +231,6 @@ class SkillConditionCategories:
         {
             SkillCondition.SELF_HP_LT_30: 0.3,
             SkillCondition.SELF_HP_LT_40: 0.4,
-            SkillCondition.SELF_HP_LTE_40: 0.4,
             SkillCondition.SELF_HP_GT_30: 0.3,
             SkillCondition.SELF_HP_GTE_40: 0.4,
             SkillCondition.SELF_HP_GTE_50: 0.5,

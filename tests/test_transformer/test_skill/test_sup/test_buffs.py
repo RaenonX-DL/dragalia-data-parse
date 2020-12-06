@@ -1,62 +1,35 @@
 from dlparse.enums import BuffParameter, HitTargetSimple, SkillCondition, SkillConditionComposite
-from dlparse.model import SupportiveSkillUnit
 from dlparse.transformer import SkillTransformer
+from tests.utils import BuffEffectInfo, check_buff_unit_match
 
 
 def test_fs_dmg_up(transformer_skill: SkillTransformer):
-    # MH Sarisse
+    # MH Sarisse S2
     # https://dragalialost.gamepedia.com/Hunter_Sarisse
     skill_data_base = transformer_skill.transform_supportive(106502021)
 
     assert skill_data_base.max_level == 3
 
     expected_buffs_lv_1 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.SELF,
-            parameter=BuffParameter.FS_DAMAGE,
-            rate=0.6,
-            duration_time=0,
-            duration_count=1,
-            hit_attr_label="BOW_112_04_BA_LV01",
-            action_cond_id=432,
-            max_stack_count=1
-        ),
+        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.FS_DAMAGE, 0.6, 0, 1, "BOW_112_04_BA_LV01", 1)
     }
     expected_buffs_lv_2 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.SELF,
-            parameter=BuffParameter.FS_DAMAGE,
-            rate=0.8,
-            duration_time=0,
-            duration_count=1,
-            hit_attr_label="BOW_112_04_BA_LV02",
-            action_cond_id=456,
-            max_stack_count=1
-        ),
+        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.FS_DAMAGE, 0.8, 0, 1, "BOW_112_04_BA_LV02", 1)
     }
     expected_buffs_lv_3 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.SELF,
-            parameter=BuffParameter.FS_DAMAGE,
-            rate=1,
-            duration_time=0,
-            duration_count=1,
-            hit_attr_label="BOW_112_04_BA_LV03",
-            action_cond_id=457,
-            max_stack_count=1
-        ),
+        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.FS_DAMAGE, 1, 0, 1, "BOW_112_04_BA_LV03", 1)
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
 
     skill_data = skill_data_base.with_conditions()
 
-    assert skill_data.max_lv_buffs == expected_buffs_lv_3
+    check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_3, check_stack_count=True)
 
     for skill_lv in range(skill_data_base.max_level):
         expected_buffs = expected_base_buffs[skill_lv]
         actual_buffs = skill_data.buffs[skill_lv]
 
-        assert actual_buffs == expected_buffs, expected_buffs.symmetric_difference(actual_buffs)
+        check_buff_unit_match(actual_buffs, expected_buffs, check_stack_count=True)
 
 
 def test_fs_spd(transformer_skill: SkillTransformer):
@@ -67,40 +40,22 @@ def test_fs_spd(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 2
 
     expected_buffs_lv_1 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.SELF,
-            parameter=BuffParameter.FS_SPD,
-            rate=0.2,
-            duration_time=15,
-            duration_count=0,
-            hit_attr_label="BUF_205_BAC_LV01",
-            action_cond_id=902,
-            max_stack_count=0
-        ),
+        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.FS_SPD, 0.2, 15, 0, "BUF_205_BAC_LV01"),
     }
     expected_buffs_lv_2 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.SELF,
-            parameter=BuffParameter.FS_SPD,
-            rate=0.3,
-            duration_time=15,
-            duration_count=0,
-            hit_attr_label="BUF_205_BAC_LV02",
-            action_cond_id=903,
-            max_stack_count=0
-        ),
+        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.FS_SPD, 0.3, 15, 0, "BUF_205_BAC_LV02"),
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2]
 
     skill_data = skill_data_base.with_conditions()
 
-    assert skill_data.max_lv_buffs == expected_buffs_lv_2
+    check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_2)
 
     for skill_lv in range(skill_data_base.max_level):
         expected_buffs = expected_base_buffs[skill_lv]
         actual_buffs = skill_data.buffs[skill_lv]
 
-        assert actual_buffs == expected_buffs, expected_buffs.symmetric_difference(actual_buffs)
+        check_buff_unit_match(actual_buffs, expected_buffs)
 
 
 def test_shield_dmg(transformer_skill: SkillTransformer):
@@ -114,104 +69,32 @@ def test_shield_dmg(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 4
 
     expected_buffs_lv_1 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.DEF,
-            rate=0.1,
-            duration_time=15,
-            duration_count=0,
-            hit_attr_label="BUF_165_DEF_LV01",
-            action_cond_id=303030101,
-            max_stack_count=0
-        ),
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.SHIELD_SINGLE_DMG,
-            rate=0.15,
-            duration_time=0,
-            duration_count=1,
-            hit_attr_label="BUF_165_SIELD_LV01",
-            action_cond_id=316010301,
-            max_stack_count=1
-        ),
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.ATK,
-            rate=0.1,
-            duration_time=15,
-            duration_count=0,
-            hit_attr_label="BUF_ALL_ATK_SR_30_LV01",
-            action_cond_id=302030201,
-            max_stack_count=0
-        ),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.DEF, 0.1, 15, 0, "BUF_165_DEF_LV01"),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.SHIELD_SINGLE_DMG, 0.15, 0, 1, "BUF_165_SIELD_LV01"),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.1, 15, 0, "BUF_ALL_ATK_SR_30_LV01"),
     }
     expected_buffs_lv_2 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.DEF,
-            rate=0.1,
-            duration_time=15,
-            duration_count=0,
-            hit_attr_label="BUF_165_DEF_LV02",
-            action_cond_id=303030101,
-            max_stack_count=0
-        ),
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.SHIELD_SINGLE_DMG,
-            rate=0.2,
-            duration_time=0,
-            duration_count=1,
-            hit_attr_label="BUF_165_SIELD_LV02",
-            action_cond_id=316010401,
-            max_stack_count=1
-        ),
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.ATK,
-            rate=0.15,
-            duration_time=15,
-            duration_count=0,
-            hit_attr_label="BUF_ALL_ATK_SR_30_LV02",
-            action_cond_id=302030301,
-            max_stack_count=0
-        ),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.DEF, 0.1, 15, 0, "BUF_165_DEF_LV02"),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.SHIELD_SINGLE_DMG, 0.2, 0, 1, "BUF_165_SIELD_LV02"),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.15, 15, 0, "BUF_ALL_ATK_SR_30_LV02"),
     }
     expected_buffs_lv_3 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.ATK,
-            rate=0.2,
-            duration_time=15,
-            duration_count=0,
-            hit_attr_label="BUF_ALL_ATK_SR_30_LV03",
-            action_cond_id=302030401,
-            max_stack_count=0
-        ),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.2, 15, 0, "BUF_ALL_ATK_SR_30_LV03"),
     }
     expected_buffs_lv_4 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.ATK,
-            rate=0.25,
-            duration_time=15,
-            duration_count=0,
-            hit_attr_label="BUF_ALL_ATK_SR_30_LV04",
-            action_cond_id=302030501,
-            max_stack_count=0
-        ),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0, "BUF_ALL_ATK_SR_30_LV04"),
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3, expected_buffs_lv_4]
 
     skill_data = skill_data_base.with_conditions()
 
-    assert skill_data.max_lv_buffs == expected_buffs_lv_4
+    check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_4)
 
     for skill_lv in range(skill_data_base.max_level):
         expected_buffs = expected_base_buffs[skill_lv]
         actual_buffs = skill_data.buffs[skill_lv]
 
-        assert actual_buffs == expected_buffs, expected_buffs.symmetric_difference(actual_buffs)
+        check_buff_unit_match(actual_buffs, expected_buffs)
 
 
 def test_shield_hp(transformer_skill: SkillTransformer):
@@ -224,106 +107,25 @@ def test_shield_hp(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 3
 
     expected_buffs_lv_1_gte_40 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.SHIELD_LIFE,
-            rate=0.3,
-            duration_time=0,
-            duration_count=0,
-            hit_attr_label="BUF_189_BARRIER_LV03",
-            action_cond_id=504,
-            max_stack_count=0
-        ),
-        SupportiveSkillUnit(
-            target=HitTargetSimple.SELF,
-            parameter=BuffParameter.HP_FIX_BY_MAX,
-            rate=0.3,
-            duration_time=0,
-            duration_count=0,
-            hit_attr_label="BUF_189_DMG_LV03",
-            action_cond_id=0,
-            max_stack_count=0
-        ),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.SHIELD_LIFE, 0.3, 0, 0, "BUF_189_BARRIER_LV03"),
+        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.HP_FIX_BY_MAX, 0.3, 0, 0, "BUF_189_DMG_LV03"),
     }
     expected_buffs_lv_2_gte_40 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.SHIELD_LIFE,
-            rate=0.3,
-            duration_time=0,
-            duration_count=0,
-            hit_attr_label="BUF_189_BARRIER_LV03",
-            action_cond_id=504,
-            max_stack_count=0
-        ),
-        SupportiveSkillUnit(
-            target=HitTargetSimple.SELF,
-            parameter=BuffParameter.HP_FIX_BY_MAX,
-            rate=0.3,
-            duration_time=0,
-            duration_count=0,
-            hit_attr_label="BUF_189_DMG_LV03",
-            action_cond_id=0,
-            max_stack_count=0
-        ),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.SHIELD_LIFE, 0.3, 0, 0, "BUF_189_BARRIER_LV03"),
+        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.HP_FIX_BY_MAX, 0.3, 0, 0, "BUF_189_DMG_LV03"),
     }
     expected_buffs_lv_3_gte_40 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.SHIELD_LIFE,
-            rate=0.3,
-            duration_time=0,
-            duration_count=0,
-            hit_attr_label="BUF_189_BARRIER_LV03",
-            action_cond_id=504,
-            max_stack_count=0
-        ),
-        SupportiveSkillUnit(
-            target=HitTargetSimple.SELF,
-            parameter=BuffParameter.HP_FIX_BY_MAX,
-            rate=0.3,
-            duration_time=0,
-            duration_count=0,
-            hit_attr_label="BUF_189_DMG_LV03",
-            action_cond_id=0,
-            max_stack_count=0
-        ),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.SHIELD_LIFE, 0.3, 0, 0, "BUF_189_BARRIER_LV03"),
+        BuffEffectInfo(HitTargetSimple.SELF, BuffParameter.HP_FIX_BY_MAX, 0.3, 0, 0, "BUF_189_DMG_LV03"),
     }
     expected_buffs_lv_1_lt_40 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.DEF,
-            rate=0.2,
-            duration_time=15,
-            duration_count=0,
-            hit_attr_label="BUF_ALL_DEF_SSR_30_LV01",
-            action_cond_id=303030301,
-            max_stack_count=0
-        ),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.DEF, 0.2, 15, 0, "BUF_ALL_DEF_SSR_30_LV01"),
     }
     expected_buffs_lv_2_lt_40 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.DEF,
-            rate=0.25,
-            duration_time=15,
-            duration_count=0,
-            hit_attr_label="BUF_ALL_DEF_SSR_30_LV02",
-            action_cond_id=303030401,
-            max_stack_count=0
-        ),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.DEF, 0.25, 15, 0, "BUF_ALL_DEF_SSR_30_LV02"),
     }
     expected_buffs_lv_3_lt_40 = {
-        SupportiveSkillUnit(
-            target=HitTargetSimple.TEAM,
-            parameter=BuffParameter.DEF,
-            rate=0.3,
-            duration_time=15,
-            duration_count=0,
-            hit_attr_label="BUF_ALL_DEF_SSR_30_LV03",
-            action_cond_id=303030501,
-            max_stack_count=0
-        ),
+        BuffEffectInfo(HitTargetSimple.TEAM, BuffParameter.DEF, 0.3, 15, 0, "BUF_ALL_DEF_SSR_30_LV03"),
     }
     expected_base_buffs_gte_40 = [expected_buffs_lv_1_gte_40, expected_buffs_lv_2_gte_40, expected_buffs_lv_3_gte_40]
     expected_base_buffs_lt_40 = [expected_buffs_lv_1_lt_40, expected_buffs_lv_2_lt_40, expected_buffs_lv_3_lt_40]
@@ -338,22 +140,22 @@ def test_shield_hp(transformer_skill: SkillTransformer):
 
     skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_GTE_40))
 
-    assert skill_data.max_lv_buffs == expected_buffs_lv_3_gte_40
+    check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_3_gte_40)
 
     for skill_lv in range(skill_data_base.max_level):
         expected_buffs = expected_base_buffs_gte_40[skill_lv]
         actual_buffs = skill_data.buffs[skill_lv]
 
-        assert actual_buffs == expected_buffs, expected_buffs.symmetric_difference(actual_buffs)
+        check_buff_unit_match(actual_buffs, expected_buffs)
 
     # HP < 40%
 
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_LTE_40))
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_LT_40))
 
-    assert skill_data.max_lv_buffs == expected_buffs_lv_3_lt_40
+    check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_3_lt_40)
 
     for skill_lv in range(skill_data_base.max_level):
         expected_buffs = expected_base_buffs_lt_40[skill_lv]
         actual_buffs = skill_data.buffs[skill_lv]
 
-        assert actual_buffs == expected_buffs, expected_buffs.symmetric_difference(actual_buffs)
+        check_buff_unit_match(actual_buffs, expected_buffs)

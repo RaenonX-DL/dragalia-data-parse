@@ -1,10 +1,10 @@
 """Classes for handling the ability data."""
 from dataclasses import dataclass, field
-from typing import Union, Optional
+from typing import Optional, Union
 
 from dlparse.enums import AbilityCondition, AbilityType, SkillCondition
 from dlparse.errors import AbilityConditionUnconvertibleError
-from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
+from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("AbilityEntry", "AbilityAsset", "AbilityParser")
 
@@ -49,12 +49,6 @@ class AbilityConditionEntry:
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
-    def _skill_cond_self_hp_lte(self):
-        if self.val_1 == 40:
-            return SkillCondition.SELF_HP_LTE_40
-
-        raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
-
     def to_skill_condition(self) -> SkillCondition:
         """
         Convert the ability condition to skill condition.
@@ -74,12 +68,8 @@ class AbilityConditionEntry:
             return self._skill_cond_self_hp_gte()
 
         # Self HP <
-        if self.condition_type == AbilityCondition.SELF_HP_LT:
+        if self.condition_type in (AbilityCondition.SELF_HP_LT, AbilityCondition.SELF_HP_LT_2):
             return self._skill_cond_self_hp_lt()
-
-        # Self Hp <=
-        if self.condition_type == AbilityCondition.SELF_HP_LTE:
-            return self._skill_cond_self_hp_lte()
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 

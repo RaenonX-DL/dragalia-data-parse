@@ -1,17 +1,11 @@
+"""Implementations for checking the buff effects."""
 from dataclasses import dataclass
 from typing import Any
-
-import pytest
 
 from dlparse.enums import BuffParameter, HitTargetSimple
 from dlparse.model import ActionConditionEffectUnit
 
-__all__ = ("approx_matrix", "BuffEffectInfo", "check_buff_unit_match")
-
-
-def approx_matrix(data: list[list[float]]):
-    """``pytest.approx()`` for a matrix."""
-    return [pytest.approx(subdata) for subdata in data]
+__all__ = ("BuffEffectInfo", "check_buff_unit_match")
 
 
 @dataclass
@@ -59,7 +53,7 @@ def check_buff_unit_match(
     expr_expected = "\\n".join([str(info) for info in sorted(expected_info)])
     expr_actual = "\\n".join([str(info) for info in sorted(actual_info)])
 
-    assert_expr = f"assert {expr_actual} == {expr_expected}"
+    assert_expr = f"assert {{{expr_actual}}} == {{{expr_expected}}}"
 
     if message is not None:
         assert_expr = f"{message}\n{assert_expr}"

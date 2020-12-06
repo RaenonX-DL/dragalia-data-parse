@@ -57,14 +57,14 @@ class AbilityCondition(Enum):
 
     Condition value 1 = 40 means that the condition matches if the user's HP is >= 40% of the max HP.
     """
-    SELF_HP_LTE = 61
+    SELF_HP_LT_2 = 61
     """
-    Matches if the user's HP is <= certain percent of the max HP.
+    Matches if the user's HP is < certain percent of the max HP.
 
     Condition value 1 is the HP% threshold.
     Condition value 2 does not have any effect.
 
-    Condition value 1 = 40 means that the condition matches if the user's HP is <= 40% of the max HP.
+    Condition value 1 = 40 means that the condition matches if the user's HP is < 40% of the max HP.
     """
 
     @classmethod

@@ -6,8 +6,9 @@ from dlparse.errors import BulletEndOfLifeError, DamagingHitValidationFailedErro
 from dlparse.mono.asset import (
     ActionBuffField, ActionBullet, ActionBulletStockFire, ActionComponentHasHitLabels, ActionConditionAsset,
 )
+from dlparse.utils import AbilityConditionConverter
+from .effect_ability_cond import ActionConditionEffectUnit
 from .hit_base import HitData
-from .skill_affliction import SkillAfflictionUnit
 
 __all__ = ("DamagingHitData",)
 
@@ -95,26 +96,10 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
         """Get the damage modifiers if standing on ``count`` buff zones created by the allies."""
         return [self.mod_on_ally_buff_zone] * count
 
-    def to_affliction_unit(self, asset_action_condition: ActionConditionAsset) -> Optional[SkillAfflictionUnit]:
-        """Get the affliction unit of this hit data."""
-        if not self.hit_attr.action_condition_id:
-            # No action condition affiliated
-            return None
+    def to_affliction_unit(self, asset_action_condition: ActionConditionAsset) -> Optional[ActionConditionEffectUnit]:
+        """Get the affliction effect unit of this hit data. Returns ``None`` if not applicable."""
+        return AbilityConditionConverter.to_affliction_unit(self, asset_action_condition)
 
-        action_cond_data = asset_action_condition.get_data_by_id(self.hit_attr.action_condition_id)
-
-        if not action_cond_data.afflict_status.is_abnormal_status:
-            # Not afflicting action condition
-            return None
-
-        return SkillAfflictionUnit(
-            status=action_cond_data.afflict_status,
-            time=self.action_component.time_start,
-            rate_percent=action_cond_data.probability_pct,
-            duration=action_cond_data.duration_sec,
-            interval=action_cond_data.slip_interval,
-            damage_mod=action_cond_data.slip_damage_mod,
-            stackable=action_cond_data.max_stack_count > 0,
-            hit_attr_label=self.hit_attr.id,
-            action_cond_id=self.hit_attr.action_condition_id
-        )
+    def to_debuff_unit(self, asset_action_condition: ActionConditionAsset) -> list[ActionConditionEffectUnit]:
+        """Get the debuff effect unit of this hit data. Returns an empty list if not applicable."""
+        return AbilityConditionConverter.to_debuff_unit(self, asset_action_condition)

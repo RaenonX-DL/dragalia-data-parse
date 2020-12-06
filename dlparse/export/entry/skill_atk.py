@@ -26,7 +26,7 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
         self.skill_total_hits_max = skill_data_to_parse.hit_count_at_max
 
         self.affliction_data_max = list(dict.fromkeys([
-            (affliction.status, affliction.rate_percent) for affliction in skill_data_to_parse.afflictions[-1]
+            (affliction.status, affliction.probability_pct) for affliction in skill_data_to_parse.afflictions[-1]
         ]))
 
     def to_csv_entry(self) -> list[str]:

@@ -6,8 +6,8 @@ from typing import Optional
 from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite, Status
 from dlparse.mono.asset import ActionConditionAsset, PlayerActionInfoAsset
 from dlparse.utils import calculate_damage_modifier
+from .effect_ability_cond import ActionConditionEffectUnit
 from .hit_dmg import DamagingHitData
-from .skill_affliction import SkillAfflictionUnit
 from .skill_base import SkillDataBase, SkillEntryBase
 
 __all__ = ("AttackingSkillDataEntry", "AttackingSkillData")
@@ -31,7 +31,8 @@ class AttackingSkillDataEntry(SkillEntryBase):
     """
 
     mods: list[list[float]]
-    afflictions: list[list[SkillAfflictionUnit]]
+    afflictions: list[list[ActionConditionEffectUnit]]
+    debuffs: list[list[ActionConditionEffectUnit]]
 
     hit_data_mtx: list[list[DamagingHitData]]
 
@@ -94,7 +95,8 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     asset_action_cond: ActionConditionAsset
 
     mods: list[list[float]] = field(init=False)
-    afflictions: list[list[SkillAfflictionUnit]] = field(init=False)
+    afflictions: list[list[ActionConditionEffectUnit]] = field(init=False)
+    debuffs: list[list[ActionConditionEffectUnit]] = field(init=False)
 
     _max_level: int = field(init=False)
 
@@ -186,7 +188,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         }
 
     def _init_affliction_mtx(self):
-        affliction_mtx: list[list[SkillAfflictionUnit]] = []
+        affliction_mtx: list[list[ActionConditionEffectUnit]] = []
 
         for hit_data_lv in self.hit_data_mtx:
             affliction_lv = []
@@ -200,11 +202,27 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return affliction_mtx
 
+    def _init_debuff_mtx(self):
+        debuff_mtx: list[list[ActionConditionEffectUnit]] = []
+
+        for hit_data_lv in self.hit_data_mtx:
+            debuff_lv = []
+
+            for hit_data in hit_data_lv:
+                if debuff_unit := hit_data.to_debuff_unit(self.asset_action_cond):
+                    debuff_lv.extend(debuff_unit)
+
+            # Sort afflictions by its time
+            debuff_mtx.append(list(sorted(debuff_lv)))
+
+        return debuff_mtx
+
     def __post_init__(self):
         super().__post_init__()
 
         self.mods = self.calculate_mods_matrix()
         self.afflictions = self._init_affliction_mtx()
+        self.debuffs = self._init_debuff_mtx()
 
         if not self.mods:
             self._max_level = 0
@@ -240,32 +258,19 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return mods
 
-    def get_base_entry(self) -> AttackingSkillDataEntry:
-        """Get the base skill data entry."""
-        return AttackingSkillDataEntry(
-            mods=self.mods,
-            afflictions=self.afflictions,
-            hit_data_mtx=self.hit_data_mtx,
-            max_level=self.max_level,
-            condition_comp=SkillConditionComposite()
-        )
-
     def with_conditions(self, condition_comp: SkillConditionComposite = None) -> AttackingSkillDataEntry:
         """
         Get the skill data when all conditions in ``condition_comp`` hold.
 
-        If ``condition_comp`` are not given, return the base data.
+        If ``condition_comp`` are not given, base data will be returned.
 
         :raises ConditionValidationFailedError: if the condition combination is invalid
         :raises BulletEndOfLifeError: if the bullet hit count condition is beyond the limit
         """
-        if not condition_comp:
-            # Return the base entry if the conditions are not given, or the conditions will not cause differences
-            return self.get_base_entry()
-
         return AttackingSkillDataEntry(
             mods=self.calculate_mods_matrix(condition_comp),
             afflictions=self.afflictions,
+            debuffs=self.debuffs,
             hit_data_mtx=self.hit_data_mtx,
             condition_comp=condition_comp,
             max_level=self.max_level

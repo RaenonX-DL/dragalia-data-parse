@@ -74,9 +74,6 @@ class SkillCondition(Enum):
     SELF_HP_LT_30 = 212
     """User's HP < 30% max."""
 
-    SELF_HP_LTE_40 = 216
-    """User's HP <= 40% max."""
-
     SELF_HP_GT_30 = 221
     """User's HP > 30% max."""
 

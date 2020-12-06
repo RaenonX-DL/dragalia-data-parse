@@ -101,3 +101,8 @@ class BuffParameter(Enum):
     A value of 0.12 means to decrease 12% HP.
     """
     # endregion
+
+    # region Special Sentinel
+    AFFLICTION = 901
+    """The buff is actually an affliction. Value does not have any meanings."""
+    # endregion

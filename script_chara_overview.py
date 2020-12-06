@@ -25,7 +25,8 @@ def print_atk_data_entry(chara_data, skill_data, skill_entry):
         if afflictions_lv:
             initial_affliction = afflictions_lv[0]
             print(f"{initial_affliction.status.name} @ {initial_affliction.time:.3f} s "
-                  f"(Rate: {initial_affliction.rate_percent} % | Duration: {initial_affliction.duration} secs)")
+                  f"(Rate: {initial_affliction.probability_pct} % |"
+                  f" Duration: {initial_affliction.duration_time} secs)")
         print()
 
 
