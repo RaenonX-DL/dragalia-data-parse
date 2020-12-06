@@ -161,3 +161,5 @@ def test_peony_s1_paralyze(transformer_skill: SkillTransformer):
 
     for skill_lv, (expected, actual) in enumerate(zip(expected_afflictions, skill_data.afflictions), start=1):
         assert expected == actual, skill_lv
+
+# TODO: More complicating affliction processes and tests

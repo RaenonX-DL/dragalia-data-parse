@@ -104,4 +104,8 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10750402)
+    # FIXME: Weirdnesses
+    #  - Celliera 102402014 - has nothing
+    #  - Halloween Melsa S2 - missing
+    #  - OG!Amane S1 107404011 - returns excessive entries (2+ buffs should not return?)
+    chara_skill_overview(10250102)

@@ -31,6 +31,7 @@ class AttackingSkillDataEntry(SkillEntryBase):
     """
 
     mods: list[list[float]]
+    afflictions: list[list[SkillAfflictionUnit]]
 
     hit_data_mtx: list[list[DamagingHitData]]
 
@@ -229,6 +230,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         """Get the base skill data entry."""
         return AttackingSkillDataEntry(
             mods=self.mods,
+            afflictions=self.afflictions,
             hit_data_mtx=self.hit_data_mtx,
             max_level=self.max_level,
             condition_comp=SkillConditionComposite()
@@ -249,6 +251,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return AttackingSkillDataEntry(
             mods=self.calculate_mods_matrix(condition_comp),
+            afflictions=self.afflictions,
             hit_data_mtx=self.hit_data_mtx,
             condition_comp=condition_comp,
             max_level=self.max_level
