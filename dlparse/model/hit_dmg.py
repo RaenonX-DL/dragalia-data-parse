@@ -114,7 +114,7 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
             duration=action_cond_data.duration_sec,
             interval=action_cond_data.slip_interval,
             damage_mod=action_cond_data.slip_damage_mod,
-            stackable=True,  # FIXME: OG!Alex DEF down?
+            stackable=action_cond_data.max_stack_count > 0,
             hit_attr_label=self.hit_attr.id,
             action_cond_id=self.hit_attr.action_condition_id
         )

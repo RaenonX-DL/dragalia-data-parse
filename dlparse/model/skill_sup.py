@@ -60,6 +60,11 @@ class SupportiveSkillEntry(SkillEntryBase):
 
     buffs: list[set[SupportiveSkillUnit]]
 
+    max_level: int = field(init=False)
+
+    def __post_init__(self):
+        self.max_level = len(self.buffs)
+
     @property
     def max_lv_buffs(self) -> set[SupportiveSkillUnit]:
         """Get the buffs at the max level."""
@@ -92,7 +97,7 @@ class SupportiveSkillConverter:
             duration_count=cond_entry.duration_count if cond_entry else 0,
             hit_attr_label=hit_data.hit_attr.id,
             action_cond_id=hit_data.hit_attr.action_condition_id,
-            max_stack_count=cond_entry.duration_count_max if cond_entry else 0
+            max_stack_count=cond_entry.max_stack_count if cond_entry else 0
         )
 
     @staticmethod

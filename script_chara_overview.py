@@ -38,11 +38,11 @@ def print_sup_data_entry(chara_data, skill_data, skill_entry, max_level):
 
         buff_units = skill_entry.buffs[skill_level]
 
-        print(f"--- Lv.{skill_level_actual} {'(max)' if max_level == skill_level else ''}")
-        print()
-        print(f"SP: {skill_data.skill_data_raw.get_sp_at_level(skill_level_actual)}")
+        sp_str = f"SP: {skill_data.skill_data_raw.get_sp_at_level(skill_level_actual)}"
         if chara_data.ss_skill_id == skill_data.skill_data_raw.id:
-            print(f"SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(skill_level_actual)}")
+            sp_str += f" / SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(skill_level_actual)}"
+
+        print(f"--- Lv.{skill_level_actual} {'(max)' if skill_entry.max_level == skill_level else ''}| {sp_str}")
         print()
 
         for buff_unit in buff_units:
@@ -104,4 +104,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10250102)
+    chara_skill_overview(10340502)

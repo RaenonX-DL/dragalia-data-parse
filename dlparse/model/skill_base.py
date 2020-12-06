@@ -16,6 +16,8 @@ class SkillEntryBase(ABC):
 
     condition_comp: SkillConditionComposite
 
+    max_level: int
+
 
 HT = TypeVar("HT", bound=HitData)
 ET = TypeVar("ET", bound=SkillEntryBase)

@@ -14,6 +14,8 @@ class ActionConditionEntry(MasterEntryBase):
 
     afflict_status: Status
 
+    overwrite_group_id: int
+
     duration_sec: float
     duration_count: float
     duration_count_max: int
@@ -61,6 +63,7 @@ class ActionConditionEntry(MasterEntryBase):
         return ActionConditionEntry(
             id=data["_Id"],
             afflict_status=Status(data["_Type"]),
+            overwrite_group_id=data["_OverwriteGroupId"],
             duration_sec=data["_DurationSec"],
             duration_count=data["_DurationNum"],
             duration_count_max=duration_count_max,
@@ -87,6 +90,11 @@ class ActionConditionEntry(MasterEntryBase):
     def target_limited_by_element(self):
         """Check if the action condition will be limited by the element of the target."""
         return self.elemental_target.is_effective
+
+    @property
+    def max_stack_count(self) -> int:
+        """Get the maximum stack count of action condition. ``0`` means not applicable."""
+        return self.duration_count_max or int(bool(self.overwrite_group_id))
 
 
 class ActionConditionAsset(MasterAssetBase[ActionConditionEntry]):

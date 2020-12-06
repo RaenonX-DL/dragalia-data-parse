@@ -4,7 +4,7 @@ from dlparse.transformer import SkillTransformer
 
 
 def test_og_alex_s1_poison(transformer_skill: SkillTransformer):
-    # Alex S1
+    # Original Alex S1
     # https://dragalialost.gamepedia.com/Alex
     skill_data = transformer_skill.transform_attacking(103405021)
 
