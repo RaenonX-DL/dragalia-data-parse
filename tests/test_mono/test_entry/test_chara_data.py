@@ -1,4 +1,4 @@
-from dlparse.mono.asset import CharaDataAsset, CharaDataEntry, SkillIdEntry, TextAsset
+from dlparse.mono.asset import CharaDataAsset, CharaDataEntry, SkillIdEntry, SkillIdentifierLabel, TextAsset
 from dlparse.mono.manager import AssetManager
 
 
@@ -190,8 +190,8 @@ def test_get_skill_id_names(asset_manager: AssetManager):
     entry = create_dummy(skill_1_id=103505031, skill_2_id=103505032)
 
     expected_identifiers = [
-        SkillIdEntry(103505031, 1, "S1"),
-        SkillIdEntry(103505032, 2, "S2")
+        SkillIdEntry(103505031, 1, SkillIdentifierLabel.S1_BASE),
+        SkillIdEntry(103505032, 2, SkillIdentifierLabel.S2_BASE)
     ]
 
     assert entry.get_skill_identifiers(asset_manager) == expected_identifiers
@@ -201,10 +201,10 @@ def test_get_skill_id_names_with_mode(asset_manager: AssetManager):
     entry = create_dummy(skill_1_id=103505031, skill_2_id=103505032, mode_2_id=12)
 
     expected_identifiers = [
-        SkillIdEntry(103505031, 1, "S1"),
-        SkillIdEntry(103505032, 2, "S2"),
-        SkillIdEntry(103505033, 1, "S1 (服わざる伴侶)"),
-        SkillIdEntry(103505034, 2, "S2 (服わざる伴侶)")
+        SkillIdEntry(103505031, 1, SkillIdentifierLabel.S1_BASE),
+        SkillIdEntry(103505032, 2, SkillIdentifierLabel.S2_BASE),
+        SkillIdEntry(103505033, 1, SkillIdentifierLabel.of_mode(1, 12)),
+        SkillIdEntry(103505034, 2, SkillIdentifierLabel.of_mode(2, 12))
     ]
 
     assert entry.get_skill_identifiers(asset_manager) == expected_identifiers
@@ -218,10 +218,10 @@ def test_get_all_skill_identifiers(asset_chara: CharaDataAsset, asset_manager: A
     actual_identifiers = skill_data.get_skill_identifiers(asset_manager)
 
     expected_identifiers = [
-        SkillIdEntry(104502011, 1, "S1"),
-        SkillIdEntry(104502012, 2, "S2"),
-        SkillIdEntry(104502013, 2, "S2 P2"),
-        SkillIdEntry(104502014, 2, "S2 P3")
+        SkillIdEntry(104502011, 1, SkillIdentifierLabel.S1_BASE),
+        SkillIdEntry(104502012, 2, SkillIdentifierLabel.S2_BASE),
+        SkillIdEntry(104502013, 2, SkillIdentifierLabel.of_phase(2, 2)),
+        SkillIdEntry(104502014, 2, SkillIdentifierLabel.of_phase(2, 3))
     ]
 
     assert actual_identifiers == expected_identifiers

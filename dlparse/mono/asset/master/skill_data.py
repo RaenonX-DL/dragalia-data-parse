@@ -5,9 +5,58 @@ from typing import Optional, Union
 from dlparse.errors import InvalidSkillLevelError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
-__all__ = ("SkillIdEntry", "SkillDataEntry", "SkillDataAsset", "SkillDataParser")
+__all__ = ("SkillIdentifierLabel", "SkillIdEntry", "SkillDataEntry", "SkillDataAsset", "SkillDataParser")
 
 SKILL_MAX_LEVEL = 4
+
+
+class SkillIdentifierLabel:
+    """
+    Class for skill identifier labels.
+
+    The label name will be used in `translation.json` for different locale at the frontend side.
+    Therefore, the naming format may be different.
+
+    Quick reference
+    ===============
+    Base S1: ``s1_base``
+
+    Base S2: ``s2_base``
+
+    Helper: ``helper``
+
+    S1 in Mode #5: ``s1_mode_5``
+
+    S1 enhanced by S2: ``s1_enhanced_by_s2``
+
+    FS enhanced by S1: ``fs_enhanced_by_s1``
+
+    S1 in phase 3: ``s1_p3``
+    """
+
+    S1_BASE = "s1_base"
+    S2_BASE = "s2_base"
+    HELPER = "helper"
+
+    @staticmethod
+    def of_mode(skill_num: int, mode_id: int) -> str:
+        """Get the identifier label of the skill ``skill_num`` in mode ``mode_id``."""
+        return f"s{skill_num}_mode_{mode_id}"
+
+    @staticmethod
+    def of_phase(skill_num: int, phase_num: int) -> str:
+        """Get the identifier label of ``skill_num`` in phase ``phase_num``."""
+        return f"s{skill_num}_p{phase_num}"
+
+    @staticmethod
+    def skill_enhanced_by(receiver_skill_num: int, enhancer_skill_num: int) -> str:
+        """Get the identifier label of the skill ``receiver_skill_num`` being enhanced by ``enhancer_skill_num``."""
+        return f"s{receiver_skill_num}_enhanced_by_s{enhancer_skill_num}"
+
+    @staticmethod
+    def fs_enhanced_by(enhancer_skill_num: int) -> str:
+        """Get the identifier label of FS being enhanced by ``enhancer_skill_num``."""
+        return f"fs_enhanced_by_s{enhancer_skill_num}"
 
 
 @dataclass
@@ -18,10 +67,8 @@ class SkillIdEntry:
     """Skill ID."""
     skill_num: int
     """Number of the skill. ``1`` for S1; ``2`` for S2."""
-    skill_identifier: str
-    """Skill identifier. This is not unique. The purpose of this is for easier skill identification."""
-
-    # FIXME: Skill identifier needs to be text label instead (then use custom text asset for overriding, possibly)
+    skill_identifier_label: str
+    """Skill identifier label. This will be translated at the frontend side."""
 
 
 @dataclass
@@ -242,7 +289,7 @@ class SkillDataEntry(MasterEntryBase):
             ret.append(SkillIdEntry(
                 trans_skill_data.id,
                 skill_num,
-                f"S{skill_num} P{phase_num}"
+                SkillIdentifierLabel.of_phase(skill_num, phase_num)
             ))
             added_skill_id.add(trans_skill_data.id)
 

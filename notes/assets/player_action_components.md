@@ -1,5 +1,10 @@
 # Notes on Player Action Components
 
+- Field `_seconds` is the action component execution starting time.
+
+- Field `_duration` is the action component execution time length.
+  This could be ``0``, which means that the execution is either momental, or the action flow is embedded somewhere.
+
 
 ## Attacking Components 
 

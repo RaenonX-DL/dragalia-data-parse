@@ -1,11 +1,11 @@
 """Base classes for the data entries to be exported."""
 import hashlib
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, InitVar, field
-from typing import final, Generic, TypeVar
+from dataclasses import InitVar, dataclass, field
+from typing import Generic, TypeVar, final
 
 from dlparse.enums import Element, SkillConditionComposite
-from dlparse.mono.asset import CharaDataEntry, TextAsset, SkillIdEntry, SkillDataEntry
+from dlparse.mono.asset import CharaDataEntry, SkillDataEntry, SkillIdEntry, TextAsset
 
 __all__ = ("ExportEntryBase", "SkillExportEntryBase")
 
@@ -78,7 +78,7 @@ class SkillExportEntryBase(Generic[T], ExportEntryBase, ABC):
         self.character_element = chara_data.element
 
         self.skill_internal_id = skill_id_entry.skill_id
-        self.skill_identifier = skill_id_entry.skill_identifier
+        self.skill_identifier = skill_id_entry.skill_identifier_label
         self.skill_num = skill_id_entry.skill_num
         self.skill_name = text_asset.to_text(skill_data.name_label, silent_fail=False)
         self.skill_max_level = chara_data.max_skill_level(skill_id_entry.skill_num)

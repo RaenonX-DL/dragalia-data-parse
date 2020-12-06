@@ -54,7 +54,7 @@ def print_skill_id_entry(chara_data, skill_id_entry):
     skill_data_sys = _asset_manager.asset_skill.get_data_by_id(skill_id)
     skill_name = _asset_manager.asset_text.to_text(skill_data_sys.name_label)
 
-    print(f"{skill_id_entry.skill_identifier}: {skill_name} ({skill_id})")
+    print(f"{skill_id_entry.skill_identifier_label}: {skill_name} ({skill_id})")
     print("-" * 50)
 
     try:
@@ -93,4 +93,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10450301)
+    chara_skill_overview(10750502)

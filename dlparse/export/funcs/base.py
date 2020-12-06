@@ -53,7 +53,7 @@ def export_transform_skill_entries(
             # Action file not found (ActionDataNotFoundError)
 
             if skip_unparsable:
-                skipped_messages.append(f"[Skill] {id_entry.skill_identifier} ({id_entry.skill_id}) "
+                skipped_messages.append(f"[Skill] {id_entry.skill_identifier_label} ({id_entry.skill_id}) "
                                         f"of {chara_name} ({chara_data.id}): {ex}")
                 continue
 

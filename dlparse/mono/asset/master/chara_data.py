@@ -6,7 +6,7 @@ from typing import Optional, TYPE_CHECKING, Union
 from dlparse.enums import Element
 from dlparse.errors import ActionDataNotFoundError, InvalidSkillNumError, TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from .skill_data import SkillDataEntry, SkillIdEntry
+from .skill_data import SkillDataEntry, SkillIdEntry, SkillIdentifierLabel
 from .text_label import TextAsset
 
 if TYPE_CHECKING:
@@ -265,8 +265,8 @@ class CharaDataEntry(MasterEntryBase):
 
     def _skill_id_base(self) -> list[SkillIdEntry]:
         return [
-            SkillIdEntry(self.skill_1_id, 1, "S1"),
-            SkillIdEntry(self.skill_2_id, 2, "S2")
+            SkillIdEntry(self.skill_1_id, 1, SkillIdentifierLabel.S1_BASE),
+            SkillIdEntry(self.skill_2_id, 2, SkillIdentifierLabel.S2_BASE)
         ]
 
     def _skill_id_mode(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
@@ -274,15 +274,11 @@ class CharaDataEntry(MasterEntryBase):
 
         for mode_id in self.mode_ids:
             if mode_data := asset_manager.asset_chara_mode.get_data_by_id(mode_id):
-                mode_name = f"Mode #{mode_id}"
-                if asset_manager.asset_text:
-                    mode_name = asset_manager.asset_text.to_text(mode_data.text_label) or mode_name
-
                 if model_skill_1_id := mode_data.skill_id_1:
-                    ret.append(SkillIdEntry(model_skill_1_id, 1, f"S1 ({mode_name})"))
+                    ret.append(SkillIdEntry(model_skill_1_id, 1, SkillIdentifierLabel.of_mode(1, mode_id)))
 
                 if model_skill_2_id := mode_data.skill_id_2:
-                    ret.append(SkillIdEntry(model_skill_2_id, 2, f"S2 ({mode_name})"))
+                    ret.append(SkillIdEntry(model_skill_2_id, 2, SkillIdentifierLabel.of_mode(2, mode_id)))
 
         return ret
 
@@ -324,19 +320,22 @@ class CharaDataEntry(MasterEntryBase):
             if action_condition := asset_manager.asset_action_cond.get_data_by_id(action_condition_id):
                 if action_condition.enhance_skill_1_id:
                     ret.append(SkillIdEntry(action_condition.enhance_skill_1_id, 1,
-                                            f"S1 - Enhanced by S{src_skill_num}"))
+                                            SkillIdentifierLabel.skill_enhanced_by(1, src_skill_num)))
+                if action_condition.enhance_skill_2_id:
+                    ret.append(SkillIdEntry(action_condition.enhance_skill_2_id, 1,
+                                            SkillIdentifierLabel.skill_enhanced_by(2, src_skill_num)))
 
         return ret
 
     @staticmethod
-    def _skill_id_helper_variant(asset_manager: "AssetManager", skill_1_data: SkillDataEntry) -> list[SkillIdEntry]:
+    def _skill_id_helper_variant(skill_1_data: SkillDataEntry) -> list[SkillIdEntry]:
         ret: list[SkillIdEntry] = []
 
         if skill_1_data and skill_1_data.has_helper_variant:
             ret.append(SkillIdEntry(
                 skill_1_data.as_helper_skill_id,
                 1,
-                asset_manager.asset_text.to_text("SKILL_IDENTIFIER_HELPER") if asset_manager.asset_text else "Helper"
+                SkillIdentifierLabel.HELPER
             ))
 
         return ret
@@ -362,7 +361,7 @@ class CharaDataEntry(MasterEntryBase):
         skill_2_data: SkillDataEntry = asset_manager.asset_skill.get_data_by_id(self.skill_2_id)
 
         ret.extend(self._skill_id_action_condition(asset_manager, skill_1_data, skill_2_data))
-        ret.extend(self._skill_id_helper_variant(asset_manager, skill_1_data))
+        ret.extend(self._skill_id_helper_variant(skill_1_data))
         ret.extend(self._skill_id_phase_change(asset_manager, skill_1_data, skill_2_data))
 
         return ret
