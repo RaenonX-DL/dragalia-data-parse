@@ -325,7 +325,9 @@ class CharaDataEntry(MasterEntryBase):
                     ret.append(SkillIdEntry(action_condition.enhance_skill_2_id, 1,
                                             SkillIdentifierLabel.skill_enhanced_by(2, src_skill_num)))
 
-        return ret
+        # https://stackoverflow.com/a/53657523/11571888
+        # Filter duplicated entries while preserving its order
+        return list(dict.fromkeys(ret))
 
     @staticmethod
     def _skill_id_helper_variant(skill_1_data: SkillDataEntry) -> list[SkillIdEntry]:

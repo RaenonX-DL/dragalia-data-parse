@@ -59,7 +59,7 @@ class SkillIdentifierLabel:
         return f"fs_enhanced_by_s{enhancer_skill_num}"
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class SkillIdEntry:
     """Class for a skill ID entry."""
 
