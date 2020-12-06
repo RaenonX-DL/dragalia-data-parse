@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Optional, Union
 
-from dlparse.enums import ElementFlag
+from dlparse.enums import ElementFlag, Status
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("ActionConditionEntry", "ActionConditionAsset", "ActionConditionParser")
@@ -11,6 +11,8 @@ __all__ = ("ActionConditionEntry", "ActionConditionAsset", "ActionConditionParse
 @dataclass
 class ActionConditionEntry(MasterEntryBase):
     """Single entry of an action condition data."""
+
+    afflict_status: Status
 
     duration_sec: float
     duration_count: float
@@ -25,7 +27,10 @@ class ActionConditionEntry(MasterEntryBase):
     Any positive number means the maximum count of stacks possible.
     """
 
-    probability: float
+    probability_pct: float
+
+    slip_interval: float
+    slip_damage_mod: float
 
     buff_atk: float
     buff_def: float
@@ -55,10 +60,13 @@ class ActionConditionEntry(MasterEntryBase):
 
         return ActionConditionEntry(
             id=data["_Id"],
+            afflict_status=Status(data["_Type"]),
             duration_sec=data["_DurationSec"],
             duration_count=data["_DurationNum"],
             duration_count_max=duration_count_max,
-            probability=data["_Rate"],
+            probability_pct=data["_Rate"],
+            slip_interval=data["_SlipDamageIntervalSec"],
+            slip_damage_mod=data["_SlipDamagePower"],
             buff_atk=data["_RateAttack"],
             buff_def=data["_RateDefense"],
             buff_crt_rate=data["_RateCritical"],

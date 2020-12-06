@@ -9,7 +9,8 @@ from dlparse.transformer import SkillTransformer
 from tests.expected_skills_lookup import skill_ids_atk, skill_ids_sup
 
 allowed_no_base_mods_sid = {
-    103505042  # Nevin S2, only has either sigil released or unlocked
+    103505042,  # Nevin S2, only has either sigil released or unlocked
+    109503012  # Formal Joachim S2, only poison
 }
 
 

@@ -41,8 +41,7 @@ class SupportiveSkillUnit:
     """
 
     def __hash__(self):
-        return hash((self.target, self.parameter, self.rate, self.duration_time, self.duration_count,
-                     self.hit_attr_label, self.action_cond_id))
+        return hash((self.hit_attr_label, self.action_cond_id))
 
     def __eq__(self, other):
         if not isinstance(other, SupportiveSkillUnit):

@@ -132,7 +132,7 @@ class SkillTransformer:
 
     def get_hit_data_matrix(
             self, skill_id: int, hit_data_cls: Type[T], /,
-            deals_damage: bool = True, max_lv: int = 0
+            effective_to_enemy: bool = True, max_lv: int = 0
     ) -> tuple[SkillDataEntry, list[list[T]]]:
         """
         Get a matrix of the hit data.
@@ -174,8 +174,8 @@ class SkillTransformer:
                 if skill_lv > len(hit_data_mtx):
                     hit_data_mtx.append([])
 
-                # Check if the criteria of getting the damaging hits or not meets
-                if hit_data.hit_attr.deals_damage == deals_damage:
+                # Check if the hit is effective to target, if desired; check the doc for the definition of effective
+                if hit_data.hit_attr.is_effective_to_enemy(self._action_cond) == effective_to_enemy:
                     hit_data_mtx[skill_lv - 1].append(hit_data)
 
         if not any(hit_data for hit_data in hit_data_mtx):
@@ -196,7 +196,7 @@ class SkillTransformer:
         :raises HitDataUnavailableError: if no hit data available
         """
         skill_data, hit_data_mtx = self.get_hit_data_matrix(skill_id, BuffingHitData,
-                                                            deals_damage=False, max_lv=max_lv)
+                                                            effective_to_enemy=False, max_lv=max_lv)
 
         return SupportiveSkillData(
             skill_data_raw=skill_data,
@@ -220,5 +220,6 @@ class SkillTransformer:
         return AttackingSkillData(
             skill_data_raw=skill_data,
             hit_data_mtx=hit_data_mtx,
-            action_info_asset=self._action_info
+            asset_action_info=self._action_info,
+            asset_action_cond=self._action_cond
         )

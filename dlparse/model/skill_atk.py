@@ -3,10 +3,11 @@ from dataclasses import dataclass, field
 from itertools import combinations, product, zip_longest
 from typing import Optional
 
-from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite, TargetStatus
-from dlparse.mono.asset import PlayerActionInfoAsset
+from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite, Status
+from dlparse.mono.asset import ActionConditionAsset, PlayerActionInfoAsset
 from dlparse.utils import calculate_damage_modifier
 from .hit_dmg import DamagingHitData
+from .skill_affliction import SkillAfflictionUnit
 from .skill_base import SkillDataBase, SkillEntryBase
 
 __all__ = ("AttackingSkillDataEntry", "AttackingSkillData")
@@ -86,9 +87,13 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     """
 
     # These are used during mods calculation
-    action_info_asset: PlayerActionInfoAsset
+    asset_action_info: PlayerActionInfoAsset
+
+    # These are used during affliction processing
+    asset_action_cond: ActionConditionAsset
 
     mods: list[list[float]] = field(init=False)
+    afflictions: list[list[SkillAfflictionUnit]] = field(init=False)
 
     _max_level: int = field(init=False)
 
@@ -97,7 +102,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         cond_elems: list[set[tuple[SkillCondition, ...]]] = self._init_possible_conditions_base_elems()
 
         # Punishers available
-        punishers_available: set[TargetStatus] = {
+        punishers_available: set[Status] = {
             punisher_state
             for hit_data_lv in self.hit_data_mtx
             for hit_data in hit_data_lv
@@ -165,10 +170,26 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             for item_combination in product(*cond_elems)
         }
 
+    def _init_affliction_mtx(self):
+        affliction_mtx: list[list[SkillAfflictionUnit]] = []
+
+        for hit_data_lv in self.hit_data_mtx:
+            affliction_lv = []
+
+            for hit_data in hit_data_lv:
+                if affliction_unit := hit_data.to_affliction_unit(self.asset_action_cond):
+                    affliction_lv.append(affliction_unit)
+
+            # Sort afflictions by its time
+            affliction_mtx.append(list(sorted(affliction_lv)))
+
+        return affliction_mtx
+
     def __post_init__(self):
         super().__post_init__()
 
         self.mods = self.calculate_mods_matrix()
+        self.afflictions = self._init_affliction_mtx()
 
         if not self.mods:
             self._max_level = 0
@@ -191,7 +212,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
                 # Sometimes this could be an empty list
                 #   - hits that only available if inside a buff zone but the skill condition is not in any buff zone
                 if damage_mod := calculate_damage_modifier(
-                        hit_data, condition_comp, action_info_asset=self.action_info_asset
+                        hit_data, condition_comp, action_info_asset=self.asset_action_info
                 ):
                     new_mods_level.append(damage_mod)
 

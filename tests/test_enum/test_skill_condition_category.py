@@ -1,7 +1,7 @@
 import pytest
 
 from dlparse.enums import (
-    TargetStatus, SkillCondition, SkillConditionCategories as CondCat, SkillConditionMaxCount as CondMax
+    SkillCondition, SkillConditionCategories as CondCat, SkillConditionMaxCount as CondMax, Status,
 )
 from dlparse.errors import EnumConversionError
 
@@ -15,7 +15,7 @@ def test_member_contains():
 
 
 def test_conversion():
-    assert CondCat.target_status.convert(SkillCondition.TARGET_PARALYZED) == TargetStatus.PARALYZE
+    assert CondCat.target_status.convert(SkillCondition.TARGET_PARALYZED) == Status.PARALYZE
     with pytest.raises(EnumConversionError):
         CondCat.target_status.convert(SkillCondition.BULLET_HIT_1)
 
@@ -25,7 +25,7 @@ def test_conversion():
 
 
 def test_reverse_conversion():
-    assert CondCat.target_status.convert_reversed(TargetStatus.PARALYZE) == SkillCondition.TARGET_PARALYZED
+    assert CondCat.target_status.convert_reversed(Status.PARALYZE) == SkillCondition.TARGET_PARALYZED
     with pytest.raises(EnumConversionError):
         CondCat.target_status.convert_reversed(SkillCondition.BULLET_HIT_1)
 

@@ -72,7 +72,7 @@ def calculate_damage_modifier(
     However, under some special circumstances (for example, deteriorating bullets),
     having multiple damage modifiers is possible.
 
-    ``action_info_asset`` will be used for special circumstance mods calculation.
+    ``asset_action_info`` will be used for special circumstance mods calculation.
     If they are not provided, the mods may be uncalculatable or inaccurate.
     If such happens, an error will be raised, or a warning will be emitted.
     """

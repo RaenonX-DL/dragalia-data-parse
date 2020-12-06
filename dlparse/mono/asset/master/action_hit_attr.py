@@ -1,9 +1,10 @@
 """Classes for handling the player action hit attribute asset."""
 from dataclasses import dataclass
-from typing import Union, Optional
+from typing import Optional, Union
 
-from dlparse.enums import TargetStatus, HitExecType, HitTarget
-from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
+from dlparse.enums import HitExecType, HitTarget, Status
+from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
+from .action_condition import ActionConditionAsset
 
 __all__ = ("HitAttrEntry", "HitAttrAsset", "HitAttrParser")
 
@@ -28,7 +29,7 @@ class HitAttrEntry(MasterEntryBase):
     hp_fix_rate: float
     hp_consumption_rate: float
 
-    punisher_states: set[TargetStatus]  # Rate will be applied when the target has any of the punisher states
+    punisher_states: set[Status]  # Rate will be applied when the target has any of the punisher states
     punisher_rate: float
 
     rate_boost_on_crisis: float  # 0 = not applicable
@@ -60,7 +61,7 @@ class HitAttrEntry(MasterEntryBase):
     @staticmethod
     def parse_raw(data: dict[str, Union[str, float, int]]) -> "HitAttrEntry":
         punisher_states = {data["_KillerState1"], data["_KillerState2"], data["_KillerState3"]} - {0}
-        punisher_states = {TargetStatus(state) for state in punisher_states} - {TargetStatus.UNKNOWN}
+        punisher_states = {Status(state) for state in punisher_states} - {Status.UNKNOWN}
 
         return HitAttrEntry(
             id=data["_Id"],
@@ -114,14 +115,31 @@ class HitAttrEntry(MasterEntryBase):
         """Check if the mods will be changed based on the character's HP."""
         return self.rate_boost_on_crisis != 0
 
-    @property
-    def deals_damage(self) -> bool:
+    def is_effective_to_enemy(self, asset_action_cond: ActionConditionAsset) -> bool:
         """
-        Check if the hit actually deals damage.
+        Check if the hit is effective to the enemy.
 
-        Some hits seem to be dummy hit. For example, Renee S1 def down (`DAG_002_03_H03_DEFDOWN_LV03`).
+        If any of the conditions below holds, the hit is considered effective:
+
+        - Afflict the enemy
+
+        - Deals damage to the enemy
         """
-        return self.damage_modifier != 0
+        if self.damage_modifier:
+            # Deals damage
+            return True
+
+        if not self.has_action_condition:
+            # No action condition assigned & does not have action condition binded
+            return False
+
+        if self.target_group != HitTarget.ENEMY:
+            # Has action condition but the target is not enemy
+            return False
+
+        action_cond_data = asset_action_cond.get_data_by_id(self.action_condition_id)
+
+        return action_cond_data.afflict_status.is_abnormal_status
 
 
 class HitAttrAsset(MasterAssetBase[HitAttrEntry]):

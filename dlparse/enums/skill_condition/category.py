@@ -6,7 +6,7 @@ from dlparse.errors import EnumConversionError
 from .items import SkillCondition
 from ..condition_base import ConditionCheckResultMixin
 from ..element import Element
-from ..target_status import TargetStatus
+from ..status import Status
 
 __all__ = ("SkillConditionCheckResult", "SkillConditionCategories", "SkillConditionMaxCount")
 
@@ -173,29 +173,29 @@ class SkillConditionCategories:
 
     # pylint: disable=too-few-public-methods
 
-    target_status = SkillConditionCategory[TargetStatus](
+    target_status = SkillConditionCategory[Status](
         {
             # Abnormal statuses
-            SkillCondition.TARGET_POISONED: TargetStatus.POISON,
-            SkillCondition.TARGET_BURNED: TargetStatus.BURN,
-            SkillCondition.TARGET_FROZEN: TargetStatus.FREEZE,
-            SkillCondition.TARGET_PARALYZED: TargetStatus.PARALYZE,
-            SkillCondition.TARGET_BLINDED: TargetStatus.BLIND,
-            SkillCondition.TARGET_STUNNED: TargetStatus.STUN,
-            SkillCondition.TARGET_CURSED: TargetStatus.CURSE,
-            SkillCondition.TARGET_BOGGED: TargetStatus.BOG,
-            SkillCondition.TARGET_SLEPT: TargetStatus.SLEEP,
-            SkillCondition.TARGET_FROSTBITTEN: TargetStatus.FROSTBITE,
-            SkillCondition.TARGET_FLASHBURNED: TargetStatus.FLASHBURN,
-            SkillCondition.TARGET_CRASHWINDED: TargetStatus.CRASHWIND,
-            SkillCondition.TARGET_SHADOWBLIGHTED: TargetStatus.SHADOWBLIGHT,
+            SkillCondition.TARGET_POISONED: Status.POISON,
+            SkillCondition.TARGET_BURNED: Status.BURN,
+            SkillCondition.TARGET_FROZEN: Status.FREEZE,
+            SkillCondition.TARGET_PARALYZED: Status.PARALYZE,
+            SkillCondition.TARGET_BLINDED: Status.BLIND,
+            SkillCondition.TARGET_STUNNED: Status.STUN,
+            SkillCondition.TARGET_CURSED: Status.CURSE,
+            SkillCondition.TARGET_BOGGED: Status.BOG,
+            SkillCondition.TARGET_SLEPT: Status.SLEEP,
+            SkillCondition.TARGET_FROSTBITTEN: Status.FROSTBITE,
+            SkillCondition.TARGET_FLASHBURNED: Status.FLASHBURN,
+            SkillCondition.TARGET_CRASHWINDED: Status.CRASHWIND,
+            SkillCondition.TARGET_SHADOWBLIGHTED: Status.SHADOWBLIGHT,
             # Special abnormal status
-            SkillCondition.TARGET_AFFLICTED: TargetStatus.AFFLICTED,
-            SkillCondition.TARGET_DEF_DOWN: TargetStatus.DEF_DOWNED,
-            SkillCondition.TARGET_BUFFED: TargetStatus.BUFFED,
-            SkillCondition.TARGET_DEBUFFED: TargetStatus.DEBUFFED,
+            SkillCondition.TARGET_AFFLICTED: Status.AFFLICTED,
+            SkillCondition.TARGET_DEF_DOWN: Status.DEF_DOWNED,
+            SkillCondition.TARGET_BUFFED: Status.BUFFED,
+            SkillCondition.TARGET_DEBUFFED: Status.DEBUFFED,
             # Enemy state
-            SkillCondition.TARGET_BREAK_STATE: TargetStatus.BREAK_STATE
+            SkillCondition.TARGET_BREAK_STATE: Status.BREAK_STATE
         },
         SkillConditionMaxCount.MULTIPLE,
         "Target - status",

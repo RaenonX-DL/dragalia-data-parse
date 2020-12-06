@@ -8,7 +8,7 @@ from .category import SkillConditionCategories as CondCat, SkillConditionCheckRe
 from .items import SkillCondition
 from .validate import validate_skill_conditions
 from ..element import Element
-from ..target_status import TargetStatus
+from ..status import Status
 
 __all__ = ("SkillConditionComposite",)
 
@@ -21,7 +21,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
     # region Target
     afflictions_condition: set[SkillCondition] = field(init=False)
-    afflictions_converted: set[TargetStatus] = field(init=False)
+    afflictions_converted: set[Status] = field(init=False)
     target_elemental: Optional[SkillCondition] = field(init=False)
     target_elemental_converted: Element = field(init=False)
     # endregion
