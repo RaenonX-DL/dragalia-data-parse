@@ -127,12 +127,26 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_hp_status.members})
 
         # Buff boosts available
-        buff_up_available: bool = any(
-            hit_data.hit_attr.boost_by_buff_count or hit_data.is_depends_on_user_buff_count
+        buff_up_direct_boost_available: bool = any(
+            hit_data.hit_attr.boost_by_buff_count
             for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         )
-        if buff_up_available:
+        buff_up_bonus_hits_available: bool = any(
+            hit_data.is_depends_on_user_buff_count
+            for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+        )
+        if buff_up_direct_boost_available:
             cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_buff_count.members})
+        elif buff_up_bonus_hits_available:
+            # Get all action IDs first, then get the max bullet counts
+            # to reduce the call count of getting the action info
+            action_ids = {hit_data.action_id for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv}
+            max_count: int = max(
+                self.asset_action_info.get_data_by_id(action_id).max_bullet_count
+                for action_id in action_ids
+            )
+            cond_elems.append({(buff_cond,) for buff_cond
+                               in SkillConditionCategories.self_buff_count.get_members_lte(max_count)})
 
         # In buff zone boosts available
         in_buff_zone_available: bool = any(

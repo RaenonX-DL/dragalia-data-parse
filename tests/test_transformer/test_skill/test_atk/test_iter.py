@@ -192,18 +192,6 @@ def test_buff_count_bonus_bullet(transformer_skill: SkillTransformer):
         SkillConditionComposite(SkillCondition.SELF_BUFF_3): 1.07 * 3 + 5.4 + 1.07 * 3,
         SkillConditionComposite(SkillCondition.SELF_BUFF_4): 1.07 * 3 + 5.4 + 1.07 * 4,
         SkillConditionComposite(SkillCondition.SELF_BUFF_5): 1.07 * 3 + 5.4 + 1.07 * 5,
-        SkillConditionComposite(SkillCondition.SELF_BUFF_6): 1.07 * 3 + 5.4 + 1.07 * 5,
-        SkillConditionComposite(SkillCondition.SELF_BUFF_7): 1.07 * 3 + 5.4 + 1.07 * 5,
-        SkillConditionComposite(SkillCondition.SELF_BUFF_8): 1.07 * 3 + 5.4 + 1.07 * 5,
-        SkillConditionComposite(SkillCondition.SELF_BUFF_9): 1.07 * 3 + 5.4 + 1.07 * 5,
-        SkillConditionComposite(SkillCondition.SELF_BUFF_10): 1.07 * 3 + 5.4 + 1.07 * 5,
-        SkillConditionComposite(SkillCondition.SELF_BUFF_20): 1.07 * 3 + 5.4 + 1.07 * 5,
-        SkillConditionComposite(SkillCondition.SELF_BUFF_25): 1.07 * 3 + 5.4 + 1.07 * 5,
-        SkillConditionComposite(SkillCondition.SELF_BUFF_30): 1.07 * 3 + 5.4 + 1.07 * 5,
-        SkillConditionComposite(SkillCondition.SELF_BUFF_35): 1.07 * 3 + 5.4 + 1.07 * 5,
-        SkillConditionComposite(SkillCondition.SELF_BUFF_40): 1.07 * 3 + 5.4 + 1.07 * 5,
-        SkillConditionComposite(SkillCondition.SELF_BUFF_45): 1.07 * 3 + 5.4 + 1.07 * 5,
-        SkillConditionComposite(SkillCondition.SELF_BUFF_50): 1.07 * 3 + 5.4 + 1.07 * 5,
         SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_0]):
             (1.07 * 3 + 5.4 + 1.07 * 0) * 1.1,
         SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_1]):
@@ -215,30 +203,6 @@ def test_buff_count_bonus_bullet(transformer_skill: SkillTransformer):
         SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_4]):
             (1.07 * 3 + 5.4 + 1.07 * 4) * 1.1,
         SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_5]):
-            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_6]):
-            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_7]):
-            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_8]):
-            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_9]):
-            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_10]):
-            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_20]):
-            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_25]):
-            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_30]):
-            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_35]):
-            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_40]):
-            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_45]):
-            (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.SELF_BUFF_50]):
             (1.07 * 3 + 5.4 + 1.07 * 5) * 1.1,
     }
 
