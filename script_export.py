@@ -7,10 +7,12 @@ _asset_manager: AssetManager = AssetManager(PATH_ROOT_ASSET_PLAYER_ACTION, PATH_
 
 def export_atk():
     export_atk_skill_as_csv("exported/skill_atk.csv", asset_manager=_asset_manager)
+    print(export_atk_skill_as_csv)
 
 
 def export_sup():
     export_sup_skill_as_csv("exported/skill_sup.csv", asset_manager=_asset_manager)
+    print(export_sup_skill_as_csv)
 
 
 if __name__ == '__main__':
