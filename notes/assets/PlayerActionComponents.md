@@ -1,10 +1,11 @@
-# Notes on Player Action Components
+# Player Action Components
 
-- Field `_seconds` is the action component execution starting time.
+## General
 
-- Field `_duration` is the action component execution time length.
-  This could be ``0``, which means that the execution is either momental, or the action flow is embedded somewhere.
+- `_seconds` is the action component execution starting time.
 
+- `_duration` is the action component execution time length. This could be ``0``, which means that the execution is
+  either momental, or the action flow is embedded somewhere.
 
 ## Attacking Components 
 
@@ -147,23 +148,30 @@ An action which sets an area.
 
 - Wedding Elisanne S1 (`101503021`)
 
-
-
 ## Active Components
 
 > Components that users can actively trigger whenever it's possible.
 
-
 ### ``ActionPartsActiveCancel``
 
-Needs investigation. Possibly active canceling action.
+This cancels the action. Trigger this by tapping the screen.
 
-May be used for calculating camera duration.
+#### Attribute notes
+
+- `_seconds` is the actual starting time for the cancel to be allowed.
+
+- `_actionId` is the specific action allowed to be used for the canceling.
+
+  If this is given (not `0`), the given action needs to be executed in order to cancel the action.
+
+  For example, if this is `110000`, commands that perform action ID `110000` is required.
+
+  - `6` is common a common action ID meaning **dodge / roll**.
 
 
 ## Effecting Components
 
-> Components that are the side effects (affecting the gameplay) of the action.
+> Components that are the gameplay-affecting side effects of the action.
 
 
 ### ``ActionPartsSettingHit``
@@ -176,76 +184,73 @@ This does **not** deal damage.
 
 - `_lifetime` is the duration of the area.
 
+## Unit Action Controlling Components
 
-## Camera Controlling Components
+> Components that are related to the action of the units.
 
-> Components that are related to the camera control / camera duration.
+### ``ActionPartsMotion``
 
+Some motion connects to animation clip (by [Mushymato]).
 
-### ``ActionPartsCameraMotion``
+#### Attribute notes
 
-Needs investigation. Could be just the camera movement.
+- `_motionState` **may** corresponds to some AnimationClip.
 
-May be used for calculating camera duration.
+  This may be used for camera duration calculation.
+
+  - `skill_A` takes exactly 1 second, which is commonly used for buffs.
 
 
 ### ``ActionPartsHitStop``
 
-Needs investigation. Frozen action after ``ActionPartsHit``.
+Needs investigation. Could be the frozen action after ``ActionPartsHit``.
 
 May be used for calculating camera duration.
-
 
 ### ``ActionPartsHeadText``
 
 Seems to be the texts appear above the head.
 
-This appears in Karina S1 (`104402011`), which could be the text of **boost x N**.
+#### Apperance notes
 
+- Karina S1 (`104402011`) for the text of **boost x N**.
 
 ## Miscellaneous / Unknown
 
 > Components that cannot be / have not been categorized.
 
-
 ### ``ActionPartsEffect``
 
 Seems to be the skill effect.
 
-May be used for calculating camera duration.
-
 
 ### ``ActionPartsMotion``
 
-Needs investigation.
-
-May be used for calculating camera duration.
+Unknown.
 
 
 ### ``ActionPartsMoveTimeCurve``
 
-Needs investigation. Possibly the variant of ``ActionPartsMotion`` but based on some other parameter, 
-or the character movement curving function (could check Summer Julietta S1).
-
-May be used for calculating camera duration.
+Unknown.
 
 
 ### ``ActionPartsRotateTarget``
 
-Needs investigation.
-
+Unknown.
 
 ### ``ActionPartsSound``
 
 SE of the action.
 
-
 ### ``ActionPartsSendSignal``
 
-Needs investigation.
+Component used for communicating with the other components.
+
 
 -----
 
 ## Additional Resources
 
 - [Command Type Enum (from DL DPS sim by Mushymato)](https://github.com/dl-stuff/dl-datamine/blob/master/loader/Actions.py)
+
+[Mushymato]: https://github.com/Mushymato
