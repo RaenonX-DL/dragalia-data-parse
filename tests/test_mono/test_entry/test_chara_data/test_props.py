@@ -1,5 +1,4 @@
-from dlparse.mono.asset import CharaDataAsset, CharaDataEntry, SkillIdEntry, SkillIdentifierLabel, TextAsset
-from dlparse.mono.manager import AssetManager
+from dlparse.mono.asset import CharaDataEntry, TextAsset
 
 
 def create_dummy(**kwargs) -> CharaDataEntry:
@@ -45,18 +44,18 @@ def create_dummy(**kwargs) -> CharaDataEntry:
         "combo_mode_2_id": -1,
         "skill_1_id": -1,
         "skill_2_id": -1,
-        "passive_1_lv_1_id": -1,
-        "passive_1_lv_2_id": -1,
-        "passive_1_lv_3_id": -1,
-        "passive_1_lv_4_id": -1,
-        "passive_2_lv_1_id": -1,
-        "passive_2_lv_2_id": -1,
-        "passive_2_lv_3_id": -1,
-        "passive_2_lv_4_id": -1,
-        "passive_3_lv_1_id": -1,
-        "passive_3_lv_2_id": -1,
-        "passive_3_lv_3_id": -1,
-        "passive_3_lv_4_id": -1,
+        "ability_1_lv_1_id": 0,
+        "ability_1_lv_2_id": 0,
+        "ability_1_lv_3_id": 0,
+        "ability_1_lv_4_id": 0,
+        "ability_2_lv_1_id": 0,
+        "ability_2_lv_2_id": 0,
+        "ability_2_lv_3_id": 0,
+        "ability_2_lv_4_id": 0,
+        "ability_3_lv_1_id": 0,
+        "ability_3_lv_2_id": 0,
+        "ability_3_lv_3_id": 0,
+        "ability_3_lv_4_id": 0,
         "ex_1_id": -1,
         "ex_2_id": -1,
         "ex_3_id": -1,
@@ -184,44 +183,3 @@ def test_get_chara_name_use_main(asset_text: TextAsset):
 def test_get_chara_name_use_second(asset_text: TextAsset):
     entry = create_dummy(name_label="CHARA_NAME_10150302", second_name_label="CHARA_NAME_COMMENT_10150302")
     assert entry.get_chara_name(asset_text) == "エルフィリス（ウエディングVer.）"
-
-
-def test_get_skill_id_names(asset_manager: AssetManager):
-    entry = create_dummy(skill_1_id=103505031, skill_2_id=103505032)
-
-    expected_identifiers = [
-        SkillIdEntry(103505031, 1, SkillIdentifierLabel.S1_BASE),
-        SkillIdEntry(103505032, 2, SkillIdentifierLabel.S2_BASE)
-    ]
-
-    assert entry.get_skill_identifiers(asset_manager) == expected_identifiers
-
-
-def test_get_skill_id_names_with_mode(asset_manager: AssetManager):
-    entry = create_dummy(skill_1_id=103505031, skill_2_id=103505032, mode_2_id=12)
-
-    expected_identifiers = [
-        SkillIdEntry(103505031, 1, SkillIdentifierLabel.S1_BASE),
-        SkillIdEntry(103505032, 2, SkillIdentifierLabel.S2_BASE),
-        SkillIdEntry(103505033, 1, SkillIdentifierLabel.of_mode(1, 12)),
-        SkillIdEntry(103505034, 2, SkillIdentifierLabel.of_mode(2, 12))
-    ]
-
-    assert entry.get_skill_identifiers(asset_manager) == expected_identifiers
-
-
-def test_get_all_skill_identifiers(asset_chara: CharaDataAsset, asset_manager: AssetManager):
-    # Summer Julietta S2
-    # https://dragalialost.gamepedia.com/Summer_Julietta
-    skill_data = asset_chara.get_data_by_id(10450201)
-
-    actual_identifiers = skill_data.get_skill_identifiers(asset_manager)
-
-    expected_identifiers = [
-        SkillIdEntry(104502011, 1, SkillIdentifierLabel.S1_BASE),
-        SkillIdEntry(104502012, 2, SkillIdentifierLabel.S2_BASE),
-        SkillIdEntry(104502013, 2, SkillIdentifierLabel.of_phase(2, 2)),
-        SkillIdEntry(104502014, 2, SkillIdentifierLabel.of_phase(2, 3))
-    ]
-
-    assert actual_identifiers == expected_identifiers

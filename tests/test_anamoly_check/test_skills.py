@@ -57,7 +57,8 @@ def test_transform_all_attack_skills(
     assert len(no_base_mods_sid) == 0, f"Skills without any modifiers included: {no_base_mods_sid}"
 
 
-@pytest.mark.skip("Temporarily skipping total supportive skills transform check")
+@pytest.mark.skip("Temporarily skipping total supportive skill transforming check. "
+                  "Remove when start working on supportive skills.")
 def test_transform_all_supportive_skills(
         asset_chara: CharaDataAsset, transformer_skill: SkillTransformer, asset_manager: AssetManager
 ):
@@ -99,66 +100,3 @@ def test_transform_all_supportive_skills(
 
     assert len(skill_ids_missing) == 0, f"Missing attacking skills (could be more): {set(skill_ids_missing.keys())}"
     assert len(skill_no_buff) == 0, f"Skills without any buffs: {skill_no_buff}"
-
-
-def test_get_skill_ids_via_mode(asset_chara: CharaDataAsset, asset_manager: AssetManager):
-    """
-    Get the skill IDs which variants are buried in chara mode data asset.
-
-    Skill IDs can be found in the fields ``_Skill1Id`` and ``_Skill2Id`` of the chara mode data entries.
-    """
-    # Catherine
-    # https://dragalialost.gamepedia.com/Catherine
-
-    skill_ids_expected = {
-        105502041: "Catherine S1",
-        105502042: "Catherine S2 @ 0 Stacks / as SS",
-        105502043: "Catherine S2 @ 1 Stack",
-        105502044: "Catherine S2 @ 2 Stacks",
-        105502045: "Catherine S2 @ 3 Stacks",
-        105502046: "Catherine S2 @ as Helper"
-    }
-
-    catherine: CharaDataEntry = asset_chara.get_data_by_id(10550204)
-    catherine_skill_ids = {entry.skill_id for entry
-                           in catherine.get_skill_identifiers(asset_manager)}
-
-    for skill_id in catherine_skill_ids:
-        skill_ids_expected.pop(skill_id, None)
-
-    assert \
-        len(skill_ids_expected) == 0, \
-        "\n".join(
-            ["Missing Catherine skills:"]
-            + [f"{skill_id:13} {note}" for skill_id, note in skill_ids_expected.items()]
-        )
-
-
-def test_get_skill_ids_via_enhancements(asset_chara: CharaDataAsset, asset_manager: AssetManager):
-    """
-    Get the skill IDs which variants are buried in action condition.
-
-    Skill IDs can be found in the fields ``_EnhancedSkill1`` and ``_EnhancedSkill2`` of the action condition entries.
-    """
-    # Lin You
-    # https://dragalialost.gamepedia.com/Lin_You
-
-    skill_ids_expected = {
-        104503011: "Lin You S1",
-        104503012: "Lin You S1",
-        104503013: "Lin You S1 @ Heaven's Breath",
-    }
-
-    lin_you: CharaDataEntry = asset_chara.get_data_by_id(10450301)
-    lin_you_skill_identifiers = lin_you.get_skill_identifiers(asset_manager)
-    lin_you_skill_ids = {entry.skill_id for entry in lin_you_skill_identifiers}
-
-    for skill_id in lin_you_skill_ids:
-        skill_ids_expected.pop(skill_id, None)
-
-    assert \
-        len(skill_ids_expected) == 0, \
-        "\n".join(
-            ["Missing Lin You skills:"]
-            + [f"{skill_id:13} {note}" for skill_id, note in skill_ids_expected.items()]
-        )

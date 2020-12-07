@@ -52,6 +52,16 @@ class ActionConditionEntry(MasterEntryBase):
 
     elemental_target: ElementFlag
 
+    @property
+    def target_limited_by_element(self):
+        """Check if the action condition will be limited by the element of the target."""
+        return self.elemental_target.is_effective
+
+    @property
+    def max_stack_count(self) -> int:
+        """Get the maximum stack count of action condition. ``0`` means not applicable."""
+        return self.duration_count_max or int(bool(self.overwrite_group_id))
+
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "ActionConditionEntry":
         duration_count_max = (
@@ -85,16 +95,6 @@ class ActionConditionEntry(MasterEntryBase):
             enhance_skill_2_id=data["_EnhancedSkill2"],
             elemental_target=ElementFlag(data["_TargetElemental"])
         )
-
-    @property
-    def target_limited_by_element(self):
-        """Check if the action condition will be limited by the element of the target."""
-        return self.elemental_target.is_effective
-
-    @property
-    def max_stack_count(self) -> int:
-        """Get the maximum stack count of action condition. ``0`` means not applicable."""
-        return self.duration_count_max or int(bool(self.overwrite_group_id))
 
 
 class ActionConditionAsset(MasterAssetBase[ActionConditionEntry]):

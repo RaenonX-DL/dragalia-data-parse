@@ -1,8 +1,8 @@
 """Classes for handling the character mode data asset."""
 from dataclasses import dataclass
-from typing import Union, Optional
+from typing import Optional, Union
 
-from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
+from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("CharaModeEntry", "CharaModeAsset", "CharaModeParser")
 
@@ -18,6 +18,11 @@ class CharaModeEntry(MasterEntryBase):
 
     text_label: str
 
+    @property
+    def skill_ids(self) -> list[int]:
+        """Get a list of effective skill IDs."""
+        return [skill_id for skill_id in (self.skill_id_1, self.skill_id_2) if skill_id != 0]
+
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "CharaModeEntry":
         return CharaModeEntry(
@@ -27,11 +32,6 @@ class CharaModeEntry(MasterEntryBase):
             skill_id_2=data["_Skill2Id"],
             text_label=data["_Text"]
         )
-
-    @property
-    def skill_ids(self) -> list[int]:
-        """Get a list of effective skill IDs."""
-        return [skill_id for skill_id in (self.skill_id_1, self.skill_id_2) if skill_id != 0]
 
 
 class CharaModeAsset(MasterAssetBase[CharaModeEntry]):

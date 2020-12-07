@@ -10,7 +10,7 @@ def test_s2(transformer_skill: SkillTransformer):
     # https://dragalialost.gamepedia.com/Meene
     skill_data_base = transformer_skill.transform_attacking(106503032)
 
-    # TEST: TBA - Meene S2 conditional affliction (poison)
+    # FIXME: TBA - Meene S2 conditional affliction (poison)
 
     addl_hits = {
         SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_0): 0,

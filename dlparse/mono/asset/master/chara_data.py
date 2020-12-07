@@ -6,6 +6,7 @@ from typing import Optional, TYPE_CHECKING, Union
 from dlparse.enums import Element
 from dlparse.errors import ActionDataNotFoundError, InvalidSkillNumError, TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
+from .ability import AbilityEntry
 from .skill_data import SkillDataEntry, SkillIdEntry, SkillIdentifierLabel
 from .text_label import TextAsset
 
@@ -73,19 +74,19 @@ class CharaDataEntry(MasterEntryBase):
     skill_1_id: int
     skill_2_id: int
 
-    # region Passives
-    passive_1_lv_1_id: int
-    passive_1_lv_2_id: int
-    passive_1_lv_3_id: int
-    passive_1_lv_4_id: int
-    passive_2_lv_1_id: int
-    passive_2_lv_2_id: int
-    passive_2_lv_3_id: int
-    passive_2_lv_4_id: int
-    passive_3_lv_1_id: int
-    passive_3_lv_2_id: int
-    passive_3_lv_3_id: int
-    passive_3_lv_4_id: int
+    # region Passive ability
+    ability_1_lv_1_id: int
+    ability_1_lv_2_id: int
+    ability_1_lv_3_id: int
+    ability_1_lv_4_id: int
+    ability_2_lv_1_id: int
+    ability_2_lv_2_id: int
+    ability_2_lv_3_id: int
+    ability_2_lv_4_id: int
+    ability_3_lv_1_id: int
+    ability_3_lv_2_id: int
+    ability_3_lv_3_id: int
+    ability_3_lv_4_id: int
     # endregion
 
     # region EX
@@ -247,6 +248,17 @@ class CharaDataEntry(MasterEntryBase):
         """Get the element of the character."""
         return Element(self.element_id)
 
+    @property
+    def ability_ids_all_level(self) -> list[int]:
+        """Get a list of effective (non-zero) ability / passive IDs at all levels."""
+        return [
+            ability_id for ability_id in (
+                self.ability_1_lv_1_id, self.ability_1_lv_2_id, self.ability_1_lv_3_id, self.ability_1_lv_4_id,
+                self.ability_2_lv_1_id, self.ability_2_lv_2_id, self.ability_2_lv_3_id, self.ability_2_lv_4_id,
+                self.ability_3_lv_1_id, self.ability_3_lv_2_id, self.ability_3_lv_3_id, self.ability_3_lv_4_id,
+            ) if ability_id
+        ]
+
     def max_skill_level(self, skill_num: int):
         """
         Get the maximum skill level of a skill.
@@ -320,14 +332,12 @@ class CharaDataEntry(MasterEntryBase):
             if action_condition := asset_manager.asset_action_cond.get_data_by_id(action_condition_id):
                 if action_condition.enhance_skill_1_id:
                     ret.append(SkillIdEntry(action_condition.enhance_skill_1_id, 1,
-                                            SkillIdentifierLabel.skill_enhanced_by(1, src_skill_num)))
+                                            SkillIdentifierLabel.skill_enhanced_by_skill(1, src_skill_num)))
                 if action_condition.enhance_skill_2_id:
                     ret.append(SkillIdEntry(action_condition.enhance_skill_2_id, 1,
-                                            SkillIdentifierLabel.skill_enhanced_by(2, src_skill_num)))
+                                            SkillIdentifierLabel.skill_enhanced_by_skill(2, src_skill_num)))
 
-        # https://stackoverflow.com/a/53657523/11571888
-        # Filter duplicated entries while preserving its order
-        return list(dict.fromkeys(ret))
+        return ret
 
     @staticmethod
     def _skill_id_helper_variant(skill_1_data: SkillDataEntry) -> list[SkillIdEntry]:
@@ -368,6 +378,26 @@ class CharaDataEntry(MasterEntryBase):
 
         return ret
 
+    def _skill_id_from_ability_data(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
+        ret: list[SkillIdEntry] = []
+
+        ability_ids_to_search: list[int] = self.ability_ids_all_level
+        while ability_ids_to_search:
+            ability_id: int = ability_ids_to_search.pop(0)
+
+            # Get the ability data
+            ability_data: AbilityEntry = asset_manager.asset_ability_data.get_data_by_id(ability_id)
+
+            # Add all other ability IDs to be searched
+            ability_ids_to_search.extend(ability_data.other_ability_ids)
+
+            # Add skill IDs enhanced by the ability
+            for skill_id, skill_num in ability_data.enhanced_skills:
+                ret.append(SkillIdEntry(skill_id, skill_num,
+                                        SkillIdentifierLabel.skill_enhanced_by_ability(skill_num, ability_id)))
+
+        return ret
+
     def get_skill_identifiers(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
         """
         Get the skill ID entries of a character.
@@ -387,8 +417,11 @@ class CharaDataEntry(MasterEntryBase):
 
         ret.extend(self._skill_id_mode(asset_manager))
         ret.extend(self._skill_id_from_skill_data(asset_manager))
+        ret.extend(self._skill_id_from_ability_data(asset_manager))
 
-        return ret
+        # https://stackoverflow.com/a/53657523/11571888
+        # Filter duplicated entries while preserving its order
+        return list(dict.fromkeys(ret))
 
     def get_chara_name(self, text_asset: TextAsset) -> str:
         """Get the name of the character."""
@@ -441,18 +474,18 @@ class CharaDataEntry(MasterEntryBase):
             combo_mode_2_id=data["_Mode2Combo"],
             skill_1_id=data["_Skill1"],
             skill_2_id=data["_Skill2"],
-            passive_1_lv_1_id=data["_Abilities11"],
-            passive_1_lv_2_id=data["_Abilities12"],
-            passive_1_lv_3_id=data["_Abilities13"],
-            passive_1_lv_4_id=data["_Abilities14"],
-            passive_2_lv_1_id=data["_Abilities21"],
-            passive_2_lv_2_id=data["_Abilities22"],
-            passive_2_lv_3_id=data["_Abilities23"],
-            passive_2_lv_4_id=data["_Abilities24"],
-            passive_3_lv_1_id=data["_Abilities31"],
-            passive_3_lv_2_id=data["_Abilities32"],
-            passive_3_lv_3_id=data["_Abilities33"],
-            passive_3_lv_4_id=data["_Abilities34"],
+            ability_1_lv_1_id=data["_Abilities11"],
+            ability_1_lv_2_id=data["_Abilities12"],
+            ability_1_lv_3_id=data["_Abilities13"],
+            ability_1_lv_4_id=data["_Abilities14"],
+            ability_2_lv_1_id=data["_Abilities21"],
+            ability_2_lv_2_id=data["_Abilities22"],
+            ability_2_lv_3_id=data["_Abilities23"],
+            ability_2_lv_4_id=data["_Abilities24"],
+            ability_3_lv_1_id=data["_Abilities31"],
+            ability_3_lv_2_id=data["_Abilities32"],
+            ability_3_lv_3_id=data["_Abilities33"],
+            ability_3_lv_4_id=data["_Abilities34"],
             ex_1_id=data["_ExAbilityData1"],
             ex_2_id=data["_ExAbilityData2"],
             ex_3_id=data["_ExAbilityData3"],

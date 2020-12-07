@@ -49,13 +49,18 @@ class SkillIdentifierLabel:
         return f"s{skill_num}_p{phase_num}"
 
     @staticmethod
-    def skill_enhanced_by(receiver_skill_num: int, enhancer_skill_num: int) -> str:
-        """Get the identifier label of the skill ``receiver_skill_num`` being enhanced by ``enhancer_skill_num``."""
+    def skill_enhanced_by_skill(receiver_skill_num: int, enhancer_skill_num: int) -> str:
+        """Get the identifier label of the skill ``receiver_skill_num`` enhanced by ``enhancer_skill_num``."""
         return f"s{receiver_skill_num}_enhanced_by_s{enhancer_skill_num}"
 
     @staticmethod
-    def fs_enhanced_by(enhancer_skill_num: int) -> str:
-        """Get the identifier label of FS being enhanced by ``enhancer_skill_num``."""
+    def skill_enhanced_by_ability(skill_num: int, ability_id: int) -> str:
+        """Get the identifier label of the skill ``skill_num`` enhanced by the ability ``ability_id``."""
+        return f"s{skill_num}_enhanced_by_ab{ability_id}"
+
+    @staticmethod
+    def fs_enhanced_by_skill(enhancer_skill_num: int) -> str:
+        """Get the identifier label of FS enhanced by ``enhancer_skill_num``."""
         return f"fs_enhanced_by_s{enhancer_skill_num}"
 
 
@@ -146,60 +151,6 @@ class SkillDataEntry(MasterEntryBase):
     """If the skill will be affected by energizing at Lv.3."""
     is_affected_by_tension_lv4: bool
     """If the skill will be affected by energizing at Lv.4."""
-
-    @staticmethod
-    def parse_raw(data: dict[str, Union[str, int]]) -> "SkillDataEntry":
-        return SkillDataEntry(
-            id=data["_Id"],
-            name_label=data["_Name"],
-            skill_type_id=data["_SkillType"],
-            icon_lv1_label=data["_SkillLv1IconName"],
-            icon_lv2_label=data["_SkillLv2IconName"],
-            icon_lv3_label=data["_SkillLv3IconName"],
-            icon_lv4_label=data["_SkillLv4IconName"],
-            description_lv1_label=data["_Description1"],
-            description_lv2_label=data["_Description2"],
-            description_lv3_label=data["_Description3"],
-            description_lv4_label=data["_Description4"],
-            sp_lv1=data["_Sp"],
-            sp_lv2=data["_SpLv2"],
-            sp_lv3=data["_SpLv3"],
-            sp_lv4=data["_SpLv4"],
-            sp_ss_lv1=data["_SpEdit"],
-            sp_ss_lv2=data["_SpLv2Edit"],
-            sp_ss_lv3=data["_SpLv3Edit"],
-            sp_ss_lv4=data["_SpLv4Edit"],
-            sp_dragon_lv1=data["_SpDragon"],
-            sp_dragon_lv2=data["_SpLv2Dragon"],
-            sp_dragon_lv3=data["_SpLv3Dragon"],
-            sp_dragon_lv4=data["_SpLv4Dragon"],
-            sp_gauge_count=data["_SpGaugeCount"],
-            required_buff_id=data["_RequiredBuffId"],
-            required_buff_count=data["_RequiredBuffCount"],
-            action_1_id=data["_ActionId1"],
-            action_2_id=data["_ActionId2"],
-            action_3_id=data["_ActionId3"],
-            action_4_id=data["_ActionId4"],
-            adv_skill_lv1=data["_AdvancedSkillLv1"],
-            adv_skill_lv1_action_id=data["_AdvancedActionId1"],
-            ability_lv1_id=data["_Ability1"],
-            ability_lv2_id=data["_Ability2"],
-            ability_lv3_id=data["_Ability3"],
-            ability_lv4_id=data["_Ability4"],
-            trans_skill_id=data["_TransSkill"],
-            trans_condition_id=data["_TransCondition"],
-            trans_hit_count=data["_TransHitCount"],
-            trans_text_label=data["_TransText"],
-            trans_time=data["_TransTime"],
-            trans_action_id=data["_TransBuff"],
-            max_use_count=data["_MaxUseNum"],
-            mode_change_skill_id=data["_ModeChange"],
-            as_helper_skill_id=data["_Support"],
-            is_affected_by_tension_lv1=bool(data["_IsAffectedByTension"]),
-            is_affected_by_tension_lv2=bool(data["_IsAffectedByTensionLv2"]),
-            is_affected_by_tension_lv3=bool(data["_IsAffectedByTensionLv3"]),
-            is_affected_by_tension_lv4=bool(data["_IsAffectedByTensionLv4"]),
-        )
 
     @property
     def action_id_1_by_level(self) -> list[int]:
@@ -296,6 +247,60 @@ class SkillDataEntry(MasterEntryBase):
             current_source = trans_skill_data
 
         return ret
+
+    @staticmethod
+    def parse_raw(data: dict[str, Union[str, int]]) -> "SkillDataEntry":
+        return SkillDataEntry(
+            id=data["_Id"],
+            name_label=data["_Name"],
+            skill_type_id=data["_SkillType"],
+            icon_lv1_label=data["_SkillLv1IconName"],
+            icon_lv2_label=data["_SkillLv2IconName"],
+            icon_lv3_label=data["_SkillLv3IconName"],
+            icon_lv4_label=data["_SkillLv4IconName"],
+            description_lv1_label=data["_Description1"],
+            description_lv2_label=data["_Description2"],
+            description_lv3_label=data["_Description3"],
+            description_lv4_label=data["_Description4"],
+            sp_lv1=data["_Sp"],
+            sp_lv2=data["_SpLv2"],
+            sp_lv3=data["_SpLv3"],
+            sp_lv4=data["_SpLv4"],
+            sp_ss_lv1=data["_SpEdit"],
+            sp_ss_lv2=data["_SpLv2Edit"],
+            sp_ss_lv3=data["_SpLv3Edit"],
+            sp_ss_lv4=data["_SpLv4Edit"],
+            sp_dragon_lv1=data["_SpDragon"],
+            sp_dragon_lv2=data["_SpLv2Dragon"],
+            sp_dragon_lv3=data["_SpLv3Dragon"],
+            sp_dragon_lv4=data["_SpLv4Dragon"],
+            sp_gauge_count=data["_SpGaugeCount"],
+            required_buff_id=data["_RequiredBuffId"],
+            required_buff_count=data["_RequiredBuffCount"],
+            action_1_id=data["_ActionId1"],
+            action_2_id=data["_ActionId2"],
+            action_3_id=data["_ActionId3"],
+            action_4_id=data["_ActionId4"],
+            adv_skill_lv1=data["_AdvancedSkillLv1"],
+            adv_skill_lv1_action_id=data["_AdvancedActionId1"],
+            ability_lv1_id=data["_Ability1"],
+            ability_lv2_id=data["_Ability2"],
+            ability_lv3_id=data["_Ability3"],
+            ability_lv4_id=data["_Ability4"],
+            trans_skill_id=data["_TransSkill"],
+            trans_condition_id=data["_TransCondition"],
+            trans_hit_count=data["_TransHitCount"],
+            trans_text_label=data["_TransText"],
+            trans_time=data["_TransTime"],
+            trans_action_id=data["_TransBuff"],
+            max_use_count=data["_MaxUseNum"],
+            mode_change_skill_id=data["_ModeChange"],
+            as_helper_skill_id=data["_Support"],
+            is_affected_by_tension_lv1=bool(data["_IsAffectedByTension"]),
+            is_affected_by_tension_lv2=bool(data["_IsAffectedByTensionLv2"]),
+            is_affected_by_tension_lv3=bool(data["_IsAffectedByTensionLv3"]),
+            is_affected_by_tension_lv4=bool(data["_IsAffectedByTensionLv4"]),
+        )
 
 
 class SkillDataAsset(MasterAssetBase[SkillDataEntry]):

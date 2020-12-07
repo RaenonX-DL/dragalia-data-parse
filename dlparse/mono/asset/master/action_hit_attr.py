@@ -58,33 +58,6 @@ class HitAttrEntry(MasterEntryBase):
     hit_condition_upper_bound: int
     """Upper bound of the hit condition."""
 
-    @staticmethod
-    def parse_raw(data: dict[str, Union[str, float, int]]) -> "HitAttrEntry":
-        punisher_states = {data["_KillerState1"], data["_KillerState2"], data["_KillerState3"]} - {0}
-        punisher_states = {Status(state) for state in punisher_states} - {Status.UNKNOWN}
-
-        return HitAttrEntry(
-            id=data["_Id"],
-            hit_exec_type=HitExecType(data["_HitExecType"]),
-            target_group=HitTarget(data["_TargetGroup"]),
-            damage_modifier=data["_DamageAdjustment"],
-            is_damage_self=bool(data["_IsDamageMyself"]),
-            hp_fix_rate=data["_SetCurrentHpRate"],
-            hp_consumption_rate=data["_ConsumeHpRate"],
-            punisher_states=punisher_states,
-            punisher_rate=data["_KillerStateDamageRate"],
-            rate_boost_on_crisis=data["_CrisisLimitRate"],
-            rate_boost_by_buff=data["_DamageUpRateByBuffCount"],
-            break_dmg_rate=data["_ToBreakDmgRate"],
-            action_condition_id=data["_ActionCondition1"],
-            sp_recov_ratio=data["_RecoverySpRatio"],
-            sp_recov_skill_idx_1=data["_RecoverySpSkillIndex"],
-            sp_recov_skill_idx_2=data["_RecoverySpSkillIndex2"],
-            has_hit_condition=data["_HitConditionType"] != 0,
-            hit_condition_lower_bound=data["_HitConditionP1"],
-            hit_condition_upper_bound=data["_HitConditionP2"]
-        )
-
     @property
     def has_action_condition(self):
         """
@@ -140,6 +113,33 @@ class HitAttrEntry(MasterEntryBase):
         action_cond_data = asset_action_cond.get_data_by_id(self.action_condition_id)
 
         return action_cond_data.afflict_status.is_abnormal_status
+
+    @staticmethod
+    def parse_raw(data: dict[str, Union[str, float, int]]) -> "HitAttrEntry":
+        punisher_states = {data["_KillerState1"], data["_KillerState2"], data["_KillerState3"]} - {0}
+        punisher_states = {Status(state) for state in punisher_states} - {Status.UNKNOWN}
+
+        return HitAttrEntry(
+            id=data["_Id"],
+            hit_exec_type=HitExecType(data["_HitExecType"]),
+            target_group=HitTarget(data["_TargetGroup"]),
+            damage_modifier=data["_DamageAdjustment"],
+            is_damage_self=bool(data["_IsDamageMyself"]),
+            hp_fix_rate=data["_SetCurrentHpRate"],
+            hp_consumption_rate=data["_ConsumeHpRate"],
+            punisher_states=punisher_states,
+            punisher_rate=data["_KillerStateDamageRate"],
+            rate_boost_on_crisis=data["_CrisisLimitRate"],
+            rate_boost_by_buff=data["_DamageUpRateByBuffCount"],
+            break_dmg_rate=data["_ToBreakDmgRate"],
+            action_condition_id=data["_ActionCondition1"],
+            sp_recov_ratio=data["_RecoverySpRatio"],
+            sp_recov_skill_idx_1=data["_RecoverySpSkillIndex"],
+            sp_recov_skill_idx_2=data["_RecoverySpSkillIndex2"],
+            has_hit_condition=data["_HitConditionType"] != 0,
+            hit_condition_lower_bound=data["_HitConditionP1"],
+            hit_condition_upper_bound=data["_HitConditionP2"]
+        )
 
 
 class HitAttrAsset(MasterAssetBase[HitAttrEntry]):

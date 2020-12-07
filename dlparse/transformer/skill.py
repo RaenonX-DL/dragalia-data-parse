@@ -113,8 +113,8 @@ class SkillTransformer:
                         ret.append(hit_data_cls(hit_attr=hit_attr_data, action_component=None, action_id=action_id,
                                                 pre_condition=ability_data.condition.to_skill_condition()))
 
-                # Add all ability data to be used upon condition mismatch to the ability data queue
-                for other_ability_id in ability_data.get_other_ability_ids:
+                # Add all other ability data to the ability data queue
+                for other_ability_id in ability_data.other_ability_ids:
                     if new_frontier := self._ability_asset.get_data_by_id(other_ability_id):
                         ability_data_queue.append(new_frontier)
 
