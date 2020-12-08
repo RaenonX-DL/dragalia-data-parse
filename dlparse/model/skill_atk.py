@@ -233,36 +233,6 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             for item_combination in product(*cond_elems)
         }
 
-    def _init_affliction_mtx(self):
-        affliction_mtx: list[list[ActionConditionEffectUnit]] = []
-
-        for hit_data_lv in self.hit_data_mtx:
-            affliction_lv = []
-
-            for hit_data in hit_data_lv:
-                if affliction_unit := hit_data.to_affliction_unit(self.asset_action_cond):
-                    affliction_lv.append(affliction_unit)
-
-            # Sort afflictions by its time
-            affliction_mtx.append(list(sorted(affliction_lv)))
-
-        return affliction_mtx
-
-    def _init_debuff_mtx(self):
-        debuff_mtx: list[list[ActionConditionEffectUnit]] = []
-
-        for hit_data_lv in self.hit_data_mtx:
-            debuff_lv = []
-
-            for hit_data in hit_data_lv:
-                if debuff_units := hit_data.to_debuff_units(self.asset_action_cond):
-                    debuff_lv.extend(debuff_units)
-
-            # Sort afflictions by its time
-            debuff_mtx.append(list(sorted(debuff_lv)))
-
-        return debuff_mtx
-
     def __post_init__(self):
         super().__post_init__()
 
