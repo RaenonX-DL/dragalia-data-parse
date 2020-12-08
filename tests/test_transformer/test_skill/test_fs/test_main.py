@@ -8,6 +8,16 @@ def test_fs_atk(transformer_skill: SkillTransformer):
     pass
 
     # FIXME - Sazanka S2-FS
+    #   BUF_123_LV01
+    #   310011301
+    #   _EnhancedBurstAttack - FS
+    #   AID - 409017
+    #
+    #   AXE_CHR_04_H01_LV01
+    #   "_ToOdDmgRate": 1.0, - OD Punisher
+    #   "_ToBreakDmgRate": 3.08, - BK Punisher?
+    #
+    #   BUF_229_01_LV01
 
     # # Base data
     # skill_data = skill_data_base.with_conditions()

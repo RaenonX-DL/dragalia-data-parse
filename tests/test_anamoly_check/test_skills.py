@@ -26,7 +26,7 @@ def test_transform_all_attack_skills(
 
         skill_ids.extend([
             skill_entry.skill_id for skill_entry
-            in chara_data.get_skill_identifiers(asset_manager)
+            in chara_data.get_skill_id_entries(asset_manager)
         ])
 
     skill_ids_missing: dict[int, str] = skill_ids_atk.copy()
@@ -71,7 +71,7 @@ def test_transform_all_supportive_skills(
 
         skill_ids.extend([skill_entry.skill_id
                           for skill_entry
-                          in chara_data.get_skill_identifiers(asset_manager)])
+                          in chara_data.get_skill_id_entries(asset_manager)])
 
     skill_ids_missing: dict[int, str] = skill_ids_sup.copy()
     skill_no_buff: set[tuple[int, tuple[SkillCondition]]] = set()

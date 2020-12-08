@@ -5,7 +5,7 @@ from typing import Any
 from .base import AppValueError
 
 __all__ = ("ConditionValidationFailedError", "BulletEndOfLifeError", "DamagingHitValidationFailedError",
-           "HitDataUnavailableError", "ActionInfoNotFoundError",
+           "HitDataUnavailableError", "ActionInfoNotFoundError", "InvalidSkillIdentifierLabelError",
            "UnhandledSelfDamageError", "InvalidSkillNumError", "InvalidSkillLevelError")
 
 
@@ -54,6 +54,10 @@ class InvalidSkillLevelError(AppValueError):
 
     def __init__(self, skill_level: int):
         super().__init__(f"Skill level `{skill_level}` is invalid")
+
+
+class InvalidSkillIdentifierLabelError(AppValueError):
+    """Error to be raised if the parameters to generate the skill identifier label is invalid."""
 
 
 class DamagaCalculationError(AppValueError, ABC):

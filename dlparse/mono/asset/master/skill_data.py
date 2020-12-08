@@ -1,8 +1,9 @@
 """Classes for handling the skill data asset."""
+from collections import defaultdict
 from dataclasses import dataclass
 from typing import Optional, Union
 
-from dlparse.errors import InvalidSkillLevelError
+from dlparse.errors import InvalidSkillIdentifierLabelError, InvalidSkillLevelError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("SkillIdentifierLabel", "SkillIdEntry", "SkillDataEntry", "SkillDataAsset", "SkillDataParser")
@@ -36,6 +37,7 @@ class SkillIdentifierLabel:
 
     S1_BASE = "s1_base"
     S2_BASE = "s2_base"
+    SHARED = "shared"
     HELPER = "helper"
 
     @staticmethod
@@ -50,7 +52,14 @@ class SkillIdentifierLabel:
 
     @staticmethod
     def skill_enhanced_by_skill(receiver_skill_num: int, enhancer_skill_num: int) -> str:
-        """Get the identifier label of the skill ``receiver_skill_num`` enhanced by ``enhancer_skill_num``."""
+        """
+        Get the identifier label of the skill ``receiver_skill_num`` enhanced by ``enhancer_skill_num``.
+
+        :raises InvalidSkillIdentifierLabelError: if the enhancer skill and the receiver skill is the same
+        """
+        if receiver_skill_num == enhancer_skill_num:
+            raise InvalidSkillIdentifierLabelError("Skill that enhances itself should be considered as phase changing")
+
         return f"s{receiver_skill_num}_enhanced_by_s{enhancer_skill_num}"
 
     @staticmethod
@@ -64,16 +73,60 @@ class SkillIdentifierLabel:
         return f"fs_enhanced_by_s{enhancer_skill_num}"
 
 
-@dataclass(unsafe_hash=True)
+@dataclass
 class SkillIdEntry:
     """Class for a skill ID entry."""
 
     skill_id: int
     """Skill ID."""
     skill_num: int
-    """Number of the skill. ``1`` for S1; ``2`` for S2."""
-    skill_identifier_label: str
-    """Skill identifier label. This will be translated at the frontend side."""
+    """Number of the skill. ``1`` for S1; ``2`` for S2; ``0`` for shared skill."""
+    skill_identifier_labels: Union[str, list[str]]
+    """
+    A list of skill identifier labels.
+
+    These will be translated at the frontend side for easier identification.
+
+    If a skill has multiple purposes (for example, served as shared variant and also S1 base, which is common),
+    all of the purposes will be listed.
+    """
+
+    def __post_init__(self):
+        # Force labels to be a list
+        if isinstance(self.skill_identifier_labels, str):
+            self.skill_identifier_labels = [self.skill_identifier_labels]
+
+    @staticmethod
+    def merge(entries: list["SkillIdEntry"]) -> list["SkillIdEntry"]:
+        """
+        Merge duplicated skill ID ``entries``.
+
+        If there are multiple entries sharing the same ``skill_id``,
+        they will be merged into one by merging ``skill_identifier_labels``.
+        """
+        entries_to_be_processed = defaultdict(list)
+
+        for entry in entries:
+            entries_to_be_processed[entry.skill_id].append(entry)
+
+        ret: list[SkillIdEntry] = []
+
+        for _, entry_list in sorted(entries_to_be_processed.items(), key=lambda item: item[0]):
+            entry: SkillIdEntry = entry_list[0]
+
+            for subsequent_entry in entry_list[1:]:
+                # Overwrite ``0`` (share skill) if possible
+                entry.skill_num = entry.skill_num or subsequent_entry.skill_num
+
+                # Filter out duplicated entries while preserving its order
+                entry.skill_identifier_labels.extend(
+                    label for label in subsequent_entry.skill_identifier_labels
+                    if label not in entry.skill_identifier_labels
+                )
+
+            ret.append(entry)
+
+        return ret
 
 
 @dataclass

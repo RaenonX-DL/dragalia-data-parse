@@ -11,7 +11,7 @@ def test_dummy(asset_manager: AssetManager):
         SkillIdEntry(103505032, 2, SkillIdentifierLabel.S2_BASE)
     ]
 
-    assert entry.get_skill_identifiers(asset_manager) == expected_identifiers
+    assert entry.get_skill_id_entries(asset_manager) == expected_identifiers
 
 
 def test_dummy_with_mode(asset_manager: AssetManager):
@@ -24,7 +24,7 @@ def test_dummy_with_mode(asset_manager: AssetManager):
         SkillIdEntry(103505034, 2, SkillIdentifierLabel.of_mode(2, 12))
     ]
 
-    assert entry.get_skill_identifiers(asset_manager) == expected_identifiers
+    assert entry.get_skill_id_entries(asset_manager) == expected_identifiers
 
 
 def test_via_phase(asset_chara: CharaDataAsset, asset_manager: AssetManager):
@@ -32,10 +32,10 @@ def test_via_phase(asset_chara: CharaDataAsset, asset_manager: AssetManager):
     # https://dragalialost.gamepedia.com/Summer_Julietta
     chara_data = asset_chara.get_data_by_id(10450201)
 
-    actual_identifiers = chara_data.get_skill_identifiers(asset_manager)
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
     expected_identifiers = [
-        SkillIdEntry(104502011, 1, SkillIdentifierLabel.S1_BASE),
+        SkillIdEntry(104502011, 1, [SkillIdentifierLabel.S1_BASE, SkillIdentifierLabel.SHARED]),
         SkillIdEntry(104502012, 2, SkillIdentifierLabel.S2_BASE),
         SkillIdEntry(104502013, 2, SkillIdentifierLabel.of_phase(2, 2)),
         SkillIdEntry(104502014, 2, SkillIdentifierLabel.of_phase(2, 3))
@@ -54,18 +54,27 @@ def test_via_mode(asset_chara: CharaDataAsset, asset_manager: AssetManager):
     # https://dragalialost.gamepedia.com/Catherine
     chara_data = asset_chara.get_data_by_id(10550204)
 
-    actual_identifiers = chara_data.get_skill_identifiers(asset_manager)
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
+
+    s1_labels_base = [
+        SkillIdentifierLabel.S1_BASE,
+        SkillIdentifierLabel.of_mode(1, 26),
+        SkillIdentifierLabel.of_mode(1, 27),
+        SkillIdentifierLabel.of_mode(1, 28),
+        SkillIdentifierLabel.of_mode(1, 29)
+    ]
+
+    s2_labels_base = [
+        SkillIdentifierLabel.S2_BASE,
+        SkillIdentifierLabel.SHARED,
+        SkillIdentifierLabel.of_mode(2, 26)
+    ]
 
     expected_identifiers = [
-        SkillIdEntry(105502041, 1, SkillIdentifierLabel.S1_BASE),
-        SkillIdEntry(105502042, 2, SkillIdentifierLabel.S2_BASE),
-        SkillIdEntry(105502041, 1, SkillIdentifierLabel.of_mode(1, 26)),
-        SkillIdEntry(105502042, 2, SkillIdentifierLabel.of_mode(2, 26)),  # S2 @ 0 Stacks / SS
-        SkillIdEntry(105502041, 1, SkillIdentifierLabel.of_mode(1, 27)),
+        SkillIdEntry(105502041, 1, s1_labels_base),
+        SkillIdEntry(105502042, 2, s2_labels_base),  # S2 @ 0 Stacks / SS
         SkillIdEntry(105502043, 2, SkillIdentifierLabel.of_mode(2, 27)),  # S2 @ 1 Stack
-        SkillIdEntry(105502041, 1, SkillIdentifierLabel.of_mode(1, 28)),
         SkillIdEntry(105502044, 2, SkillIdentifierLabel.of_mode(2, 28)),  # S2 @ 2 Stacks
-        SkillIdEntry(105502041, 1, SkillIdentifierLabel.of_mode(1, 29)),
         SkillIdEntry(105502045, 2, SkillIdentifierLabel.of_mode(2, 29)),  # S2 @ 3 Stacks
         SkillIdEntry(105502046, 1, SkillIdentifierLabel.HELPER)  # S2 as helper
     ]
@@ -83,7 +92,7 @@ def test_via_enhancements(asset_chara: CharaDataAsset, asset_manager: AssetManag
     # https://dragalialost.gamepedia.com/Lin_You
     chara_data = asset_chara.get_data_by_id(10450301)
 
-    actual_identifiers = chara_data.get_skill_identifiers(asset_manager)
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
     expected_identifiers = [
         SkillIdEntry(104503011, 1, SkillIdentifierLabel.S1_BASE),
@@ -94,23 +103,47 @@ def test_via_enhancements(asset_chara: CharaDataAsset, asset_manager: AssetManag
     assert actual_identifiers == expected_identifiers
 
 
+def test_via_enhancements_multi(asset_chara: CharaDataAsset, asset_manager: AssetManager):
+    """
+    Get the skill IDs which variants are buried in action condition.
+
+    Skill IDs can be found in the fields ``_EnhancedSkill1`` and ``_EnhancedSkill2`` of the action condition entries.
+    """
+    # Xander
+    # https://dragalialost.gamepedia.com/Xander
+    chara_data = asset_chara.get_data_by_id(10150201)
+
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
+
+    expected_identifiers = [
+        SkillIdEntry(101502011, 1, SkillIdentifierLabel.SHARED),  # SS
+        SkillIdEntry(101502012, 2, SkillIdentifierLabel.S2_BASE),  # S2 Base
+        SkillIdEntry(101502013, 1, SkillIdentifierLabel.of_phase(1, 2)),  # S1 enhanced once (S1-P2)
+        SkillIdEntry(101502014, 1, SkillIdentifierLabel.of_phase(1, 3)),  # S1 enhanced twice (S1-P3)
+        SkillIdEntry(101502015, 1, SkillIdentifierLabel.S1_BASE),  # S1 Base
+    ]
+
+    assert actual_identifiers == expected_identifiers
+
+
 def test_via_ability(asset_chara: CharaDataAsset, asset_manager: AssetManager):
     """
     Get the skill IDs which variants are buried in the ability data.
 
-    These can be found from the ability data b
+    These can be found from the ability variants of an ability data.
     """
     # Meene
     # https://dragalialost.gamepedia.com/Meene
     chara_data = asset_chara.get_data_by_id(10650303)
 
-    actual_identifiers = chara_data.get_skill_identifiers(asset_manager)
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
     expected_identifiers = [
         SkillIdEntry(106503031, 1, SkillIdentifierLabel.S1_BASE),
         SkillIdEntry(106503032, 2, SkillIdentifierLabel.S2_BASE),
         SkillIdEntry(106503033, 1, SkillIdentifierLabel.skill_enhanced_by_ability(1, 1268)),  # S1 @ 6+ butterflies
         SkillIdEntry(106503036, 2, SkillIdentifierLabel.skill_enhanced_by_ability(2, 1302)),  # S2 @ 6+ butterflies
+        SkillIdEntry(106503037, 1, SkillIdentifierLabel.SHARED),  # SS
     ]
 
     assert actual_identifiers == expected_identifiers

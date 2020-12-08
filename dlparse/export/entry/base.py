@@ -60,7 +60,7 @@ class SkillExportEntryBase(Generic[T], ExportEntryBase, ABC):
     character_element: Element = field(init=False)
 
     skill_internal_id: int = field(init=False)
-    skill_identifier: str = field(init=False)
+    skill_identifiers: str = field(init=False)
     skill_num: int = field(init=False)
     skill_name: str = field(init=False)
     skill_max_level: int = field(init=False)
@@ -78,7 +78,7 @@ class SkillExportEntryBase(Generic[T], ExportEntryBase, ABC):
         self.character_element = chara_data.element
 
         self.skill_internal_id = skill_id_entry.skill_id
-        self.skill_identifier = skill_id_entry.skill_identifier_label
+        self.skill_identifiers = skill_id_entry.skill_identifier_labels
         self.skill_num = skill_id_entry.skill_num
         self.skill_name = text_asset.to_text(skill_data.name_label, silent_fail=False)
         self.skill_max_level = chara_data.max_skill_level(skill_id_entry.skill_num)
@@ -91,7 +91,7 @@ class SkillExportEntryBase(Generic[T], ExportEntryBase, ABC):
     @property
     def unique_id(self) -> str:
         return (
-            f"{self.character_internal_id}{self.skill_internal_id}{self.skill_identifier}"
+            f"{self.character_internal_id}{self.skill_internal_id}{self.skill_identifiers}"
             f"{hash(self.skill_condition_comp)}"
         )
 
@@ -104,7 +104,7 @@ class SkillExportEntryBase(Generic[T], ExportEntryBase, ABC):
             self.character_internal_id,
             self.character_element,
             self.skill_internal_id,
-            self.skill_identifier,
+            self.skill_identifiers,
             self.skill_condition_comp,
             self.sp_at_max,
             self.ss_sp

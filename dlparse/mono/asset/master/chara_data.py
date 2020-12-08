@@ -109,7 +109,12 @@ class CharaDataEntry(MasterEntryBase):
     # region Shared Skills
     ss_cost_max_self: int
     ss_skill_id: int
-    ss_skill_level: int
+    ss_skill_num: int
+    """
+    Corresponding skill num. If the shared skill corresponds to S1, this will be ``1``.
+
+    ``0`` if the character does not have a sharable skill.
+    """
     ss_skill_cost: int
     ss_skill_relation_id: int
     """SS cost offset or similar. OG!Hawk and OG!Nefaria has this for now."""
@@ -267,19 +272,24 @@ class CharaDataEntry(MasterEntryBase):
 
         :raises InvalidSkillNumError: if `skill_num` is invalid
         """
-        if skill_num == 1:
+        if skill_num == 1:  # S1
             return 4 if self.is_70_mc else 3
 
-        if skill_num == 2:
+        if skill_num == 2:  # S2
             return 3 if self.is_70_mc else 2
 
         raise InvalidSkillNumError(skill_num)
 
     def _skill_id_base(self) -> list[SkillIdEntry]:
-        return [
+        ret: list[SkillIdEntry] = [
             SkillIdEntry(self.skill_1_id, 1, SkillIdentifierLabel.S1_BASE),
             SkillIdEntry(self.skill_2_id, 2, SkillIdentifierLabel.S2_BASE)
         ]
+
+        if self.ss_skill_id:
+            ret.append(SkillIdEntry(self.ss_skill_id, self.ss_skill_num, SkillIdentifierLabel.SHARED))
+
+        return ret
 
     def _skill_id_mode(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
         ret: list[SkillIdEntry] = []
@@ -295,47 +305,88 @@ class CharaDataEntry(MasterEntryBase):
         return ret
 
     def _skill_id_hit_labels(
-            self, asset_manager: "AssetManager", skill_1_data: SkillDataEntry, skill_2_data: SkillDataEntry
+            self, asset_manager: "AssetManager", skill_data: SkillDataEntry, skill_num: int
     ) -> dict[str, int]:
         hit_labels: dict[str, int] = {}
 
-        for skill_num, skill_data in enumerate([skill_1_data, skill_2_data], start=1):
-            # Load all hit labels of the skill
-            for action_id in skill_data.action_id_1_by_level:
-                for skill_lv in range(1, self.max_skill_level(skill_num) + 1):
-                    try:
-                        prefab = asset_manager.loader_pa.get_prefab(action_id)
-                        for hit_label, _ in prefab.get_hit_actions(skill_lv):
-                            hit_labels[hit_label] = skill_num
-                    except ActionDataNotFoundError:
-                        pass  # If prefab file not found, nothing should happen
+        # Load all hit labels of the skill
+        for action_id in skill_data.action_id_1_by_level:
+            for skill_lv in range(1, self.max_skill_level(skill_num) + 1):
+                try:
+                    prefab = asset_manager.loader_pa.get_prefab(action_id)
+                    for hit_label, _ in prefab.get_hit_actions(skill_lv):
+                        hit_labels[hit_label] = skill_num
+                except ActionDataNotFoundError:
+                    pass  # If prefab file not found, nothing should happen
 
         return hit_labels
+
+    def _skill_id_action_condition_enhanced(
+            self, asset_manager: "AssetManager", skill_id: int, skill_num: int, src_skill_num: int,
+            hit_labels: dict[str, int], phase_counter: dict[int, int]
+    ) -> SkillIdEntry:
+        # Get the label to be used
+        if src_skill_num == skill_num:
+            # Self-enhancing, considered as phase instead
+            label = SkillIdentifierLabel.of_phase(skill_num, phase_counter[skill_num])
+            phase_counter[skill_num] += 1
+        else:
+            # Enhanced by other skill
+            label = SkillIdentifierLabel.skill_enhanced_by_skill(skill_num, src_skill_num)
+
+        # Get the other hit labels (if available) for further discovery
+        skill_data = asset_manager.asset_skill.get_data_by_id(skill_id)
+        hit_labels.update(self._skill_id_hit_labels(asset_manager, skill_data, skill_num))
+
+        # Return enhanced skill ID entry
+        return SkillIdEntry(skill_id, skill_num, label)
 
     def _skill_id_action_condition(
             self, asset_manager: "AssetManager", skill_1_data: SkillDataEntry, skill_2_data: SkillDataEntry
     ) -> list[SkillIdEntry]:
         ret: list[SkillIdEntry] = []
 
-        hit_labels = self._skill_id_hit_labels(asset_manager, skill_1_data, skill_2_data)
+        # Initial hit labels to be discovered
+        hit_labels = (self._skill_id_hit_labels(asset_manager, skill_1_data, 1)
+                      | self._skill_id_hit_labels(asset_manager, skill_2_data, 2))
+        hit_labels_searched: set[str] = set()
 
-        # Get all action condition IDs of the hit labels
-        action_condition_ids = {
-            asset_manager.asset_hit_attr.get_data_by_id(hit_label).action_condition_id: src_skill_num
-            for hit_label, src_skill_num in hit_labels.items()
-            if hit_label in asset_manager.asset_hit_attr
-        }
-        action_condition_ids.pop(0, None)  # Discard non-effective action condition ID
+        # Counter to be used if the skill is self-enhancing (consider as phased skills instead)
+        # Such case occurs on Xander (`10150201`)
+        phase_counter = {1: 2, 2: 2}
 
-        # Get all enhance IDs in the action condition data entry
-        for action_condition_id, src_skill_num in action_condition_ids.items():
-            if action_condition := asset_manager.asset_action_cond.get_data_by_id(action_condition_id):
-                if action_condition.enhance_skill_1_id:
-                    ret.append(SkillIdEntry(action_condition.enhance_skill_1_id, 1,
-                                            SkillIdentifierLabel.skill_enhanced_by_skill(1, src_skill_num)))
-                if action_condition.enhance_skill_2_id:
-                    ret.append(SkillIdEntry(action_condition.enhance_skill_2_id, 1,
-                                            SkillIdentifierLabel.skill_enhanced_by_skill(2, src_skill_num)))
+        # Check each hit labels to see if there are any skill enhancements
+        while hit_labels:
+            hit_label, src_skill_num = hit_labels.popitem()
+
+            if hit_label in hit_labels_searched:
+                continue  # Hit label already searched, skipping
+
+            hit_labels_searched.add(hit_label)
+
+            if hit_label not in asset_manager.asset_hit_attr:
+                continue  # Hit label could be missing - officials inserted dummy data
+
+            action_cond_id = asset_manager.asset_hit_attr.get_data_by_id(hit_label).action_condition_id
+            if not action_cond_id:
+                continue  # Action condition ID = 0 - not used
+
+            action_cond = asset_manager.asset_action_cond.get_data_by_id(action_cond_id)
+            if not action_cond:
+                continue  # Action condition data not found - officials inserted dummy action condition data
+
+            enhance_targets = [
+                (1, action_cond.enhance_skill_1_id),
+                (2, action_cond.enhance_skill_2_id)
+            ]
+
+            for target_skill_num, target_skill_id in enhance_targets:
+                if not target_skill_id:
+                    continue  # Enhance target skill ID not set (= 0)
+
+                ret.append(self._skill_id_action_condition_enhanced(
+                    asset_manager, target_skill_id, target_skill_num, src_skill_num, hit_labels, phase_counter
+                ))
 
         return ret
 
@@ -398,7 +449,7 @@ class CharaDataEntry(MasterEntryBase):
 
         return ret
 
-    def get_skill_identifiers(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
+    def get_skill_id_entries(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
         """
         Get the skill ID entries of a character.
 
@@ -419,9 +470,7 @@ class CharaDataEntry(MasterEntryBase):
         ret.extend(self._skill_id_from_skill_data(asset_manager))
         ret.extend(self._skill_id_from_ability_data(asset_manager))
 
-        # https://stackoverflow.com/a/53657523/11571888
-        # Filter duplicated entries while preserving its order
-        return list(dict.fromkeys(ret))
+        return SkillIdEntry.merge(ret)
 
     def get_chara_name(self, text_asset: TextAsset) -> str:
         """Get the name of the character."""
@@ -500,7 +549,7 @@ class CharaDataEntry(MasterEntryBase):
             fs_count_max=data["_MaxChargeLv"],
             ss_cost_max_self=data["_HoldEditSkillCost"],
             ss_skill_id=data["_EditSkillId"],
-            ss_skill_level=data["_EditSkillLevelNum"],
+            ss_skill_num=data["_EditSkillLevelNum"],
             ss_skill_cost=data["_EditSkillCost"],
             ss_skill_relation_id=data["_EditSkillRelationId"],
             ss_release_item_id=data["_EditReleaseEntityId1"],

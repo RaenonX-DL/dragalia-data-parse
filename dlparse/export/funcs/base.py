@@ -36,7 +36,7 @@ def export_transform_skill_entries(
     skipped_messages: list[str] = []
 
     # Get all skills and iterate them
-    skill_identifiers = chara_data.get_skill_identifiers(asset_manager)
+    skill_identifiers = chara_data.get_skill_id_entries(asset_manager)
     for id_entry in skill_identifiers:
         chara_name = chara_data.get_chara_name(asset_manager.asset_text)
 
@@ -53,7 +53,7 @@ def export_transform_skill_entries(
             # Action file not found (ActionDataNotFoundError)
 
             if skip_unparsable:
-                skipped_messages.append(f"[Skill] {id_entry.skill_identifier_label} ({id_entry.skill_id}) "
+                skipped_messages.append(f"[Skill] {id_entry.skill_identifier_labels} ({id_entry.skill_id}) "
                                         f"of {chara_name} ({chara_data.id}): {ex}")
                 continue
 

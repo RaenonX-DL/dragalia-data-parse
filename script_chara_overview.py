@@ -61,7 +61,7 @@ def print_skill_id_entry(chara_data, skill_id_entry):
     skill_data_sys = _asset_manager.asset_skill.get_data_by_id(skill_id)
     skill_name = _asset_manager.asset_text.to_text(skill_data_sys.name_label)
 
-    print(f"{skill_id_entry.skill_identifier_label}: {skill_name} ({skill_id})")
+    print(f"{' / '.join(skill_id_entry.skill_identifier_labels)}: {skill_name} ({skill_id})")
     print("-" * 50)
 
     try:
@@ -91,15 +91,16 @@ def print_skill_id_entry(chara_data, skill_id_entry):
 def chara_skill_overview(chara_id):
     chara_data = _asset_manager.asset_chara_data.get_data_by_id(chara_id)
 
-    skill_identifiers = chara_data.get_skill_identifiers(_asset_manager)
+    skill_id_entries = chara_data.get_skill_id_entries(_asset_manager)
+    skill_identifiers = [id_label for skill_id_entry in skill_id_entries
+                         for id_label in skill_id_entry.skill_identifier_labels]
 
     print(f"{chara_data.get_chara_name(_asset_manager.asset_text)} ({chara_id})")
     print()
-    print("Skill Identifiers available: "
-          f"{' / '.join([skill_identifier.skill_identifier_label for skill_identifier in skill_identifiers])}")
+    print(f"Skill Identifiers available: {' / '.join(skill_identifiers)}")
     print("=" * 50)
 
-    for skill_id_entry in skill_identifiers:
+    for skill_id_entry in skill_id_entries:
         print_skill_id_entry(chara_data, skill_id_entry)
         print("=" * 50)
 
