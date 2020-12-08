@@ -62,18 +62,16 @@ def test_s2_alchemy(transformer_skill: SkillTransformer):
     # Base data
     skill_data = skill_data_base.with_conditions()
 
-    assert skill_data.hit_count == [2, 2, 0]
+    assert skill_data.hit_count == [2, 2]
     assert skill_data.hit_count_at_max == 2
     assert skill_data.total_mod == pytest.approx([
         21.19 + 2.12,
-        23.54 + 2.35,
-        0
+        23.54 + 2.35
     ])
     assert skill_data.total_mod_at_max == pytest.approx(23.54 + 2.35)
     assert skill_data.mods == approx_matrix([
         [2.12, 21.19],
-        [2.35, 23.54],
-        []
+        [2.35, 23.54]
     ])
     assert skill_data.mods_at_max == pytest.approx([2.35, 23.54])
     assert skill_data.max_level == 2

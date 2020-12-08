@@ -163,26 +163,24 @@ class SkillTransformer:
             zipped_ids = zip(skill_data.action_id_1_by_level, skill_data.ability_id_by_level)
 
         for skill_lv, (action_id, ability_id) in enumerate(zipped_ids, start=1):
-            hit_data_list: HitDataList = self._get_hit_data_lv(hit_data_cls, skill_lv, action_id, ability_id)
+            hit_data_lv: HitDataList = self._get_hit_data_lv(hit_data_cls, skill_lv, action_id, ability_id)
 
-            if not hit_data_list:
-                # No hit attribute data available, terminate further discovery
-                break
+            # Create an empty array for the current skill level
+            if skill_lv > len(hit_data_mtx):
+                hit_data_mtx.append([])
 
-            for hit_data in hit_data_list:
-                # Create an empty array for the corresonding skill level
-                if skill_lv > len(hit_data_mtx):
-                    hit_data_mtx.append([])
-
+            for hit_data in hit_data_lv:
                 # Check if the hit is effective to target, if desired; check the doc for the definition of effective
                 if hit_data.hit_attr.is_effective_to_enemy(self._action_cond) == effective_to_enemy:
                     hit_data_mtx[skill_lv - 1].append(hit_data)
 
         if not any(hit_data for hit_data in hit_data_mtx):
-            # No hit data available
+            # No hit data available at all levels
             raise HitDataUnavailableError()
 
-        return skill_data, hit_data_mtx
+        highest_available_level = max(idx for idx, hit_data_lv in enumerate(hit_data_mtx) if hit_data_lv)
+
+        return skill_data, hit_data_mtx[:highest_available_level + 1]
 
     def transform_supportive(self, skill_id: int, max_lv: int = 0) -> SupportiveSkillData:
         """
