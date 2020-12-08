@@ -14,15 +14,6 @@ Developed under Python 3.9.
 
 ------
 
-Most of the sample skill data for correctness checking will locate at `test_transformer/test_skill`.
-
-Note that some skill data will be different from what is on [Gamepedia][Gamepedia]. This is most likely due to some
-human reading errors or outdated information because of the v2.0 update.
-
-[Gamepedia]: https://dragalialost.gamepedia.com/
-
-------
-
 # Prerequisites
 
 - Install Python 3.9.
@@ -63,6 +54,10 @@ Export all skill data as csv to the specified location.
 
 # Credits
 
+### Main Developer
+
+- \[OM\] [RaenonX][GH-raenonx]
+
 ### Correctness double-check
 
 - \[OM\] Andy / Toasty
@@ -83,6 +78,8 @@ Export all skill data as csv to the specified location.
 
 - \[SimCord\] [Mushymato / Chu][GH-mushymato]
 
+- \[OM\] [RaenonX][GH-raenonx]
+
 - \[OM\] [Ryo][GH-ryo]
 
 - \[OM\] Spark / AAAAA
@@ -95,7 +92,35 @@ Export all skill data as csv to the specified location.
 
 [GH-mushymato]: https://github.com/Mushymato
 
+[GH-raenonx]: https://github.com/RaenonX
+
 [GH-ryo]: https://github.com/ryoliao
+
+------
+
+# Notes
+
+Most of the sample skill data for correctness checking will locate at `test_transformer/test_skill`.
+
+Some skill data will be different from what is on [Gamepedia][Gamepedia]. This is most likely due to some human reading
+errors or outdated information because of the v2.0 update.
+
+[Gamepedia]: https://dragalialost.gamepedia.com/
+
+### Development Goals
+
+- This parser aims to parse **all** game assets correctly and automatically.
+
+  > Doing so gives the ability to automate the game data deploying process,
+  > reducing unnecessary works for every new updates.
+
+- As few dependencies as possible to run the parser.
+
+  > Doing so would reduce the difficulty to deploy the data processing pipeline,
+  > since Python native packages only has a few calls which results will differ across different platforms.
+  >
+  > This assumes that any possible additional dependency will not significantly boost the data processing speed
+  > (if necessary), which rarely happens in general.
 
 ------
 

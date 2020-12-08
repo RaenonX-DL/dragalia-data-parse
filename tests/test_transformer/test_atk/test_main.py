@@ -1,7 +1,4 @@
-from dlparse.transformer import SkillTransformer
-
-
-def test_fs_atk(transformer_skill: SkillTransformer):
+def test_fs_atk():
     # Sazanka S2-FS
     # https://dragalialost.gamepedia.com/Sazanka
     # skill_data_base = transformer_skill.transform_attacking(104405012)
@@ -31,3 +28,6 @@ def test_fs_atk(transformer_skill: SkillTransformer):
     # assert skill_data.mods == [[5.96] * 2, [6.63] * 2, [7.36] * 2, [8.18] * 2]
     # assert skill_data.mods_at_max == [8.18] * 2
     # assert skill_data.max_level == 4
+
+# TEST: TBA - Ilia S2-FS (`10950401`) / Roll
+# TEST: TBA - OG!Vanessa S1-FS
