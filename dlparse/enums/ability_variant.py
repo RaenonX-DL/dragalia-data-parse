@@ -20,7 +20,7 @@ class AbilityVariantType(Enum):
     UNKNOWN = -1
 
     CHANGE_STATE = 14
-    """Calls the hit attribute (at str field)."""
+    """Calls the hit attribute (at str field) or the action condition (ID at ID-A field) if the condition holds."""
 
     OTHER_ABILITY = 43
     """Link to another ability (at ID-A field)."""

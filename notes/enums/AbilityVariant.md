@@ -69,7 +69,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 11. AddRecoverySp
 12. AddRecoveryDp
 13. RecoveryHpOnHitCount
-14. ChangeState
+<a href="#14---changestate">14. ChangeState</a>
 15. ResistInstantDeath
 16. DebuffGrantUp
 17. SpCharge
@@ -133,6 +133,28 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 For the missing enums below, it means that the **documentation has not been created** yet, rather than fields not used.
 
 If the fields are not explicitly mentioned, it means that the unmentioned fields are not used.
+
+### `14` - `ChangeState`
+
+Call the assigned items once the condition is satisifed.
+
+Items to be called could be:
+
+- Action condition if given in the ID - A field
+
+- Hit attribute if given in the string field
+
+#### Variant ID - A
+
+The action condition ID to be called (if given).
+
+A value of `888` means that to call the action condition ID `888` once the condition satifies.
+
+#### Variant String
+
+The hit attribute to be called (if given).
+
+A value of `BUF_222_LV01` means that to call the hit attribute `BUF_222_LV01` once the condition satisifes.
 
 ### `43` - `ReferenceOther`
 
