@@ -195,7 +195,7 @@ class SkillConditionCategories:
             SkillCondition.TARGET_BUFFED: Status.BUFFED,
             SkillCondition.TARGET_DEBUFFED: Status.DEBUFFED,
             # Enemy state
-            SkillCondition.TARGET_BREAK_STATE: Status.BREAK_STATE
+            SkillCondition.TARGET_BK_STATE: Status.BK_STATE
         },
         SkillConditionMaxCount.MULTIPLE,
         "Target - status",

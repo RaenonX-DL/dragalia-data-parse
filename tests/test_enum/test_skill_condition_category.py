@@ -53,7 +53,7 @@ def test_get_members():
         SkillCondition.TARGET_DEF_DOWN,
         SkillCondition.TARGET_BUFFED,
         SkillCondition.TARGET_DEBUFFED,
-        SkillCondition.TARGET_BREAK_STATE
+        SkillCondition.TARGET_BK_STATE
     }
 
 

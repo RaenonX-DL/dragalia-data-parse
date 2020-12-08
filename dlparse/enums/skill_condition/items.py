@@ -41,7 +41,8 @@ class SkillCondition(Enum):
     # endregion
 
     # region State
-    TARGET_BREAK_STATE = 181
+    TARGET_BK_STATE = 181
+    TARGET_OD_STATE = 182
     # endregion
 
     # region Abnormal

@@ -56,7 +56,7 @@ class Status(IntEnum):
     BUFFED = 198
     DEBUFFED = 199
 
-    BREAK_STATE = 201
+    BK_STATE = 201
 
     @property
     def is_abnormal_status(self):

@@ -22,6 +22,7 @@ class DamageUnit:
     mod: float
     unit_affliction: Optional[AfflictionEffectUnit]
     unit_debuffs: list[ActionConditionEffectUnit]
+    hit_attr_label: str
 
     def __post_init__(self):
         if self.unit_affliction and not isinstance(self.unit_affliction, AfflictionEffectUnit):
@@ -143,7 +144,7 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
 
         if self.will_deteriorate and condition_comp.bullet_hit_count:
             # Deteriorating bullets
-            return [DamageUnit(self.damage_modifier_at_hit(hit_count), unit_affliction, unit_debuff)
+            return [DamageUnit(self.damage_modifier_at_hit(hit_count), unit_affliction, unit_debuff, hit_attr.id)
                     for hit_count in range(1, condition_comp.bullet_hit_count_converted + 1)]
 
         if self.is_effective_inside_buff_zone:
@@ -151,7 +152,7 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
             mods = self.mods_in_self_buff_zone(condition_comp.buff_zone_self_converted or 0)
             mods += self.mods_in_ally_buff_zone(condition_comp.buff_zone_ally_converted or 0)
 
-            return [DamageUnit(mod, unit_affliction, unit_debuff) for mod in mods]
+            return [DamageUnit(mod, unit_affliction, unit_debuff, hit_attr.id) for mod in mods]
 
         if self.is_depends_on_user_buff_count:
             # Damage dealt depends on the user's buff count
@@ -160,27 +161,49 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
                 condition_comp.buff_count_converted or 0
             )
 
-            return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff)
+            return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)
                     for _ in range(effective_buff_count)]
 
         if self.is_depends_on_bullet_on_map:
             # Damage dealt depends on the bullets on the map
-            return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff)
+            return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)
                     for _ in range(condition_comp.bullets_on_map_converted or 0)]
 
         if type(self.action_component) is ActionBullet:  # pylint: disable=unidiomatic-typecheck
             # Action component is exactly `ActionPartsBullet`, max hit count may be in effect
             # For example, Lin You S1 (`104503011`, AID `491040` and `491042`)
-            return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff)
+            return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)
                     for _ in range(self.max_hit_count or 1)]
 
         # Cases not handled above
-        return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff)]
+        return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)]
 
-    def _damage_units_apply_mod_boosts(self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite):
+    def _damage_units_apply_mod_boosts_target(
+            self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite
+    ):
         hit_attr = self.hit_attr
 
-        # HP boosts
+        # OD boosts
+        if condition_comp.target_in_od:
+            for damage_unit in damage_units:
+                damage_unit.mod *= hit_attr.rate_boost_in_od
+
+        # BK boosts
+        if condition_comp.target_in_bk:
+            for damage_unit in damage_units:
+                damage_unit.mod *= hit_attr.rate_boost_in_bk
+
+        # Punisher boosts
+        if hit_attr.boost_on_target_afflicted and condition_comp.afflictions_converted & hit_attr.punisher_states:
+            for damage_unit in damage_units:
+                damage_unit.mod *= hit_attr.punisher_rate
+
+    def _damage_units_apply_mod_boosts_self(
+            self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite
+    ):
+        hit_attr = self.hit_attr
+
+        # Crisis boosts
         if hit_attr.boost_by_hp:
             for damage_unit in damage_units:
                 damage_unit.mod = calculate_crisis_mod(
@@ -192,10 +215,9 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
             for damage_unit in damage_units:
                 damage_unit.mod *= (1 + hit_attr.rate_boost_by_buff * condition_comp.buff_count_converted)
 
-        # Punisher boosts
-        if hit_attr.boost_on_target_afflicted and condition_comp.afflictions_converted & hit_attr.punisher_states:
-            for damage_unit in damage_units:
-                damage_unit.mod *= hit_attr.punisher_rate
+    def _damage_units_apply_mod_boosts(self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite):
+        self._damage_units_apply_mod_boosts_target(damage_units, condition_comp)
+        self._damage_units_apply_mod_boosts_self(damage_units, condition_comp)
 
     def to_damage_units(
             self, condition_comp: SkillConditionComposite, /,

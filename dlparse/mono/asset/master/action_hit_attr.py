@@ -29,15 +29,23 @@ class HitAttrEntry(MasterEntryBase):
     hp_fix_rate: float
     hp_consumption_rate: float
 
-    punisher_states: set[Status]  # Rate will be applied when the target has any of the punisher states
+    # Rate will be applied when the target has any of the punisher states
+    # The rate will only apply once, even if the target have multiple states that are listed as punisher
+    punisher_states: set[Status]
     punisher_rate: float
 
+    rate_boost_in_od: float  # 1 = No change
+    """Damage modifier boosting rate if the target is in Overdrive (OD) state."""
+    rate_boost_in_bk: float  # 1 = No change
+    """Damage modifier boosting rate if the target is in Break (BK) state."""
     rate_boost_on_crisis: float  # 0 = not applicable
-    """Damage modifier boosting rate on low HP."""
+    """
+    Damage modifier boosting rate on 1 HP.
+
+    This is quadratic. For the detailed calculation, check the documentation of ``calculate_crisis_mod()``.
+    """
     rate_boost_by_buff: float  # 0 = not applicable
     """Damage modifier boosting rate for each buff."""
-
-    break_dmg_rate: float  # Searching regex: "_ToBreakDmgRate": (?!1\.0|0\.0)
 
     action_condition_id: int
 
@@ -79,9 +87,14 @@ class HitAttrEntry(MasterEntryBase):
         return self.rate_boost_by_buff != 0
 
     @property
-    def boost_in_break(self) -> bool:
-        """Check if the damage modifier will be boosted during break."""
-        return self.break_dmg_rate != 1
+    def boost_in_od(self) -> bool:
+        """Check if the damage modifier will be boosted during overdrive (OD)."""
+        return self.damage_modifier and self.rate_boost_in_od != 1
+
+    @property
+    def boost_in_bk(self) -> bool:
+        """Check if the damage modifier will be boosted during break (BK)."""
+        return self.damage_modifier and self.rate_boost_in_bk != 1
 
     @property
     def boost_by_hp(self) -> bool:
@@ -124,6 +137,8 @@ class HitAttrEntry(MasterEntryBase):
             hit_exec_type=HitExecType(data["_HitExecType"]),
             target_group=HitTarget(data["_TargetGroup"]),
             damage_modifier=data["_DamageAdjustment"],
+            rate_boost_in_od=data["_ToOdDmgRate"],
+            rate_boost_in_bk=data["_ToBreakDmgRate"],
             is_damage_self=bool(data["_IsDamageMyself"]),
             hp_fix_rate=data["_SetCurrentHpRate"],
             hp_consumption_rate=data["_ConsumeHpRate"],
@@ -131,7 +146,6 @@ class HitAttrEntry(MasterEntryBase):
             punisher_rate=data["_KillerStateDamageRate"],
             rate_boost_on_crisis=data["_CrisisLimitRate"],
             rate_boost_by_buff=data["_DamageUpRateByBuffCount"],
-            break_dmg_rate=data["_ToBreakDmgRate"],
             action_condition_id=data["_ActionCondition1"],
             sp_recov_ratio=data["_RecoverySpRatio"],
             sp_recov_skill_idx_1=data["_RecoverySpSkillIndex"],

@@ -1,6 +1,6 @@
 """Skill condition composite class."""
 from dataclasses import dataclass, field
-from typing import Optional, Sequence, Union
+from typing import ClassVar, Optional, Sequence, Union
 
 from dlparse.enums.condition_base import ConditionCompositeBase
 from dlparse.errors import ConditionValidationFailedError
@@ -19,11 +19,18 @@ __all__ = ("SkillConditionComposite",)
 class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     """Composite class of various attacking skill conditions."""
 
+    allowed_no_categorize_conds: ClassVar[set[SkillCondition]] = {
+        SkillCondition.TARGET_OD_STATE,
+        SkillCondition.TARGET_BK_STATE
+    }
+
     # region Target
     afflictions_condition: set[SkillCondition] = field(init=False)
     afflictions_converted: set[Status] = field(init=False)
     target_elemental: Optional[SkillCondition] = field(init=False)
     target_elemental_converted: Element = field(init=False)
+    target_in_od: bool = field(init=False)
+    target_in_bk: bool = field(init=False)
     # endregion
 
     # region Self status
@@ -49,7 +56,6 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     bullets_on_map_converted: int = field(init=False)
     addl_inputs: Optional[SkillCondition] = field(init=False)
     addl_inputs_converted: int = field(init=False)
-
     # endregion
 
     @staticmethod
@@ -120,7 +126,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self._init_validate_self()
         self._init_validate_skill()
 
-        if cond_not_categorized := (set(conditions) - set(self.conditions_sorted)):
+        if cond_not_categorized := (set(conditions) - set(self.conditions_sorted) - self.allowed_no_categorize_conds):
             raise ConditionValidationFailedError(SkillConditionCheckResult.HAS_CONDITIONS_LEFT, cond_not_categorized)
 
     def __post_init__(self, conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]]):
@@ -128,6 +134,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
         self.afflictions_condition = CondCat.target_status.extract(conditions)
         self.target_elemental = CondCat.target_elemental.extract(conditions)
+        self.target_in_od = SkillCondition.TARGET_OD_STATE in conditions
+        self.target_in_bk = SkillCondition.TARGET_BK_STATE in conditions
 
         self.hp_status = CondCat.self_hp_status.extract(conditions)
         self.hp_condition = CondCat.self_hp_cond.extract(conditions)

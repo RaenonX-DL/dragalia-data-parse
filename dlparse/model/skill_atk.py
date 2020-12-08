@@ -115,9 +115,20 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     _max_level: int = field(init=False)
     _has_non_zero_mods: bool = field(init=False)
 
-    def _init_all_possible_conditions(self):
-        # Initialization
-        cond_elems: list[set[tuple[SkillCondition, ...]]] = self._init_possible_conditions_base_elems()
+    def _init_all_possible_conditions_target(self):
+        cond_elems: list[set[tuple[SkillCondition, ...]]] = []
+
+        # OD / BK boosts available
+        od_boost_available: bool = any(
+            hit_data.hit_attr.boost_in_od for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+        )
+        if od_boost_available:
+            cond_elems.append({(SkillCondition.TARGET_OD_STATE,)})
+        bk_boost_available: bool = any(
+            hit_data.hit_attr.boost_in_bk for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+        )
+        if bk_boost_available:
+            cond_elems.append({(SkillCondition.TARGET_BK_STATE,)})
 
         # Punishers available
         punishers_available: set[Status] = {
@@ -135,6 +146,11 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
                 affliction_combinations.update(combinations(conditions, count))
 
             cond_elems.append(affliction_combinations)
+
+        return cond_elems
+
+    def _init_all_possible_conditions_self(self):
+        cond_elems: list[set[tuple[SkillCondition, ...]]] = []
 
         # Crisis boosts available
         crisis_available: bool = any(
@@ -174,6 +190,11 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_in_buff_zone_self.members})
             cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_in_buff_zone_ally.members})
 
+        return cond_elems
+
+    def _init_possible_conditions_skill(self):
+        cond_elems: list[set[tuple[SkillCondition, ...]]] = []
+
         # Deterioration available
         will_deteriorate: bool = any(
             hit_data.will_deteriorate for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
@@ -195,6 +216,16 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             #   The parser uses the limited enums to do the limitating work for now.
             cond_elems.append({(bullet_on_map,)
                                for bullet_on_map in SkillConditionCategories.skill_bullets_on_map.members})
+
+        return cond_elems
+
+    def _init_all_possible_conditions(self):
+        # Initialization
+        cond_elems: list[set[tuple[SkillCondition, ...]]] = self._init_possible_conditions_base_elems()
+
+        cond_elems.extend(self._init_all_possible_conditions_target())
+        cond_elems.extend(self._init_all_possible_conditions_self())
+        cond_elems.extend(self._init_possible_conditions_skill())
 
         # Add combinations
         self.possible_conditions = {
