@@ -634,7 +634,3 @@ def test_buff_related_1(transformer_skill: SkillTransformer):
         ])
         assert skill_data.mods_at_max == [8.18 * boost_rate] * 2
         assert skill_data.max_level == 4
-
-
-def test_fs_atk():
-    pass  # TEST: TBA - fs attack (Sazanka S2-FS)

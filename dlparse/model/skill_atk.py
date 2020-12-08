@@ -190,7 +190,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             (hit_data.is_depends_on_bullet_on_map for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv)
         )
         if depends_on_bullets_on_map:
-            # TODO: This currently works on Meene, who have 9 butterflies limitation.
+            # EXNOTE: This currently works on Meene, who have 9 butterflies limitation.
             #   However, the 9 butterflies limitation are not implemented yet.
             #   The parser uses the limited enums to do the limitating work for now.
             cond_elems.append({(bullet_on_map,)

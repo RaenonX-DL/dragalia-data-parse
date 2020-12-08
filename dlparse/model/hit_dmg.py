@@ -139,7 +139,7 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
         unit_affliction = self.to_affliction_unit(asset_action_condition)
         unit_debuff = self.to_debuff_units(asset_action_condition)
 
-        # TODO: Bullet timings like `msl` in dl-sim may be added here
+        # EXNOTE: Bullet timings like `msl` in dl-sim may be added here
 
         if self.will_deteriorate and condition_comp.bullet_hit_count:
             # Deteriorating bullets
