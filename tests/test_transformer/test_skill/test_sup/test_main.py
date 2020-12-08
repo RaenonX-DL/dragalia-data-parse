@@ -424,6 +424,36 @@ def test_with_attack_one_time_use(transformer_skill: SkillTransformer):
         check_buff_unit_match(actual_buffs, expected_buffs)
 
 
+def test_elemental_resistances(transformer_skill: SkillTransformer):
+    # Pecorine S1
+    # https://dragalialost.gamepedia.com/Pecorine
+    skill_data_base = transformer_skill.transform_supportive(101504041)
+
+    assert skill_data_base.max_level == 3
+
+    expected_buffs_lv_1 = {
+        BuffEffectInfo("SWD_127_04_BUF_LV01", HitTargetSimple.SELF, BuffParameter.RESISTANCE_SHADOW, 0.05, 10, 0)
+    }
+    expected_buffs_lv_2 = {
+        BuffEffectInfo("SWD_127_04_BUF_LV02", HitTargetSimple.SELF, BuffParameter.RESISTANCE_SHADOW, 0.08, 10, 0)
+    }
+    expected_buffs_lv_3 = {
+        BuffEffectInfo("SWD_127_04_BUF_LV03", HitTargetSimple.SELF, BuffParameter.RESISTANCE_SHADOW, 0.1, 10, 0)
+    }
+
+    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
+
+    skill_data = skill_data_base.with_conditions()
+
+    check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_3)
+
+    for skill_lv in range(skill_data_base.max_level):
+        expected_buffs = expected_base_buffs[skill_lv]
+        actual_buffs = skill_data.buffs[skill_lv]
+
+        check_buff_unit_match(actual_buffs, expected_buffs)
+
+
 def test_hp_drain(transformer_skill: SkillTransformer):
     # Yue S2
     # https://dragalialost.gamepedia.com/Yue

@@ -68,6 +68,7 @@ class BuffParameter(Enum):
     """Heal the target using Recovery Potency. A value of 0.12 means that the target will be healed with 12% RP."""
     # endregion
 
+    # region Defensive
     # region Shield
     SHIELD_SINGLE_DMG = 401
     """
@@ -85,6 +86,20 @@ class BuffParameter(Enum):
 
     Check https://dragalialost.gamepedia.com/Life_Shield for more details.
     """
+    # endregion
+
+    # region Resistance
+    RESISTANCE_FLAME = 411
+    """Flame resistance up. A value of 0.12 means that the user reduces flame damage taken by 12%."""
+    RESISTANCE_WATER = 412
+    """Water resistance up. A value of 0.12 means that the user reduces water damage taken by 12%."""
+    RESISTANCE_WIND = 413
+    """Wind resistance up. A value of 0.12 means that the user reduces wind damage taken by 12%."""
+    RESISTANCE_LIGHT = 414
+    """Light resistance up. A value of 0.12 means that the user reduces light damage taken by 12%."""
+    RESISTANCE_SHADOW = 415
+    """Shadow resistance up. A value of 0.12 means that the user reduces shadow damage taken by 12%."""
+    # endregion
     # endregion
 
     # region HP Control

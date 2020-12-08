@@ -142,6 +142,69 @@ class AbilityConditionConverter:
         return AbilityConditionConverter.to_buffing_units(hit_data, asset_action_condition)
 
     @staticmethod
+    def _units_common_buffs(
+            hit_data: HT, cond_entry: ActionConditionEntry
+    ) -> list[Optional[ActionConditionEffectUnit]]:
+        return [
+            # ATK
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.ATK, cond_entry.buff_atk, hit_data, cond_entry),
+            # DEF
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.DEF, cond_entry.buff_def, hit_data, cond_entry),
+            # CRT rate
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.CRT_RATE, cond_entry.buff_crt_rate, hit_data, cond_entry),
+            # CRT damage
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.CRT_DAMAGE, cond_entry.buff_crt_damage, hit_data, cond_entry),
+            # Skill damage
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.SKILL_DAMAGE, cond_entry.buff_skill_damage, hit_data, cond_entry),
+            # FS damage
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.FS_DAMAGE, cond_entry.buff_fs_damage, hit_data, cond_entry),
+            # ATK SPD
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.ATK_SPD, cond_entry.buff_atk_spd, hit_data, cond_entry),
+            # FS SPD
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.FS_SPD, cond_entry.buff_fs_spd, hit_data, cond_entry),
+            # SP rate
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.SP_RATE, cond_entry.buff_sp_rate, hit_data, cond_entry)
+        ]
+
+    @staticmethod
+    def _units_defensive_buffs(
+            hit_data: HT, cond_entry: ActionConditionEntry
+    ) -> list[Optional[ActionConditionEffectUnit]]:
+        return [
+            # Damage shield
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.SHIELD_SINGLE_DMG, cond_entry.shield_dmg, hit_data, cond_entry),
+            # HP shield
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.SHIELD_LIFE, cond_entry.shield_hp, hit_data, cond_entry),
+
+            # Flame resistance
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.RESISTANCE_FLAME, cond_entry.resistance_flame, hit_data, cond_entry),
+            # Water resistance
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.RESISTANCE_WATER, cond_entry.resistance_water, hit_data, cond_entry),
+            # Wind resistance
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.RESISTANCE_WIND, cond_entry.resistance_wind, hit_data, cond_entry),
+            # Light resistance
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.RESISTANCE_LIGHT, cond_entry.resistance_light, hit_data, cond_entry),
+            # Shadow resistance
+            AbilityConditionConverter.to_param_up(
+                BuffParameter.RESISTANCE_SHADOW, cond_entry.resistance_shadow, hit_data, cond_entry)
+        ]
+
+    @staticmethod
     def to_buffing_units(
             hit_data: HT, asset_action_condition: ActionConditionAsset
     ) -> list[ActionConditionEffectUnit]:
@@ -158,40 +221,8 @@ class AbilityConditionConverter:
         # --- General buffs
 
         if cond_entry:
-            # ATK
-            units.append(AbilityConditionConverter.to_param_up(
-                BuffParameter.ATK, cond_entry.buff_atk, hit_data, cond_entry))
-            # DEF
-            units.append(AbilityConditionConverter.to_param_up(
-                BuffParameter.DEF, cond_entry.buff_def, hit_data, cond_entry))
-            # CRT rate
-            units.append(AbilityConditionConverter.to_param_up(
-                BuffParameter.CRT_RATE, cond_entry.buff_crt_rate, hit_data, cond_entry))
-            # CRT damage
-            units.append(AbilityConditionConverter.to_param_up(
-                BuffParameter.CRT_DAMAGE, cond_entry.buff_crt_damage, hit_data, cond_entry))
-            # Skill damage
-            units.append(AbilityConditionConverter.to_param_up(
-                BuffParameter.SKILL_DAMAGE, cond_entry.buff_skill_damage, hit_data, cond_entry))
-            # FS damage
-            units.append(AbilityConditionConverter.to_param_up(
-                BuffParameter.FS_DAMAGE, cond_entry.buff_fs_damage, hit_data, cond_entry))
-            # ATK SPD
-            units.append(AbilityConditionConverter.to_param_up(
-                BuffParameter.ATK_SPD, cond_entry.buff_atk_spd, hit_data, cond_entry))
-            # FS SPD
-            units.append(AbilityConditionConverter.to_param_up(
-                BuffParameter.FS_SPD, cond_entry.buff_fs_spd, hit_data, cond_entry))
-            # SP rate
-            units.append(AbilityConditionConverter.to_param_up(
-                BuffParameter.SP_RATE, cond_entry.buff_sp_rate, hit_data, cond_entry))
-
-            # Damage Shield
-            units.append(AbilityConditionConverter.to_param_up(
-                BuffParameter.SHIELD_SINGLE_DMG, cond_entry.shield_dmg, hit_data, cond_entry))
-            # HP Shield
-            units.append(AbilityConditionConverter.to_param_up(
-                BuffParameter.SHIELD_LIFE, cond_entry.shield_hp, hit_data, cond_entry))
+            units.extend(AbilityConditionConverter._units_common_buffs(hit_data, cond_entry))
+            units.extend(AbilityConditionConverter._units_defensive_buffs(hit_data, cond_entry))
 
         # --- Instant gauge refill
 

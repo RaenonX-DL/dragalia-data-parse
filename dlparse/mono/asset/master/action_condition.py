@@ -47,6 +47,12 @@ class ActionConditionEntry(MasterEntryBase):
     shield_dmg: float
     shield_hp: float
 
+    resistance_flame: float
+    resistance_water: float
+    resistance_wind: float
+    resistance_light: float
+    resistance_shadow: float
+
     enhance_skill_1_id: int
     enhance_skill_2_id: int
 
@@ -91,6 +97,11 @@ class ActionConditionEntry(MasterEntryBase):
             buff_fs_spd=data["_RateChargeSpeed"],
             shield_dmg=data["_RateDamageShield"],
             shield_hp=data["_RateSacrificeShield"],
+            resistance_flame=data["_RateFire"],
+            resistance_water=data["_RateWater"],
+            resistance_wind=data["_RateWind"],
+            resistance_light=data["_RateLight"],
+            resistance_shadow=data["_RateDark"],
             enhance_skill_1_id=data["_EnhancedSkill1"],
             enhance_skill_2_id=data["_EnhancedSkill2"],
             elemental_target=ElementFlag(data["_TargetElemental"])
