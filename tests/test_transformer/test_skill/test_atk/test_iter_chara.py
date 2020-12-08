@@ -34,7 +34,7 @@ def test_catherine(transformer_skill: SkillTransformer):
         assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
 
 
-def test_yukata_curran_unmasked(transformer_skill: SkillTransformer):
+def test_yukata_curran_s1_unmasked(transformer_skill: SkillTransformer):
     # Yukata Curran S1 - Unmasked
     # https://dragalialost.gamepedia.com/Yukata_Curran
     skill_data = transformer_skill.transform_attacking(103504041)

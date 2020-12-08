@@ -1,22 +1,20 @@
 import pytest
 
-from dlparse.enums import SkillConditionComposite, SkillConditionCategories
+from dlparse.enums import SkillConditionCategories, SkillConditionComposite
 from dlparse.transformer import SkillTransformer
 
 
-def test_s1(transformer_skill: SkillTransformer):
-    # Original Amane S1
-    # https://dragalialost.gamepedia.com/Amane
-    skill_data_base = transformer_skill.transform_attacking(107404011)
+def test_s2(transformer_skill: SkillTransformer):
+    # Chelle S2
+    # https://dragalialost.gamepedia.com/Chelle
+    skill_data_base = transformer_skill.transform_attacking(106505032)
 
     base_mods = [
-        [7.182] * 2,
-        [7.974] * 2,
-        [8.856] * 2,
-        [8.856] * 2
+        [9.11],
+        [11.388]
     ]
-    per_buff_mods = [0, 0, 0, 1.05]
-    per_buff_max = [0, 0, 0, 2]
+    per_buff_mods = [0.76, 0.95]
+    per_buff_max = [8, 8]
 
     for buff_count in range(10):  # Arbitrarily chosen, should not give any errors
         buff_count_cond = SkillConditionCategories.self_buff_count.convert_reversed(buff_count)
@@ -39,4 +37,4 @@ def test_s1(transformer_skill: SkillTransformer):
             assert sorted(actual_mods_lv) == sorted(expected_mods_lv)
         assert sorted(skill_data.mods_at_max) == sorted(expected_mods[-1])
 
-        assert skill_data.max_level == 4
+        assert skill_data.max_level == 2
