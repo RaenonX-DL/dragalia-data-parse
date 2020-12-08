@@ -6,7 +6,7 @@ from tests.utils import DebuffInfo, check_debuff_unit_match
 def test_unstackable(transformer_skill: SkillTransformer):
     # Original Alex S1
     # https://dragalialost.gamepedia.com/Alex
-    skill_data = transformer_skill.transform_attacking(103405021)
+    skill_data = transformer_skill.transform_attacking(103405021).with_conditions()
 
     expected_debuffs_lv_1 = []
     expected_debuffs_lv_2 = (
@@ -32,7 +32,7 @@ def test_unstackable(transformer_skill: SkillTransformer):
 def test_stackable(transformer_skill: SkillTransformer):
     # Curran S1
     # https://dragalialost.gamepedia.com/Curran
-    skill_data = transformer_skill.transform_attacking(104505011)
+    skill_data = transformer_skill.transform_attacking(104505011).with_conditions()
 
     expected_debuffs_lv_1 = []
     expected_debuffs_lv_2 = ([DebuffInfo("AXE_105_04_H01_LV02", BuffParameter.DEF, -0.05, 50, 10, True)] * 3

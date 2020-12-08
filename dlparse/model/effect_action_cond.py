@@ -1,14 +1,14 @@
 """Classes for a single ability condition effect."""
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from dlparse.enums import BuffParameter, HitTargetSimple, Status
 
-__all__ = ("ActionConditionEffectUnit",)
+__all__ = ("ActionConditionEffectUnit", "AfflictionEffectUnit")
 
 
 @dataclass
 class ActionConditionEffectUnit:
-    """The atomic unit of an effect of an ability condition."""
+    """The atomic unit of an effect of an action condition."""
 
     time: float
 
@@ -61,3 +61,16 @@ class ActionConditionEffectUnit:
             raise ValueError(f"Cannot compare `ActionConditionEffectUnit` with {type(other)}")
 
         return self.time < other.time
+
+
+@dataclass
+class AfflictionEffectUnit(ActionConditionEffectUnit):
+    """An action condition effect that afflicts the enemy."""
+
+    rate: float = field(init=False)
+    duration_count: float = field(init=False)
+
+    def __post_init__(self):
+        # Directly sets the default causes error
+        self.rate = 0
+        self.duration_count = 0

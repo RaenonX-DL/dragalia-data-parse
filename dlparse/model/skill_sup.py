@@ -7,7 +7,7 @@ from typing import Optional
 from dlparse.enums import Element, SkillCondition, SkillConditionCategories, SkillConditionComposite
 from dlparse.mono.asset import ActionConditionAsset
 from dlparse.utils import AbilityConditionConverter
-from .effect_ability_cond import ActionConditionEffectUnit
+from .effect_action_cond import ActionConditionEffectUnit
 from .hit_buff import BuffingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
 

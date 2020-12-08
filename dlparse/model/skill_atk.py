@@ -5,9 +5,8 @@ from typing import Optional
 
 from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite, Status
 from dlparse.mono.asset import ActionConditionAsset, PlayerActionInfoAsset
-from dlparse.utils import calculate_damage_modifier
-from .effect_ability_cond import ActionConditionEffectUnit
-from .hit_dmg import DamagingHitData
+from .effect_action_cond import ActionConditionEffectUnit
+from .hit_dmg import DamageUnit, DamagingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
 
 __all__ = ("AttackingSkillDataEntry", "AttackingSkillData")
@@ -30,20 +29,37 @@ class AttackingSkillDataEntry(SkillEntryBase):
         (OG Elisanne S1 - `105402011`).
     """
 
-    mods: list[list[float]]
-    afflictions: list[list[ActionConditionEffectUnit]]
-    debuffs: list[list[ActionConditionEffectUnit]]
-
-    hit_data_mtx: list[list[DamagingHitData]]
+    hit_unit_mtx: list[list[DamageUnit]]
 
     max_level: int
 
     condition_comp: SkillConditionComposite
 
+    mods: list[list[float]] = field(init=False)
+    afflictions: list[list[ActionConditionEffectUnit]] = field(init=False)
+    debuffs: list[list[ActionConditionEffectUnit]] = field(init=False)
+
     hit_count: list[int] = field(init=False)
     total_mod: list[float] = field(init=False)
 
     def __post_init__(self):
+        self.mods = [
+            [hit_unit.mod for hit_unit in hit_unit_lv if hit_unit.mod]
+            for hit_unit_lv in self.hit_unit_mtx
+        ]
+        self.afflictions = [
+            [hit_unit.unit_affliction for hit_unit in hit_unit_lv if hit_unit.unit_affliction]
+            for hit_unit_lv in self.hit_unit_mtx
+        ]
+        self.debuffs = [
+            [
+                unit_debuff
+                for hit_unit in hit_unit_lv if hit_unit.unit_debuffs
+                for unit_debuff in hit_unit.unit_debuffs
+            ]
+            for hit_unit_lv in self.hit_unit_mtx
+        ]
+
         self.total_mod = [sum(mods) for mods in self.mods]
         self.hit_count = [len(mods) for mods in self.mods]
 
@@ -94,11 +110,10 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     # These are used during affliction processing
     asset_action_cond: ActionConditionAsset
 
-    mods: list[list[float]] = field(init=False)
-    afflictions: list[list[ActionConditionEffectUnit]] = field(init=False)
-    debuffs: list[list[ActionConditionEffectUnit]] = field(init=False)
+    _unit_mtx_base: list[list[DamageUnit]] = field(init=False)
 
     _max_level: int = field(init=False)
+    _has_non_zero_mods: bool = field(init=False)
 
     def _init_all_possible_conditions(self):
         # Initialization
@@ -209,8 +224,8 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             debuff_lv = []
 
             for hit_data in hit_data_lv:
-                if debuff_unit := hit_data.to_debuff_unit(self.asset_action_cond):
-                    debuff_lv.extend(debuff_unit)
+                if debuff_units := hit_data.to_debuff_units(self.asset_action_cond):
+                    debuff_lv.extend(debuff_units)
 
             # Sort afflictions by its time
             debuff_mtx.append(list(sorted(debuff_lv)))
@@ -220,43 +235,46 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     def __post_init__(self):
         super().__post_init__()
 
-        self.mods = self.calculate_mods_matrix()
-        self.afflictions = self._init_affliction_mtx()
-        self.debuffs = self._init_debuff_mtx()
+        self._unit_mtx_base = self.calculate_units_matrix()
 
-        if not self.mods:
-            self._max_level = 0
-        else:
-            self._max_level = max(zip(reversed([sum(mods) for mods in self.mods]), range(len(self.mods), 0, -1)),
-                                  key=lambda item: item[0])[1]
+        # Calculate the max level by getting the level which has the max total mods
+        # -------------------------------------------------------------------------
+        #   Some dummy data were inserted for a higher (& usually unreleased) level,
+        #   causing the max level to be inaccurate if we simply get the length of the mods matrix.
+        #
+        #   If there are 2 levels sharing the same total mods, the higher level will be used.
+        self._max_level = max(zip(reversed([sum(unit.mod for unit in units) for units in self._unit_mtx_base]),
+                                  range(len(self._unit_mtx_base), 0, -1)),
+                              key=lambda item: item[0])[1]
 
-    def calculate_mods_matrix(self, condition_comp: Optional[SkillConditionComposite] = None) -> list[list[float]]:
-        """Calculate the damage modifier matrix."""
-        mods: list[list[float]] = []
+        self._has_non_zero_mods = any(sum(unit.mod for unit in units) > 0 for units in self._unit_mtx_base)
+
+    def calculate_units_matrix(
+            self, condition_comp: Optional[SkillConditionComposite] = None
+    ) -> list[list[DamageUnit]]:
+        """Calculate the damage unit matrix."""
+        units: list[list[DamageUnit]] = []
 
         if not condition_comp:
             condition_comp = SkillConditionComposite()  # Dummy empty condition composite
 
         for hit_data_lv in self.hit_data_mtx:
-            new_mods_level = []  # Array of the mods at the same level
+            new_units_level = []  # Array of the units at the same level
 
             for hit_data in hit_data_lv:
-                # Add the calculated mod(s) only if the mod list is not empty
-                # Sometimes this could be an empty list
-                #   - hits that only available if inside a buff zone but the skill condition is not in any buff zone
-                if damage_mod := calculate_damage_modifier(
-                        hit_data, condition_comp, action_info_asset=self.asset_action_info
-                ):
-                    new_mods_level.append(damage_mod)
+                new_units_level.append(hit_data.to_damage_units(
+                    condition_comp,
+                    asset_action_condition=self.asset_action_cond, asset_action_info=self.asset_action_info
+                ))
 
             # (Deteriorating bullets)
             # [[1, 0.5, 0.2], [1, 0.5, 0.2]] needs to be transformed to [1, 1, 0.5, 0.5, 0.2, 0.2]
             # (Nevin S2 @ Sigil Released)
             # [[9], [0.9, 0.9]] needs to be transformed to [9, 0.9, 0.9]
-            mods.append([subitem for item in zip_longest(*new_mods_level, fillvalue=None)
-                         for subitem in item if subitem])
+            units.append([subitem for item in zip_longest(*new_units_level, fillvalue=None)
+                          for subitem in item if subitem])
 
-        return mods
+        return units
 
     def with_conditions(self, condition_comp: SkillConditionComposite = None) -> AttackingSkillDataEntry:
         """
@@ -268,13 +286,15 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         :raises BulletEndOfLifeError: if the bullet hit count condition is beyond the limit
         """
         return AttackingSkillDataEntry(
-            mods=self.calculate_mods_matrix(condition_comp),
-            afflictions=self.afflictions,
-            debuffs=self.debuffs,
-            hit_data_mtx=self.hit_data_mtx,
+            hit_unit_mtx=self.calculate_units_matrix(condition_comp),
             condition_comp=condition_comp,
             max_level=self.max_level
         )
+
+    @property
+    def has_non_zero_mods(self) -> bool:
+        """Check if the skill data has at least one damage modifier > 0 hit at any level."""
+        return self._has_non_zero_mods
 
     @property
     def max_level(self) -> int:

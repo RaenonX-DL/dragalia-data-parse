@@ -40,7 +40,7 @@ def test_transform_all_attack_skills(
             skill_entries.extend(skill_data.get_all_possible_entries())
 
             skill_ids_missing.pop(skill_id, None)
-            if not any(sum(mods_lv) > 0 for mods_lv in skill_data.mods):
+            if not skill_data.has_non_zero_mods:
                 skill_ids_zero_mods.add(skill_id)
         except HitDataUnavailableError:
             # No attacking data found / skill is not an attacking skill

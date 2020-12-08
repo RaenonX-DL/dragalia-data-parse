@@ -21,7 +21,7 @@ def print_atk_data_entry(chara_data, skill_data, skill_entry):
         print(f"Total Mods: {skill_entry.total_mod[skill_level]:.0%} "
               f"({skill_entry.hit_count[skill_level]} hits)")
 
-        afflictions_lv = skill_data.afflictions[skill_level]
+        afflictions_lv = skill_entry.afflictions[skill_level]
         if afflictions_lv:
             initial_affliction = afflictions_lv[0]
             print(f"{initial_affliction.status.name} @ {initial_affliction.time:.3f} s "

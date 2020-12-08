@@ -3,7 +3,7 @@ from typing import Optional, TypeVar
 
 from dlparse.enums import BuffParameter, HitTargetSimple, SkillIndex, Status
 from dlparse.errors import UnhandledSelfDamageError
-from dlparse.model import ActionConditionEffectUnit, HitData
+from dlparse.model import ActionConditionEffectUnit, AfflictionEffectUnit, HitData
 from dlparse.mono.asset import ActionConditionAsset, ActionConditionEntry, HitAttrEntry
 
 __all__ = ("AbilityConditionConverter",)
@@ -96,7 +96,7 @@ class AbilityConditionConverter:
     @staticmethod
     def to_affliction_unit(
             hit_data: HT, asset_action_condition: ActionConditionAsset
-    ) -> Optional[ActionConditionEffectUnit]:
+    ) -> Optional[AfflictionEffectUnit]:
         """Get the affliction effect unit of ``hit_data``. Returns ``None`` if not applicable."""
         if not hit_data.hit_attr.action_condition_id:
             # No action condition affiliated
@@ -112,15 +112,13 @@ class AbilityConditionConverter:
             # Not afflicting action condition
             return None
 
-        return ActionConditionEffectUnit(
+        return AfflictionEffectUnit(
             time=hit_data.action_component.time_start,
             status=action_cond_data.afflict_status,
             target=hit_data.target_simple,
             probability_pct=action_cond_data.probability_pct,
-            rate=0,
             parameter=BuffParameter.AFFLICTION,
             duration_time=action_cond_data.duration_sec,
-            duration_count=0,
             slip_interval=action_cond_data.slip_interval,
             slip_damage_mod=action_cond_data.slip_damage_mod,
             max_stack_count=action_cond_data.max_stack_count,
