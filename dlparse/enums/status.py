@@ -32,16 +32,27 @@ class Status(IntEnum):
     BLIND = 5
     STUN = 6
     CURSE = 7
+    REBORN = 8  # `AbsRebirth = 8` officially
     BOG = 9
     SLEEP = 10
     FROSTBITE = 11
     FLASHBURN = 12
     CRASHWIND = 13
     SHADOWBLIGHT = 14
+    DESTROYFIRE = 15
 
     AFFLICTED = 99
 
+    HP_DOWNED = 101
+    ATK_DOWNED = 102
     DEF_DOWNED = 103
+    CRT_DOWNED = 104
+    SKILL_DMG_DOWNED = 105
+    FS_DMG_DOWNED = 106
+    RP_DOWNED = 107
+    BLEEDING = 108
+
+    BUFFED_OR_DEBUFFED = 197
     BUFFED = 198
     DEBUFFED = 199
 
