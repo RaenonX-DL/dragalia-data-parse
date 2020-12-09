@@ -7,7 +7,8 @@ from dlparse.enums import Element, SkillNumber
 from dlparse.errors import InvalidSkillNumError, TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 from dlparse.mono.asset.extension import NamedEntry, SkillDiscoverableEntry
-from .skill_data import SKILL_MAX_LEVEL
+from .dragon_data import DRAGON_SKILL_MAX_LEVEL
+from .skill_data import CHARA_SKILL_MAX_LEVEL
 from .text_label import TextAsset
 
 __all__ = ("CharaDataEntry", "CharaDataAsset", "CharaDataParser")
@@ -113,7 +114,6 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
     ss_release_item_quantity: int
     # endregion
 
-    unique_dragon_id: int
     unique_dragon_inherit_skill_lv: int
 
     is_dragon_drive: bool
@@ -253,18 +253,13 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
 
     @property
     def has_unique_weapon(self) -> bool:
-        """Check if the character has an unique weapon"""
+        """Check if the character has an unique weapon."""
         return self.unique_weapon_id != 0
 
     @property
     def has_special_win_face(self) -> bool:
         """Check if the character has a special winning face."""
         return self.win_face_eye_id != 0 or self.win_face_mouth_id
-
-    @property
-    def has_unique_dragon(self) -> bool:
-        """Check if the character has an unique dragon."""
-        return self.unique_dragon_id != 0
 
     @property
     def ability_ids_all_level(self) -> list[int]:
@@ -278,7 +273,16 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
 
     def max_skill_level(self, skill_num: SkillNumber):
         if skill_num == SkillNumber.ABILITY:
-            return SKILL_MAX_LEVEL  # No explicit skill index info found, using the max possible level
+            return CHARA_SKILL_MAX_LEVEL  # No explicit skill index info found, using the max possible level
+
+        if skill_num.is_dragon_skill:
+            if not self.unique_dragon_inherit_skill_lv:
+                return DRAGON_SKILL_MAX_LEVEL
+
+            if skill_num == SkillNumber.S1_DRAGON:
+                skill_num = SkillNumber.S1
+            elif skill_num == SkillNumber.S2_DRAGON:
+                skill_num = SkillNumber.S2
 
         if skill_num == SkillNumber.S1:
             return 4 if self.is_70_mc else 3
@@ -291,7 +295,7 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
     def get_chara_name(self, text_asset: TextAsset) -> str:
         """Get the name of the character."""
         try:
-            return text_asset.to_text(self.second_name_label, silent_fail=False)
+            return text_asset.to_text(self.name_label_2, silent_fail=False)
         except TextLabelNotFoundError:
             return text_asset.to_text(self.name_label)
 
@@ -300,7 +304,7 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
         return CharaDataEntry(
             id=data["_Id"],
             name_label=data["_Name"],
-            second_name_label=data["_SecondName"],
+            name_label_2=data["_SecondName"],
             emblem_id=data["_EmblemId"],
             weapon_type_id=data["_WeaponType"],
             rarity=data["_Rarity"],

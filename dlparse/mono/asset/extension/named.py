@@ -11,5 +11,5 @@ class NamedEntry(ABC):
     """Interface for a named data entry."""
 
     name_label: str
-    second_name_label: str
+    name_label_2: str
     emblem_id: int

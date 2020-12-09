@@ -5,7 +5,7 @@ def create_dummy(**kwargs) -> CharaDataEntry:
     params = {
         "id": 0,
         "name_label": "Dummy",
-        "second_name_label": "Dummy",
+        "name_label_2": "Dummy",
         "emblem_id": 0,
         "weapon_type_id": 0,
         "rarity": 0,
@@ -180,10 +180,10 @@ def test_custom_id():
 
 
 def test_get_chara_name_use_main(asset_text: TextAsset):
-    entry = create_dummy(name_label="CHARA_NAME_10840301", second_name_label="CHARA_NAME_COMMENT_10840301")
+    entry = create_dummy(name_label="CHARA_NAME_10840301", name_label_2="CHARA_NAME_COMMENT_10840301")
     assert entry.get_chara_name(asset_text) == "ルーエン"
 
 
 def test_get_chara_name_use_second(asset_text: TextAsset):
-    entry = create_dummy(name_label="CHARA_NAME_10150302", second_name_label="CHARA_NAME_COMMENT_10150302")
+    entry = create_dummy(name_label="CHARA_NAME_10150302", name_label_2="CHARA_NAME_COMMENT_10150302")
     assert entry.get_chara_name(asset_text) == "エルフィリス（ウエディングVer.）"

@@ -228,3 +228,29 @@ def test_via_chain(asset_chara: CharaDataAsset, asset_manager: AssetManager):
     ]
 
     assert actual_identifiers == expected_identifiers
+
+
+def test_via_unique_dragon(asset_chara: CharaDataAsset, asset_manager: AssetManager):
+    """
+    Get the skill IDs which variants are in the form of dragon skill (character has unique dragon).
+
+    These can be found from the unique dragon linked to the character data.
+    """
+    # Tiki
+    # https://dragalialost.gamepedia.com/Tiki
+    chara_data = asset_chara.get_data_by_id(10350203)
+
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
+
+    expected_identifiers = [
+        # S1 Base
+        SkillIdEntry(103502031, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
+        # S2 Base
+        SkillIdEntry(103502032, SkillNumber.S2, SkillIdentifierLabel.S2_BASE),
+        # S1 in unique dragon
+        SkillIdEntry(299000061, SkillNumber.S1_DRAGON, SkillIdentifierLabel.S1_DRAGON),
+        # S2 in unique dragon
+        SkillIdEntry(299000062, SkillNumber.S2_DRAGON, SkillIdentifierLabel.S2_DRAGON),
+    ]
+
+    assert actual_identifiers == expected_identifiers

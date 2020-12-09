@@ -18,7 +18,15 @@ class SkillNumber(Enum):
     S1 = 1
     S2 = 2
 
-    ABILITY = 10
+    S1_DRAGON = 11
+    S2_DRAGON = 12
+
+    ABILITY = 100
+
+    @property
+    def is_dragon_skill(self):
+        """Check if the skill number is dragon skill."""
+        return self in (self.S1_DRAGON, self.S2_DRAGON)
 
     @property
     def repr(self) -> str:

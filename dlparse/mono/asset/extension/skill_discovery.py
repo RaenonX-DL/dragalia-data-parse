@@ -10,7 +10,7 @@ from .skill import SkillEntry
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
-    from dlparse.mono.asset import AbilityEntry, SkillDataEntry
+    from dlparse.mono.asset import AbilityEntry, SkillDataEntry, DragonDataEntry
 
 __all__ = ("SkillIdentifierLabel", "SkillIdEntry", "SkillDiscoverableEntry")
 
@@ -41,6 +41,8 @@ class SkillIdentifierLabel:
 
     S1_BASE = "s1_base"
     S2_BASE = "s2_base"
+    S1_DRAGON = "s1_dragon"
+    S2_DRAGON = "s2_dragon"
     SHARED = "shared"
     HELPER = "helper"
 
@@ -142,6 +144,8 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
     ss_skill_id: int
     ss_skill_num: SkillNumber
 
+    unique_dragon_id: int
+
     @property
     @abstractmethod
     def ability_ids_all_level(self) -> list[int]:
@@ -171,35 +175,10 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
         """
         raise NotImplementedError()
 
-    def _from_base(self) -> list[SkillIdEntry]:
-        """Get the base skills."""
-        ret: list[SkillIdEntry] = [
-            SkillIdEntry(self.skill_1_id, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
-            SkillIdEntry(self.skill_2_id, SkillNumber.S2, SkillIdentifierLabel.S2_BASE)
-        ]
-
-        if self.ss_skill_id:
-            ret.append(SkillIdEntry(self.ss_skill_id, self.ss_skill_num, SkillIdentifierLabel.SHARED))
-
-        return ret
-
-    def _from_mode(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
-        """Get all possible skills from all possible modes."""
-        ret: list[SkillIdEntry] = []
-
-        for mode_id in self.mode_ids:
-            if mode_data := asset_manager.asset_chara_mode.get_data_by_id(mode_id):
-                if model_skill_1_id := mode_data.skill_id_1:
-                    ret.append(SkillIdEntry(
-                        model_skill_1_id, SkillNumber.S1, SkillIdentifierLabel.of_mode(SkillNumber.S1, mode_id)
-                    ))
-
-                if model_skill_2_id := mode_data.skill_id_2:
-                    ret.append(SkillIdEntry(
-                        model_skill_2_id, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, mode_id)
-                    ))
-
-        return ret
+    @property
+    def has_unique_dragon(self) -> bool:
+        """Check if the character has an unique dragon."""
+        return self.unique_dragon_id != 0
 
     def _get_hit_labels(
             self, asset_manager: "AssetManager", skill_data: "SkillDataEntry", skill_num: SkillNumber
@@ -255,7 +234,7 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
         return SkillIdEntry(skill_id, skill_num, label)
 
     def _from_hit_labels(
-            self, asset_manager: "AssetManager", skill_id: int, skill_num: SkillNumber
+            self, asset_manager: "AssetManager", skill_data: "SkillDataEntry", skill_num: SkillNumber
     ) -> list[SkillIdEntry]:
         """
         Get all possible skills from the hit labels of ``skill_id``.
@@ -265,7 +244,7 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
         ret: list[SkillIdEntry] = []
 
         # Initial hit labels to be discovered
-        hit_labels = self._get_hit_labels(asset_manager, asset_manager.asset_skill.get_data_by_id(skill_id), skill_num)
+        hit_labels = self._get_hit_labels(asset_manager, skill_data, skill_num)
         hit_labels_searched: set[str] = set()
 
         # Counter to be used if the skill is hit_data-enhancing (consider as phased skills instead)
@@ -353,6 +332,20 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
 
         return ret
 
+    def _from_phase(
+            self, asset_manager: "AssetManager", skill_1_data: "SkillDataEntry", skill_2_data: "SkillDataEntry"
+    ) -> list[SkillIdEntry]:
+        """Get all phased skill variants of both ``skill_1_data`` and ``skill_2_data``."""
+        ret: list[SkillIdEntry] = []
+
+        if skill_1_data.has_phase_variant:
+            ret.extend(self._phase_single(skill_1_data, asset_manager, SkillNumber.S1))
+
+        if skill_2_data.has_phase_variant:
+            ret.extend(self._phase_single(skill_2_data, asset_manager, SkillNumber.S2))
+
+        return ret
+
     @staticmethod
     def _chain_single(
             skill_data: "SkillDataEntry", asset_manager: "AssetManager", skill_num: SkillNumber
@@ -373,20 +366,6 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
 
         return ret
 
-    def _from_phase(
-            self, asset_manager: "AssetManager", skill_1_data: "SkillDataEntry", skill_2_data: "SkillDataEntry"
-    ) -> list[SkillIdEntry]:
-        """Get all phased skill variants of both ``skill_1_data`` and ``skill_2_data``."""
-        ret: list[SkillIdEntry] = []
-
-        if skill_1_data.has_phase_variant:
-            ret.extend(self._phase_single(skill_1_data, asset_manager, SkillNumber.S1))
-
-        if skill_2_data.has_phase_variant:
-            ret.extend(self._phase_single(skill_2_data, asset_manager, SkillNumber.S2))
-
-        return ret
-
     def _from_chain(
             self, asset_manager: "AssetManager", skill_1_data: "SkillDataEntry", skill_2_data: "SkillDataEntry"
     ) -> list[SkillIdEntry]:
@@ -401,26 +380,6 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
 
         return ret
 
-    def _from_skill_ext(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
-        """
-        Get all possible skills from the base skills of ``chara_data``.
-
-        This will attempt to find any additional possible skills from the hit labels of the base S1 and S2,
-        helper variant (if any), and phase changed variants (if any).
-        """
-        ret: list[SkillIdEntry] = []
-
-        skill_1_data: "SkillDataEntry" = asset_manager.asset_skill.get_data_by_id(self.skill_1_id)
-        skill_2_data: "SkillDataEntry" = asset_manager.asset_skill.get_data_by_id(self.skill_2_id)
-
-        ret.extend(self._from_hit_labels(asset_manager, self.skill_1_id, SkillNumber.S1))
-        ret.extend(self._from_hit_labels(asset_manager, self.skill_2_id, SkillNumber.S2))
-        ret.extend(self._from_helper(skill_1_data))
-        ret.extend(self._from_phase(asset_manager, skill_1_data, skill_2_data))
-        ret.extend(self._from_chain(asset_manager, skill_1_data, skill_2_data))
-
-        return ret
-
     def _get_all_ability(self, asset_manager: "AssetManager") -> dict[int, "AbilityEntry"]:
         """Get all ability data that may be used by this entry."""
         ret: dict[int, "AbilityEntry"] = {}
@@ -429,6 +388,98 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
 
         for ability_id in self.ability_ids_all_level:
             ret.update(ability_asset.get_data_by_id(ability_id).get_all_ability(ability_asset))
+
+        return ret
+
+    def _skill_additional_single(
+            self, asset_manager: "AssetManager", skill_data: "SkillDataEntry", skill_num: SkillNumber
+    ) -> list[SkillIdEntry]:
+        """
+        Get all possible variants of a ``skill_data``.
+
+        This includes phase variant, chain variant and the variants from the skill hit labels;
+        does not include the skill data being passed in.
+        """
+        ret: list[SkillIdEntry] = []
+
+        if skill_data.has_phase_variant:
+            ret.extend(self._phase_single(skill_data, asset_manager, skill_num))
+
+        if skill_data.has_chain_variant:
+            ret.extend(self._chain_single(skill_data, asset_manager, skill_num))
+
+        ret.extend(self._from_hit_labels(asset_manager, skill_data, skill_num))
+
+        return ret
+
+    def _from_base(self) -> list[SkillIdEntry]:
+        """Get the base skills."""
+        ret: list[SkillIdEntry] = [
+            SkillIdEntry(self.skill_1_id, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
+            SkillIdEntry(self.skill_2_id, SkillNumber.S2, SkillIdentifierLabel.S2_BASE)
+        ]
+
+        if self.ss_skill_id:
+            ret.append(SkillIdEntry(self.ss_skill_id, self.ss_skill_num, SkillIdentifierLabel.SHARED))
+
+        return ret
+
+    def _from_mode(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
+        """Get all possible skills from all possible modes."""
+        ret: list[SkillIdEntry] = []
+
+        for mode_id in self.mode_ids:
+            if mode_data := asset_manager.asset_chara_mode.get_data_by_id(mode_id):
+                if model_skill_1_id := mode_data.skill_id_1:
+                    ret.append(SkillIdEntry(
+                        model_skill_1_id, SkillNumber.S1, SkillIdentifierLabel.of_mode(SkillNumber.S1, mode_id)
+                    ))
+
+                if model_skill_2_id := mode_data.skill_id_2:
+                    ret.append(SkillIdEntry(
+                        model_skill_2_id, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, mode_id)
+                    ))
+
+        return ret
+
+    def _from_dragon(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
+        """Get all possible skills from the dragon, if it's unique for the unit."""
+        if not self.has_unique_dragon:
+            return []
+
+        ret: list[SkillIdEntry] = []
+
+        unique_dragon_data: "DragonDataEntry" = asset_manager.asset_dragon.get_data_by_id(self.unique_dragon_id)
+
+        skill_1_data: "SkillDataEntry" = asset_manager.asset_skill.get_data_by_id(unique_dragon_data.skill_1_id)
+        ret.append(SkillIdEntry(
+            unique_dragon_data.skill_1_id, SkillNumber.S1_DRAGON, SkillIdentifierLabel.S1_DRAGON
+        ))
+        ret.extend(self._skill_additional_single(asset_manager, skill_1_data, SkillNumber.S1_DRAGON))
+
+        # Dragon usually does not have 2 skills (except Tiki's)
+        if skill_2_data := asset_manager.asset_skill.get_data_by_id(unique_dragon_data.skill_2_id):
+            ret.append(SkillIdEntry(
+                unique_dragon_data.skill_2_id, SkillNumber.S2_DRAGON, SkillIdentifierLabel.S2_DRAGON
+            ))
+            ret.extend(self._skill_additional_single(asset_manager, skill_2_data, SkillNumber.S2_DRAGON))
+
+        return ret
+
+    def _from_skill_ext(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
+        """
+        Get all possible skills extended from base S1 and S2. This also returns the helper variant, if any.
+
+        Note that base S1 and S2 will not be included.
+        """
+        ret: list[SkillIdEntry] = []
+
+        skill_1_data: "SkillDataEntry" = asset_manager.asset_skill.get_data_by_id(self.skill_1_id)
+        skill_2_data: "SkillDataEntry" = asset_manager.asset_skill.get_data_by_id(self.skill_2_id)
+
+        ret.extend(self._skill_additional_single(asset_manager, skill_1_data, SkillNumber.S1))
+        ret.extend(self._skill_additional_single(asset_manager, skill_2_data, SkillNumber.S2))
+        ret.extend(self._from_helper(skill_1_data))
 
         return ret
 
@@ -454,34 +505,28 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
                         action_cond.enhance_skill_1_id, SkillNumber.S1,
                         SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S1, ability_id)
                     ))
-                    ret.extend(self._from_hit_labels(asset_manager, action_cond.enhance_skill_1_id, SkillNumber.S1))
+                    ret.extend(self._from_hit_labels(
+                        asset_manager, asset_manager.asset_skill.get_data_by_id(action_cond.enhance_skill_1_id),
+                        SkillNumber.S1
+                    ))
                 if action_cond.enhance_skill_2_id:
                     ret.append(SkillIdEntry(
                         action_cond.enhance_skill_2_id, SkillNumber.S2,
                         SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S2, ability_id)
                     ))
-                    ret.extend(self._from_hit_labels(asset_manager, action_cond.enhance_skill_2_id, SkillNumber.S2))
+                    ret.extend(self._from_hit_labels(
+                        asset_manager, asset_manager.asset_skill.get_data_by_id(action_cond.enhance_skill_2_id),
+                        SkillNumber.S2
+                    ))
 
         return ret
 
     def get_skill_id_entries(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
-        """
-        Get the skill ID entries of a character.
-
-        This includes different skills in different modes, helper variants, and phase changed IDs, if any.
-
-        If ``asset_text`` is not provided, mode name (if any) will not be able to convert to text.
-        ``Mode #<MODE_ID>`` will be the identifier instead.
-
-        If ``asset_skill`` is not provided, support skill variant (if any) and the phase changing variant (if any)
-        will not be included.
-
-        If any of ``loader_action``, ``asset_skill``, ``asset_hit_attr`` or ``asset_action_condition``
-        are not provided, skills that can be enhanced by using another skill (if any) will not be included.
-        """
+        """Get all possible skill ID entries of a character."""
         ret: list[SkillIdEntry] = self._from_base()
 
         ret.extend(self._from_mode(asset_manager))
+        ret.extend(self._from_dragon(asset_manager))
         ret.extend(self._from_skill_ext(asset_manager))
         ret.extend(self._from_ability(asset_manager))
 

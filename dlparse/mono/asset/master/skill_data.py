@@ -5,9 +5,9 @@ from typing import Optional, Union
 from dlparse.errors import InvalidSkillLevelError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
-__all__ = ("SkillDataEntry", "SkillDataAsset", "SkillDataParser", "SKILL_MAX_LEVEL")
+__all__ = ("SkillDataEntry", "SkillDataAsset", "SkillDataParser", "CHARA_SKILL_MAX_LEVEL")
 
-SKILL_MAX_LEVEL = 4
+CHARA_SKILL_MAX_LEVEL = 4
 
 
 @dataclass
@@ -99,7 +99,7 @@ class SkillDataEntry(MasterEntryBase):
             self.adv_skill_lv1_action_id
             if self.adv_skill_lv1_action_id and level + 1 >= self.adv_skill_lv1
             else self.action_1_id
-            for level in range(SKILL_MAX_LEVEL)
+            for level in range(CHARA_SKILL_MAX_LEVEL)
         ]
 
     @property

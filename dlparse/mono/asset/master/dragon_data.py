@@ -1,0 +1,67 @@
+"""Classes for handling the dragon data asset."""
+from dataclasses import dataclass
+from typing import Optional, Union
+
+from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
+from dlparse.mono.asset.extension import NamedEntry, SkillEntry
+
+__all__ = ("DragonDataEntry", "DragonDataAsset", "DragonDataParser", "DRAGON_SKILL_MAX_LEVEL")
+
+DRAGON_SKILL_MAX_LEVEL = 2
+
+
+@dataclass
+class DragonDataEntry(NamedEntry, SkillEntry, MasterEntryBase):
+    """Single entry of a dragon data."""
+
+    ability_id_1_lv1: int
+    ability_id_1_lv2: int
+    ability_id_1_lv3: int
+    ability_id_1_lv4: int
+    ability_id_1_lv5: int
+    ability_id_2_lv1: int
+    ability_id_2_lv2: int
+    ability_id_2_lv3: int
+    ability_id_2_lv4: int
+    ability_id_2_lv5: int
+
+    @staticmethod
+    def parse_raw(data: dict[str, Union[str, int]]) -> "DragonDataEntry":
+        return DragonDataEntry(
+            id=data["_Id"],
+            emblem_id=data["_EmblemId"],
+            name_label=data["_Name"],
+            name_label_2=data["_SecondName"],
+            skill_1_id=data["_Skill1"],
+            skill_2_id=data["_Skill2"],
+            ability_id_1_lv1=data["_Abilities11"],
+            ability_id_1_lv2=data["_Abilities12"],
+            ability_id_1_lv3=data["_Abilities13"],
+            ability_id_1_lv4=data["_Abilities14"],
+            ability_id_1_lv5=data["_Abilities15"],
+            ability_id_2_lv1=data["_Abilities21"],
+            ability_id_2_lv2=data["_Abilities22"],
+            ability_id_2_lv3=data["_Abilities23"],
+            ability_id_2_lv4=data["_Abilities24"],
+            ability_id_2_lv5=data["_Abilities25"],
+        )
+
+
+class DragonDataAsset(MasterAssetBase[DragonDataEntry]):
+    """Dragon data asset class."""
+
+    asset_file_name = "DragonData.json"
+
+    def __init__(self, file_path: Optional[str] = None, /,
+                 asset_dir: Optional[str] = None):
+        super().__init__(DragonDataParser, file_path, asset_dir=asset_dir)
+
+
+class DragonDataParser(MasterParserBase[DragonDataEntry]):
+    """Class to parse the dragon data file."""
+
+    @classmethod
+    def parse_file(cls, file_path: str) -> dict[int, DragonDataEntry]:
+        entries = cls.get_entries(file_path)
+
+        return {key: DragonDataEntry.parse_raw(value) for key, value in entries.items()}

@@ -3,8 +3,8 @@ from typing import Optional
 
 from dlparse.transformer import SkillTransformer
 from .asset import (
-    AbilityAsset, ActionConditionAsset, CharaDataAsset, CharaModeAsset, HitAttrAsset, PlayerActionInfoAsset,
-    SkillChainAsset, SkillDataAsset, TextAsset,
+    AbilityAsset, ActionConditionAsset, CharaDataAsset, CharaModeAsset, DragonDataAsset, HitAttrAsset,
+    PlayerActionInfoAsset, SkillChainAsset, SkillDataAsset, TextAsset,
 )
 from .loader import PlayerActionFileLoader
 
@@ -20,6 +20,7 @@ class AssetManager:
         self._asset_action_cond: ActionConditionAsset = ActionConditionAsset(asset_dir=master_asset_dir)
         self._asset_chara_data: CharaDataAsset = CharaDataAsset(asset_dir=master_asset_dir)
         self._asset_chara_mode: CharaModeAsset = CharaModeAsset(asset_dir=master_asset_dir)
+        self._asset_dragon: DragonDataAsset = DragonDataAsset(asset_dir=master_asset_dir)
         self._asset_hit_attr: HitAttrAsset = HitAttrAsset(asset_dir=master_asset_dir)
         self._asset_skill: SkillDataAsset = SkillDataAsset(asset_dir=master_asset_dir)
         self._asset_skill_chain: SkillChainAsset = SkillChainAsset(asset_dir=master_asset_dir)
@@ -52,6 +53,11 @@ class AssetManager:
     def asset_chara_mode(self) -> CharaModeAsset:
         """Get the character mode asset."""
         return self._asset_chara_mode
+
+    @property
+    def asset_dragon(self) -> DragonDataAsset:
+        """Get the dragon data asset."""
+        return self._asset_dragon
 
     @property
     def asset_hit_attr(self) -> HitAttrAsset:

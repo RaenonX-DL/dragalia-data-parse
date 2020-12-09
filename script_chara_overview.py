@@ -99,11 +99,11 @@ def chara_skill_overview(chara_id):
     print()
     print(f"Skill Identifiers available: {' / '.join(skill_identifiers)}")
     if chara_data.has_unique_dragon:
-        print("!" * 10 + "This unit has an unique dragon." + "!" * 10)
+        print("!" * 10 + " UNIQUE DRAGON " + "!" * 10)
     if chara_data.has_unique_weapon:
-        print("-" * 10 + "This unit has an unique weapon." + "-" * 10)
+        print("-" * 10 + " UNIQUE WEAPON " + "-" * 10)
     if chara_data.has_special_win_face:
-        print("-" * 10 + "This unit has a special winning face." + "-" * 10)
+        print("-" * 10 + " UNIQUE WIN FACE " + "-" * 10)
     print("=" * 50)
 
     for skill_id_entry in skill_id_entries:
@@ -112,4 +112,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10350203)
+    chara_skill_overview(10950301)
