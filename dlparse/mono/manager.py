@@ -4,7 +4,7 @@ from typing import Optional
 from dlparse.transformer import SkillTransformer
 from .asset import (
     AbilityAsset, ActionConditionAsset, CharaDataAsset, CharaModeAsset, HitAttrAsset, PlayerActionInfoAsset,
-    SkillDataAsset, TextAsset,
+    SkillChainAsset, SkillDataAsset, TextAsset,
 )
 from .loader import PlayerActionFileLoader
 
@@ -22,6 +22,7 @@ class AssetManager:
         self._asset_chara_mode: CharaModeAsset = CharaModeAsset(asset_dir=master_asset_dir)
         self._asset_hit_attr: HitAttrAsset = HitAttrAsset(asset_dir=master_asset_dir)
         self._asset_skill: SkillDataAsset = SkillDataAsset(asset_dir=master_asset_dir)
+        self._asset_skill_chain: SkillChainAsset = SkillChainAsset(asset_dir=master_asset_dir)
         self._asset_text: TextAsset = TextAsset(asset_dir=master_asset_dir, asset_dir_custom=custom_asset_dir)
         self._asset_pa_info: PlayerActionInfoAsset = PlayerActionInfoAsset(asset_dir=master_asset_dir)
 
@@ -61,6 +62,11 @@ class AssetManager:
     def asset_skill(self) -> SkillDataAsset:
         """Get the skill data asset."""
         return self._asset_skill
+
+    @property
+    def asset_skill_chain(self) -> SkillChainAsset:
+        """Get the skill chain data asset."""
+        return self._asset_skill_chain
 
     @property
     def asset_text(self) -> TextAsset:

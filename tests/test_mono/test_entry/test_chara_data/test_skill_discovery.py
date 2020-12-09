@@ -1,4 +1,4 @@
-from dlparse.enums import SkillNumber
+from dlparse.enums import SkillChainCondition, SkillNumber
 from dlparse.mono.asset import CharaDataAsset, SkillIdEntry, SkillIdentifierLabel
 from dlparse.mono.manager import AssetManager
 from .test_props import create_dummy
@@ -185,6 +185,46 @@ def test_via_ability_2(asset_chara: CharaDataAsset, asset_manager: AssetManager)
         SkillIdEntry(107504033, SkillNumber.S1, SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S1, 963)),
         # S2 @ CP = 100
         SkillIdEntry(107504034, SkillNumber.S2, SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S2, 963)),
+    ]
+
+    assert actual_identifiers == expected_identifiers
+
+
+def test_via_chain(asset_chara: CharaDataAsset, asset_manager: AssetManager):
+    """
+    Get the skill IDs which variants are buried in the skill chain data.
+
+    These can be found from the ability variants of an ability data.
+    """
+    # Gala Alex
+    # https://dragalialost.gamepedia.com/Gala_Alex
+    chara_data = asset_chara.get_data_by_id(10150502)
+
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
+
+    expected_identifiers = [
+        # S1 Base
+        SkillIdEntry(101505021, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
+        # S2 Base
+        SkillIdEntry(101505022, SkillNumber.S2, SkillIdentifierLabel.S2_BASE),
+        # S1 Chained
+        SkillIdEntry(101505023, SkillNumber.S1,
+                     SkillIdentifierLabel.of_chain(SkillNumber.S1, SkillChainCondition.NONE)),
+        # S1 Chained (Target buffed)
+        SkillIdEntry(101505024, SkillNumber.S1,
+                     SkillIdentifierLabel.of_chain(SkillNumber.S1, SkillChainCondition.TARGET_HAS_BUFF)),
+        # S1 Chained (Target break)
+        SkillIdEntry(101505025, SkillNumber.S1,
+                     SkillIdentifierLabel.of_chain(SkillNumber.S1, SkillChainCondition.TARGET_BK_STATE)),
+        # S2 Chained
+        SkillIdEntry(101505026, SkillNumber.S2,
+                     SkillIdentifierLabel.of_chain(SkillNumber.S2, SkillChainCondition.NONE)),
+        # S2 Chained (Target buffed)
+        SkillIdEntry(101505027, SkillNumber.S2,
+                     SkillIdentifierLabel.of_chain(SkillNumber.S2, SkillChainCondition.TARGET_HAS_BUFF)),
+        # S2 Chained (Target break)
+        SkillIdEntry(101505028, SkillNumber.S2,
+                     SkillIdentifierLabel.of_chain(SkillNumber.S2, SkillChainCondition.TARGET_BK_STATE)),
     ]
 
     assert actual_identifiers == expected_identifiers

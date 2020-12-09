@@ -7,4 +7,5 @@ from .chara_mode_data import CharaModeAsset, CharaModeEntry
 from .cheat_detection import CheatDetectionAsset, CheatDetectionEntry
 from .player_action import PlayerActionInfoAsset, PlayerActionInfoEntry
 from .skill_data import SkillDataAsset, SkillDataEntry
+from .skill_data_chain import SkillChainAsset, SkillChainEntry
 from .text_label import TextAsset, TextEntry

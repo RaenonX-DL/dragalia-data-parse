@@ -4,7 +4,7 @@ from enum import IntEnum
 
 class HitExecType(IntEnum):
     """
-    Enum of the hit execution type.
+    Enums of the hit execution type.
 
     This corresponds to the field ``_HitExecType`` in the hit attribute asset.
     """

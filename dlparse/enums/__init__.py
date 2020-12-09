@@ -4,6 +4,7 @@ from .ability_variant import AbilityVariantType
 from .action_type import ActionCommandType
 from .buff_parameter import BuffParameter
 from .bullet import FireStockPattern
+from .chain_cond import SkillChainCondition
 from .element import Element, ElementFlag
 from .hit_exec_type import HitExecType
 from .skill_condition import *  # noqa

@@ -62,6 +62,8 @@ class SkillDataEntry(MasterEntryBase):
     ability_lv3_id: int
     ability_lv4_id: int
 
+    chain_group_id: int
+
     trans_skill_id: int
     """Phase change. The skill ID of the next phase."""
     trans_condition_id: int
@@ -115,9 +117,14 @@ class SkillDataEntry(MasterEntryBase):
         return self.as_helper_skill_id != 0
 
     @property
-    def has_phase_changing(self) -> bool:
-        """Check if the skill has phase changing available."""
+    def has_phase_variant(self) -> bool:
+        """Check if the skill has a phase variant."""
         return self.trans_skill_id != 0
+
+    @property
+    def has_chain_variant(self):
+        """Check if the skill has a chain variant."""
+        return self.chain_group_id != 0
 
     def get_sp_at_level(self, level: int) -> int:
         """
@@ -188,6 +195,7 @@ class SkillDataEntry(MasterEntryBase):
             action_4_id=data["_ActionId4"],
             adv_skill_lv1=data["_AdvancedSkillLv1"],
             adv_skill_lv1_action_id=data["_AdvancedActionId1"],
+            chain_group_id=data["_ChainGroupId"],
             ability_lv1_id=data["_Ability1"],
             ability_lv2_id=data["_Ability2"],
             ability_lv3_id=data["_Ability3"],

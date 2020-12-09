@@ -27,7 +27,7 @@ class SkillNumber(Enum):
 
         :raises InvalidSkillNumError: if the skill number does not have representation implemented yet
         """
-        # Keeping the original `__repr__` implementation for enums to easier identify the enum while debugging
+        # Keep the original `__repr__` implementation for enums to identify the enum while debugging easier
         if self == SkillNumber.S1:
             return "s1"
 

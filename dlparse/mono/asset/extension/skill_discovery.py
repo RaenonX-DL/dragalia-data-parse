@@ -4,7 +4,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Union
 
-from dlparse.enums import SkillNumber
+from dlparse.enums import SkillChainCondition, SkillNumber
 from dlparse.errors import ActionDataNotFoundError, InvalidSkillIdentifierLabelError
 
 if TYPE_CHECKING:
@@ -52,6 +52,11 @@ class SkillIdentifierLabel:
     def of_phase(skill_num: SkillNumber, phase_num: int) -> str:
         """Get the identifier label of ``skill_num`` in phase ``phase_num``."""
         return f"{skill_num.repr}_p{phase_num}"
+
+    @staticmethod
+    def of_chain(skill_num: SkillNumber, chain_cond: SkillChainCondition):
+        """Get the identifier label of chained skill ``skill_num`` given condition ``chain_cond``."""
+        return f"{skill_num.repr}_chain_{chain_cond.repr}"
 
     @staticmethod
     def skill_enhanced_by_skill(receiver_skill_num: SkillNumber, enhancer_skill_num: SkillNumber) -> str:
@@ -308,8 +313,8 @@ class SkillDiscoverableEntry(ABC):
     def _phase_single(
             skill_data: "SkillDataEntry", asset_manager: "AssetManager", skill_num: SkillNumber
     ) -> list[SkillIdEntry]:
-        """Get all possible skills after phase changing for a single ``skill_data``, excluding the source skill."""
-        if not skill_data.has_phase_changing:
+        """Get all possible skills after phase changing for ``skill_data``, excluding the source skill."""
+        if not skill_data.has_phase_variant:
             return []
 
         ret: list[SkillIdEntry] = []
@@ -336,17 +341,51 @@ class SkillDiscoverableEntry(ABC):
 
         return ret
 
+    @staticmethod
+    def _chain_single(
+            skill_data: "SkillDataEntry", asset_manager: "AssetManager", skill_num: SkillNumber
+    ) -> list[SkillIdEntry]:
+        """Get all possible chained skill variants, excluding the source skill."""
+        if not skill_data.has_chain_variant:
+            return []
+
+        ret: list[SkillIdEntry] = []
+
+        chain_data_list = asset_manager.asset_skill_chain.get_data_by_group_id(skill_data.chain_group_id)
+        for chain_data in chain_data_list:
+            ret.append(SkillIdEntry(
+                chain_data.id,
+                skill_num,
+                SkillIdentifierLabel.of_chain(skill_num, chain_data.chain_condition)
+            ))
+
+        return ret
+
     def _from_phase(
             self, asset_manager: "AssetManager", skill_1_data: "SkillDataEntry", skill_2_data: "SkillDataEntry"
     ) -> list[SkillIdEntry]:
-        """Get all phase changed skill variants of both ``skill_1_data`` and ``skill_2_data``."""
+        """Get all phased skill variants of both ``skill_1_data`` and ``skill_2_data``."""
         ret: list[SkillIdEntry] = []
 
-        if skill_1_data and skill_1_data.has_phase_changing:
+        if skill_1_data.has_phase_variant:
             ret.extend(self._phase_single(skill_1_data, asset_manager, SkillNumber.S1))
 
-        if skill_2_data and skill_2_data.has_phase_changing:
+        if skill_2_data.has_phase_variant:
             ret.extend(self._phase_single(skill_2_data, asset_manager, SkillNumber.S2))
+
+        return ret
+
+    def _from_chain(
+            self, asset_manager: "AssetManager", skill_1_data: "SkillDataEntry", skill_2_data: "SkillDataEntry"
+    ) -> list[SkillIdEntry]:
+        """Get all chained skill variants of both ``skill_1_data`` and ``skill_2_data``."""
+        ret: list[SkillIdEntry] = []
+
+        if skill_1_data.has_chain_variant:
+            ret.extend(self._chain_single(skill_1_data, asset_manager, SkillNumber.S1))
+
+        if skill_2_data.has_chain_variant:
+            ret.extend(self._chain_single(skill_2_data, asset_manager, SkillNumber.S2))
 
         return ret
 
@@ -366,6 +405,7 @@ class SkillDiscoverableEntry(ABC):
         ret.extend(self._from_hit_labels(asset_manager, self.skill_2_id, SkillNumber.S2))
         ret.extend(self._from_helper(skill_1_data))
         ret.extend(self._from_phase(asset_manager, skill_1_data, skill_2_data))
+        ret.extend(self._from_chain(asset_manager, skill_1_data, skill_2_data))
 
         return ret
 
