@@ -4,7 +4,7 @@ def test_fs_atk():
     # skill_data_base = transformer_skill.transform_attacking(104405012)
     pass
 
-    # FIXME - Sazanka S2-FS
+    # TEST - Sazanka S2-FS
     #   BUF_123_LV01
     #   310011301
     #   _EnhancedBurstAttack - FS

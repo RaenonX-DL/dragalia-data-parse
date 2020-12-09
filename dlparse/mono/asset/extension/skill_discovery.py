@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Union
 
 from dlparse.enums import SkillChainCondition, SkillNumber
 from dlparse.errors import ActionDataNotFoundError, InvalidSkillIdentifierLabelError
+from .skill import SkillEntry
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -134,20 +135,31 @@ class SkillIdEntry:
         return ret
 
 
-class SkillDiscoverableEntry(ABC):
+@dataclass
+class SkillDiscoverableEntry(SkillEntry, ABC):
     """An interface that allows an entry to discover its possible skills."""
-
-    mode_ids: list[int]
-
-    skill_1_id: int
-    skill_2_id: int
 
     ss_skill_id: int
     ss_skill_num: SkillNumber
 
     @property
+    @abstractmethod
     def ability_ids_all_level(self) -> list[int]:
         """Get a list of effective (non-zero) ability / passive IDs at all levels."""
+        raise NotImplementedError()
+
+    @property
+    @abstractmethod
+    def mode_ids(self) -> list[int]:
+        """
+        Get a list of effective mode IDs.
+
+        This could include but not limited to:
+
+        - Enhance mode (Bellina)
+
+        - Buff stacks (Catherine)
+        """
         raise NotImplementedError()
 
     @abstractmethod

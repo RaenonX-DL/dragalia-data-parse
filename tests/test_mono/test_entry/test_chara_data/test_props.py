@@ -82,6 +82,10 @@ def create_dummy(**kwargs) -> CharaDataEntry:
         "grow_material_start": None,
         "grow_material_end": None,
         "grow_material_id": 0,
+        "unique_dragon_inherit_skill_lv": 0,
+        "unique_weapon_id": 0,
+        "win_face_eye_id": 0,
+        "win_face_mouth_id": 0
     }
 
     params.update(kwargs)

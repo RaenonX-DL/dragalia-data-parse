@@ -6,7 +6,7 @@ from typing import Optional, Union
 from dlparse.enums import Element, SkillNumber
 from dlparse.errors import InvalidSkillNumError, TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import SkillDiscoverableEntry
+from dlparse.mono.asset.extension import NamedEntry, SkillDiscoverableEntry
 from .skill_data import SKILL_MAX_LEVEL
 from .text_label import TextAsset
 
@@ -14,14 +14,10 @@ __all__ = ("CharaDataEntry", "CharaDataAsset", "CharaDataParser")
 
 
 @dataclass
-class CharaDataEntry(SkillDiscoverableEntry, MasterEntryBase):
+class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
     """Single entry of a character data."""
 
     # region Attributes
-    name_label: str
-    second_name_label: str
-    emblem_id: int
-
     weapon_type_id: int
     rarity: int
 
@@ -68,9 +64,6 @@ class CharaDataEntry(SkillDiscoverableEntry, MasterEntryBase):
     combo_original_id: int
     combo_mode_1_id: int
     combo_mode_2_id: int
-
-    skill_1_id: int
-    skill_2_id: int
 
     # region Passive ability
     ability_1_lv_1_id: int
@@ -242,8 +235,7 @@ class CharaDataEntry(SkillDiscoverableEntry, MasterEntryBase):
 
         - Buff stacks (Catherine)
         """
-        return [mode_id for mode_id in (self.mode_1_id, self.mode_2_id, self.mode_3_id, self.mode_4_id)
-                if mode_id != 0]
+        return [mode_id for mode_id in (self.mode_1_id, self.mode_2_id, self.mode_3_id, self.mode_4_id) if mode_id]
 
     @property
     def custom_id(self) -> str:
