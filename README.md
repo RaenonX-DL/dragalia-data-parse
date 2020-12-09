@@ -86,9 +86,13 @@ Export all skill data as csv to the specified location.
 
 - \[SimCord\] ThatOneGuy
 
-### Datamining Pipeline
+### Datamining and data deploying pipeline
 
 - \[OM\] [Ryo][GH-ryo]
+
+### Miscellaneous discussions
+
+- \[OM\] Siena
 
 [GH-mushymato]: https://github.com/Mushymato
 

@@ -17,6 +17,7 @@ __all__ = ("CharaDataEntry", "CharaDataAsset", "CharaDataParser")
 class CharaDataEntry(SkillDiscoverableEntry, MasterEntryBase):
     """Single entry of a character data."""
 
+    # region Attributes
     name_label: str
     second_name_label: str
     emblem_id: int
@@ -120,10 +121,16 @@ class CharaDataEntry(SkillDiscoverableEntry, MasterEntryBase):
     # endregion
 
     unique_dragon_id: int
+    unique_dragon_inherit_skill_lv: int
 
     is_dragon_drive: bool
     """Bellina, etc."""
     is_playable: bool
+
+    unique_weapon_id: int
+
+    win_face_eye_id: int
+    win_face_mouth_id: int
 
     max_friendship_point: int
     """Raid event units."""
@@ -131,6 +138,8 @@ class CharaDataEntry(SkillDiscoverableEntry, MasterEntryBase):
     grow_material_start: Optional[datetime]
     grow_material_end: Optional[datetime]
     grow_material_id: int
+
+    # endregion
 
     @property
     def is_70_mc(self) -> bool:
@@ -251,6 +260,21 @@ class CharaDataEntry(SkillDiscoverableEntry, MasterEntryBase):
         return Element(self.element_id)
 
     @property
+    def has_unique_weapon(self) -> bool:
+        """Check if the character has an unique weapon"""
+        return self.unique_weapon_id != 0
+
+    @property
+    def has_special_win_face(self) -> bool:
+        """Check if the character has a special winning face."""
+        return self.win_face_eye_id != 0 or self.win_face_mouth_id
+
+    @property
+    def has_unique_dragon(self) -> bool:
+        """Check if the character has an unique dragon."""
+        return self.unique_dragon_id != 0
+
+    @property
     def ability_ids_all_level(self) -> list[int]:
         return [
             ability_id for ability_id in (
@@ -354,8 +378,12 @@ class CharaDataEntry(SkillDiscoverableEntry, MasterEntryBase):
             ss_skill_relation_id=data["_EditSkillRelationId"],
             ss_release_item_id=data["_EditReleaseEntityId1"],
             ss_release_item_quantity=data["_EditReleaseEntityQuantity1"],
+            win_face_eye_id=data["_WinFaceEyeMotion"],
+            win_face_mouth_id=data["_WinFaceEyeMotion"],
+            unique_weapon_id=data["_UniqueWeaponId"],
             unique_dragon_id=data["_UniqueDragonId"],
-            is_dragon_drive=bool(data["_IsEnhanceChara"]),
+            unique_dragon_inherit_skill_lv=bool(data["_IsConvertDragonSkillLevel"]),
+            is_dragon_drive=bool(data["_WinFaceMouthMotion"]),
             is_playable=bool(data["_IsPlayable"]),
             max_friendship_point=data["_MaxFriendshipPoint"],
             grow_material_start=cls.parse_datetime(data["_GrowMaterialOnlyStartDate"]),
