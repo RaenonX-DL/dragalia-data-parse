@@ -1,1 +1,1 @@
-"""Main parser for the Dragalia Lost data."""
+"""Main implementations of the Dragalia Lost game asset data parser."""

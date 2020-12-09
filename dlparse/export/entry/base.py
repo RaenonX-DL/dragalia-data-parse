@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import InitVar, dataclass, field
 from typing import Generic, TypeVar, final
 
-from dlparse.enums import Element, SkillConditionComposite
+from dlparse.enums import Element, SkillConditionComposite, SkillNumber
 from dlparse.mono.asset import CharaDataEntry, SkillDataEntry, SkillIdEntry, TextAsset
 
 __all__ = ("ExportEntryBase", "SkillExportEntryBase")
@@ -61,7 +61,7 @@ class SkillExportEntryBase(Generic[T], ExportEntryBase, ABC):
 
     skill_internal_id: int = field(init=False)
     skill_identifiers: str = field(init=False)
-    skill_num: int = field(init=False)
+    skill_num: SkillNumber = field(init=False)
     skill_name: str = field(init=False)
     skill_max_level: int = field(init=False)
 

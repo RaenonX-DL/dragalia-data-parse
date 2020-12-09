@@ -99,24 +99,19 @@ class SkillTransformer:
         ret: HitDataList = []
 
         if init_ability_data := self._ability_asset.get_data_by_id(ability_id):
-            # Get all ability data from the condition chain
-            ability_data_queue = [init_ability_data]
+            # Get all ability data from the ability chain
+            ability_data_dict = init_ability_data.get_all_ability(self._ability_asset)
 
-            while ability_data_queue:
-                # Pop an ability data from the frontier
-                ability_data = ability_data_queue.pop(0)
-
-                # Parse to :class:`HitData` and attach it to the hit data list to be returned
+            # Loop through each hit labels of each ability data
+            for ability_data in ability_data_dict.values():
                 for hit_label in ability_data.assigned_hit_labels:
                     # If the hit attribute is missing, just skip it; sometimes it's simply missing
                     if hit_attr_data := self._hit_attr.get_data_by_id(hit_label):
-                        ret.append(hit_data_cls(hit_attr=hit_attr_data, action_component=None, action_id=action_id,
-                                                pre_condition=ability_data.condition.to_skill_condition()))
-
-                # Add all other ability data to the ability data queue
-                for other_ability_id in ability_data.other_ability_ids:
-                    if new_frontier := self._ability_asset.get_data_by_id(other_ability_id):
-                        ability_data_queue.append(new_frontier)
+                        # Parse to :class:`HitData` and attach it to the hit data list to be returned
+                        ret.append(hit_data_cls(
+                            hit_attr=hit_attr_data, action_component=None, action_id=action_id,
+                            pre_condition=ability_data.condition.to_skill_condition()
+                        ))
 
         return ret
 

@@ -70,7 +70,7 @@ def create_dummy(**kwargs) -> CharaDataEntry:
         "fs_count_max": 0,
         "ss_cost_max_self": 0,
         "ss_skill_id": 0,
-        "ss_skill_num": 0,
+        "ss_skill_num": 1,
         "ss_skill_cost": 0,
         "ss_skill_relation_id": 0,
         "ss_release_item_id": 0,

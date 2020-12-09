@@ -1,8 +1,11 @@
 """Errors related to skill parsing / transforming."""
 from abc import ABC
-from typing import Any
+from typing import Any, TYPE_CHECKING, Union
 
 from .base import AppValueError
+
+if TYPE_CHECKING:
+    from dlparse.enums import SkillNumber
 
 __all__ = ("ConditionValidationFailedError", "BulletEndOfLifeError", "DamagingHitValidationFailedError",
            "HitDataUnavailableError", "ActionInfoNotFoundError", "InvalidSkillIdentifierLabelError",
@@ -45,7 +48,7 @@ class UnhandledSelfDamageError(AppValueError):
 class InvalidSkillNumError(AppValueError):
     """Error to be raised if the given skill number is invalid."""
 
-    def __init__(self, skill_num: int):
+    def __init__(self, skill_num: Union["SkillNumber", int]):
         super().__init__(f"Skill number `{skill_num}` is invalid")
 
 

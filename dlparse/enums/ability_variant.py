@@ -19,6 +19,9 @@ class AbilityVariantType(Enum):
 
     UNKNOWN = -1
 
+    NOT_USED = 0
+    """Variant not used."""
+
     CHANGE_STATE = 14
     """Calls the hit attribute (at str field) or the action condition (ID at ID-A field) if the condition holds."""
 

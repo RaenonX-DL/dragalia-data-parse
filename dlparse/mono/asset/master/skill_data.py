@@ -1,132 +1,13 @@
 """Classes for handling the skill data asset."""
-from collections import defaultdict
 from dataclasses import dataclass
 from typing import Optional, Union
 
-from dlparse.errors import InvalidSkillIdentifierLabelError, InvalidSkillLevelError
+from dlparse.errors import InvalidSkillLevelError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
-__all__ = ("SkillIdentifierLabel", "SkillIdEntry", "SkillDataEntry", "SkillDataAsset", "SkillDataParser")
+__all__ = ("SkillDataEntry", "SkillDataAsset", "SkillDataParser", "SKILL_MAX_LEVEL")
 
 SKILL_MAX_LEVEL = 4
-
-
-class SkillIdentifierLabel:
-    """
-    Class for skill identifier labels.
-
-    The label name will be used in `translation.json` for different locale at the frontend side.
-    Therefore, the naming format may be different.
-
-    Quick reference
-    ===============
-    Base S1: ``s1_base``
-
-    Base S2: ``s2_base``
-
-    Helper: ``helper``
-
-    S1 in Mode #5: ``s1_mode_5``
-
-    S1 enhanced by S2: ``s1_enhanced_by_s2``
-
-    FS enhanced by S1: ``fs_enhanced_by_s1``
-
-    S1 in phase 3: ``s1_p3``
-    """
-
-    S1_BASE = "s1_base"
-    S2_BASE = "s2_base"
-    SHARED = "shared"
-    HELPER = "helper"
-
-    @staticmethod
-    def of_mode(skill_num: int, mode_id: int) -> str:
-        """Get the identifier label of the skill ``skill_num`` in mode ``mode_id``."""
-        return f"s{skill_num}_mode_{mode_id}"
-
-    @staticmethod
-    def of_phase(skill_num: int, phase_num: int) -> str:
-        """Get the identifier label of ``skill_num`` in phase ``phase_num``."""
-        return f"s{skill_num}_p{phase_num}"
-
-    @staticmethod
-    def skill_enhanced_by_skill(receiver_skill_num: int, enhancer_skill_num: int) -> str:
-        """
-        Get the identifier label of the skill ``receiver_skill_num`` enhanced by ``enhancer_skill_num``.
-
-        :raises InvalidSkillIdentifierLabelError: if the enhancer skill and the receiver skill is the same
-        """
-        if receiver_skill_num == enhancer_skill_num:
-            raise InvalidSkillIdentifierLabelError("Skill that enhances itself should be considered as phase changing")
-
-        return f"s{receiver_skill_num}_enhanced_by_s{enhancer_skill_num}"
-
-    @staticmethod
-    def skill_enhanced_by_ability(skill_num: int, ability_id: int) -> str:
-        """Get the identifier label of the skill ``skill_num`` enhanced by the ability ``ability_id``."""
-        return f"s{skill_num}_enhanced_by_ab{ability_id}"
-
-    @staticmethod
-    def fs_enhanced_by_skill(enhancer_skill_num: int) -> str:
-        """Get the identifier label of FS enhanced by ``enhancer_skill_num``."""
-        return f"fs_enhanced_by_s{enhancer_skill_num}"
-
-
-@dataclass
-class SkillIdEntry:
-    """Class for a skill ID entry."""
-
-    skill_id: int
-    """Skill ID."""
-    skill_num: int
-    """Number of the skill. ``1`` for S1; ``2`` for S2; ``0`` for shared skill."""
-    skill_identifier_labels: Union[str, list[str]]
-    """
-    A list of skill identifier labels.
-
-    These will be translated at the frontend side for easier identification.
-
-    If a skill has multiple purposes (for example, served as shared variant and also S1 base, which is common),
-    all of the purposes will be listed.
-    """
-
-    def __post_init__(self):
-        # Force labels to be a list
-        if isinstance(self.skill_identifier_labels, str):
-            self.skill_identifier_labels = [self.skill_identifier_labels]
-
-    @staticmethod
-    def merge(entries: list["SkillIdEntry"]) -> list["SkillIdEntry"]:
-        """
-        Merge duplicated skill ID ``entries``.
-
-        If there are multiple entries sharing the same ``skill_id``,
-        they will be merged into one by merging ``skill_identifier_labels``.
-        """
-        entries_to_be_processed = defaultdict(list)
-
-        for entry in entries:
-            entries_to_be_processed[entry.skill_id].append(entry)
-
-        ret: list[SkillIdEntry] = []
-
-        for _, entry_list in sorted(entries_to_be_processed.items(), key=lambda item: item[0]):
-            entry: SkillIdEntry = entry_list[0]
-
-            for subsequent_entry in entry_list[1:]:
-                # Overwrite ``0`` (share skill) if possible
-                entry.skill_num = entry.skill_num or subsequent_entry.skill_num
-
-                # Filter out duplicated entries while preserving its order
-                entry.skill_identifier_labels.extend(
-                    label for label in subsequent_entry.skill_identifier_labels
-                    if label not in entry.skill_identifier_labels
-                )
-
-            ret.append(entry)
-
-        return ret
 
 
 @dataclass
@@ -271,35 +152,6 @@ class SkillDataEntry(MasterEntryBase):
             return self.sp_ss_lv4
 
         raise InvalidSkillLevelError(level)
-
-    def get_phase_changed_skills(self, skill_asset: "SkillDataAsset", skill_num: int) -> list[SkillIdEntry]:
-        """Get a list of skills of all possible transitioned skills, excluding the source skill."""
-        ret: list[SkillIdEntry] = []
-        added_skill_id: set[int] = set()
-        current_source: SkillDataEntry = self
-
-        if not self.has_phase_changing:
-            return ret
-
-        while trans_skill_data := skill_asset.get_data_by_id(current_source.trans_skill_id):
-            if trans_skill_data.id == self.id:
-                break  # Changed to source skill data
-
-            if trans_skill_data.id in added_skill_id:
-                break  # Phase looped back
-
-            phase_num = len(ret) + 2
-
-            ret.append(SkillIdEntry(
-                trans_skill_data.id,
-                skill_num,
-                SkillIdentifierLabel.of_phase(skill_num, phase_num)
-            ))
-            added_skill_id.add(trans_skill_data.id)
-
-            current_source = trans_skill_data
-
-        return ret
 
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "SkillDataEntry":

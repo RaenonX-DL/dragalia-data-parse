@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
-from dlparse.enums import AbilityCondition, AbilityVariantType, SkillCondition
+from dlparse.enums import AbilityCondition, AbilityVariantType, SkillCondition, SkillNumber
 from dlparse.errors import AbilityConditionUnconvertibleError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
@@ -88,9 +88,19 @@ class AbilityVariantEntry:
     up_value: float
 
     @property
+    def is_not_used(self) -> bool:
+        """Check if the variant is not used."""
+        return self.type_enum == AbilityVariantType.NOT_USED
+
+    @property
     def assigned_hit_label(self) -> Optional[str]:
-        """Get the assigned hit label, if the type matches. Returns ``None`` if unavailable."""
+        """Get the assigned hit label. Returns ``None`` if unavailable."""
         return self.id_str if self.type_enum == AbilityVariantType.CHANGE_STATE else None
+
+    @property
+    def assigned_action_condition(self) -> Optional[int]:
+        """Get the assigned action condition ID. Returns ``None`` if unavailable."""
+        return self.id_a if self.type_enum == AbilityVariantType.CHANGE_STATE else None
 
     @property
     def other_ability_id(self) -> Optional[int]:
@@ -98,9 +108,12 @@ class AbilityVariantEntry:
         return self.id_a if self.type_enum == AbilityVariantType.OTHER_ABILITY else None
 
     @property
-    def enhanced_skill(self) -> Optional[tuple[int, int]]:
+    def enhanced_skill(self) -> Optional[tuple[int, SkillNumber]]:
         """Get the enhanced skill ID and its skill number. Returns ``None`` if unavailable."""
-        return (self.id_a, self.target_action_id - 2) if self.type_enum == AbilityVariantType.ENHANCE_SKILL else None
+        return (
+            (self.id_a, SkillNumber.s1_s2_only(self.target_action_id - 2))
+            if self.type_enum == AbilityVariantType.ENHANCE_SKILL else None
+        )
 
 
 @dataclass
@@ -117,11 +130,6 @@ class AbilityEntry(MasterEntryBase):
     variant_3: AbilityVariantEntry
 
     @property
-    def variants(self) -> list[AbilityVariantEntry]:
-        """Get all ability variants as a list."""
-        return [self.variant_1, self.variant_2, self.variant_3]
-
-    @property
     def assigned_hit_labels(self) -> list[str]:
         """
         Get a list of hit labels assigned to the variants.
@@ -131,24 +139,59 @@ class AbilityEntry(MasterEntryBase):
         return [variant.assigned_hit_label for variant in self.variants if variant.assigned_hit_label]
 
     @property
-    def other_ability_ids(self) -> list[int]:
+    def action_conditions(self) -> list[int]:
         """
-        Get a list of ability IDs that are being referenced by the variants.
+        Get a list of hit labels assigned to the variants.
 
-        Returns an empty list if no other ability IDs available.
+        Returns an empty list if no assigned label found.
         """
-        return [variant.other_ability_id for variant in self.variants if variant.other_ability_id]
+        return [variant.assigned_action_condition for variant in self.variants if variant.assigned_action_condition]
 
     @property
-    def enhanced_skills(self) -> list[tuple[int, int]]:
+    def enhanced_skills(self) -> list[tuple[int, SkillNumber]]:
         """
-        Get a list of skills that may be enhanced if the ability condition holds.
+        Get a list of skill IDs and numbers that will be enhanced if the ability condition holds.
 
-        The 1st element is the skill ID; the 2nd element is the skill number.
-
-        Returns an empty list if no enhanced skill variants available.
+        Returns an empty list if no skill enhancement found.
         """
         return [variant.enhanced_skill for variant in self.variants if variant.enhanced_skill]
+
+    @property
+    def variants(self) -> list[AbilityVariantEntry]:
+        """
+        Get all in-use ability variants as a list.
+
+        Note that this does **not** give the other variants that come from different ability linked by the variants.
+        To get all possible variants, call ``get_variants()`` instead.
+        """
+        return [variant for variant in (self.variant_1, self.variant_2, self.variant_3) if not variant.is_not_used]
+
+    def get_variants(self, ability_asset: "AbilityAsset") -> list[AbilityVariantEntry]:
+        """Get all variants bound to the ability."""
+        variants_traverse: list[AbilityVariantEntry] = self.variants
+        variants_return: list[AbilityVariantEntry] = []
+
+        while variants_traverse:
+            variant = variants_traverse.pop(0)
+            other_ability_id = variant.other_ability_id
+
+            if other_ability_id:
+                variants_return.append(variant)
+                variants_traverse.extend(ability_asset.get_data_by_id(other_ability_id).variants)
+
+        return variants_return
+
+    def get_all_ability(self, ability_asset: "AbilityAsset") -> dict[int, "AbilityEntry"]:
+        """Get all the ability ID and the ability data possible from this ability, including self."""
+        ret: dict[int, "AbilityEntry"] = {self.id: self}
+
+        for variant in self.get_variants(ability_asset):
+            other_ability_id = variant.other_ability_id
+
+            if other_ability_id and other_ability_id not in ret:
+                ret[other_ability_id] = ability_asset.get_data_by_id(other_ability_id)
+
+        return ret
 
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "AbilityEntry":
@@ -156,20 +199,26 @@ class AbilityEntry(MasterEntryBase):
             id=data["_Id"],
             name_label=data["_Name"],
             details_label=data["_Details"],
-            condition=AbilityConditionEntry(data["_ConditionType"],
-                                            data["_ConditionValue"], data["_ConditionValue2"]),
-            variant_1=AbilityVariantEntry(AbilityVariantType(data["_AbilityType1"]),
-                                          data["_VariousId1a"], data["_VariousId1b"], data["_VariousId1c"],
-                                          data["_VariousId1str"], data["_AbilityLimitedGroupId1"],
-                                          data["_TargetAction1"], data["_AbilityType1UpValue"]),
-            variant_2=AbilityVariantEntry(AbilityVariantType(data["_AbilityType2"]),
-                                          data["_VariousId2a"], data["_VariousId2b"], data["_VariousId2c"],
-                                          data["_VariousId2str"], data["_AbilityLimitedGroupId2"],
-                                          data["_TargetAction2"], data["_AbilityType2UpValue"]),
-            variant_3=AbilityVariantEntry(AbilityVariantType(data["_AbilityType3"]),
-                                          data["_VariousId3a"], data["_VariousId3b"], data["_VariousId3c"],
-                                          data["_VariousId3str"], data["_AbilityLimitedGroupId3"],
-                                          data["_TargetAction3"], data["_AbilityType3UpValue"])
+            condition=AbilityConditionEntry(
+                data["_ConditionType"], data["_ConditionValue"], data["_ConditionValue2"]
+            ),
+            variant_1=AbilityVariantEntry(
+                AbilityVariantType(data["_AbilityType1"]),
+                data["_VariousId1a"], data["_VariousId1b"], data["_VariousId1c"],
+                data["_VariousId1str"], data["_AbilityLimitedGroupId1"], data["_TargetAction1"],
+                data["_AbilityType1UpValue"]
+            ),
+            variant_2=AbilityVariantEntry(
+                AbilityVariantType(data["_AbilityType2"]),
+                data["_VariousId2a"], data["_VariousId2b"], data["_VariousId2c"],
+                data["_VariousId2str"], data["_AbilityLimitedGroupId2"], data["_TargetAction2"],
+                data["_AbilityType2UpValue"]),
+            variant_3=AbilityVariantEntry(
+                AbilityVariantType(data["_AbilityType3"]),
+                data["_VariousId3a"], data["_VariousId3b"], data["_VariousId3c"],
+                data["_VariousId3str"], data["_AbilityLimitedGroupId3"], data["_TargetAction3"],
+                data["_AbilityType3UpValue"]
+            )
         )
 
 

@@ -53,6 +53,7 @@ class ActionConditionEntry(MasterEntryBase):
     resistance_light: float
     resistance_shadow: float
 
+    enhance_fs_action_id: int
     enhance_skill_1_id: int
     enhance_skill_2_id: int
 
@@ -102,6 +103,7 @@ class ActionConditionEntry(MasterEntryBase):
             resistance_wind=data["_RateWind"],
             resistance_light=data["_RateLight"],
             resistance_shadow=data["_RateDark"],
+            enhance_fs_action_id=data["_EnhancedBurstAttack"],
             enhance_skill_1_id=data["_EnhancedSkill1"],
             enhance_skill_2_id=data["_EnhancedSkill2"],
             elemental_target=ElementFlag(data["_TargetElemental"])
