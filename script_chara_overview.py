@@ -22,11 +22,17 @@ def print_atk_data_entry(chara_data, skill_data, skill_entry):
               f"({skill_entry.hit_count[skill_level]} hits)")
 
         afflictions_lv = skill_entry.afflictions[skill_level]
-        if afflictions_lv:
-            initial_affliction = afflictions_lv[0]
-            print(f"{initial_affliction.status.name} @ {initial_affliction.time:.3f} s "
-                  f"(Rate: {initial_affliction.probability_pct} % |"
-                  f" Duration: {initial_affliction.duration_time} secs)")
+        for affliction in afflictions_lv:
+            print(f"{affliction.status.name} @ {affliction.time:.3f} s "
+                  f"(Rate: {affliction.probability_pct} % |"
+                  f" Duration: {affliction.duration_time} secs)")
+        print()
+
+        debuffs_lv = skill_entry.debuffs[skill_level]
+        for debuff in debuffs_lv:
+            print(f"{debuff.parameter.name} {debuff.rate} @ {debuff.time:.3f} s "
+                  f"(Rate: {debuff.probability_pct} % |"
+                  f" Duration: {debuff.duration_time} secs)")
         print()
 
 
@@ -112,4 +118,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10950301)
+    chara_skill_overview(10750403)

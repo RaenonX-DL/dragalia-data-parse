@@ -55,7 +55,7 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
     # endregion
 
     mode_change_id: int
-    """Gala Leif / Mitsuba, etc."""
+    """Gala Leif, Mitsuba, etc."""
     mode_1_id: int
     mode_2_id: int
     mode_3_id: int

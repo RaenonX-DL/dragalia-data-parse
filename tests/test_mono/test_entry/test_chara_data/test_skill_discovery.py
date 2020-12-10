@@ -254,3 +254,5 @@ def test_via_unique_dragon(asset_chara: CharaDataAsset, asset_manager: AssetMana
     ]
 
     assert actual_identifiers == expected_identifiers
+
+# TODO: For units that start quests with a mode (Mitsuba, Leif), do not return base skill data
