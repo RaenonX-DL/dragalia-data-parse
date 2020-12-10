@@ -39,7 +39,7 @@ class Status(IntEnum):
     FLASHBURN = 12
     STORMLASH = 13
     SHADOWBLIGHT = 14
-    DESTROYFIRE = 15
+    SCORCHREND = 15
 
     AFFLICTED = 99
 

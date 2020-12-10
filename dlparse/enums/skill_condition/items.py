@@ -30,6 +30,7 @@ class SkillCondition(Enum):
     TARGET_FLASHBURNED = 112
     TARGET_STORMLASHED = 113
     TARGET_SHADOWBLIGHTED = 114
+    TARGET_SCORCHRENT = 115
     # endregion
 
     # region Elemental
