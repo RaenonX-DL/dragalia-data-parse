@@ -141,41 +141,44 @@ class SkillCondition(Enum):
     # endregion
 
     # region Count of teammates covered
-    COVER_TEAMMATE_0 = 351
-    COVER_TEAMMATE_1 = 352
-    COVER_TEAMMATE_2 = 353
-    COVER_TEAMMATE_3 = 354
+    COVER_TEAMMATE_0 = 321
+    COVER_TEAMMATE_1 = 322
+    COVER_TEAMMATE_2 = 323
+    COVER_TEAMMATE_3 = 324
     # endregion
 
     # region Bullets left on the map
     # Note:
     # - Only Meene uses this implementation for now, may be more in the future.
     # - Meene can only summon up to 9 butterflies on the map. This info has not yet been discovered by this parser.
-    BULLETS_ON_MAP_0 = 361
-    BULLETS_ON_MAP_1 = 362
-    BULLETS_ON_MAP_2 = 363
-    BULLETS_ON_MAP_3 = 364
-    BULLETS_ON_MAP_4 = 365
-    BULLETS_ON_MAP_5 = 366
-    BULLETS_ON_MAP_6 = 367
-    BULLETS_ON_MAP_7 = 368
-    BULLETS_ON_MAP_8 = 369
-    BULLETS_ON_MAP_9 = 370
+    BULLETS_ON_MAP_0 = 331
+    BULLETS_ON_MAP_1 = 332
+    BULLETS_ON_MAP_2 = 333
+    BULLETS_ON_MAP_3 = 334
+    BULLETS_ON_MAP_4 = 335
+    BULLETS_ON_MAP_5 = 336
+    BULLETS_ON_MAP_6 = 337
+    BULLETS_ON_MAP_7 = 338
+    BULLETS_ON_MAP_8 = 339
+    BULLETS_ON_MAP_9 = 340
     # endregion
 
     # region Additional inputs by user
-    ADDL_INPUT_0 = 371
-    ADDL_INPUT_1 = 372
-    ADDL_INPUT_2 = 373
-    ADDL_INPUT_3 = 374
-    ADDL_INPUT_4 = 375
-    ADDL_INPUT_5 = 376
-    ADDL_INPUT_6 = 377
-
+    ADDL_INPUT_0 = 351
+    ADDL_INPUT_1 = 352
+    ADDL_INPUT_2 = 353
+    ADDL_INPUT_3 = 354
+    ADDL_INPUT_4 = 355
+    ADDL_INPUT_5 = 356
+    ADDL_INPUT_6 = 357
     # endregion
 
     # region Action canceling
-    CANCELS_FJOACHIM_S2 = 391
+    CANCELS_FJOACHIM_S2 = 371
+    # endregion
+
+    # region Miscellaneous
+    MARK_EXPLODES = 391
 
     # endregion
     # endregion

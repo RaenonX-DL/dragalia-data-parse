@@ -5,6 +5,7 @@ from typing import Optional, Type
 from dlparse.mono.asset.base import (
     ActionAssetBase, ActionComponentBase, ActionComponentHasHitLabels, ActionParserBase,
 )
+from .buff_bomb import ActionBuffBomb
 from .buff_field import ActionBuffField
 from .bullet import ActionBullet
 from .bullet_format import ActionBulletFormation
@@ -35,11 +36,13 @@ class PlayerActionParser(ActionParserBase):
         "ActionPartsFireStockBullet": ActionBulletStockFire,
         "ActionPartsFormationBullet": ActionBulletFormation,
         "ActionPartsParabolaBullet": ActionBulletParabola,
-        # Any other hits / actions
+        # Active actions
+        "ActionActiveCancel": ActionActiveCancel,
+        "ActionPartsTerminateOtherParts": ActionTerminateOthers,
+        # Any other hits
         "ActionPartsSettingHit": ActionSettingHit,
         "ActionPartsBuffFieldAttachment": ActionBuffField,
-        "ActionActiveCancel": ActionActiveCancel,
-        "ActionPartsTerminateOtherParts": ActionTerminateOthers
+        "ActionPartsRemoveBuffTriggerBomb": ActionBuffBomb
     }
 
     @classmethod

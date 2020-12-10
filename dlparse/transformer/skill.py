@@ -2,7 +2,9 @@
 from typing import Optional, TYPE_CHECKING, Type, TypeVar
 
 from dlparse.enums import SkillCondition, SkillConditionCategories
-from dlparse.errors import ActionInfoNotFoundError, AppValueError, HitDataUnavailableError, SkillDataNotFoundError
+from dlparse.errors import (
+    ActionInfoNotFoundError, HitDataUnavailableError, PreconditionCollidedError, SkillDataNotFoundError,
+)
 from dlparse.model import AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SupportiveSkillData
 from dlparse.mono.asset import SkillDataAsset, SkillDataEntry
 
@@ -43,13 +45,10 @@ class SkillTransformer:
         # Convert hit actions of ``action_id`` to hit data
         for hit_label, action_component in prefab.get_hit_actions(skill_lv):
             # Check for multiple pre-conditions, raise error if needed
-            if additional_pre_condition and action_component.condition_data.skill_pre_condition:
-                raise AppValueError(
-                    f"Multiple pre-condition detected: {additional_pre_condition} "
-                    f"& {action_component.condition_data.skill_pre_condition}"
-                )
+            if additional_pre_condition and action_component.skill_pre_condition:
+                raise PreconditionCollidedError(additional_pre_condition, action_component.skill_pre_condition)
 
-            pre_condition = additional_pre_condition or action_component.condition_data.skill_pre_condition
+            pre_condition = additional_pre_condition or action_component.skill_pre_condition
 
             # If the hit attribute is missing, just skip it; sometimes it's simply missing
             if hit_attr_data := self._hit_attr.get_data_by_id(hit_label):
@@ -59,7 +58,7 @@ class SkillTransformer:
                 ))
 
         # Convert hit actions of the next action if the current one is being terminated
-        # Formal Joachim S1 has this
+        # Formal Joachim S1 (`109503011`) has this
         if prefab.component_cancel_to_next:
             next_action_id = self._action_info.get_data_by_id(action_id).next_action_id
 
@@ -190,8 +189,8 @@ class SkillTransformer:
                 hit_data_mtx.append([])
 
             for hit_data in hit_data_lv:
-                # Check if the hit is effective to target, if desired; check the doc for the definition of effective
-                if hit_data.hit_attr.is_effective_to_enemy(self._action_cond) == effective_to_enemy:
+                # Check if the hit is effective to target, if desired; check the docs for the definition of effective
+                if hit_data.is_effective_to_enemy(self._action_cond) == effective_to_enemy:
                     hit_data_mtx[skill_lv - 1].append(hit_data)
 
         if not any(hit_data for hit_data in hit_data_mtx):

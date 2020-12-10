@@ -5,11 +5,12 @@ from typing import Any, TYPE_CHECKING, Union
 from .base import AppValueError
 
 if TYPE_CHECKING:
-    from dlparse.enums import SkillNumber
+    from dlparse.enums import SkillNumber, SkillCondition
 
 __all__ = ("ConditionValidationFailedError", "BulletEndOfLifeError", "DamagingHitValidationFailedError",
            "HitDataUnavailableError", "ActionInfoNotFoundError", "InvalidSkillIdentifierLabelError",
-           "UnhandledSelfDamageError", "InvalidSkillNumError", "InvalidSkillLevelError")
+           "UnhandledSelfDamageError", "InvalidSkillNumError", "InvalidSkillLevelError",
+           "PreconditionCollidedError")
 
 
 class ConditionValidationFailedError(AppValueError):
@@ -77,3 +78,10 @@ class BulletEndOfLifeError(DamagaCalculationError):
 
     def __init__(self, lifetime_hit: int, hit_count: int):
         super().__init__(f"Bullet life ends (at hit {lifetime_hit}) before hitting {hit_count} times")
+
+
+class PreconditionCollidedError(AppValueError):
+    """Error to be raised if there are multiple pre-conditions available but not handled."""
+
+    def __init__(self, pre_condition_1: "SkillCondition", pre_condition_2: "SkillCondition"):
+        super().__init__(f"Multiple pre-conditions detected: {pre_condition_1} & {pre_condition_2}")

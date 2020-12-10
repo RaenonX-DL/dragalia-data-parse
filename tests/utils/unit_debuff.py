@@ -40,12 +40,15 @@ def check_debuff_unit_match(
     """
     # Check for non-sense (>= 0) rate
     for actual_unit, expected_info_single in zip(actual_units, expected_info):
-        if actual_unit.rate >= 0:
-            pytest.fail(f"A unit in the actual return has a rate of {actual_unit.rate} which is >= 0.\n{actual_unit}")
+        if actual_unit.rate > 0:
+            pytest.fail(f"A unit in the actual return has a rate of {actual_unit.rate} which is > 0. "
+                        f"Debuffs should have either a rate of 0 (for example, mark) or < 0 (for example, DEF down)"
+                        f"\n{actual_unit}")
 
-        if expected_info_single.rate >= 0:
-            pytest.fail(f"A unit in the expected return has a rate of {expected_info_single.rate} which is >= 0.\n"
-                        f"{expected_info_single}")
+        if expected_info_single.rate > 0:
+            pytest.fail(f"A unit in the expected return has a rate of {expected_info_single.rate} which is > 0. "
+                        f"Debuffs should have either a rate of 0 (for example, mark) or < 0 (for example, DEF down)"
+                        f"\n{expected_info_single}")
 
     actual_info = [
         DebuffInfo(unit.hit_attr_label, unit.parameter, unit.rate, unit.probability_pct, unit.duration_time,

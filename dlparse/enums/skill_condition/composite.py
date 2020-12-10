@@ -21,7 +21,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
     allowed_not_categorize_conds: ClassVar[set[SkillCondition]] = {
         SkillCondition.TARGET_OD_STATE,
-        SkillCondition.TARGET_BK_STATE
+        SkillCondition.TARGET_BK_STATE,
+        SkillCondition.MARK_EXPLODES
     }
 
     # region Target
@@ -57,6 +58,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     addl_inputs: Optional[SkillCondition] = field(init=False)
     addl_inputs_converted: int = field(init=False)
     action_cancel: Optional[SkillCondition] = field(init=False)
+    mark_explode: bool = field(init=False)
     # endregion
 
     @staticmethod
@@ -154,6 +156,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.bullets_on_map = CondCat.skill_bullets_on_map.extract(conditions)
         self.addl_inputs = CondCat.skill_addl_inputs.extract(conditions)
         self.action_cancel = CondCat.skill_action_cancel.extract(conditions)
+        self.mark_explode = SkillCondition.MARK_EXPLODES in conditions
 
         self._init_validate_fields(conditions)
 
@@ -222,6 +225,9 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
         if self.action_cancel:
             ret += (self.action_cancel,)
+
+        if self.mark_explode:
+            ret += (SkillCondition.MARK_EXPLODES,)
 
         return ret
 

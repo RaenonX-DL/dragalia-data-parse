@@ -4,7 +4,7 @@ from typing import Optional, TypeVar
 from dlparse.enums import BuffParameter, HitTargetSimple, SkillIndex, Status
 from dlparse.errors import UnhandledSelfDamageError
 from dlparse.model import ActionConditionEffectUnit, AfflictionEffectUnit, HitData
-from dlparse.mono.asset import ActionConditionAsset, ActionConditionEntry, HitAttrEntry
+from dlparse.mono.asset import ActionBuffBomb, ActionConditionAsset, ActionConditionEntry, HitAttrEntry
 
 __all__ = ("AbilityConditionConverter",)
 
@@ -94,6 +94,32 @@ class AbilityConditionConverter:
         raise UnhandledSelfDamageError(hit_attr.id)
 
     @staticmethod
+    def to_marker_unit(hit_data: HT, asset_action_condition: ActionConditionAsset) -> list[ActionConditionEffectUnit]:
+        """Get the marker effect of ``hit_data`` (if any) as a debuff unit."""
+        if not isinstance(hit_data.action_component, ActionBuffBomb):
+            return []
+
+        action_cond: ActionConditionEntry = asset_action_condition.get_data_by_id(
+            hit_data.action_component.action_condition_id
+        )
+
+        return [ActionConditionEffectUnit(
+            time=hit_data.action_time,
+            status=Status.NONE,
+            probability_pct=action_cond.probability_pct,
+            target=HitTargetSimple.ENEMY,
+            parameter=BuffParameter.MARK,
+            rate=0,
+            slip_interval=action_cond.slip_interval,
+            slip_damage_mod=action_cond.slip_damage_mod,
+            duration_time=action_cond.duration_sec,
+            duration_count=action_cond.duration_count,
+            hit_attr_label=hit_data.hit_attr.id,
+            action_cond_id=hit_data.action_component.action_condition_id,
+            max_stack_count=1
+        )]
+
+    @staticmethod
     def to_affliction_unit(
             hit_data: HT, asset_action_condition: ActionConditionAsset
     ) -> Optional[AfflictionEffectUnit]:
@@ -131,15 +157,23 @@ class AbilityConditionConverter:
             hit_data: HT, asset_action_condition: ActionConditionAsset
     ) -> list[ActionConditionEffectUnit]:
         """Get the debuff effect unit of ``hit_data``. Returns an empty list if not applicable."""
-        if not hit_data.hit_attr.action_condition_id:
-            # No action condition affiliated
-            return []
-
         if not hit_data.target_simple == HitTargetSimple.ENEMY:
             # Target not enemy
             return []
 
-        return AbilityConditionConverter.to_buffing_units(hit_data, asset_action_condition)
+        ret: list[ActionConditionEffectUnit] = []
+
+        # Action is buff bomb - mark of Nobunaga S1 (`102501031`)
+        ret.extend(AbilityConditionConverter.to_marker_unit(hit_data, asset_action_condition))
+
+        if not ret and not hit_data.hit_attr.action_condition_id:
+            # No marker units and action condition affiliated to the hit data
+            return []
+
+        # Add all buffing/debuffing units
+        ret.extend(AbilityConditionConverter.to_buffing_units(hit_data, asset_action_condition))
+
+        return ret
 
     @staticmethod
     def _units_common_buffs(

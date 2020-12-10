@@ -4,7 +4,9 @@ from dataclasses import dataclass
 from typing import Generic, Optional, TypeVar
 
 from dlparse.enums import HitTargetSimple, SkillCondition
-from dlparse.mono.asset import ActionComponentBase, ActionConditionEntry, ActionSettingHit, HitAttrEntry
+from dlparse.mono.asset import (
+    ActionBuffBomb, ActionComponentBase, ActionConditionAsset, ActionConditionEntry, ActionSettingHit, HitAttrEntry,
+)
 
 __all__ = ("HitData",)
 
@@ -46,6 +48,26 @@ class HitData(Generic[T], ABC):
             return HitTargetSimple.AREA
 
         return ret
+
+    def is_effective_to_enemy(self, asset_action_cond: ActionConditionAsset) -> bool:
+        """
+        Check if the hit is effective to the enemy.
+
+        If any of the conditions below holds, the hit is considered effective:
+
+        - Afflict the enemy
+
+        - Deals damage to the enemy
+        """
+        if self.hit_attr.is_effective_to_enemy(asset_action_cond):
+            # Early terminate, since the hit attribute itself indicates that it's effective to the enemy
+            return True
+
+        if isinstance(self.action_component, ActionBuffBomb):
+            # Action component is buff bomb, targeted to the enemy
+            return True
+
+        return False
 
     def get_duration(self, cond_entry: Optional[ActionConditionEntry]) -> float:
         """Get the duration of the buff."""
