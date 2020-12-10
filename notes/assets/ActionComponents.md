@@ -4,22 +4,20 @@
 
 - `_seconds` is the action component execution starting time.
 
-- `_duration` is the action component execution time length. This could be ``0``, which means that the execution is
+- `_duration` is the action component execution time length. This could be `0`, which means that the execution is
   either momental, or the action flow is embedded somewhere.
 
 ## Attacking Components 
 
 > Components that actually attacks the target.
 
-
-### ``ActionPartsBullet``
+### `ActionPartsBullet`
 
 Single attacking projectile of a skill.
 
 A single component corresponds to a single attack.
 
-
-### ``ActionPartsFireStockBullet``
+### `ActionPartsFireStockBullet`
 
 Fire the same bullet multiple times.
 
@@ -58,8 +56,7 @@ Fire the same bullet multiple times.
   - `2` means that the bullet will only fire according to the user buff count.
     If the user does not have any buff, the bullet will **not** fire.
 
-
-### ``ActionPartsStockBullet``
+### `ActionPartsStockBullet`
 
 Fire the bullet which is actually an action.
 
@@ -73,8 +70,7 @@ Fire the bullet which is actually an action.
 
 - `_autoFireInterval`: Action firing interval in seconds.
 
-
-### ``ActionPartsHit``
+### `ActionPartsHit`
 
 An attacking action that comes from the player of a skill.
 
@@ -84,8 +80,7 @@ A single component corresponds to a single attack.
 
 - Hit label = `CMN_AVOID` seems to mean invincible, which may appear for projectile attack (Euden S2 - `101401012`).
 
-
-### ``ActionPartsPivotBullet``
+### `ActionPartsPivotBullet`
 
 Another type of bullets. Distinction unknown.
 
@@ -93,8 +88,7 @@ Another type of bullets. Distinction unknown.
 
 - Wedding Aoi S1 (`103503011`)
 
-
-### ``ActionPartsFormationBullet``
+### `ActionPartsFormationBullet`
 
 Another type of bullets. Distinction unknown.
 
@@ -106,8 +100,7 @@ Another type of bullets. Distinction unknown.
 
 > Only these skills use this component. (as of 2020/11/23)
 
-
-### ``ActionPartsMultiBullet``
+### `ActionPartsMultiBullet`
 
 Another type of bullets. Distinction unknown.
 
@@ -115,8 +108,7 @@ Another type of bullets. Distinction unknown.
 
 - Bellina S1 Enhanced (`103505033`)
 
-
-### ``ActionPartsParabolaBullet``
+### `ActionPartsParabolaBullet`
 
 Another type of bullets. Distinction unknown.
 
@@ -124,8 +116,7 @@ Another type of bullets. Distinction unknown.
 
 - Ilia S2 @ Alchemy (`103505033`)
 
-
-### ``ActionPartsBuffFieldAttachment``
+### `ActionPartsBuffFieldAttachment`
 
 Add a damaging hit if according to the buff field count.
 
@@ -139,8 +130,7 @@ Add a damaging hit if according to the buff field count.
   - `0` for the ally built
   - `1` for the self built  
 
-
-### ``ActionSettingHit``
+### `ActionSettingHit`
 
 An action which sets an area.
 
@@ -148,11 +138,12 @@ An action which sets an area.
 
 - Wedding Elisanne S1 (`101503021`)
 
+
 ## Active Components
 
 > Components that users can actively trigger whenever it's possible.
 
-### ``ActionPartsActiveCancel``
+### `ActionPartsActiveCancel`
 
 This cancels the action. Trigger this by tapping the screen.
 
@@ -168,13 +159,40 @@ This cancels the action. Trigger this by tapping the screen.
 
   - `6` is common a common action ID meaning **dodge / roll**.
 
+### `ActionPartsTerminateOtherParts`
+
+*The definition and usage of this component may be inaccurate because the information available is insufficient for
+now.*
+
+This acts as a connector to check if the action should be the next action
+(which ID can be found in the player action info asset) should be executed instead if the condition holds.
+
+#### Attribute notes
+
+- `_partConditionData` is an action component condition structure storing the condition for the state change. If the
+  condition holds, the next action (which ID can be found in the player action info asset) will be executed.
+
+  > For the details of the action,
+  > check the [documentation of the action components condition](/notes/assets/ActionComponentsCondition.md).
+
+- `_toggleSkillNextAction` is a flag indicating that if the next action will be executed. Currently, all such
+  components (as of [2020/12/07][gh2V8gX93j1K5xyD]) has this set to `1` (true).
+
+#### Apperance notes
+
+- Halloween Melsa S2 (`105503032`, AID `591320`)
+
+- Formal Joachim S1 (`109503011`, AID `991060`)
+
+> Only these skills use this component. (as of [2020/12/07][gh2V8gX93j1K5xyD])
+
+[gh2V8gX93j1K5xyD]: https://github.com/RaenonX-DL/dragalia-data-depot/releases/tag/2020.12.07-gh2V8gX93j1K5xyD
 
 ## Effecting Components
 
 > Components that are the gameplay-affecting side effects of the action.
 
-
-### ``ActionPartsSettingHit``
+### `ActionPartsSettingHit`
 
 Sets an area with some special effects. (Wedding Elisanne S1 / S2)
 
@@ -188,7 +206,7 @@ This does **not** deal damage.
 
 > Components that are related to the action of the units.
 
-### ``ActionPartsMotion``
+### `ActionPartsMotion`
 
 Some motion connects to animation clip (by [Mushymato]).
 
@@ -200,14 +218,13 @@ Some motion connects to animation clip (by [Mushymato]).
 
   - `skill_A` takes exactly 1 second, which is commonly used for buffs.
 
+### `ActionPartsHitStop`
 
-### ``ActionPartsHitStop``
-
-Needs investigation. Could be the frozen action after ``ActionPartsHit``.
+Needs investigation. Could be the frozen action after `ActionPartsHit`.
 
 May be used for calculating camera duration.
 
-### ``ActionPartsHeadText``
+### `ActionPartsHeadText`
 
 Seems to be the texts appear above the head.
 
@@ -219,30 +236,27 @@ Seems to be the texts appear above the head.
 
 > Components that cannot be / have not been categorized.
 
-### ``ActionPartsEffect``
+### `ActionPartsEffect`
 
 Seems to be the skill effect.
 
-
-### ``ActionPartsMotion``
-
-Unknown.
-
-
-### ``ActionPartsMoveTimeCurve``
+### `ActionPartsMotion`
 
 Unknown.
 
-
-### ``ActionPartsRotateTarget``
+### `ActionPartsMoveTimeCurve`
 
 Unknown.
 
-### ``ActionPartsSound``
+### `ActionPartsRotateTarget`
+
+Unknown.
+
+### `ActionPartsSound`
 
 SE of the action.
 
-### ``ActionPartsSendSignal``
+### `ActionPartsSendSignal`
 
 Component used for communicating with the other components.
 

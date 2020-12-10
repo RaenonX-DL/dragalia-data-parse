@@ -4,6 +4,8 @@ from typing import Union
 
 from dlparse.mono.asset.base import ActionComponentHasHitLabels
 
+__all__ = ("ActionSettingHit",)
+
 
 @dataclass
 class ActionSettingHit(ActionComponentHasHitLabels):

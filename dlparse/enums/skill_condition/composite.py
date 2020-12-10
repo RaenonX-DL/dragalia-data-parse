@@ -19,7 +19,7 @@ __all__ = ("SkillConditionComposite",)
 class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     """Composite class of various attacking skill conditions."""
 
-    allowed_no_categorize_conds: ClassVar[set[SkillCondition]] = {
+    allowed_not_categorize_conds: ClassVar[set[SkillCondition]] = {
         SkillCondition.TARGET_OD_STATE,
         SkillCondition.TARGET_BK_STATE
     }
@@ -56,6 +56,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     bullets_on_map_converted: int = field(init=False)
     addl_inputs: Optional[SkillCondition] = field(init=False)
     addl_inputs_converted: int = field(init=False)
+    action_cancel: Optional[SkillCondition] = field(init=False)
     # endregion
 
     @staticmethod
@@ -121,12 +122,16 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         if self.addl_inputs and self.addl_inputs not in CondCat.skill_addl_inputs:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_ADDL_INPUTS)
 
+        # Check `self.action_canceling`
+        if self.action_cancel and self.action_cancel not in CondCat.skill_action_cancel:
+            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_ACTION_CANCEL)
+
     def _init_validate_fields(self, conditions: tuple[SkillCondition]):
         self._init_validate_target()
         self._init_validate_self()
         self._init_validate_skill()
 
-        if cond_not_categorized := (set(conditions) - set(self.conditions_sorted) - self.allowed_no_categorize_conds):
+        if cond_not_categorized := (set(conditions) - set(self.conditions_sorted) - self.allowed_not_categorize_conds):
             raise ConditionValidationFailedError(SkillConditionCheckResult.HAS_CONDITIONS_LEFT, cond_not_categorized)
 
     def __post_init__(self, conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]]):
@@ -148,6 +153,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.bullet_hit_count = CondCat.skill_bullet_hit.extract(conditions)
         self.bullets_on_map = CondCat.skill_bullets_on_map.extract(conditions)
         self.addl_inputs = CondCat.skill_addl_inputs.extract(conditions)
+        self.action_cancel = CondCat.skill_action_cancel.extract(conditions)
 
         self._init_validate_fields(conditions)
 
@@ -213,6 +219,9 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
         if self.addl_inputs:
             ret += (self.addl_inputs,)
+
+        if self.action_cancel:
+            ret += (self.action_cancel,)
 
         return ret
 

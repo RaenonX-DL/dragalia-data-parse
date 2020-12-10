@@ -37,7 +37,7 @@ class Status(IntEnum):
     SLEEP = 10
     FROSTBITE = 11
     FLASHBURN = 12
-    CRASHWIND = 13
+    STORMLASH = 13
     SHADOWBLIGHT = 14
     DESTROYFIRE = 15
 

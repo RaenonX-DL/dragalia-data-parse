@@ -28,7 +28,7 @@ class SkillCondition(Enum):
     TARGET_SLEPT = 110
     TARGET_FROSTBITTEN = 111
     TARGET_FLASHBURNED = 112
-    TARGET_CRASHWINDED = 113
+    TARGET_STORMLASHED = 113
     TARGET_SHADOWBLIGHTED = 114
     # endregion
 
@@ -170,6 +170,11 @@ class SkillCondition(Enum):
     ADDL_INPUT_4 = 375
     ADDL_INPUT_5 = 376
     ADDL_INPUT_6 = 377
+
+    # endregion
+
+    # region Action canceling
+    CANCELS_FJOACHIM_S2 = 391
 
     # endregion
     # endregion

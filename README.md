@@ -120,7 +120,7 @@ errors or outdated information because of the v2.0 update.
 
 - As few dependencies as possible to run the parser.
 
-  > Doing so would reduce the difficulty to deploy the data processing pipeline,
+  > Doing so reduces the difficulty to deploy the data processing pipeline,
   > since Python native packages only has a few calls which results will differ across different platforms.
   >
   > This assumes that any possible additional dependency will not significantly boost the data processing speed

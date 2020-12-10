@@ -1,9 +1,9 @@
 """Prefab file class for getting the components."""
 import re
-from typing import Type
+from typing import Optional, Type
 
 from dlparse.mono.asset.base import (
-    ActionAssetBase, ActionParserBase, ActionComponentBase, ActionComponentHasHitLabels
+    ActionAssetBase, ActionComponentBase, ActionComponentHasHitLabels, ActionParserBase,
 )
 from .buff_field import ActionBuffField
 from .bullet import ActionBullet
@@ -12,8 +12,10 @@ from .bullet_multi import ActionBulletMulti
 from .bullet_parabola import ActionBulletParabola
 from .bullet_pivot import ActionBulletPivot
 from .bullet_stock_fire import ActionBulletStockFire
+from .cancel import ActionActiveCancel
 from .hit import ActionHit
 from .set_hit import ActionSettingHit
+from .terminate import ActionTerminateOthers
 
 __all__ = ("PlayerActionPrefab",)
 
@@ -36,6 +38,8 @@ class PlayerActionParser(ActionParserBase):
         # Any other hits / actions
         "ActionPartsSettingHit": ActionSettingHit,
         "ActionPartsBuffFieldAttachment": ActionBuffField,
+        "ActionActiveCancel": ActionActiveCancel,
+        "ActionPartsTerminateOtherParts": ActionTerminateOthers
     }
 
     @classmethod
@@ -63,15 +67,23 @@ class PlayerActionPrefab(ActionAssetBase):
     }
     """List of label starting keywords to be omitted."""
 
+    aid_roll: int = 6
+    """Action ID of the roll dodge."""
+
     def __init__(self, file_path: str):
         super().__init__(PlayerActionParser, file_path)
 
         # Pre-categorize components for faster access
-        self._damaging_hits: list[ActionComponentHasHitLabels] = []
-
-        for component in self:
-            if isinstance(component, ActionComponentHasHitLabels):
-                self._damaging_hits.append(component)
+        self._damaging_hits: list[ActionComponentHasHitLabels] = [
+            component for component in self if isinstance(component, ActionComponentHasHitLabels)
+        ]
+        self._cancel_actions: list[ActionActiveCancel] = [
+            component for component in self if isinstance(component, ActionActiveCancel)
+        ]
+        self._terminate_others: Optional[ActionTerminateOthers] = next(
+            (component for component in self if isinstance(component, ActionTerminateOthers)),
+            None
+        )
 
     def get_hit_actions(self, skill_lv: int) -> list[tuple[str, ActionComponentHasHitLabels]]:
         """
@@ -90,6 +102,15 @@ class PlayerActionPrefab(ActionAssetBase):
                     hit_actions.append((self.get_hit_label_at_skill_lv(hit_label, skill_lv), action_hit))
 
         return hit_actions
+
+    @property
+    def component_cancel_to_next(self) -> Optional[ActionTerminateOthers]:
+        """
+        Get the component indicating if the next action should be executed instead if the action cancels the others.
+
+        Returns ``None`` if not applicable.
+        """
+        return self._terminate_others
 
     @classmethod
     def is_effective_label(cls, label: str) -> bool:

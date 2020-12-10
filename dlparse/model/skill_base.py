@@ -38,7 +38,7 @@ class SkillDataBase(Generic[HT, ET], ABC):
         cond_elems: list[set[tuple[SkillCondition, ...]]] = []
 
         # Get all possible pre-conditions if any
-        pre_conditions: set[tuple[SkillCondition]] = {
+        pre_conditions: set[tuple[SkillCondition, ...]] = {
             (hit_data.pre_condition,)
             for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
             if hit_data.pre_condition
@@ -46,8 +46,15 @@ class SkillDataBase(Generic[HT, ET], ABC):
         if pre_conditions:
             if any(pre_condition in SkillConditionCategories.skill_addl_inputs
                    for pre_condition_tuple in pre_conditions for pre_condition in pre_condition_tuple):
-                # Pre-condition has additional inputs condition, no-additional-input condition is possible
+                # Pre-condition has additional inputs condition,
+                # no-additional-input (additional input = 0) condition is possible
                 pre_conditions.add((SkillCondition.ADDL_INPUT_0,))
+
+            if any(pre_condition in SkillConditionCategories.skill_action_cancel
+                   for pre_condition_tuple in pre_conditions for pre_condition in pre_condition_tuple):
+                # Pre-condition has action cancelling condition,
+                # no cancelling (no condition) is possible
+                pre_conditions.add(())
 
             cond_elems.append(pre_conditions)
 

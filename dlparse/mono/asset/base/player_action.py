@@ -4,16 +4,15 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Callable, Optional, Type, Union
 
-from dlparse.enums import SkillCondition
+from dlparse.enums import ActionConditionType, SkillCondition, SkillConditionCategories
 from dlparse.errors import AssetKeyMissingError
 from .asset import AssetBase
 from .entry import EntryBase
 from .parser import ParserBase
 
 __all__ = (
-    "ActionComponentBase", "ActionComponentHasHitLabels",
-    "ActionAssetBase",
-    "ActionParserBase"
+    "ActionComponentBase", "ActionComponentHasHitLabels", "ActionComponentCondition",
+    "ActionAssetBase", "ActionParserBase"
 )
 
 
@@ -21,25 +20,29 @@ __all__ = (
 class ActionComponentCondition(EntryBase):
     """Condition data of an action component."""
 
-    type_id: int
+    type_condition: ActionConditionType
     type_values: list[int]
 
     @staticmethod
     def parse_raw(data: dict[str, Union[int, list[int]]]) -> Optional["ActionComponentCondition"]:
         return ActionComponentCondition(
-            type_id=data["_conditionType"],
+            type_condition=ActionConditionType(data["_conditionType"]),
             type_values=data["_conditionValue"]
         )
 
     @property
     def skill_pre_condition(self) -> SkillCondition:
         """Get the action executing pre-condition."""
-        # Appears in Nevin S2 (103505042 - 391330)
-        if self.type_values[0] == 1152:
-            if self.type_values[2] == 1:
-                return SkillCondition.SELF_SIGIL_LOCKED
-            if self.type_values[2] == 0:
-                return SkillCondition.SELF_SIGIL_RELEASED
+        if self.type_condition == ActionConditionType.ACTION_CONDITION:
+            # Appears in Nevin S2 (103505042 - 391330)
+            if self.type_values[0] == 1152:
+                if self.type_values[2] == 1:
+                    return SkillCondition.SELF_SIGIL_LOCKED
+                if self.type_values[2] == 0:
+                    return SkillCondition.SELF_SIGIL_RELEASED
+
+        if self.type_condition == ActionConditionType.ACTION_CANCEL:
+            return SkillConditionCategories.skill_action_cancel.convert_reversed(self.type_values[0])
 
         return SkillCondition.NONE
 
@@ -78,6 +81,41 @@ class ActionComponentBase(EntryBase, ABC):
     condition_data: Optional[ActionComponentCondition]
     loop_data: Optional[ActionComponentLoop]
 
+    @property
+    def skill_pre_condition(self) -> SkillCondition:
+        """Get the pre-condition for this action component to be executed."""
+        if not self.condition_data:
+            return SkillCondition.NONE
+
+        return self.condition_data.skill_pre_condition
+
+    @staticmethod
+    @abstractmethod
+    def parse_raw(data: dict[str, Union[str, int, float]]) -> "ActionComponentBase":
+        """Parse a raw data to be the component class."""
+        raise NotImplementedError()
+
+    @classmethod
+    def get_base_kwargs(
+            cls, raw_data: dict[str, Union[str, int, float, dict[str, Union[int, float]]]]
+    ) -> dict[str, Union[int, float, ActionComponentCondition, ActionComponentLoop, list[str], None]]:
+        """Get the base kwargs for constructing the component."""
+        return {
+            "command_type_id": raw_data["commandType"],
+            "speed": raw_data["_speed"],
+            "time_start": raw_data["_seconds"],
+            "time_duration": raw_data["_duration"],
+            "condition_data": ActionComponentCondition.parse_raw(raw_data["_conditionData"]),
+            "loop_data": ActionComponentLoop.parse_raw(raw_data["_loopData"])
+        }
+
+
+@dataclass
+class ActionComponentHasHitLabels(ActionComponentBase, ABC):
+    """Base class for action components which have hit labels assigned."""
+
+    hit_labels: list[str]
+
     use_same_component: bool
     """
     This indicates if the hit labels of the action component is shared across the levels.
@@ -100,38 +138,19 @@ class ActionComponentBase(EntryBase, ABC):
         - :class:`ActionBulletFormation`
     """
 
-    @staticmethod
-    @abstractmethod
-    def parse_raw(data: dict[str, Union[str, int, float]]) -> "ActionComponentBase":
-        """Parse a raw data to be the component class."""
-        raise NotImplementedError()
+    def __post_init__(self):
+        # Some labels contain whitespaces, check the doc of the test ``test_label_has_whitespaces()``
+        self.hit_labels = [label.strip() for label in self.hit_labels]
 
     @classmethod
     def get_base_kwargs(
             cls, raw_data: dict[str, Union[str, int, float, dict[str, Union[int, float]]]]
     ) -> dict[str, Union[int, float, ActionComponentCondition, ActionComponentLoop, list[str], None]]:
-        """Get the base kwargs for constructing the component."""
-        return {
-            "command_type_id": raw_data["commandType"],
-            "speed": raw_data["_speed"],
-            "time_start": raw_data["_seconds"],
-            "time_duration": raw_data["_duration"],
-            "condition_data": ActionComponentCondition.parse_raw(raw_data["_conditionData"]),
-            "loop_data": ActionComponentLoop.parse_raw(raw_data["_loopData"]),
-            # Sometimes missing, for example, arranged bullet (type 37)
-            "use_same_component": bool(raw_data.get("_useSameComponent", 1))
-        }
+        base_kwargs = super().get_base_kwargs(raw_data)
 
+        base_kwargs["use_same_component"] = bool(raw_data.get("_useSameComponent", 1))
 
-@dataclass
-class ActionComponentHasHitLabels(ActionComponentBase, ABC):
-    """Base class for action components which have hit labels assigned."""
-
-    hit_labels: list[str]
-
-    def __post_init__(self):
-        # Some labels contain whitespaces, check the doc of the test ``test_label_has_whitespaces()``
-        self.hit_labels = [label.strip() for label in self.hit_labels]
+        return base_kwargs
 
 
 class ActionParserBase(ParserBase, ABC):

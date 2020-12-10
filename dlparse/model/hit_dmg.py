@@ -238,7 +238,6 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
 
         if self.pre_condition:
             # Pre-condition available, perform checks
-
             if self.pre_condition in SkillConditionCategories.skill_addl_inputs:
                 # Pre-condition is additional inputs, perform special check
                 pre_cond_addl_hit = SkillConditionCategories.skill_addl_inputs.convert(self.pre_condition)
@@ -249,6 +248,14 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
             elif self.pre_condition not in condition_comp:
                 # Other pre-conditions & not listed in the given condition composite i.e. pre-condition mismatch
                 return []
+
+        if condition_comp.action_cancel and self.pre_condition != condition_comp.action_cancel:
+            # If action canceling is included in the conditions,
+            # only the actions to be executed after the cancel should be returned
+            # For example, `991061` is executed only if Formal Joachim S1 (109503011) is used
+            # to cancel his S2 `991070` (and `991060` will not be executed / will be interrupted).
+            # If no cancellation is used, `991060` will be executed completely and no execution of `991061` instead.
+            return []
 
         # Get base units
 

@@ -38,60 +38,85 @@ class SkillTransformer:
     ) -> HitDataList:
         ret: HitDataList = []
 
-        for hit_label, action_component in self._action_loader.get_prefab(action_id).get_hit_actions(skill_lv):
+        prefab = self._action_loader.get_prefab(action_id)
+
+        # Convert hit actions of ``action_id`` to hit data
+        for hit_label, action_component in prefab.get_hit_actions(skill_lv):
             # Check for multiple pre-conditions, raise error if needed
             if additional_pre_condition and action_component.condition_data.skill_pre_condition:
-                raise AppValueError(f"Multiple pre-condition detected: "
-                                    f"{additional_pre_condition} "
-                                    f"& {action_component.condition_data.skill_pre_condition}")
+                raise AppValueError(
+                    f"Multiple pre-condition detected: {additional_pre_condition} "
+                    f"& {action_component.condition_data.skill_pre_condition}"
+                )
 
             pre_condition = additional_pre_condition or action_component.condition_data.skill_pre_condition
 
             # If the hit attribute is missing, just skip it; sometimes it's simply missing
             if hit_attr_data := self._hit_attr.get_data_by_id(hit_label):
-                ret.append(hit_data_cls(hit_attr=hit_attr_data, action_component=action_component,
-                                        action_id=action_id, pre_condition=pre_condition))
+                ret.append(hit_data_cls(
+                    hit_attr=hit_attr_data, action_component=action_component,
+                    action_id=action_id, pre_condition=pre_condition
+                ))
+
+        # Convert hit actions of the next action if the current one is being terminated
+        # Formal Joachim S1 has this
+        if prefab.component_cancel_to_next:
+            next_action_id = self._action_info.get_data_by_id(action_id).next_action_id
+
+            ret.extend(self._get_hit_data_action_component(
+                hit_data_cls, skill_lv, next_action_id,
+                additional_pre_condition=prefab.component_cancel_to_next.effective_condition.skill_pre_condition
+            ))
 
         return ret
 
     def _get_hit_data_next_action(self, hit_data_cls: Type[T], skill_lv: int, action_id: int) -> HitDataList:
         # This currently handles additional inputs (Ramona S1, Lathna S1) only
+        action_info = self._action_info.get_data_by_id(action_id)
+        if not action_info.next_action_id:
+            # No next action
+            return []
+
+        if self._action_loader.get_prefab(action_id).component_cancel_to_next:
+            # Next action only procs if it's canceled by ``action_id``
+            # Handled in ``_get_hit_data_action_component()``
+            return []
+
         ret: HitDataList = []
 
-        action_info = self._action_info.get_data_by_id(action_id)
-        if init_next_action_id := action_info.next_action_id:
-            action_id_queue = [init_next_action_id]
-            action_info_prev = [action_info]
+        action_id_queue = [action_info.next_action_id]
+        action_info_prev = [action_info]
 
-            while action_id_queue:
-                # Pop the next action ID to get the prefab and the info
-                curr_action_id = action_id_queue.pop(0)
-                curr_action_info = self._action_info.get_data_by_id(curr_action_id)
-                if not curr_action_info:
-                    raise ActionInfoNotFoundError(curr_action_id)
+        while action_id_queue:
+            # Pop the next action ID to get the prefab and the info
+            curr_action_id = action_id_queue.pop(0)
+            curr_action_info = self._action_info.get_data_by_id(curr_action_id)
+            if not curr_action_info:
+                raise ActionInfoNotFoundError(curr_action_id)
 
-                prev_action_info = action_info_prev.pop(0)
+            prev_action_info = action_info_prev.pop(0)
 
-                # Parse the actions and attach it to the hit data list to be returned
-                if prev_action_info.max_addl_input_count:
-                    # Additional inputs available, list them all
-                    pre_conditions = [
-                        SkillConditionCategories.skill_addl_inputs.convert_reversed(addl_input_count)
-                        for addl_input_count in range(1, prev_action_info.max_addl_input_count + 1)
-                    ]
-                else:
-                    # Additional inputs unavailable, have one dummy pre-condition to trigger the parse
-                    pre_conditions = [SkillCondition.NONE]
+            # Parse the actions and attach it to the hit data list to be returned
+            if prev_action_info.max_addl_input_count:
+                # Additional inputs available, list them all
+                pre_conditions = [
+                    SkillConditionCategories.skill_addl_inputs.convert_reversed(addl_input_count)
+                    for addl_input_count in range(1, prev_action_info.max_addl_input_count + 1)
+                ]
+            else:
+                # Additional inputs unavailable, have one dummy pre-condition to trigger the parse
+                pre_conditions = [SkillCondition.NONE]
 
-                # Iterate through all possible pre-conditions
-                for pre_condition in pre_conditions:
-                    ret.extend(self._get_hit_data_action_component(hit_data_cls, skill_lv, curr_action_id,
-                                                                   additional_pre_condition=pre_condition))
+            # Iterate through all possible pre-conditions
+            for pre_condition in pre_conditions:
+                ret.extend(self._get_hit_data_action_component(
+                    hit_data_cls, skill_lv, curr_action_id, additional_pre_condition=pre_condition
+                ))
 
-                # Add all next actions, if available
-                if curr_action_info.next_action_id:
-                    action_id_queue.append(curr_action_info.next_action_id)
-                    action_info_prev.append(curr_action_info)
+            # Add all next actions, if available
+            if curr_action_info.next_action_id:
+                action_id_queue.append(curr_action_info.next_action_id)
+                action_info_prev.append(curr_action_info)
 
         return ret
 
@@ -188,8 +213,10 @@ class SkillTransformer:
         :raises ActionDataNotFoundError: if the action data file of the skill is not found
         :raises HitDataUnavailableError: if no hit data available
         """
-        skill_data, hit_data_mtx = self.get_hit_data_matrix(skill_id, BuffingHitData,
-                                                            effective_to_enemy=False, max_lv=max_lv)
+        skill_data, hit_data_mtx = self.get_hit_data_matrix(
+            skill_id, BuffingHitData,
+            effective_to_enemy=False, max_lv=max_lv
+        )
 
         return SupportiveSkillData(
             skill_data_raw=skill_data,
@@ -208,7 +235,9 @@ class SkillTransformer:
         :raises ActionDataNotFoundError: if the action data file of the skill is not found
         :raises HitDataUnavailableError: if no hit data available
         """
-        skill_data, hit_data_mtx = self.get_hit_data_matrix(skill_id, DamagingHitData, max_lv=max_lv)
+        skill_data, hit_data_mtx = self.get_hit_data_matrix(
+            skill_id, DamagingHitData, max_lv=max_lv
+        )
 
         return AttackingSkillData(
             skill_data_raw=skill_data,

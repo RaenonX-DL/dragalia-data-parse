@@ -47,7 +47,7 @@ def test_get_members():
         SkillCondition.TARGET_SLEPT,
         SkillCondition.TARGET_FROSTBITTEN,
         SkillCondition.TARGET_FLASHBURNED,
-        SkillCondition.TARGET_CRASHWINDED,
+        SkillCondition.TARGET_STORMLASHED,
         SkillCondition.TARGET_SHADOWBLIGHTED,
         SkillCondition.TARGET_AFFLICTED,
         SkillCondition.TARGET_DEF_DOWN,

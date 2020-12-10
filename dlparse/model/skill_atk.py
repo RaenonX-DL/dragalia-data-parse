@@ -192,7 +192,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return cond_elems
 
-    def _init_possible_conditions_skill(self):
+    def _init_all_possible_conditions_skill(self):
         cond_elems: list[set[tuple[SkillCondition, ...]]] = []
 
         # Deterioration available
@@ -225,7 +225,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         cond_elems.extend(self._init_all_possible_conditions_target())
         cond_elems.extend(self._init_all_possible_conditions_self())
-        cond_elems.extend(self._init_possible_conditions_skill())
+        cond_elems.extend(self._init_all_possible_conditions_skill())
 
         # Add combinations
         self.possible_conditions = {

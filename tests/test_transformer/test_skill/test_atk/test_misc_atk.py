@@ -48,12 +48,6 @@ def test_eugene_s1(transformer_skill: SkillTransformer):
     pass  # TEST: TBA - Eugene S1
 
 
-def test_formal_joachim_s1_explosion(transformer_skill: SkillTransformer):
-    # Formal Joachim S1 Explosion (S2-S1)
-    # https://dragalialost.gamepedia.com/Formal_Joachim
-    pass  # TEST: TBA - F!Joachim S2-S1
-
-
 def test_summer_mikoto_s1_celestial(transformer_skill: SkillTransformer):
     # Summer Mikoto S1 (Celestial)
     # https://dragalialost.gamepedia.com/Summer_Mikoto

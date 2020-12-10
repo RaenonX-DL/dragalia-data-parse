@@ -27,6 +27,7 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_TEAMMATE_COVERAGE = auto()
     MULTIPLE_BULLETS_ON_MAP = auto()
     MULTIPLE_ADDL_INPUTS = auto()
+    MULTIPLE_ACTION_CANCEL = auto()
 
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
     INTERNAL_NOT_TARGET_ELEMENTAL = auto()
@@ -40,8 +41,11 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_TEAMMATE_COVERAGE = auto()
     INTERNAL_NOT_BULLETS_ON_MAP = auto()
     INTERNAL_NOT_ADDL_INPUTS = auto()
+    INTERNAL_NOT_ACTION_CANCEL = auto()
 
     HAS_CONDITIONS_LEFT = auto()
+
+    UNEXPECTED = auto()
 
     @classmethod
     def passing_enums(cls) -> set["SkillConditionCheckResult"]:
@@ -187,7 +191,7 @@ class SkillConditionCategories:
             SkillCondition.TARGET_SLEPT: Status.SLEEP,
             SkillCondition.TARGET_FROSTBITTEN: Status.FROSTBITE,
             SkillCondition.TARGET_FLASHBURNED: Status.FLASHBURN,
-            SkillCondition.TARGET_CRASHWINDED: Status.CRASHWIND,
+            SkillCondition.TARGET_STORMLASHED: Status.STORMLASH,
             SkillCondition.TARGET_SHADOWBLIGHTED: Status.SHADOWBLIGHT,
             # Special abnormal status
             SkillCondition.TARGET_AFFLICTED: Status.AFFLICTED,
@@ -199,7 +203,7 @@ class SkillConditionCategories:
         },
         SkillConditionMaxCount.MULTIPLE,
         "Target - status",
-        SkillConditionCheckResult.PASS  # Impossible to fail (current only invalid reason is multiple conditions)
+        SkillConditionCheckResult.UNEXPECTED  # Impossible to fail (current only invalid reason is multiple conditions)
     )
     target_elemental = SkillConditionCategory[Element](
         {
@@ -355,6 +359,14 @@ class SkillConditionCategories:
         SkillConditionMaxCount.SINGLE,
         "Skill - additional input",
         SkillConditionCheckResult.MULTIPLE_ADDL_INPUTS
+    )
+    skill_action_cancel = SkillConditionCategoryTargetNumber(
+        {
+            SkillCondition.CANCELS_FJOACHIM_S2: 991070,
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Skill - action cancel",
+        SkillConditionCheckResult.MULTIPLE_ACTION_CANCEL
     )
 
     @classmethod
