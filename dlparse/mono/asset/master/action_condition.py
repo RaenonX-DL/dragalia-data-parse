@@ -1,6 +1,6 @@
 """Classes for handling the action condition asset."""
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Optional, TextIO, Union
 
 from dlparse.enums import ElementFlag, Status
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
@@ -115,16 +115,18 @@ class ActionConditionAsset(MasterAssetBase[ActionConditionEntry]):
 
     asset_file_name = "ActionCondition.json"
 
-    def __init__(self, file_path: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None):
-        super().__init__(ActionConditionParser, file_path, asset_dir=asset_dir)
+    def __init__(
+            self, file_location: Optional[str] = None, /,
+            asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
+    ):
+        super().__init__(ActionConditionParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
 
 class ActionConditionParser(MasterParserBase[ActionConditionEntry]):
     """Class to parse the action condition file."""
 
     @classmethod
-    def parse_file(cls, file_path: str) -> dict[int, ActionConditionEntry]:
-        entries = cls.get_entries(file_path)
+    def parse_file(cls, file_like: TextIO) -> dict[int, ActionConditionEntry]:
+        entries = cls.get_entries_dict(file_like)
 
         return {key: ActionConditionEntry.parse_raw(value) for key, value in entries.items()}

@@ -1,6 +1,6 @@
 """Classes for handling the ability data."""
 from dataclasses import dataclass, field
-from typing import Optional, Union
+from typing import Optional, TextIO, Union
 
 from dlparse.enums import AbilityCondition, AbilityVariantType, SkillCondition, SkillNumber
 from dlparse.errors import AbilityConditionUnconvertibleError
@@ -269,16 +269,18 @@ class AbilityAsset(MasterAssetBase[AbilityEntry]):
 
     asset_file_name = "AbilityData.json"
 
-    def __init__(self, file_path: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None):
-        super().__init__(AbilityParser, file_path, asset_dir=asset_dir)
+    def __init__(
+            self, file_location: Optional[str] = None, /,
+            asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
+    ):
+        super().__init__(AbilityParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
 
 class AbilityParser(MasterParserBase[AbilityEntry]):
     """Class to parse the ability file."""
 
     @classmethod
-    def parse_file(cls, file_path: str) -> dict[int, AbilityEntry]:
-        entries = cls.get_entries(file_path)
+    def parse_file(cls, file_like: TextIO) -> dict[int, AbilityEntry]:
+        entries = cls.get_entries_dict(file_like)
 
         return {key: AbilityEntry.parse_raw(value) for key, value in entries.items()}

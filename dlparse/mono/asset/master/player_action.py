@@ -1,8 +1,8 @@
 """Classes for handling the player action info asset."""
 from dataclasses import dataclass
-from typing import Union, Optional
+from typing import Optional, TextIO, Union
 
-from dlparse.mono.asset.base import MasterEntryBase, MasterAssetBase, MasterParserBase
+from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("PlayerActionInfoEntry", "PlayerActionInfoAsset", "PlayerActionInfoParser")
 
@@ -54,16 +54,18 @@ class PlayerActionInfoAsset(MasterAssetBase[PlayerActionInfoEntry]):
 
     asset_file_name = "PlayerAction.json"
 
-    def __init__(self, file_path: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None):
-        super().__init__(PlayerActionInfoParser, file_path, asset_dir=asset_dir)
+    def __init__(
+            self, file_location: Optional[str] = None, /,
+            asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
+    ):
+        super().__init__(PlayerActionInfoParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
 
 class PlayerActionInfoParser(MasterParserBase[PlayerActionInfoEntry]):
     """Class to parse the player action info file."""
 
     @classmethod
-    def parse_file(cls, file_path: str) -> dict[int, PlayerActionInfoEntry]:
-        entries = cls.get_entries(file_path)
+    def parse_file(cls, file_like: TextIO) -> dict[int, PlayerActionInfoEntry]:
+        entries = cls.get_entries_dict(file_like)
 
         return {key: PlayerActionInfoEntry.parse_raw(value) for key, value in entries.items()}

@@ -1,23 +1,23 @@
-"""Classes for handling ability condition."""
-from typing import Optional, TypeVar
+"""Extension to allow a hit data to convert itself to various effect units."""
+from abc import ABC
+from dataclasses import dataclass
+from typing import Generic, Optional
 
 from dlparse.enums import BuffParameter, HitTargetSimple, SkillIndex, Status
 from dlparse.errors import UnhandledSelfDamageError
-from dlparse.model import ActionConditionEffectUnit, AfflictionEffectUnit, HitData
 from dlparse.mono.asset import ActionBuffBomb, ActionConditionAsset, ActionConditionEntry, HitAttrEntry
+from .effect_action_cond import ActionConditionEffectUnit, AfflictionEffectUnit
+from .hit_base import HitData, T
 
-__all__ = ("AbilityConditionConverter",)
-
-HT = TypeVar("HT", bound=HitData)
+__all__ = ("UnitsConvertibleHitData",)
 
 
-class AbilityConditionConverter:
-    """Class for converting an ability condition entry to units of effects."""
+@dataclass
+class UnitsConvertibleHitData(HitData, Generic[T], ABC):
+    """Base hit data class which can be converted to various units."""
 
-    @staticmethod
     def to_param_up(
-            param_enum: BuffParameter, param_rate: float,
-            hit_data: HT, cond_entry: Optional[ActionConditionEntry]
+            self, param_enum: BuffParameter, param_rate: float, cond_entry: Optional[ActionConditionEntry]
     ) -> Optional[ActionConditionEffectUnit]:
         """
         Creates an effect unit (if applicable) based on the given data.
@@ -30,18 +30,18 @@ class AbilityConditionConverter:
             return None
 
         return ActionConditionEffectUnit(
-            time=hit_data.action_time,
+            time=self.action_time,
             status=Status.NONE,
-            target=hit_data.target_simple,
+            target=self.target_simple,
             parameter=param_enum,
             probability_pct=cond_entry.probability_pct if cond_entry else 0,
             rate=param_rate,
             slip_interval=cond_entry.slip_interval if cond_entry else 0,
             slip_damage_mod=cond_entry.slip_damage_mod if cond_entry else 0,
-            duration_time=hit_data.get_duration(cond_entry),
+            duration_time=self.get_duration(cond_entry),
             duration_count=cond_entry.duration_count if cond_entry else 0,
-            hit_attr_label=hit_data.hit_attr.id,
-            action_cond_id=hit_data.hit_attr.action_condition_id,
+            hit_attr_label=self.hit_attr.id,
+            action_cond_id=self.hit_attr.action_condition_id,
             max_stack_count=cond_entry.max_stack_count if cond_entry else 0
         )
 
@@ -93,18 +93,17 @@ class AbilityConditionConverter:
 
         raise UnhandledSelfDamageError(hit_attr.id)
 
-    @staticmethod
-    def to_marker_unit(hit_data: HT, asset_action_condition: ActionConditionAsset) -> list[ActionConditionEffectUnit]:
+    def to_marker_unit(self, asset_action_condition: ActionConditionAsset) -> list[ActionConditionEffectUnit]:
         """Get the marker effect of ``hit_data`` (if any) as a debuff unit."""
-        if not isinstance(hit_data.action_component, ActionBuffBomb):
+        if not isinstance(self.action_component, ActionBuffBomb):
             return []
 
         action_cond: ActionConditionEntry = asset_action_condition.get_data_by_id(
-            hit_data.action_component.action_condition_id
+            self.action_component.action_condition_id
         )
 
         return [ActionConditionEffectUnit(
-            time=hit_data.action_time,
+            time=self.action_time,
             status=Status.NONE,
             probability_pct=action_cond.probability_pct,
             target=HitTargetSimple.ENEMY,
@@ -114,164 +113,146 @@ class AbilityConditionConverter:
             slip_damage_mod=action_cond.slip_damage_mod,
             duration_time=action_cond.duration_sec,
             duration_count=action_cond.duration_count,
-            hit_attr_label=hit_data.hit_attr.id,
-            action_cond_id=hit_data.action_component.action_condition_id,
+            hit_attr_label=self.hit_attr.id,
+            action_cond_id=self.action_component.action_condition_id,
             max_stack_count=1
         )]
 
-    @staticmethod
     def to_affliction_unit(
-            hit_data: HT, asset_action_condition: ActionConditionAsset
+            self, asset_action_condition: ActionConditionAsset
     ) -> Optional[AfflictionEffectUnit]:
         """Get the affliction effect unit of ``hit_data``. Returns ``None`` if not applicable."""
-        if not hit_data.hit_attr.action_condition_id:
+        if not self.hit_attr.action_condition_id:
             # No action condition affiliated
             return None
 
-        if not hit_data.target_simple == HitTargetSimple.ENEMY:
+        if self.target_simple != HitTargetSimple.ENEMY:
             # Target not enemy
             return None
 
-        action_cond_data = asset_action_condition.get_data_by_id(hit_data.hit_attr.action_condition_id)
+        action_cond_data = asset_action_condition.get_data_by_id(self.hit_attr.action_condition_id)
 
         if not action_cond_data.afflict_status.is_abnormal_status:
             # Not afflicting action condition
             return None
 
         return AfflictionEffectUnit(
-            time=hit_data.action_component.time_start,
+            time=self.action_component.time_start,
             status=action_cond_data.afflict_status,
-            target=hit_data.target_simple,
+            target=self.target_simple,
             probability_pct=action_cond_data.probability_pct,
             parameter=BuffParameter.AFFLICTION,
             duration_time=action_cond_data.duration_sec,
             slip_interval=action_cond_data.slip_interval,
             slip_damage_mod=action_cond_data.slip_damage_mod,
             max_stack_count=action_cond_data.max_stack_count,
-            hit_attr_label=hit_data.hit_attr.id,
-            action_cond_id=hit_data.hit_attr.action_condition_id
+            hit_attr_label=self.hit_attr.id,
+            action_cond_id=self.hit_attr.action_condition_id
         )
 
-    @staticmethod
-    def to_debuff_unit(
-            hit_data: HT, asset_action_condition: ActionConditionAsset
+    def to_debuff_units(
+            self, asset_action_condition: ActionConditionAsset
     ) -> list[ActionConditionEffectUnit]:
         """Get the debuff effect unit of ``hit_data``. Returns an empty list if not applicable."""
-        if not hit_data.target_simple == HitTargetSimple.ENEMY:
+        if self.target_simple != HitTargetSimple.ENEMY:
             # Target not enemy
             return []
 
         ret: list[ActionConditionEffectUnit] = []
 
         # Action is buff bomb - mark of Nobunaga S1 (`102501031`)
-        ret.extend(AbilityConditionConverter.to_marker_unit(hit_data, asset_action_condition))
+        ret.extend(self.to_marker_unit(asset_action_condition))
 
-        if not ret and not hit_data.hit_attr.action_condition_id:
+        if not ret and not self.hit_attr.action_condition_id:
             # No marker units and action condition affiliated to the hit data
             return []
 
         # Add all buffing/debuffing units
-        ret.extend(AbilityConditionConverter.to_buffing_units(hit_data, asset_action_condition))
+        ret.extend(self.to_buffing_units(asset_action_condition))
 
         return ret
 
-    @staticmethod
     def _units_common_buffs(
-            hit_data: HT, cond_entry: ActionConditionEntry
+            self, cond_entry: ActionConditionEntry
     ) -> list[Optional[ActionConditionEffectUnit]]:
         return [
             # ATK
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.ATK, cond_entry.buff_atk, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.ATK, cond_entry.buff_atk, cond_entry),
             # DEF
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.DEF, cond_entry.buff_def, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.DEF, cond_entry.buff_def, cond_entry),
             # CRT rate
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.CRT_RATE, cond_entry.buff_crt_rate, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.CRT_RATE, cond_entry.buff_crt_rate, cond_entry),
             # CRT damage
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.CRT_DAMAGE, cond_entry.buff_crt_damage, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.CRT_DAMAGE, cond_entry.buff_crt_damage, cond_entry),
             # Skill damage
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.SKILL_DAMAGE, cond_entry.buff_skill_damage, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.SKILL_DAMAGE, cond_entry.buff_skill_damage, cond_entry),
             # FS damage
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.FS_DAMAGE, cond_entry.buff_fs_damage, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.FS_DAMAGE, cond_entry.buff_fs_damage, cond_entry),
             # ATK SPD
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.ATK_SPD, cond_entry.buff_atk_spd, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.ATK_SPD, cond_entry.buff_atk_spd, cond_entry),
             # FS SPD
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.FS_SPD, cond_entry.buff_fs_spd, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.FS_SPD, cond_entry.buff_fs_spd, cond_entry),
             # SP rate
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.SP_RATE, cond_entry.buff_sp_rate, hit_data, cond_entry)
+            self.to_param_up(BuffParameter.SP_RATE, cond_entry.buff_sp_rate, cond_entry)
         ]
 
-    @staticmethod
     def _units_defensive_buffs(
-            hit_data: HT, cond_entry: ActionConditionEntry
+            self, cond_entry: ActionConditionEntry
     ) -> list[Optional[ActionConditionEffectUnit]]:
         return [
             # Damage shield
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.SHIELD_SINGLE_DMG, cond_entry.shield_dmg, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.SHIELD_SINGLE_DMG, cond_entry.shield_dmg, cond_entry),
             # HP shield
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.SHIELD_LIFE, cond_entry.shield_hp, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.SHIELD_LIFE, cond_entry.shield_hp, cond_entry),
 
             # Flame resistance
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.RESISTANCE_FLAME, cond_entry.resistance_flame, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.RESISTANCE_FLAME, cond_entry.resistance_flame, cond_entry),
             # Water resistance
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.RESISTANCE_WATER, cond_entry.resistance_water, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.RESISTANCE_WATER, cond_entry.resistance_water, cond_entry),
             # Wind resistance
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.RESISTANCE_WIND, cond_entry.resistance_wind, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.RESISTANCE_WIND, cond_entry.resistance_wind, cond_entry),
             # Light resistance
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.RESISTANCE_LIGHT, cond_entry.resistance_light, hit_data, cond_entry),
+            self.to_param_up(BuffParameter.RESISTANCE_LIGHT, cond_entry.resistance_light, cond_entry),
             # Shadow resistance
-            AbilityConditionConverter.to_param_up(
-                BuffParameter.RESISTANCE_SHADOW, cond_entry.resistance_shadow, hit_data, cond_entry)
+            self.to_param_up(BuffParameter.RESISTANCE_SHADOW, cond_entry.resistance_shadow, cond_entry)
         ]
 
-    @staticmethod
     def to_buffing_units(
-            hit_data: HT, asset_action_condition: ActionConditionAsset
+            self, asset_action_condition: ActionConditionAsset
     ) -> list[ActionConditionEffectUnit]:
         """Converts ``hit_data`` to a list of buffing units as :class:`ActionConditionEffectUnit`."""
         units: list[Optional[ActionConditionEffectUnit]] = []
 
         # Get the action condition entry
-        cond_entry: ActionConditionEntry = asset_action_condition.get_data_by_id(hit_data.hit_attr.action_condition_id)
+        cond_entry: ActionConditionEntry = asset_action_condition.get_data_by_id(self.hit_attr.action_condition_id)
 
         # --- Conditions in action condition
 
-        units.append(AbilityConditionConverter.to_damage_self(hit_data.action_time, hit_data.hit_attr))
+        units.append(self.to_damage_self(self.action_time, self.hit_attr))
 
         # --- General buffs
 
         if cond_entry:
-            units.extend(AbilityConditionConverter._units_common_buffs(hit_data, cond_entry))
-            units.extend(AbilityConditionConverter._units_defensive_buffs(hit_data, cond_entry))
+            units.extend(self._units_common_buffs(cond_entry))
+            units.extend(self._units_defensive_buffs(cond_entry))
 
         # --- Instant gauge refill
 
         # SP charge %
         # idx 2 always give more accurate result (at least S!Cleo is giving the correct one)
-        if skill_idx := SkillIndex(hit_data.hit_attr.sp_recov_skill_idx_2):
+        if skill_idx := SkillIndex(self.hit_attr.sp_recov_skill_idx_2):
             if skill_idx == SkillIndex.S1:
-                units.append(AbilityConditionConverter.to_param_up(
-                    BuffParameter.SP_CHARGE_PCT_S1, hit_data.hit_attr.sp_recov_ratio, hit_data, cond_entry))
+                units.append(self.to_param_up(
+                    BuffParameter.SP_CHARGE_PCT_S1, self.hit_attr.sp_recov_ratio, cond_entry
+                ))
             elif skill_idx == SkillIndex.S2:
-                units.append(AbilityConditionConverter.to_param_up(
-                    BuffParameter.SP_CHARGE_PCT_S2, hit_data.hit_attr.sp_recov_ratio, hit_data, cond_entry))
+                units.append(self.to_param_up(
+                    BuffParameter.SP_CHARGE_PCT_S2, self.hit_attr.sp_recov_ratio, cond_entry
+                ))
             elif skill_idx == SkillIndex.USED_SKILL:
-                units.append(AbilityConditionConverter.to_param_up(
-                    BuffParameter.SP_CHARGE_PCT_USED, hit_data.hit_attr.sp_recov_ratio, hit_data, cond_entry))
+                units.append(self.to_param_up(
+                    BuffParameter.SP_CHARGE_PCT_USED, self.hit_attr.sp_recov_ratio, cond_entry
+                ))
 
         # Remove ``None`` element (``None`` will be added if the entry is ineffective)
         return list(sorted(u for u in units if u))

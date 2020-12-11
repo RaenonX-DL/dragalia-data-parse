@@ -9,7 +9,7 @@ from dlparse.mono.asset import (
     HitAttrEntry,
 )
 
-__all__ = ("HitData",)
+__all__ = ("HitData", "T")
 
 T = TypeVar("T", bound=ActionComponentBase)
 

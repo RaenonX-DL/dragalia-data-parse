@@ -6,7 +6,11 @@ jobs:
   cqa:
     name: CQA
 
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        os: [ macos-latest, windows-latest, ubuntu-18.04 ]
+
+    runs-on: ${{ matrix.os }}
 
     continue-on-error: true
 

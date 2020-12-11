@@ -6,7 +6,6 @@ from typing import Optional
 
 from dlparse.enums import Element, SkillCondition, SkillConditionCategories, SkillConditionComposite
 from dlparse.mono.asset import ActionConditionAsset
-from dlparse.utils import AbilityConditionConverter
 from .effect_action_cond import ActionConditionEffectUnit
 from .hit_buff import BuffingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
@@ -129,7 +128,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                     # Skip conditions that has pre condition, let ``buffs_pre_conditioned`` handles this
                     continue
 
-                buff_lv.update(AbilityConditionConverter.to_buffing_units(hit_data, action_condition_asset))
+                buff_lv.update(hit_data.to_buffing_units(action_condition_asset))
 
             self.buffs_base.append(buff_lv)
 
@@ -160,9 +159,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                     ):
                         continue  # Teammate # higher than the boundary
 
-                    buff_lv[teammate_count].update(AbilityConditionConverter.to_buffing_units(
-                        hit_data, action_condition_asset
-                    ))
+                    buff_lv[teammate_count].update(hit_data.to_buffing_units(action_condition_asset))
 
             self.buffs_teammate_coverage.append(buff_lv)
 
@@ -184,9 +181,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
                 for elem in Element.get_all_valid_elements():
                     if elem.to_flag() in action_condition.elemental_target:
-                        buff_lv[elem].update(AbilityConditionConverter.to_buffing_units(
-                            hit_data, action_condition_asset
-                        ))
+                        buff_lv[elem].update(hit_data.to_buffing_units(action_condition_asset))
 
             self.buffs_elemental.append(buff_lv)
 
@@ -197,9 +192,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
             buff_lv: dict[SkillCondition, set[ActionConditionEffectUnit]] = defaultdict(set)
 
             for hit_data in hit_data_lv:
-                buff_lv[hit_data.pre_condition].update(AbilityConditionConverter.to_buffing_units(
-                    hit_data, action_condition_asset
-                ))
+                buff_lv[hit_data.pre_condition].update(hit_data.to_buffing_units(action_condition_asset))
 
             self.buffs_pre_conditioned.append(dict(buff_lv))
 

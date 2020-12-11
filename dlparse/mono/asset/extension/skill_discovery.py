@@ -194,7 +194,7 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
         for action_id in skill_data.action_id_1_by_level:
             for skill_lv in range(1, self.max_skill_level(skill_num) + 1):
                 try:
-                    prefab = asset_manager.loader_pa.get_prefab(action_id)
+                    prefab = asset_manager.loader_action.get_prefab(action_id)
                     for hit_label, _ in prefab.get_hit_actions(skill_lv):
                         hit_labels[hit_label] = skill_num
                 except ActionDataNotFoundError:

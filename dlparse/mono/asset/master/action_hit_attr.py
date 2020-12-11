@@ -1,6 +1,6 @@
 """Classes for handling the player action hit attribute asset."""
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Optional, TextIO, Union
 
 from dlparse.enums import HitExecType, HitTarget, Status
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
@@ -159,18 +159,20 @@ class HitAttrEntry(MasterEntryBase):
 class HitAttrAsset(MasterAssetBase[HitAttrEntry]):
     """Player action hit attribute asset class."""
 
-    asset_file_name = "PlayerActionhitAttribute.json"
+    asset_file_name = "PlayerActionHitAttribute.json"
 
-    def __init__(self, file_path: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None):
-        super().__init__(HitAttrParser, file_path, asset_dir=asset_dir)
+    def __init__(
+            self, file_location: Optional[str] = None, /,
+            asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
+    ):
+        super().__init__(HitAttrParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
 
 class HitAttrParser(MasterParserBase[HitAttrEntry]):
     """Class to parse the player action hit attribute file."""
 
     @classmethod
-    def parse_file(cls, file_path: str) -> dict[int, HitAttrEntry]:
-        entries = cls.get_entries(file_path)
+    def parse_file(cls, file_like: TextIO) -> dict[int, HitAttrEntry]:
+        entries = cls.get_entries_dict(file_like)
 
         return {key: HitAttrEntry.parse_raw(value) for key, value in entries.items()}

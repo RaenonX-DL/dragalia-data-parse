@@ -36,7 +36,7 @@ echo "${CLR_CYN}Checking with pylint (tests.utils)...${CLR_NC}"
 run_cmd_exit_on_err "pylint tests.utils" "pylint check (tests.utils)"
 
 echo "${CLR_CYN}Running code tests...${CLR_NC}"
-run_cmd_exit_on_err pytest "code test"
+run_cmd_exit_on_err "pytest --slow" "code test"
 
 echo "--- ${CLR_GRN}All checks passed.${CLR_NC} ---"
 read -p "Press enter to continue." -r

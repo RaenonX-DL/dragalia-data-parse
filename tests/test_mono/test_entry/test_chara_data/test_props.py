@@ -1,4 +1,5 @@
-from dlparse.mono.asset import CharaDataEntry, TextAsset
+from dlparse.mono.asset import CharaDataEntry
+from dlparse.mono.manager import AssetManager
 
 
 def create_dummy(**kwargs) -> CharaDataEntry:
@@ -179,11 +180,11 @@ def test_custom_id():
     assert entry.custom_id == "100011/11"
 
 
-def test_get_chara_name_use_main(asset_text: TextAsset):
+def test_get_chara_name_use_main(asset_manager: AssetManager):
     entry = create_dummy(name_label="CHARA_NAME_10840301", name_label_2="CHARA_NAME_COMMENT_10840301")
-    assert entry.get_chara_name(asset_text) == "ルーエン"
+    assert entry.get_chara_name(asset_manager.asset_text) == "ルーエン"
 
 
-def test_get_chara_name_use_second(asset_text: TextAsset):
+def test_get_chara_name_use_second(asset_manager: AssetManager):
     entry = create_dummy(name_label="CHARA_NAME_10150302", name_label_2="CHARA_NAME_COMMENT_10150302")
-    assert entry.get_chara_name(asset_text) == "エルフィリス（ウエディングVer.）"
+    assert entry.get_chara_name(asset_manager.asset_text) == "エルフィリス（ウエディングVer.）"

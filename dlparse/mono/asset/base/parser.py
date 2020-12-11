@@ -1,6 +1,6 @@
 """Base parser class."""
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, TextIO
 
 __all__ = ("ParserBase",)
 
@@ -16,6 +16,6 @@ class ParserBase(ABC):
 
     @staticmethod
     @abstractmethod
-    def parse_file(file_path: str) -> Any:
+    def parse_file(file_like: TextIO) -> Any:
         """Parse the file."""
         raise NotImplementedError()

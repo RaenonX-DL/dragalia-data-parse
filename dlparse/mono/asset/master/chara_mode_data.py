@@ -1,6 +1,6 @@
 """Classes for handling the character mode data asset."""
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Optional, TextIO, Union
 
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
@@ -46,9 +46,11 @@ class CharaModeAsset(MasterAssetBase[CharaModeEntry]):
             if not data.text_label:  # Only fill if no label exists
                 data.text_label = f"CUSTOM_CHARA_MODE_{data.id:04}"
 
-    def __init__(self, file_path: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None):
-        super().__init__(CharaModeParser, file_path, asset_dir=asset_dir)
+    def __init__(
+            self, file_location: Optional[str] = None, /,
+            asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
+    ):
+        super().__init__(CharaModeParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
         self._init_fill_name_label()
 
@@ -57,7 +59,7 @@ class CharaModeParser(MasterParserBase[CharaModeEntry]):
     """Class to parse the character mode data file."""
 
     @classmethod
-    def parse_file(cls, file_path: str) -> dict[int, CharaModeEntry]:
-        entries = cls.get_entries(file_path)
+    def parse_file(cls, file_like: TextIO) -> dict[int, CharaModeEntry]:
+        entries = cls.get_entries_dict(file_like)
 
         return {key: CharaModeEntry.parse_raw(value) for key, value in entries.items()}

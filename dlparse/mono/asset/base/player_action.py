@@ -2,7 +2,7 @@
 import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Callable, Optional, Type, Union
+from typing import Callable, Optional, TextIO, Type, Union
 
 from dlparse.enums import ActionConditionType, SkillCondition, SkillConditionCategories
 from dlparse.errors import AssetKeyMissingError
@@ -157,14 +157,13 @@ class ActionParserBase(ParserBase, ABC):
     """Base parser class for parsing the player action asset files."""
 
     @staticmethod
-    def get_components(file_path: str) -> list[dict]:
+    def get_components(file_like: TextIO) -> list[dict]:
         """
         Get a list of components as raw data, which needs to be further parsed.
 
         :raises AssetKeyMissingError: if key `Components` is not in the data
         """
-        with open(file_path) as f:
-            data = json.load(f)
+        data = json.load(file_like)
 
         if "Components" not in data:
             raise AssetKeyMissingError("Components")
@@ -172,7 +171,7 @@ class ActionParserBase(ParserBase, ABC):
         return data["Components"]
 
     @staticmethod
-    def parse_file(file_path: str) -> list[ActionComponentBase]:
+    def parse_file(file_like: str) -> list[ActionComponentBase]:
         """Parse a file as a list of components."""
         raise NotImplementedError()
 
@@ -180,9 +179,11 @@ class ActionParserBase(ParserBase, ABC):
 class ActionAssetBase(AssetBase, ABC):
     """Base class for a player action mono behavior asset."""
 
-    def __init__(self, parser_cls: Type[ActionParserBase], file_path: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None):
-        super().__init__(parser_cls, file_path, asset_dir=asset_dir)
+    def __init__(
+            self, parser_cls: Type[ActionParserBase], file_location: Optional[str] = None, /,
+            asset_dir: Optional[str] = None
+    ):
+        super().__init__(parser_cls, file_location, asset_dir=asset_dir)
 
     def __iter__(self):
         return iter(self._data)

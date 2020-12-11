@@ -1,7 +1,7 @@
 """Classes for handling the character data asset."""
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional, Union
+from typing import Optional, TextIO, Union
 
 from dlparse.enums import Element, SkillNumber
 from dlparse.errors import InvalidSkillNumError, TextLabelNotFoundError
@@ -393,16 +393,18 @@ class CharaDataAsset(MasterAssetBase[CharaDataEntry]):
 
     asset_file_name = "CharaData.json"
 
-    def __init__(self, file_path: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None):
-        super().__init__(CharaDataParser, file_path, asset_dir=asset_dir)
+    def __init__(
+            self, file_location: Optional[str] = None, /,
+            asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
+    ):
+        super().__init__(CharaDataParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
 
 class CharaDataParser(MasterParserBase[CharaDataEntry]):
     """Class to parse the character data file."""
 
     @classmethod
-    def parse_file(cls, file_path: str) -> dict[int, CharaDataEntry]:
-        entries = cls.get_entries(file_path)
+    def parse_file(cls, file_like: TextIO) -> dict[int, CharaDataEntry]:
+        entries = cls.get_entries_dict(file_like)
 
         return {key: CharaDataEntry.parse_raw(value) for key, value in entries.items()}

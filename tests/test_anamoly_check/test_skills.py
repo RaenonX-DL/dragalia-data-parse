@@ -14,11 +14,9 @@ allowed_no_base_mods_sid = {
 }
 
 
-def test_transform_all_attack_skills(
-        asset_chara: CharaDataAsset, transformer_skill: SkillTransformer, asset_manager: AssetManager
-):
+def test_transform_all_attack_skills(transformer_skill: SkillTransformer, asset_manager: AssetManager):
     skill_ids: list[int] = []
-    for chara_data in asset_chara:
+    for chara_data in asset_manager.asset_chara_data:
         chara_data: CharaDataEntry
 
         if not chara_data.is_playable:

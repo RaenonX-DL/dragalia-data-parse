@@ -1,6 +1,6 @@
 """Classes for handling the skill data asset."""
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Optional, TextIO, Union
 
 from dlparse.errors import InvalidSkillLevelError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
@@ -221,16 +221,18 @@ class SkillDataAsset(MasterAssetBase[SkillDataEntry]):
 
     asset_file_name = "SkillData.json"
 
-    def __init__(self, file_path: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None):
-        super().__init__(SkillDataParser, file_path, asset_dir=asset_dir)
+    def __init__(
+            self, file_location: Optional[str] = None, /,
+            asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
+    ):
+        super().__init__(SkillDataParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
 
 class SkillDataParser(MasterParserBase[SkillDataEntry]):
     """Class to parse the skill data."""
 
     @classmethod
-    def parse_file(cls, file_path: str) -> dict[int, SkillDataEntry]:
-        entries = cls.get_entries(file_path)
+    def parse_file(cls, file_like: TextIO) -> dict[int, SkillDataEntry]:
+        entries = cls.get_entries_dict(file_like)
 
         return {key: SkillDataEntry.parse_raw(value) for key, value in entries.items()}

@@ -1,6 +1,6 @@
 """Prefab file class for getting the components."""
 import re
-from typing import Optional, Type
+from typing import Optional, TextIO, Type
 
 from dlparse.mono.asset.base import (
     ActionAssetBase, ActionComponentBase, ActionComponentHasHitLabels, ActionParserBase,
@@ -46,8 +46,8 @@ class PlayerActionParser(ActionParserBase):
     }
 
     @classmethod
-    def parse_file(cls, file_path: str) -> list[ActionComponentBase]:
-        components_raw: list[dict] = cls.get_components(file_path)
+    def parse_file(cls, file_like: TextIO) -> list[ActionComponentBase]:
+        components_raw: list[dict] = cls.get_components(file_like)
         components: list[ActionComponentBase] = []
 
         for component in components_raw:
@@ -73,8 +73,8 @@ class PlayerActionPrefab(ActionAssetBase):
     aid_roll: int = 6
     """Action ID of the roll dodge."""
 
-    def __init__(self, file_path: str):
-        super().__init__(PlayerActionParser, file_path)
+    def __init__(self, file_location: str):
+        super().__init__(PlayerActionParser, file_location)
 
         # Pre-categorize components for faster access
         self._damaging_hits: list[ActionComponentHasHitLabels] = [

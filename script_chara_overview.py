@@ -1,7 +1,7 @@
 from dlparse.mono.manager import AssetManager
-from tests.static import PATH_DIR_MASTER_ASSET, PATH_ROOT_ASSET_PLAYER_ACTION
+from tests.static import PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET
 
-_asset_manager: AssetManager = AssetManager(PATH_ROOT_ASSET_PLAYER_ACTION, PATH_DIR_MASTER_ASSET)
+_asset_manager: AssetManager = AssetManager(PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET)
 
 
 def print_atk_data_entry(chara_data, skill_data, skill_entry):

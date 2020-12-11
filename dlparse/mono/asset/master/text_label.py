@@ -1,6 +1,6 @@
 """Classes for handling the text label asset."""
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, TextIO
 
 from dlparse.errors import TextLabelNotFoundError
 from dlparse.mono.asset.base import CustomParserBase, MasterAssetBase, MasterEntryBase, MasterParserBase
@@ -32,14 +32,20 @@ class TextAsset(MasterAssetBase[TextEntry]):
 
     asset_file_name = "TextLabel.json"
 
-    def __init__(self, file_path: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None,
-                 asset_dir_custom: Optional[str] = None, file_path_custom: Optional[str] = None):
-        super().__init__(MasterTextParser, file_path, asset_dir=asset_dir)
+    def __init__(
+            self, file_location: Optional[str] = None, /,
+            asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None,
+            custom_asset_dir: Optional[str] = None, custom_file_location: Optional[str] = None,
+            custom_file_like: Optional[TextIO] = None,
+    ):
+        super().__init__(MasterTextParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
         # Read in and overwrite the data by custom assets
-        if custom_file_path := self.get_file_path(file_path=file_path_custom, asset_dir=asset_dir_custom):
-            self._data.update(CustomTextParser.parse_file(custom_file_path))
+        custom_file_path = self.get_file_path(
+            file_location=custom_file_location, asset_dir=custom_asset_dir, on_fail=None
+        )
+        if custom_file_like or custom_file_path:
+            self._data.update(CustomTextParser.parse_file(custom_file_like or self.get_file_like(custom_file_path)))
 
     def to_text(self, label: str, /, silent_fail: bool = True) -> str:
         """
@@ -64,8 +70,8 @@ class MasterTextParser(MasterParserBase[TextEntry]):
     """Class to parse the master text label file."""
 
     @classmethod
-    def parse_file(cls, file_path: str) -> dict[int, TextEntry]:
-        entries = cls.get_entries(file_path)
+    def parse_file(cls, file_like: TextIO) -> dict[int, TextEntry]:
+        entries = cls.get_entries_dict(file_like)
 
         return {key: TextEntry.parse_raw(value) for key, value in entries.items()}
 
@@ -74,7 +80,7 @@ class CustomTextParser(CustomParserBase):
     """Class to parse the custom text label file."""
 
     @classmethod
-    def parse_file(cls, file_path: str) -> dict[int, TextEntry]:
-        entries = cls.get_entries(file_path)
+    def parse_file(cls, file_like: TextIO) -> dict[int, TextEntry]:
+        entries = cls.get_entries_dict(file_like)
 
         return {key: TextEntry.parse_raw(value) for key, value in entries.items()}

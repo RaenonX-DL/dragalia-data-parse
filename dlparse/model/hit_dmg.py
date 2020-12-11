@@ -8,9 +8,9 @@ from dlparse.mono.asset import (
     ActionBuffField, ActionBullet, ActionBulletStockFire, ActionComponentHasHitLabels, ActionConditionAsset,
     PlayerActionInfoAsset,
 )
-from dlparse.utils import AbilityConditionConverter, calculate_crisis_mod
+from dlparse.utils import calculate_crisis_mod
 from .effect_action_cond import ActionConditionEffectUnit, AfflictionEffectUnit
-from .hit_base import HitData
+from .hit_unit import UnitsConvertibleHitData
 
 __all__ = ("DamagingHitData", "DamageUnit")
 
@@ -36,7 +36,7 @@ class DamageUnit:
 
 
 @dataclass
-class DamagingHitData(HitData[ActionComponentHasHitLabels]):
+class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
     """
     Class for the data of a single raw damaging hit.
 
@@ -130,14 +130,6 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
     def mods_in_ally_buff_zone(self, count: int) -> list[float]:
         """Get the damage modifiers if standing on ``count`` buff zones created by the allies."""
         return [self.mod_on_ally_buff_zone] * count
-
-    def to_affliction_unit(self, asset_action_condition: ActionConditionAsset) -> Optional[AppValueError]:
-        """Get the affliction effect unit of this hit data. Returns ``None`` if not applicable."""
-        return AbilityConditionConverter.to_affliction_unit(self, asset_action_condition)
-
-    def to_debuff_units(self, asset_action_condition: ActionConditionAsset) -> list[ActionConditionEffectUnit]:
-        """Get the debuff effect unit of this hit data. Returns an empty list if not applicable."""
-        return AbilityConditionConverter.to_debuff_unit(self, asset_action_condition)
 
     def _damage_units_get_base(
             self, condition_comp: SkillConditionComposite, /,

@@ -1,7 +1,7 @@
 """Classes for custom assets."""
 import json
 from abc import ABC
-from typing import Any
+from typing import Any, TextIO
 
 from dlparse.errors import AssetKeyMissingError
 from .parser import ParserBase
@@ -20,10 +20,9 @@ class CustomParserBase(ParserBase, ABC):
     key_id: str = "_Id"
 
     @classmethod
-    def get_entries(cls, file_path: str) -> dict[int, dict]:
-        """Get a dict of data entries which value needs to be further parsed."""
-        with open(file_path, encoding="utf-8") as f:
-            data = json.load(f)
+    def get_entries_dict(cls, file_like: TextIO) -> dict[int, dict]:
+        """Get a dict of data entries to be further parsed."""
+        data = json.load(file_like)
 
         ret: dict[int, dict] = {}
 
@@ -37,6 +36,6 @@ class CustomParserBase(ParserBase, ABC):
         return ret
 
     @staticmethod
-    def parse_file(file_path: str) -> dict[int, Any]:
+    def parse_file(file_like: TextIO) -> dict[int, Any]:
         """Parse a file as a :class:`dict` which key is the ID of the value."""
         raise NotImplementedError()

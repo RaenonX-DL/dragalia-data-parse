@@ -2,11 +2,11 @@
 from dataclasses import dataclass
 
 from dlparse.mono.asset import ActionComponentBase
-from .hit_base import HitData
+from .hit_unit import UnitsConvertibleHitData
 
 __all__ = ("BuffingHitData",)
 
 
 @dataclass
-class BuffingHitData(HitData[ActionComponentBase]):
+class BuffingHitData(UnitsConvertibleHitData[ActionComponentBase]):
     """Class for the data of a single buffing hit."""

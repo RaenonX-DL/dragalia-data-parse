@@ -1,6 +1,6 @@
 """Classes for handling the dragon data asset."""
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Optional, TextIO, Union
 
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 from dlparse.mono.asset.extension import NamedEntry, SkillEntry
@@ -52,16 +52,18 @@ class DragonDataAsset(MasterAssetBase[DragonDataEntry]):
 
     asset_file_name = "DragonData.json"
 
-    def __init__(self, file_path: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None):
-        super().__init__(DragonDataParser, file_path, asset_dir=asset_dir)
+    def __init__(
+            self, file_location: Optional[str] = None, /,
+            asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
+    ):
+        super().__init__(DragonDataParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
 
 class DragonDataParser(MasterParserBase[DragonDataEntry]):
     """Class to parse the dragon data file."""
 
     @classmethod
-    def parse_file(cls, file_path: str) -> dict[int, DragonDataEntry]:
-        entries = cls.get_entries(file_path)
+    def parse_file(cls, file_like: TextIO) -> dict[int, DragonDataEntry]:
+        entries = cls.get_entries_dict(file_like)
 
         return {key: DragonDataEntry.parse_raw(value) for key, value in entries.items()}

@@ -3,10 +3,10 @@ from typing import Optional
 
 from dlparse.transformer import SkillTransformer
 from .asset import (
-    AbilityAsset, ActionConditionAsset, CharaDataAsset, CharaModeAsset, DragonDataAsset, HitAttrAsset,
-    PlayerActionInfoAsset, SkillChainAsset, SkillDataAsset, TextAsset,
+    AbilityAsset, ActionConditionAsset, ActionPartsListAsset, CharaDataAsset, CharaModeAsset, DragonDataAsset,
+    HitAttrAsset, PlayerActionInfoAsset, SkillChainAsset, SkillDataAsset, TextAsset,
 )
-from .loader import PlayerActionFileLoader
+from .loader import ActionFileLoader
 
 __all__ = ("AssetManager",)
 
@@ -14,7 +14,10 @@ __all__ = ("AssetManager",)
 class AssetManager:
     """A class for loading and managing all the assets and loaders."""
 
-    def __init__(self, player_action_dir: str, master_asset_dir: str, custom_asset_dir: Optional[str] = None):
+    def __init__(
+            self, action_asset_dir: str, master_asset_dir: str, /,
+            custom_asset_dir: Optional[str] = None
+    ):
         # Assets
         self._asset_ability_data: AbilityAsset = AbilityAsset(asset_dir=master_asset_dir)
         self._asset_action_cond: ActionConditionAsset = ActionConditionAsset(asset_dir=master_asset_dir)
@@ -24,16 +27,17 @@ class AssetManager:
         self._asset_hit_attr: HitAttrAsset = HitAttrAsset(asset_dir=master_asset_dir)
         self._asset_skill_data: SkillDataAsset = SkillDataAsset(asset_dir=master_asset_dir)
         self._asset_skill_chain: SkillChainAsset = SkillChainAsset(asset_dir=master_asset_dir)
-        self._asset_text: TextAsset = TextAsset(asset_dir=master_asset_dir, asset_dir_custom=custom_asset_dir)
+        self._asset_text: TextAsset = TextAsset(asset_dir=master_asset_dir, custom_asset_dir=custom_asset_dir)
         self._asset_pa_info: PlayerActionInfoAsset = PlayerActionInfoAsset(asset_dir=master_asset_dir)
+        self._asset_action_list: ActionPartsListAsset = ActionPartsListAsset(asset_dir=action_asset_dir)
 
         # Loaders
-        self._loader_pa: PlayerActionFileLoader = PlayerActionFileLoader(player_action_dir)
+        self._loader_action: ActionFileLoader = ActionFileLoader(self._asset_action_list, action_asset_dir)
 
         # Transformers
         self._transformer_skill: SkillTransformer = SkillTransformer(self)
 
-    # region Assets / Loaders / Transformers
+    # region Assets
     @property
     def asset_ability_data(self) -> AbilityAsset:
         """Get the ability data asset."""
@@ -85,14 +89,24 @@ class AssetManager:
         return self._asset_pa_info
 
     @property
-    def loader_pa(self) -> PlayerActionFileLoader:
-        """Get the player action file loader."""
-        return self._loader_pa
+    def asset_action_list(self) -> ActionPartsListAsset:
+        """Get the action parts list asset."""
+        return self._asset_action_list
+    # endregion
 
+    # region Loaders
+    @property
+    def loader_action(self) -> ActionFileLoader:
+        """Get the action file loader."""
+        return self._loader_action
+    # endregion
+
+    # region Transformers
     @property
     def transformer_skill(self) -> SkillTransformer:
         """Get the skill transformer."""
         return self._transformer_skill
+    # endregion
 
     # endregion
 

@@ -2,24 +2,29 @@
 import os
 
 from dlparse.errors import ActionDataNotFoundError
-from dlparse.mono.asset import PlayerActionPrefab
+from dlparse.mono.asset import ActionPartsListAsset, PlayerActionPrefab
+from dlparse.utils import is_url
 
-__all__ = ("PlayerActionFileLoader",)
+__all__ = ("ActionFileLoader",)
 
 
-class PlayerActionFileLoader:
+class ActionFileLoader:
     """Class to load the player action files."""
 
-    def _init_path_index(self, file_root_path: str):
-        for path, _, files in os.walk(file_root_path):
-            for name in files:
-                action_id = self.extract_action_id(name)
+    def _init_path_index(self, asset_parts_list: ActionPartsListAsset, file_root_path: str):
+        for parts_entry in asset_parts_list:
+            file_path = parts_entry.resource_path_actual
 
-                self._path_index[action_id] = os.path.join(path, name)
+            if is_url(file_root_path):
+                path = file_root_path + "/" + file_path
+            else:
+                path = os.path.join(file_root_path, file_path)
 
-    def __init__(self, file_root_path: str):
+            self._path_index[parts_entry.id] = path
+
+    def __init__(self, asset_parts_list: ActionPartsListAsset, file_root_path: str):
         self._path_index: dict[int, str] = {}  # K = action ID; V = file path
-        self._init_path_index(file_root_path)
+        self._init_path_index(asset_parts_list, file_root_path)
 
         self._prefab_cache: dict[int, PlayerActionPrefab] = {}
 
@@ -50,6 +55,11 @@ class PlayerActionFileLoader:
             self._prefab_cache[action_id] = PlayerActionPrefab(file_path)
 
         return self._prefab_cache[action_id]
+
+    @staticmethod
+    def to_action_file_name(action_id: int) -> str:
+        """Get the player action file name of ``action_id``."""
+        return f"PlayerAction_{action_id:08}.prefab.json"
 
     @staticmethod
     def extract_action_id(file_name: str) -> int:

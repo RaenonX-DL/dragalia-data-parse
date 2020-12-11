@@ -2,7 +2,7 @@
 import json
 from abc import ABC
 from dataclasses import dataclass
-from typing import Callable, Generic, Optional, Type, TypeVar, Union
+from typing import Callable, Generic, Optional, TextIO, Type, TypeVar, Union
 
 from dlparse.errors import AssetKeyMissingError
 from .asset import AssetBase
@@ -25,11 +25,10 @@ T = TypeVar("T", bound=MasterEntryBase)
 class MasterParserBase(Generic[T], ParserBase, ABC):
     """Base parser class for parsing the master asset files."""
 
-    @staticmethod
-    def get_entries(file_path: str) -> dict[Union[int, str], dict]:
-        """Get a dict of data entries which value needs to be further parsed."""
-        with open(file_path, encoding="utf-8") as f:
-            data = json.load(f)
+    @classmethod
+    def get_entries_dict(cls, file_like: TextIO) -> dict[Union[int, str], dict]:
+        """Get a dict of data entries to be further parsed."""
+        data = json.load(file_like)
 
         if "dict" not in data:
             raise AssetKeyMissingError("dict")
@@ -45,8 +44,17 @@ class MasterParserBase(Generic[T], ParserBase, ABC):
 
         return {entry["_Id"]: entry for entry in entry_values}
 
+    @classmethod
+    def get_entries_list(cls, file_like: TextIO) -> list[dict]:
+        """Get a list of data entries to be further parsed as a dict."""
+        data = json.load(file_like)
+
+        if "list" not in data:
+            raise AssetKeyMissingError("list")
+        return data["list"]
+
     @staticmethod
-    def parse_file(file_path: str) -> dict[int, T]:
+    def parse_file(file_like: str) -> dict[int, T]:
         """Parse a file as a :class:`dict` which key is the ID of the value."""
         raise NotImplementedError()
 
@@ -54,15 +62,20 @@ class MasterParserBase(Generic[T], ParserBase, ABC):
 class MasterAssetBase(Generic[T], AssetBase, ABC):
     """Base class for a master mono behavior asset."""
 
-    def __init__(self, parser_cls: Type[MasterParserBase[T]], file_path: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None):
-        super().__init__(parser_cls, file_path, asset_dir=asset_dir)
+    def __init__(self, parser_cls: Type[MasterParserBase[T]], file_location: Optional[str] = None, /,
+                 asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None):
+        super().__init__(parser_cls, file_location, asset_dir=asset_dir, file_like=file_like)
 
     def __iter__(self):
         return iter(self._data.values())
 
     def __contains__(self, item):
         return item in self._data.keys()
+
+    @property
+    def all_ids(self) -> set[Union[int, str]]:
+        """Get the set of all data IDs."""
+        return set(self._data.keys())
 
     def filter(self, condition: Callable[[T], bool]) -> list[T]:
         """Get a list of data which matches the ``condition``."""

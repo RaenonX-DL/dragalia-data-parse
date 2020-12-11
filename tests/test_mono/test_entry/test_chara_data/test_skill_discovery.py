@@ -1,5 +1,5 @@
 from dlparse.enums import SkillChainCondition, SkillNumber
-from dlparse.mono.asset import CharaDataAsset, SkillIdEntry, SkillIdentifierLabel
+from dlparse.mono.asset import SkillIdEntry, SkillIdentifierLabel
 from dlparse.mono.manager import AssetManager
 from .test_props import create_dummy
 
@@ -28,10 +28,10 @@ def test_dummy_with_mode(asset_manager: AssetManager):
     assert chara_data.get_skill_id_entries(asset_manager) == expected_identifiers
 
 
-def test_via_phase(asset_chara: CharaDataAsset, asset_manager: AssetManager):
+def test_via_phase(asset_manager: AssetManager):
     # Summer Julietta S2
     # https://dragalialost.gamepedia.com/Summer_Julietta
-    chara_data = asset_chara.get_data_by_id(10450201)
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10450201)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
@@ -45,7 +45,7 @@ def test_via_phase(asset_chara: CharaDataAsset, asset_manager: AssetManager):
     assert actual_identifiers == expected_identifiers
 
 
-def test_via_mode(asset_chara: CharaDataAsset, asset_manager: AssetManager):
+def test_via_mode(asset_manager: AssetManager):
     """
     Get the skill IDs which variants are buried in chara mode data asset.
 
@@ -53,7 +53,7 @@ def test_via_mode(asset_chara: CharaDataAsset, asset_manager: AssetManager):
     """
     # Catherine
     # https://dragalialost.gamepedia.com/Catherine
-    chara_data = asset_chara.get_data_by_id(10550204)
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10550204)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
@@ -83,7 +83,7 @@ def test_via_mode(asset_chara: CharaDataAsset, asset_manager: AssetManager):
     assert actual_identifiers == expected_identifiers
 
 
-def test_via_enhancements(asset_chara: CharaDataAsset, asset_manager: AssetManager):
+def test_via_enhancements(asset_manager: AssetManager):
     """
     Get the skill IDs which variants are buried in action condition.
 
@@ -91,7 +91,7 @@ def test_via_enhancements(asset_chara: CharaDataAsset, asset_manager: AssetManag
     """
     # Lin You
     # https://dragalialost.gamepedia.com/Lin_You
-    chara_data = asset_chara.get_data_by_id(10450301)
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10450301)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
@@ -108,7 +108,7 @@ def test_via_enhancements(asset_chara: CharaDataAsset, asset_manager: AssetManag
     assert actual_identifiers == expected_identifiers
 
 
-def test_via_enhancements_multi(asset_chara: CharaDataAsset, asset_manager: AssetManager):
+def test_via_enhancements_multi(asset_manager: AssetManager):
     """
     Get the skill IDs which variants are buried in action condition.
 
@@ -116,7 +116,7 @@ def test_via_enhancements_multi(asset_chara: CharaDataAsset, asset_manager: Asse
     """
     # Xander
     # https://dragalialost.gamepedia.com/Xander
-    chara_data = asset_chara.get_data_by_id(10150201)
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10150201)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
@@ -136,7 +136,7 @@ def test_via_enhancements_multi(asset_chara: CharaDataAsset, asset_manager: Asse
     assert actual_identifiers == expected_identifiers
 
 
-def test_via_ability(asset_chara: CharaDataAsset, asset_manager: AssetManager):
+def test_via_ability(asset_manager: AssetManager):
     """
     Get the skill IDs which variants are buried in the ability data.
 
@@ -144,7 +144,7 @@ def test_via_ability(asset_chara: CharaDataAsset, asset_manager: AssetManager):
     """
     # Meene
     # https://dragalialost.gamepedia.com/Meene
-    chara_data = asset_chara.get_data_by_id(10650303)
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10650303)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
@@ -164,7 +164,7 @@ def test_via_ability(asset_chara: CharaDataAsset, asset_manager: AssetManager):
     assert actual_identifiers == expected_identifiers
 
 
-def test_via_ability_2(asset_chara: CharaDataAsset, asset_manager: AssetManager):
+def test_via_ability_2(asset_manager: AssetManager):
     """
     Get the skill IDs which variants are buried in the ability data.
 
@@ -172,7 +172,7 @@ def test_via_ability_2(asset_chara: CharaDataAsset, asset_manager: AssetManager)
     """
     # Radiant Xuan Zang
     # https://dragalialost.gamepedia.com/Radiant_Xuan_Zang
-    chara_data = asset_chara.get_data_by_id(10750403)
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10750403)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
@@ -190,7 +190,7 @@ def test_via_ability_2(asset_chara: CharaDataAsset, asset_manager: AssetManager)
     assert actual_identifiers == expected_identifiers
 
 
-def test_via_chain(asset_chara: CharaDataAsset, asset_manager: AssetManager):
+def test_via_chain(asset_manager: AssetManager):
     """
     Get the skill IDs which variants are buried in the skill chain data.
 
@@ -198,7 +198,7 @@ def test_via_chain(asset_chara: CharaDataAsset, asset_manager: AssetManager):
     """
     # Gala Alex
     # https://dragalialost.gamepedia.com/Gala_Alex
-    chara_data = asset_chara.get_data_by_id(10150502)
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10150502)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
@@ -230,7 +230,7 @@ def test_via_chain(asset_chara: CharaDataAsset, asset_manager: AssetManager):
     assert actual_identifiers == expected_identifiers
 
 
-def test_via_unique_dragon(asset_chara: CharaDataAsset, asset_manager: AssetManager):
+def test_via_unique_dragon(asset_manager: AssetManager):
     """
     Get the skill IDs which variants are in the form of dragon skill (character has unique dragon).
 
@@ -238,7 +238,7 @@ def test_via_unique_dragon(asset_chara: CharaDataAsset, asset_manager: AssetMana
     """
     # Tiki
     # https://dragalialost.gamepedia.com/Tiki
-    chara_data = asset_chara.get_data_by_id(10350203)
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10350203)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 

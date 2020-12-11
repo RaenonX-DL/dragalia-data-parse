@@ -25,7 +25,7 @@ class SkillTransformer:
         self._asset_skill = asset_manager.asset_skill_data
         self._asset_hit_attr = asset_manager.asset_hit_attr
         self._asset_action_cond = asset_manager.asset_action_cond
-        self._loader_pa = asset_manager.loader_pa
+        self._loader_action = asset_manager.loader_action
         self._asset_pa_info = asset_manager.asset_pa_info
         self._asset_ability = asset_manager.asset_ability_data
 
@@ -35,7 +35,7 @@ class SkillTransformer:
     ) -> HitDataList:
         ret: HitDataList = []
 
-        prefab = self._loader_pa.get_prefab(action_id)
+        prefab = self._loader_action.get_prefab(action_id)
 
         # Convert hit actions of ``action_id`` to hit data
         for hit_label, action_component in prefab.get_hit_actions(skill_lv):
@@ -74,7 +74,7 @@ class SkillTransformer:
             # No next action
             return []
 
-        if self._loader_pa.get_prefab(action_id).component_cancel_to_next:
+        if self._loader_action.get_prefab(action_id).component_cancel_to_next:
             # Next action only procs if it's canceled by ``action_id``
             # Handled in ``_get_hit_data_action_component()``
             return []
