@@ -58,6 +58,10 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
     # region Flags of bullets having special patterns
     is_depends_on_user_buff_count: bool = False
     is_depends_on_bullet_on_map: bool = False
+    # endregion
+
+    # region Other attributes
+    is_boost_by_combo: bool = False
 
     # endregion
 
@@ -88,6 +92,10 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
                 self.mod_on_self_buff_zone = self.hit_attr.damage_modifier
             else:
                 self.mod_on_ally_buff_zone = self.hit_attr.damage_modifier
+
+        # Other attributes
+        if self.ability_data:
+            self.is_boost_by_combo = self.ability_data.is_boost_by_combo
 
         self._init_validity_check()
 
@@ -214,6 +222,11 @@ class DamagingHitData(HitData[ActionComponentHasHitLabels]):
         if hit_attr.boost_by_buff_count and condition_comp.buff_count:
             for damage_unit in damage_units:
                 damage_unit.mod *= (1 + hit_attr.rate_boost_by_buff * condition_comp.buff_count_converted)
+
+        # Combo damage boosts
+        if condition_comp.combo_count_converted and self.ability_data.is_boost_by_combo:
+            for damage_unit in damage_units:
+                damage_unit.mod *= (1 + self.ability_data.get_boost_by_combo(condition_comp.combo_count_converted))
 
     def _damage_units_apply_mod_boosts(self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite):
         self._damage_units_apply_mod_boosts_target(damage_units, condition_comp)

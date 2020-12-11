@@ -31,6 +31,9 @@ class AbilityVariantType(Enum):
     ENHANCE_SKILL = 44
     """Enhance a skill (ID at ID-A field, # at target action field)."""
 
+    DMG_UP_ON_COMBO = 54
+    """Damage up by user combo count."""
+
     @classmethod
     def _missing_(cls, _):
         return AbilityVariantType.UNKNOWN

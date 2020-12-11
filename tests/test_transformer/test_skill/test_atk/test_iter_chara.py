@@ -354,3 +354,34 @@ def test_nobunaga_s1(transformer_skill: SkillTransformer):
         del expected_addl_at_max[entry.condition_comp]
 
     assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
+def test_mitsuhide_s2(transformer_skill: SkillTransformer):
+    # Mitsuhide
+    # https://dragalialost.gamepedia.com/Mitsuhide
+    skill_data = transformer_skill.transform_attacking(103504022)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_at_max = {
+        SkillConditionComposite(SkillCondition.COMBO_0): 13.56 * 1.00,
+        SkillConditionComposite(SkillCondition.COMBO_5): 13.56 * 1.05,
+        SkillConditionComposite(SkillCondition.COMBO_10): 13.56 * 1.10,
+        SkillConditionComposite(SkillCondition.COMBO_15): 13.56 * 1.20,
+        SkillConditionComposite(SkillCondition.COMBO_20): 13.56 * 1.30,
+        SkillConditionComposite(SkillCondition.COMBO_25): 13.56 * 1.40,
+        SkillConditionComposite(SkillCondition.COMBO_30): 13.56 * 1.50,
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert \
+            pytest.approx(expected_addl_at_max[entry.condition_comp]) == entry.total_mod_at_max, \
+            entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"

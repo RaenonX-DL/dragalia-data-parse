@@ -109,7 +109,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 51. RandomBuff
 52. CriticalUpDependsOnBuffTypeCount
 53. InvalidDragonAbility
-54. ActDamageUpDependsOnHitCount
+<a href="#54---actdamageupdependsonhitcount">54. ActDamageUpDependsOnHitCount</a>
 55. ChainTimeExtension
 56. UniqueTransform
 57. EnhancedElementDamage
@@ -133,6 +133,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 For the missing enums below, it means that the **documentation has not been created** yet, rather than fields not used.
 
 If the fields are not explicitly mentioned, it means that the unmentioned fields are not used.
+
 
 ### `14` - `ChangeState`
 
@@ -179,3 +180,31 @@ after the enhancement.
 
 For Menee (`10650303`), Enhanced S1 (`106503033`, available if 6+ butterflies exist on the map) have this as `3` while
 Enhanced S2 (`106503036`, available if 6+ butterflies exist on the map) have this as `4`.
+
+### `54` - `ActDamageUpDependsOnHitCount`
+
+Raise the damage depends on the user's hit count.
+
+Check the doc of the variant string for more details.
+
+> This actually occurs in Mitsuhide S2 (`103504022`).
+
+#### Variant String
+
+Data of the damage boost.
+
+A value of `5_5/10_10/15_20/20_30/25_40/30_50` means that:
+
+- +5% damage if combo >= 5
+
+- +10% damage if combo >= 10
+
+- +20% damage if combo >= 15
+
+- +30% damage if combo >= 20
+
+- +40% damage if combo >= 25
+
+- +50% damage if combo >= 30
+
+The highest damage boost will be picked. For example, if the user's combo count is 27, then the damage boost is 40%.

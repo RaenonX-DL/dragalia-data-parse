@@ -19,7 +19,8 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_TARGET_ELEMENT = auto()
     MULTIPLE_HP_CONDITION = auto()
     MULTIPLE_HP_STATUS = auto()
-    MULTIPLE_BUFF = auto()
+    MULTIPLE_COMBO_COUNT = auto()
+    MULTIPLE_BUFF_COUNT = auto()
     MULTIPLE_BUFF_ZONE_SELF = auto()
     MULTIPLE_BUFF_ZONE_ALLY = auto()
     MULTIPLE_SELF_ACTION_CONDITION = auto()
@@ -33,6 +34,7 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_TARGET_ELEMENTAL = auto()
     INTERNAL_NOT_HP_STATUS = auto()
     INTERNAL_NOT_HP_CONDITION = auto()
+    INTERNAL_NOT_COMBO_COUNT = auto()
     INTERNAL_NOT_BUFF_COUNT = auto()
     INTERNAL_NOT_BUFF_ZONE_SELF = auto()
     INTERNAL_NOT_BUFF_ZONE_ALLY = auto()
@@ -245,6 +247,20 @@ class SkillConditionCategories:
         "Self - HP condition (of % max)",
         SkillConditionCheckResult.MULTIPLE_HP_CONDITION
     )
+    self_combo_count = SkillConditionCategoryTargetNumber(
+        {
+            SkillCondition.COMBO_0: 0,
+            SkillCondition.COMBO_5: 5,
+            SkillCondition.COMBO_10: 10,
+            SkillCondition.COMBO_15: 15,
+            SkillCondition.COMBO_20: 20,
+            SkillCondition.COMBO_25: 25,
+            SkillCondition.COMBO_30: 30,
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Self - combo count",
+        SkillConditionCheckResult.MULTIPLE_COMBO_COUNT
+    )
     self_buff_count = SkillConditionCategoryTargetNumber(
         {
             SkillCondition.SELF_BUFF_0: 0,
@@ -268,7 +284,7 @@ class SkillConditionCategories:
         },
         SkillConditionMaxCount.SINGLE,
         "Self - buff count",
-        SkillConditionCheckResult.MULTIPLE_BUFF
+        SkillConditionCheckResult.MULTIPLE_BUFF_COUNT
     )
     self_in_buff_zone_self = SkillConditionCategoryTargetNumber(
         {

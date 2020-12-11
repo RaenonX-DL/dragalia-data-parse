@@ -6,7 +6,7 @@ from dlparse.errors import (
     ActionInfoNotFoundError, HitDataUnavailableError, PreconditionCollidedError, SkillDataNotFoundError,
 )
 from dlparse.model import AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SupportiveSkillData
-from dlparse.mono.asset import SkillDataAsset, SkillDataEntry
+from dlparse.mono.asset import SkillDataEntry
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -22,25 +22,20 @@ class SkillTransformer:
     """Class to transform the skill data."""
 
     def __init__(self, asset_manager: "AssetManager"):
-        self._skill_data = asset_manager.asset_skill
-        self._hit_attr = asset_manager.asset_hit_attr
-        self._action_cond = asset_manager.asset_action_cond
-        self._action_loader = asset_manager.loader_pa
-        self._action_info = asset_manager.asset_pa_info
-        self._ability_asset = asset_manager.asset_ability_data
-
-    @property
-    def skill_data_asset(self) -> SkillDataAsset:
-        """Get the skill data asset used by this transformer."""
-        return self._skill_data
+        self._asset_skill = asset_manager.asset_skill_data
+        self._asset_hit_attr = asset_manager.asset_hit_attr
+        self._asset_action_cond = asset_manager.asset_action_cond
+        self._loader_pa = asset_manager.loader_pa
+        self._asset_pa_info = asset_manager.asset_pa_info
+        self._asset_ability = asset_manager.asset_ability_data
 
     def _get_hit_data_action_component(
-            self, hit_data_cls: Type[T], skill_lv: int, action_id: int, /,
+            self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_id: int, /,
             additional_pre_condition: SkillCondition = SkillCondition.NONE
     ) -> HitDataList:
         ret: HitDataList = []
 
-        prefab = self._action_loader.get_prefab(action_id)
+        prefab = self._loader_pa.get_prefab(action_id)
 
         # Convert hit actions of ``action_id`` to hit data
         for hit_label, action_component in prefab.get_hit_actions(skill_lv):
@@ -51,32 +46,35 @@ class SkillTransformer:
             pre_condition = additional_pre_condition or action_component.skill_pre_condition
 
             # If the hit attribute is missing, just skip it; sometimes it's simply missing
-            if hit_attr_data := self._hit_attr.get_data_by_id(hit_label):
+            if hit_attr_data := self._asset_hit_attr.get_data_by_id(hit_label):
                 ret.append(hit_data_cls(
                     hit_attr=hit_attr_data, action_component=action_component,
-                    action_id=action_id, pre_condition=pre_condition
+                    action_id=action_id, pre_condition=pre_condition,
+                    ability_data=self._asset_ability.get_data_by_id(ability_id)
                 ))
 
         # Convert hit actions of the next action if the current one is being terminated
         # Formal Joachim S1 (`109503011`) has this
         if prefab.component_cancel_to_next:
-            next_action_id = self._action_info.get_data_by_id(action_id).next_action_id
+            next_action_id = self._asset_pa_info.get_data_by_id(action_id).next_action_id
 
             ret.extend(self._get_hit_data_action_component(
-                hit_data_cls, skill_lv, next_action_id,
+                hit_data_cls, skill_lv, next_action_id, ability_id,
                 additional_pre_condition=prefab.component_cancel_to_next.effective_condition.skill_pre_condition
             ))
 
         return ret
 
-    def _get_hit_data_next_action(self, hit_data_cls: Type[T], skill_lv: int, action_id: int) -> HitDataList:
+    def _get_hit_data_next_action(
+            self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_id: int
+    ) -> HitDataList:
         # This currently handles additional inputs (Ramona S1, Lathna S1) only
-        action_info = self._action_info.get_data_by_id(action_id)
+        action_info = self._asset_pa_info.get_data_by_id(action_id)
         if not action_info.next_action_id:
             # No next action
             return []
 
-        if self._action_loader.get_prefab(action_id).component_cancel_to_next:
+        if self._loader_pa.get_prefab(action_id).component_cancel_to_next:
             # Next action only procs if it's canceled by ``action_id``
             # Handled in ``_get_hit_data_action_component()``
             return []
@@ -89,7 +87,7 @@ class SkillTransformer:
         while action_id_queue:
             # Pop the next action ID to get the prefab and the info
             curr_action_id = action_id_queue.pop(0)
-            curr_action_info = self._action_info.get_data_by_id(curr_action_id)
+            curr_action_info = self._asset_pa_info.get_data_by_id(curr_action_id)
             if not curr_action_info:
                 raise ActionInfoNotFoundError(curr_action_id)
 
@@ -109,7 +107,7 @@ class SkillTransformer:
             # Iterate through all possible pre-conditions
             for pre_condition in pre_conditions:
                 ret.extend(self._get_hit_data_action_component(
-                    hit_data_cls, skill_lv, curr_action_id, additional_pre_condition=pre_condition
+                    hit_data_cls, skill_lv, curr_action_id, ability_id, additional_pre_condition=pre_condition
                 ))
 
             # Add all next actions, if available
@@ -119,22 +117,31 @@ class SkillTransformer:
 
         return ret
 
-    def _get_hit_data_lv_ability(self, hit_data_cls: Type[T], action_id: int, ability_id: int) -> HitDataList:
+    def _get_hit_data_lv_ability_to_others(
+            self, hit_data_cls: Type[T], action_id: int, ability_id: int
+    ) -> HitDataList:
+        """
+        Get the other hit attributes linked to the ability.
+
+        Note that this does **NOT** include the effects coming from the ability,
+        for example, Mitsuhide S2 combo count damage boost.
+        """
         ret: HitDataList = []
 
-        if init_ability_data := self._ability_asset.get_data_by_id(ability_id):
+        if init_ability_data := self._asset_ability.get_data_by_id(ability_id):
             # Get all ability data from the ability chain
-            ability_data_dict = init_ability_data.get_all_ability(self._ability_asset)
+            ability_data_dict = init_ability_data.get_all_ability(self._asset_ability)
 
             # Loop through each hit labels of each ability data
             for ability_data in ability_data_dict.values():
                 for hit_label in ability_data.assigned_hit_labels:
                     # If the hit attribute is missing, just skip it; sometimes it's simply missing
-                    if hit_attr_data := self._hit_attr.get_data_by_id(hit_label):
+                    if hit_attr_data := self._asset_hit_attr.get_data_by_id(hit_label):
                         # Parse to :class:`HitData` and attach it to the hit data list to be returned
                         ret.append(hit_data_cls(
                             hit_attr=hit_attr_data, action_component=None, action_id=action_id,
-                            pre_condition=ability_data.condition.to_skill_condition()
+                            pre_condition=ability_data.condition.to_skill_condition(),
+                            ability_data=ability_data
                         ))
 
         return ret
@@ -143,9 +150,9 @@ class SkillTransformer:
         """Get a list of hit attributes at a certain ``skill_lv``."""
         ret: HitDataList = []
 
-        ret.extend(self._get_hit_data_action_component(hit_data_cls, skill_lv, action_id))
-        ret.extend(self._get_hit_data_next_action(hit_data_cls, skill_lv, action_id))
-        ret.extend(self._get_hit_data_lv_ability(hit_data_cls, action_id, ability_id))
+        ret.extend(self._get_hit_data_action_component(hit_data_cls, skill_lv, action_id, ability_id))
+        ret.extend(self._get_hit_data_next_action(hit_data_cls, skill_lv, action_id, ability_id))
+        ret.extend(self._get_hit_data_lv_ability_to_others(hit_data_cls, action_id, ability_id))
 
         return ret
 
@@ -166,7 +173,7 @@ class SkillTransformer:
         :raises HitDataUnavailableError: no hit data available
         """
         # Get the skill data
-        skill_data: Optional[SkillDataEntry] = self._skill_data.get_data_by_id(skill_id)
+        skill_data: Optional[SkillDataEntry] = self._asset_skill.get_data_by_id(skill_id)
         if not skill_data:
             raise SkillDataNotFoundError(skill_id)
 
@@ -190,7 +197,7 @@ class SkillTransformer:
 
             for hit_data in hit_data_lv:
                 # Check if the hit is effective to target, if desired; check the docs for the definition of effective
-                if hit_data.is_effective_to_enemy(self._action_cond) == effective_to_enemy:
+                if hit_data.is_effective_to_enemy(self._asset_action_cond) == effective_to_enemy:
                     hit_data_mtx[skill_lv - 1].append(hit_data)
 
         if not any(hit_data for hit_data in hit_data_mtx):
@@ -220,7 +227,7 @@ class SkillTransformer:
         return SupportiveSkillData(
             skill_data_raw=skill_data,
             hit_data_mtx=hit_data_mtx,
-            action_condition_asset=self._action_cond
+            action_condition_asset=self._asset_action_cond
         )
 
     def transform_attacking(self, skill_id: int, max_lv: int = 0) -> AttackingSkillData:
@@ -241,6 +248,6 @@ class SkillTransformer:
         return AttackingSkillData(
             skill_data_raw=skill_data,
             hit_data_mtx=hit_data_mtx,
-            asset_action_info=self._action_info,
-            asset_action_cond=self._action_cond
+            asset_action_info=self._asset_pa_info,
+            asset_action_cond=self._asset_action_cond
         )

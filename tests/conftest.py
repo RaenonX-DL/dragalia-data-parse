@@ -58,7 +58,7 @@ def asset_hit_attr() -> HitAttrAsset:
 @pytest.fixture
 def asset_skill() -> SkillDataAsset:
     """Get the skill data asset."""
-    return _asset_manager.asset_skill
+    return _asset_manager.asset_skill_data
 
 
 @pytest.fixture

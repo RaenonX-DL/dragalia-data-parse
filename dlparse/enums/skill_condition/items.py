@@ -89,6 +89,23 @@ class SkillCondition(Enum):
     """User's HP >= 85% max."""
     # endregion
 
+    # region Combo count
+    COMBO_0 = 241
+    """User's combo count = 0."""
+    COMBO_5 = 242
+    """User's combo count = 5."""
+    COMBO_10 = 243
+    """User's combo count = 10."""
+    COMBO_15 = 244
+    """User's combo count = 15."""
+    COMBO_20 = 245
+    """User's combo count = 20."""
+    COMBO_25 = 246
+    """User's combo count = 25."""
+    COMBO_30 = 247
+    """User's combo count = 30."""
+    # endregion
+
     # region Buff count
     SELF_BUFF_0 = 251
     SELF_BUFF_1 = 252

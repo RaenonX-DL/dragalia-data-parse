@@ -64,7 +64,7 @@ def print_sup_data_entry(chara_data, skill_data, skill_entry, max_level):
 def print_skill_id_entry(chara_data, skill_id_entry):
     skill_id = skill_id_entry.skill_id
 
-    skill_data_sys = _asset_manager.asset_skill.get_data_by_id(skill_id)
+    skill_data_sys = _asset_manager.asset_skill_data.get_data_by_id(skill_id)
     skill_name = _asset_manager.asset_text.to_text(skill_data_sys.name_label)
 
     print(f"{' / '.join(skill_id_entry.skill_identifier_labels)}: {skill_name} ({skill_id})")
@@ -118,4 +118,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10250103)
+    chara_skill_overview(10350402)

@@ -227,7 +227,7 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
             label = SkillIdentifierLabel.skill_enhanced_by_skill(skill_num, src_skill_num)
 
         # Get the other hit labels (if available) for further discovery
-        skill_data = asset_manager.asset_skill.get_data_by_id(skill_id)
+        skill_data = asset_manager.asset_skill_data.get_data_by_id(skill_id)
         hit_labels.update(self._get_hit_labels(asset_manager, skill_data, skill_num))
 
         # Return enhanced skill ID entry
@@ -312,7 +312,7 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
         added_skill_id: set[int] = set()
         current_source: "SkillDataEntry" = skill_data
 
-        while trans_skill_data := asset_manager.asset_skill.get_data_by_id(current_source.trans_skill_id):
+        while trans_skill_data := asset_manager.asset_skill_data.get_data_by_id(current_source.trans_skill_id):
             if trans_skill_data.id == skill_data.id:
                 break  # Changed to source skill data
 
@@ -451,14 +451,14 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
 
         unique_dragon_data: "DragonDataEntry" = asset_manager.asset_dragon.get_data_by_id(self.unique_dragon_id)
 
-        skill_1_data: "SkillDataEntry" = asset_manager.asset_skill.get_data_by_id(unique_dragon_data.skill_1_id)
+        skill_1_data: "SkillDataEntry" = asset_manager.asset_skill_data.get_data_by_id(unique_dragon_data.skill_1_id)
         ret.append(SkillIdEntry(
             unique_dragon_data.skill_1_id, SkillNumber.S1_DRAGON, SkillIdentifierLabel.S1_DRAGON
         ))
         ret.extend(self._skill_additional_single(asset_manager, skill_1_data, SkillNumber.S1_DRAGON))
 
         # Dragon usually does not have 2 skills (except Tiki's)
-        if skill_2_data := asset_manager.asset_skill.get_data_by_id(unique_dragon_data.skill_2_id):
+        if skill_2_data := asset_manager.asset_skill_data.get_data_by_id(unique_dragon_data.skill_2_id):
             ret.append(SkillIdEntry(
                 unique_dragon_data.skill_2_id, SkillNumber.S2_DRAGON, SkillIdentifierLabel.S2_DRAGON
             ))
@@ -474,8 +474,8 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
         """
         ret: list[SkillIdEntry] = []
 
-        skill_1_data: "SkillDataEntry" = asset_manager.asset_skill.get_data_by_id(self.skill_1_id)
-        skill_2_data: "SkillDataEntry" = asset_manager.asset_skill.get_data_by_id(self.skill_2_id)
+        skill_1_data: "SkillDataEntry" = asset_manager.asset_skill_data.get_data_by_id(self.skill_1_id)
+        skill_2_data: "SkillDataEntry" = asset_manager.asset_skill_data.get_data_by_id(self.skill_2_id)
 
         ret.extend(self._skill_additional_single(asset_manager, skill_1_data, SkillNumber.S1))
         ret.extend(self._skill_additional_single(asset_manager, skill_2_data, SkillNumber.S2))
@@ -506,7 +506,7 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
                         SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S1, ability_id)
                     ))
                     ret.extend(self._from_hit_labels(
-                        asset_manager, asset_manager.asset_skill.get_data_by_id(action_cond.enhance_skill_1_id),
+                        asset_manager, asset_manager.asset_skill_data.get_data_by_id(action_cond.enhance_skill_1_id),
                         SkillNumber.S1
                     ))
                 if action_cond.enhance_skill_2_id:
@@ -515,7 +515,7 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
                         SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S2, ability_id)
                     ))
                     ret.extend(self._from_hit_labels(
-                        asset_manager, asset_manager.asset_skill.get_data_by_id(action_cond.enhance_skill_2_id),
+                        asset_manager, asset_manager.asset_skill_data.get_data_by_id(action_cond.enhance_skill_2_id),
                         SkillNumber.S2
                     ))
 

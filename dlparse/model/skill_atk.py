@@ -181,6 +181,13 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             cond_elems.append({(buff_cond,) for buff_cond
                                in SkillConditionCategories.self_buff_count.get_members_lte(max_count)})
 
+        # Combo boosts available
+        combo_boost_available: bool = any(
+            hit_data.is_boost_by_combo for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+        )
+        if combo_boost_available:
+            cond_elems.append({(combo_cond,) for combo_cond in SkillConditionCategories.self_combo_count.members})
+
         # In buff zone boosts available
         in_buff_zone_available: bool = any(
             hit_data.is_effective_inside_buff_zone

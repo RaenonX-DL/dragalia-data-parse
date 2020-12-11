@@ -38,6 +38,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     hp_status: Optional[SkillCondition] = field(init=False)
     hp_status_converted: float = field(init=False)
     hp_condition: Optional[SkillCondition] = field(init=False)
+    combo_count: Optional[SkillCondition] = field(init=False)
+    combo_count_converted: int = field(init=False)
     buff_count: Optional[SkillCondition] = field(init=False)
     buff_count_converted: int = field(init=False)
     buff_zone_self: Optional[SkillCondition] = field(init=False)
@@ -86,6 +88,10 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         # Check `self.hp_condition`
         if self.hp_condition and self.hp_condition not in CondCat.self_hp_cond:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_HP_CONDITION)
+
+        # Check `self.combo_count`
+        if self.combo_count and self.combo_count not in CondCat.self_combo_count:
+            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_COMBO_COUNT)
 
         # Check `self.buff_count`
         if self.buff_count and self.buff_count not in CondCat.self_buff_count:
@@ -146,6 +152,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
         self.hp_status = CondCat.self_hp_status.extract(conditions)
         self.hp_condition = CondCat.self_hp_cond.extract(conditions)
+        self.combo_count = CondCat.self_combo_count.extract(conditions)
         self.buff_count = CondCat.self_buff_count.extract(conditions)
         self.buff_zone_self = CondCat.self_in_buff_zone_self.extract(conditions)
         self.buff_zone_ally = CondCat.self_in_buff_zone_ally.extract(conditions)
@@ -166,6 +173,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.target_elemental_converted = CondCat.target_elemental.convert(self.target_elemental, on_missing=None)
 
         self.hp_status_converted = CondCat.self_hp_status.convert(self.hp_status, on_missing=1)
+        self.combo_count_converted = CondCat.self_combo_count.convert(self.combo_count, on_missing=0)
         self.buff_count_converted = CondCat.self_buff_count.convert(self.buff_count, on_missing=None)
         self.buff_zone_self_converted = CondCat.self_in_buff_zone_self.convert(self.buff_zone_self, on_missing=None)
         self.buff_zone_ally_converted = CondCat.self_in_buff_zone_ally.convert(self.buff_zone_ally, on_missing=None)
@@ -193,6 +201,9 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
         if self.hp_condition:
             ret += (self.hp_condition,)
+
+        if self.combo_count:
+            ret += (self.combo_count,)
 
         if self.buff_count:
             ret += (self.buff_count,)
@@ -241,6 +252,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         - [Target] Afflictions
         - [Target] Target element
         - [Self] HP status / condition
+        - [Self] Combo count
         - [Self] Buff count
         - [Self] Buff zone built by self / ally
         - [Self] Self action condition
@@ -248,6 +260,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         - [Skill] Teammate coverage
         - [Skill] Bullets on map
         - [Skill] Additional inputs
+        - [Skill] Mark explosion
         """
         return (self._cond_sorted_target()
                 + self._cond_sorted_self_status()

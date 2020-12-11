@@ -22,7 +22,7 @@ class AssetManager:
         self._asset_chara_mode: CharaModeAsset = CharaModeAsset(asset_dir=master_asset_dir)
         self._asset_dragon: DragonDataAsset = DragonDataAsset(asset_dir=master_asset_dir)
         self._asset_hit_attr: HitAttrAsset = HitAttrAsset(asset_dir=master_asset_dir)
-        self._asset_skill: SkillDataAsset = SkillDataAsset(asset_dir=master_asset_dir)
+        self._asset_skill_data: SkillDataAsset = SkillDataAsset(asset_dir=master_asset_dir)
         self._asset_skill_chain: SkillChainAsset = SkillChainAsset(asset_dir=master_asset_dir)
         self._asset_text: TextAsset = TextAsset(asset_dir=master_asset_dir, asset_dir_custom=custom_asset_dir)
         self._asset_pa_info: PlayerActionInfoAsset = PlayerActionInfoAsset(asset_dir=master_asset_dir)
@@ -65,9 +65,9 @@ class AssetManager:
         return self._asset_hit_attr
 
     @property
-    def asset_skill(self) -> SkillDataAsset:
+    def asset_skill_data(self) -> SkillDataAsset:
         """Get the skill data asset."""
-        return self._asset_skill
+        return self._asset_skill_data
 
     @property
     def asset_skill_chain(self) -> SkillChainAsset:

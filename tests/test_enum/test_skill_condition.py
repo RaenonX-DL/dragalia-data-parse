@@ -9,7 +9,7 @@ def test_validity_result_enum():
     assert not bool(SkillConditionCheckResult.MULTIPLE_HP_CONDITION)
 
     assert SkillConditionCheckResult.PASS.passed
-    assert not SkillConditionCheckResult.MULTIPLE_BUFF.passed
+    assert not SkillConditionCheckResult.MULTIPLE_BUFF_COUNT.passed
 
 
 def test_validity_check():
@@ -35,7 +35,7 @@ def test_validity_single_buff():
 
 def test_validity_multi_buff():
     conditions = [SkillCondition.SELF_BUFF_10, SkillCondition.SELF_BUFF_25]
-    assert validate_skill_conditions(conditions) == SkillConditionCheckResult.MULTIPLE_BUFF
+    assert validate_skill_conditions(conditions) == SkillConditionCheckResult.MULTIPLE_BUFF_COUNT
 
 
 def test_validity_single_bullet_hit_count():

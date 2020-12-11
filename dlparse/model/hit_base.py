@@ -5,7 +5,8 @@ from typing import Generic, Optional, TypeVar
 
 from dlparse.enums import HitTargetSimple, SkillCondition
 from dlparse.mono.asset import (
-    ActionBuffBomb, ActionComponentBase, ActionConditionAsset, ActionConditionEntry, ActionSettingHit, HitAttrEntry,
+    AbilityEntry, ActionBuffBomb, ActionComponentBase, ActionConditionAsset, ActionConditionEntry, ActionSettingHit,
+    HitAttrEntry,
 )
 
 __all__ = ("HitData",)
@@ -28,6 +29,8 @@ class HitData(Generic[T], ABC):
     - Condition from the action component
     - Ability condition embedded on the skill data
     """
+
+    ability_data: Optional[AbilityEntry]
 
     @property
     def action_time(self):

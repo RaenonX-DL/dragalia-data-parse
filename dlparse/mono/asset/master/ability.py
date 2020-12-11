@@ -87,6 +87,17 @@ class AbilityVariantEntry:
     target_action_id: int
     up_value: float
 
+    # K = min combo count; V = damage boost rate
+    # - Highest combo first
+    _combo_boost_data: list[tuple[int, float]] = field(default_factory=list)
+
+    def __post_init__(self):
+        if self.type_enum == AbilityVariantType.DMG_UP_ON_COMBO:
+            # Variant type is boost on combo, parse the data
+            for entry in self.id_str.split("/"):
+                combo_count, boost_pct = entry.split("_")
+                self._combo_boost_data.append((int(combo_count), float(boost_pct)))
+
     @property
     def is_not_used(self) -> bool:
         """Check if the variant is not used."""
@@ -114,6 +125,24 @@ class AbilityVariantEntry:
             (self.id_a, SkillNumber.s1_s2_only(self.target_action_id - 2))
             if self.type_enum == AbilityVariantType.ENHANCE_SKILL else None
         )
+
+    @property
+    def is_boosted_by_combo(self) -> bool:
+        """Check if the variant type is to boost the damage according to the combo count."""
+        return self.type_enum == AbilityVariantType.DMG_UP_ON_COMBO
+
+    def get_boost_by_combo(self, combo_count: int) -> float:
+        """
+        Get the total damage boost rate when the user combo count is ``combo_count``.
+
+        The return will be 0.05 for 5% boost.
+        """
+        # Highest combo threshold first, reversing the data list
+        for min_combo_count, dmg_up_pct in reversed(self._combo_boost_data):
+            if combo_count >= min_combo_count:
+                return dmg_up_pct / 100
+
+        return 0
 
 
 @dataclass
@@ -166,6 +195,11 @@ class AbilityEntry(MasterEntryBase):
         """
         return [variant for variant in (self.variant_1, self.variant_2, self.variant_3) if not variant.is_not_used]
 
+    @property
+    def is_boost_by_combo(self) -> bool:
+        """Check if the damage will be boosted according to the current combo count."""
+        return any(variant.is_boosted_by_combo for variant in self.variants)
+
     def get_variants(self, ability_asset: "AbilityAsset") -> list[AbilityVariantEntry]:
         """Get all variants bound to the ability."""
         variants_traverse: list[AbilityVariantEntry] = self.variants
@@ -192,6 +226,14 @@ class AbilityEntry(MasterEntryBase):
                 ret[other_ability_id] = ability_asset.get_data_by_id(other_ability_id)
 
         return ret
+
+    def get_boost_by_combo(self, combo_count: int) -> float:
+        """
+        Get the total rate of damage boost when the user combo count is ``combo_count``.
+
+        The return will be 0.05 for a total of 5% boost.
+        """
+        return sum(variant.get_boost_by_combo(combo_count) for variant in self.variants)
 
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "AbilityEntry":
