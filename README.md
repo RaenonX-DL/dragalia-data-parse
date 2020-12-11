@@ -46,6 +46,10 @@ Instead, there are some express scripts. To use them, directly modify the paramt
 
 Get a quick overview of a certain character by specifying the character ID. Character ID should be an 8-digit number.
 
+### `script_check_skill`
+
+Check if the newly added skills are all parsed.
+
 ### `script_data_diff`
 
 Check the data difference between different versions of the assets.
