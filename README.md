@@ -126,6 +126,11 @@ errors or outdated information because of the v2.0 update.
   > This assumes that any possible additional dependency will not significantly boost the data processing speed
   > (if necessary), which rarely happens in general.
 
+If you are looking for some asset notes or explanations, try visiting the [notes] section. Note that the notes may be
+incomplete.
+
+[notes]: https://github.com/RaenonX-DL/dragalia-data-parse/tree/main/notes
+
 ------
 
 # Milestones

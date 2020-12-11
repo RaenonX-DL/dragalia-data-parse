@@ -187,7 +187,7 @@ Raise the damage depends on the user's hit count.
 
 Check the doc of the variant string for more details.
 
-> This actually occurs in Mitsuhide S2 (`103504022`).
+> This actually appears on Mitsuhide S2 (`103504022`).
 
 #### Variant String
 

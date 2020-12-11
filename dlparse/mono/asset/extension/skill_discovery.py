@@ -248,7 +248,7 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
         hit_labels_searched: set[str] = set()
 
         # Counter to be used if the skill is hit_data-enhancing (consider as phased skills instead)
-        # Such case occurs on Xander (`10150201`)
+        # Such case appears on Xander (`10150201`)
         phase_counter = {SkillNumber.S1: 2, SkillNumber.S2: 2}
 
         # Check each hit labels to see if there are any skill enhancements
