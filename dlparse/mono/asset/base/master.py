@@ -73,6 +73,10 @@ class MasterAssetBase(Generic[T], AssetBase, ABC):
         return item in self._data.keys()
 
     @property
+    def data(self) -> dict:
+        return self._data
+
+    @property
     def all_ids(self) -> set[Union[int, str]]:
         """Get the set of all data IDs."""
         return set(self._data.keys())

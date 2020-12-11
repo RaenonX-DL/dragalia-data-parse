@@ -6,8 +6,7 @@ from dlparse.mono.asset import TextAsset
 from dlparse.mono.loader import ActionFileLoader
 from dlparse.mono.manager import AssetManager
 from tests.static import (
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, get_remote_dir_master_asset,
-    get_remote_dir_player_action,
+    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, get_remote_dir_action_asset, get_remote_dir_master_asset,
 )
 
 
@@ -45,6 +44,6 @@ def test_prefab_loader_local_dir(asset_manager: AssetManager):
 @pytest.mark.slow
 def test_prefab_loader_remote_dir(asset_manager: AssetManager):
     loader = ActionFileLoader(
-        asset_manager.asset_action_list, get_remote_dir_player_action()
+        asset_manager.asset_action_list, get_remote_dir_action_asset()
     )
     assert loader.get_prefab(141001) is not None

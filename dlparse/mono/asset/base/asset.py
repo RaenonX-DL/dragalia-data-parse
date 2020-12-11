@@ -2,7 +2,7 @@
 import io
 import os
 from abc import ABC, abstractmethod
-from typing import Any, Optional, TextIO, Type
+from typing import Any, Optional, TextIO, Type, Union
 from urllib.error import HTTPError
 from urllib.request import urlopen
 
@@ -52,6 +52,10 @@ class AssetBase(ABC):
     @abstractmethod
     def __iter__(self):
         raise NotImplementedError()
+
+    @property
+    def data(self) -> Union[dict, list, set]:
+        return self._data
 
     @staticmethod
     def get_file_like(file_location: str) -> TextIO:

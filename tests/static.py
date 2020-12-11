@@ -2,7 +2,7 @@ import os
 
 __all__ = (
     "PATH_LOCAL_DIR_MASTER_ASSET", "PATH_LOCAL_DIR_CUSTOM_ASSET", "PATH_LOCAL_DIR_ACTION_ASSET",
-    "get_remote_dir_player_action", "get_remote_dir_master_asset"
+    "get_remote_dir_action_asset", "get_remote_dir_master_asset"
 )
 
 PATH_LOCAL_ROOT_DATA = ".data"
@@ -17,18 +17,21 @@ PATH_REMOTE_GH = "https://raw.githubusercontent.com/RaenonX-DL/dragalia-data-dep
 REMOTE_VERSION_TAG = "2020.12.11-Sh3XK6NMv7neVgaf"
 
 
-def get_remote_dir_player_action(version_tag: str = REMOTE_VERSION_TAG) -> str:
+def get_remote_dir_action_asset(version_tag: str = None) -> str:
     """
-    Get the remote player action asset directory.
+    Get the remote action asset directory.
 
     The format of ``version_tag`` should be ``YYYY.MM.DD-VERSION_CODE``.
 
     The return will **NOT** end with a slash.
     """
+    if not version_tag:
+        version_tag = REMOTE_VERSION_TAG
+
     return f"{PATH_REMOTE_GH}{version_tag}/assets/_gluonresources/resources/actions"
 
 
-def get_remote_dir_master_asset(version_tag: str = REMOTE_VERSION_TAG) -> str:
+def get_remote_dir_master_asset(version_tag: str = None) -> str:
     """
     Get the remote master asset directory.
 
@@ -36,4 +39,7 @@ def get_remote_dir_master_asset(version_tag: str = REMOTE_VERSION_TAG) -> str:
 
     The return will **NOT** end with a slash.
     """
+    if not version_tag:
+        version_tag = REMOTE_VERSION_TAG
+
     return f"{PATH_REMOTE_GH}{version_tag}/assets/_gluonresources/resources/master"

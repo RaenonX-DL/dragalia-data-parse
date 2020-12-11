@@ -46,6 +46,12 @@ Instead, there are some express scripts. To use them, directly modify the paramt
 
 Get a quick overview of a certain character by specifying the character ID. Character ID should be an 8-digit number.
 
+### `script_data_diff`
+
+Check the data difference between different versions of the assets.
+
+One asset will be the local version, and another will be one of the [remote][data-depot] versions.
+
 ### `script_export`
 
 Export all skill data as csv to the specified location.
