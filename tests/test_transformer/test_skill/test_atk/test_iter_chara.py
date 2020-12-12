@@ -385,3 +385,5 @@ def test_mitsuhide_s2(transformer_skill: SkillTransformer):
         del expected_addl_at_max[entry.condition_comp]
 
     assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+# FIXME: Naveed S1 (10150101) list S2 count usage

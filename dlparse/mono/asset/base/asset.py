@@ -55,6 +55,7 @@ class AssetBase(ABC):
 
     @property
     def data(self) -> Union[dict, list, set]:
+        """Get all data of the asset."""
         return self._data
 
     @staticmethod

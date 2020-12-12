@@ -27,6 +27,8 @@ class AbilityCondition(Enum):
 
     Condition value 1 = 40 means that the condition matches if the user's HP is > 40% of the max HP.
     """
+    ENERGIZED = 18
+    """Matches if the user is energized."""
     SELF_HP_LT = 37
     """
     Matches if the user's HP is < certain percent of the max HP.

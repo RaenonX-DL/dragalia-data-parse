@@ -302,7 +302,7 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
 
     @staticmethod
     def _phase_single(
-            skill_data: "SkillDataEntry", asset_manager: "AssetManager", skill_num: SkillNumber
+            asset_manager: "AssetManager", skill_data: "SkillDataEntry", skill_num: SkillNumber
     ) -> list[SkillIdEntry]:
         """Get all possible skills after phase changing for ``skill_data``, excluding the source skill."""
         if not skill_data.has_phase_variant:
@@ -339,16 +339,16 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
         ret: list[SkillIdEntry] = []
 
         if skill_1_data.has_phase_variant:
-            ret.extend(self._phase_single(skill_1_data, asset_manager, SkillNumber.S1))
+            ret.extend(self._phase_single(asset_manager, skill_1_data, SkillNumber.S1))
 
         if skill_2_data.has_phase_variant:
-            ret.extend(self._phase_single(skill_2_data, asset_manager, SkillNumber.S2))
+            ret.extend(self._phase_single(asset_manager, skill_2_data, SkillNumber.S2))
 
         return ret
 
     @staticmethod
     def _chain_single(
-            skill_data: "SkillDataEntry", asset_manager: "AssetManager", skill_num: SkillNumber
+            asset_manager: "AssetManager", skill_data: "SkillDataEntry", skill_num: SkillNumber
     ) -> list[SkillIdEntry]:
         """Get all possible chained skill variants, excluding the source skill."""
         if not skill_data.has_chain_variant:
@@ -373,10 +373,10 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
         ret: list[SkillIdEntry] = []
 
         if skill_1_data.has_chain_variant:
-            ret.extend(self._chain_single(skill_1_data, asset_manager, SkillNumber.S1))
+            ret.extend(self._chain_single(asset_manager, skill_1_data, SkillNumber.S1))
 
         if skill_2_data.has_chain_variant:
-            ret.extend(self._chain_single(skill_2_data, asset_manager, SkillNumber.S2))
+            ret.extend(self._chain_single(asset_manager, skill_2_data, SkillNumber.S2))
 
         return ret
 
@@ -391,11 +391,26 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
 
         return ret
 
+    @staticmethod
+    def _ability_single(asset_manager: "AssetManager", ability_id: int) -> list[SkillIdEntry]:
+        """Get all skills enhanced by the ability bound to ``skill_data``."""
+        ret: list[SkillIdEntry] = []
+
+        ability_data = asset_manager.asset_ability_data.get_data_by_id(ability_id)
+
+        for target_skill_id, target_skill_num in ability_data.enhanced_skills:
+            ret.append(SkillIdEntry(
+                target_skill_id, target_skill_num,
+                SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S1, ability_id)
+            ))
+
+        return ret
+
     def _skill_additional_single(
             self, asset_manager: "AssetManager", skill_data: "SkillDataEntry", skill_num: SkillNumber
     ) -> list[SkillIdEntry]:
         """
-        Get all possible variants of a ``skill_data``.
+        Get all possible skill variants of a ``skill_data``.
 
         This includes phase variant, chain variant and the variants from the skill hit labels;
         does not include the skill data being passed in.
@@ -403,10 +418,14 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
         ret: list[SkillIdEntry] = []
 
         if skill_data.has_phase_variant:
-            ret.extend(self._phase_single(skill_data, asset_manager, skill_num))
+            ret.extend(self._phase_single(asset_manager, skill_data, skill_num))
 
         if skill_data.has_chain_variant:
-            ret.extend(self._chain_single(skill_data, asset_manager, skill_num))
+            ret.extend(self._chain_single(asset_manager, skill_data, skill_num))
+
+        # Get all skill abilities, - {0} for removing ineffective ones
+        for ability_id in set(skill_data.ability_id_by_level) - {0}:
+            ret.extend(self._ability_single(asset_manager, ability_id))
 
         ret.extend(self._from_hit_labels(asset_manager, skill_data, skill_num))
 
@@ -490,7 +509,7 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
         ability_data_dict: dict[int, "AbilityEntry"] = self._get_all_ability(asset_manager)
 
         for ability_id, ability_data in ability_data_dict.items():
-            # Add skill IDs enhanced by the ability
+            # Add skill IDs enhanced by the character ability (different from the skills enhanced by the skill ability)
             for skill_id, skill_num in ability_data.enhanced_skills:
                 ret.append(SkillIdEntry(
                     skill_id, skill_num, SkillIdentifierLabel.skill_enhanced_by_ability(skill_num, ability_id)

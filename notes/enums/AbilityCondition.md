@@ -36,7 +36,7 @@ Field: `_ConditionType`
 15. QUEST_START
 16. OVERDRIVE
 17. ABNORMAL_STATUS
-18. TENSION_MAX
+<a href="#18---tension_max">18. TENSION_MAX</a>
 19. TENSION_MAX_MOMENT
 20. DEBUFF_SLIP_HP
 21. HITCOUNT_MOMENT
@@ -127,6 +127,10 @@ Check if the user's HP is > a certain threshold.
 `Val 1 = 40` means that the condition holds if the user's HP is > 40%.
 
 - **Val 1**: HP threshold.
+
+### `18` - `TENSION_MAX`
+
+Check if the user is energized.
 
 ### `37` - `HP_NOREACH`
 

@@ -132,8 +132,9 @@ class SkillTransformer:
             # Get all ability data from the ability chain
             ability_data_dict = init_ability_data.get_all_ability(self._asset_ability)
 
-            # Loop through each hit labels of each ability data
+            # Loop through each ability data
             for ability_data in ability_data_dict.values():
+                # Check assigned enhance hit labels, if any
                 for hit_label in ability_data.assigned_hit_labels:
                     # If the hit attribute is missing, just skip it; sometimes it's simply missing
                     if hit_attr_data := self._asset_hit_attr.get_data_by_id(hit_label):
