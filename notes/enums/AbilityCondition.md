@@ -37,7 +37,7 @@ Field: `_ConditionType`
 16. OVERDRIVE
 17. ABNORMAL_STATUS
 <a href="#18---tension_max">18. TENSION_MAX</a>
-19. TENSION_MAX_MOMENT
+<a href="#19---tension_max_moment">19. TENSION_MAX_MOMENT</a>
 20. DEBUFF_SLIP_HP
 21. HITCOUNT_MOMENT
 22. GET_HEAL_SKILL
@@ -120,6 +120,7 @@ not used.
 
 Missing value(s) means that the corresponding value is not used.
 
+
 ### `01` - `HP_MORE`
 
 Check if the user's HP is > a certain threshold.
@@ -130,7 +131,23 @@ Check if the user's HP is > a certain threshold.
 
 ### `18` - `TENSION_MAX`
 
-Check if the user is energized.
+Check if the user **is** energized.
+
+Note that the effect will be effective as long as the user is energized. This is different
+from [`19. TENSION_MAX_MOMENT`](#19---tension_max_moment), which only triggers when the user got energized.
+
+### `19` - `TENSION_MAX_MOMENT`
+
+Check if the user **got** energized.
+
+Note that the effect will be granted once the user got energized. This is different
+from [`18. TENSION_MAX`](#18---tension_max), which effects will be effective as long as the user is energized.
+
+> This is only used by Nadine (`10550102`) as of 2020/12/12.
+
+- **Val 1**: *Used but meaning unknown. Could be the count of effects to grant.*
+
+  For all usages as of 2020/12/12, this only has a value of `1`.
 
 ### `37` - `HP_NOREACH`
 

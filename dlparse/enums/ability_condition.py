@@ -29,6 +29,13 @@ class AbilityCondition(Enum):
     """
     ENERGIZED = 18
     """Matches if the user is energized."""
+    ENERGIZED_MOMENT = 19
+    """
+    Matches if the user is energized.
+
+    Note that the difference between `ENERGIZED` is that the effect of `ENERGIZED` will stay as long as
+    the user is energized, whereas the effect of `ENERGIZED_ONCE` will be granted once the user is energized.
+    """
     SELF_HP_LT = 37
     """
     Matches if the user's HP is < certain percent of the max HP.

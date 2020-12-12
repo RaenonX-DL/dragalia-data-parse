@@ -71,6 +71,10 @@ class AbilityConditionEntry:
         if self.condition_type in (AbilityCondition.SELF_HP_LT, AbilityCondition.SELF_HP_LT_2):
             return self._skill_cond_self_hp_lt()
 
+        # User energized
+        if self.condition_type == AbilityCondition.ENERGIZED_MOMENT:
+            return SkillCondition.SELF_ENERGIZED
+
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
 

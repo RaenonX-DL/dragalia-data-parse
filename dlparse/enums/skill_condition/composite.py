@@ -22,7 +22,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     allowed_not_categorize_conds: ClassVar[set[SkillCondition]] = {
         SkillCondition.TARGET_OD_STATE,
         SkillCondition.TARGET_BK_STATE,
-        SkillCondition.MARK_EXPLODES
+        SkillCondition.MARK_EXPLODES,
+        SkillCondition.SELF_ENERGIZED
     }
 
     # region Target

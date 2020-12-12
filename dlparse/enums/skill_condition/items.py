@@ -42,8 +42,8 @@ class SkillCondition(Enum):
     # endregion
 
     # region State
-    TARGET_BK_STATE = 181
-    TARGET_OD_STATE = 182
+    TARGET_BK_STATE = 180
+    TARGET_OD_STATE = 181
     # endregion
 
     # region Abnormal
@@ -56,75 +56,75 @@ class SkillCondition(Enum):
 
     # region Self status
     # region HP
-    SELF_HP_1 = 201
+    SELF_HP_1 = 200
     """User's HP = 1."""
-    SELF_HP_EQ_10 = 202
+    SELF_HP_EQ_10 = 201
     """User's HP = 10% max."""
-    SELF_HP_EQ_20 = 203
+    SELF_HP_EQ_20 = 202
     """User's HP = 20% max."""
-    SELF_HP_EQ_30 = 204
+    SELF_HP_EQ_30 = 203
     """User's HP = 30% max."""
-    SELF_HP_EQ_50 = 205
+    SELF_HP_EQ_50 = 204
     """User's HP = 50% max."""
-    SELF_HP_EQ_70 = 206
+    SELF_HP_EQ_70 = 205
     """User's HP = 70% max."""
-    SELF_HP_FULL = 207
+    SELF_HP_FULL = 206
     """User's HP is full."""
 
-    SELF_HP_LT_40 = 211
+    SELF_HP_LT_40 = 210
     """User's HP < 40% max."""
-    SELF_HP_LT_30 = 212
+    SELF_HP_LT_30 = 211
     """User's HP < 30% max."""
 
-    SELF_HP_GT_30 = 221
+    SELF_HP_GT_30 = 220
     """User's HP > 30% max."""
 
-    SELF_HP_GTE_40 = 226
+    SELF_HP_GTE_40 = 225
     """User's HP >= 40% max."""
-    SELF_HP_GTE_50 = 227
+    SELF_HP_GTE_50 = 226
     """User's HP >= 50% max."""
-    SELF_HP_GTE_60 = 228
+    SELF_HP_GTE_60 = 227
     """User's HP >= 60% max."""
-    SELF_HP_GTE_85 = 229
+    SELF_HP_GTE_85 = 228
     """User's HP >= 85% max."""
     # endregion
 
     # region Combo count
-    COMBO_0 = 241
+    COMBO_0 = 240
     """User's combo count = 0."""
-    COMBO_5 = 242
+    COMBO_5 = 241
     """User's combo count = 5."""
-    COMBO_10 = 243
+    COMBO_10 = 242
     """User's combo count = 10."""
-    COMBO_15 = 244
+    COMBO_15 = 243
     """User's combo count = 15."""
-    COMBO_20 = 245
+    COMBO_20 = 244
     """User's combo count = 20."""
-    COMBO_25 = 246
+    COMBO_25 = 245
     """User's combo count = 25."""
-    COMBO_30 = 247
+    COMBO_30 = 246
     """User's combo count = 30."""
     # endregion
 
     # region Buff count
-    SELF_BUFF_0 = 251
-    SELF_BUFF_1 = 252
-    SELF_BUFF_2 = 253
-    SELF_BUFF_3 = 254
-    SELF_BUFF_4 = 255
-    SELF_BUFF_5 = 256
-    SELF_BUFF_6 = 257
-    SELF_BUFF_7 = 258
-    SELF_BUFF_8 = 259
-    SELF_BUFF_9 = 260
-    SELF_BUFF_10 = 261
-    SELF_BUFF_20 = 262
-    SELF_BUFF_25 = 263
-    SELF_BUFF_30 = 264
-    SELF_BUFF_35 = 265
-    SELF_BUFF_40 = 266
-    SELF_BUFF_45 = 267
-    SELF_BUFF_50 = 268
+    SELF_BUFF_0 = 250
+    SELF_BUFF_1 = 251
+    SELF_BUFF_2 = 252
+    SELF_BUFF_3 = 253
+    SELF_BUFF_4 = 254
+    SELF_BUFF_5 = 255
+    SELF_BUFF_6 = 256
+    SELF_BUFF_7 = 257
+    SELF_BUFF_8 = 258
+    SELF_BUFF_9 = 259
+    SELF_BUFF_10 = 260
+    SELF_BUFF_20 = 261
+    SELF_BUFF_25 = 262
+    SELF_BUFF_30 = 263
+    SELF_BUFF_35 = 264
+    SELF_BUFF_40 = 265
+    SELF_BUFF_45 = 266
+    SELF_BUFF_50 = 267
     # endregion
 
     # region In buff zone
@@ -143,6 +143,7 @@ class SkillCondition(Enum):
     SELF_GAUGE_FILLED_0 = 282
     SELF_GAUGE_FILLED_1 = 283
     SELF_GAUGE_FILLED_2 = 284
+    SELF_ENERGIZED = 290
     # endregion
     # endregion
 
@@ -161,43 +162,43 @@ class SkillCondition(Enum):
     # endregion
 
     # region Count of teammates covered
-    COVER_TEAMMATE_0 = 321
-    COVER_TEAMMATE_1 = 322
-    COVER_TEAMMATE_2 = 323
-    COVER_TEAMMATE_3 = 324
+    COVER_TEAMMATE_0 = 320
+    COVER_TEAMMATE_1 = 321
+    COVER_TEAMMATE_2 = 322
+    COVER_TEAMMATE_3 = 323
     # endregion
 
     # region Bullets left on the map
     # EXNOTE: Only Meene uses this implementation for now, may be more in the future.
     # - Meene can only summon up to 9 butterflies on the map. This info has not yet been discovered by this parser.
-    BULLETS_ON_MAP_0 = 331
-    BULLETS_ON_MAP_1 = 332
-    BULLETS_ON_MAP_2 = 333
-    BULLETS_ON_MAP_3 = 334
-    BULLETS_ON_MAP_4 = 335
-    BULLETS_ON_MAP_5 = 336
-    BULLETS_ON_MAP_6 = 337
-    BULLETS_ON_MAP_7 = 338
-    BULLETS_ON_MAP_8 = 339
-    BULLETS_ON_MAP_9 = 340
+    BULLETS_ON_MAP_0 = 330
+    BULLETS_ON_MAP_1 = 331
+    BULLETS_ON_MAP_2 = 332
+    BULLETS_ON_MAP_3 = 333
+    BULLETS_ON_MAP_4 = 334
+    BULLETS_ON_MAP_5 = 335
+    BULLETS_ON_MAP_6 = 336
+    BULLETS_ON_MAP_7 = 337
+    BULLETS_ON_MAP_8 = 338
+    BULLETS_ON_MAP_9 = 339
     # endregion
 
     # region Additional inputs by user
-    ADDL_INPUT_0 = 351
-    ADDL_INPUT_1 = 352
-    ADDL_INPUT_2 = 353
-    ADDL_INPUT_3 = 354
-    ADDL_INPUT_4 = 355
-    ADDL_INPUT_5 = 356
-    ADDL_INPUT_6 = 357
+    ADDL_INPUT_0 = 350
+    ADDL_INPUT_1 = 351
+    ADDL_INPUT_2 = 352
+    ADDL_INPUT_3 = 353
+    ADDL_INPUT_4 = 354
+    ADDL_INPUT_5 = 355
+    ADDL_INPUT_6 = 356
     # endregion
 
     # region Action canceling
-    CANCELS_FJOACHIM_S2 = 371
+    CANCELS_FJOACHIM_S2 = 370
     # endregion
 
     # region Miscellaneous
-    MARK_EXPLODES = 391
+    MARK_EXPLODES = 390
 
     # endregion
     # endregion

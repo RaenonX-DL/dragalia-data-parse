@@ -136,6 +136,37 @@ def test_via_enhancements_multi(asset_manager: AssetManager):
     assert actual_identifiers == expected_identifiers
 
 
+def test_via_enhancements_multi_action(asset_manager: AssetManager):
+    """
+    Get the skill IDs which variants are buried in action condition.
+
+    Skill IDs can be found in the fields ``_EnhancedSkill1`` and ``_EnhancedSkill2`` of the action condition entries.
+
+    Additionally, this checks if all possible skill actions are returned.
+    For example, Nadine S2 randomly picks one effect, both of these should be returned.
+    """
+    # Nadine S1
+    # https://dragalialost.gamepedia.com/Nadine
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10550102)
+
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
+
+    label_s1_enhanced_by_s2 = SkillIdentifierLabel.skill_enhanced_by_skill(SkillNumber.S1, SkillNumber.S2)
+
+    expected_identifiers = [
+        # S1 Base
+        SkillIdEntry(105501021, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
+        # S2 Base - 1
+        SkillIdEntry(105501022, SkillNumber.S2, SkillIdentifierLabel.S2_BASE),
+        # S1 enhanced by S2
+        SkillIdEntry(105501023, SkillNumber.S1, label_s1_enhanced_by_s2),
+        # SS variant
+        SkillIdEntry(105501025, SkillNumber.S1, SkillIdentifierLabel.SHARED),
+    ]
+
+    assert actual_identifiers == expected_identifiers
+
+
 def test_via_ability(asset_manager: AssetManager):
     """
     Get the skill IDs which variants are buried in the ability data.
