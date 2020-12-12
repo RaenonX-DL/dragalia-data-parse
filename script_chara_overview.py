@@ -1,3 +1,4 @@
+from dlparse.errors import HitDataUnavailableError
 from dlparse.mono.manager import AssetManager
 from tests.static import PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET
 
@@ -73,33 +74,38 @@ def print_skill_id_entry(chara_data, skill_id_entry):
     try:
         data_atk = _asset_manager.transformer_skill.transform_attacking(
             skill_id,
-            max_lv=chara_data.max_skill_level(skill_id_entry.skill_num)
+            max_lv=chara_data.max_skill_level(skill_id_entry.skill_num),
+            # Getting the highest level of the ability only
+            ability_ids=chara_data.ability_ids_at_max_level
         )
 
         for skill_entry in data_atk.get_all_possible_entries():
             print_atk_data_entry(chara_data, data_atk, skill_entry)
-    except Exception as ex:
-        print(f"--- No attacking data available for this skill --- {ex}")
+    except HitDataUnavailableError:
+        print(f"--- No attacking data available for this skill ---")
         print()
 
     try:
         data_sup = _asset_manager.transformer_skill.transform_supportive(
             skill_id,
-            max_lv=chara_data.max_skill_level(skill_id_entry.skill_num)
+            max_lv=chara_data.max_skill_level(skill_id_entry.skill_num),
+            # Getting the highest level of the ability only
+            ability_ids=chara_data.ability_ids_at_max_level
         )
 
         for skill_entry in data_sup.get_all_possible_entries():
             print_sup_data_entry(chara_data, data_sup, skill_entry, data_sup.max_level)
-    except Exception as ex:
-        print(f"--- No supportive data available for this skill --- {ex}")
+    except HitDataUnavailableError:
+        print(f"--- No supportive data available for this skill ---")
 
 
 def chara_skill_overview(chara_id):
     chara_data = _asset_manager.asset_chara_data.get_data_by_id(chara_id)
 
     skill_id_entries = chara_data.get_skill_id_entries(_asset_manager)
-    skill_identifiers = [id_label for skill_id_entry in skill_id_entries
-                         for id_label in skill_id_entry.skill_identifier_labels]
+    skill_identifiers = [
+        id_label for skill_id_entry in skill_id_entries for id_label in skill_id_entry.skill_identifier_labels
+    ]
 
     print(f"{chara_data.get_chara_name(_asset_manager.asset_text)} ({chara_id})")
     print()
@@ -118,4 +124,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10150101)
+    chara_skill_overview(10150301)

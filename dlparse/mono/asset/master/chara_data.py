@@ -262,6 +262,36 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
         return self.win_face_eye_id != 0 or self.win_face_mouth_id
 
     @property
+    def ability_ids_at_max_level(self) -> list[int]:
+        """Get the ability IDs at its max level."""
+        ret: list[int] = []
+
+        # DON'T use `self.is_70_mc` because some ability will not have a level increase even if it's 70 MC
+
+        for abid in (self.ability_1_lv_4_id, self.ability_1_lv_3_id, self.ability_1_lv_2_id, self.ability_1_lv_1_id):
+            if not abid:  # Ability ineffective, continue
+                continue
+
+            ret.append(abid)  # Found 1 effective ability, add it and terminate the loop
+            break
+
+        for abid in (self.ability_2_lv_4_id, self.ability_2_lv_3_id, self.ability_2_lv_2_id, self.ability_2_lv_1_id):
+            if not abid:  # Ability ineffective, continue
+                continue
+
+            ret.append(abid)  # Found 1 effective ability, add it and terminate the loop
+            break
+
+        for abid in (self.ability_3_lv_4_id, self.ability_3_lv_3_id, self.ability_3_lv_2_id, self.ability_3_lv_1_id):
+            if not abid:  # Ability ineffective, continue
+                continue
+
+            ret.append(abid)  # Found 1 effective ability, add it and terminate the loop
+            break
+
+        return ret
+
+    @property
     def ability_ids_all_level(self) -> list[int]:
         return [
             ability_id for ability_id in (

@@ -95,7 +95,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 37. EnemyAbilityKiller
 38. HitAttribute
 39. PassiveGrant
-40. ActiveGaugeStatusUp
+<a href="#40---activegaugestatusup">40. ActiveGaugeStatusUp</a>
 41. Dummy05
 42. HitAttributeShift
 <a href="#43---referenceother">43. ReferenceOther</a>
@@ -156,6 +156,33 @@ A value of `888` means that to call the action condition ID `888` once the condi
 The hit attribute to be called (if given).
 
 A value of `BUF_222_LV01` means that to call the hit attribute `BUF_222_LV01` once the condition satisifes.
+
+### `40` - `ActiveGaugeStatusUp`
+
+Get the status up information according to the user gauge status.
+
+> This actually appears (and only appears) on Gala Ranzal (`10150301`) as of 2020/12/11.
+
+#### Variant ID - A, Variant ID - B
+
+*Both are 1, but usage and meaning unknown.*
+
+#### Variant String
+
+Data of the DEF boost and the target action damage boost.
+
+A value of `5_10/15_50` means:
+
+Gauge(s) filled | DEF | Action Damage Boost
+:---: | :---: | :---:
+1 | +5% | +15%
+2 | +10% | +50%
+
+#### Variant Target Action
+
+Action to receive the damage boost.
+
+A value of `3` means S1.
 
 ### `43` - `ReferenceOther`
 

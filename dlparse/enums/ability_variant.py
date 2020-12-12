@@ -25,6 +25,9 @@ class AbilityVariantType(Enum):
     CHANGE_STATE = 14
     """Calls the hit attribute (at str field) or the action condition (ID at ID-A field) if the condition holds."""
 
+    GAUGE_STATUS = 40
+    """Grants different effects according to the user's gauge status."""
+
     OTHER_ABILITY = 43
     """Link to another ability (at ID-A field)."""
 

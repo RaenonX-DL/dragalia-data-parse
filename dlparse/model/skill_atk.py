@@ -192,6 +192,13 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         if combo_boost_available:
             cond_elems.append({(combo_cond,) for combo_cond in SkillConditionCategories.self_combo_count.members})
 
+        # Gauge boosts available
+        gauge_boost_available: bool = any(
+            hit_data.is_boost_by_gauge_filled for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+        )
+        if gauge_boost_available:
+            cond_elems.append({(combo_cond,) for combo_cond in SkillConditionCategories.self_gauge_filled.members})
+
         # In buff zone boosts available
         in_buff_zone_available: bool = any(
             hit_data.is_effective_inside_buff_zone

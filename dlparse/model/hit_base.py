@@ -30,7 +30,7 @@ class HitData(Generic[T], ABC):
     - Ability condition embedded on the skill data
     """
 
-    ability_data: Optional[AbilityEntry]
+    ability_data: list[AbilityEntry]
 
     @property
     def action_time(self):

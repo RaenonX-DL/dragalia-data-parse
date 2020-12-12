@@ -137,9 +137,12 @@ class SkillCondition(Enum):
     SELF_IN_BUFF_ZONE_BY_ALLY_3 = 276
     # endregion
 
-    # region Action condition status (corresponds to specific action condition, for example, sigil locked)
+    # region Special status (for example, sigil locked for Nevin, guages filled for Gala Ranzal)
     SELF_SIGIL_LOCKED = 280  # ACID: 1152
     SELF_SIGIL_RELEASED = 281
+    SELF_GAUGE_FILLED_0 = 282
+    SELF_GAUGE_FILLED_1 = 283
+    SELF_GAUGE_FILLED_2 = 284
     # endregion
     # endregion
 
@@ -165,8 +168,7 @@ class SkillCondition(Enum):
     # endregion
 
     # region Bullets left on the map
-    # Note:
-    # - Only Meene uses this implementation for now, may be more in the future.
+    # EXNOTE: Only Meene uses this implementation for now, may be more in the future.
     # - Meene can only summon up to 9 butterflies on the map. This info has not yet been discovered by this parser.
     BULLETS_ON_MAP_0 = 331
     BULLETS_ON_MAP_1 = 332

@@ -24,6 +24,7 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_BUFF_ZONE_SELF = auto()
     MULTIPLE_BUFF_ZONE_ALLY = auto()
     MULTIPLE_SELF_ACTION_CONDITION = auto()
+    MULTIPLE_GAUGE_FILLED = auto()
     MULTIPLE_BULLET_HIT = auto()
     MULTIPLE_TEAMMATE_COVERAGE = auto()
     MULTIPLE_BULLETS_ON_MAP = auto()
@@ -39,6 +40,7 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_BUFF_ZONE_SELF = auto()
     INTERNAL_NOT_BUFF_ZONE_ALLY = auto()
     INTERNAL_NOT_SELF_ACTION_CONDITION = auto()
+    INTERNAL_NOT_GAUGE_FILLED = auto()
     INTERNAL_NOT_BULLET_HIT_COUNT = auto()
     INTERNAL_NOT_TEAMMATE_COVERAGE = auto()
     INTERNAL_NOT_BULLETS_ON_MAP = auto()
@@ -309,13 +311,23 @@ class SkillConditionCategories:
     )
     self_action_condition = SkillConditionCategoryTargetNumber(
         {
-            # Value is the corresponding ACID (not necessary means that it needs to exist)
+            # Value is the corresponding Action Condition ID (not necessary means that it needs to exist)
             SkillCondition.SELF_SIGIL_LOCKED: 1152,
-            SkillCondition.SELF_SIGIL_RELEASED: 1152
+            SkillCondition.SELF_SIGIL_RELEASED: 1152,
         },
         SkillConditionMaxCount.SINGLE,
         "Self - action condition status",
         SkillConditionCheckResult.MULTIPLE_SELF_ACTION_CONDITION
+    )
+    self_gauge_filled = SkillConditionCategoryTargetNumber(
+        {
+            SkillCondition.SELF_GAUGE_FILLED_0: 0,
+            SkillCondition.SELF_GAUGE_FILLED_1: 1,
+            SkillCondition.SELF_GAUGE_FILLED_2: 2,
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Self - gauge status",
+        SkillConditionCheckResult.MULTIPLE_GAUGE_FILLED
     )
     skill_bullet_hit = SkillConditionCategoryTargetNumber(
         {

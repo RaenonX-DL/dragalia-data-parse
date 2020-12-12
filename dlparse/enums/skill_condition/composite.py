@@ -48,6 +48,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     buff_zone_ally_converted: int = field(init=False)
     self_action_cond: Optional[SkillCondition] = field(init=False)
     self_action_cond_id: int = field(init=False)
+    gauge_filled: Optional[SkillCondition] = field(init=False)
+    gauge_filled_converted: int = field(init=False)
     # endregion
 
     # region Skill effect / animation
@@ -113,6 +115,10 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         if self.self_action_cond and self.self_action_cond not in CondCat.self_action_condition:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_SELF_ACTION_CONDITION)
 
+        # Check `self.gauge_filled`
+        if self.gauge_filled and self.gauge_filled not in CondCat.self_gauge_filled:
+            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_GAUGE_FILLED)
+
     def _init_validate_skill(self):
         # Check `self.teammate_coverage`
         if self.teammate_coverage and self.teammate_coverage not in CondCat.skill_teammates_covered:
@@ -157,6 +163,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.buff_zone_self = CondCat.self_in_buff_zone_self.extract(conditions)
         self.buff_zone_ally = CondCat.self_in_buff_zone_ally.extract(conditions)
         self.self_action_cond = CondCat.self_action_condition.extract(conditions)
+        self.gauge_filled = CondCat.self_gauge_filled.extract(conditions)
 
         self.teammate_coverage = CondCat.skill_teammates_covered.extract(conditions)
         self.bullet_hit_count = CondCat.skill_bullet_hit.extract(conditions)
@@ -178,6 +185,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.buff_zone_self_converted = CondCat.self_in_buff_zone_self.convert(self.buff_zone_self, on_missing=None)
         self.buff_zone_ally_converted = CondCat.self_in_buff_zone_ally.convert(self.buff_zone_ally, on_missing=None)
         self.self_action_cond_id = CondCat.self_action_condition.convert(self.self_action_cond, on_missing=None)
+        self.gauge_filled_converted = CondCat.self_gauge_filled.convert(self.gauge_filled, on_missing=0)
 
         self.teammate_coverage_converted = CondCat.skill_teammates_covered.convert(self.teammate_coverage,
                                                                                    on_missing=None)
@@ -216,6 +224,9 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
         if self.self_action_cond:
             ret += (self.self_action_cond,)
+
+        if self.gauge_filled:
+            ret += (self.gauge_filled,)
 
         return ret
 
@@ -256,6 +267,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         - [Self] Buff count
         - [Self] Buff zone built by self / ally
         - [Self] Self action condition
+        - [Self] Gauge status
         - [Skill] Bullet hit count
         - [Skill] Teammate coverage
         - [Skill] Bullets on map

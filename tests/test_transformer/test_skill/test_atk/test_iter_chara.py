@@ -415,3 +415,55 @@ def test_naveed_s1(transformer_skill: SkillTransformer):
         del expected_addl_at_max[entry.condition_comp]
 
     assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
+def test_gala_ranzal_s1_no_ability(transformer_skill: SkillTransformer):
+    # Gala Ranzal S1
+    # https://dragalialost.gamepedia.com/Gala_Ranzal
+    skill_data = transformer_skill.transform_attacking(101503011)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_at_max = {
+        SkillConditionComposite(): 3.036 * 6
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert \
+            pytest.approx(expected_addl_at_max[entry.condition_comp]) == entry.total_mod_at_max, \
+            entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
+def test_gala_ranzal_s1_with_ability(transformer_skill: SkillTransformer):
+    # Gala Ranzal S1
+    # https://dragalialost.gamepedia.com/Gala_Ranzal
+    skill_data = transformer_skill.transform_attacking(101503011, ability_ids=[124])
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_at_max = {
+        SkillConditionComposite(SkillCondition.SELF_GAUGE_FILLED_0): 3.036 * 6 * 1,
+        SkillConditionComposite(SkillCondition.SELF_GAUGE_FILLED_1): 3.036 * 6 * 1.2,
+        SkillConditionComposite(SkillCondition.SELF_GAUGE_FILLED_2): 3.036 * 6 * 2,
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert \
+            pytest.approx(expected_addl_at_max[entry.condition_comp]) == entry.total_mod_at_max, \
+            entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"

@@ -1,5 +1,6 @@
 """Class for a single damaging hit."""
 from dataclasses import dataclass
+from itertools import product
 from typing import Optional
 
 from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite
@@ -63,7 +64,7 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
 
     # region Other attributes
     is_boost_by_combo: bool = False
-
+    is_boost_by_gauge_filled: bool = False
     # endregion
 
     def _init_validity_check(self):
@@ -101,7 +102,12 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
 
         # Other attributes
         if self.ability_data:
-            self.is_boost_by_combo = self.ability_data.is_boost_by_combo
+            self.is_boost_by_combo = any(
+                ability_data.is_boost_by_combo for ability_data in self.ability_data
+            )
+            self.is_boost_by_gauge_filled = any(
+                ability_data.is_boost_by_gauge_status for ability_data in self.ability_data
+            )
 
         self._init_validity_check()
 
@@ -230,9 +236,15 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
                 damage_unit.mod *= (1 + hit_attr.rate_boost_by_buff * condition_comp.buff_count_converted)
 
         # Combo damage boosts
-        if condition_comp.combo_count_converted and self.ability_data.is_boost_by_combo:
-            for damage_unit in damage_units:
-                damage_unit.mod *= (1 + self.ability_data.get_boost_by_combo(condition_comp.combo_count_converted))
+        if condition_comp.combo_count_converted and self.is_boost_by_combo:
+            for ability_data, damage_unit in product(self.ability_data, damage_units):
+                damage_unit.mod *= (1 + ability_data.get_boost_by_combo(condition_comp.combo_count_converted))
+
+        # Combo damage boosts
+        if condition_comp.gauge_filled_converted and self.is_boost_by_gauge_filled:
+            for ability_data, damage_unit in product(self.ability_data, damage_units):
+                boost_rate = 1 + ability_data.get_boost_by_gauge_filled_dmg(condition_comp.gauge_filled_converted)
+                damage_unit.mod *= boost_rate
 
     def _damage_units_apply_mod_boosts(self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite):
         self._damage_units_apply_mod_boosts_target(damage_units, condition_comp)

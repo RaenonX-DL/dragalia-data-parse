@@ -90,13 +90,21 @@ class AbilityVariantEntry:
     # K = min combo count; V = damage boost rate
     # - Highest combo first
     _combo_boost_data: list[tuple[int, float]] = field(default_factory=list)
+    _def_boost_data: list[int] = field(default_factory=list)
+    _skill_boost_data: list[int] = field(default_factory=list)
 
     def __post_init__(self):
         if self.type_enum == AbilityVariantType.DMG_UP_ON_COMBO:
-            # Variant type is boost on combo, parse the data
+            # Variant type is boost by combo
             for entry in self.id_str.split("/"):
                 combo_count, boost_pct = entry.split("_")
                 self._combo_boost_data.append((int(combo_count), float(boost_pct)))
+        elif self.type_enum == AbilityVariantType.GAUGE_STATUS:
+            # Variant type is boost by gauge status
+            def_data, skill_boost_data = self.id_str.split("/", 1)
+
+            self._def_boost_data = [0] + [int(boost_pct) for boost_pct in def_data.split("_")]
+            self._skill_boost_data = [0] + [int(boost_pct) for boost_pct in skill_boost_data.split("_")]
 
     @property
     def is_not_used(self) -> bool:
@@ -131,6 +139,11 @@ class AbilityVariantEntry:
         """Check if the variant type is to boost the damage according to the combo count."""
         return self.type_enum == AbilityVariantType.DMG_UP_ON_COMBO
 
+    @property
+    def is_boosted_by_gauge_status(self) -> bool:
+        """Check if the damage will be boosted according to the gauge status."""
+        return self.type_enum == AbilityVariantType.GAUGE_STATUS
+
     def get_boost_by_combo(self, combo_count: int) -> float:
         """
         Get the total damage boost rate when the user combo count is ``combo_count``.
@@ -143,6 +156,17 @@ class AbilityVariantEntry:
                 return dmg_up_pct / 100
 
         return 0
+
+    def get_boost_by_gauge_filled_dmg(self, gauge_filled: int) -> float:
+        """
+        Get the total damage boost rate when ``gauge_filled`` gauges are filled.
+
+        The return will be 0.05 for 5% boost.
+        """
+        if not self._skill_boost_data:
+            return 0
+
+        return self._skill_boost_data[gauge_filled] / 100
 
 
 @dataclass
@@ -200,6 +224,11 @@ class AbilityEntry(MasterEntryBase):
         """Check if the damage will be boosted according to the current combo count."""
         return any(variant.is_boosted_by_combo for variant in self.variants)
 
+    @property
+    def is_boost_by_gauge_status(self) -> bool:
+        """Check if the damage will be boosted according to the gauge status."""
+        return any(variant.is_boosted_by_gauge_status for variant in self.variants)
+
     def get_variants(self, ability_asset: "AbilityAsset") -> list[AbilityVariantEntry]:
         """Get all variants bound to the ability."""
         variants_traverse: list[AbilityVariantEntry] = self.variants
@@ -229,11 +258,19 @@ class AbilityEntry(MasterEntryBase):
 
     def get_boost_by_combo(self, combo_count: int) -> float:
         """
-        Get the total rate of damage boost when the user combo count is ``combo_count``.
+        Get the total damage boost rate when the user combo count is ``combo_count``.
 
         The return will be 0.05 for a total of 5% boost.
         """
         return sum(variant.get_boost_by_combo(combo_count) for variant in self.variants)
+
+    def get_boost_by_gauge_filled_dmg(self, gauge_filled: int) -> float:
+        """
+        Get the total damage boost rate when ``gauge_filled`` gauges are filled.
+
+        The return will be 0.05 for a total of 5% boost.
+        """
+        return sum(variant.get_boost_by_gauge_filled_dmg(gauge_filled) for variant in self.variants)
 
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "AbilityEntry":
