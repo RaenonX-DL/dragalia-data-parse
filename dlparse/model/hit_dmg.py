@@ -56,6 +56,7 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
     # endregion
 
     # region Flags of bullets having special patterns
+    is_depends_on_bullet_summoned: bool = False
     is_depends_on_user_buff_count: bool = False
     is_depends_on_bullet_on_map: bool = False
     # endregion
@@ -78,10 +79,15 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
 
             if isinstance(self.action_component, ActionBulletStockFire):
                 # Check if the damaging hit depends on special pattern
+                self.is_depends_on_bullet_summoned = self.action_component.is_depends_on_bullet_summoned
                 self.is_depends_on_user_buff_count = self.action_component.is_depends_on_user_buff_count
                 self.is_depends_on_bullet_on_map = self.action_component.is_depends_on_bullet_on_map
 
-            # Set the max hit count except for special pattern bullets
+                # Only stores the max hit count if depends on count of bullets summoned
+                if self.action_component.is_depends_on_bullet_summoned:
+                    self.max_hit_count = self.action_component.max_hit_count
+
+            # Set the max hit count except for stock bullets in special stocking pattern
             if not (isinstance(self.action_component, ActionBulletStockFire)
                     and self.action_component.is_special_pattern):
                 self.max_hit_count = self.action_component.max_hit_count
@@ -144,8 +150,10 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
 
         if self.will_deteriorate and condition_comp.bullet_hit_count:
             # Deteriorating bullets
-            return [DamageUnit(self.damage_modifier_at_hit(hit_count), unit_affliction, unit_debuff, hit_attr.id)
-                    for hit_count in range(1, condition_comp.bullet_hit_count_converted + 1)]
+            return [
+                DamageUnit(self.damage_modifier_at_hit(hit_count), unit_affliction, unit_debuff, hit_attr.id)
+                for hit_count in range(1, condition_comp.bullet_hit_count_converted + 1)
+            ]
 
         if self.is_effective_inside_buff_zone:
             # Damage mods inside buff zones i.e. no damage mod if not in buff zone
@@ -154,6 +162,13 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
 
             return [DamageUnit(mod, unit_affliction, unit_debuff, hit_attr.id) for mod in mods]
 
+        if self.is_depends_on_bullet_summoned or self.is_depends_on_bullet_on_map:
+            # Damage dealt depends on the bullets summoned / bullets on the map
+            return [
+                DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)
+                for _ in range(condition_comp.bullets_on_map_converted or 0)
+            ]
+
         if self.is_depends_on_user_buff_count:
             # Damage dealt depends on the user's buff count
             effective_buff_count = min(
@@ -161,19 +176,18 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
                 condition_comp.buff_count_converted or 0
             )
 
-            return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)
-                    for _ in range(effective_buff_count)]
-
-        if self.is_depends_on_bullet_on_map:
-            # Damage dealt depends on the bullets on the map
-            return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)
-                    for _ in range(condition_comp.bullets_on_map_converted or 0)]
+            return [
+                DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)
+                for _ in range(effective_buff_count)
+            ]
 
         if type(self.action_component) is ActionBullet:  # pylint: disable=unidiomatic-typecheck
             # Action component is exactly `ActionPartsBullet`, max hit count may be in effect
             # For example, Lin You S1 (`104503011`, AID `491040` and `491042`)
-            return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)
-                    for _ in range(self.max_hit_count or 1)]
+            return [
+                DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)
+                for _ in range(self.max_hit_count or 1)
+            ]
 
         # Cases not handled above
         return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)]

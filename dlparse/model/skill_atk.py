@@ -138,8 +138,10 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             for punisher_state in hit_data.hit_attr.punisher_states
         }
         if punishers_available:
-            conditions: set[SkillCondition] = {SkillConditionCategories.target_status.convert_reversed(affliction)
-                                               for affliction in punishers_available}
+            conditions: set[SkillCondition] = {
+                SkillConditionCategories.target_status.convert_reversed(affliction)
+                for affliction in punishers_available
+            }
             # noinspection PyTypeChecker
             affliction_combinations: set[tuple[SkillCondition, ...]] = set()
             for count in range(len(conditions) + 1):
@@ -178,8 +180,10 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
                 self.asset_action_info.get_data_by_id(action_id).max_bullet_count
                 for action_id in action_ids
             )
-            cond_elems.append({(buff_cond,) for buff_cond
-                               in SkillConditionCategories.self_buff_count.get_members_lte(max_count)})
+            cond_elems.append({
+                (buff_cond,) for buff_cond
+                in SkillConditionCategories.self_buff_count.get_members_lte(max_count)
+            })
 
         # Combo boosts available
         combo_boost_available: bool = any(
@@ -210,19 +214,36 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             max_bullet_hit: int = max(
                 (hit_data.max_hit_count for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv)
             )
-            cond_elems.append({(bullet_hit,) for bullet_hit
-                               in SkillConditionCategories.skill_bullet_hit.get_members_lte(max_bullet_hit)})
+            cond_elems.append({
+                (bullet_hit,) for bullet_hit
+                in SkillConditionCategories.skill_bullet_hit.get_members_lte(max_bullet_hit)
+            })
+
+        # Bullet summon count dependent & available
+        depends_on_bullet_summoned: int = max(
+            (hit_data.is_depends_on_bullet_summoned for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv)
+        )
+        if depends_on_bullet_summoned:
+            # EXNOTE: Only Naveed uses this as of 2020/12/11.
+            max_bullet_hit: int = max(
+                (hit_data.max_hit_count for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv)
+            )
+            cond_elems.append({
+                (bullet_on_map,) for bullet_on_map
+                in SkillConditionCategories.skill_bullets_on_map.get_members_lte(max_bullet_hit)
+            })
 
         # On-map bullet count dependent & available
         depends_on_bullets_on_map: int = max(
             (hit_data.is_depends_on_bullet_on_map for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv)
         )
         if depends_on_bullets_on_map:
-            # EXNOTE: This currently works on Meene, who have 9 butterflies limitation.
-            #   However, the 9 butterflies limitation are not implemented yet.
+            # EXNOTE: Only Meene uses this as of 2020/12/11.
+            #   This has a limitation of the 9 butterflies limitation (not yet implemented).
             #   The parser uses the limited enums to do the limitating work for now.
-            cond_elems.append({(bullet_on_map,)
-                               for bullet_on_map in SkillConditionCategories.skill_bullets_on_map.members})
+            cond_elems.append({
+                (bullet_on_map,) for bullet_on_map in SkillConditionCategories.skill_bullets_on_map.members
+            })
 
         return cond_elems
 
@@ -279,8 +300,10 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             # [[1, 0.5, 0.2], [1, 0.5, 0.2]] needs to be transformed to [1, 1, 0.5, 0.5, 0.2, 0.2]
             # (Nevin S2 @ Sigil Released)
             # [[9], [0.9, 0.9]] needs to be transformed to [9, 0.9, 0.9]
-            units.append([subitem for item in zip_longest(*new_units_level, fillvalue=None)
-                          for subitem in item if subitem])
+            units.append([
+                subitem for item in zip_longest(*new_units_level, fillvalue=None)
+                for subitem in item if subitem
+            ])
 
         return units
 

@@ -27,6 +27,10 @@ Fire the same bullet multiple times.
 
 - Yukata Curran S1 (`103504041` for unmasked, `103504043` for masked, with damage deterioration effect)
 
+- Naveed S1 (`101501011`, AID `191020`)
+  - `_fireStockPattern` = `1`
+  - Max count 5
+
 - Gala Sarisse S1 (`106501011`, AID `691030`)
   - `_fireStockPattern` = `2`
   - Max count 7
@@ -49,12 +53,26 @@ Fire the same bullet multiple times.
 
 #### Attribute notes
 
-- `_bulletNum`: count of bullets. This seems to use the same hit label (`_hitAttrLabel`).
+- `_bulletNum`: count of bullets. Bullets use the same hit label (`_hitAttrLabel`).
 
 - `_fireStockPattern`: Usage pattern of the bullets.
 
-  - `2` means that the bullet will only fire according to the user buff count.
-    If the user does not have any buff, the bullet will **not** fire.
+  - `1` means that the bullet will only fire according to the bullets being summoned around themselves.
+
+    The max count information is stored as `_bulletNum`.
+
+    > Used by Naveed S1 (`101501011`) only as of 2020/12/11.
+
+  - `2` means that the bullet will only fire according to the user buff count. If the user does not have any buff, the
+    bullet will **not** fire.
+
+    The max count information is stored in the player action info asset.
+
+  - `4` means that the bullets on the map will be transformed to skill hits.
+
+    Location of the max count information **unknown**.
+
+    > Used by Meene S1 normal (`106503031`, AID `691190`), Meene S2 normal (`106503032`, AID `691200`), Meene S1 6+ butterflies variant (`106503033`, AID `691191`) and Meene S2 6+ butterflies variant (`106503036`, AID `691201`) as of 2020/12/11.
 
 ### `ActionPartsStockBullet`
 

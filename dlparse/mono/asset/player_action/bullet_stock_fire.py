@@ -14,20 +14,27 @@ __all__ = ("ActionBulletStockFire",)
 class ActionBulletStockFire(ActionBullet):
     """Class of ``ActionPartsFireStockBullet`` component in the player action asset."""
 
+    pattern: FireStockPattern = FireStockPattern.NONE
+
+    is_depends_on_bullet_summoned: bool = False
     is_depends_on_user_buff_count: bool = False
     is_depends_on_bullet_on_map: bool = False
+
+    bullet_num: int = 0  # Used only if `pattern` is `FireStockPattern.BULLET_COUNT_SUMMONED`
 
     @classmethod
     def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBulletStockFire":
         kwargs = cls.get_base_kwargs(data)
 
+        bullet_num: int = data["_bulletNum"]
+
         # Get the bullet stocking pattern
-        pattern = FireStockPattern(data["_fireStockPattern"])
+        pattern: FireStockPattern = FireStockPattern(data["_fireStockPattern"])
 
         # Attach hit labels of the stock bullets
         labels_possible: list[str]
-        if pattern in (FireStockPattern.USER_BUFF_COUNT_DEPENDENT, FireStockPattern.BULLET_TRANSFORM_TO_SKILL):
-            # -- Hit count is independent, do **NOT** expand the hit labels
+        if pattern.is_special_pattern:
+            # -- Special pattern - Hit count is independent, do **NOT** expand the hit labels
             # Handle hit count during skill data processing instead,
             # because player action info and skill condition are required to get the actual mods
             labels_possible = [data["_hitAttrLabel"]]
@@ -42,15 +49,18 @@ class ActionBulletStockFire(ActionBullet):
 
         return ActionBulletStockFire(
             hit_labels=[label for label in labels_possible if label],
+            pattern=pattern,
+            is_depends_on_bullet_summoned=pattern == FireStockPattern.BULLET_COUNT_SUMMONED,
             is_depends_on_user_buff_count=pattern == FireStockPattern.USER_BUFF_COUNT_DEPENDENT,
             is_depends_on_bullet_on_map=pattern == FireStockPattern.BULLET_TRANSFORM_TO_SKILL,
+            bullet_num=bullet_num,
             **kwargs
         )
 
     @property
     def is_special_pattern(self) -> bool:
         """Check if the bullet stock has a special pattern to fire."""
-        return self.is_depends_on_user_buff_count or self.is_depends_on_bullet_on_map
+        return self.pattern.is_special_pattern
 
     @property
     def max_hit_count(self) -> int:
@@ -61,5 +71,8 @@ class ActionBulletStockFire(ActionBullet):
         if self.is_depends_on_bullet_on_map:
             raise BulletMaxCountUnavailableError("This depends on the count of bullets on the map. "
                                                  "Additional info is needed to get the actual max hit count.")
+
+        if self.is_depends_on_bullet_summoned:
+            return self.bullet_num
 
         return super().max_hit_count
