@@ -42,17 +42,7 @@ class AttackingSkillDataEntry(SkillEntryBase):
     # FIXME: Skill entry to include buff up data for on-site calculation on the website
     # - When getting all possible entries, there should be a flag to skip all buff pre-conditions
 
-    def __post_init__(self, asset_action_cond: ActionConditionAsset):
-        self.mods = [
-            [hit_unit.mod for hit_unit in hit_unit_lv if hit_unit.mod]
-            for hit_unit_lv in self.hit_unit_mtx
-        ]
-        self.afflictions = [
-            [hit_unit.unit_affliction for hit_unit in hit_unit_lv if hit_unit.unit_affliction]
-            for hit_unit_lv in self.hit_unit_mtx
-        ]
-
-        # Parse debuff units
+    def _init_debuff(self, asset_action_cond: ActionConditionAsset):
         self.debuffs = []
         for hit_unit_lv in self.hit_unit_mtx:
             debuff_units_lv = []
@@ -81,6 +71,19 @@ class AttackingSkillDataEntry(SkillEntryBase):
                 debuff_units_lv.extend(hit_unit.unit_debuffs)
 
             self.debuffs.append(debuff_units_lv)
+
+    def __post_init__(self, asset_action_cond: ActionConditionAsset):
+        self.mods = [
+            [hit_unit.mod for hit_unit in hit_unit_lv if hit_unit.mod]
+            for hit_unit_lv in self.hit_unit_mtx
+        ]
+        self.afflictions = [
+            [hit_unit.unit_affliction for hit_unit in hit_unit_lv if hit_unit.unit_affliction]
+            for hit_unit_lv in self.hit_unit_mtx
+        ]
+
+        # Parse debuff units
+        self._init_debuff(asset_action_cond)
 
         self.total_mod = [sum(mods) for mods in self.mods]
 
