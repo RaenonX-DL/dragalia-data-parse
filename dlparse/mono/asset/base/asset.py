@@ -96,7 +96,7 @@ class AssetBase(ABC):
         If both are provided, ``asset_dir`` will be ignored.
 
         If nothing is provided, :class:`ConfigError` is raised if nothing is specified as ``on_fail``.
-        Otherwise, returns ``on_fail``.
+        Otherwise, return ``on_fail``.
 
         :raises ConfigError: if the path is failed to get, and nothing has been set to `on_fail`
         """

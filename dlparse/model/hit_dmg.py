@@ -7,7 +7,7 @@ from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditi
 from dlparse.errors import AppValueError, BulletEndOfLifeError, DamagingHitValidationFailedError
 from dlparse.mono.asset import (
     ActionBuffField, ActionBullet, ActionBulletStockFire, ActionComponentHasHitLabels, ActionConditionAsset,
-    BuffCountAsset, PlayerActionInfoAsset,
+    BuffCountAsset, HitAttrEntry, PlayerActionInfoAsset,
 )
 from dlparse.utils import calculate_crisis_mod
 from .effect_action_cond import ActionConditionEffectUnit, AfflictionEffectUnit
@@ -23,7 +23,7 @@ class DamageUnit:
     mod: float
     unit_affliction: Optional[AfflictionEffectUnit]
     unit_debuffs: list[ActionConditionEffectUnit]
-    hit_attr_label: str
+    hit_attr: HitAttrEntry
 
     def __post_init__(self):
         if self.unit_affliction and not isinstance(self.unit_affliction, AfflictionEffectUnit):
@@ -121,7 +121,7 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
         """
         Get the damage modifier at hit ``hit_count``.
 
-        If the damage hit will not deteriorate, returns the original damage modifier.
+        If the damage hit will not deteriorate, return the original damage modifier.
 
         :raises BulletEndOfLifeError: if `hit_count` is beyond the maximum possible bullet hit count
         """
@@ -152,14 +152,14 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
         """
         Get the base damage units according to the hit data attributes.
 
-        Returns ``None`` if the hit data attributes cannot determine the base damage units yet.
+        Return ``None`` if the hit data attributes cannot determine the base damage units yet.
         """
         hit_attr = self.hit_attr
 
         if self.will_deteriorate and condition_comp.bullet_hit_count:
             # Deteriorating bullets
             return [
-                DamageUnit(self.damage_modifier_at_hit(hit_count), unit_affliction, units_debuff, hit_attr.id)
+                DamageUnit(self.damage_modifier_at_hit(hit_count), unit_affliction, units_debuff, hit_attr)
                 for hit_count in range(1, condition_comp.bullet_hit_count_converted + 1)
             ]
 
@@ -168,12 +168,12 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
             mods = self.mods_in_self_buff_zone(condition_comp.buff_zone_self_converted or 0)
             mods += self.mods_in_ally_buff_zone(condition_comp.buff_zone_ally_converted or 0)
 
-            return [DamageUnit(mod, unit_affliction, units_debuff, hit_attr.id) for mod in mods]
+            return [DamageUnit(mod, unit_affliction, units_debuff, hit_attr) for mod in mods]
 
         if self.is_depends_on_bullet_summoned or self.is_depends_on_bullet_on_map:
             # Damage dealt depends on the bullets summoned / bullets on the map
             return [
-                DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr.id)
+                DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
                 for _ in range(condition_comp.bullets_on_map_converted or 0)
             ]
 
@@ -184,7 +184,7 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
                 condition_comp.buff_count_converted or 0
             )
             return [
-                DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr.id)
+                DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
                 for _ in range(effective_buff_count)
             ]
 
@@ -221,12 +221,12 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
             # Action component is exactly `ActionPartsBullet`, max hit count may be in effect
             # For example, Lin You S1 (`104503011`, AID `491040` and `491042`)
             return [
-                DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr.id)
+                DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
                 for _ in range(self.max_hit_count or 1)
             ]
 
         # Cases not handled above
-        return [DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr.id)]
+        return [DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)]
 
     def _damage_units_apply_mod_boosts_target(
             self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite
@@ -310,13 +310,12 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
                     # hit invalid
                     return []
             elif self.pre_condition == SkillCondition.MARK_EXPLODES and not condition_comp.mark_explode:
-                # Pre-condition is marking: if condition to explode the mark, returns the damage (pass this check).
-                # Otherwise, returns the marking debuff unit.
+                # Get the damage unit that marks the enemy
                 return [DamageUnit(
                     0,
                     self.to_affliction_unit(asset_action_condition),
                     self.to_debuff_units(asset_action_condition),
-                    self.hit_attr.id
+                    self.hit_attr
                 )]
             elif self.pre_condition not in condition_comp:
                 # Other pre-conditions & not listed in the given condition composite i.e. pre-condition mismatch
@@ -332,7 +331,7 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
             return []
 
         if condition_comp.mark_explode and self.pre_condition != SkillCondition.MARK_EXPLODES:
-            # Condition wants the mark explode damage, but the damage hit is not the explosion damage
+            # Mark explosion damage is requested, but the damaging hit is not the explosion damage
             return []
 
         # Get base units

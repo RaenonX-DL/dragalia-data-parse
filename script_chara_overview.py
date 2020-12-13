@@ -6,30 +6,28 @@ _asset_manager: AssetManager = AssetManager(PATH_LOCAL_DIR_ACTION_ASSET, PATH_LO
 
 
 def print_atk_data_entry(chara_data, skill_data, skill_entry):
-    print(f"# Attacking effects - Conditions: {skill_entry.condition_comp.conditions_sorted}")
+    skill_level = skill_entry.max_level - 1
+
+    print(f"# Attacking effects (at max lv) - Conditions: {skill_entry.condition_comp.conditions_sorted}")
+    print()
+    sp_str = f"SP: {skill_data.skill_data_raw.get_sp_at_level(skill_level)}"
+    if chara_data.ss_skill_id == skill_data.skill_data_raw.id:
+        sp_str += f" / SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(skill_level)}"
+    print(sp_str)
+    print(f"Mods distribution: {skill_entry.mods[skill_level]}")
+    print(f"Total Mods: {skill_entry.total_mod[skill_level]:.0%} ({skill_entry.hit_count[skill_level]} hits)")
     print()
 
-    for skill_level in range(skill_entry.max_level):
-        skill_level_actual = skill_level + 1
-
-        sp_str = f"SP: {skill_data.skill_data_raw.get_sp_at_level(skill_level_actual)}"
-        if chara_data.ss_skill_id == skill_data.skill_data_raw.id:
-            sp_str += f" / SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(skill_level_actual)}"
-
-        print(f"--- Lv.{skill_level_actual} {'(max)' if skill_entry.max_level == skill_level else ''}| {sp_str}")
-        print()
-        print(f"Mods distribution: {skill_entry.mods[skill_level]}")
-        print(f"Total Mods: {skill_entry.total_mod[skill_level]:.0%} "
-              f"({skill_entry.hit_count[skill_level]} hits)")
-
-        afflictions_lv = skill_entry.afflictions[skill_level]
+    afflictions_lv = skill_entry.afflictions[skill_level]
+    if afflictions_lv:
         for affliction in afflictions_lv:
             print(f"{affliction.status.name} @ {affliction.time:.3f} s "
                   f"(Rate: {affliction.probability_pct} % |"
                   f" Duration: {affliction.duration_time} secs)")
         print()
 
-        debuffs_lv = skill_entry.debuffs[skill_level]
+    debuffs_lv = skill_entry.debuffs[skill_level]
+    if debuffs_lv:
         for debuff in debuffs_lv:
             print(f"{debuff.parameter.name} {debuff.rate} @ {debuff.time:.3f} s "
                   f"(Rate: {debuff.probability_pct} % |"
@@ -41,25 +39,22 @@ def print_sup_data_entry(chara_data, skill_data, skill_entry, max_level):
     print(f"# Supportive effects - Conditions: {skill_entry.condition_comp.conditions_sorted}")
     print()
 
-    for skill_level in range(max_level):
-        skill_level_actual = skill_level + 1
+    buff_units = skill_entry.buffs[max_level]
 
-        buff_units = skill_entry.buffs[skill_level]
+    sp_str = f"SP: {skill_data.skill_data_raw.get_sp_at_level(max_level)}"
+    if chara_data.ss_skill_id == skill_data.skill_data_raw.id:
+        sp_str += f" / SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(max_level)}"
 
-        sp_str = f"SP: {skill_data.skill_data_raw.get_sp_at_level(skill_level_actual)}"
-        if chara_data.ss_skill_id == skill_data.skill_data_raw.id:
-            sp_str += f" / SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(skill_level_actual)}"
+    print(f"--- Lv.{max_level} {'(max)' if skill_entry.max_level == max_level else ''}| {sp_str}")
+    print()
 
-        print(f"--- Lv.{skill_level_actual} {'(max)' if skill_entry.max_level == skill_level else ''}| {sp_str}")
+    for buff_unit in buff_units:
+        print(f"{buff_unit.target} - {buff_unit.parameter} {buff_unit.rate}")
+        if buff_unit.duration_time:
+            print(f"Duration: {buff_unit.duration_time} secs")
+        if buff_unit.duration_count:
+            print(f"{buff_unit.duration_count} stacks (max {buff_unit.max_stack_count})")
         print()
-
-        for buff_unit in buff_units:
-            print(f"{buff_unit.target} - {buff_unit.parameter} {buff_unit.rate}")
-            if buff_unit.duration_time:
-                print(f"Duration: {buff_unit.duration_time} secs")
-            if buff_unit.duration_count:
-                print(f"{buff_unit.duration_count} stacks (max {buff_unit.max_stack_count})")
-            print()
 
 
 def print_skill_id_entry(chara_data, skill_id_entry):
@@ -124,4 +119,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10550102)
+    chara_skill_overview(10450402)

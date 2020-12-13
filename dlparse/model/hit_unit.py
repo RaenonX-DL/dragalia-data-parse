@@ -48,9 +48,9 @@ class UnitsConvertibleHitData(HitData, Generic[T], ABC):
     @staticmethod
     def to_damage_self(starting_time: float, hit_attr: HitAttrEntry) -> Optional[ActionConditionEffectUnit]:
         """
-        Returns the corresponding :class:`ActionConditionEffectUnit` if the hit attribute will self damage.
+        Return the corresponding :class:`ActionConditionEffectUnit` if the hit attribute will self damage.
 
-        Returns ``None`` if not self damaging.
+        Return ``None`` if not self damaging.
 
         :raises UnhandledSelfDamageError: if the self damage ability is unhandled
         """
@@ -121,7 +121,7 @@ class UnitsConvertibleHitData(HitData, Generic[T], ABC):
     def to_affliction_unit(
             self, asset_action_condition: ActionConditionAsset
     ) -> Optional[AfflictionEffectUnit]:
-        """Get the affliction effect unit of ``hit_data``. Returns ``None`` if not applicable."""
+        """Get the affliction effect unit of ``hit_data``. Return ``None`` if not applicable."""
         if not self.hit_attr.action_condition_id:
             # No action condition affiliated
             return None
@@ -153,7 +153,7 @@ class UnitsConvertibleHitData(HitData, Generic[T], ABC):
     def to_debuff_units(
             self, asset_action_condition: ActionConditionAsset
     ) -> list[ActionConditionEffectUnit]:
-        """Get the debuff effect unit of ``hit_data``. Returns an empty list if not applicable."""
+        """Get the debuff effect unit of ``hit_data``. Return an empty list if not applicable."""
         if self.target_simple != HitTargetSimple.ENEMY:
             # Target not enemy
             return []

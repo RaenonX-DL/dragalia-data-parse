@@ -117,22 +117,22 @@ class AbilityVariantEntry:
 
     @property
     def assigned_hit_label(self) -> Optional[str]:
-        """Get the assigned hit label. Returns ``None`` if unavailable."""
+        """Get the assigned hit label. Return ``None`` if unavailable."""
         return self.id_str if self.type_enum == AbilityVariantType.CHANGE_STATE else None
 
     @property
     def assigned_action_condition(self) -> Optional[int]:
-        """Get the assigned action condition ID. Returns ``None`` if unavailable."""
+        """Get the assigned action condition ID. Return ``None`` if unavailable."""
         return self.id_a if self.type_enum == AbilityVariantType.CHANGE_STATE else None
 
     @property
     def other_ability_id(self) -> Optional[int]:
-        """Get the other ability ID assigned. Returns ``None`` if unavailable."""
+        """Get the other ability ID assigned. Return ``None`` if unavailable."""
         return self.id_a if self.type_enum == AbilityVariantType.OTHER_ABILITY else None
 
     @property
     def enhanced_skill(self) -> Optional[tuple[int, SkillNumber]]:
-        """Get the enhanced skill ID and its skill number. Returns ``None`` if unavailable."""
+        """Get the enhanced skill ID and its skill number. Return ``None`` if unavailable."""
         return (
             (self.id_a, SkillNumber.s1_s2_only(self.target_action_id - 2))
             if self.type_enum == AbilityVariantType.ENHANCE_SKILL else None
@@ -152,7 +152,7 @@ class AbilityVariantEntry:
         """
         Get the total damage boost rate when the user combo count is ``combo_count``.
 
-        The return will be 0.05 for 5% boost.
+        The return of 0.05 means 5% boost.
         """
         # Highest combo threshold first, reversing the data list
         for min_combo_count, dmg_up_pct in reversed(self._combo_boost_data):
@@ -165,7 +165,7 @@ class AbilityVariantEntry:
         """
         Get the total damage boost rate when ``gauge_filled`` gauges are filled.
 
-        The return will be 0.05 for 5% boost.
+        The return of 0.05 means 5% boost.
         """
         if not self._skill_boost_data:
             return 0
@@ -191,7 +191,7 @@ class AbilityEntry(MasterEntryBase):
         """
         Get a list of hit labels assigned to the variants.
 
-        Returns an empty list if no assigned label found.
+        Return an empty list if no assigned label found.
         """
         return [variant.assigned_hit_label for variant in self.variants if variant.assigned_hit_label]
 
@@ -200,7 +200,7 @@ class AbilityEntry(MasterEntryBase):
         """
         Get a list of hit labels assigned to the variants.
 
-        Returns an empty list if no assigned label found.
+        Return an empty list if no assigned label found.
         """
         return [variant.assigned_action_condition for variant in self.variants if variant.assigned_action_condition]
 
@@ -209,7 +209,7 @@ class AbilityEntry(MasterEntryBase):
         """
         Get a list of skill IDs and numbers that will be enhanced if the ability condition holds.
 
-        Returns an empty list if no skill enhancement found.
+        Return an empty list if no skill enhancement found.
         """
         return [variant.enhanced_skill for variant in self.variants if variant.enhanced_skill]
 
@@ -264,7 +264,7 @@ class AbilityEntry(MasterEntryBase):
         """
         Get the total damage boost rate when the user combo count is ``combo_count``.
 
-        The return will be 0.05 for a total of 5% boost.
+        The return of 0.05 means a total pf 5% boost.
         """
         return sum(variant.get_boost_by_combo(combo_count) for variant in self.variants)
 
@@ -272,7 +272,7 @@ class AbilityEntry(MasterEntryBase):
         """
         Get the total damage boost rate when ``gauge_filled`` gauges are filled.
 
-        The return will be 0.05 for a total of 5% boost.
+        The return of 0.05 means a total pf 5% boost.
         """
         return sum(variant.get_boost_by_gauge_filled_dmg(gauge_filled) for variant in self.variants)
 

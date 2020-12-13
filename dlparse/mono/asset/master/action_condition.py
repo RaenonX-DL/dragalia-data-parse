@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
-from dlparse.enums import ElementFlag, Status
+from dlparse.enums import Element, ElementFlag, SkillCondition, SkillConditionCategories, Status
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("ActionConditionEntry", "ActionConditionAsset", "ActionConditionParser")
@@ -15,6 +15,7 @@ class ActionConditionEntry(MasterEntryBase):
     afflict_status: Status
 
     overwrite_group_id: int
+    overwrite_identical_owner: int
 
     duration_sec: float
     duration_count: float
@@ -59,16 +60,6 @@ class ActionConditionEntry(MasterEntryBase):
 
     elemental_target: ElementFlag
 
-    @property
-    def target_limited_by_element(self):
-        """Check if the action condition will be limited by the element of the target."""
-        return self.elemental_target.is_effective
-
-    @property
-    def max_stack_count(self) -> int:
-        """Get the maximum stack count of action condition. ``0`` means not applicable."""
-        return self.duration_count_max or int(bool(self.overwrite_group_id))
-
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "ActionConditionEntry":
         duration_count_max = (
@@ -81,6 +72,7 @@ class ActionConditionEntry(MasterEntryBase):
             id=data["_Id"],
             afflict_status=Status(data["_Type"]),
             overwrite_group_id=data["_OverwriteGroupId"],
+            overwrite_identical_owner=data["_OverwriteIdenticalOwner"],
             duration_sec=data["_DurationSec"],
             duration_count=data["_DurationNum"],
             duration_count_max=duration_count_max,
@@ -108,6 +100,36 @@ class ActionConditionEntry(MasterEntryBase):
             enhance_skill_2_id=data["_EnhancedSkill2"],
             elemental_target=ElementFlag(data["_TargetElemental"])
         )
+
+    @property
+    def skill_conditions(self) -> list[SkillCondition]:
+        """
+        Get the skill conditions for this action condition to be effective.
+
+        If no conditions are required, return an empty list.
+
+        If any of the skill conditions returned matches, then the action condition is considered effective.
+        """
+        if not self.target_limited_by_element:
+            # Not limited to certain element, no condition
+            return []
+
+        return [
+            SkillConditionCategories.target_element.convert_reversed(element)
+            for element in Element.from_flag(self.elemental_target)
+        ]
+
+    @property
+    def target_limited_by_element(self):
+        """Check if the action condition will be limited by the element of the target."""
+        return self.elemental_target.is_effective
+
+    @property
+    def max_stack_count(self) -> int:
+        """Get the maximum stack count of action condition. ``0`` means not applicable."""
+        return (self.duration_count_max
+                or int(bool(self.overwrite_group_id))
+                or int(bool(self.overwrite_identical_owner)))
 
 
 class ActionConditionAsset(MasterAssetBase[ActionConditionEntry]):

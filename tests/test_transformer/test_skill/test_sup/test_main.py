@@ -62,15 +62,13 @@ def test_single_effect_to_team_limited(transformer_skill: SkillTransformer):
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
 
-    # No element given
-
+    # Base data
     skill_data = skill_data_base.with_conditions()
 
     assert skill_data.max_lv_buffs == set()
     assert skill_data.buffs == [set()] * skill_data_base.max_level
 
-    # Fire element given
-
+    # Flame-attuned (should be effective)
     skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_ELEM_FLAME))
 
     check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_3)
@@ -81,9 +79,8 @@ def test_single_effect_to_team_limited(transformer_skill: SkillTransformer):
 
         check_buff_unit_match(actual_buffs, expected_buffs)
 
-    # Wrong element given
-
-    skill_data = skill_data_base.with_conditions()
+    # Water-attuned (should be ineffective)
+    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_ELEM_WATER))
 
     assert skill_data.max_lv_buffs == set()
     assert skill_data.buffs == [set()] * skill_data_base.max_level

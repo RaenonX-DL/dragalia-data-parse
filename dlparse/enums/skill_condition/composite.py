@@ -315,6 +315,9 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     def __iter__(self):
         return iter(self.conditions_sorted)
 
+    def __bool__(self):
+        return bool(self.conditions_sorted)
+
     def __add__(self, other):
         if not isinstance(other, SkillConditionComposite):
             raise TypeError(f"Cannot add `SkillConditionComposite` with type {type(other)}")

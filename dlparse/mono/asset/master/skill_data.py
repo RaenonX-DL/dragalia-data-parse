@@ -113,7 +113,7 @@ class SkillDataEntry(MasterEntryBase):
     @property
     def ability_id_by_level(self) -> list[int]:
         """
-        Get the ability ID list for each level. If the ability is not applicable at the certain level, returns 0.
+        Get the ability ID list for each level. If the ability is not applicable at the certain level, return 0.
 
         Note that the ability ID for skill lv. 1 will be located at index 0.
         """

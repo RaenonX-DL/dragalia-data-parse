@@ -167,8 +167,9 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
         self.buffs_elemental: list[dict[Element, set[ActionConditionEffectUnit]]] = []
 
         for hit_data_lv in self.hit_data_mtx:
-            buff_lv: dict[Element, set[ActionConditionEffectUnit]] = {elem: set()
-                                                                      for elem in Element.get_all_valid_elements()}
+            buff_lv: dict[Element, set[ActionConditionEffectUnit]] = {
+                elem: set() for elem in Element.get_all_valid_elements()
+            }
 
             for hit_data in hit_data_lv:
                 if not hit_data.hit_attr.has_action_condition:
@@ -180,8 +181,10 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                     continue  # Action condition not limited by element
 
                 for elem in Element.get_all_valid_elements():
-                    if elem.to_flag() in action_condition.elemental_target:
-                        buff_lv[elem].update(hit_data.to_buffing_units(action_condition_asset))
+                    if elem.to_flag() not in action_condition.elemental_target:
+                        continue
+
+                    buff_lv[elem].update(hit_data.to_buffing_units(action_condition_asset))
 
             self.buffs_elemental.append(buff_lv)
 

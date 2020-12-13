@@ -58,6 +58,11 @@ class Element(Enum):
     def _missing_(cls, _):
         return cls.UNKNOWN
 
+    @classmethod
+    def from_flag(cls, elem_flag: ElementFlag) -> list["Element"]:
+        """Convert the ``elem_flag`` to a list of corresponding elements."""
+        return [element for element in cls.get_all_valid_elements() if element.to_flag() in elem_flag]
+
     @staticmethod
     def get_all_valid_elements() -> list["Element"]:
         """Get a list of all valid elements."""

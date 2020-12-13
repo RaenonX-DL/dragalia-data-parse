@@ -86,5 +86,5 @@ class MasterAssetBase(Generic[T], AssetBase, ABC):
         return [data for data in self if condition(data)]
 
     def get_data_by_id(self, data_id: Union[int, str], default: Optional[T] = None) -> Optional[T]:
-        """Get a data by its ``data_id``. Returns ``default`` if not found."""
+        """Get a data by its ``data_id``. Return ``default`` if not found."""
         return self._data.get(data_id, default)

@@ -487,7 +487,7 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
 
     def _from_skill_ext(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
         """
-        Get all possible skills extended from base S1 and S2. This also returns the helper variant, if any.
+        Get all possible skills extended from base S1 and S2. This also return the helper variant, if any.
 
         Note that base S1 and S2 will not be included.
         """

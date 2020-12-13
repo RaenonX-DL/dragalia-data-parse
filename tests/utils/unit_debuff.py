@@ -23,8 +23,6 @@ class DebuffInfo(BuffInfoBase):
 
     stackable: bool
 
-    hit_label: str
-
     def __hash__(self):
         return hash((self.parameter, self.rate, self.probability_pct, self.duration, self.stackable, self.hit_label))
 

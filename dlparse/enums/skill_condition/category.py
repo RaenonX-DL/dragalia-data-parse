@@ -444,6 +444,6 @@ class SkillConditionCategories:
         """
         Get the skill condition category corresponds to the action condition.
 
-        Returns ``None`` if no corresponding condition category.
+        Return ``None`` if no corresponding condition category.
         """
         return cls._action_cond_cat.get(action_cond_id)

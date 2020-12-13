@@ -3,7 +3,7 @@ import pytest
 from dlparse.transformer import SkillTransformer
 
 
-def test_elisanne_s1(transformer_skill: SkillTransformer):
+def test_s1(transformer_skill: SkillTransformer):
     # Elisanne S1
     # https://dragalialost.gamepedia.com/Elisanne
     skill_data_base = transformer_skill.transform_attacking(105402011)

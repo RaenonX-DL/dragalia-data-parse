@@ -51,7 +51,7 @@ class TextAsset(MasterAssetBase[TextEntry]):
         """
         Convert ``label`` to its corresponding text.
 
-        If ``silent_fail``, ``label`` will be the return if not found. Otherwise, raises :class:`ValueError`.
+        If ``silent_fail``, ``label`` will be returned if not found. Otherwise, raise :class:`ValueError`.
 
         :raises TextLabelNotFoundError: if silent fail is set to false, and the label is not found
         """

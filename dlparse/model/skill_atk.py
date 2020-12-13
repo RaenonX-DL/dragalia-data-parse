@@ -1,7 +1,6 @@
 """Models for character skills."""
-from dataclasses import dataclass, field
+from dataclasses import InitVar, dataclass, field
 from itertools import combinations, product, zip_longest
-from typing import Optional
 
 from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite, Status
 from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset, PlayerActionInfoAsset
@@ -29,12 +28,10 @@ class AttackingSkillDataEntry(SkillEntryBase):
         (OG Elisanne S1 - `105402011`).
     """
 
+    asset_action_cond: InitVar[ActionConditionAsset]  # Used for effect unit categorizing
+
     hit_unit_mtx: list[list[DamageUnit]]
     hit_count: list[int]
-
-    max_level: int
-
-    condition_comp: SkillConditionComposite
 
     mods: list[list[float]] = field(init=False)
     afflictions: list[list[ActionConditionEffectUnit]] = field(init=False)
@@ -42,7 +39,10 @@ class AttackingSkillDataEntry(SkillEntryBase):
 
     total_mod: list[float] = field(init=False)
 
-    def __post_init__(self):
+    # FIXME: Skill entry to include buff up data for on-site calculation on the website
+    # - When getting all possible entries, there should be a flag to skip all buff pre-conditions
+
+    def __post_init__(self, asset_action_cond: ActionConditionAsset):
         self.mods = [
             [hit_unit.mod for hit_unit in hit_unit_lv if hit_unit.mod]
             for hit_unit_lv in self.hit_unit_mtx
@@ -51,14 +51,36 @@ class AttackingSkillDataEntry(SkillEntryBase):
             [hit_unit.unit_affliction for hit_unit in hit_unit_lv if hit_unit.unit_affliction]
             for hit_unit_lv in self.hit_unit_mtx
         ]
-        self.debuffs = [
-            [
-                unit_debuff
-                for hit_unit in hit_unit_lv if hit_unit.unit_debuffs
-                for unit_debuff in hit_unit.unit_debuffs
-            ]
-            for hit_unit_lv in self.hit_unit_mtx
-        ]
+
+        # Parse debuff units
+        self.debuffs = []
+        for hit_unit_lv in self.hit_unit_mtx:
+            debuff_units_lv = []
+
+            for hit_unit in hit_unit_lv:
+                if not hit_unit.unit_debuffs:
+                    continue  # No debuff units available, skip it
+
+                if not hit_unit.hit_attr.action_condition_id:
+                    # No action condition bound to the hit attribute, add all debuff units directly
+                    debuff_units_lv.extend(hit_unit.unit_debuffs)
+                    continue
+
+                # Action condition bound to the hit unit, check that
+                action_cond = asset_action_cond.get_data_by_id(hit_unit.hit_attr.action_condition_id)
+                action_cond_conditions = action_cond.skill_conditions
+
+                if (
+                        action_cond_conditions
+                        and not any(elem_cond in self.condition_comp for elem_cond in action_cond_conditions)
+                ):
+                    # No condition of the action condition matches,
+                    # debuff units of the action condition should not work
+                    continue
+
+                debuff_units_lv.extend(hit_unit.unit_debuffs)
+
+            self.debuffs.append(debuff_units_lv)
 
         self.total_mod = [sum(mods) for mods in self.mods]
 
@@ -177,10 +199,8 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_buff_count.members})
 
             # Check if any buff boost data available
-            buff_boost_data_ids: set[int] = {
-                                                hit_data.hit_attr.buff_boost_data_id
-                                                for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
-                                            } - {0}
+            buff_boost_data_ids: set[int] = {hit_data.hit_attr.buff_boost_data_id
+                                             for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv} - {0}
             if buff_boost_data_ids:
                 # Buff boost data available, check all buff boost data and add its related condition
                 for buff_boost_data_id in buff_boost_data_ids:
@@ -298,7 +318,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     def __post_init__(self):
         super().__post_init__()
 
-        self._unit_mtx_base, _ = self.calculate_units_matrix()
+        self._unit_mtx_base, _ = self.calculate_units_matrix(SkillConditionComposite())
 
         # Calculate the max level by getting the level which has the max total mods
         # -------------------------------------------------------------------------
@@ -312,7 +332,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         self._has_non_zero_mods = any(sum(unit.mod for unit in units) > 0 for units in self._unit_mtx_base)
 
     def calculate_units_matrix(
-            self, condition_comp: Optional[SkillConditionComposite] = None
+            self, condition_comp: SkillConditionComposite
     ) -> tuple[list[list[DamageUnit]], list[int]]:
         """Calculate the damage unit matrix and the hit count vector."""
         units: list[list[DamageUnit]] = []
@@ -379,9 +399,13 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         :raises ConditionValidationFailedError: if the condition combination is invalid
         :raises BulletEndOfLifeError: if the bullet hit count condition is beyond the limit
         """
+        if not condition_comp:
+            condition_comp = SkillConditionComposite()
+
         hit_unit_mtx, hit_count_vct = self.calculate_units_matrix(condition_comp)
 
         return AttackingSkillDataEntry(
+            asset_action_cond=self.asset_action_cond,
             hit_unit_mtx=hit_unit_mtx,
             hit_count=hit_count_vct,
             condition_comp=condition_comp,

@@ -111,7 +111,7 @@ class PlayerActionPrefab(ActionAssetBase):
         """
         Get the component indicating if the next action should be executed instead if the action cancels the others.
 
-        Returns ``None`` if not applicable.
+        Return ``None`` if not applicable.
         """
         return self._terminate_others
 
@@ -126,7 +126,7 @@ class PlayerActionPrefab(ActionAssetBase):
         Get the hit label at ``level``.
 
         For example, if ``original_label`` is ``SWD_110_04_H01_LV02`` and ``level`` is ``3``,
-        the return will be ``SWD_110_04_H01_LV03``.
+        return ``SWD_110_04_H01_LV03``.
         """
         return original_label[:-1] + str(skill_lv)
 
