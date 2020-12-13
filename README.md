@@ -60,6 +60,10 @@ One asset will be the local version, and another will be one of the [remote][dat
 
 Export all skill data as csv to the specified location.
 
+### `script_view_hit_attr`
+
+View the data of all given hit attributes.
+
 ------
 
 # Credits
