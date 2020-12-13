@@ -36,11 +36,13 @@ class AttackingSkillDataEntry(SkillEntryBase):
     hit_count: list[int]
 
     mods: list[list[float]] = field(init=False)
+    counter_mods: list[list[float]] = field(init=False)
     afflictions: list[list[ActionConditionEffectUnit]] = field(init=False)
     debuffs: list[list[ActionConditionEffectUnit]] = field(init=False)
     buff_boost_data_mtx: list[list[BuffCountBoostData]] = field(init=False)
 
     total_mod: list[float] = field(init=False)
+    total_counter_mod: list[float] = field(init=False)
 
     def _init_debuff(self, asset_action_cond: ActionConditionAsset):
         self.debuffs = []
@@ -77,6 +79,10 @@ class AttackingSkillDataEntry(SkillEntryBase):
             [hit_unit.mod for hit_unit in hit_unit_lv if hit_unit.mod]
             for hit_unit_lv in self.hit_unit_mtx
         ]
+        self.counter_mods = [
+            [hit_unit.counter_mod for hit_unit in hit_unit_lv if hit_unit.mod]
+            for hit_unit_lv in self.hit_unit_mtx
+        ]
         self.afflictions = [
             [hit_unit.unit_affliction for hit_unit in hit_unit_lv if hit_unit.unit_affliction]
             for hit_unit_lv in self.hit_unit_mtx
@@ -91,6 +97,7 @@ class AttackingSkillDataEntry(SkillEntryBase):
         ]
 
         self.total_mod = [sum(mods) for mods in self.mods]
+        self.total_counter_mod = [sum(counter_mod) for counter_mod in self.counter_mods]
 
     @property
     def hit_count_at_max(self) -> int:
@@ -106,6 +113,16 @@ class AttackingSkillDataEntry(SkillEntryBase):
     def mods_at_max(self) -> list[float]:
         """Get the skill modifiers at the max level."""
         return self.mods[self.max_level - 1]
+
+    @property
+    def total_counter_mod_at_max(self) -> float:
+        """Get the total counter damage modifier at the max level."""
+        return self.total_counter_mod[self.max_level - 1]
+
+    @property
+    def counter_mod_at_max(self) -> list[float]:
+        """Get the counter damage modifiers at the max level."""
+        return self.counter_mods[self.max_level - 1]
 
     @property
     def deals_damage(self) -> bool:

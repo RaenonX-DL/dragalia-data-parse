@@ -1,5 +1,5 @@
 """Class for a single damaging hit."""
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from itertools import product
 from typing import Optional
 
@@ -25,9 +25,13 @@ class DamageUnit:
     unit_debuffs: list[ActionConditionEffectUnit]
     hit_attr: HitAttrEntry
 
+    counter_mod: float = field(init=False)
+
     def __post_init__(self):
         if self.unit_affliction and not isinstance(self.unit_affliction, AfflictionEffectUnit):
             raise AppValueError(f"Unexpected affliction unit type {type(self.unit_affliction)}")
+
+        self.counter_mod = self.hit_attr.damage_modifier_counter
 
     @property
     def is_empty(self) -> bool:

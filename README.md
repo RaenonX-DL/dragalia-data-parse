@@ -102,6 +102,8 @@ View the data of all given hit attributes.
 
 ### Datamining and data deploying pipeline
 
+- \[SimCord\] qwewqa
+
 - \[OM\] [Ryo][GH-ryo]
 
 ### Miscellaneous discussions

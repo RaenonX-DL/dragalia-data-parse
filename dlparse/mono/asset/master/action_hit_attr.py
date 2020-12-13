@@ -26,6 +26,14 @@ class HitAttrEntry(MasterEntryBase):
     target_group: HitTarget
 
     damage_modifier: float
+    damage_modifier_counter: float
+    """
+    Damage modifier to be added if the user is damaged during skill casting.
+
+    Note that this damage is calculated element-neutrally.
+    The formula of this is simply ``damage received x counter damage modifier``.
+    Any additional effects such as crisis mods, punishers will **NOT** be applied.
+    """
 
     is_damage_self: bool
     hp_fix_rate: float
@@ -94,6 +102,7 @@ class HitAttrEntry(MasterEntryBase):
             hit_exec_type=HitExecType(data["_HitExecType"]),
             target_group=HitTarget(data["_TargetGroup"]),
             damage_modifier=data["_DamageAdjustment"],
+            damage_modifier_counter=data["_DamageCounterCoef"],
             rate_boost_in_od=data["_ToOdDmgRate"],
             rate_boost_in_bk=data["_ToBreakDmgRate"],
             is_damage_self=bool(data["_IsDamageMyself"]),
