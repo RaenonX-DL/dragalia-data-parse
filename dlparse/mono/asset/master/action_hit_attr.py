@@ -53,18 +53,61 @@ class HitAttrEntry(MasterEntryBase):
     sp_recov_skill_idx_1: int
     sp_recov_skill_idx_2: int
 
+    dummy_hit_count: bool
+    """
+    Check if a dummy hit count will be added according to the count of teammates covered by the skill effect.
+
+    Check ``notes/others/TeammateCoverageHandling.md`` for more details.
+    """
+
     has_hit_condition: bool
     """
     Check if the hit condition is in effect.
 
-    If this is ``True``, then the skill hit count must be
-    greater than or equal to ``hit_condition_lower_bound`` (if set) or
-    less than or equal to ``hit_condition_upper_bound`` (if set) to make the hit effective.
+    Check ``notes/others/TeammateCoverageHandling.md`` for more details
+    as this field is related to the handling of such.
+
+    - Hit condition means that the hit count of the skill must match a certain criteria
+    (composed by `hit_condition_lower_bound` and `hit_condition_upper_bound`) to make the hit attribute effective.
     """
     hit_condition_lower_bound: int
     """Lower bound of the hit condition."""
     hit_condition_upper_bound: int
     """Upper bound of the hit condition."""
+
+    @staticmethod
+    def parse_raw(data: dict[str, Union[str, float, int]]) -> "HitAttrEntry":
+        punisher_states = {data["_KillerState1"], data["_KillerState2"], data["_KillerState3"]} - {0}
+        punisher_states = {Status(state) for state in punisher_states} - {Status.UNKNOWN}
+
+        # As of 2020/12/12, if `data["_HitConditionType"]` is a non-zero value, it can only be either `1` or `2`.
+        # For hit condition = 1, it's only used by Laranoa S2 (`106502012`) to indicate the teammate count.
+        # For hit condition = 2, it's only used by Summer Cleo S2 (`106504012`), Nadine S1 (`105501021`),
+        # and Chelle S1 (`106505031`).
+
+        return HitAttrEntry(
+            id=data["_Id"],
+            hit_exec_type=HitExecType(data["_HitExecType"]),
+            target_group=HitTarget(data["_TargetGroup"]),
+            damage_modifier=data["_DamageAdjustment"],
+            rate_boost_in_od=data["_ToOdDmgRate"],
+            rate_boost_in_bk=data["_ToBreakDmgRate"],
+            is_damage_self=bool(data["_IsDamageMyself"]),
+            hp_fix_rate=data["_SetCurrentHpRate"],
+            hp_consumption_rate=data["_ConsumeHpRate"],
+            punisher_states=punisher_states,
+            punisher_rate=data["_KillerStateDamageRate"],
+            rate_boost_on_crisis=data["_CrisisLimitRate"],
+            rate_boost_by_buff=data["_DamageUpRateByBuffCount"],
+            action_condition_id=data["_ActionCondition1"],
+            sp_recov_ratio=data["_RecoverySpRatio"],
+            sp_recov_skill_idx_1=data["_RecoverySpSkillIndex"],
+            sp_recov_skill_idx_2=data["_RecoverySpSkillIndex2"],
+            dummy_hit_count=bool(data["_IsAddCombo"]),
+            has_hit_condition=data["_HitConditionType"] != 0,
+            hit_condition_lower_bound=data["_HitConditionP1"],
+            hit_condition_upper_bound=data["_HitConditionP2"]
+        )
 
     @property
     def has_action_condition(self):
@@ -75,6 +118,46 @@ class HitAttrEntry(MasterEntryBase):
             Action condition contains the information of afflicting the target or buffs.
         """
         return self.action_condition_id != 0
+
+    @property
+    def is_hit_condition_range(self) -> bool:
+        """
+        Check if the hit condition is a range.
+
+        If this holds, the hit count must fall within the hit coundition boundaries
+        to make the hit attribute effective.
+
+        Note that if this holds, ``self.is_hit_condition_gte`` always holds.
+        Because of this, whenever hit condition is be used,
+        always check for this before ``self.is_hit_condition_gte`` to avoid errors.
+        """
+        return bool(self.hit_condition_upper_bound and self.hit_condition_lower_bound)
+
+    @property
+    def is_hit_condition_gte(self) -> bool:
+        """
+        Check if the hit condition is a threshold.
+
+        If this holds, the hit count must fall within the hit coundition boundaries
+        to make the hit attribute effective.
+
+        Note that if ``self.is_hit_condition_range`` holds, this always holds.
+        Because of this, whenever hit condition is be used,
+        always check for ``self.is_hit_condition_range`` before this to avoid errors.
+        """
+        return self.hit_condition_lower_bound and not self.hit_condition_upper_bound
+
+    def is_effective_hit_count(self, hit_count: int) -> bool:
+        """Check if the hit attribute is effective when the user's hit count is ``hit_count``."""
+        if not self.has_hit_condition:
+            # Always effective if no hit condition
+            return True
+
+        is_within_range = (self.is_hit_condition_range
+                           and self.hit_condition_lower_bound <= hit_count <= self.hit_condition_upper_bound)
+        is_greater_than_threshold = self.is_hit_condition_gte and hit_count >= self.hit_condition_lower_bound
+
+        return is_within_range or is_greater_than_threshold
 
     @property
     def boost_on_target_afflicted(self) -> bool:
@@ -101,7 +184,7 @@ class HitAttrEntry(MasterEntryBase):
         """Check if the mods will be changed based on the character's HP."""
         return self.rate_boost_on_crisis != 0
 
-    def is_effective_to_enemy(self, asset_action_cond: ActionConditionAsset) -> bool:
+    def is_effective_to_enemy(self, asset_action_cond: ActionConditionAsset, desired_effectiveness: bool) -> bool:
         """
         Check if the hit is effective to the enemy.
 
@@ -115,6 +198,14 @@ class HitAttrEntry(MasterEntryBase):
             # Deals damage
             return True
 
+        if self.dummy_hit_count:
+            # If the hit attribute adds dummy hit count, return the desired effectiveness because
+            # the hit data should be considered regardless its effect target
+            # -----------------------------------------------------------------------------------
+            # Simply returning `True` or `False`, gives inaccurate result for either attacking or supportive skill data
+            # because the hit to add dummy counts will be missed
+            return desired_effectiveness
+
         if not self.has_action_condition:
             # No action condition assigned & does not have action condition binded
             return False
@@ -126,34 +217,6 @@ class HitAttrEntry(MasterEntryBase):
         action_cond_data = asset_action_cond.get_data_by_id(self.action_condition_id)
 
         return action_cond_data.afflict_status.is_abnormal_status
-
-    @staticmethod
-    def parse_raw(data: dict[str, Union[str, float, int]]) -> "HitAttrEntry":
-        punisher_states = {data["_KillerState1"], data["_KillerState2"], data["_KillerState3"]} - {0}
-        punisher_states = {Status(state) for state in punisher_states} - {Status.UNKNOWN}
-
-        return HitAttrEntry(
-            id=data["_Id"],
-            hit_exec_type=HitExecType(data["_HitExecType"]),
-            target_group=HitTarget(data["_TargetGroup"]),
-            damage_modifier=data["_DamageAdjustment"],
-            rate_boost_in_od=data["_ToOdDmgRate"],
-            rate_boost_in_bk=data["_ToBreakDmgRate"],
-            is_damage_self=bool(data["_IsDamageMyself"]),
-            hp_fix_rate=data["_SetCurrentHpRate"],
-            hp_consumption_rate=data["_ConsumeHpRate"],
-            punisher_states=punisher_states,
-            punisher_rate=data["_KillerStateDamageRate"],
-            rate_boost_on_crisis=data["_CrisisLimitRate"],
-            rate_boost_by_buff=data["_DamageUpRateByBuffCount"],
-            action_condition_id=data["_ActionCondition1"],
-            sp_recov_ratio=data["_RecoverySpRatio"],
-            sp_recov_skill_idx_1=data["_RecoverySpSkillIndex"],
-            sp_recov_skill_idx_2=data["_RecoverySpSkillIndex2"],
-            has_hit_condition=data["_HitConditionType"] != 0,
-            hit_condition_lower_bound=data["_HitConditionP1"],
-            hit_condition_upper_bound=data["_HitConditionP2"]
-        )
 
 
 class HitAttrAsset(MasterAssetBase[HitAttrEntry]):

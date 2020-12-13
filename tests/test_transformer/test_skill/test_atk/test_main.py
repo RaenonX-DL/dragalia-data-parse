@@ -117,7 +117,7 @@ def test_multi_hits_different_damage_2(transformer_skill: SkillTransformer):
     assert skill_data.max_level == 2
 
 
-def test_has_dummy_hits(transformer_skill: SkillTransformer):
+def test_has_functional_hits(transformer_skill: SkillTransformer):
     # Renee S1
     # https://dragalialost.gamepedia.com/Renee
     skill_data = transformer_skill.transform_attacking(103402031).with_conditions()

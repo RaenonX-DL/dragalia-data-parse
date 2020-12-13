@@ -65,6 +65,7 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
     # region Other attributes
     is_boost_by_combo: bool = False
     is_boost_by_gauge_filled: bool = False
+
     # endregion
 
     def _init_validity_check(self):
@@ -143,21 +144,22 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
         """Get the damage modifiers if standing on ``count`` buff zones created by the allies."""
         return [self.mod_on_ally_buff_zone] * count
 
-    def _damage_units_get_base(
-            self, condition_comp: SkillConditionComposite, /,
-            asset_action_condition: ActionConditionAsset, asset_action_info: PlayerActionInfoAsset
-    ) -> list[DamageUnit]:
+    def _damage_units_get_base_attributes(
+            self, condition_comp: SkillConditionComposite, unit_affliction: AfflictionEffectUnit,
+            units_debuff: list[ActionConditionEffectUnit], /,
+            asset_action_info: PlayerActionInfoAsset
+    ) -> Optional[list[DamageUnit]]:
+        """
+        Get the base damage units according to the hit data attributes.
+
+        Returns ``None`` if the hit data attributes cannot determine the base damage units yet.
+        """
         hit_attr = self.hit_attr
-
-        unit_affliction = self.to_affliction_unit(asset_action_condition)
-        unit_debuff = self.to_debuff_units(asset_action_condition)
-
-        # EXNOTE: Bullet timings like `msl` in dl-sim may be added here
 
         if self.will_deteriorate and condition_comp.bullet_hit_count:
             # Deteriorating bullets
             return [
-                DamageUnit(self.damage_modifier_at_hit(hit_count), unit_affliction, unit_debuff, hit_attr.id)
+                DamageUnit(self.damage_modifier_at_hit(hit_count), unit_affliction, units_debuff, hit_attr.id)
                 for hit_count in range(1, condition_comp.bullet_hit_count_converted + 1)
             ]
 
@@ -166,12 +168,12 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
             mods = self.mods_in_self_buff_zone(condition_comp.buff_zone_self_converted or 0)
             mods += self.mods_in_ally_buff_zone(condition_comp.buff_zone_ally_converted or 0)
 
-            return [DamageUnit(mod, unit_affliction, unit_debuff, hit_attr.id) for mod in mods]
+            return [DamageUnit(mod, unit_affliction, units_debuff, hit_attr.id) for mod in mods]
 
         if self.is_depends_on_bullet_summoned or self.is_depends_on_bullet_on_map:
             # Damage dealt depends on the bullets summoned / bullets on the map
             return [
-                DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)
+                DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr.id)
                 for _ in range(condition_comp.bullets_on_map_converted or 0)
             ]
 
@@ -181,22 +183,50 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
                 asset_action_info.get_data_by_id(self.action_id).max_bullet_count,
                 condition_comp.buff_count_converted or 0
             )
-
             return [
-                DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)
+                DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr.id)
                 for _ in range(effective_buff_count)
             ]
+
+        return None
+
+    def _damage_units_get_base(
+            self, condition_comp: SkillConditionComposite, hit_count: int, /,
+            asset_action_condition: ActionConditionAsset, asset_action_info: PlayerActionInfoAsset
+    ) -> list[DamageUnit]:
+        hit_attr = self.hit_attr
+
+        unit_affliction = self.to_affliction_unit(asset_action_condition)
+        units_debuff = self.to_debuff_units(asset_action_condition)
+
+        # EXNOTE: Bullet timings like `msl` in dl-sim may be added here
+
+        # This must be before the check of `type(self.action_component) is ActionBullet`
+        # because the hit attribute will be ineffective if the hit count does not match the hit condition,
+        # which implies that the type of the action component is meaningless
+        if not hit_attr.is_effective_hit_count(hit_count):
+            # Hit attribute is not effective when the user's hit count is ``hit_count``
+            return []
+
+        base_units_by_attr = self._damage_units_get_base_attributes(
+            condition_comp, unit_affliction, units_debuff, asset_action_info=asset_action_info
+        )
+        # Explicitly checking `None` because both `None` and empty list is falsy while
+        # `None` means no early termination condition met; an empty list means no damage unit
+        if base_units_by_attr is not None:
+            # Class attributes can determine the base damage units, return it
+            return base_units_by_attr
 
         if type(self.action_component) is ActionBullet:  # pylint: disable=unidiomatic-typecheck
             # Action component is exactly `ActionPartsBullet`, max hit count may be in effect
             # For example, Lin You S1 (`104503011`, AID `491040` and `491042`)
             return [
-                DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)
+                DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr.id)
                 for _ in range(self.max_hit_count or 1)
             ]
 
         # Cases not handled above
-        return [DamageUnit(hit_attr.damage_modifier, unit_affliction, unit_debuff, hit_attr.id)]
+        return [DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr.id)]
 
     def _damage_units_apply_mod_boosts_target(
             self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite
@@ -251,11 +281,11 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
         self._damage_units_apply_mod_boosts_self(damage_units, condition_comp)
 
     def to_damage_units(
-            self, condition_comp: SkillConditionComposite, /,
+            self, condition_comp: SkillConditionComposite, hit_count: int, /,
             asset_action_condition: ActionConditionAsset, asset_action_info: PlayerActionInfoAsset
     ) -> list[DamageUnit]:
         """
-        Calculates the damage modifier of ``hit_data`` under ``condition_comp``.
+        Calculates the damage modifier under ``condition_comp`` when the skill has dealt ``hit_count`` hits.
 
         Usually, a single hit will have a single modifier.
         However, under some special circumstances (for example, deteriorating bullets),
@@ -305,7 +335,8 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
         # Get base units
 
         damage_units = self._damage_units_get_base(
-            condition_comp, asset_action_condition=asset_action_condition, asset_action_info=asset_action_info
+            condition_comp, hit_count,
+            asset_action_condition=asset_action_condition, asset_action_info=asset_action_info
         )
 
         # Apply boosts

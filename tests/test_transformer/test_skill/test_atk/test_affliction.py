@@ -74,4 +74,4 @@ def test_meene_s2_6_butterflies_poison(transformer_skill: SkillTransformer):
         assert len(expected_afflictions) == len(skill_data.afflictions)
 
         for skill_lv, (expected, actual) in enumerate(zip(expected_afflictions, skill_data.afflictions), start=1):
-            check_affliction_unit_match(actual, expected, message=skill_lv)
+            check_affliction_unit_match(actual, expected, message=[skill_lv, condition_comp])

@@ -145,7 +145,7 @@ def test_via_enhancements_multi_action(asset_manager: AssetManager):
     Additionally, this checks if all possible skill actions are returned.
     For example, Nadine S2 randomly picks one effect, both of these should be returned.
     """
-    # Nadine S1
+    # Nadine
     # https://dragalialost.gamepedia.com/Nadine
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10550102)
 

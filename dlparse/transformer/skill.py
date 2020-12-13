@@ -45,13 +45,18 @@ class SkillTransformer:
 
             pre_condition = additional_pre_condition or action_component.skill_pre_condition
 
-            # If the hit attribute is missing, just skip it; sometimes it's simply missing
-            if hit_attr_data := self._asset_hit_attr.get_data_by_id(hit_label):
-                ret.append(hit_data_cls(
-                    hit_attr=hit_attr_data, action_component=action_component,
-                    action_id=action_id, pre_condition=pre_condition,
-                    ability_data=[self._asset_ability.get_data_by_id(ability_id) for ability_id in ability_ids]
-                ))
+            # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
+            # pylint: disable=superfluous-parens
+            if not (hit_attr_data := self._asset_hit_attr.get_data_by_id(hit_label)):
+                # Hit attribute missing, skip it
+                # - Not letting it "explode" because officials love to insert unused dummy data
+                continue
+
+            ret.append(hit_data_cls(
+                hit_attr=hit_attr_data, action_component=action_component,
+                action_id=action_id, pre_condition=pre_condition,
+                ability_data=[self._asset_ability.get_data_by_id(ability_id) for ability_id in ability_ids]
+            ))
 
         # Convert hit actions of the next action if the current one is being terminated
         # Formal Joachim S1 (`109503011`) has this
@@ -216,7 +221,7 @@ class SkillTransformer:
 
             for hit_data in hit_data_lv:
                 # Check if the hit is effective to target, if desired; check the docs for the definition of effective
-                if hit_data.is_effective_to_enemy(self._asset_action_cond) == effective_to_enemy:
+                if hit_data.is_effective_to_enemy(self._asset_action_cond, effective_to_enemy) == effective_to_enemy:
                     hit_data_mtx[skill_lv - 1].append(hit_data)
 
         if not any(hit_data for hit_data in hit_data_mtx):
@@ -274,9 +279,15 @@ class SkillTransformer:
             skill_id, DamagingHitData, max_lv=max_lv, ability_ids=ability_ids
         )
 
-        return AttackingSkillData(
+        ret: AttackingSkillData = AttackingSkillData(
             skill_data_raw=skill_data,
             hit_data_mtx=hit_data_mtx,
             asset_action_info=self._asset_pa_info,
             asset_action_cond=self._asset_action_cond
         )
+
+        if not any(entry.deals_damage for entry in ret.get_all_possible_entries()):
+            # All mods are 0 for all possible combinations of the skill condition
+            raise HitDataUnavailableError()
+
+        return ret

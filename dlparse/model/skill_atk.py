@@ -30,6 +30,7 @@ class AttackingSkillDataEntry(SkillEntryBase):
     """
 
     hit_unit_mtx: list[list[DamageUnit]]
+    hit_count: list[int]
 
     max_level: int
 
@@ -39,7 +40,6 @@ class AttackingSkillDataEntry(SkillEntryBase):
     afflictions: list[list[ActionConditionEffectUnit]] = field(init=False)
     debuffs: list[list[ActionConditionEffectUnit]] = field(init=False)
 
-    hit_count: list[int] = field(init=False)
     total_mod: list[float] = field(init=False)
 
     def __post_init__(self):
@@ -61,7 +61,6 @@ class AttackingSkillDataEntry(SkillEntryBase):
         ]
 
         self.total_mod = [sum(mods) for mods in self.mods]
-        self.hit_count = [len(mods) for mods in self.mods]
 
     @property
     def hit_count_at_max(self) -> int:
@@ -77,6 +76,11 @@ class AttackingSkillDataEntry(SkillEntryBase):
     def mods_at_max(self) -> list[float]:
         """Get the skill modifiers at the max level."""
         return self.mods[self.max_level - 1]
+
+    @property
+    def deals_damage(self) -> bool:
+        """Check if any damage will be dealt at any level."""
+        return any(mod for mod in self.mods)
 
 
 @dataclass
@@ -213,6 +217,15 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     def _init_all_possible_conditions_skill(self):
         cond_elems: list[set[tuple[SkillCondition, ...]]] = []
 
+        # Teammate coverage available
+        teammate_coverage_available: bool = any(
+            hit_data.hit_attr.has_hit_condition for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+        )
+        if teammate_coverage_available:
+            cond_elems.append({
+                (teammate_coverage,) for teammate_coverage in SkillConditionCategories.skill_teammates_covered.members
+            })
+
         # Deterioration available
         will_deteriorate: bool = any(
             hit_data.will_deteriorate for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
@@ -271,48 +284,76 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     def __post_init__(self):
         super().__post_init__()
 
-        self._unit_mtx_base = self.calculate_units_matrix()
+        self._unit_mtx_base, _ = self.calculate_units_matrix()
 
         # Calculate the max level by getting the level which has the max total mods
         # -------------------------------------------------------------------------
-        #   Some dummy data were inserted for a higher (& usually unreleased) level,
-        #   causing the max level to be inaccurate if we simply get the length of the mods matrix.
+        # Some dummy data were inserted for a higher (& usually unreleased) level,
+        # causing the max level to be inaccurate if we simply get the length of the mods matrix.
         #
-        #   If there are 2 levels sharing the same total mods, the higher level will be used.
+        # If there are 2 levels sharing the same total mods, the higher level will be used.
         self._max_level = max(zip(reversed([sum(unit.mod for unit in units) for units in self._unit_mtx_base]),
                                   range(len(self._unit_mtx_base), 0, -1)),
                               key=lambda item: item[0])[1]
-
         self._has_non_zero_mods = any(sum(unit.mod for unit in units) > 0 for units in self._unit_mtx_base)
 
     def calculate_units_matrix(
             self, condition_comp: Optional[SkillConditionComposite] = None
-    ) -> list[list[DamageUnit]]:
-        """Calculate the damage unit matrix."""
+    ) -> tuple[list[list[DamageUnit]], list[int]]:
+        """Calculate the damage unit matrix and the hit count vector."""
         units: list[list[DamageUnit]] = []
+        hit_counts: list[int] = []
 
         if not condition_comp:
             condition_comp = SkillConditionComposite()  # Dummy empty condition composite
 
         for hit_data_lv in self.hit_data_mtx:
             new_units_level = []  # Array of the units at the same level
+            # Hit counter for the damage unit calculation (Nadine S1 teammate coverage handling)
+            new_units_hit_counter = 0
+            # Hit counter for the conditional hits by hit count
+            # The count of this will not be used for each damage unit calculation,
+            # but will be used after parsing all damage units to get the actual hit count
+            new_units_hit_counter_exclusive = 0
 
             for hit_data in hit_data_lv:
-                new_units_level.append(hit_data.to_damage_units(
-                    condition_comp,
+                damage_units = hit_data.to_damage_units(
+                    condition_comp, new_units_hit_counter,
                     asset_action_condition=self.asset_action_cond, asset_action_info=self.asset_action_info
-                ))
+                )
 
-            # (Deteriorating bullets)
+                new_units_level.append(damage_units)
+
+                # Add hit count according to the count of damage units that actually deals damage
+                # -------------------------------------------------------------------------------
+                # Filters delayed damage (for example, mark explosion)
+                # Increases different counter according to the hit flag of hit condition
+                unit_hit_count = len([unit for unit in damage_units if unit.mod])
+                if not hit_data.hit_attr.has_hit_condition:
+                    new_units_hit_counter += unit_hit_count
+                else:
+                    new_units_hit_counter_exclusive += unit_hit_count
+
+                # Add dummy hit counts according to the teammate coverage
+                # Do **NOT** use ``damage_units`` for counting the dummy hits because
+                # ``damage_units`` is an empty list when ``hit_data`` only deals dummy hits
+                new_units_hit_counter += (hit_data.hit_attr.dummy_hit_count
+                                          * ((condition_comp.teammate_coverage_converted or 0) + 1))
+
+            # "Flatten" the damage units matrix
+            # ---------------------------------
+            # For deteriorating bullets:
             # [[1, 0.5, 0.2], [1, 0.5, 0.2]] needs to be transformed to [1, 1, 0.5, 0.5, 0.2, 0.2]
-            # (Nevin S2 @ Sigil Released)
+            # For Nevin S2 @ Sigil Released:
             # [[9], [0.9, 0.9]] needs to be transformed to [9, 0.9, 0.9]
             units.append([
                 subitem for item in zip_longest(*new_units_level, fillvalue=None)
-                for subitem in item if subitem
+                for subitem in item if subitem  # `if subitem` for filtering `None`
             ])
+            # Add the hit counters
+            hit_counts.append(new_units_hit_counter + new_units_hit_counter_exclusive)
 
-        return units
+        return units, hit_counts
 
     def with_conditions(self, condition_comp: SkillConditionComposite = None) -> AttackingSkillDataEntry:
         """
@@ -323,8 +364,11 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         :raises ConditionValidationFailedError: if the condition combination is invalid
         :raises BulletEndOfLifeError: if the bullet hit count condition is beyond the limit
         """
+        hit_unit_mtx, hit_count_vct = self.calculate_units_matrix(condition_comp)
+
         return AttackingSkillDataEntry(
-            hit_unit_mtx=self.calculate_units_matrix(condition_comp),
+            hit_unit_mtx=hit_unit_mtx,
+            hit_count=hit_count_vct,
             condition_comp=condition_comp,
             max_level=self.max_level
         )

@@ -3,9 +3,9 @@ from dlparse.export import export_sup_skills_as_entries
 from dlparse.mono.manager import AssetManager
 from tests.expected_skills_lookup import skill_ids_sup
 
-ExpectedInfoType = dict[tuple[int, SkillConditionComposite], set[tuple[HitTargetSimple, BuffParameter, float]]]
+ExpectedInfoLookup = dict[tuple[int, SkillConditionComposite], set[tuple[HitTargetSimple, BuffParameter, float]]]
 
-expected_contained_info: ExpectedInfoType = {
+expected_contained_info: ExpectedInfoLookup = {
     # Kirsty S2
     (105503022, SkillConditionComposite()): {
         (HitTargetSimple.TEAM, BuffParameter.ATK, 0.2)
@@ -44,7 +44,7 @@ def test_exported_entries(asset_manager: AssetManager):
     assert len(entries) > 0
 
     skill_ids_missing: dict[int, str] = skill_ids_sup.copy()
-    skill_info_missing: ExpectedInfoType = expected_contained_info.copy()
+    skill_info_missing: ExpectedInfoLookup = expected_contained_info.copy()
 
     for entry in entries:
         skill_ids_missing.pop(entry.skill_internal_id, None)

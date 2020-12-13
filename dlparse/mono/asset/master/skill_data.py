@@ -107,9 +107,8 @@ class SkillDataEntry(MasterEntryBase):
     def all_action_ids(self) -> set[int]:
         """Get a set of all possible and effective action IDs."""
         # - {0} for removing ineffective AIDs
-        return {
-                   self.action_1_id, self.action_2_id, self.action_3_id, self.action_4_id, self.adv_skill_lv1_action_id
-               } - {0}
+        return {self.action_1_id, self.action_2_id, self.action_3_id, self.action_4_id,
+                self.adv_skill_lv1_action_id} - {0}
 
     @property
     def ability_id_by_level(self) -> list[int]:
