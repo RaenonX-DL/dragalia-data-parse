@@ -108,6 +108,8 @@ View the data of all given hit attributes.
 
 - \[OM\] Siena
 
+Also thanks to everyone who had contributed to [Gamepedia].
+
 [GH-mushymato]: https://github.com/Mushymato
 
 [GH-raenonx]: https://github.com/RaenonX
