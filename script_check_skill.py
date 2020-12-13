@@ -1,5 +1,3 @@
-from dlparse.mono.asset import CharaDataEntry, SkillDataEntry
-from dlparse.mono.asset.base import MasterAssetBase
 from dlparse.mono.manager import AssetManager
 from tests.static import (
     PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, get_remote_dir_action_asset,
@@ -18,23 +16,7 @@ manager_remote = AssetManager(
 )
 
 
-def check_diff_internal(left: MasterAssetBase, right: MasterAssetBase, title: str, manager: AssetManager):
-    if diff_ids := (left.all_ids - right.all_ids):
-        print(f"{title} in {left.__class__.__name__} ({len(diff_ids)}):")
-
-        for diff_id in sorted(diff_ids):
-            data = left.get_data_by_id(diff_id)
-            if isinstance(data, SkillDataEntry):
-                print(f"- {diff_id} ({manager.asset_text.to_text(data.name_label)})")
-            elif isinstance(data, CharaDataEntry):
-                print(f"- {diff_id} ({data.get_chara_name(manager.asset_text)})")
-            else:
-                print(f"- {diff_id}")
-
-        print()
-
-
-def check_diff(old_asset: AssetManager, new_asset: AssetManager):
+def check_unparsed_skill(old_asset: AssetManager, new_asset: AssetManager):
     diff_chara_ids = new_asset.asset_chara_data.all_ids - old_asset.asset_chara_data.all_ids
     diff_skill_ids = new_asset.asset_skill_data.all_ids - old_asset.asset_skill_data.all_ids
 
@@ -52,4 +34,4 @@ def check_diff(old_asset: AssetManager, new_asset: AssetManager):
 
 
 if __name__ == '__main__':
-    check_diff(manager_remote, manager_local)
+    check_unparsed_skill(manager_remote, manager_local)
