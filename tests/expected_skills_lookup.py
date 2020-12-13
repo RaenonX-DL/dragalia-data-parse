@@ -44,7 +44,13 @@ skill_ids_sup: dict[int, str] = {
     105402011: "Elisanne S1",
 }
 
-# TODO: TBA - Expected recovery skill IDs
 skill_ids_rcv: dict[int, str] = {
     101503021: "Wedding Elisanne S1",
+    108504011: "Hildegarde S1",
+    108401021: "Halloween Lowen S1",
+    108401022: "Halloween Lowen S2",
+    108504021: "Gala Zena S1",
+    108505011: "Heinwald S1",
+    108304021: "Estelle S1",
+    108304022: "Estelle S2",
 }
