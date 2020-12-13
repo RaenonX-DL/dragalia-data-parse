@@ -2,9 +2,11 @@
 from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
-from dlparse.enums import HitExecType, HitTarget, Status
+from dlparse.enums import HitExecType, HitTarget, SkillConditionComposite, Status
+from dlparse.model import BuffCountBoostData
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 from .action_condition import ActionConditionAsset
+from .buff_count import BuffCountAsset
 
 __all__ = ("HitAttrEntry", "HitAttrAsset", "HitAttrParser")
 
@@ -186,6 +188,42 @@ class HitAttrEntry(MasterEntryBase):
     def boost_by_hp(self) -> bool:
         """Check if the mods will be changed based on the character's HP."""
         return self.rate_boost_on_crisis != 0
+
+    def get_buff_count_boost_data(
+            self, condition_comp: SkillConditionComposite,
+            asset_action_cond: ActionConditionAsset, asset_buff_count: BuffCountAsset
+    ) -> BuffCountBoostData:
+        """Get the buff count boost data of this hit attribute."""
+        if not self.boost_by_buff_count:
+            return BuffCountBoostData(0, 0, 0, 0, 0, 0)  # Not boosted
+
+        if self.rate_boost_by_buff:
+            # Uncapped direct boost
+            return BuffCountBoostData(
+                self.rate_boost_by_buff * condition_comp.buff_count_converted,
+                0,
+                self.rate_boost_by_buff,
+                0,
+                0,
+                0
+            )
+
+        # Capped buff count boost
+        entry_buff_count = asset_buff_count.get_data_by_id(self.buff_boost_data_id)
+        entry_action_cond = asset_action_cond.get_data_by_id(entry_buff_count.action_condition_id)
+        action_cond_count = entry_buff_count.get_effective_action_condition_count(condition_comp)
+
+        in_effect_rate = (action_cond_count * entry_buff_count.action_condition_rate
+                          + condition_comp.buff_count_converted * entry_buff_count.rate_base)
+
+        return BuffCountBoostData(
+            min(in_effect_rate, entry_buff_count.rate_limit),
+            entry_buff_count.rate_limit,
+            entry_buff_count.rate_base,
+            entry_buff_count.action_condition_id,
+            entry_action_cond.max_instance_count - action_cond_count,
+            entry_buff_count.action_condition_rate,
+        )
 
     def is_effective_to_enemy(self, asset_action_cond: ActionConditionAsset, desired_effectiveness: bool) -> bool:
         """

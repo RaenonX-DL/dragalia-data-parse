@@ -4,6 +4,7 @@ from itertools import combinations, product, zip_longest
 
 from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite, Status
 from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset, PlayerActionInfoAsset
+from .buff_count_boost import BuffCountBoostData
 from .effect_action_cond import ActionConditionEffectUnit
 from .hit_dmg import DamageUnit, DamagingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
@@ -29,6 +30,7 @@ class AttackingSkillDataEntry(SkillEntryBase):
     """
 
     asset_action_cond: InitVar[ActionConditionAsset]  # Used for effect unit categorizing
+    asset_buff_count: InitVar[BuffCountAsset]  # Used for buff boost data extracting
 
     hit_unit_mtx: list[list[DamageUnit]]
     hit_count: list[int]
@@ -36,11 +38,9 @@ class AttackingSkillDataEntry(SkillEntryBase):
     mods: list[list[float]] = field(init=False)
     afflictions: list[list[ActionConditionEffectUnit]] = field(init=False)
     debuffs: list[list[ActionConditionEffectUnit]] = field(init=False)
+    buff_boost_data_mtx: list[list[BuffCountBoostData]] = field(init=False)
 
     total_mod: list[float] = field(init=False)
-
-    # FIXME: Skill entry to include buff up data for on-site calculation on the website
-    # - When getting all possible entries, there should be a flag to skip all buff pre-conditions
 
     def _init_debuff(self, asset_action_cond: ActionConditionAsset):
         self.debuffs = []
@@ -72,7 +72,7 @@ class AttackingSkillDataEntry(SkillEntryBase):
 
             self.debuffs.append(debuff_units_lv)
 
-    def __post_init__(self, asset_action_cond: ActionConditionAsset):
+    def __post_init__(self, asset_action_cond: ActionConditionAsset, asset_buff_count: BuffCountAsset):
         self.mods = [
             [hit_unit.mod for hit_unit in hit_unit_lv if hit_unit.mod]
             for hit_unit_lv in self.hit_unit_mtx
@@ -81,9 +81,14 @@ class AttackingSkillDataEntry(SkillEntryBase):
             [hit_unit.unit_affliction for hit_unit in hit_unit_lv if hit_unit.unit_affliction]
             for hit_unit_lv in self.hit_unit_mtx
         ]
-
-        # Parse debuff units
         self._init_debuff(asset_action_cond)
+        self.buff_boost_data_mtx = [
+            [
+                hit_unit.hit_attr.get_buff_count_boost_data(self.condition_comp, asset_action_cond, asset_buff_count)
+                for hit_unit in hit_unit_lv
+            ]
+            for hit_unit_lv in self.hit_unit_mtx
+        ]
 
         self.total_mod = [sum(mods) for mods in self.mods]
 
@@ -137,6 +142,9 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     asset_action_cond: ActionConditionAsset  # Used during affliction processing
     asset_buff_count: BuffCountAsset
 
+    # Indicate if the sectioned buff counts should be included in possible conditions
+    with_sectioned_buffs: InitVar[bool]
+
     _unit_mtx_base: list[list[DamageUnit]] = field(init=False)
 
     _max_level: int = field(init=False)
@@ -178,7 +186,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return cond_elems
 
-    def _init_all_possible_conditions_self(self):
+    def _init_all_possible_conditions_self(self, with_sectioned_buffs: bool):
         cond_elems: list[set[tuple[SkillCondition, ...]]] = []
 
         # Crisis boosts available
@@ -189,7 +197,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_hp_status.members})
 
         # Buff boosts available
-        buff_up_direct_boost_available: bool = any(
+        boost_by_buff_available: bool = any(
             hit_data.hit_attr.boost_by_buff_count
             for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         )
@@ -197,9 +205,10 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             hit_data.is_depends_on_user_buff_count
             for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         )
-        if buff_up_direct_boost_available:
-            # Add direct boost conditions
-            cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_buff_count.members})
+        if boost_by_buff_available:
+            # Add direct boost conditions (only add the sectioned buff count condition if specified)
+            if with_sectioned_buffs:
+                cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_buff_count.members})
 
             # Check if any buff boost data available
             buff_boost_data_ids: set[int] = {hit_data.hit_attr.buff_boost_data_id
@@ -304,12 +313,12 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return cond_elems
 
-    def _init_all_possible_conditions(self):
+    def _init_all_possible_conditions(self, /, with_sectioned_buffs: bool):
         # Initialization
         cond_elems: list[set[tuple[SkillCondition, ...]]] = self._init_possible_conditions_base_elems()
 
         cond_elems.extend(self._init_all_possible_conditions_target())
-        cond_elems.extend(self._init_all_possible_conditions_self())
+        cond_elems.extend(self._init_all_possible_conditions_self(with_sectioned_buffs))
         cond_elems.extend(self._init_all_possible_conditions_skill())
 
         # Add combinations
@@ -318,8 +327,8 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             for item_combination in product(*cond_elems)
         }
 
-    def __post_init__(self):
-        super().__post_init__()
+    def __post_init__(self, with_sectioned_buffs: bool):
+        super().__post_init__(with_sectioned_buffs=with_sectioned_buffs)
 
         self._unit_mtx_base, _ = self.calculate_units_matrix(SkillConditionComposite())
 
@@ -409,6 +418,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return AttackingSkillDataEntry(
             asset_action_cond=self.asset_action_cond,
+            asset_buff_count=self.asset_buff_count,
             hit_unit_mtx=hit_unit_mtx,
             hit_count=hit_count_vct,
             condition_comp=condition_comp,

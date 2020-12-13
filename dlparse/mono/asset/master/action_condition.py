@@ -17,6 +17,8 @@ class ActionConditionEntry(MasterEntryBase):
     overwrite_group_id: int
     overwrite_identical_owner: int
 
+    max_instance_count: int
+
     duration_sec: float
     duration_count: float
     duration_count_max: int
@@ -73,6 +75,7 @@ class ActionConditionEntry(MasterEntryBase):
             afflict_status=Status(data["_Type"]),
             overwrite_group_id=data["_OverwriteGroupId"],
             overwrite_identical_owner=data["_OverwriteIdenticalOwner"],
+            max_instance_count=data["_MaxDuplicatedCount"],
             duration_sec=data["_DurationSec"],
             duration_count=data["_DurationNum"],
             duration_count_max=duration_count_max,
