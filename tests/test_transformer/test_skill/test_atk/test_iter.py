@@ -142,6 +142,8 @@ def test_crisis_only(transformer_skill: SkillTransformer):
 
 
 def test_buff_count_direct(transformer_skill: SkillTransformer):
+    # For indirect buff boost tests, refer to each character instead (such as Lapis)
+
     # Karina S1
     # https://dragalialost.gamepedia.com/Karina
     skill_data = transformer_skill.transform_attacking(104402011)
@@ -160,6 +162,7 @@ def test_buff_count_direct(transformer_skill: SkillTransformer):
         SkillConditionComposite(SkillCondition.SELF_BUFF_8): 16.36 * (1 + 0.05 * 8),
         SkillConditionComposite(SkillCondition.SELF_BUFF_9): 16.36 * (1 + 0.05 * 9),
         SkillConditionComposite(SkillCondition.SELF_BUFF_10): 16.36 * (1 + 0.05 * 10),
+        SkillConditionComposite(SkillCondition.SELF_BUFF_15): 16.36 * (1 + 0.05 * 15),
         SkillConditionComposite(SkillCondition.SELF_BUFF_20): 16.36 * (1 + 0.05 * 20),
         SkillConditionComposite(SkillCondition.SELF_BUFF_25): 16.36 * (1 + 0.05 * 25),
         SkillConditionComposite(SkillCondition.SELF_BUFF_30): 16.36 * (1 + 0.05 * 30),

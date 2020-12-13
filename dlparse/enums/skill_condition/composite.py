@@ -114,7 +114,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
         # Check `self.self_action_cond`
         if self.self_action_cond and self.self_action_cond not in CondCat.self_action_condition:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_SELF_ACTION_CONDITION)
+            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_ACTION_CONDITION)
 
         # Check `self.gauge_filled`
         if self.gauge_filled and self.gauge_filled not in CondCat.self_gauge_filled:

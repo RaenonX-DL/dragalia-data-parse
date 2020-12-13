@@ -54,7 +54,7 @@ class SkillCondition(Enum):
     # endregion
     # endregion
 
-    # region Self status
+    # region Self status (general)
     # region HP
     SELF_HP_1 = 200
     """User's HP = 1."""
@@ -118,13 +118,14 @@ class SkillCondition(Enum):
     SELF_BUFF_8 = 258
     SELF_BUFF_9 = 259
     SELF_BUFF_10 = 260
-    SELF_BUFF_20 = 261
-    SELF_BUFF_25 = 262
-    SELF_BUFF_30 = 263
-    SELF_BUFF_35 = 264
-    SELF_BUFF_40 = 265
-    SELF_BUFF_45 = 266
-    SELF_BUFF_50 = 267
+    SELF_BUFF_15 = 261
+    SELF_BUFF_20 = 262
+    SELF_BUFF_25 = 263
+    SELF_BUFF_30 = 264
+    SELF_BUFF_35 = 265
+    SELF_BUFF_40 = 266
+    SELF_BUFF_45 = 267
+    SELF_BUFF_50 = 268
     # endregion
 
     # region In buff zone
@@ -135,15 +136,6 @@ class SkillCondition(Enum):
     SELF_IN_BUFF_ZONE_BY_ALLY_1 = 274
     SELF_IN_BUFF_ZONE_BY_ALLY_2 = 275
     SELF_IN_BUFF_ZONE_BY_ALLY_3 = 276
-    # endregion
-
-    # region Special status (for example, sigil locked for Nevin, guages filled for Gala Ranzal)
-    SELF_SIGIL_LOCKED = 280  # ACID: 1152
-    SELF_SIGIL_RELEASED = 281
-    SELF_GAUGE_FILLED_0 = 282
-    SELF_GAUGE_FILLED_1 = 283
-    SELF_GAUGE_FILLED_2 = 284
-    SELF_ENERGIZED = 290
     # endregion
     # endregion
 
@@ -199,6 +191,27 @@ class SkillCondition(Enum):
 
     # region Miscellaneous
     MARK_EXPLODES = 390
+    # endregion
+    # endregion
+
+    # region Self status (special)
+    # region Action condition (Sigil released, lapis cards, etc.)
+    SELF_SIGIL_LOCKED = 400  # ACID: 1152
+    SELF_SIGIL_RELEASED = 401
+    SELF_LAPIS_CARD_0 = 410  # ACID: 1319
+    SELF_LAPIS_CARD_1 = 411  # ACID: 1319
+    SELF_LAPIS_CARD_2 = 412  # ACID: 1319
+    SELF_LAPIS_CARD_3 = 413  # ACID: 1319
+    # endregion
+
+    # region Gauge-related
+    SELF_GAUGE_FILLED_0 = 450
+    SELF_GAUGE_FILLED_1 = 451
+    SELF_GAUGE_FILLED_2 = 452
+    # endregion
+
+    # region Special (Energized, inspired)
+    SELF_ENERGIZED = 490
 
     # endregion
     # endregion

@@ -23,13 +23,14 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_BUFF_COUNT = auto()
     MULTIPLE_BUFF_ZONE_SELF = auto()
     MULTIPLE_BUFF_ZONE_ALLY = auto()
-    MULTIPLE_SELF_ACTION_CONDITION = auto()
-    MULTIPLE_GAUGE_FILLED = auto()
     MULTIPLE_BULLET_HIT = auto()
     MULTIPLE_TEAMMATE_COVERAGE = auto()
     MULTIPLE_BULLETS_ON_MAP = auto()
     MULTIPLE_ADDL_INPUTS = auto()
     MULTIPLE_ACTION_CANCEL = auto()
+    MULTIPLE_ACTION_CONDITION = auto()
+    MULTIPLE_GAUGE_FILLED = auto()
+    MULTIPLE_LAPIS_CARD = auto()
 
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
     INTERNAL_NOT_TARGET_ELEMENTAL = auto()
@@ -39,13 +40,14 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_BUFF_COUNT = auto()
     INTERNAL_NOT_BUFF_ZONE_SELF = auto()
     INTERNAL_NOT_BUFF_ZONE_ALLY = auto()
-    INTERNAL_NOT_SELF_ACTION_CONDITION = auto()
-    INTERNAL_NOT_GAUGE_FILLED = auto()
     INTERNAL_NOT_BULLET_HIT_COUNT = auto()
     INTERNAL_NOT_TEAMMATE_COVERAGE = auto()
     INTERNAL_NOT_BULLETS_ON_MAP = auto()
     INTERNAL_NOT_ADDL_INPUTS = auto()
     INTERNAL_NOT_ACTION_CANCEL = auto()
+    INTERNAL_NOT_ACTION_CONDITION = auto()
+    INTERNAL_NOT_GAUGE_FILLED = auto()
+    INTERNAL_NOT_LAPIS_CARD = auto()
 
     HAS_CONDITIONS_LEFT = auto()
 
@@ -181,6 +183,7 @@ class SkillConditionCategories:
 
     # pylint: disable=too-few-public-methods
 
+    # region Target
     target_status = SkillConditionCategory[Status](
         {
             # Abnormal statuses
@@ -221,6 +224,9 @@ class SkillConditionCategories:
         "Target - element",
         SkillConditionCheckResult.MULTIPLE_TARGET_ELEMENT
     )
+    # endregion
+
+    # region Self status (general)
     self_hp_status = SkillConditionCategoryTargetNumber(
         {
             SkillCondition.SELF_HP_1: 0,
@@ -276,6 +282,7 @@ class SkillConditionCategories:
             SkillCondition.SELF_BUFF_8: 8,
             SkillCondition.SELF_BUFF_9: 9,
             SkillCondition.SELF_BUFF_10: 10,
+            SkillCondition.SELF_BUFF_15: 15,
             SkillCondition.SELF_BUFF_20: 20,
             SkillCondition.SELF_BUFF_25: 25,
             SkillCondition.SELF_BUFF_30: 30,
@@ -309,26 +316,9 @@ class SkillConditionCategories:
         "Self - count of ally-built buff zones inside",
         SkillConditionCheckResult.MULTIPLE_BUFF_ZONE_ALLY
     )
-    self_action_condition = SkillConditionCategoryTargetNumber(
-        {
-            # Value is the corresponding Action Condition ID (not necessary means that it needs to exist)
-            SkillCondition.SELF_SIGIL_LOCKED: 1152,
-            SkillCondition.SELF_SIGIL_RELEASED: 1152,
-        },
-        SkillConditionMaxCount.SINGLE,
-        "Self - action condition status",
-        SkillConditionCheckResult.MULTIPLE_SELF_ACTION_CONDITION
-    )
-    self_gauge_filled = SkillConditionCategoryTargetNumber(
-        {
-            SkillCondition.SELF_GAUGE_FILLED_0: 0,
-            SkillCondition.SELF_GAUGE_FILLED_1: 1,
-            SkillCondition.SELF_GAUGE_FILLED_2: 2,
-        },
-        SkillConditionMaxCount.SINGLE,
-        "Self - gauge status",
-        SkillConditionCheckResult.MULTIPLE_GAUGE_FILLED
-    )
+    # endregion
+
+    # region Skill animation/effect
     skill_bullet_hit = SkillConditionCategoryTargetNumber(
         {
             SkillCondition.BULLET_HIT_1: 1,
@@ -396,6 +386,46 @@ class SkillConditionCategories:
         "Skill - action cancel",
         SkillConditionCheckResult.MULTIPLE_ACTION_CANCEL
     )
+    # endregion
+
+    # region Self status (special)
+    self_action_condition = SkillConditionCategoryTargetNumber(
+        {
+            # Value is the corresponding Action Condition ID (not necessary means that it needs to exist)
+            SkillCondition.SELF_SIGIL_LOCKED: 1152,
+            SkillCondition.SELF_SIGIL_RELEASED: 1152,
+            SkillCondition.SELF_LAPIS_CARD_0: 1319,
+            SkillCondition.SELF_LAPIS_CARD_1: 1319,
+            SkillCondition.SELF_LAPIS_CARD_2: 1319,
+            SkillCondition.SELF_LAPIS_CARD_3: 1319,
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Self - action condition status",
+        SkillConditionCheckResult.MULTIPLE_ACTION_CONDITION
+    )
+    self_gauge_filled = SkillConditionCategoryTargetNumber(
+        {
+            SkillCondition.SELF_GAUGE_FILLED_0: 0,
+            SkillCondition.SELF_GAUGE_FILLED_1: 1,
+            SkillCondition.SELF_GAUGE_FILLED_2: 2,
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Self - gauge status",
+        SkillConditionCheckResult.MULTIPLE_GAUGE_FILLED
+    )
+    self_lapis_card = SkillConditionCategoryTargetNumber(
+        {
+            SkillCondition.SELF_LAPIS_CARD_0: 0,
+            SkillCondition.SELF_LAPIS_CARD_1: 1,
+            SkillCondition.SELF_LAPIS_CARD_2: 2,
+            SkillCondition.SELF_LAPIS_CARD_3: 3,
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Self - gauge status",
+        SkillConditionCheckResult.MULTIPLE_LAPIS_CARD
+    )
+
+    # endregion
 
     @classmethod
     def get_all_categories(cls) -> list[SkillConditionCategory]:

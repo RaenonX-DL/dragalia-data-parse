@@ -31,6 +31,7 @@ def test_label_has_whitespaces(transformer_skill: SkillTransformer):
     condition_to_dmg_up_rate = {
         (SkillCondition.SELF_BUFF_0,): 1 + 0,
         (SkillCondition.SELF_BUFF_10,): 1 + 0.05 * 10,
+        (SkillCondition.SELF_BUFF_15,): 1 + 0.05 * 15,
         (SkillCondition.SELF_BUFF_20,): 1 + 0.05 * 20,
         (SkillCondition.SELF_BUFF_25,): 1 + 0.05 * 25,
         (SkillCondition.SELF_BUFF_30,): 1 + 0.05 * 30,

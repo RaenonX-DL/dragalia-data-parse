@@ -586,6 +586,8 @@ def test_hp_related_2_5(transformer_skill: SkillTransformer):
 
 
 def test_buff_related_1(transformer_skill: SkillTransformer):
+    # For indirect buff boost tests, refer to each character instead (such as Lapis)
+
     # Karina S1
     # https://dragalialost.gamepedia.com/Karina
     skill_data_base = transformer_skill.transform_attacking(104402011)
@@ -605,6 +607,7 @@ def test_buff_related_1(transformer_skill: SkillTransformer):
     condition_to_dmg_up_rate = {
         (SkillCondition.SELF_BUFF_0,): 1 + 0,
         (SkillCondition.SELF_BUFF_10,): 1 + 0.05 * 10,
+        (SkillCondition.SELF_BUFF_15,): 1 + 0.05 * 15,
         (SkillCondition.SELF_BUFF_20,): 1 + 0.05 * 20,
         (SkillCondition.SELF_BUFF_25,): 1 + 0.05 * 25,
         (SkillCondition.SELF_BUFF_30,): 1 + 0.05 * 30,
