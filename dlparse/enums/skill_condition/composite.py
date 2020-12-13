@@ -1,6 +1,6 @@
 """Skill condition composite class."""
 from dataclasses import dataclass, field
-from typing import ClassVar, Optional, Sequence, Union
+from typing import ClassVar, Optional, Sequence, TYPE_CHECKING, Union
 
 from dlparse.enums.condition_base import ConditionCompositeBase
 from dlparse.errors import ConditionValidationFailedError
@@ -9,6 +9,9 @@ from .items import SkillCondition
 from .validate import validate_skill_conditions
 from ..element import Element
 from ..status import Status
+
+if TYPE_CHECKING:
+    from dlparse.mono.asset import BuffCountAsset, HitAttrEntry
 
 __all__ = ("SkillConditionComposite",)
 
@@ -29,8 +32,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     # region Target
     afflictions_condition: set[SkillCondition] = field(init=False)
     afflictions_converted: set[Status] = field(init=False)
-    target_elemental: Optional[SkillCondition] = field(init=False)
-    target_elemental_converted: Element = field(init=False)
+    target_element: Optional[SkillCondition] = field(init=False)
+    target_element_converted: Element = field(init=False)
     target_in_od: bool = field(init=False)
     target_in_bk: bool = field(init=False)
     # endregion
@@ -47,8 +50,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     buff_zone_self_converted: int = field(init=False)
     buff_zone_ally: Optional[SkillCondition] = field(init=False)
     buff_zone_ally_converted: int = field(init=False)
-    self_action_cond: Optional[SkillCondition] = field(init=False)
-    self_action_cond_id: int = field(init=False)
+    action_cond: Optional[SkillCondition] = field(init=False)
+    action_cond_id: int = field(init=False)
     gauge_filled: Optional[SkillCondition] = field(init=False)
     gauge_filled_converted: int = field(init=False)
     # endregion
@@ -66,6 +69,11 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     mark_explode: bool = field(init=False)
     # endregion
 
+    # region Other fields
+    _has_buff_boost_condition: bool = field(init=False)
+
+    # endregion
+
     @staticmethod
     def _init_validate_conditions(conditions: tuple[SkillCondition]):
         # Validate the condition combinations
@@ -79,8 +87,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
                for condition in self.afflictions_condition):
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_AFFLICTION_ONLY)
 
-        # Check `self.target_elemental`
-        if self.target_elemental and self.target_elemental not in CondCat.target_elemental:
+        # Check `self.target_element`
+        if self.target_element and self.target_element not in CondCat.target_element:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_TARGET_ELEMENTAL)
 
     def _init_validate_self(self):
@@ -112,8 +120,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         if self.buff_zone_ally and self.buff_zone_ally not in CondCat.self_in_buff_zone_ally:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BUFF_ZONE_ALLY)
 
-        # Check `self.self_action_cond`
-        if self.self_action_cond and self.self_action_cond not in CondCat.self_action_condition:
+        # Check `self.action_cond`
+        if self.action_cond and self.action_cond not in CondCat.action_condition:
             raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_ACTION_CONDITION)
 
         # Check `self.gauge_filled`
@@ -152,8 +160,9 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     def __post_init__(self, conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]]):
         conditions = self._init_process_conditions(conditions)
 
+        # region Categorized condition fields
         self.afflictions_condition = CondCat.target_status.extract(conditions)
-        self.target_elemental = CondCat.target_elemental.extract(conditions)
+        self.target_element = CondCat.target_element.extract(conditions)
         self.target_in_od = SkillCondition.TARGET_OD_STATE in conditions
         self.target_in_bk = SkillCondition.TARGET_BK_STATE in conditions
 
@@ -163,7 +172,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.buff_count = CondCat.self_buff_count.extract(conditions)
         self.buff_zone_self = CondCat.self_in_buff_zone_self.extract(conditions)
         self.buff_zone_ally = CondCat.self_in_buff_zone_ally.extract(conditions)
-        self.self_action_cond = CondCat.self_action_condition.extract(conditions)
+        self.action_cond = CondCat.action_condition.extract(conditions)
         self.gauge_filled = CondCat.self_gauge_filled.extract(conditions)
 
         self.teammate_coverage = CondCat.skill_teammates_covered.extract(conditions)
@@ -172,20 +181,22 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.addl_inputs = CondCat.skill_addl_inputs.extract(conditions)
         self.action_cancel = CondCat.skill_action_cancel.extract(conditions)
         self.mark_explode = SkillCondition.MARK_EXPLODES in conditions
+        # endregion
 
         self._init_validate_fields(conditions)
 
+        # region Converted fields
         self.afflictions_converted = {
             CondCat.target_status.convert(condition) for condition in self.afflictions_condition
         }
-        self.target_elemental_converted = CondCat.target_elemental.convert(self.target_elemental, on_missing=None)
+        self.target_element_converted = CondCat.target_element.convert(self.target_element, on_missing=None)
 
         self.hp_status_converted = CondCat.self_hp_status.convert(self.hp_status, on_missing=1)
         self.combo_count_converted = CondCat.self_combo_count.convert(self.combo_count, on_missing=0)
-        self.buff_count_converted = CondCat.self_buff_count.convert(self.buff_count, on_missing=None)
-        self.buff_zone_self_converted = CondCat.self_in_buff_zone_self.convert(self.buff_zone_self, on_missing=None)
-        self.buff_zone_ally_converted = CondCat.self_in_buff_zone_ally.convert(self.buff_zone_ally, on_missing=None)
-        self.self_action_cond_id = CondCat.self_action_condition.convert(self.self_action_cond, on_missing=None)
+        self.buff_count_converted = CondCat.self_buff_count.convert(self.buff_count, on_missing=0)
+        self.buff_zone_self_converted = CondCat.self_in_buff_zone_self.convert(self.buff_zone_self, on_missing=0)
+        self.buff_zone_ally_converted = CondCat.self_in_buff_zone_ally.convert(self.buff_zone_ally, on_missing=0)
+        self.action_cond_id = CondCat.action_condition.convert(self.action_cond, on_missing=None)
         self.gauge_filled_converted = CondCat.self_gauge_filled.convert(self.gauge_filled, on_missing=0)
 
         self.teammate_coverage_converted = CondCat.skill_teammates_covered.convert(self.teammate_coverage,
@@ -193,12 +204,20 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.bullet_hit_count_converted = CondCat.skill_bullet_hit.convert(self.bullet_hit_count, on_missing=None)
         self.bullets_on_map_converted = CondCat.skill_bullets_on_map.convert(self.bullets_on_map, on_missing=None)
         self.addl_inputs_converted = CondCat.skill_addl_inputs.convert(self.addl_inputs, on_missing=None)
+        # endregion
+
+        # region Other fields
+        self._has_buff_boost_condition = any(
+            condition in CondCat.self_buff_count or condition in CondCat.self_lapis_card
+            for condition in conditions
+        )
+        # endregion
 
     def _cond_sorted_target(self) -> tuple[SkillCondition]:
         ret: tuple[SkillCondition] = tuple(self.afflictions_condition)
 
-        if self.target_elemental:
-            ret += (self.target_elemental,)
+        if self.target_element:
+            ret += (self.target_element,)
 
         return ret
 
@@ -223,8 +242,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         if self.buff_zone_ally:
             ret += (self.buff_zone_ally,)
 
-        if self.self_action_cond:
-            ret += (self.self_action_cond,)
+        if self.action_cond:
+            ret += (self.action_cond,)
 
         if self.gauge_filled:
             ret += (self.gauge_filled,)
@@ -255,6 +274,11 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         return ret
 
     @property
+    def has_buff_boost_condition(self) -> bool:
+        """Check if the composite has any condition that boosts damage by the buff count."""
+        return self._has_buff_boost_condition
+
+    @property
     def conditions_sorted(self) -> tuple[SkillCondition, ...]:
         """
         Get the sorted conditions as a tuple.
@@ -278,6 +302,15 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         return (self._cond_sorted_target()
                 + self._cond_sorted_self_status()
                 + self._cond_sorted_skill())
+
+    def get_boost_rate_by_buff(self, hit_attr: "HitAttrEntry", asset_buff_count: "BuffCountAsset"):
+        """Get the damage boost rate of ``hit_attr`` under the given condition."""
+        if hit_attr.buff_boost_data_id:
+            # Uses buff boost data to boost the damage
+            return asset_buff_count.get_data_by_id(hit_attr.buff_boost_data_id).get_buff_up_rate(self)
+
+        # Get the uncapped buff boost rate
+        return self.buff_count_converted * hit_attr.rate_boost_by_buff
 
     def __iter__(self):
         return iter(self.conditions_sorted)

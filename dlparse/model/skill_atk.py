@@ -4,7 +4,7 @@ from itertools import combinations, product, zip_longest
 from typing import Optional
 
 from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite, Status
-from dlparse.mono.asset import ActionConditionAsset, PlayerActionInfoAsset
+from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset, PlayerActionInfoAsset
 from .effect_action_cond import ActionConditionEffectUnit
 from .hit_dmg import DamageUnit, DamagingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
@@ -108,11 +108,9 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         To get the actual max skill level in-game, character data is needed.
     """
 
-    # These are used during mods calculation
-    asset_action_info: PlayerActionInfoAsset
-
-    # These are used during affliction processing
-    asset_action_cond: ActionConditionAsset
+    asset_action_info: PlayerActionInfoAsset  # Used during mods calculation
+    asset_action_cond: ActionConditionAsset  # Used during affliction processing
+    asset_buff_count: BuffCountAsset
 
     _unit_mtx_base: list[list[DamageUnit]] = field(init=False)
 
@@ -175,7 +173,23 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         )
         if buff_up_direct_boost_available:
+            # Add direct boost conditions
             cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_buff_count.members})
+
+            # Check if any buff boost data available
+            buff_boost_data_ids: set[int] = {
+                                                hit_data.hit_attr.buff_boost_data_id
+                                                for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+                                            } - {0}
+            if buff_boost_data_ids:
+                # Buff boost data available, check all buff boost data and add its related condition
+                for buff_boost_data_id in buff_boost_data_ids:
+                    action_condition_id = self.asset_buff_count.get_data_by_id(buff_boost_data_id).action_condition_id
+
+                    cond_elems.append({
+                        (buff_cond,) for buff_cond
+                        in SkillConditionCategories.get_category_action_condition(action_condition_id).members
+                    })
         elif buff_up_bonus_hits_available:
             # Get all action IDs first, then get the max bullet counts
             # to reduce the call count of getting the action info
@@ -319,7 +333,8 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             for hit_data in hit_data_lv:
                 damage_units = hit_data.to_damage_units(
                     condition_comp, new_units_hit_counter,
-                    asset_action_condition=self.asset_action_cond, asset_action_info=self.asset_action_info
+                    asset_action_condition=self.asset_action_cond, asset_action_info=self.asset_action_info,
+                    asset_buff_count=self.asset_buff_count
                 )
 
                 new_units_level.append(damage_units)

@@ -1,6 +1,6 @@
 """Classes for skill condition categories."""
 from enum import Enum, auto
-from typing import Any, Generic, Iterable, TypeVar, Union
+from typing import Any, Generic, Iterable, Optional, TypeVar, Union
 
 from dlparse.errors import EnumConversionError
 from .items import SkillCondition
@@ -85,6 +85,9 @@ class SkillConditionCategory(Generic[T]):
             return False
 
         return item in self.members
+
+    def __repr__(self):
+        return f"<SkillConditionCategory - {self._name}>"
 
     @property
     def name(self) -> str:
@@ -181,8 +184,6 @@ class SkillConditionCategoryTargetNumber(SkillConditionCategory[float]):
 class SkillConditionCategories:
     """Categories for skill conditions (:class:`SkillCondition`)."""
 
-    # pylint: disable=too-few-public-methods
-
     # region Target
     target_status = SkillConditionCategory[Status](
         {
@@ -212,7 +213,7 @@ class SkillConditionCategories:
         "Target - status",
         SkillConditionCheckResult.UNEXPECTED  # Impossible to fail (current only invalid reason is multiple conditions)
     )
-    target_elemental = SkillConditionCategory[Element](
+    target_element = SkillConditionCategory[Element](
         {
             SkillCondition.TARGET_ELEM_FLAME: Element.FLAME,
             SkillCondition.TARGET_ELEM_WATER: Element.WATER,
@@ -389,7 +390,7 @@ class SkillConditionCategories:
     # endregion
 
     # region Self status (special)
-    self_action_condition = SkillConditionCategoryTargetNumber(
+    action_condition = SkillConditionCategoryTargetNumber(
         {
             # Value is the corresponding Action Condition ID (not necessary means that it needs to exist)
             SkillCondition.SELF_SIGIL_LOCKED: 1152,
@@ -424,11 +425,25 @@ class SkillConditionCategories:
         "Self - gauge status",
         SkillConditionCheckResult.MULTIPLE_LAPIS_CARD
     )
-
     # endregion
+
+    _action_cond_cat: dict[int, SkillConditionCategory] = {
+        1319: self_lapis_card
+    }
 
     @classmethod
     def get_all_categories(cls) -> list[SkillConditionCategory]:
         """Get all skill condition categories."""
-        return [val for name, val in vars(cls).items()
-                if not callable(getattr(cls, name)) and not name.startswith("__")]
+        return [
+            val for name, val in vars(cls).items()
+            if not callable(getattr(cls, name)) and not name.startswith("_")
+        ]
+
+    @classmethod
+    def get_category_action_condition(cls, action_cond_id: int) -> Optional[SkillConditionCategory]:
+        """
+        Get the skill condition category corresponds to the action condition.
+
+        Returns ``None`` if no corresponding condition category.
+        """
+        return cls._action_cond_cat.get(action_cond_id)

@@ -46,6 +46,8 @@ class HitAttrEntry(MasterEntryBase):
     """
     rate_boost_by_buff: float  # 0 = not applicable
     """Damage modifier boosting rate for each buff."""
+    buff_boost_data_id: int  # 0 = not applicable
+    """ID of the buff boost data. This ID will be used to get the buff boost data from the buff count data asset."""
 
     action_condition_id: int
 
@@ -99,6 +101,7 @@ class HitAttrEntry(MasterEntryBase):
             punisher_rate=data["_KillerStateDamageRate"],
             rate_boost_on_crisis=data["_CrisisLimitRate"],
             rate_boost_by_buff=data["_DamageUpRateByBuffCount"],
+            buff_boost_data_id=data["_DamageUpDataByBuffCount"],
             action_condition_id=data["_ActionCondition1"],
             sp_recov_ratio=data["_RecoverySpRatio"],
             sp_recov_skill_idx_1=data["_RecoverySpSkillIndex"],
@@ -167,7 +170,7 @@ class HitAttrEntry(MasterEntryBase):
     @property
     def boost_by_buff_count(self) -> bool:
         """Check if the damage modifier will be boosted by the count of buffs."""
-        return self.rate_boost_by_buff != 0
+        return self.rate_boost_by_buff != 0 or self.buff_boost_data_id != 0
 
     @property
     def boost_in_od(self) -> bool:

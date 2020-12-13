@@ -2,6 +2,7 @@
 from .ability import AbilityAsset, AbilityEntry
 from .action_condition import ActionConditionAsset, ActionConditionEntry
 from .action_hit_attr import HitAttrAsset, HitAttrEntry
+from .buff_count import BuffCountAsset, BuffCountEntry
 from .chara_data import CharaDataAsset, CharaDataEntry
 from .chara_mode_data import CharaModeAsset, CharaModeEntry
 from .cheat_detection import CheatDetectionAsset, CheatDetectionEntry

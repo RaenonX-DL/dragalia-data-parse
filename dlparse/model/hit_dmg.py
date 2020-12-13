@@ -7,7 +7,7 @@ from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditi
 from dlparse.errors import AppValueError, BulletEndOfLifeError, DamagingHitValidationFailedError
 from dlparse.mono.asset import (
     ActionBuffField, ActionBullet, ActionBulletStockFire, ActionComponentHasHitLabels, ActionConditionAsset,
-    PlayerActionInfoAsset,
+    BuffCountAsset, PlayerActionInfoAsset,
 )
 from dlparse.utils import calculate_crisis_mod
 from .effect_action_cond import ActionConditionEffectUnit, AfflictionEffectUnit
@@ -249,7 +249,8 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
                 damage_unit.mod *= hit_attr.punisher_rate
 
     def _damage_units_apply_mod_boosts_self(
-            self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite
+            self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite, /,
+            asset_buff_count: BuffCountAsset
     ):
         hit_attr = self.hit_attr
 
@@ -261,28 +262,34 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
                 )
 
         # Buff boosts
-        if hit_attr.boost_by_buff_count and condition_comp.buff_count:
+        if hit_attr.boost_by_buff_count and condition_comp.has_buff_boost_condition:
+            damage_boost_rate = condition_comp.get_boost_rate_by_buff(hit_attr, asset_buff_count)
+
             for damage_unit in damage_units:
-                damage_unit.mod *= (1 + hit_attr.rate_boost_by_buff * condition_comp.buff_count_converted)
+                damage_unit.mod *= (1 + damage_boost_rate)
 
         # Combo damage boosts
         if condition_comp.combo_count_converted and self.is_boost_by_combo:
             for ability_data, damage_unit in product(self.ability_data, damage_units):
                 damage_unit.mod *= (1 + ability_data.get_boost_by_combo(condition_comp.combo_count_converted))
 
-        # Combo damage boosts
+        # Gauge fill boosts
         if condition_comp.gauge_filled_converted and self.is_boost_by_gauge_filled:
             for ability_data, damage_unit in product(self.ability_data, damage_units):
                 boost_rate = 1 + ability_data.get_boost_by_gauge_filled_dmg(condition_comp.gauge_filled_converted)
                 damage_unit.mod *= boost_rate
 
-    def _damage_units_apply_mod_boosts(self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite):
+    def _damage_units_apply_mod_boosts(
+            self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite, /,
+            asset_buff_count: BuffCountAsset
+    ):
         self._damage_units_apply_mod_boosts_target(damage_units, condition_comp)
-        self._damage_units_apply_mod_boosts_self(damage_units, condition_comp)
+        self._damage_units_apply_mod_boosts_self(damage_units, condition_comp, asset_buff_count=asset_buff_count)
 
     def to_damage_units(
             self, condition_comp: SkillConditionComposite, hit_count: int, /,
-            asset_action_condition: ActionConditionAsset, asset_action_info: PlayerActionInfoAsset
+            asset_action_condition: ActionConditionAsset, asset_action_info: PlayerActionInfoAsset,
+            asset_buff_count: BuffCountAsset
     ) -> list[DamageUnit]:
         """
         Calculates the damage modifier under ``condition_comp`` when the skill has dealt ``hit_count`` hits.
@@ -290,10 +297,6 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
         Usually, a single hit will have a single modifier.
         However, under some special circumstances (for example, deteriorating bullets),
         having multiple damage modifiers is possible.
-
-        ``asset_action_info`` will be used for special circumstance mods calculation.
-        If they are not provided, the mods may be uncalculatable or inaccurate.
-        If such happens, an error will be raised, or a warning will be emitted.
         """
         # Early terminations / checks
 
@@ -341,7 +344,7 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
 
         # Apply boosts
 
-        self._damage_units_apply_mod_boosts(damage_units, condition_comp)
+        self._damage_units_apply_mod_boosts(damage_units, condition_comp, asset_buff_count=asset_buff_count)
 
         # Return non-empty units only
         return [damage_unit for damage_unit in damage_units if not damage_unit.is_empty]

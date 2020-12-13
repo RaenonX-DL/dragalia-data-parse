@@ -22,12 +22,13 @@ class SkillTransformer:
     """Class to transform the skill data."""
 
     def __init__(self, asset_manager: "AssetManager"):
-        self._asset_skill = asset_manager.asset_skill_data
-        self._asset_hit_attr = asset_manager.asset_hit_attr
-        self._asset_action_cond = asset_manager.asset_action_cond
-        self._loader_action = asset_manager.loader_action
-        self._asset_pa_info = asset_manager.asset_pa_info
         self._asset_ability = asset_manager.asset_ability_data
+        self._asset_action_cond = asset_manager.asset_action_cond
+        self._asset_buff_count = asset_manager.asset_buff_count
+        self._asset_hit_attr = asset_manager.asset_hit_attr
+        self._asset_pa_info = asset_manager.asset_pa_info
+        self._asset_skill = asset_manager.asset_skill_data
+        self._loader_action = asset_manager.loader_action
 
     def _get_hit_data_action_component(
             self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_ids: list[int], /,
@@ -283,7 +284,8 @@ class SkillTransformer:
             skill_data_raw=skill_data,
             hit_data_mtx=hit_data_mtx,
             asset_action_info=self._asset_pa_info,
-            asset_action_cond=self._asset_action_cond
+            asset_action_cond=self._asset_action_cond,
+            asset_buff_count=self._asset_buff_count
         )
 
         if not any(entry.deals_damage for entry in ret.get_all_possible_entries()):

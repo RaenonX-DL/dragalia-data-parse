@@ -97,8 +97,8 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
         # Elemental restriction available
         if has_elemental_restriction:
             cond_elems.append({(target_element_cond,)
-                               for target_element_cond in SkillConditionCategories.target_elemental.members
-                               if any(buffs_lv[SkillConditionCategories.target_elemental.convert(target_element_cond)]
+                               for target_element_cond in SkillConditionCategories.target_element.members
+                               if any(buffs_lv[SkillConditionCategories.target_element.convert(target_element_cond)]
                                       for buffs_lv in self.buffs_elemental)})
 
         # Add combinations
@@ -219,9 +219,9 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                 )
 
         # Attach elemental buffs
-        if condition_comp.target_elemental:
+        if condition_comp.target_element:
             for skill_lv in range(self.max_level):
-                buffs[skill_lv].update(self.buffs_elemental[skill_lv][condition_comp.target_elemental_converted])
+                buffs[skill_lv].update(self.buffs_elemental[skill_lv][condition_comp.target_element_converted])
 
         # Attach pre-conditioned buffs, if matches
         for skill_lv in range(self.max_level):
