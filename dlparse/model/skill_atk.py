@@ -130,6 +130,20 @@ class AttackingSkillDataEntry(SkillEntryBase):
         ]
 
     @property
+    def crisis_mods(self) -> list[list[float]]:
+        """
+        Get the crsis damage modifier distribution at each level.
+
+        The 1st dimension is the skill level, and the 2nd dimension is each hit.
+
+        Every hit will be returned, even if it does not have crsis damage modifier.
+        """
+        return [
+            [mod_unit.crisis for mod_unit in mod_unit_lv]
+            for mod_unit_lv in self.mod_unit_mtx
+        ]
+
+    @property
     def total_counter_mod(self) -> list[float]:
         """Get the total counter damage modifiers at each level."""
         return [sum(counter_mod) for counter_mod in self.counter_mods]
