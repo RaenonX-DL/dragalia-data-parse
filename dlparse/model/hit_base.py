@@ -5,8 +5,7 @@ from typing import Generic, Optional, TypeVar
 
 from dlparse.enums import HitTargetSimple, SkillCondition
 from dlparse.mono.asset import (
-    AbilityEntry, ActionBuffBomb, ActionComponentBase, ActionConditionAsset, ActionConditionEntry, ActionSettingHit,
-    HitAttrEntry,
+    AbilityEntry, ActionBuffBomb, ActionComponentBase, ActionConditionEntry, ActionSettingHit, HitAttrEntry,
 )
 
 __all__ = ("HitData", "T")
@@ -52,7 +51,7 @@ class HitData(Generic[T], ABC):
 
         return ret
 
-    def is_effective_to_enemy(self, asset_action_cond: ActionConditionAsset, desired_effectiveness: bool) -> bool:
+    def is_effective_to_enemy(self, desired_effectiveness: bool) -> bool:
         """
         Check if the hit is effective to the enemy.
 
@@ -62,7 +61,7 @@ class HitData(Generic[T], ABC):
 
         - Deals damage to the enemy
         """
-        if self.hit_attr.is_effective_to_enemy(asset_action_cond, desired_effectiveness):
+        if self.hit_attr.is_effective_to_enemy(desired_effectiveness):
             # Early terminate, since the hit attribute itself indicates that it's effective to the enemy
             return True
 

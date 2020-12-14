@@ -222,7 +222,7 @@ class SkillTransformer:
 
             for hit_data in hit_data_lv:
                 # Check if the hit is effective to target, if desired; check the docs for the definition of effective
-                if hit_data.is_effective_to_enemy(self._asset_action_cond, effective_to_enemy) == effective_to_enemy:
+                if hit_data.is_effective_to_enemy(effective_to_enemy) == effective_to_enemy:
                     hit_data_mtx[skill_lv - 1].append(hit_data)
 
         if not any(hit_data for hit_data in hit_data_mtx):

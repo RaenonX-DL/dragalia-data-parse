@@ -4,7 +4,6 @@ from typing import Optional, TextIO, Union
 
 from dlparse.enums import HitExecType, HitTarget, Status
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from .action_condition import ActionConditionAsset
 
 __all__ = ("HitAttrEntry", "HitAttrAsset", "HitAttrParser")
 
@@ -196,7 +195,7 @@ class HitAttrEntry(MasterEntryBase):
         """Check if the mods will be changed based on the character's HP."""
         return self.rate_boost_on_crisis != 0
 
-    def is_effective_to_enemy(self, asset_action_cond: ActionConditionAsset, desired_effectiveness: bool) -> bool:
+    def is_effective_to_enemy(self, desired_effectiveness: bool) -> bool:
         """
         Check if the hit is effective to the enemy.
 
@@ -226,9 +225,7 @@ class HitAttrEntry(MasterEntryBase):
             # Has action condition but the target is not enemy
             return False
 
-        action_cond_data = asset_action_cond.get_data_by_id(self.action_condition_id)
-
-        return action_cond_data.afflict_status.is_abnormal_status
+        return True
 
 
 class HitAttrAsset(MasterAssetBase[HitAttrEntry]):

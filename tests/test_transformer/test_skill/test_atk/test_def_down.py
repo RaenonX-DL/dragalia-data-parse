@@ -3,7 +3,7 @@ from dlparse.transformer import SkillTransformer
 from tests.utils import DebuffInfo, check_debuff_unit_match
 
 
-def test_unstackable(transformer_skill: SkillTransformer):
+def test_unstackable_1(transformer_skill: SkillTransformer):
     # Original Alex S1
     # https://dragalialost.gamepedia.com/Alex
     skill_data = transformer_skill.transform_attacking(103405021).with_conditions()
@@ -17,6 +17,26 @@ def test_unstackable(transformer_skill: SkillTransformer):
             [DebuffInfo("DAG_117_03_H01_180_SHANON_LV03", BuffParameter.DEF, -0.05, 100, 10, False)] * 3
             + [DebuffInfo("DAG_117_03_H02_180_SHANON_LV03", BuffParameter.DEF, -0.05, 100, 10, False)] * 1
     )
+
+    expected_debuffs = [expected_debuffs_lv_1, expected_debuffs_lv_2, expected_debuffs_lv_3]
+
+    assert skill_data.max_level == 3
+
+    for skill_lv in range(skill_data.max_level):
+        expected_buffs = expected_debuffs[skill_lv]
+        actual_buffs = skill_data.debuffs[skill_lv]
+
+        check_debuff_unit_match(actual_buffs, expected_buffs)
+
+
+def test_unstackable_2(transformer_skill: SkillTransformer):
+    # Raemond S1
+    # https://dragalialost.gamepedia.com/Raemond
+    skill_data = transformer_skill.transform_attacking(101304011).with_conditions()
+
+    expected_debuffs_lv_1 = [DebuffInfo("SWD_001_02_H02_DEF_RAIMUND_LV01", BuffParameter.DEF, -0.05, 100, 10, False)]
+    expected_debuffs_lv_2 = [DebuffInfo("SWD_001_02_H02_DEF_RAIMUND_LV02", BuffParameter.DEF, -0.05, 100, 10, False)]
+    expected_debuffs_lv_3 = [DebuffInfo("SWD_001_02_H02_DEF_RAIMUND_LV03", BuffParameter.DEF, -0.05, 100, 10, False)]
 
     expected_debuffs = [expected_debuffs_lv_1, expected_debuffs_lv_2, expected_debuffs_lv_3]
 
