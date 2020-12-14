@@ -37,6 +37,8 @@ Each variant has at most 1 group ID affliated. `0` for not used.
 
 Field: `_AbilityLimitedGroupIdN`. For example, `_AbilityLimitedGroupId1` for the 1st variant.
 
+> Used for limiting the up value.
+
 ### Variant Target Action
 
 Each variant has at most 1 target action ID affiliated. `0` for not used.

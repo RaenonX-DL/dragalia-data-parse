@@ -85,16 +85,42 @@ def test_s2_call_fig(transformer_skill: SkillTransformer):
     pass
 
     # TEST: TBA - GaLaxi S2 (Fig)
-    #   AID 391270 (Main action) auto fires 391272 (Fig bullets)
-    #   SID - 103501022
-    #   Find how did the action canceled
-    #   _autoFireInterval / _autoFireActionId
-    #   [Token(Token = "0x400D32E")] RemoveAllStockBullets, (Check AbilityConst.cs)
-    #   the correct way to read that ability would be
-    #   when buff at ConditionValue is removed
-    #   clear all bullets
-    #   ----------
-    #   Action component SendSignal?
+    #   SID 103501022
+    #   AID 391270
+    #   - DAG_127_04_H01_LV01
+    #   - ActionPartsStockBullet Fires 391272
+    #   -------------------
+    #   DAG_127_04_H01_LV01
+    #   - (Dead end)
+    #   -------------------
+    #   CID 10350102
+    #   - ABID 2 - 1064
+    #   -------------------
+    #   - ABID 1064
+    #     - Ref ABID 1068?
+    #     - Ref ABID 1094
+    #     - Ref ABID 1099?
+    #   -------------------
+    #   - ABID 1094
+    #     - Cond 64 - Req 994, -1 / 0
+    #       - REQUIRED_BUFF_AND_SP1_MORE
+    #     - Type 61, IDA: 1
+    #       - Change to Mode 1
+    #     - Ref ABID 1095
+    #   - ABID 1095
+    #     - Cond 70 - 994 / 0
+    #       - BUFF_DISAPPEARED When ACID 994 disappear?
+    #     - Type 61, IDA: 0
+    #       - Change to Mode 0
+    #     - Type 60
+    #       - Remove Stock Bullets
+    #     - Ref ABID 1116
+    #   - ABID 1116
+    #     - Cond 70 - 994 / 0
+    #       - BUFF_DISAPPEARED When ACID 994 disappear?
+    #     - Type 14 - ACID 1075
+    #     - Type 14 - ACID 1077
+    #     - Type 14 - ACID 1079
 
     # Base data
     # skill_data = skill_data_base.with_conditions()

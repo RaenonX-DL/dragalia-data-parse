@@ -146,6 +146,8 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
 
     unique_dragon_id: int
 
+    # OPTIMIZE: Use the ability explorer to extract the info and the pre-condition instead
+
     @property
     @abstractmethod
     def ability_ids_all_level(self) -> list[int]:

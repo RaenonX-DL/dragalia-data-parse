@@ -37,6 +37,9 @@ class AbilityVariantType(Enum):
     DMG_UP_ON_COMBO = 54
     """Damage up by user combo count."""
 
+    REMOVE_ALL_STOCK_BULLETS = 60
+    """Remove all stock bullets."""
+
     @classmethod
     def _missing_(cls, _):
         return AbilityVariantType.UNKNOWN
