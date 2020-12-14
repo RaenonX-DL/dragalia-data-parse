@@ -1,12 +1,16 @@
+from typing import TYPE_CHECKING
+
 from dlparse.mono.asset import CharaDataEntry, SkillDataEntry
-from dlparse.mono.asset.base import MasterAssetBase
 from dlparse.mono.manager import AssetManager
 from tests.static import (
     PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, get_remote_dir_action_asset,
     get_remote_dir_master_asset,
 )
 
-version_tag = ""
+if TYPE_CHECKING:
+    from dlparse.mono.asset.base import MasterAssetBase
+
+version_tag = "2020.12.11-Sh3XK6NMv7neVgaf"
 
 manager_local = AssetManager(
     PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
@@ -18,7 +22,7 @@ manager_remote = AssetManager(
 )
 
 
-def check_diff_internal(left: MasterAssetBase, right: MasterAssetBase, title: str, manager: AssetManager):
+def check_diff_internal(left: "MasterAssetBase", right: "MasterAssetBase", title: str, manager: AssetManager):
     if diff_ids := (left.all_ids - right.all_ids):
         print(f"{title} in {left.__class__.__name__} ({len(diff_ids)}):")
 
@@ -34,7 +38,7 @@ def check_diff_internal(left: MasterAssetBase, right: MasterAssetBase, title: st
         print()
 
 
-def check_diff(old_asset: MasterAssetBase, new_asset: MasterAssetBase):
+def check_diff(old_asset: "MasterAssetBase", new_asset: "MasterAssetBase"):
     type_old = type(old_asset)
     type_new = type(new_asset)
 
@@ -52,3 +56,4 @@ if __name__ == '__main__':
     check_diff(manager_remote.asset_hit_attr, manager_local.asset_hit_attr)
     check_diff(manager_remote.asset_skill_data, manager_local.asset_skill_data)
     check_diff(manager_remote.asset_chara_data, manager_local.asset_chara_data)
+    check_diff(manager_remote.asset_text, manager_local.asset_text)

@@ -8,6 +8,7 @@ from .buff_count_boost import BuffCountBoostData
 from .effect_action_cond import ActionConditionEffectUnit
 from .hit_dmg import DamageUnit, DamagingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
+from .unit_mod import DamageModifierUnit
 
 __all__ = ("AttackingSkillDataEntry", "AttackingSkillData")
 
@@ -35,14 +36,10 @@ class AttackingSkillDataEntry(SkillEntryBase):
     hit_unit_mtx: list[list[DamageUnit]]
     hit_count: list[int]
 
-    mods: list[list[float]] = field(init=False)
-    counter_mods: list[list[float]] = field(init=False)
+    mod_unit_mtx: list[list[DamageModifierUnit]] = field(init=False)
+
     afflictions: list[list[ActionConditionEffectUnit]] = field(init=False)
     debuffs: list[list[ActionConditionEffectUnit]] = field(init=False)
-    buff_boost_data_mtx: list[list[BuffCountBoostData]] = field(init=False)
-
-    total_mod: list[float] = field(init=False)
-    total_counter_mod: list[float] = field(init=False)
 
     def _init_debuff(self, asset_action_cond: ActionConditionAsset):
         self.debuffs = []
@@ -74,30 +71,80 @@ class AttackingSkillDataEntry(SkillEntryBase):
 
             self.debuffs.append(debuff_units_lv)
 
+    def _init_mod_unit_mtx(self, asset_action_cond: ActionConditionAsset, asset_buff_count: BuffCountAsset):
+        self.mod_unit_mtx = []
+        for hit_unit_lv in self.hit_unit_mtx:
+            mod_unit_lv = []
+
+            for hit_unit in hit_unit_lv:
+                buff_boost_data = hit_unit.hit_attr.get_buff_count_boost_data(
+                    self.condition_comp, asset_action_cond, asset_buff_count
+                )
+
+                mod_unit_lv.append(DamageModifierUnit(
+                    hit_unit.mod, hit_unit.hit_attr.rate_boost_on_crisis, hit_unit.counter_mod, buff_boost_data
+                ))
+
+            self.mod_unit_mtx.append(mod_unit_lv)
+
     def __post_init__(self, asset_action_cond: ActionConditionAsset, asset_buff_count: BuffCountAsset):
-        self.mods = [
-            [hit_unit.mod for hit_unit in hit_unit_lv if hit_unit.mod]
-            for hit_unit_lv in self.hit_unit_mtx
-        ]
-        self.counter_mods = [
-            [hit_unit.counter_mod for hit_unit in hit_unit_lv if hit_unit.mod]
-            for hit_unit_lv in self.hit_unit_mtx
-        ]
+        self._init_mod_unit_mtx(asset_action_cond, asset_buff_count)
+
         self.afflictions = [
             [hit_unit.unit_affliction for hit_unit in hit_unit_lv if hit_unit.unit_affliction]
             for hit_unit_lv in self.hit_unit_mtx
         ]
         self._init_debuff(asset_action_cond)
-        self.buff_boost_data_mtx = [
-            [
-                hit_unit.hit_attr.get_buff_count_boost_data(self.condition_comp, asset_action_cond, asset_buff_count)
-                for hit_unit in hit_unit_lv
-            ]
-            for hit_unit_lv in self.hit_unit_mtx
+
+    @property
+    def mods(self) -> list[list[float]]:
+        """
+        Get the original damage modifier distribution at each level.
+
+        The 1st dimension is the skill level, and the 2nd dimension is each hit.
+
+        Mods = ``0`` will not be returned.
+        """
+        return [
+            [mod_unit.original for mod_unit in mod_unit_lv if mod_unit.original]
+            for mod_unit_lv in self.mod_unit_mtx
         ]
 
-        self.total_mod = [sum(mods) for mods in self.mods]
-        self.total_counter_mod = [sum(counter_mod) for counter_mod in self.counter_mods]
+    @property
+    def total_mod(self) -> list[float]:
+        """Get the total original damage modifiers at each level."""
+        return [sum(mods) for mods in self.mods]
+
+    @property
+    def counter_mods(self) -> list[list[float]]:
+        """
+        Get the counter damage modifier distribution at each level.
+
+        The 1st dimension is the skill level, and the 2nd dimension is each hit.
+
+        Every hit will be returned, even if it does not have counter damage modifier.
+        """
+        return [
+            [mod_unit.counter for mod_unit in mod_unit_lv]
+            for mod_unit_lv in self.mod_unit_mtx
+        ]
+
+    @property
+    def total_counter_mod(self) -> list[float]:
+        """Get the total counter damage modifiers at each level."""
+        return [sum(counter_mod) for counter_mod in self.counter_mods]
+
+    @property
+    def buff_boost_data_mtx(self) -> list[list[BuffCountBoostData]]:
+        """
+        Get the buff count boost data at each level.
+
+        The 1st dimension is the skill level, and the 2nd dimension is each hit.
+        """
+        return [
+            [mod_unit.buff_boost_data for mod_unit in mod_unit_lv if mod_unit.buff_boost_data]
+            for mod_unit_lv in self.mod_unit_mtx
+        ]
 
     @property
     def hit_count_at_max(self) -> int:
