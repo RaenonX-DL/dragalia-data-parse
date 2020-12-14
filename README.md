@@ -155,4 +155,12 @@ inaccurate.
 
 - `2020/11/18 AM 11:01 CST`: Project started.
 
-- `2020/11/19 PM 07:04 CST`: First commit of the project (1b2c776).
+- `2020/11/19 PM 07:04 CST`: First commit of the project ([v0.1]).
+
+- `2020/12/14 AN 06:09 CST`: Completed all skill damage parsing (with afflictions).
+
+  > This excludes Gala Laxi S2. Also, debuffs are not yet confirmed at this point.
+
+[v0.1]: https://github.com/RaenonX-DL/dragalia-data-parse/releases/tag/v0.1
+
+[v1.0]: https://github.com/RaenonX-DL/dragalia-data-parse/releases/tag/v1.0
