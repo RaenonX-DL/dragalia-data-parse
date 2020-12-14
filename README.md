@@ -70,11 +70,11 @@ View the data of all given hit attributes.
 
 ### Main Developer
 
-- \[OM\] [RaenonX][GH-raenonx]
+- **\[OM\] [RaenonX][GH-raenonx]**
 
 ### Correctness double-check
 
-- \[OM\] Andy / Toasty
+- **\[OM\] Andy / Toasty**
 
 - \[OM\] Huang
 
@@ -82,7 +82,7 @@ View the data of all given hit attributes.
 
 - \[OM\] Leo
 
-- \[OM\] Spark / AAAAA
+- **\[OM\] Spark / AAAAA**
 
 - \[OM\] Yorkwarm
 
@@ -90,13 +90,13 @@ View the data of all given hit attributes.
 
 - \[SimCord\] Anastasia
 
-- \[SimCord\] [Mushymato / Chu][GH-mushymato]
+- **\[SimCord\] [Mushymato / Chu][GH-mushymato]**
 
-- \[OM\] [RaenonX][GH-raenonx]
+- **\[OM\] [RaenonX][GH-raenonx]**
 
-- \[OM\] [Ryo][GH-ryo]
+- **\[OM\] [Ryo][GH-ryo]**
 
-- \[OM\] Spark / AAAAA
+- **\[OM\] Spark / AAAAA**
 
 - \[SimCord\] ThatOneGuy
 
@@ -104,7 +104,7 @@ View the data of all given hit attributes.
 
 - \[SimCord\] qwewqa
 
-- \[OM\] [Ryo][GH-ryo]
+- **\[OM\] [Ryo][GH-ryo]**
 
 ### Miscellaneous discussions
 
@@ -157,7 +157,7 @@ inaccurate.
 
 - `2020/11/19 PM 07:04 CST`: First commit of the project ([v0.1]).
 
-- `2020/12/14 AN 06:09 CST`: Completed all skill damage parsing (with afflictions).
+- `2020/12/14 AN 06:09 CST`: Completed all skill damage parsing with afflictions ([v1.0]).
 
   > This excludes Gala Laxi S2. Also, debuffs are not yet confirmed at this point.
 

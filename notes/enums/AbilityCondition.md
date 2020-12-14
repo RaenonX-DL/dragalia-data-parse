@@ -33,7 +33,7 @@ Field: `_ConditionType`
 12. TRANSFORM_DRAGON
 13. HP_MORE_MOMENT
 14. HP_LESS_MOMENT
-15. QUEST_START
+<a href="#15---quest_start">15. QUEST_START</a>
 16. OVERDRIVE
 17. ABNORMAL_STATUS
 <a href="#18---tension_max">18. TENSION_MAX</a>
@@ -120,7 +120,6 @@ not used.
 
 Missing value(s) means that the corresponding value is not used.
 
-
 ### `01` - `HP_MORE`
 
 Check if the user's HP is > a certain threshold.
@@ -128,6 +127,10 @@ Check if the user's HP is > a certain threshold.
 `Val 1 = 40` means that the condition holds if the user's HP is > 40%.
 
 - **Val 1**: HP threshold.
+
+### `15` - `QUEST_START`
+
+Apply all the effects once at the beginning of the quest.
 
 ### `18` - `TENSION_MAX`
 

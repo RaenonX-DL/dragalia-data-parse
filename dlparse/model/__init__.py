@@ -1,4 +1,5 @@
 """Various custom data models."""
+from .ability import AbilityData
 from .buff_count_boost import BuffCountBoostData
 from .effect_action_cond import ActionConditionEffectUnit, AfflictionEffectUnit
 from .hit_base import HitData

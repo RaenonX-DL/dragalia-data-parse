@@ -1,7 +1,7 @@
 """Classes for loading all the assets and loaders."""
 from typing import Optional
 
-from dlparse.transformer import SkillTransformer
+from dlparse.transformer import AbilityTransformer, SkillTransformer
 from .asset import (
     AbilityAsset, ActionConditionAsset, ActionPartsListAsset, BuffCountAsset, CharaDataAsset, CharaModeAsset,
     DragonDataAsset, HitAttrAsset, PlayerActionInfoAsset, SkillChainAsset, SkillDataAsset, TextAsset,
@@ -36,6 +36,7 @@ class AssetManager:
         self._loader_action: ActionFileLoader = ActionFileLoader(self._asset_action_list, action_asset_dir)
 
         # Transformers
+        self._transformer_ability: AbilityTransformer = AbilityTransformer(self)
         self._transformer_skill: SkillTransformer = SkillTransformer(self)
 
     # region Assets
@@ -105,6 +106,7 @@ class AssetManager:
     def loader_action(self) -> ActionFileLoader:
         """Get the action file loader."""
         return self._loader_action
+
     # endregion
 
     # region Transformers
@@ -112,6 +114,12 @@ class AssetManager:
     def transformer_skill(self) -> SkillTransformer:
         """Get the skill transformer."""
         return self._transformer_skill
+
+    @property
+    def transformer_ability(self) -> AbilityTransformer:
+        """Get the ability transformer."""
+        return self._transformer_ability
+
     # endregion
 
     # endregion
