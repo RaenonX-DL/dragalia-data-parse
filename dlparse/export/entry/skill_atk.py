@@ -17,7 +17,7 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
     skill_total_hits_max: int = field(init=False)
 
     affliction_data_max: list[tuple[Status, float]] = field(init=False)
-    debuff_data_max: list[tuple[BuffParameter, float, float, bool]] = field(init=False)
+    debuff_data_max: list[tuple[BuffParameter, float, float, float, bool]] = field(init=False)
 
     def __post_init__(self, text_asset: TextAsset, chara_data: CharaDataEntry, skill_data: SkillDataEntry,
                       skill_id_entry: SkillIdEntry, skill_data_to_parse: AttackingSkillDataEntry):
@@ -30,7 +30,7 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
             (affliction.status, affliction.probability_pct) for affliction in skill_data_to_parse.afflictions[-1]
         ]))
         self.debuff_data_max = list(dict.fromkeys([
-            (debuff.parameter, debuff.rate, debuff.duration_time, debuff.stackable)
+            (debuff.parameter, debuff.probability_pct, debuff.rate, debuff.duration_time, debuff.stackable)
             for debuff in skill_data_to_parse.debuffs[-1]
         ]))
 

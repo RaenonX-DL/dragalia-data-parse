@@ -77,8 +77,8 @@ class AttackingSkillDataEntry(SkillEntryBase):
             mod_unit_lv = []
 
             for hit_unit in hit_unit_lv:
-                buff_boost_data = hit_unit.hit_attr.get_buff_count_boost_data(
-                    self.condition_comp, asset_action_cond, asset_buff_count
+                buff_boost_data = BuffCountBoostData.from_hit_attr(
+                    hit_unit.hit_attr, self.condition_comp, asset_action_cond, asset_buff_count
                 )
 
                 mod_unit_lv.append(DamageModifierUnit(
