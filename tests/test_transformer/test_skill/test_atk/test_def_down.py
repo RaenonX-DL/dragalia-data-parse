@@ -156,3 +156,22 @@ def test_area(transformer_skill: SkillTransformer):
         actual_buffs = skill_data.debuffs[skill_lv]
 
         check_debuff_unit_match(actual_buffs, expected_buffs)
+
+
+def test_area_only(transformer_skill: SkillTransformer):
+    # Sha Wujing S2
+    # https://dragalialost.gamepedia.com/Sha_Wujing
+    skill_data = transformer_skill.transform_attacking(105404022).with_conditions()
+
+    expected_debuffs_lv_1 = [DebuffInfo("LAM_126_03_DEF_DOWN_FLD_LV01", BuffParameter.DEF, -0.1, 100, 10, True)]
+    expected_debuffs_lv_2 = [DebuffInfo("LAM_126_03_DEF_DOWN_FLD_LV02", BuffParameter.DEF, -0.15, 100, 10, True)]
+
+    expected_debuffs = [expected_debuffs_lv_1, expected_debuffs_lv_2]
+
+    assert skill_data.max_level == 2
+
+    for skill_lv in range(skill_data.max_level):
+        expected_buffs = expected_debuffs[skill_lv]
+        actual_buffs = skill_data.debuffs[skill_lv]
+
+        check_debuff_unit_match(actual_buffs, expected_buffs)

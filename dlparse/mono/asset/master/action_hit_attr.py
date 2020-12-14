@@ -214,15 +214,16 @@ class HitAttrEntry(MasterEntryBase):
             # the hit data should be considered regardless its effect target
             # -----------------------------------------------------------------------------------
             # Simply returning `True` or `False`, gives inaccurate result for either attacking or supportive skill data
-            # because the hit to add dummy counts will be missed
+            # because the hit to add dummy counts will be missed.
+            # Therefore, returning the desired effectiveness to keep the effectiveness being the desired one
             return desired_effectiveness
-
-        if not self.has_action_condition:
-            # No action condition assigned & does not have action condition binded
-            return False
 
         if self.target_group != HitTarget.ENEMY:
             # Has action condition but the target is not enemy
+            return False
+
+        if not self.has_action_condition:
+            # No action condition assigned & does not have action condition binded
             return False
 
         return True

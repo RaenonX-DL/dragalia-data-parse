@@ -296,8 +296,8 @@ class SkillTransformer:
             is_exporting=is_exporting
         )
 
-        if not any(entry.deals_damage for entry in ret.get_all_possible_entries()):
-            # All mods are 0 for all possible combinations of the skill condition
+        if not any(entry.has_effects_on_enemy for entry in ret.get_all_possible_entries()):
+            # All effects does not target enemy at all level
             raise HitDataUnavailableError()
 
         return ret

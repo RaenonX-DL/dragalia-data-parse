@@ -45,6 +45,8 @@ Each variant has at most 1 target action ID affiliated. `0` for not used.
 
 Field: `_TargetActionN`. For example, `_TargetAction1` for the 1st variant.
 
+Check [the documentation for target action](/notes/enums/TargetAction.md) for more details.
+
 # Variant Up Value
 
 Each variant has at most 1 up value affiliated. `0.0` for not used. Note that different from others, this seems to
@@ -183,8 +185,6 @@ Gauge(s) filled | DEF | Action Damage Boost
 #### Variant Target Action
 
 Action to receive the damage boost.
-
-A value of `3` means S1.
 
 ### `43` - `ReferenceOther`
 

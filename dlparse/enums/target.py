@@ -13,8 +13,8 @@ class HitTargetSimple(Enum):
     The value of :class:`HitTarget` could be different even if the effective target is essentially the same,
     possibly due to some in-game mechanism.
 
-    For example, ``HitTarget.SELF`` and ``HitTarget.SELF_HIT_DEPENDENT`` is effectively the same.
-    The only difference is that ``HitTarget.SELF_HIT_DEPENDENT`` requires hit check; ``HitTarget.SELF`` does not.
+    For example, ``HitTarget.SELF`` and ``HitTarget.HIT_DEPENDENT_SELF`` is effectively the same.
+    The only difference is that ``HitTarget.HIT_DEPENDENT_SELF`` requires hit check; ``HitTarget.SELF`` does not.
     """
 
     UNKNOWN = -1
@@ -31,11 +31,15 @@ class HitTarget(Enum):
     Target of an action (hit attribute).
 
     This corresponds to the field ``_TargetGroup`` in the hit attribute asset.
+
+    For the completed details, check
+    ``https://github.com/dl-stuff/dl-datamine/blob/f6b6d604fd85b2ba69a0c01349c3b042972c9489/exporter/Mappings.py#L69``.
     """
 
     UNKNOWN = -1
 
     SELF = 1
+    """The effect will be applied to the user themselves only."""
     SELF_SKILL_AREA = 2
     """
     The effect will be applied to every ally who stays within the skill effect range.
@@ -44,9 +48,12 @@ class HitTarget(Enum):
     and the skills that creates an area (for example, Wedding Elisanne S1 ``101503021``).
     """
     ENEMY = 3
+    """The effect will be applied to the enemy."""
     TEAM = 6
-
-    SELF_HIT_DEPENDENT = 15
+    """The effect will be applied to the whole team."""
+    TEAM_LOWEST_HP = 7
+    """The effect will be applied to the member who has the lowest HP% among the team, including the user."""
+    HIT_DEPENDENT_SELF = 15
     """
     The effect will be applied to the user themselves, but it depends on how many times the skill hit.
 
@@ -72,6 +79,6 @@ TRANS_DICT_TO_SIMPLE: dict[HitTarget, HitTargetSimple] = {
     HitTarget.SELF_SKILL_AREA: HitTargetSimple.SELF_SURROUNDING,
     HitTarget.ENEMY: HitTargetSimple.ENEMY,
     HitTarget.TEAM: HitTargetSimple.TEAM,
-    HitTarget.SELF_HIT_DEPENDENT: HitTargetSimple.SELF
+    HitTarget.HIT_DEPENDENT_SELF: HitTargetSimple.SELF
 }
 """A :class:`dict` to convert :class:`HitTarget` to the simplified version."""

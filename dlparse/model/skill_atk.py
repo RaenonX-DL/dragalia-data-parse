@@ -2,7 +2,7 @@
 from dataclasses import InitVar, dataclass, field
 from itertools import combinations, product, zip_longest
 
-from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite, Status
+from dlparse.enums import HitTargetSimple, SkillCondition, SkillConditionCategories, SkillConditionComposite, Status
 from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset, PlayerActionInfoAsset
 from .buff_count_boost import BuffCountBoostData
 from .effect_action_cond import ActionConditionEffectUnit
@@ -186,9 +186,27 @@ class AttackingSkillDataEntry(SkillEntryBase):
         return self.counter_mods[self.max_level - 1]
 
     @property
-    def deals_damage(self) -> bool:
-        """Check if any damage will be dealt at any level."""
-        return any(mod for mod in self.mods)
+    def has_effects_on_enemy(self) -> bool:
+        """Check if there are any effects which target is the enemy."""
+        if any(any(mod.original for mod in mod_unit_lv) for mod_unit_lv in self.mod_unit_mtx):
+            # Has mod > 0
+            return True
+
+        if any(
+                any(affliction.target == HitTargetSimple.ENEMY for affliction in affliction_lv)
+                for affliction_lv in self.afflictions
+        ):
+            # Afflicts enemy
+            return True
+
+        if any(
+                any(debuff.target == HitTargetSimple.ENEMY for debuff in debuff_lv)
+                for debuff_lv in self.debuffs
+        ):
+            # Debuffs enemy
+            return True
+
+        return False
 
 
 @dataclass
