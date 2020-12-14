@@ -39,6 +39,7 @@ class ActionConditionEntry(MasterEntryBase):
 
     buff_atk: float
     buff_def: float
+    buff_def_b: float
     buff_crt_rate: float
     buff_crt_damage: float
     buff_skill_damage: float
@@ -84,6 +85,7 @@ class ActionConditionEntry(MasterEntryBase):
             slip_damage_mod=data["_SlipDamagePower"],
             buff_atk=data["_RateAttack"],
             buff_def=data["_RateDefense"],
+            buff_def_b=data["_RateDefenseB"],
             buff_crt_rate=data["_RateCritical"],
             buff_crt_damage=data["_EnhancedCritical"],
             buff_skill_damage=data["_RateSkill"],

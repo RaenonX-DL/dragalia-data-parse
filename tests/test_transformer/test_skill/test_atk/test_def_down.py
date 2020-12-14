@@ -144,8 +144,8 @@ def test_area(transformer_skill: SkillTransformer):
     # https://dragalialost.gamepedia.com/Wedding_Elisanne
     skill_data = transformer_skill.transform_attacking(101503022).with_conditions()
 
-    expected_debuffs_lv_1 = [DebuffInfo("SWD_111_04_DEF_DOWN_FLD_LV01", BuffParameter.DEF, -0.15, 0, 10, True)]
-    expected_debuffs_lv_2 = [DebuffInfo("SWD_111_04_DEF_DOWN_FLD_LV02", BuffParameter.DEF, -0.15, 0, 10, True)]
+    expected_debuffs_lv_1 = [DebuffInfo("SWD_111_04_DEF_DOWN_FLD_LV01", BuffParameter.DEF, -0.1, 100, 10, True)]
+    expected_debuffs_lv_2 = [DebuffInfo("SWD_111_04_DEF_DOWN_FLD_LV02", BuffParameter.DEF, -0.15, 100, 10, True)]
 
     expected_debuffs = [expected_debuffs_lv_1, expected_debuffs_lv_2]
 

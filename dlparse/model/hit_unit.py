@@ -178,8 +178,8 @@ class UnitsConvertibleHitData(HitData, Generic[T], ABC):
         return [
             # ATK
             self.to_param_up(BuffParameter.ATK, cond_entry.buff_atk, cond_entry),
-            # DEF
-            self.to_param_up(BuffParameter.DEF, cond_entry.buff_def, cond_entry),
+            # DEF & DEF (B) - I don't know why the fuck they need two of this
+            self.to_param_up(BuffParameter.DEF, cond_entry.buff_def + cond_entry.buff_def_b, cond_entry),
             # CRT rate
             self.to_param_up(BuffParameter.CRT_RATE, cond_entry.buff_crt_rate, cond_entry),
             # CRT damage

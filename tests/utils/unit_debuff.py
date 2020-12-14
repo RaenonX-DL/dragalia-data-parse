@@ -49,8 +49,9 @@ def check_debuff_unit_match(
                         f"\n{expected_info_single}")
 
     actual_info = [
-        DebuffInfo(unit.hit_attr_label, unit.parameter, unit.rate, unit.probability_pct, unit.duration_time,
-                   unit.stackable)
+        DebuffInfo(
+            unit.hit_attr_label, unit.parameter, unit.rate, unit.probability_pct, unit.duration_time, unit.stackable
+        )
         for unit in actual_units
     ]
 
