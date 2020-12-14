@@ -262,7 +262,7 @@ class SkillTransformer:
 
     def transform_attacking(
             self, skill_id: int, /,
-            max_lv: int = 0, ability_ids: Optional[list[int]] = None, with_sectioned_buffs: bool = True
+            max_lv: int = 0, ability_ids: Optional[list[int]] = None, is_exporting: bool = True
     ) -> AttackingSkillData:
         """
         Transform skill of ``skill_id`` to :class:`AttackingSkillDataEntry`.
@@ -272,6 +272,12 @@ class SkillTransformer:
 
         ``ability_ids`` are the ability IDs to be additionally considered when parsing the skills.
         When the user enhance their skills via the character ability, this will be required to get the accurate result.
+
+        If ``is_exporting`` is ``True``, sectioned conditions will not be considered as a possible condition.
+        This should be ``True`` when exporting the data to save the data size.
+
+        Setting this to ``False`` can give you a quick overview of the skill,
+        if iterating through all the possible conditions.
 
         :raises SkillDataNotFoundError: if the skill data is not found
         :raises ActionDataNotFoundError: if the action data file of the skill is not found
@@ -287,7 +293,7 @@ class SkillTransformer:
             asset_action_info=self._asset_pa_info,
             asset_action_cond=self._asset_action_cond,
             asset_buff_count=self._asset_buff_count,
-            with_sectioned_buffs=with_sectioned_buffs
+            is_exporting=is_exporting
         )
 
         if not any(entry.deals_damage for entry in ret.get_all_possible_entries()):

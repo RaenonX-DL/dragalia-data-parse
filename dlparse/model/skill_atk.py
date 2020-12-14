@@ -220,8 +220,8 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     asset_action_cond: ActionConditionAsset  # Used during affliction processing
     asset_buff_count: BuffCountAsset
 
-    # Indicate if the sectioned buff counts should be included in possible conditions
-    with_sectioned_buffs: InitVar[bool]
+    # Indicate if the sectioned conditions should be included in possible conditions
+    is_exporting: InitVar[bool]
 
     _unit_mtx_base: list[list[DamageUnit]] = field(init=False)
 
@@ -264,15 +264,16 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return cond_elems
 
-    def _init_all_possible_conditions_self(self, with_sectioned_buffs: bool):
+    def _init_all_possible_conditions_self_crisis_buff(self, is_exporting: bool):
         cond_elems: list[set[tuple[SkillCondition, ...]]] = []
 
-        # Crisis boosts available
-        crisis_available: bool = any(
-            hit_data.hit_attr.boost_by_hp for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
-        )
-        if crisis_available:
-            cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_hp_status.members})
+        # Crisis boosts available (skip adding sectioned HP if exporting)
+        if not is_exporting:
+            crisis_available: bool = any(
+                hit_data.hit_attr.boost_by_hp for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+            )
+            if crisis_available:
+                cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_hp_status.members})
 
         # Buff boosts available
         boost_by_buff_available: bool = any(
@@ -284,8 +285,8 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         )
         if boost_by_buff_available:
-            # Add direct boost conditions (only add the sectioned buff count condition if specified)
-            if with_sectioned_buffs:
+            # Add direct boost conditions (only add the sectioned buff count condition if not exporting)
+            if not is_exporting:
                 cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_buff_count.members})
 
             # Check if any buff boost data available
@@ -312,6 +313,11 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
                 (buff_cond,) for buff_cond
                 in SkillConditionCategories.self_buff_count.get_members_lte(max_count)
             })
+
+        return cond_elems
+
+    def _init_all_possible_conditions_self_others(self):
+        cond_elems: list[set[tuple[SkillCondition, ...]]] = []
 
         # Combo boosts available
         combo_boost_available: bool = any(
@@ -391,12 +397,13 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return cond_elems
 
-    def _init_all_possible_conditions(self, /, with_sectioned_buffs: bool):
+    def _init_all_possible_conditions(self, /, is_exporting: bool):
         # Initialization
         cond_elems: list[set[tuple[SkillCondition, ...]]] = self._init_possible_conditions_base_elems()
 
         cond_elems.extend(self._init_all_possible_conditions_target())
-        cond_elems.extend(self._init_all_possible_conditions_self(with_sectioned_buffs))
+        cond_elems.extend(self._init_all_possible_conditions_self_crisis_buff(is_exporting))
+        cond_elems.extend(self._init_all_possible_conditions_self_others())
         cond_elems.extend(self._init_all_possible_conditions_skill())
 
         # Add combinations
@@ -405,8 +412,8 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             for item_combination in product(*cond_elems)
         }
 
-    def __post_init__(self, with_sectioned_buffs: bool):
-        super().__post_init__(with_sectioned_buffs=with_sectioned_buffs)
+    def __post_init__(self, is_exporting: bool):
+        super().__post_init__(is_exporting=is_exporting)
 
         self._unit_mtx_base, _ = self.calculate_units_matrix(SkillConditionComposite())
 

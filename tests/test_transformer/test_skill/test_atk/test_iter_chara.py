@@ -530,7 +530,37 @@ def test_nadine_s1_trendsetting(transformer_skill: SkillTransformer):
 def test_lapis_s2(transformer_skill: SkillTransformer):
     # Lapis S2
     # https://dragalialost.gamepedia.com/Lapis
-    skill_data = transformer_skill.transform_attacking(109502012)
+
+    skill_data = transformer_skill.transform_attacking(109502012, is_exporting=True)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_conds = [
+        SkillCondition.SELF_LAPIS_CARD_0,
+        SkillCondition.SELF_LAPIS_CARD_1,
+        SkillCondition.SELF_LAPIS_CARD_2,
+        SkillCondition.SELF_LAPIS_CARD_3,
+    ]
+    expected_conds_up_rate = {
+        SkillConditionComposite(addl_cond): min(SkillConditionCategories.self_lapis_card.convert(addl_cond) * 0.2, 0.8)
+        for addl_cond in expected_addl_conds
+    }
+
+    expected = set(expected_conds_up_rate.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        expected_rate = 15.05 * 2 * (1 + expected_conds_up_rate[entry.condition_comp])
+
+        assert entry.total_mod_at_max == pytest.approx(expected_rate), entry.condition_comp
+        del expected_conds_up_rate[entry.condition_comp]
+
+    assert len(expected_conds_up_rate) == 0, f"Conditions not tested: {list(sorted(expected_conds_up_rate.keys()))}"
+
+    # Not exporting
+    skill_data = transformer_skill.transform_attacking(109502012, is_exporting=False)
 
     possible_entries = skill_data.get_all_possible_entries()
 

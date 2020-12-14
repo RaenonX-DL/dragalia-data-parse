@@ -1,6 +1,9 @@
+from itertools import product
+
 import pytest
 
-from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite
+from dlparse.model import BuffCountBoostData
 from dlparse.transformer import SkillTransformer
 
 
@@ -27,7 +30,29 @@ def test_no_condition(transformer_skill: SkillTransformer):
 def test_has_crisis_and_punisher_1(transformer_skill: SkillTransformer):
     # Veronica S1
     # https://dragalialost.gamepedia.com/Veronica
-    skill_data = transformer_skill.transform_attacking(107505011)
+
+    # Exporting
+    skill_data = transformer_skill.transform_attacking(107505011, is_exporting=True)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_max_total_mods = {
+        SkillConditionComposite(): 24.77,
+        SkillConditionComposite(SkillCondition.TARGET_POISONED): 29.724,
+    }
+
+    assert set(expected_max_total_mods.keys()) == {entry.condition_comp for entry in possible_entries}
+
+    for entry in possible_entries:
+        expected_total_mod = expected_max_total_mods[entry.condition_comp]
+
+        assert entry.total_mod_at_max == pytest.approx(expected_total_mod), entry.condition_comp
+        del expected_max_total_mods[entry.condition_comp]
+
+    assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
+
+    # Not exporting
+    skill_data = transformer_skill.transform_attacking(107505011, is_exporting=False)
 
     possible_entries = skill_data.get_all_possible_entries()
 
@@ -62,7 +87,29 @@ def test_has_crisis_and_punisher_1(transformer_skill: SkillTransformer):
 def test_has_crisis_and_punisher_2(transformer_skill: SkillTransformer):
     # Louise S2
     # https://dragalialost.gamepedia.com/Louise
-    skill_data = transformer_skill.transform_attacking(106503012)
+
+    # Exporting
+    skill_data = transformer_skill.transform_attacking(106503012, is_exporting=True)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_max_total_mods = {
+        SkillConditionComposite(): 20.94,
+        SkillConditionComposite(SkillCondition.TARGET_POISONED): 31.41,
+    }
+
+    assert set(expected_max_total_mods.keys()) == {entry.condition_comp for entry in possible_entries}
+
+    for entry in possible_entries:
+        assert entry.total_mod_at_max == pytest.approx(expected_max_total_mods[entry.condition_comp]), \
+            entry.condition_comp
+
+        del expected_max_total_mods[entry.condition_comp]
+
+    assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
+
+    # Not exporting
+    skill_data = transformer_skill.transform_attacking(106503012, is_exporting=False)
 
     possible_entries = skill_data.get_all_possible_entries()
 
@@ -118,7 +165,26 @@ def test_punisher_only(transformer_skill: SkillTransformer):
 def test_crisis_only(transformer_skill: SkillTransformer):
     # Bellina S2
     # https://dragalialost.gamepedia.com/Bellina
-    skill_data = transformer_skill.transform_attacking(103505034)
+
+    # Exporting
+    skill_data = transformer_skill.transform_attacking(103505034, is_exporting=True)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_max_total_mods = {
+        SkillConditionComposite(): 12.12,
+    }
+
+    assert set(expected_max_total_mods.keys()) == {entry.condition_comp for entry in possible_entries}
+
+    for entry in possible_entries:
+        assert entry.total_mod_at_max == expected_max_total_mods[entry.condition_comp], entry.condition_comp
+        del expected_max_total_mods[entry.condition_comp]
+
+    assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
+
+    # Not exporting
+    skill_data = transformer_skill.transform_attacking(103505034, is_exporting=False)
 
     possible_entries = skill_data.get_all_possible_entries()
 
@@ -146,7 +212,9 @@ def test_buff_count_direct(transformer_skill: SkillTransformer):
 
     # Karina S1
     # https://dragalialost.gamepedia.com/Karina
-    skill_data = transformer_skill.transform_attacking(104402011)
+
+    # Not exporting
+    skill_data = transformer_skill.transform_attacking(104402011, is_exporting=False)
 
     possible_entries = skill_data.get_all_possible_entries()
 
@@ -179,6 +247,117 @@ def test_buff_count_direct(transformer_skill: SkillTransformer):
         del expected_max_total_mods[entry.condition_comp]
 
     assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
+
+    # Exporting
+    skill_data = transformer_skill.transform_attacking(104402011, is_exporting=True)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_max_total_mods = {
+        SkillConditionComposite(): 16.36
+    }
+
+    assert set(expected_max_total_mods.keys()) == {entry.condition_comp for entry in possible_entries}
+
+    for entry in possible_entries:
+        assert entry.total_mod_at_max == expected_max_total_mods[entry.condition_comp], entry.condition_comp
+        del expected_max_total_mods[entry.condition_comp]
+
+    assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
+
+
+def test_buff_count_data(transformer_skill: SkillTransformer):
+    # Lapis S2
+    # https://dragalialost.gamepedia.com/Lapis
+
+    # Not exporting
+    skill_data = transformer_skill.transform_attacking(109502012, is_exporting=False)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_buff_count_conds = [
+        SkillCondition.SELF_BUFF_0,
+        SkillCondition.SELF_BUFF_1,
+        SkillCondition.SELF_BUFF_2,
+        SkillCondition.SELF_BUFF_3,
+        SkillCondition.SELF_BUFF_4,
+        SkillCondition.SELF_BUFF_5,
+        SkillCondition.SELF_BUFF_6,
+        SkillCondition.SELF_BUFF_7,
+        SkillCondition.SELF_BUFF_8,
+        SkillCondition.SELF_BUFF_9,
+        SkillCondition.SELF_BUFF_10,
+        SkillCondition.SELF_BUFF_15,
+        SkillCondition.SELF_BUFF_20,
+        SkillCondition.SELF_BUFF_25,
+        SkillCondition.SELF_BUFF_30,
+        SkillCondition.SELF_BUFF_35,
+        SkillCondition.SELF_BUFF_40,
+        SkillCondition.SELF_BUFF_45,
+        SkillCondition.SELF_BUFF_50,
+    ]
+    expected_addl_conds = [
+        SkillCondition.SELF_LAPIS_CARD_0,
+        SkillCondition.SELF_LAPIS_CARD_1,
+        SkillCondition.SELF_LAPIS_CARD_2,
+        SkillCondition.SELF_LAPIS_CARD_3,
+    ]
+    expected_in_effect_rates = {
+        SkillConditionComposite([buff_count_cond, addl_cond]):
+            min(
+                SkillConditionCategories.self_buff_count.convert(buff_count_cond) * 0.05
+                + SkillConditionCategories.self_lapis_card.convert(addl_cond) * 0.2,
+                0.8
+            )
+        for buff_count_cond, addl_cond in product(expected_buff_count_conds, expected_addl_conds)
+    }
+    expected_max_total_mods = {cond: 15.05 * 2 * (1 + up_rate) for cond, up_rate in expected_in_effect_rates.items()}
+
+    assert set(expected_max_total_mods.keys()) == {entry.condition_comp for entry in possible_entries}
+
+    lapis_cat = SkillConditionCategories.self_lapis_card
+
+    for entry in possible_entries:
+        expected_in_effect_rate = expected_in_effect_rates[entry.condition_comp]
+        expected_total_mods = expected_max_total_mods[entry.condition_comp]
+
+        boost_data = BuffCountBoostData(
+            expected_in_effect_rate, 0.8, 0.05,
+            1319, 3 - lapis_cat.convert(lapis_cat.extract(entry.condition_comp)), 0.2
+        )
+
+        assert entry.total_mod_at_max == pytest.approx(expected_total_mods), entry.condition_comp
+        assert entry.buff_boost_data_mtx[-1] == [boost_data] * 2, entry.condition_comp
+        del expected_max_total_mods[entry.condition_comp]
+
+    assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
+
+    # Exporting
+    skill_data = transformer_skill.transform_attacking(109502012, is_exporting=True)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_data = {
+        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_0):
+            (30.10, BuffCountBoostData(0, 0.8, 0.05, 1319, 3, 0.2)),
+        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_1):
+            (36.12, BuffCountBoostData(0.2, 0.8, 0.05, 1319, 2, 0.2)),
+        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_2):
+            (42.14, BuffCountBoostData(0.4, 0.8, 0.05, 1319, 1, 0.2)),
+        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_3):
+            (48.16, BuffCountBoostData(0.6, 0.8, 0.05, 1319, 0, 0.2)),
+    }
+
+    assert set(expected_data.keys()) == {entry.condition_comp for entry in possible_entries}
+
+    for entry in possible_entries:
+        expected_total_mods, expected_boost_data = expected_data[entry.condition_comp]
+
+        assert entry.total_mod_at_max == pytest.approx(expected_total_mods), entry.condition_comp
+        assert entry.buff_boost_data_mtx[-1] == [expected_boost_data] * 2
+        del expected_data[entry.condition_comp]
+
+    assert len(expected_data) == 0, f"Conditions not tested: {set(expected_data.keys())}"
 
 
 def test_buff_count_bonus_bullet(transformer_skill: SkillTransformer):
