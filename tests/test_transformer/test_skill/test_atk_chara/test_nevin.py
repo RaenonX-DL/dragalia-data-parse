@@ -3,6 +3,7 @@ from itertools import product
 import pytest
 
 from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.model import BuffZoneBoostData
 from dlparse.transformer import SkillTransformer
 
 
@@ -76,6 +77,22 @@ def test_iter_entries_s2_released(transformer_skill: SkillTransformer):
         del expected_addl_at_max[entry.condition_comp]
 
     assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
+def test_buff_zone_boost_s2_locked(transformer_skill: SkillTransformer):
+    # Nevin S2 @ Sigil Locked
+    # https://dragalialost.gamepedia.com/Nevin
+    skill_data = transformer_skill.transform_attacking(103505042, is_exporting=True).with_conditions()
+
+    assert skill_data.buff_zone_boost_mtx == [BuffZoneBoostData(0, 0)] * 2
+
+
+def test_buff_zone_boost_s2_released(transformer_skill: SkillTransformer):
+    # Nevin S2 @ Sigil Released
+    # https://dragalialost.gamepedia.com/Nevin
+    skill_data = transformer_skill.transform_attacking(103505044, is_exporting=True).with_conditions()
+
+    assert skill_data.buff_zone_boost_mtx == [BuffZoneBoostData(2.7, 0.9), BuffZoneBoostData(3, 1)]
 
 
 def test_s2_locked(transformer_skill: SkillTransformer):

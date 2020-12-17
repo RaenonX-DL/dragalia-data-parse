@@ -327,7 +327,7 @@ def test_buff_count_data(transformer_skill: SkillTransformer):
         )
 
         assert entry.total_mod_at_max == pytest.approx(expected_total_mods), entry.condition_comp
-        assert entry.buff_boost_data_mtx[-1] == [boost_data] * 2, entry.condition_comp
+        assert entry.buff_count_boost_mtx[-1] == [boost_data] * 2, entry.condition_comp
         del expected_max_total_mods[entry.condition_comp]
 
     assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"

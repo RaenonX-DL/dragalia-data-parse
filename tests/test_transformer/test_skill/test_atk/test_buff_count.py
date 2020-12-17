@@ -20,7 +20,7 @@ def test_capped(transformer_skill: SkillTransformer):
         skill_data = skill_data_base.with_conditions(condition)
 
         # * 2 for 2 hits
-        assert skill_data.buff_boost_data_mtx == [[buff_count_boost_data] * 2] * skill_max_lv
+        assert skill_data.buff_count_boost_mtx == [[buff_count_boost_data] * 2] * skill_max_lv
 
 
 def test_uncapped(transformer_skill: SkillTransformer):
@@ -30,4 +30,4 @@ def test_uncapped(transformer_skill: SkillTransformer):
 
     skill_max_lv = skill_data.max_level
 
-    assert skill_data.buff_boost_data_mtx == [[BuffCountBoostData(0, 0, 0.05, 0, 0, 0)] * 2] * skill_max_lv
+    assert skill_data.buff_count_boost_mtx == [[BuffCountBoostData(0, 0, 0.05, 0, 0, 0)] * 2] * skill_max_lv

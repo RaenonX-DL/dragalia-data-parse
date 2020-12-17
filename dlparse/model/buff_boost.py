@@ -1,14 +1,31 @@
-"""Buff count boost data model."""
+"""Buff boosting data model."""
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 from dlparse.enums import SkillConditionComposite
 from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset, HitAttrEntry
+from .hit_dmg import DamagingHitData
 
-__all__ = ("BuffCountBoostData",)
+__all__ = ("BuffCountBoostData", "BuffZoneBoostData")
 
 
 @dataclass
-class BuffCountBoostData:
+class BuffBoostData(ABC):
+    """Base buff boost data class."""
+
+    @abstractmethod
+    def __hash__(self):
+        raise NotImplementedError()
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+
+        return hash(self) == hash(other)
+
+
+@dataclass(eq=False)
+class BuffCountBoostData(BuffBoostData):
     """Data used for calculating the damage boost according to the buff count."""
 
     in_effect_rate: float  # 0 = nothing in-effect
@@ -70,8 +87,22 @@ class BuffCountBoostData:
             self.action_condition_id, self.action_condition_count_max, int(self.action_condition_rate_each * 1E5)
         ))
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
 
-        return hash(self) == hash(other)
+@dataclass(eq=False)
+class BuffZoneBoostData(BuffBoostData):
+    """Data used for calculating the damage boost according to the buff zone."""
+
+    rate_by_self: float
+    rate_by_ally: float
+
+    def __hash__(self):
+        # x 1E5 for handling floating errors
+        return hash((self.rate_by_self * 1E5, self.rate_by_ally * 1E5,))
+
+    @staticmethod
+    def from_hit_units(hit_data_list: list[DamagingHitData]) -> "BuffZoneBoostData":
+        """``hit_data_list`` to a buff zone boosting data."""
+        rate_by_self = sum(hit_data.mod_on_self_buff_zone for hit_data in hit_data_list)
+        rate_by_ally = sum(hit_data.mod_on_ally_buff_zone for hit_data in hit_data_list)
+
+        return BuffZoneBoostData(rate_by_self, rate_by_ally)

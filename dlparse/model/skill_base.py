@@ -88,10 +88,10 @@ class SkillDataBase(Generic[HT, ET], ABC):
 
             # Convert elements to skill conditions and add it
             # - Dummy condition tuple for pre-condition of none, meaning other elements
-            cond_elems.append({
-                                  (SkillConditionCategories.target_element.convert_reversed(elem),) for elem in
-                                  action_conds_elem
-                              } | {()})
+            cond_elems.append(
+                {(SkillConditionCategories.target_element.convert_reversed(elem),) for elem in action_conds_elem}
+                | {()}
+            )
 
         return cond_elems
 

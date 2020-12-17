@@ -1,7 +1,7 @@
 """Class for a single damage mod unit."""
 from dataclasses import dataclass
 
-from .buff_count_boost import BuffCountBoostData
+from .buff_boost import BuffCountBoostData
 
 __all__ = ("DamageModifierUnit",)
 
