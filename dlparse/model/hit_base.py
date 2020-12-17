@@ -5,7 +5,7 @@ from typing import Generic, Optional, TypeVar
 
 from dlparse.enums import HitTargetSimple, SkillCondition
 from dlparse.mono.asset import (
-    AbilityEntry, ActionBuffBomb, ActionComponentBase, ActionConditionEntry, ActionSettingHit, HitAttrEntry,
+    AbilityEntry, ActionBuffBomb, ActionComponentBase, ActionConditionEntry, ActionHit, ActionSettingHit, HitAttrEntry,
 )
 
 __all__ = ("HitData", "T")
@@ -62,7 +62,13 @@ class HitData(Generic[T], ABC):
         - Deals damage to the enemy
         """
         if self.hit_attr.is_effective_to_enemy(desired_effectiveness):
-            # Early terminate, since the hit attribute itself indicates that it's effective to the enemy
+            # Check if the action component is :class:`ActionHit`, if it is, verify it's range is not 0
+            # > This happens on Lathna S1 (`105505021`) and Ramona S1 (`104501011`),
+            # > where the last hit is only effective in Mercurial Gauntlet (last hit range = 0)
+            if isinstance(self.action_component, ActionHit):
+                return self.action_component.hit_range > 0
+
+            # Otherwise, it's effective
             return True
 
         if isinstance(self.action_component, ActionBuffBomb):

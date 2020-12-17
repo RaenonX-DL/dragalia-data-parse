@@ -13,21 +13,16 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_0]): 2.61 * 3 + 2.61 * 0 + 2.61,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_1]): 2.61 * 3 + 2.61 * 1 + 2.61,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_2]): 2.61 * 3 + 2.61 * 2 + 2.61,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_3]): 2.61 * 3 + 2.61 * 3 + 2.61,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_4]): 2.61 * 4 + 2.61 * 3 + 2.61,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_0, SkillCondition.TARGET_POISONED]):
-            5.22 * 3 + 5.22 * 0 + 5.22,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_1, SkillCondition.TARGET_POISONED]):
-            5.22 * 3 + 5.22 * 1 + 5.22,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_2, SkillCondition.TARGET_POISONED]):
-            5.22 * 3 + 5.22 * 2 + 5.22,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_3, SkillCondition.TARGET_POISONED]):
-            5.22 * 3 + 5.22 * 3 + 5.22,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_4, SkillCondition.TARGET_POISONED]):
-            5.22 * 4 + 5.22 * 3 + 5.22,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_0]): 2.61 * 3 + 2.61 * 0,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_1]): 2.61 * 3 + 2.61 * 1,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_2]): 2.61 * 3 + 2.61 * 2,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_3]): 2.61 * 3 + 2.61 * 3,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_4]): 2.61 * 3 + 2.61 * 4,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_0, SkillCondition.TARGET_POISONED]): 5.22 * 3 + 5.22 * 0,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_1, SkillCondition.TARGET_POISONED]): 5.22 * 3 + 5.22 * 1,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_2, SkillCondition.TARGET_POISONED]): 5.22 * 3 + 5.22 * 2,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_3, SkillCondition.TARGET_POISONED]): 5.22 * 3 + 5.22 * 3,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_4, SkillCondition.TARGET_POISONED]): 5.22 * 3 + 5.22 * 4,
     }
 
     expected = set(expected_addl_at_max.keys())
@@ -63,17 +58,17 @@ def test_s1(transformer_skill: SkillTransformer):
         SkillConditionComposite(SkillCondition.ADDL_INPUT_4): 4,
     }
     post_dmg = [
-        [1.79],
-        [1.99],
-        [2.21],
-        [2.61]
+        [],
+        [],
+        [],
+        []
     ]
 
     for cond_comp, bonus_hits in addl_hits.items():
         skill_data = skill_data_base.with_conditions(cond_comp)
 
-        assert skill_data.hit_count == [4 + bonus_hits, 4 + bonus_hits, 4 + bonus_hits, 4 + bonus_hits]
-        assert skill_data.hit_count_at_max == 4 + bonus_hits
+        assert skill_data.hit_count == [3 + bonus_hits, 3 + bonus_hits, 3 + bonus_hits, 3 + bonus_hits]
+        assert skill_data.hit_count_at_max == 3 + bonus_hits
         assert skill_data.total_mod == pytest.approx([
             sum(pre_dmg[0]) + 1.79 * bonus_hits + sum(post_dmg[0]),
             sum(pre_dmg[1]) + 1.99 * bonus_hits + sum(post_dmg[1]),

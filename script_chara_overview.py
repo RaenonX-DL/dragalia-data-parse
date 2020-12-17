@@ -121,4 +121,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10150105)
+    chara_skill_overview(10450101)
