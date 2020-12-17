@@ -157,7 +157,7 @@ inaccurate.
 
 - `2020/11/19 PM 07:04 CST`: First commit of the project ([v0.1]).
 
-- `2020/12/14 AN 06:09 CST`: Completed all skill damage parsing with afflictions ([v1.0]).
+- `2020/12/14 AM 06:09 CST`: Completed all skill damage parsing with afflictions ([v1.0]).
 
   > This excludes Gala Laxi S2. Also, debuffs are not yet confirmed at this point.
 

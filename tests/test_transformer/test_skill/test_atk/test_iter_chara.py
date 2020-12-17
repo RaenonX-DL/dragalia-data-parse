@@ -613,3 +613,55 @@ def test_lapis_s2(transformer_skill: SkillTransformer):
         del expected_conds_up_rate[entry.condition_comp]
 
     assert len(expected_conds_up_rate) == 0, f"Conditions not tested: {list(sorted(expected_conds_up_rate.keys()))}"
+
+
+def test_delphi_s2(transformer_skill: SkillTransformer):
+    # Delphi
+    # https://dragalialost.gamepedia.com/Delphi
+    skill_data = transformer_skill.transform_attacking(103505022)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_at_max = {
+        SkillConditionComposite(): 4.99,
+        SkillConditionComposite(SkillCondition.TARGET_ELEM_LIGHT): 4.99,
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert \
+            pytest.approx(expected_addl_at_max[entry.condition_comp]) == entry.total_mod_at_max, \
+            entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
+def test_dragonyule_malora_s1(transformer_skill: SkillTransformer):
+    # Dragonyule Malora S1
+    # https://dragalialost.gamepedia.com/Dragonyule_Malora
+    skill_data = transformer_skill.transform_attacking(104504021)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_at_max = {
+        SkillConditionComposite(): 4.67 * 2,
+        SkillConditionComposite(SkillCondition.TARGET_ELEM_SHADOW): 4.67 * 2,
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert \
+            pytest.approx(expected_addl_at_max[entry.condition_comp]) == entry.total_mod_at_max, \
+            entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"

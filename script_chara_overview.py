@@ -71,7 +71,7 @@ def print_skill_id_entry(chara_data, skill_id_entry):
             skill_id,
             max_lv=chara_data.max_skill_level(skill_id_entry.skill_num),
             # Getting the highest level of the ability only
-            ability_ids=chara_data.ability_ids_at_max_level
+            # ability_ids=chara_data.ability_ids_at_max_level
         )
 
         for skill_entry in data_atk.get_all_possible_entries():
@@ -85,7 +85,7 @@ def print_skill_id_entry(chara_data, skill_id_entry):
             skill_id,
             max_lv=chara_data.max_skill_level(skill_id_entry.skill_num),
             # Getting the highest level of the ability only
-            ability_ids=chara_data.ability_ids_at_max_level
+            # ability_ids=chara_data.ability_ids_at_max_level
         )
 
         for skill_entry in data_sup.get_all_possible_entries():
@@ -119,4 +119,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10540402)
+    chara_skill_overview(10350502)

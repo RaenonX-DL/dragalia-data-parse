@@ -3,9 +3,9 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Generic, TypeVar, final
 
-from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite
+from dlparse.enums import Element, ElementFlag, SkillCondition, SkillConditionCategories, SkillConditionComposite
 from dlparse.model import HitData
-from dlparse.mono.asset import SkillDataEntry
+from dlparse.mono.asset import ActionConditionAsset, SkillDataEntry
 
 __all__ = ("SkillEntryBase", "SkillDataBase")
 
@@ -26,6 +26,8 @@ ET = TypeVar("ET", bound=SkillEntryBase)
 @dataclass
 class SkillDataBase(Generic[HT, ET], ABC):
     """Base class for a single skill data."""
+
+    asset_action_cond: ActionConditionAsset
 
     skill_data_raw: SkillDataEntry
 
@@ -65,6 +67,31 @@ class SkillDataBase(Generic[HT, ET], ABC):
                 pre_conditions.add(())
 
             cond_elems.append(pre_conditions)
+
+        # Get the elemental restriction from the action conditions if any
+        action_conds_elem_flag: set[ElementFlag] = set()
+        for hit_data_lv in self.hit_data_mtx:
+            for hit_data in hit_data_lv:
+                if not hit_data.hit_attr.has_action_condition:
+                    continue  # No action condition
+
+                action_conds_elem_flag.add(
+                    self.asset_action_cond.get_data_by_id(hit_data.hit_attr.action_condition_id).elemental_target
+                )
+        if action_conds_elem_flag:
+            # Elemental action condition available
+
+            # Convert discovered elemental flags to elements
+            action_conds_elem: set[Element] = set()
+            for elem_flag in action_conds_elem_flag:
+                action_conds_elem.update(Element.from_flag(elem_flag))
+
+            # Convert elements to skill conditions and add it
+            # - Dummy condition tuple for pre-condition of none, meaning other elements
+            cond_elems.append({
+                                  (SkillConditionCategories.target_element.convert_reversed(elem),) for elem in
+                                  action_conds_elem
+                              } | {()})
 
         return cond_elems
 

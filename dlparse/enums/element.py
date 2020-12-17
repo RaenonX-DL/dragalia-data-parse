@@ -24,6 +24,11 @@ class ElementFlag(Flag):
         """Check if the elemental flag is in effect."""
         return int(self.value) != 0
 
+    @property
+    def elements(self) -> list["Element"]:
+        """Get a list of effective elements of this flag."""
+        return [elem for elem in Element.get_all_valid_elements() if elem.to_flag() in self]
+
 
 class Element(Enum):
     """

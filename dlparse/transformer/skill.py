@@ -255,9 +255,9 @@ class SkillTransformer:
         )
 
         return SupportiveSkillData(
+            asset_action_cond=self._asset_action_cond,
             skill_data_raw=skill_data,
-            hit_data_mtx=hit_data_mtx,
-            action_condition_asset=self._asset_action_cond
+            hit_data_mtx=hit_data_mtx
         )
 
     def transform_attacking(

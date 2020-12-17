@@ -1,6 +1,6 @@
 """Class for a single supportive skill entry."""
 from collections import defaultdict
-from dataclasses import InitVar, dataclass, field
+from dataclasses import dataclass, field
 from itertools import product
 from typing import Optional
 
@@ -41,8 +41,6 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
     All buffs can be generated from this class as :class:`SupportiveSkillEntry`. Each entry contains exactly one buff.
     """
-
-    action_condition_asset: InitVar[ActionConditionAsset]
 
     buffs_base: list[set[ActionConditionEffectUnit]] = field(init=False)
     """
@@ -180,10 +178,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                 if not action_condition.target_limited_by_element:
                     continue  # Action condition not limited by element
 
-                for elem in Element.get_all_valid_elements():
-                    if elem.to_flag() not in action_condition.elemental_target:
-                        continue
-
+                for elem in action_condition.elemental_target.elements:
                     buff_lv[elem].update(hit_data.to_buffing_units(action_condition_asset))
 
             self.buffs_elemental.append(buff_lv)
@@ -199,13 +194,13 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
             self.buffs_pre_conditioned.append(dict(buff_lv))
 
-    def __post_init__(self, action_condition_asset: ActionConditionAsset):
-        self._init_base_buffs(action_condition_asset)
-        self._init_teammate_coverage_buffs(action_condition_asset)
-        self._init_elemental_buffs(action_condition_asset)
-        self._init_pre_conditioned_buffs(action_condition_asset)
+    def __post_init__(self):
+        self._init_base_buffs(self.asset_action_cond)
+        self._init_teammate_coverage_buffs(self.asset_action_cond)
+        self._init_elemental_buffs(self.asset_action_cond)
+        self._init_pre_conditioned_buffs(self.asset_action_cond)
 
-        super().__post_init__(action_condition_asset)
+        super().__post_init__(self.asset_action_cond)
 
     def with_conditions(self, condition_comp: Optional[SkillConditionComposite] = None) -> SupportiveSkillEntry:
         if not condition_comp:
