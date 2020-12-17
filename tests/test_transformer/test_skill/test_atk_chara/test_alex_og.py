@@ -4,6 +4,34 @@ from dlparse.enums import SkillCondition, SkillConditionComposite
 from dlparse.transformer import SkillTransformer
 
 
+def test_iter_entries_s2(transformer_skill: SkillTransformer):
+    # Original Alex S2
+    # https://dragalialost.gamepedia.com/Alex
+    skill_data = transformer_skill.transform_attacking(103405022)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    # EXNOTE: Not yet 70 MC (2020/12/07), but S2 already have data for 3 levels (lv.3 does not have BK punisher)
+
+    expected_addl_at_max = {
+        SkillConditionComposite(): 2.01 * 3 + 4.02,
+        SkillConditionComposite(SkillCondition.TARGET_BK_STATE): 2.01 * 3 + 4.02,
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert \
+            pytest.approx(expected_addl_at_max[entry.condition_comp]) == entry.total_mod_at_max, \
+            entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
 def test_og_alex_s2(transformer_skill: SkillTransformer):
     # Original Alex S2
     # https://dragalialost.gamepedia.com/Alex

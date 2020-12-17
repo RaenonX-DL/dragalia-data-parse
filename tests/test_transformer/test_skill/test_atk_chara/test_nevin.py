@@ -6,6 +6,78 @@ from dlparse.enums import SkillCondition, SkillConditionComposite
 from dlparse.transformer import SkillTransformer
 
 
+def test_iter_entries_s2_locked(transformer_skill: SkillTransformer):
+    # Nevin S2 @ Sigil locked
+    # https://dragalialost.gamepedia.com/Nevin
+    skill_data = transformer_skill.transform_attacking(103505042)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_max_total_mods = {
+        SkillConditionComposite(SkillCondition.SELF_SIGIL_RELEASED): 10,
+        SkillConditionComposite(SkillCondition.SELF_SIGIL_LOCKED): 10,
+    }
+
+    expected = set(expected_max_total_mods.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert entry.total_mod_at_max == expected_max_total_mods[entry.condition_comp]
+        del expected_max_total_mods[entry.condition_comp]
+
+    assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
+
+
+def test_iter_entries_s2_released(transformer_skill: SkillTransformer):
+    # Nevin S2 @ Sigil released
+    # https://dragalialost.gamepedia.com/Nevin
+    skill_data = transformer_skill.transform_attacking(103505044)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_at_max = {
+        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_0,
+                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_0]): 0,
+        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_0,
+                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_1]): 1,
+        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_0,
+                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 2,
+        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_0,
+                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 3,
+        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_1,
+                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_0]): 3,
+        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_1,
+                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_1]): 4,
+        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_1,
+                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 5,
+        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_1,
+                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 6,
+        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2,
+                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_0]): 6,
+        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2,
+                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_1]): 7,
+        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2,
+                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 8,
+        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2,
+                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 9,
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        expected_total = 10 + expected_addl_at_max[entry.condition_comp]
+
+        assert pytest.approx(expected_total) == entry.total_mod_at_max, entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
 def test_s2_locked(transformer_skill: SkillTransformer):
     # Nevin S2 @ Sigil locked
     # https://dragalialost.gamepedia.com/Nevin

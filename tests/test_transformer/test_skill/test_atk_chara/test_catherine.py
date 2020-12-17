@@ -1,6 +1,37 @@
 import pytest
 
+from dlparse.enums import SkillConditionComposite
 from dlparse.transformer import SkillTransformer
+
+
+def test_iter_entries(transformer_skill: SkillTransformer):
+    skill_id_mods = {
+        105502042: 0.54 * 46,
+        105502043: 0.54 * 58,
+        105502044: 0.54 * 66,
+        105502045: 0.54 * 37 + 1.22 * 37,
+        105502046: 0.54 * 46
+    }
+
+    for skill_id, total_mod in skill_id_mods.items():
+        skill_data = transformer_skill.transform_attacking(skill_id)
+
+        possible_entries = skill_data.get_all_possible_entries()
+
+        expected_max_total_mods = {
+            SkillConditionComposite(): total_mod,
+        }
+
+        expected = set(expected_max_total_mods.keys())
+        actual = {entry.condition_comp for entry in possible_entries}
+
+        assert expected == actual, actual.symmetric_difference(expected)
+
+        for entry in possible_entries:
+            assert entry.total_mod_at_max == pytest.approx(expected_max_total_mods[entry.condition_comp])
+            del expected_max_total_mods[entry.condition_comp]
+
+        assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
 
 
 def test_s2_0_stack_and_as_shared(transformer_skill: SkillTransformer):

@@ -5,6 +5,32 @@ from dlparse.transformer import SkillTransformer
 from tests.utils import DebuffInfo, approx_matrix, check_debuff_unit_match
 
 
+def test_iter_entries_s1(transformer_skill: SkillTransformer):
+    # Nobunaga
+    # https://dragalialost.gamepedia.com/Nobunaga
+    skill_data = transformer_skill.transform_attacking(102501031)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_at_max = {
+        SkillConditionComposite(): 7.13,
+        SkillConditionComposite(SkillCondition.MARK_EXPLODES): 15.65,
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert \
+            pytest.approx(expected_addl_at_max[entry.condition_comp]) == entry.total_mod_at_max, \
+            entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
 def test_s1(transformer_skill: SkillTransformer):
     # Nobunaga
     # https://dragalialost.gamepedia.com/Nobunaga

@@ -5,6 +5,62 @@ from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
 
 
+def test_iter_entries_s1_normal(transformer_skill: SkillTransformer):
+    # Nadine S1
+    # https://dragalialost.gamepedia.com/Nadine
+    skill_data = transformer_skill.transform_attacking(105501021)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_at_max = {
+        SkillConditionComposite(SkillCondition.COVER_TEAMMATE_0): 13.152,
+        SkillConditionComposite(SkillCondition.COVER_TEAMMATE_1): 13.152 + 1.64,
+        SkillConditionComposite(SkillCondition.COVER_TEAMMATE_2): 13.152 + 3.29,
+        SkillConditionComposite(SkillCondition.COVER_TEAMMATE_3): 13.152 + 3.29
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert \
+            pytest.approx(expected_addl_at_max[entry.condition_comp]) == entry.total_mod_at_max, \
+            entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
+def test_iter_entries_s1_trendsetting(transformer_skill: SkillTransformer):
+    # Nadine S1 @ Trendsetting
+    # https://dragalialost.gamepedia.com/Nadine
+    skill_data = transformer_skill.transform_attacking(105501023)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_at_max = {
+        SkillConditionComposite(SkillCondition.COVER_TEAMMATE_0): 4.384 * 3 + 3.29,
+        SkillConditionComposite(SkillCondition.COVER_TEAMMATE_1): 4.384 * 3 + 3.29,
+        SkillConditionComposite(SkillCondition.COVER_TEAMMATE_2): 4.384 * 3 + 5.75,
+        SkillConditionComposite(SkillCondition.COVER_TEAMMATE_3): 4.384 * 3 + 5.75
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert \
+            pytest.approx(expected_addl_at_max[entry.condition_comp]) == entry.total_mod_at_max, \
+            entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
 def test_s1_normal(transformer_skill: SkillTransformer):
     # Nadine S1 normal
     # https://dragalialost.gamepedia.com/Nadine
@@ -51,7 +107,7 @@ def test_s1_normal(transformer_skill: SkillTransformer):
         assert skill_data.max_level == 3
 
 
-def test_s1_enhanced(transformer_skill: SkillTransformer):
+def test_s1_trendsetting(transformer_skill: SkillTransformer):
     # Nadine S1 enhanced by S2
     # https://dragalialost.gamepedia.com/Nadine
     skill_data_base = transformer_skill.transform_attacking(105501023)

@@ -5,6 +5,51 @@ from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
 
 
+def test_iter_entries_s1(transformer_skill: SkillTransformer):
+    # Ramona S1
+    # https://dragalialost.gamepedia.com/Ramona
+    skill_data = transformer_skill.transform_attacking(104501011)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_at_max = {
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_0]): 3.76 + 2.93 * 3 + 2.93 * 0 + 3.76,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_1]): 3.76 + 2.93 * 3 + 2.93 * 1 + 3.76,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_2]): 3.76 + 2.93 * 3 + 2.93 * 2 + 3.76,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_3]): 3.76 + 2.93 * 3 + 2.93 * 3 + 3.76,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_4]): 3.76 + 2.93 * 3 + 2.93 * 4 + 3.76,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_5]): 3.76 + 2.93 * 3 + 2.93 * 5 + 3.76,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_6]): 3.76 + 2.93 * 3 + 2.93 * 6 + 3.76,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_0, SkillCondition.TARGET_BURNED]):
+            4.888 + 3.809 * 3 + 3.809 * 0 + 4.888,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_1, SkillCondition.TARGET_BURNED]):
+            4.888 + 3.809 * 3 + 3.809 * 1 + 4.888,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_2, SkillCondition.TARGET_BURNED]):
+            4.888 + 3.809 * 3 + 3.809 * 2 + 4.888,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_3, SkillCondition.TARGET_BURNED]):
+            4.888 + 3.809 * 3 + 3.809 * 3 + 4.888,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_4, SkillCondition.TARGET_BURNED]):
+            4.888 + 3.809 * 3 + 3.809 * 4 + 4.888,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_5, SkillCondition.TARGET_BURNED]):
+            4.888 + 3.809 * 3 + 3.809 * 5 + 4.888,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_6, SkillCondition.TARGET_BURNED]):
+            4.888 + 3.809 * 3 + 3.809 * 6 + 4.888,
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert \
+            pytest.approx(expected_addl_at_max[entry.condition_comp]) == entry.total_mod_at_max, \
+            entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
 def test_s1(transformer_skill: SkillTransformer):
     # Ramona S1
     # https://dragalialost.gamepedia.com/Ramona

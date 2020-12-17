@@ -3,7 +3,7 @@ from dlparse.transformer import SkillTransformer
 from tests.utils import DebuffInfo, check_debuff_unit_match
 
 
-def test_unstackable_1(transformer_skill: SkillTransformer):
+def test_def_down_unstackable_1(transformer_skill: SkillTransformer):
     # Original Alex S1
     # https://dragalialost.gamepedia.com/Alex
     skill_data = transformer_skill.transform_attacking(103405021).with_conditions()
@@ -29,7 +29,7 @@ def test_unstackable_1(transformer_skill: SkillTransformer):
         check_debuff_unit_match(actual_buffs, expected_buffs)
 
 
-def test_unstackable_2(transformer_skill: SkillTransformer):
+def test_def_down_unstackable_2(transformer_skill: SkillTransformer):
     # Raemond S1
     # https://dragalialost.gamepedia.com/Raemond
     skill_data = transformer_skill.transform_attacking(101304011).with_conditions()
@@ -49,7 +49,7 @@ def test_unstackable_2(transformer_skill: SkillTransformer):
         check_debuff_unit_match(actual_buffs, expected_buffs)
 
 
-def test_stackable(transformer_skill: SkillTransformer):
+def test_def_down_stackable(transformer_skill: SkillTransformer):
     # Curran S1
     # https://dragalialost.gamepedia.com/Curran
     skill_data = transformer_skill.transform_attacking(104505011).with_conditions()
@@ -73,7 +73,7 @@ def test_stackable(transformer_skill: SkillTransformer):
         check_debuff_unit_match(actual_buffs, expected_buffs)
 
 
-def test_elemental_restricted(transformer_skill: SkillTransformer):
+def test_def_down_elemental_restricted(transformer_skill: SkillTransformer):
     # Dragonyule Malora S1
     # https://dragalialost.gamepedia.com/Dragonyule_Malora
     skill_data_base = transformer_skill.transform_attacking(104504021)
@@ -139,7 +139,7 @@ def test_elemental_restricted(transformer_skill: SkillTransformer):
         check_debuff_unit_match(actual_buffs, expected_buffs)
 
 
-def test_area(transformer_skill: SkillTransformer):
+def test_def_down_area(transformer_skill: SkillTransformer):
     # Wedding Elisanne S2
     # https://dragalialost.gamepedia.com/Wedding_Elisanne
     skill_data = transformer_skill.transform_attacking(101503022).with_conditions()
@@ -158,7 +158,7 @@ def test_area(transformer_skill: SkillTransformer):
         check_debuff_unit_match(actual_buffs, expected_buffs)
 
 
-def test_area_only(transformer_skill: SkillTransformer):
+def test_def_down_area_2(transformer_skill: SkillTransformer):
     # Sha Wujing S2
     # https://dragalialost.gamepedia.com/Sha_Wujing
     skill_data = transformer_skill.transform_attacking(105404022).with_conditions()

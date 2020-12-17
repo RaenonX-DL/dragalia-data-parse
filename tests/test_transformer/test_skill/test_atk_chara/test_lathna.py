@@ -5,6 +5,45 @@ from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
 
 
+def test_iter_entries_s1(transformer_skill: SkillTransformer):
+    # Lathna S1
+    # https://dragalialost.gamepedia.com/Lathna
+    skill_data = transformer_skill.transform_attacking(105505021)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_at_max = {
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_0]): 2.61 * 3 + 2.61 * 0 + 2.61,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_1]): 2.61 * 3 + 2.61 * 1 + 2.61,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_2]): 2.61 * 3 + 2.61 * 2 + 2.61,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_3]): 2.61 * 3 + 2.61 * 3 + 2.61,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_4]): 2.61 * 4 + 2.61 * 3 + 2.61,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_0, SkillCondition.TARGET_POISONED]):
+            5.22 * 3 + 5.22 * 0 + 5.22,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_1, SkillCondition.TARGET_POISONED]):
+            5.22 * 3 + 5.22 * 1 + 5.22,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_2, SkillCondition.TARGET_POISONED]):
+            5.22 * 3 + 5.22 * 2 + 5.22,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_3, SkillCondition.TARGET_POISONED]):
+            5.22 * 3 + 5.22 * 3 + 5.22,
+        SkillConditionComposite([SkillCondition.ADDL_INPUT_4, SkillCondition.TARGET_POISONED]):
+            5.22 * 4 + 5.22 * 3 + 5.22,
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        assert \
+            pytest.approx(expected_addl_at_max[entry.condition_comp]) == entry.total_mod_at_max, \
+            entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
 def test_s1(transformer_skill: SkillTransformer):
     # Lathna S1
     # https://dragalialost.gamepedia.com/Lathna
