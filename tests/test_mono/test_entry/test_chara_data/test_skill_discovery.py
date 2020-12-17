@@ -16,11 +16,10 @@ def test_dummy(asset_manager: AssetManager):
 
 
 def test_dummy_with_mode(asset_manager: AssetManager):
-    chara_data = create_dummy(skill_1_id=103505031, skill_2_id=103505032, mode_2_id=12)
+    # Dummy mode change type 99 to indicate modes available
+    chara_data = create_dummy(skill_1_id=103505031, skill_2_id=103505032, mode_change_type=99, mode_2_id=12)
 
     expected_identifiers = [
-        SkillIdEntry(103505031, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
-        SkillIdEntry(103505032, SkillNumber.S2, SkillIdentifierLabel.S2_BASE),
         SkillIdEntry(103505033, SkillNumber.S1, SkillIdentifierLabel.of_mode(SkillNumber.S1, 12)),
         SkillIdEntry(103505034, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, 12))
     ]
@@ -45,7 +44,7 @@ def test_via_phase(asset_manager: AssetManager):
     assert actual_identifiers == expected_identifiers
 
 
-def test_via_mode(asset_manager: AssetManager):
+def test_via_mode_1(asset_manager: AssetManager):
     """
     Get the skill IDs which variants are buried in chara mode data asset.
 
@@ -58,7 +57,6 @@ def test_via_mode(asset_manager: AssetManager):
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
     s1_labels_base = [
-        SkillIdentifierLabel.S1_BASE,
         SkillIdentifierLabel.of_mode(SkillNumber.S1, 26),
         SkillIdentifierLabel.of_mode(SkillNumber.S1, 27),
         SkillIdentifierLabel.of_mode(SkillNumber.S1, 28),
@@ -66,7 +64,6 @@ def test_via_mode(asset_manager: AssetManager):
     ]
 
     s2_labels_base = [
-        SkillIdentifierLabel.S2_BASE,
         SkillIdentifierLabel.SHARED,
         SkillIdentifierLabel.of_mode(SkillNumber.S2, 26)
     ]
@@ -78,6 +75,52 @@ def test_via_mode(asset_manager: AssetManager):
         SkillIdEntry(105502044, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, 28)),  # S2 @ 2 Stacks
         SkillIdEntry(105502045, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, 29)),  # S2 @ 3 Stacks
         SkillIdEntry(105502046, SkillNumber.S1, SkillIdentifierLabel.HELPER)  # S2 as helper
+    ]
+
+    assert actual_identifiers == expected_identifiers
+
+
+def test_via_mode_2(asset_manager: AssetManager):
+    """
+    Get the skill IDs which variants are buried in chara mode data asset.
+
+    Skill IDs can be found in the fields ``_Skill1Id`` and ``_Skill2Id`` of the chara mode data entries.
+    """
+    # Gala Leif
+    # https://dragalialost.gamepedia.com/Gala_Leif
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10150303)
+
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
+
+    expected_identifiers = [
+        SkillIdEntry(101503031, SkillNumber.S1, SkillIdentifierLabel.of_mode(SkillNumber.S1, 22)),
+        SkillIdEntry(101503032, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, 22)),
+        SkillIdEntry(101503033, SkillNumber.S1, SkillIdentifierLabel.of_mode(SkillNumber.S1, 23)),
+        SkillIdEntry(101503034, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, 23)),
+    ]
+
+    assert actual_identifiers == expected_identifiers
+
+
+def test_via_mode_3(asset_manager: AssetManager):
+    """
+    Get the skill IDs which variants are buried in chara mode data asset.
+
+    Skill IDs can be found in the fields ``_Skill1Id`` and ``_Skill2Id`` of the chara mode data entries.
+    """
+    # Valerio
+    # https://dragalialost.gamepedia.com/Valerio
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10250201)
+
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
+
+    expected_identifiers = [
+        SkillIdEntry(102502011, SkillNumber.S1, SkillIdentifierLabel.of_mode(SkillNumber.S1, 4)),
+        SkillIdEntry(102502012, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, 4)),
+        SkillIdEntry(102502013, SkillNumber.S1, SkillIdentifierLabel.of_mode(SkillNumber.S1, 5)),
+        SkillIdEntry(102502014, SkillNumber.S1, SkillIdentifierLabel.of_mode(SkillNumber.S1, 6)),
+        SkillIdEntry(102502015, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, 5)),
+        SkillIdEntry(102502016, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, 6))
     ]
 
     assert actual_identifiers == expected_identifiers
@@ -309,5 +352,3 @@ def test_via_unique_dragon(asset_manager: AssetManager):
     ]
 
     assert actual_identifiers == expected_identifiers
-
-# TODO: For units that start quests with a mode (Mitsuba, Leif), do not return base skill data

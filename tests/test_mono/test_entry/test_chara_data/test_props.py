@@ -34,7 +34,7 @@ def create_dummy(**kwargs) -> CharaDataEntry:
         "plus_atk_5": 0,
         "mc_full_bonus_atk": 0,
         "def_coef": 0,
-        "mode_change_id": 0,
+        "mode_change_type": 0,
         "mode_1_id": 0,
         "mode_2_id": 0,
         "mode_3_id": 0,

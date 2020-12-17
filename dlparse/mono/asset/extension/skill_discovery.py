@@ -206,6 +206,12 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
 
     @property
     @abstractmethod
+    def has_mode_change(self) -> bool:
+        """Check if the character has mode change enabled."""
+        raise NotImplementedError()
+
+    @property
+    @abstractmethod
     def mode_ids(self) -> list[int]:
         """
         Get a list of effective mode IDs.
@@ -485,10 +491,13 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
 
     def _from_base(self) -> list[SkillIdEntry]:
         """Get the base skills."""
-        ret: list[SkillIdEntry] = [
-            SkillIdEntry(self.skill_1_id, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
-            SkillIdEntry(self.skill_2_id, SkillNumber.S2, SkillIdentifierLabel.S2_BASE)
-        ]
+        ret: list[SkillIdEntry] = []
+
+        if not self.has_mode_change:
+            ret.extend([
+                SkillIdEntry(self.skill_1_id, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
+                SkillIdEntry(self.skill_2_id, SkillNumber.S2, SkillIdentifierLabel.S2_BASE)
+            ])
 
         if self.ss_skill_id:
             ret.append(SkillIdEntry(self.ss_skill_id, self.ss_skill_num, SkillIdentifierLabel.SHARED))
@@ -600,7 +609,8 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
 
         ret: list[SkillIdEntry] = self._from_base()
 
-        ret.extend(self._from_mode(asset_manager))
+        if self.has_mode_change:
+            ret.extend(self._from_mode(asset_manager))
         ret.extend(self._from_dragon(asset_manager))
         ret.extend(self._from_skill_ext(asset_manager))
         ret.extend(self._from_ability(asset_manager))

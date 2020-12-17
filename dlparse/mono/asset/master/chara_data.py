@@ -54,8 +54,7 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
     def_coef: float
     # endregion
 
-    mode_change_id: int
-    """Gala Leif, Mitsuba, etc."""
+    mode_change_type: int
     mode_1_id: int
     mode_2_id: int
     mode_3_id: int
@@ -225,6 +224,10 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
         return self.max_atk_at_50
 
     @property
+    def has_mode_change(self) -> bool:
+        return self.mode_change_type != 0
+
+    @property
     def mode_ids(self) -> list[int]:
         """
         Get a list of effective mode IDs.
@@ -362,7 +365,7 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
             plus_atk_5=data["_PlusAtk5"],
             mc_full_bonus_atk=data["_McFullBonusAtk5"],
             def_coef=data["_DefCoef"],
-            mode_change_id=data["_ModeChangeType"],
+            mode_change_type=data["_ModeChangeType"],
             mode_1_id=data["_ModeId1"],
             mode_2_id=data["_ModeId2"],
             mode_3_id=data["_ModeId3"],
