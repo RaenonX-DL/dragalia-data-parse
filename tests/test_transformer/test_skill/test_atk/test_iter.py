@@ -337,27 +337,22 @@ def test_buff_count_data(transformer_skill: SkillTransformer):
 
     possible_entries = skill_data.get_all_possible_entries()
 
-    expected_data = {
-        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_0):
-            (30.10, BuffCountBoostData(0, 0.8, 0.05, 1319, 3, 0.2)),
-        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_1):
-            (36.12, BuffCountBoostData(0.2, 0.8, 0.05, 1319, 2, 0.2)),
-        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_2):
-            (42.14, BuffCountBoostData(0.4, 0.8, 0.05, 1319, 1, 0.2)),
-        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_3):
-            (48.16, BuffCountBoostData(0.6, 0.8, 0.05, 1319, 0, 0.2)),
+    expected_max_total_mods = {
+        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_0): 30.10,
+        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_1): 36.12,
+        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_2): 42.14,
+        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_3): 48.16,
     }
 
-    assert set(expected_data.keys()) == {entry.condition_comp for entry in possible_entries}
+    assert set(expected_max_total_mods.keys()) == {entry.condition_comp for entry in possible_entries}
 
     for entry in possible_entries:
-        expected_total_mods, expected_boost_data = expected_data[entry.condition_comp]
+        expected_total_mods = expected_max_total_mods[entry.condition_comp]
 
         assert entry.total_mod_at_max == pytest.approx(expected_total_mods), entry.condition_comp
-        assert entry.buff_boost_data_mtx[-1] == [expected_boost_data] * 2
-        del expected_data[entry.condition_comp]
+        del expected_max_total_mods[entry.condition_comp]
 
-    assert len(expected_data) == 0, f"Conditions not tested: {set(expected_data.keys())}"
+    assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
 
 
 def test_buff_count_bonus_bullet(transformer_skill: SkillTransformer):
