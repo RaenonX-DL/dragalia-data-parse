@@ -7,6 +7,7 @@ _asset_manager: AssetManager = AssetManager(PATH_LOCAL_DIR_ACTION_ASSET, PATH_LO
 
 def print_atk_data_entry(chara_data, skill_data, skill_entry):
     skill_level = skill_entry.max_level - 1
+    skill_level_prev = skill_level - 1
 
     print(f"# Attacking effects (at max lv) - Conditions: {skill_entry.condition_comp.conditions_sorted}")
     print()
@@ -15,7 +16,8 @@ def print_atk_data_entry(chara_data, skill_data, skill_entry):
         sp_str += f" / SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(skill_level)}"
     print(sp_str)
     print(f"Mods distribution: {skill_entry.mods[skill_level]}")
-    print(f"Total Mods: {skill_entry.total_mod[skill_level]:.0%} ({skill_entry.hit_count[skill_level]} hits)")
+    print(f"Total Mods: {skill_entry.total_mod[skill_level]:.0%} ({skill_entry.hit_count[skill_level]} hits) - "
+          f"{(skill_entry.total_mod[skill_level] / skill_entry.total_mod[skill_level_prev]) - 1:+.2%}")
     print()
 
     afflictions_lv = skill_entry.afflictions[skill_level]
@@ -54,7 +56,7 @@ def print_sup_data_entry(chara_data, skill_data, skill_entry, max_level):
             print(f"Duration: {buff_unit.duration_time} secs")
         if buff_unit.duration_count:
             print(f"{buff_unit.duration_count} stacks (max {buff_unit.max_stack_count})")
-        print()
+    print()
 
 
 def print_skill_id_entry(chara_data, skill_id_entry):
