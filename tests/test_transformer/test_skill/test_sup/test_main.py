@@ -451,7 +451,11 @@ def test_elemental_resistances(transformer_skill: SkillTransformer):
         check_buff_unit_match(actual_buffs, expected_buffs)
 
 
-def test_hp_drain(transformer_skill: SkillTransformer):
+def test_hp_drain():
     # Yue S2
     # https://dragalialost.gamepedia.com/Yue
     pass  # TEST: TBA - Yue S2
+
+
+def test_self_debuff():
+    pass  # TEST: TBA - Durant S2 / Yue S2

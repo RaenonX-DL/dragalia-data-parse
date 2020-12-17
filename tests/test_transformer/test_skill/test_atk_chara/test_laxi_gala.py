@@ -77,7 +77,7 @@ def test_s2_eden(transformer_skill: SkillTransformer):
     assert skill_data.max_level == 2
 
 
-def test_s2_call_fig(transformer_skill: SkillTransformer):
+def test_s2_call_fig():
     # Gala Laxi Fig
     # https://dragalialost.gamepedia.com/Gala_Laxi
     # skill_data_base = transformer_skill.transform_attacking(103501022)
