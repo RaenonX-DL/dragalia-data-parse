@@ -34,7 +34,9 @@ def test_iter_entries_s2_locked(transformer_skill: SkillTransformer):
 def test_iter_entries_s2_released(transformer_skill: SkillTransformer):
     # Nevin S2 @ Sigil released
     # https://dragalialost.gamepedia.com/Nevin
-    skill_data = transformer_skill.transform_attacking(103505044)
+
+    # Not exporting
+    skill_data = transformer_skill.transform_attacking(103505044, is_exporting=False)
 
     possible_entries = skill_data.get_all_possible_entries()
 
@@ -63,6 +65,28 @@ def test_iter_entries_s2_released(transformer_skill: SkillTransformer):
                                  SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 8,
         SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2,
                                  SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 9,
+    }
+
+    expected = set(expected_addl_at_max.keys())
+    actual = {entry.condition_comp for entry in possible_entries}
+
+    assert expected == actual, actual.symmetric_difference(expected)
+
+    for entry in possible_entries:
+        expected_total = 10 + expected_addl_at_max[entry.condition_comp]
+
+        assert pytest.approx(expected_total) == entry.total_mod_at_max, entry.condition_comp
+        del expected_addl_at_max[entry.condition_comp]
+
+    assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+    # Exporting
+    skill_data = transformer_skill.transform_attacking(103505044, is_exporting=True)
+
+    possible_entries = skill_data.get_all_possible_entries()
+
+    expected_addl_at_max = {
+        SkillConditionComposite(): 0,
     }
 
     expected = set(expected_addl_at_max.keys())

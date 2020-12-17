@@ -337,7 +337,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return cond_elems
 
-    def _init_all_possible_conditions_self_others(self):
+    def _init_all_possible_conditions_self_others(self, is_exporting: bool):
         cond_elems: list[set[tuple[SkillCondition, ...]]] = []
 
         # Combo boosts available
@@ -355,11 +355,10 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             cond_elems.append({(combo_cond,) for combo_cond in SkillConditionCategories.self_gauge_filled.members})
 
         # In buff zone boosts available
-        in_buff_zone_available: bool = any(
-            hit_data.is_effective_inside_buff_zone
-            for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
-        )
-        if in_buff_zone_available:
+        if not is_exporting and any(
+                hit_data.is_effective_inside_buff_zone
+                for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
+        ):
             cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_in_buff_zone_self.members})
             cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_in_buff_zone_ally.members})
 
@@ -424,7 +423,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         cond_elems.extend(self._init_all_possible_conditions_target())
         cond_elems.extend(self._init_all_possible_conditions_self_crisis_buff(is_exporting))
-        cond_elems.extend(self._init_all_possible_conditions_self_others())
+        cond_elems.extend(self._init_all_possible_conditions_self_others(is_exporting))
         cond_elems.extend(self._init_all_possible_conditions_skill())
 
         # Add combinations
