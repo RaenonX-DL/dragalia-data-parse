@@ -3,9 +3,9 @@ import pytest
 from dlparse.enums import SkillCondition
 from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError
 from dlparse.model import AttackingSkillDataEntry, SupportiveSkillEntry
-from dlparse.mono.asset import CharaDataAsset, CharaDataEntry
+from dlparse.mono.asset import CharaDataEntry
 from dlparse.mono.manager import AssetManager
-from dlparse.transformer import SkillTransformer
+from dlparse.transformer import AbilityTransformer, SkillTransformer
 from tests.expected_skills_lookup import skill_ids_atk, skill_ids_sup
 
 allowed_no_base_mods_sid = {
@@ -60,10 +60,10 @@ def test_transform_all_attack_skills(transformer_skill: SkillTransformer, asset_
 @pytest.mark.skip("Temporarily skipping total supportive skill transforming check. "
                   "Remove when start working on supportive skills.")
 def test_transform_all_supportive_skills(
-        asset_chara: CharaDataAsset, transformer_skill: SkillTransformer, asset_manager: AssetManager
+        transformer_skill: SkillTransformer, asset_manager: AssetManager
 ):
     skill_ids: list[int] = []
-    for chara_data in asset_chara:
+    for chara_data in asset_manager.asset_chara_data:
         chara_data: CharaDataEntry
 
         if not chara_data.is_playable:
@@ -100,3 +100,10 @@ def test_transform_all_supportive_skills(
 
     assert len(skill_ids_missing) == 0, f"Missing attacking skills (could be more): {set(skill_ids_missing.keys())}"
     assert len(skill_no_buff) == 0, f"Skills without any buffs: {skill_no_buff}"
+
+
+def test_transform_all_character_ability(transformer_ability: AbilityTransformer, asset_manager: AssetManager):
+    for chara_data in asset_manager.asset_chara_data:
+        for ability_id in chara_data.ability_ids_all_level:
+            # FIXME: Check for any unknown conditions
+            ability_data = transformer_ability.transform_ability(ability_id)
