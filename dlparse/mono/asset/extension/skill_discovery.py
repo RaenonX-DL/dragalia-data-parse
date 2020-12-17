@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Union
 
 from dlparse.enums import SkillChainCondition, SkillNumber
 from dlparse.errors import ActionDataNotFoundError, InvalidSkillIdentifierLabelError
+from dlparse.mono.asset.base import MasterEntryBase
 from .skill import SkillEntry
 
 if TYPE_CHECKING:
@@ -83,6 +84,16 @@ class SkillIdentifierLabel:
         """Get the identifier label of FS enhanced by ``enhancer_skill_num``."""
         return f"fs_enhanced_by_{enhancer_skill_num.repr}"
 
+    @staticmethod
+    def chrom_status_for_s1(stack_count: int) -> str:
+        """Get the identifier of Chrom (`10150105`) variant when ``stack_count``."""
+        return f"s1_{stack_count}s"
+
+    @staticmethod
+    def chrom_status_for_s2(stack_count: int, gauge_count: int) -> str:
+        """Get the identifier of Chrom (`10150105`) S2 variant when ``stack_count`` and ``gauge_count``."""
+        return f"s2_{stack_count}s_{gauge_count}g"
+
 
 @dataclass
 class SkillIdEntry:
@@ -137,8 +148,49 @@ class SkillIdEntry:
         return ret
 
 
+# WARNING: Manual discovery should be used **ONLY IF** the skill itself is too complex,
+# and the pattern is unlikely to be re-used again. For example, Chrom (`10150105`).
+_manual_identifiers: dict[int, list[SkillIdEntry]] = {
+    10150105: [
+        SkillIdEntry(
+            101501051, SkillNumber.S1,
+            [SkillIdentifierLabel.chrom_status_for_s1(0)]
+        ),
+        SkillIdEntry(
+            101501052, SkillNumber.S2,
+            [SkillIdentifierLabel.chrom_status_for_s2(1, gauge + 1) for gauge in range(3)]
+        ),
+        SkillIdEntry(
+            101501053, SkillNumber.S2,
+            [SkillIdentifierLabel.chrom_status_for_s2(2, gauge + 1) for gauge in range(3)]
+        ),
+        SkillIdEntry(
+            101501054, SkillNumber.S2,
+            [SkillIdentifierLabel.chrom_status_for_s2(3, gauge + 1) for gauge in range(2)]
+        ),
+        SkillIdEntry(
+            101501055, SkillNumber.S2,
+            [SkillIdentifierLabel.chrom_status_for_s2(3, 3)]
+        ),
+        SkillIdEntry(
+            101501056, SkillNumber.S1,
+            [SkillIdentifierLabel.chrom_status_for_s1(1)]
+        ),
+        SkillIdEntry(
+            101501057, SkillNumber.S1,
+            [SkillIdentifierLabel.chrom_status_for_s1(2), SkillIdentifierLabel.chrom_status_for_s1(3)]
+        )
+    ]
+}
+"""
+Manually defined skill identifiers.
+
+The key is the character ID (an 8-digit number); the value is a list of the skill ID entries.
+"""
+
+
 @dataclass
-class SkillDiscoverableEntry(SkillEntry, ABC):
+class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
     """An interface that allows an entry to discover its possible skills."""
 
     ss_skill_id: int
@@ -541,7 +593,11 @@ class SkillDiscoverableEntry(SkillEntry, ABC):
         return ret
 
     def get_skill_id_entries(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
-        """Get all possible skill ID entries of a character."""
+        """Get all possible skill ID entries of a skill."""
+        if identifiers := _manual_identifiers.get(self.id):
+            # Early return for manual discovery
+            return identifiers
+
         ret: list[SkillIdEntry] = self._from_base()
 
         ret.extend(self._from_mode(asset_manager))
