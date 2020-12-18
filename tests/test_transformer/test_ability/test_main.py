@@ -1,4 +1,6 @@
+from dlparse.enums import BuffParameter, SkillCondition, SkillConditionComposite
 from dlparse.transformer import AbilityTransformer
+from tests.utils import AbilityEffectInfo, check_ability_effect_unit_match
 
 
 def test_all_skill_prep(transformer_ability: AbilityTransformer):
@@ -7,9 +9,18 @@ def test_all_skill_prep(transformer_ability: AbilityTransformer):
 
     ability_data = transformer_ability.transform_ability(721)
 
-    # FIXME: Add some tests to imply the possible usages
-    #   - Keep condition values, only transform "onSkill" to be also the condition
-    #   - Transform effects
-    # FIXME: [PRIO] Steps for dev
-    #   - try transform all
-    #   - find the best internal data structure for exporting
+    cond_quest_start = SkillConditionComposite(SkillCondition.QUEST_START)
+    cond_skill_used = SkillConditionComposite(SkillCondition.SKILL_USED_ALL)
+
+    expected_info = {
+        AbilityEffectInfo(721, cond_quest_start, BuffParameter.SP_CHARGE_PCT_S1, 1),
+        AbilityEffectInfo(721, cond_quest_start, BuffParameter.SP_CHARGE_PCT_S2, 1),
+        AbilityEffectInfo(721, cond_quest_start, BuffParameter.SP_CHARGE_PCT_S3, 1),
+        AbilityEffectInfo(721, cond_quest_start, BuffParameter.SP_CHARGE_PCT_S4, 1),
+        AbilityEffectInfo(723, cond_skill_used, BuffParameter.SP_CHARGE_PCT_S1, 0.05),
+        AbilityEffectInfo(723, cond_skill_used, BuffParameter.SP_CHARGE_PCT_S2, 0.05),
+        AbilityEffectInfo(723, cond_skill_used, BuffParameter.SP_CHARGE_PCT_S3, 0.05),
+        AbilityEffectInfo(723, cond_skill_used, BuffParameter.SP_CHARGE_PCT_S4, 0.05),
+    }
+
+    check_ability_effect_unit_match(ability_data.effect_units, expected_info)

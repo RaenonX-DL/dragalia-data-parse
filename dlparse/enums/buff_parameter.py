@@ -37,25 +37,31 @@ class BuffParameter(Enum):
     """Rate of SP gain. A value of 0.12 means SP +12%."""
     SP_GAIN = 202
     """Immediate SP gain. A value of 100 means get SP 100."""
-    SP_CHARGE_PCT = 203
-    """
-    Immediately charges the SP by certain % of **ALL** skills.
-
-    A value of 0.15 means to refill 15% SP of all skills.
-    """
-    SP_CHARGE_PCT_S1 = 204
+    SP_CHARGE_PCT_S1 = 211
     """
     Immediately charges the SP of **S1**.
 
     A value of 0.15 means to refill 15% SP of S1.
     """
-    SP_CHARGE_PCT_S2 = 205
+    SP_CHARGE_PCT_S2 = 212
     """
     Immediately charges the SP of **S2**.
 
     A value of 0.15 means to refill 15% SP of S2.
     """
-    SP_CHARGE_PCT_USED = 206
+    SP_CHARGE_PCT_S3 = 213
+    """
+    Immediately charges the SP of **S3**.
+
+    A value of 0.15 means to refill 15% SP of S3.
+    """
+    SP_CHARGE_PCT_S4 = 214
+    """
+    Immediately charges the SP of **S4**.
+
+    A value of 0.15 means to refill 15% SP of S4.
+    """
+    SP_CHARGE_PCT_USED = 215
     """
     Immediately charges the SP of the skill that was just used.
 

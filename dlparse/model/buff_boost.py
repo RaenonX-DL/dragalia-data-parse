@@ -1,10 +1,13 @@
 """Buff boosting data model."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from dlparse.enums import SkillConditionComposite
-from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset, HitAttrEntry
-from .hit_dmg import DamagingHitData
+
+if TYPE_CHECKING:
+    from .hit_dmg import DamagingHitData
+    from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset, HitAttrEntry
 
 __all__ = ("BuffCountBoostData", "BuffZoneBoostData")
 
@@ -16,12 +19,6 @@ class BuffBoostData(ABC):
     @abstractmethod
     def __hash__(self):
         raise NotImplementedError()
-
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
-
-        return hash(self) == hash(other)
 
 
 @dataclass(eq=False)
@@ -45,8 +42,8 @@ class BuffCountBoostData(BuffBoostData):
 
     @staticmethod
     def from_hit_attr(
-            hit_attr: HitAttrEntry, condition_comp: SkillConditionComposite,
-            asset_action_cond: ActionConditionAsset, asset_buff_count: BuffCountAsset
+            hit_attr: "HitAttrEntry", condition_comp: SkillConditionComposite,
+            asset_action_cond: "ActionConditionAsset", asset_buff_count: "BuffCountAsset"
     ) -> "BuffCountBoostData":
         """Get the buff count boost data of ``hit_attr``."""
         if not hit_attr.boost_by_buff_count:
@@ -100,7 +97,7 @@ class BuffZoneBoostData(BuffBoostData):
         return hash((self.rate_by_self * 1E5, self.rate_by_ally * 1E5,))
 
     @staticmethod
-    def from_hit_units(hit_data_list: list[DamagingHitData]) -> "BuffZoneBoostData":
+    def from_hit_units(hit_data_list: list["DamagingHitData"]) -> "BuffZoneBoostData":
         """``hit_data_list`` to a buff zone boosting data."""
         rate_by_self = sum(hit_data.mod_on_self_buff_zone for hit_data in hit_data_list)
         rate_by_ally = sum(hit_data.mod_on_ally_buff_zone for hit_data in hit_data_list)

@@ -4,6 +4,7 @@ from typing import Any, Generic, Iterable, Optional, TypeVar, Union
 
 from dlparse.errors import EnumConversionError
 from .items import SkillCondition
+from ..ability_condition import AbilityCondition
 from ..condition_base import ConditionCheckResultMixin
 from ..element import Element
 from ..status import Status
@@ -31,6 +32,7 @@ class SkillConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_ACTION_CONDITION = auto()
     MULTIPLE_GAUGE_FILLED = auto()
     MULTIPLE_LAPIS_CARD = auto()
+    MULTIPLE_MISC = auto()
 
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
     INTERNAL_NOT_TARGET_ELEMENTAL = auto()
@@ -184,7 +186,7 @@ class SkillConditionCategoryTargetNumber(SkillConditionCategory[float]):
 class SkillConditionCategories:
     """Categories for skill conditions (:class:`SkillCondition`)."""
 
-    # region Target
+    # region 1xx - Target
     target_status = SkillConditionCategory[Status](
         {
             # Abnormal statuses
@@ -227,7 +229,7 @@ class SkillConditionCategories:
     )
     # endregion
 
-    # region Self status (general)
+    # region 2xx - Self status (general)
     self_hp_status = SkillConditionCategoryTargetNumber(
         {
             SkillCondition.SELF_HP_1: 0,
@@ -319,7 +321,7 @@ class SkillConditionCategories:
     )
     # endregion
 
-    # region Skill animation/effect
+    # region 3xx - Skill animation/effect
     skill_bullet_hit = SkillConditionCategoryTargetNumber(
         {
             SkillCondition.BULLET_HIT_1: 1,
@@ -389,7 +391,7 @@ class SkillConditionCategories:
     )
     # endregion
 
-    # region Self status (special)
+    # region 4xx - Self status (special)
     action_condition = SkillConditionCategoryTargetNumber(
         {
             # Value is the corresponding Action Condition ID (not necessary means that it needs to exist)
@@ -424,6 +426,17 @@ class SkillConditionCategories:
         SkillConditionMaxCount.SINGLE,
         "Self - gauge status",
         SkillConditionCheckResult.MULTIPLE_LAPIS_CARD
+    )
+    # endregion
+
+    # region 9xx - Miscellaneous
+    misc = SkillConditionCategory[AbilityCondition](
+        {
+            SkillCondition.QUEST_START: AbilityCondition.QUEST_START,
+        },
+        SkillConditionMaxCount.SINGLE,
+        "Miscellaneous",
+        SkillConditionCheckResult.MULTIPLE_MISC
     )
     # endregion
 

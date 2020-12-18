@@ -15,7 +15,7 @@ class SkillCondition(Enum):
 
     NONE = 0
 
-    # region Target
+    # region 1xx - Target
     # region Afflicted
     TARGET_POISONED = 101
     TARGET_BURNED = 102
@@ -54,7 +54,7 @@ class SkillCondition(Enum):
     # endregion
     # endregion
 
-    # region Self status (general)
+    # region 2xx - Self status (general)
     # region HP
     SELF_HP_1 = 200
     """User's HP = 1."""
@@ -139,7 +139,7 @@ class SkillCondition(Enum):
     # endregion
     # endregion
 
-    # region Skill animation/effect
+    # region 3xx - Skill animation/effect
     # region Bullet hit count
     BULLET_HIT_1 = 301
     BULLET_HIT_2 = 302
@@ -194,7 +194,7 @@ class SkillCondition(Enum):
     # endregion
     # endregion
 
-    # region Self status (special)
+    # region 4xx - Self status (special)
     # region Action condition (Sigil released, lapis cards, etc.)
     SELF_SIGIL_LOCKED = 400  # ACID: 1152
     SELF_SIGIL_RELEASED = 401
@@ -210,10 +210,20 @@ class SkillCondition(Enum):
     SELF_GAUGE_FILLED_2 = 452
     # endregion
 
+    # region Skill usage
+    SKILL_USED_S1 = 481
+    SKILL_USED_S2 = 482
+    SKILL_USED_ALL = 489
+    # endregion
+
     # region Special (Energized, inspired)
     SELF_ENERGIZED = 490
-
     # endregion
+    # endregion
+
+    # region 9xx - Miscellaneous (e.g. quest start)
+    QUEST_START = 901
+
     # endregion
 
     def __bool__(self):

@@ -102,7 +102,9 @@ View the data of all given hit attributes.
 
 ### Datamining and data deploying pipeline
 
-- \[SimCord\] qwewqa
+- \[SimCord\] qwewqa / Mustard Yellow
+
+- \[SimCord\] eave
 
 - **\[OM\] [Ryo][GH-ryo]**
 

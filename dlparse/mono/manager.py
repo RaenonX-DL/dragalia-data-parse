@@ -3,8 +3,8 @@ from typing import Optional
 
 from dlparse.transformer import AbilityTransformer, SkillTransformer
 from .asset import (
-    AbilityAsset, ActionConditionAsset, ActionPartsListAsset, BuffCountAsset, CharaDataAsset, CharaModeAsset,
-    DragonDataAsset, HitAttrAsset, PlayerActionInfoAsset, SkillChainAsset, SkillDataAsset, TextAsset,
+    AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionPartsListAsset, BuffCountAsset, CharaDataAsset,
+    CharaModeAsset, DragonDataAsset, HitAttrAsset, PlayerActionInfoAsset, SkillChainAsset, SkillDataAsset, TextAsset,
 )
 from .loader import ActionFileLoader
 
@@ -20,6 +20,7 @@ class AssetManager:
     ):
         # Assets
         self._asset_ability_data: AbilityAsset = AbilityAsset(asset_dir=master_asset_dir)
+        self._asset_ability_limit: AbilityLimitGroupAsset = AbilityLimitGroupAsset(asset_dir=master_asset_dir)
         self._asset_action_cond: ActionConditionAsset = ActionConditionAsset(asset_dir=master_asset_dir)
         self._asset_buff_count: BuffCountAsset = BuffCountAsset(asset_dir=master_asset_dir)
         self._asset_chara_data: CharaDataAsset = CharaDataAsset(asset_dir=master_asset_dir)
@@ -44,6 +45,11 @@ class AssetManager:
     def asset_ability_data(self) -> AbilityAsset:
         """Get the ability data asset."""
         return self._asset_ability_data
+
+    @property
+    def asset_ability_limit(self) -> AbilityLimitGroupAsset:
+        """Get the ability limit data asset."""
+        return self._asset_ability_limit
 
     @property
     def asset_action_cond(self) -> ActionConditionAsset:

@@ -4,7 +4,8 @@ from typing import Optional
 from .base import AppValueError, EntryNotFoundError
 
 __all__ = ("SkillDataNotFoundError", "ActionDataNotFoundError", "TextLabelNotFoundError",
-           "AbilityConditionUnconvertibleError", "BulletMaxCountUnavailableError")
+           "AbilityLimitDataNotFoundError", "AbilityOnSkillUnconvertibleError",
+           "AbilityConditionUnconvertibleError", "BulletMaxCountUnavailableError", "AbilityVariantUnconvertibleError")
 
 
 class SkillDataNotFoundError(EntryNotFoundError):
@@ -35,12 +36,35 @@ class TextLabelNotFoundError(EntryNotFoundError):
         super().__init__(f"Text of label {label} not found")
 
 
+class AbilityLimitDataNotFoundError(EntryNotFoundError):
+    """Error to be raised if the ability limit data is not found."""
+
+    def __init__(self, data_id: int):
+        super().__init__(f"Ability limit data of ID {data_id} not found")
+
+
+class AbilityVariantUnconvertibleError(AppValueError):
+    """Error to be raised if the ability variant cannot be converted to ability variant effect unit."""
+
+    def __init__(self, ability_id: int, variant_type: int):
+        super().__init__(f"Unable to convert ability variant to effect units "
+                         f"(ability ID: {ability_id} / variant type ID {variant_type})")
+
+
 class AbilityConditionUnconvertibleError(AppValueError):
     """Error to be raised if the ability condition cannot be converted to skill condition."""
 
     def __init__(self, ability_condition: int, val_1: float, val_2: float):
         super().__init__(f"Unable to convert ability condition to skill condition "
                          f"(ability condition code: {ability_condition} / val 1: {val_1} / val 2: {val_2})")
+
+
+class AbilityOnSkillUnconvertibleError(AppValueError):
+    """Error to be raised if the on skill field of the ability cannot be converted to skill condition."""
+
+    def __init__(self, ability_id: int, on_skill: int):
+        super().__init__(f"Unable to convert ability on skill condition to skill condition "
+                         f"(ability ID: {ability_id} / on skill: {on_skill}")
 
 
 class BulletMaxCountUnavailableError(AppValueError):

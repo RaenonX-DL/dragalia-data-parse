@@ -1,12 +1,16 @@
 """Classes for handling the ability data."""
 from dataclasses import dataclass, field
-from typing import Optional, TextIO, Union
+from typing import Optional, TextIO, TypeVar, Union
 
-from dlparse.enums import AbilityCondition, AbilityVariantType, SkillCondition, SkillNumber
-from dlparse.errors import AbilityConditionUnconvertibleError
+from dlparse.enums import AbilityCondition, AbilityVariantType, SkillCondition, SkillConditionComposite, SkillNumber
+from dlparse.errors import AbilityConditionUnconvertibleError, AbilityOnSkillUnconvertibleError
+from dlparse.model import AbilityVariantEffectUnit, EffectUnitBase
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
+from .ability_limit_group import AbilityLimitGroupAsset
 
-__all__ = ("AbilityEntry", "AbilityAsset", "AbilityParser")
+__all__ = ("AbilityVariantEntry", "AbilityEntry", "AbilityAsset", "AbilityParser")
+
+T = TypeVar("T", bound=EffectUnitBase)
 
 
 @dataclass
@@ -71,18 +75,27 @@ class AbilityConditionEntry:
         if self.condition_type in (AbilityCondition.SELF_HP_LT, AbilityCondition.SELF_HP_LT_2):
             return self._skill_cond_self_hp_lt()
 
+        # Quest start
+        if self.condition_type == AbilityCondition.QUEST_START:
+            return SkillCondition.QUEST_START
+
         # User energized
         if self.condition_type == AbilityCondition.ENERGIZED_MOMENT:
             return SkillCondition.SELF_ENERGIZED
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
+    @property
+    def is_unknown_condition(self) -> bool:
+        """Check if the condition type is unknown."""
+        return self.condition_type == AbilityCondition.UNKNOWN
+
 
 @dataclass
 class AbilityVariantEntry:
     """A single ability variant class. This class is for a group of fields in :class:`AbilityEntry`."""
 
-    type_enum: AbilityVariantType
+    type_id: int
     id_a: int
     id_b: int
     id_c: int
@@ -91,6 +104,8 @@ class AbilityVariantEntry:
     target_action_id: int
     up_value: float
 
+    type_enum: AbilityVariantType = field(init=False)
+
     # K = min combo count; V = damage boost rate
     # - Highest combo first
     _combo_boost_data: list[tuple[int, float]] = field(default_factory=list)
@@ -98,6 +113,8 @@ class AbilityVariantEntry:
     _skill_boost_data: list[int] = field(default_factory=list)
 
     def __post_init__(self):
+        self.type_enum = AbilityVariantType(self.type_id)
+
         if self.type_enum == AbilityVariantType.DMG_UP_ON_COMBO:
             # Variant type is boost by combo
             for entry in self.id_str.split("/"):
@@ -114,6 +131,21 @@ class AbilityVariantEntry:
     def is_not_used(self) -> bool:
         """Check if the variant is not used."""
         return self.type_enum == AbilityVariantType.NOT_USED
+
+    @property
+    def is_unknown_type(self):
+        """Check if the variant type is unknown."""
+        return self.type_enum == AbilityVariantType.UNKNOWN
+
+    @property
+    def is_boosted_by_combo(self) -> bool:
+        """Check if the variant type is to boost the damage according to the combo count."""
+        return self.type_enum == AbilityVariantType.DMG_UP_ON_COMBO
+
+    @property
+    def is_boosted_by_gauge_status(self) -> bool:
+        """Check if the damage will be boosted according to the gauge status."""
+        return self.type_enum == AbilityVariantType.GAUGE_STATUS
 
     @property
     def assigned_hit_label(self) -> Optional[str]:
@@ -137,16 +169,6 @@ class AbilityVariantEntry:
             (self.id_a, SkillNumber.s1_s2_only(self.target_action_id - 2))
             if self.type_enum == AbilityVariantType.ENHANCE_SKILL else None
         )
-
-    @property
-    def is_boosted_by_combo(self) -> bool:
-        """Check if the variant type is to boost the damage according to the combo count."""
-        return self.type_enum == AbilityVariantType.DMG_UP_ON_COMBO
-
-    @property
-    def is_boosted_by_gauge_status(self) -> bool:
-        """Check if the damage will be boosted according to the gauge status."""
-        return self.type_enum == AbilityVariantType.GAUGE_STATUS
 
     def get_boost_by_combo(self, combo_count: int) -> float:
         """
@@ -181,6 +203,8 @@ class AbilityEntry(MasterEntryBase):
     details_label: str
 
     condition: AbilityConditionEntry
+
+    on_skill: int
 
     variant_1: AbilityVariantEntry
     variant_2: AbilityVariantEntry
@@ -224,6 +248,29 @@ class AbilityEntry(MasterEntryBase):
         return [variant for variant in (self.variant_1, self.variant_2, self.variant_3) if not variant.is_not_used]
 
     @property
+    def on_skill_condition(self) -> SkillCondition:
+        """
+        Convert the on skill field to its corresponding skill condition.
+
+        :raises AbilityOnSkillUnconvertibleError: unable to convert on skill condition to skill condition
+        """
+        # Value of `3` is a legacy one, usage unknown, currently no units are using it (2020/12/18)
+
+        if self.on_skill == 0:
+            return SkillCondition.NONE
+
+        if self.on_skill == 1:
+            return SkillCondition.SKILL_USED_S1
+
+        if self.on_skill == 2:
+            return SkillCondition.SKILL_USED_S2
+
+        if self.on_skill == 99:
+            return SkillCondition.SKILL_USED_ALL
+
+        raise AbilityOnSkillUnconvertibleError(self.id, self.on_skill)
+
+    @property
     def is_boost_by_combo(self) -> bool:
         """Check if the damage will be boosted according to the current combo count."""
         return any(variant.is_boosted_by_combo for variant in self.variants)
@@ -232,6 +279,21 @@ class AbilityEntry(MasterEntryBase):
     def is_boost_by_gauge_status(self) -> bool:
         """Check if the damage will be boosted according to the gauge status."""
         return any(variant.is_boosted_by_gauge_status for variant in self.variants)
+
+    @property
+    def is_unknown_condition(self) -> bool:
+        """Check if the ability condition is unknown."""
+        return self.condition.is_unknown_condition
+
+    @property
+    def has_unknown_variant(self) -> bool:
+        """Check if any of the ability variants is unknown."""
+        return any(variant.is_unknown_type for variant in self.variants)
+
+    @property
+    def has_unknown_elements(self) -> bool:
+        """Check if the ability data contains any unknown variants or condition."""
+        return self.is_unknown_condition or self.has_unknown_variant
 
     def get_variants(self, ability_asset: "AbilityAsset") -> list[AbilityVariantEntry]:
         """Get all variants bound to the ability."""
@@ -276,6 +338,28 @@ class AbilityEntry(MasterEntryBase):
         """
         return sum(variant.get_boost_by_gauge_filled_dmg(gauge_filled) for variant in self.variants)
 
+    def to_effect_units(self, asset_ability_limit: AbilityLimitGroupAsset) -> set[T]:
+        """Convert the current ability effects (usually in the variants) to effect units."""
+        effect_units: set[T] = set()
+
+        for variant in self.variants:
+            if variant.type_enum == AbilityVariantType.OTHER_ABILITY:
+                continue  # Refer to the other ability, no variant effect
+
+            # Get the conditions
+            conditions: list[SkillCondition] = []
+            if on_skill_cond := self.on_skill_condition:
+                conditions.append(on_skill_cond)
+            if ability_cond := self.condition.to_skill_condition():
+                conditions.append(ability_cond)
+
+            effect_units.update(AbilityVariantEffectUnit.from_ability_variant(
+                variant, self.id, SkillConditionComposite(conditions),
+                asset_ability_limit=asset_ability_limit,
+            ))
+
+        return effect_units
+
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "AbilityEntry":
         return AbilityEntry(
@@ -285,19 +369,20 @@ class AbilityEntry(MasterEntryBase):
             condition=AbilityConditionEntry(
                 data["_ConditionType"], data["_ConditionValue"], data["_ConditionValue2"]
             ),
+            on_skill=data["_OnSkill"],
             variant_1=AbilityVariantEntry(
-                AbilityVariantType(data["_AbilityType1"]),
+                data["_AbilityType1"],
                 data["_VariousId1a"], data["_VariousId1b"], data["_VariousId1c"],
                 data["_VariousId1str"], data["_AbilityLimitedGroupId1"], data["_TargetAction1"],
                 data["_AbilityType1UpValue"]
             ),
             variant_2=AbilityVariantEntry(
-                AbilityVariantType(data["_AbilityType2"]),
+                data["_AbilityType2"],
                 data["_VariousId2a"], data["_VariousId2b"], data["_VariousId2c"],
                 data["_VariousId2str"], data["_AbilityLimitedGroupId2"], data["_TargetAction2"],
                 data["_AbilityType2UpValue"]),
             variant_3=AbilityVariantEntry(
-                AbilityVariantType(data["_AbilityType3"]),
+                data["_AbilityType3"],
                 data["_VariousId3a"], data["_VariousId3b"], data["_VariousId3c"],
                 data["_VariousId3str"], data["_AbilityLimitedGroupId3"], data["_TargetAction3"],
                 data["_AbilityType3UpValue"]

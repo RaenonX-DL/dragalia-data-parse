@@ -31,13 +31,13 @@ Each variant has at most 1 string affiliated. Empty string `""` for not used.
 
 Field: `_VariousIdNstr`. For example, `_VariousId1str` for the string affiliated of the 1st variant.
 
-### Variant Limited Group
+### Variant Limit Group
 
 Each variant has at most 1 group ID affliated. `0` for not used.
 
 Field: `_AbilityLimitedGroupIdN`. For example, `_AbilityLimitedGroupId1` for the 1st variant.
 
-> Used for limiting the up value.
+> This is used for limiting the value. More information of the group ID can be found in `AbilityLimitedGroup.json`.
 
 ### Variant Target Action
 
@@ -76,7 +76,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 <a href="#14---changestate">14. ChangeState</a>
 15. ResistInstantDeath
 16. DebuffGrantUp
-17. SpCharge
+<a href="#17---spcharge">17. SpCharge</a>
 18. BuffExtension
 19. DebuffExtension
 20. AbnormalKiller
@@ -160,6 +160,20 @@ A value of `888` means that to call the action condition ID `888` once the condi
 The hit attribute to be called (if given).
 
 A value of `BUF_222_LV01` means that to call the hit attribute `BUF_222_LV01` once the condition satisifes.
+
+### `17` - `SpCharge`
+
+Charge all SP gauges.
+
+### Variant Limit Group
+
+ID of the value limiting group.
+
+# Variant Up Value
+
+The percentage of the SP to charge for all skills.
+
+A value of `100` means to charge all skills with 100% SP (immediately ready the skill).
 
 ### `40` - `ActiveGaugeStatusUp`
 

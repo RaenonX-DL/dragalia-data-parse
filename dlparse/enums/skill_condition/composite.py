@@ -26,7 +26,11 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         SkillCondition.TARGET_OD_STATE,
         SkillCondition.TARGET_BK_STATE,
         SkillCondition.MARK_EXPLODES,
-        SkillCondition.SELF_ENERGIZED
+        SkillCondition.SELF_ENERGIZED,
+        SkillCondition.SKILL_USED_S1,
+        SkillCondition.SKILL_USED_S2,
+        SkillCondition.SKILL_USED_ALL,
+        SkillCondition.QUEST_START
     }
 
     # region Target
