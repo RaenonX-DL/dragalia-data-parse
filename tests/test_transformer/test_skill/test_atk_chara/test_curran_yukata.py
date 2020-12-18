@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite
+from dlparse.enums import Condition, ConditionCategories, ConditionComposite
 from dlparse.errors import BulletEndOfLifeError
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
@@ -26,23 +26,23 @@ def test_iter_entries_s1_unmasked(transformer_skill: SkillTransformer):
     ]
 
     expected_max_total_mods = {
-        SkillConditionComposite(SkillCondition.BULLET_HIT_1): pytest.approx(lv_3_single_no_affliction * dmg_ups[0]),
-        SkillConditionComposite(SkillCondition.BULLET_HIT_2): pytest.approx(lv_3_single_no_affliction * dmg_ups[1]),
-        SkillConditionComposite(SkillCondition.BULLET_HIT_3): pytest.approx(lv_3_single_no_affliction * dmg_ups[2]),
-        SkillConditionComposite(SkillCondition.BULLET_HIT_4): pytest.approx(lv_3_single_no_affliction * dmg_ups[3]),
-        SkillConditionComposite(SkillCondition.BULLET_HIT_5): pytest.approx(lv_3_single_no_affliction * dmg_ups[4]),
-        SkillConditionComposite(SkillCondition.BULLET_HIT_6): pytest.approx(lv_3_single_no_affliction * dmg_ups[5]),
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.BULLET_HIT_1]):
+        ConditionComposite(Condition.BULLET_HIT_1): pytest.approx(lv_3_single_no_affliction * dmg_ups[0]),
+        ConditionComposite(Condition.BULLET_HIT_2): pytest.approx(lv_3_single_no_affliction * dmg_ups[1]),
+        ConditionComposite(Condition.BULLET_HIT_3): pytest.approx(lv_3_single_no_affliction * dmg_ups[2]),
+        ConditionComposite(Condition.BULLET_HIT_4): pytest.approx(lv_3_single_no_affliction * dmg_ups[3]),
+        ConditionComposite(Condition.BULLET_HIT_5): pytest.approx(lv_3_single_no_affliction * dmg_ups[4]),
+        ConditionComposite(Condition.BULLET_HIT_6): pytest.approx(lv_3_single_no_affliction * dmg_ups[5]),
+        ConditionComposite([Condition.TARGET_PARALYZED, Condition.BULLET_HIT_1]):
             pytest.approx(lv_3_single_paralyzed * dmg_ups[0]),
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.BULLET_HIT_2]):
+        ConditionComposite([Condition.TARGET_PARALYZED, Condition.BULLET_HIT_2]):
             pytest.approx(lv_3_single_paralyzed * dmg_ups[1]),
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.BULLET_HIT_3]):
+        ConditionComposite([Condition.TARGET_PARALYZED, Condition.BULLET_HIT_3]):
             pytest.approx(lv_3_single_paralyzed * dmg_ups[2]),
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.BULLET_HIT_4]):
+        ConditionComposite([Condition.TARGET_PARALYZED, Condition.BULLET_HIT_4]):
             pytest.approx(lv_3_single_paralyzed * dmg_ups[3]),
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.BULLET_HIT_5]):
+        ConditionComposite([Condition.TARGET_PARALYZED, Condition.BULLET_HIT_5]):
             pytest.approx(lv_3_single_paralyzed * dmg_ups[4]),
-        SkillConditionComposite([SkillCondition.TARGET_PARALYZED, SkillCondition.BULLET_HIT_6]):
+        ConditionComposite([Condition.TARGET_PARALYZED, Condition.BULLET_HIT_6]):
             pytest.approx(lv_3_single_paralyzed * dmg_ups[5]),
     }
 
@@ -65,10 +65,10 @@ def test_s1_over_bullet_count(transformer_skill: SkillTransformer):
 
     # 7 Bullets (already ended)
     with pytest.raises(BulletEndOfLifeError):
-        skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.BULLET_HIT_7))
+        skill_data_base.with_conditions(ConditionComposite(Condition.BULLET_HIT_7))
     # 8 Bullets (already ended)
     with pytest.raises(BulletEndOfLifeError):
-        skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.BULLET_HIT_8))
+        skill_data_base.with_conditions(ConditionComposite(Condition.BULLET_HIT_8))
 
 
 def test_s1_unmasked_no_affliction(transformer_skill: SkillTransformer):
@@ -103,18 +103,18 @@ def test_s1_unmasked_no_affliction(transformer_skill: SkillTransformer):
 
     # Different bullet hit count
     dmg_up_rate = {
-        SkillCondition.BULLET_HIT_1: sum(0.55 ** deterioration_count for deterioration_count in range(1)),
-        SkillCondition.BULLET_HIT_2: sum(0.55 ** deterioration_count for deterioration_count in range(2)),
-        SkillCondition.BULLET_HIT_3: sum(0.55 ** deterioration_count for deterioration_count in range(3)),
-        SkillCondition.BULLET_HIT_4: sum(0.55 ** deterioration_count for deterioration_count in range(4)),
-        SkillCondition.BULLET_HIT_5: sum(0.55 ** deterioration_count for deterioration_count in range(5)),
-        SkillCondition.BULLET_HIT_6: sum(0.55 ** deterioration_count for deterioration_count in range(6)),
+        Condition.BULLET_HIT_1: sum(0.55 ** deterioration_count for deterioration_count in range(1)),
+        Condition.BULLET_HIT_2: sum(0.55 ** deterioration_count for deterioration_count in range(2)),
+        Condition.BULLET_HIT_3: sum(0.55 ** deterioration_count for deterioration_count in range(3)),
+        Condition.BULLET_HIT_4: sum(0.55 ** deterioration_count for deterioration_count in range(4)),
+        Condition.BULLET_HIT_5: sum(0.55 ** deterioration_count for deterioration_count in range(5)),
+        Condition.BULLET_HIT_6: sum(0.55 ** deterioration_count for deterioration_count in range(6)),
     }
 
     for condition, up_rate in dmg_up_rate.items():
-        skill_data = skill_data_base.with_conditions(SkillConditionComposite(condition))
+        skill_data = skill_data_base.with_conditions(ConditionComposite(condition))
 
-        bullet_hit_count = SkillConditionCategories.skill_bullet_hit.convert(condition)
+        bullet_hit_count = ConditionCategories.skill_bullet_hit.convert(condition)
         hits_conditioned = hits_expected * bullet_hit_count
 
         assert skill_data.hit_count == [hits_conditioned, hits_conditioned, hits_conditioned]
@@ -158,7 +158,7 @@ def test_s1_unmasked_paralyzed(transformer_skill: SkillTransformer):
     hits_expected = 3
 
     # Base data - (1 hit for each bullets)
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_PARALYZED))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_PARALYZED))
 
     assert skill_data.hit_count == [hits_expected, hits_expected, hits_expected]
     assert skill_data.hit_count_at_max == hits_expected
@@ -178,19 +178,19 @@ def test_s1_unmasked_paralyzed(transformer_skill: SkillTransformer):
 
     # Different bullet hit count
     dmg_up_rate = {
-        SkillCondition.BULLET_HIT_1: sum(0.55 ** deterioration_count for deterioration_count in range(1)),
-        SkillCondition.BULLET_HIT_2: sum(0.55 ** deterioration_count for deterioration_count in range(2)),
-        SkillCondition.BULLET_HIT_3: sum(0.55 ** deterioration_count for deterioration_count in range(3)),
-        SkillCondition.BULLET_HIT_4: sum(0.55 ** deterioration_count for deterioration_count in range(4)),
-        SkillCondition.BULLET_HIT_5: sum(0.55 ** deterioration_count for deterioration_count in range(5)),
-        SkillCondition.BULLET_HIT_6: sum(0.55 ** deterioration_count for deterioration_count in range(6)),
+        Condition.BULLET_HIT_1: sum(0.55 ** deterioration_count for deterioration_count in range(1)),
+        Condition.BULLET_HIT_2: sum(0.55 ** deterioration_count for deterioration_count in range(2)),
+        Condition.BULLET_HIT_3: sum(0.55 ** deterioration_count for deterioration_count in range(3)),
+        Condition.BULLET_HIT_4: sum(0.55 ** deterioration_count for deterioration_count in range(4)),
+        Condition.BULLET_HIT_5: sum(0.55 ** deterioration_count for deterioration_count in range(5)),
+        Condition.BULLET_HIT_6: sum(0.55 ** deterioration_count for deterioration_count in range(6)),
     }
 
     for condition, up_rate in dmg_up_rate.items():
         skill_data = skill_data_base.with_conditions(
-            SkillConditionComposite((SkillCondition.TARGET_PARALYZED, condition)))
+            ConditionComposite((Condition.TARGET_PARALYZED, condition)))
 
-        bullet_hit_count = SkillConditionCategories.skill_bullet_hit.convert(condition)
+        bullet_hit_count = ConditionCategories.skill_bullet_hit.convert(condition)
         hits_conditioned = hits_expected * bullet_hit_count
 
         assert skill_data.hit_count == [hits_conditioned, hits_conditioned, hits_conditioned]
@@ -254,18 +254,18 @@ def test_s1_masked_no_affliction(transformer_skill: SkillTransformer):
 
     # Different bullet hit count
     dmg_up_rate = {
-        SkillCondition.BULLET_HIT_1: sum(0.55 ** deterioration_count for deterioration_count in range(1)),
-        SkillCondition.BULLET_HIT_2: sum(0.55 ** deterioration_count for deterioration_count in range(2)),
-        SkillCondition.BULLET_HIT_3: sum(0.55 ** deterioration_count for deterioration_count in range(3)),
-        SkillCondition.BULLET_HIT_4: sum(0.55 ** deterioration_count for deterioration_count in range(4)),
-        SkillCondition.BULLET_HIT_5: sum(0.55 ** deterioration_count for deterioration_count in range(5)),
-        SkillCondition.BULLET_HIT_6: sum(0.55 ** deterioration_count for deterioration_count in range(6)),
+        Condition.BULLET_HIT_1: sum(0.55 ** deterioration_count for deterioration_count in range(1)),
+        Condition.BULLET_HIT_2: sum(0.55 ** deterioration_count for deterioration_count in range(2)),
+        Condition.BULLET_HIT_3: sum(0.55 ** deterioration_count for deterioration_count in range(3)),
+        Condition.BULLET_HIT_4: sum(0.55 ** deterioration_count for deterioration_count in range(4)),
+        Condition.BULLET_HIT_5: sum(0.55 ** deterioration_count for deterioration_count in range(5)),
+        Condition.BULLET_HIT_6: sum(0.55 ** deterioration_count for deterioration_count in range(6)),
     }
 
     for condition, up_rate in dmg_up_rate.items():
-        skill_data = skill_data_base.with_conditions(SkillConditionComposite(condition))
+        skill_data = skill_data_base.with_conditions(ConditionComposite(condition))
 
-        bullet_hit_count = SkillConditionCategories.skill_bullet_hit.convert(condition)
+        bullet_hit_count = ConditionCategories.skill_bullet_hit.convert(condition)
         hits_conditioned = hits_expected * bullet_hit_count
 
         assert skill_data.hit_count == [hits_conditioned, hits_conditioned, hits_conditioned]
@@ -309,7 +309,7 @@ def test_s1_masked_paralyzed(transformer_skill: SkillTransformer):
     hits_expected = 5
 
     # Base data - (1 hit for each bullets)
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_PARALYZED))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_PARALYZED))
 
     assert skill_data.hit_count == [hits_expected, hits_expected, hits_expected]
     assert skill_data.hit_count_at_max == hits_expected
@@ -329,19 +329,19 @@ def test_s1_masked_paralyzed(transformer_skill: SkillTransformer):
 
     # Different bullet hit count
     dmg_up_rate = {
-        SkillCondition.BULLET_HIT_1: sum(0.55 ** deterioration_count for deterioration_count in range(1)),
-        SkillCondition.BULLET_HIT_2: sum(0.55 ** deterioration_count for deterioration_count in range(2)),
-        SkillCondition.BULLET_HIT_3: sum(0.55 ** deterioration_count for deterioration_count in range(3)),
-        SkillCondition.BULLET_HIT_4: sum(0.55 ** deterioration_count for deterioration_count in range(4)),
-        SkillCondition.BULLET_HIT_5: sum(0.55 ** deterioration_count for deterioration_count in range(5)),
-        SkillCondition.BULLET_HIT_6: sum(0.55 ** deterioration_count for deterioration_count in range(6)),
+        Condition.BULLET_HIT_1: sum(0.55 ** deterioration_count for deterioration_count in range(1)),
+        Condition.BULLET_HIT_2: sum(0.55 ** deterioration_count for deterioration_count in range(2)),
+        Condition.BULLET_HIT_3: sum(0.55 ** deterioration_count for deterioration_count in range(3)),
+        Condition.BULLET_HIT_4: sum(0.55 ** deterioration_count for deterioration_count in range(4)),
+        Condition.BULLET_HIT_5: sum(0.55 ** deterioration_count for deterioration_count in range(5)),
+        Condition.BULLET_HIT_6: sum(0.55 ** deterioration_count for deterioration_count in range(6)),
     }
 
     for condition, up_rate in dmg_up_rate.items():
         skill_data = skill_data_base.with_conditions(
-            SkillConditionComposite((SkillCondition.TARGET_PARALYZED, condition)))
+            ConditionComposite((Condition.TARGET_PARALYZED, condition)))
 
-        bullet_hit_count = SkillConditionCategories.skill_bullet_hit.convert(condition)
+        bullet_hit_count = ConditionCategories.skill_bullet_hit.convert(condition)
         hits_conditioned = hits_expected * bullet_hit_count
 
         assert skill_data.hit_count == [hits_conditioned, hits_conditioned, hits_conditioned]
@@ -412,7 +412,7 @@ def test_s2_masked_paralyzed(transformer_skill: SkillTransformer):
     hits_expected = 30
 
     # Base data - (1 hit for each bullets)
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_PARALYZED))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_PARALYZED))
 
     assert skill_data.hit_count == [hits_expected, hits_expected]
     assert skill_data.hit_count_at_max == hits_expected

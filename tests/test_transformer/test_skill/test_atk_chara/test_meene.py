@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.enums import Condition, ConditionComposite
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
 
@@ -13,16 +13,16 @@ def test_iter_entries_s2(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        SkillConditionComposite([SkillCondition.BULLETS_ON_MAP_0]): 1.67 * 0,
-        SkillConditionComposite([SkillCondition.BULLETS_ON_MAP_1]): 1.67 * 1,
-        SkillConditionComposite([SkillCondition.BULLETS_ON_MAP_2]): 1.67 * 2,
-        SkillConditionComposite([SkillCondition.BULLETS_ON_MAP_3]): 1.67 * 3,
-        SkillConditionComposite([SkillCondition.BULLETS_ON_MAP_4]): 1.67 * 4,
-        SkillConditionComposite([SkillCondition.BULLETS_ON_MAP_5]): 1.67 * 5,
-        SkillConditionComposite([SkillCondition.BULLETS_ON_MAP_6]): 1.67 * 6,
-        SkillConditionComposite([SkillCondition.BULLETS_ON_MAP_7]): 1.67 * 7,
-        SkillConditionComposite([SkillCondition.BULLETS_ON_MAP_8]): 1.67 * 8,
-        SkillConditionComposite([SkillCondition.BULLETS_ON_MAP_9]): 1.67 * 9,
+        ConditionComposite([Condition.BULLETS_ON_MAP_0]): 1.67 * 0,
+        ConditionComposite([Condition.BULLETS_ON_MAP_1]): 1.67 * 1,
+        ConditionComposite([Condition.BULLETS_ON_MAP_2]): 1.67 * 2,
+        ConditionComposite([Condition.BULLETS_ON_MAP_3]): 1.67 * 3,
+        ConditionComposite([Condition.BULLETS_ON_MAP_4]): 1.67 * 4,
+        ConditionComposite([Condition.BULLETS_ON_MAP_5]): 1.67 * 5,
+        ConditionComposite([Condition.BULLETS_ON_MAP_6]): 1.67 * 6,
+        ConditionComposite([Condition.BULLETS_ON_MAP_7]): 1.67 * 7,
+        ConditionComposite([Condition.BULLETS_ON_MAP_8]): 1.67 * 8,
+        ConditionComposite([Condition.BULLETS_ON_MAP_9]): 1.67 * 9,
     }
 
     expected = set(expected_addl_at_max.keys())
@@ -45,16 +45,16 @@ def test_s2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503032)
 
     addl_hits = {
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_0): 0,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_1): 1,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_2): 2,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_3): 3,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_4): 4,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_5): 5,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_6): 6,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_7): 7,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_8): 8,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_9): 9,
+        ConditionComposite(Condition.BULLETS_ON_MAP_0): 0,
+        ConditionComposite(Condition.BULLETS_ON_MAP_1): 1,
+        ConditionComposite(Condition.BULLETS_ON_MAP_2): 2,
+        ConditionComposite(Condition.BULLETS_ON_MAP_3): 3,
+        ConditionComposite(Condition.BULLETS_ON_MAP_4): 4,
+        ConditionComposite(Condition.BULLETS_ON_MAP_5): 5,
+        ConditionComposite(Condition.BULLETS_ON_MAP_6): 6,
+        ConditionComposite(Condition.BULLETS_ON_MAP_7): 7,
+        ConditionComposite(Condition.BULLETS_ON_MAP_8): 8,
+        ConditionComposite(Condition.BULLETS_ON_MAP_9): 9,
     }
 
     for cond_comp, bonus_hits in addl_hits.items():
@@ -81,16 +81,16 @@ def test_s2_6_plus_butterflies(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503036)
 
     addl_hits = {
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_0): 0,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_1): 1,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_2): 2,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_3): 3,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_4): 4,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_5): 5,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_6): 6,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_7): 7,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_8): 8,
-        SkillConditionComposite(SkillCondition.BULLETS_ON_MAP_9): 9,
+        ConditionComposite(Condition.BULLETS_ON_MAP_0): 0,
+        ConditionComposite(Condition.BULLETS_ON_MAP_1): 1,
+        ConditionComposite(Condition.BULLETS_ON_MAP_2): 2,
+        ConditionComposite(Condition.BULLETS_ON_MAP_3): 3,
+        ConditionComposite(Condition.BULLETS_ON_MAP_4): 4,
+        ConditionComposite(Condition.BULLETS_ON_MAP_5): 5,
+        ConditionComposite(Condition.BULLETS_ON_MAP_6): 6,
+        ConditionComposite(Condition.BULLETS_ON_MAP_7): 7,
+        ConditionComposite(Condition.BULLETS_ON_MAP_8): 8,
+        ConditionComposite(Condition.BULLETS_ON_MAP_9): 9,
     }
 
     for cond_comp, bonus_hits in addl_hits.items():

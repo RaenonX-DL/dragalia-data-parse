@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillConditionCategories, SkillConditionComposite
+from dlparse.enums import ConditionCategories, ConditionComposite
 from dlparse.transformer import SkillTransformer
 
 
@@ -17,9 +17,9 @@ def test_s2(transformer_skill: SkillTransformer):
     per_buff_max = [8, 8]
 
     for buff_count in range(10):  # Arbitrarily chosen, should not give any errors
-        buff_count_cond = SkillConditionCategories.self_buff_count.convert_reversed(buff_count)
+        buff_count_cond = ConditionCategories.self_buff_count.convert_reversed(buff_count)
 
-        skill_data = skill_data_base.with_conditions(SkillConditionComposite(buff_count_cond))
+        skill_data = skill_data_base.with_conditions(ConditionComposite(buff_count_cond))
 
         expected_hits = [len(mods_lv) + min(buff_count, per_buff_max[lv_idx])
                          for lv_idx, mods_lv in enumerate(base_mods)]

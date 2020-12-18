@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from itertools import product
 from typing import Optional
 
-from dlparse.enums import Element, SkillCondition, SkillConditionCategories, SkillConditionComposite
+from dlparse.enums import Condition, ConditionCategories, ConditionComposite, Element
 from dlparse.mono.asset import ActionConditionAsset
 from .effect_action_cond import ActionConditionEffectUnit
 from .hit_buff import BuffingHitData
@@ -62,12 +62,12 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
     Calling ``buffs_elemental[skill_lv][element_enum]`` will return a set of buffs at ``skill_lv``
     when the target element is ``element_enum``.
     """
-    buffs_pre_conditioned: list[dict[SkillCondition, set[ActionConditionEffectUnit]]] = field(init=False)
+    buffs_pre_conditioned: list[dict[Condition, set[ActionConditionEffectUnit]]] = field(init=False)
     """
     Buffs to be granted only if the condition matches.
 
-    Calling ``buffs_hp_condition[skill_lv][skill_condition]`` will return a set of buffs at ``skill_lv``
-    when the target condition matches ``skill_condition``.
+    Calling ``buffs_hp_condition[skill_lv][condition]`` will return a set of buffs at ``skill_lv``
+    when the target condition matches ``condition``.
     """
 
     def _init_all_possible_conditions(self, action_condition_asset: ActionConditionAsset):
@@ -85,23 +85,23 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
         )
 
         # Initialization
-        cond_elems: list[set[tuple[SkillCondition, ...]]] = self._init_possible_conditions_base_elems()
+        cond_elems: list[set[tuple[Condition, ...]]] = self._init_possible_conditions_base_elems()
 
         # Teammate coverage conditions available
         if has_teammate_coverage:
             cond_elems.append({(teammate_coverage_cond,) for teammate_coverage_cond
-                               in SkillConditionCategories.skill_teammates_covered.members})
+                               in ConditionCategories.skill_teammates_covered.members})
 
         # Elemental restriction available
         if has_elemental_restriction:
             cond_elems.append({(target_element_cond,)
-                               for target_element_cond in SkillConditionCategories.target_element.members
-                               if any(buffs_lv[SkillConditionCategories.target_element.convert(target_element_cond)]
+                               for target_element_cond in ConditionCategories.target_element.members
+                               if any(buffs_lv[ConditionCategories.target_element.convert(target_element_cond)]
                                       for buffs_lv in self.buffs_elemental)})
 
         # Add combinations
         self.possible_conditions = {
-            SkillConditionComposite(tuple(subitem for item in item_combination for subitem in item))
+            ConditionComposite(tuple(subitem for item in item_combination for subitem in item))
             for item_combination in product(*cond_elems)
         }
 
@@ -133,7 +133,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
     def _init_teammate_coverage_buffs(self, action_condition_asset: ActionConditionAsset):
         self.buffs_teammate_coverage: list[list[set[ActionConditionEffectUnit]]] = []
 
-        teammate_coverage_counts = SkillConditionCategories.skill_teammates_covered.targets
+        teammate_coverage_counts = ConditionCategories.skill_teammates_covered.targets
 
         for hit_data_lv in self.hit_data_mtx:
             buff_lv: list[set[ActionConditionEffectUnit]] = [set() for _ in teammate_coverage_counts]
@@ -184,10 +184,10 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
             self.buffs_elemental.append(buff_lv)
 
     def _init_pre_conditioned_buffs(self, action_condition_asset: ActionConditionAsset):
-        self.buffs_pre_conditioned: list[dict[SkillCondition, set[ActionConditionEffectUnit]]] = []
+        self.buffs_pre_conditioned: list[dict[Condition, set[ActionConditionEffectUnit]]] = []
 
         for hit_data_lv in self.hit_data_mtx:
-            buff_lv: dict[SkillCondition, set[ActionConditionEffectUnit]] = defaultdict(set)
+            buff_lv: dict[Condition, set[ActionConditionEffectUnit]] = defaultdict(set)
 
             for hit_data in hit_data_lv:
                 buff_lv[hit_data.pre_condition].update(hit_data.to_buffing_units(action_condition_asset))
@@ -202,9 +202,9 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
         super().__post_init__(self.asset_action_cond)
 
-    def with_conditions(self, condition_comp: Optional[SkillConditionComposite] = None) -> SupportiveSkillEntry:
+    def with_conditions(self, condition_comp: Optional[ConditionComposite] = None) -> SupportiveSkillEntry:
         if not condition_comp:
-            condition_comp = SkillConditionComposite()  # Dummy empty condition composite
+            condition_comp = ConditionComposite()  # Dummy empty condition composite
 
         # Deep copy buff base
         buffs: list[set[ActionConditionEffectUnit]] = [buff_set.copy() for buff_set in self.buffs_base]

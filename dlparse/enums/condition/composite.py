@@ -1,75 +1,75 @@
-"""Skill condition composite class."""
+"""Condition composite class."""
 from dataclasses import dataclass, field
 from typing import ClassVar, Optional, Sequence, TYPE_CHECKING, Union
 
 from dlparse.enums.condition_base import ConditionCompositeBase
 from dlparse.errors import ConditionValidationFailedError
-from .category import SkillConditionCategories as CondCat, SkillConditionCheckResult
-from .items import SkillCondition
-from .validate import validate_skill_conditions
+from .category import ConditionCategories as CondCat, ConditionCheckResult
+from .items import Condition
+from .validate import validate_conditions
 from ..element import Element
 from ..status import Status
 
 if TYPE_CHECKING:
     from dlparse.mono.asset import BuffCountAsset, HitAttrEntry
 
-__all__ = ("SkillConditionComposite",)
+__all__ = ("ConditionComposite",)
 
 
 # ``eq=False`` to keep the ``__hash__`` of the superclass
 # ``repr=False`` to keep the ``__repr__`` of the superclass
 @dataclass(eq=False, repr=False)
-class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
-    """Composite class of various attacking skill conditions."""
+class ConditionComposite(ConditionCompositeBase[Condition]):
+    """Composite class of various attacking conditions."""
 
-    allowed_not_categorize_conds: ClassVar[set[SkillCondition]] = {
-        SkillCondition.TARGET_OD_STATE,
-        SkillCondition.TARGET_BK_STATE,
-        SkillCondition.MARK_EXPLODES,
-        SkillCondition.SELF_ENERGIZED,
-        SkillCondition.SKILL_USED_S1,
-        SkillCondition.SKILL_USED_S2,
-        SkillCondition.SKILL_USED_ALL,
-        SkillCondition.QUEST_START
+    allowed_not_categorize_conds: ClassVar[set[Condition]] = {
+        Condition.TARGET_OD_STATE,
+        Condition.TARGET_BK_STATE,
+        Condition.MARK_EXPLODES,
+        Condition.SELF_ENERGIZED,
+        Condition.SKILL_USED_S1,
+        Condition.SKILL_USED_S2,
+        Condition.SKILL_USED_ALL,
+        Condition.QUEST_START
     }
 
     # region Target
-    afflictions_condition: set[SkillCondition] = field(init=False)
+    afflictions_condition: set[Condition] = field(init=False)
     afflictions_converted: set[Status] = field(init=False)
-    target_element: Optional[SkillCondition] = field(init=False)
+    target_element: Optional[Condition] = field(init=False)
     target_element_converted: Element = field(init=False)
     target_in_od: bool = field(init=False)
     target_in_bk: bool = field(init=False)
     # endregion
 
     # region Self status
-    hp_status: Optional[SkillCondition] = field(init=False)
+    hp_status: Optional[Condition] = field(init=False)
     hp_status_converted: float = field(init=False)
-    hp_condition: Optional[SkillCondition] = field(init=False)
-    combo_count: Optional[SkillCondition] = field(init=False)
+    hp_condition: Optional[Condition] = field(init=False)
+    combo_count: Optional[Condition] = field(init=False)
     combo_count_converted: int = field(init=False)
-    buff_count: Optional[SkillCondition] = field(init=False)
+    buff_count: Optional[Condition] = field(init=False)
     buff_count_converted: int = field(init=False)
-    buff_zone_self: Optional[SkillCondition] = field(init=False)
+    buff_zone_self: Optional[Condition] = field(init=False)
     buff_zone_self_converted: int = field(init=False)
-    buff_zone_ally: Optional[SkillCondition] = field(init=False)
+    buff_zone_ally: Optional[Condition] = field(init=False)
     buff_zone_ally_converted: int = field(init=False)
-    action_cond: Optional[SkillCondition] = field(init=False)
+    action_cond: Optional[Condition] = field(init=False)
     action_cond_id: int = field(init=False)
-    gauge_filled: Optional[SkillCondition] = field(init=False)
+    gauge_filled: Optional[Condition] = field(init=False)
     gauge_filled_converted: int = field(init=False)
     # endregion
 
     # region Skill effect / animation
-    teammate_coverage: Optional[SkillCondition] = field(init=False)
+    teammate_coverage: Optional[Condition] = field(init=False)
     teammate_coverage_converted: int = field(init=False)
-    bullet_hit_count: Optional[SkillCondition] = field(init=False)
+    bullet_hit_count: Optional[Condition] = field(init=False)
     bullet_hit_count_converted: int = field(init=False)
-    bullets_on_map: Optional[SkillCondition] = field(init=False)
+    bullets_on_map: Optional[Condition] = field(init=False)
     bullets_on_map_converted: int = field(init=False)
-    addl_inputs: Optional[SkillCondition] = field(init=False)
+    addl_inputs: Optional[Condition] = field(init=False)
     addl_inputs_converted: int = field(init=False)
-    action_cancel: Optional[SkillCondition] = field(init=False)
+    action_cancel: Optional[Condition] = field(init=False)
     mark_explode: bool = field(init=False)
     # endregion
 
@@ -79,96 +79,96 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
     # endregion
 
     @staticmethod
-    def _init_validate_conditions(conditions: tuple[SkillCondition]):
+    def _init_validate_conditions(conditions: tuple[Condition]):
         # Validate the condition combinations
         # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
-        if not (result := validate_skill_conditions(conditions)):  # pylint: disable=superfluous-parens
+        if not (result := validate_conditions(conditions)):  # pylint: disable=superfluous-parens
             raise ConditionValidationFailedError(result)
 
     def _init_validate_target(self):
         # Check `self.afflictions_condition`
         if any(condition not in CondCat.target_status
                for condition in self.afflictions_condition):
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_AFFLICTION_ONLY)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_AFFLICTION_ONLY)
 
         # Check `self.target_element`
         if self.target_element and self.target_element not in CondCat.target_element:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_TARGET_ELEMENTAL)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_TARGET_ELEMENTAL)
 
     def _init_validate_self(self):
         # Check `self.hp_status`
         if self.hp_status and self.hp_status not in CondCat.self_hp_status:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_HP_STATUS)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_HP_STATUS)
 
         # Check `self.hp_condition`
         if self.hp_condition and self.hp_condition not in CondCat.self_hp_cond:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_HP_CONDITION)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_HP_CONDITION)
 
         # Check `self.combo_count`
         if self.combo_count and self.combo_count not in CondCat.self_combo_count:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_COMBO_COUNT)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_COMBO_COUNT)
 
         # Check `self.buff_count`
         if self.buff_count and self.buff_count not in CondCat.self_buff_count:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BUFF_COUNT)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BUFF_COUNT)
 
         # Check `self.bullet_hit_count`
         if self.bullet_hit_count and self.bullet_hit_count not in CondCat.skill_bullet_hit:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BULLET_HIT_COUNT)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BULLET_HIT_COUNT)
 
         # Check `self.buff_zone_self`
         if self.buff_zone_self and self.buff_zone_self not in CondCat.self_in_buff_zone_self:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BUFF_ZONE_SELF)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BUFF_ZONE_SELF)
 
         # Check `self.buff_zone_ally`
         if self.buff_zone_ally and self.buff_zone_ally not in CondCat.self_in_buff_zone_ally:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BUFF_ZONE_ALLY)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BUFF_ZONE_ALLY)
 
         # Check `self.action_cond`
         if self.action_cond and self.action_cond not in CondCat.action_condition:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_ACTION_CONDITION)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_ACTION_CONDITION)
 
         # Check `self.gauge_filled`
         if self.gauge_filled and self.gauge_filled not in CondCat.self_gauge_filled:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_GAUGE_FILLED)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_GAUGE_FILLED)
 
     def _init_validate_skill(self):
         # Check `self.teammate_coverage`
         if self.teammate_coverage and self.teammate_coverage not in CondCat.skill_teammates_covered:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_TEAMMATE_COVERAGE)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_TEAMMATE_COVERAGE)
 
         # Check `self.bullet_hit_count`
         if self.bullet_hit_count and self.bullet_hit_count not in CondCat.skill_bullet_hit:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BULLET_HIT_COUNT)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BULLET_HIT_COUNT)
 
         # Check `self.bullets_on_map`
         if self.bullets_on_map and self.bullets_on_map not in CondCat.skill_bullets_on_map:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_BULLETS_ON_MAP)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BULLETS_ON_MAP)
 
         # Check `self.addl_inputs`
         if self.addl_inputs and self.addl_inputs not in CondCat.skill_addl_inputs:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_ADDL_INPUTS)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_ADDL_INPUTS)
 
         # Check `self.action_canceling`
         if self.action_cancel and self.action_cancel not in CondCat.skill_action_cancel:
-            raise ConditionValidationFailedError(SkillConditionCheckResult.INTERNAL_NOT_ACTION_CANCEL)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_ACTION_CANCEL)
 
-    def _init_validate_fields(self, conditions: tuple[SkillCondition]):
+    def _init_validate_fields(self, conditions: tuple[Condition]):
         self._init_validate_target()
         self._init_validate_self()
         self._init_validate_skill()
 
         if cond_not_categorized := (set(conditions) - set(self.conditions_sorted) - self.allowed_not_categorize_conds):
-            raise ConditionValidationFailedError(SkillConditionCheckResult.HAS_CONDITIONS_LEFT, cond_not_categorized)
+            raise ConditionValidationFailedError(ConditionCheckResult.HAS_CONDITIONS_LEFT, cond_not_categorized)
 
-    def __post_init__(self, conditions: Optional[Union[Sequence[SkillCondition], SkillCondition]]):
+    def __post_init__(self, conditions: Optional[Union[Sequence[Condition], Condition]]):
         conditions = self._init_process_conditions(conditions)
 
         # region Categorized condition fields
         self.afflictions_condition = CondCat.target_status.extract(conditions)
         self.target_element = CondCat.target_element.extract(conditions)
-        self.target_in_od = SkillCondition.TARGET_OD_STATE in conditions
-        self.target_in_bk = SkillCondition.TARGET_BK_STATE in conditions
+        self.target_in_od = Condition.TARGET_OD_STATE in conditions
+        self.target_in_bk = Condition.TARGET_BK_STATE in conditions
 
         self.hp_status = CondCat.self_hp_status.extract(conditions)
         self.hp_condition = CondCat.self_hp_cond.extract(conditions)
@@ -184,7 +184,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         self.bullets_on_map = CondCat.skill_bullets_on_map.extract(conditions)
         self.addl_inputs = CondCat.skill_addl_inputs.extract(conditions)
         self.action_cancel = CondCat.skill_action_cancel.extract(conditions)
-        self.mark_explode = SkillCondition.MARK_EXPLODES in conditions
+        self.mark_explode = Condition.MARK_EXPLODES in conditions
         # endregion
 
         self._init_validate_fields(conditions)
@@ -217,16 +217,16 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         )
         # endregion
 
-    def _cond_sorted_target(self) -> tuple[SkillCondition]:
-        ret: tuple[SkillCondition] = tuple(self.afflictions_condition)
+    def _cond_sorted_target(self) -> tuple[Condition]:
+        ret: tuple[Condition] = tuple(self.afflictions_condition)
 
         if self.target_element:
             ret += (self.target_element,)
 
         return ret
 
-    def _cond_sorted_self_status(self) -> tuple[SkillCondition]:
-        ret: tuple[SkillCondition] = tuple()
+    def _cond_sorted_self_status(self) -> tuple[Condition]:
+        ret: tuple[Condition] = tuple()
 
         if self.hp_status:
             ret += (self.hp_status,)
@@ -254,8 +254,8 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
 
         return ret
 
-    def _cond_sorted_skill(self) -> tuple[SkillCondition]:
-        ret: tuple[SkillCondition] = tuple()
+    def _cond_sorted_skill(self) -> tuple[Condition]:
+        ret: tuple[Condition] = tuple()
 
         if self.bullet_hit_count:
             ret += (self.bullet_hit_count,)
@@ -273,7 +273,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
             ret += (self.action_cancel,)
 
         if self.mark_explode:
-            ret += (SkillCondition.MARK_EXPLODES,)
+            ret += (Condition.MARK_EXPLODES,)
 
         return ret
 
@@ -283,7 +283,7 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         return self._has_buff_boost_condition
 
     @property
-    def conditions_sorted(self) -> tuple[SkillCondition, ...]:
+    def conditions_sorted(self) -> tuple[Condition, ...]:
         """
         Get the sorted conditions as a tuple.
 
@@ -323,13 +323,13 @@ class SkillConditionComposite(ConditionCompositeBase[SkillCondition]):
         return bool(self.conditions_sorted)
 
     def __add__(self, other):
-        if not isinstance(other, SkillConditionComposite):
-            raise TypeError(f"Cannot add `SkillConditionComposite` with type {type(other)}")
+        if not isinstance(other, ConditionComposite):
+            raise TypeError(f"Cannot add `ConditionComposite` with type {type(other)}")
 
-        return SkillConditionComposite(self.conditions_sorted + other.conditions_sorted)
+        return ConditionComposite(self.conditions_sorted + other.conditions_sorted)
 
     def __lt__(self, other):
-        if not isinstance(other, SkillConditionComposite):
-            raise TypeError(f"Cannot compare `SkillConditionComposite` with type {type(other)}")
+        if not isinstance(other, ConditionComposite):
+            raise TypeError(f"Cannot compare `ConditionComposite` with type {type(other)}")
 
         return self.conditions_sorted < other.conditions_sorted

@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.enums import Condition, ConditionComposite
 from dlparse.transformer import SkillTransformer
 
 
@@ -14,8 +14,8 @@ def test_iter_entries_s2(transformer_skill: SkillTransformer):
     # EXNOTE: Not yet 70 MC (2020/12/07), but S2 already have data for 3 levels (lv.3 does not have BK punisher)
 
     expected_addl_at_max = {
-        SkillConditionComposite(): 2.01 * 3 + 4.02,
-        SkillConditionComposite(SkillCondition.TARGET_BK_STATE): 2.01 * 3 + 4.02,
+        ConditionComposite(): 2.01 * 3 + 4.02,
+        ConditionComposite(Condition.TARGET_BK_STATE): 2.01 * 3 + 4.02,
     }
 
     expected = set(expected_addl_at_max.keys())
@@ -59,7 +59,7 @@ def test_og_alex_s2(transformer_skill: SkillTransformer):
     assert skill_data.max_level == 3
 
     # In BK
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_BK_STATE))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_BK_STATE))
 
     assert skill_data.hit_count == [4, 4, 4]
     assert skill_data.hit_count_at_max == 4

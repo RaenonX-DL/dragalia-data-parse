@@ -1,10 +1,10 @@
 """Conditions for the skills."""
 from enum import Enum
 
-__all__ = ("SkillCondition",)
+__all__ = ("Condition",)
 
 
-class SkillCondition(Enum):
+class Condition(Enum):
     """
     Conditions for the skill data entries.
 
@@ -227,10 +227,10 @@ class SkillCondition(Enum):
     # endregion
 
     def __bool__(self):
-        return self != SkillCondition.NONE
+        return self != Condition.NONE
 
     def __lt__(self, other):
-        if not isinstance(other, SkillCondition):
-            raise TypeError(f"Cannot compare `SkillCondition` with type {type(other)}")
+        if not isinstance(other, Condition):
+            raise TypeError(f"Cannot compare `Condition` with type {type(other)}")
 
         return int(self.value) < int(other.value)

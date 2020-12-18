@@ -24,9 +24,9 @@ def export_sup_skills_of_chara(
                 ret.append(CharaSupportiveSkillEntry(
                     text_asset=asset_manager.asset_text,
                     chara_data=chara_data,
+                    condition_comp=skill_entry.condition_comp,
                     skill_data=skill_data.skill_data_raw,
                     skill_id_entry=id_entry,
-                    skill_condition_comp=skill_entry.condition_comp,
                     skill_data_to_parse=buff
                 ))
 

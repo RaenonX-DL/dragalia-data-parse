@@ -1,11 +1,11 @@
-"""Functions to validate the skill conditions."""
-from typing import Optional, Iterable
+"""Functions to validate the conditions."""
+from typing import Iterable, Optional
 
-from .category import SkillConditionCategories, SkillConditionCheckResult
-from .items import SkillCondition
+from .category import ConditionCategories, ConditionCheckResult
+from .items import Condition
 
 
-def validate_skill_conditions(conditions: Optional[Iterable[SkillCondition]] = None) -> SkillConditionCheckResult:
+def validate_conditions(conditions: Optional[Iterable[Condition]] = None) -> ConditionCheckResult:
     """
     Check the validity of ``conditions``.
 
@@ -23,11 +23,11 @@ def validate_skill_conditions(conditions: Optional[Iterable[SkillCondition]] = N
     """
     # No conditions given
     if not conditions:
-        return SkillConditionCheckResult.PASS
+        return ConditionCheckResult.PASS
 
     # Categorical checks
-    for category in SkillConditionCategories.get_all_categories():
+    for category in ConditionCategories.get_all_categories():
         if not category.is_valid(conditions):
             return category.result_on_invalid
 
-    return SkillConditionCheckResult.PASS
+    return ConditionCheckResult.PASS

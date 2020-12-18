@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Union
 
-from dlparse.enums import SkillCondition
+from dlparse.enums import Condition
 from dlparse.errors import PreconditionCollidedError
 from dlparse.mono.asset.base import ActionComponentHasHitLabels
 
@@ -16,11 +16,11 @@ class ActionBuffBomb(ActionComponentHasHitLabels):
     action_condition_id: int
 
     @property
-    def skill_pre_condition(self) -> SkillCondition:
+    def skill_pre_condition(self) -> Condition:
         if super().skill_pre_condition:
-            raise PreconditionCollidedError(SkillCondition.MARK_EXPLODES, super().skill_pre_condition)
+            raise PreconditionCollidedError(Condition.MARK_EXPLODES, super().skill_pre_condition)
 
-        return SkillCondition.MARK_EXPLODES
+        return Condition.MARK_EXPLODES
 
     @classmethod
     def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBuffBomb":

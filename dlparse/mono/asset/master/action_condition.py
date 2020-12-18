@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
-from dlparse.enums import Element, ElementFlag, SkillCondition, SkillConditionCategories, Status
+from dlparse.enums import Condition, ConditionCategories, Element, ElementFlag, Status
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("ActionConditionEntry", "ActionConditionAsset", "ActionConditionParser")
@@ -107,20 +107,20 @@ class ActionConditionEntry(MasterEntryBase):
         )
 
     @property
-    def skill_conditions(self) -> list[SkillCondition]:
+    def conditions(self) -> list[Condition]:
         """
-        Get the skill conditions for this action condition to be effective.
+        Get the conditions for this action condition to be effective.
 
         If no conditions are required, return an empty list.
 
-        If any of the skill conditions returned matches, then the action condition is considered effective.
+        If any of the conditions returned matches, then the action condition is considered effective.
         """
         if not self.target_limited_by_element:
             # Not limited to certain element, no condition
             return []
 
         return [
-            SkillConditionCategories.target_element.convert_reversed(element)
+            ConditionCategories.target_element.convert_reversed(element)
             for element in Element.from_flag(self.elemental_target)
         ]
 

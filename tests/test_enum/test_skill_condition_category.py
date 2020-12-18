@@ -1,59 +1,59 @@
 import pytest
 
 from dlparse.enums import (
-    SkillCondition, SkillConditionCategories as CondCat, SkillConditionMaxCount as CondMax, Status,
+    Condition, ConditionCategories as CondCat, ConditionMaxCount as CondMax, Status,
 )
 from dlparse.errors import EnumConversionError
 
 
 def test_member_contains():
-    assert SkillCondition.TARGET_PARALYZED in CondCat.target_status
-    assert SkillCondition.BULLET_HIT_1 not in CondCat.target_status
+    assert Condition.TARGET_PARALYZED in CondCat.target_status
+    assert Condition.BULLET_HIT_1 not in CondCat.target_status
 
-    assert SkillCondition.SELF_BUFF_10 in CondCat.self_buff_count
-    assert SkillCondition.BULLET_HIT_1 not in CondCat.self_buff_count
+    assert Condition.SELF_BUFF_10 in CondCat.self_buff_count
+    assert Condition.BULLET_HIT_1 not in CondCat.self_buff_count
 
 
 def test_conversion():
-    assert CondCat.target_status.convert(SkillCondition.TARGET_PARALYZED) == Status.PARALYZE
+    assert CondCat.target_status.convert(Condition.TARGET_PARALYZED) == Status.PARALYZE
     with pytest.raises(EnumConversionError):
-        CondCat.target_status.convert(SkillCondition.BULLET_HIT_1)
+        CondCat.target_status.convert(Condition.BULLET_HIT_1)
 
-    assert CondCat.self_buff_count.convert(SkillCondition.SELF_BUFF_10) == 10
+    assert CondCat.self_buff_count.convert(Condition.SELF_BUFF_10) == 10
     with pytest.raises(EnumConversionError):
-        CondCat.target_status.convert(SkillCondition.BULLET_HIT_1)
+        CondCat.target_status.convert(Condition.BULLET_HIT_1)
 
 
 def test_reverse_conversion():
-    assert CondCat.target_status.convert_reversed(Status.PARALYZE) == SkillCondition.TARGET_PARALYZED
+    assert CondCat.target_status.convert_reversed(Status.PARALYZE) == Condition.TARGET_PARALYZED
     with pytest.raises(EnumConversionError):
-        CondCat.target_status.convert_reversed(SkillCondition.BULLET_HIT_1)
+        CondCat.target_status.convert_reversed(Condition.BULLET_HIT_1)
 
-    assert CondCat.self_buff_count.convert_reversed(10) == SkillCondition.SELF_BUFF_10
+    assert CondCat.self_buff_count.convert_reversed(10) == Condition.SELF_BUFF_10
     with pytest.raises(EnumConversionError):
-        CondCat.self_buff_count.convert_reversed(SkillCondition.BULLET_HIT_1)
+        CondCat.self_buff_count.convert_reversed(Condition.BULLET_HIT_1)
 
 
 def test_get_members():
     assert CondCat.target_status.members == {
-        SkillCondition.TARGET_POISONED,
-        SkillCondition.TARGET_BURNED,
-        SkillCondition.TARGET_FROZEN,
-        SkillCondition.TARGET_PARALYZED,
-        SkillCondition.TARGET_BLINDED,
-        SkillCondition.TARGET_STUNNED,
-        SkillCondition.TARGET_CURSED,
-        SkillCondition.TARGET_BOGGED,
-        SkillCondition.TARGET_SLEPT,
-        SkillCondition.TARGET_FROSTBITTEN,
-        SkillCondition.TARGET_FLASHBURNED,
-        SkillCondition.TARGET_STORMLASHED,
-        SkillCondition.TARGET_SHADOWBLIGHTED,
-        SkillCondition.TARGET_AFFLICTED,
-        SkillCondition.TARGET_DEF_DOWN,
-        SkillCondition.TARGET_BUFFED,
-        SkillCondition.TARGET_DEBUFFED,
-        SkillCondition.TARGET_BK_STATE
+        Condition.TARGET_POISONED,
+        Condition.TARGET_BURNED,
+        Condition.TARGET_FROZEN,
+        Condition.TARGET_PARALYZED,
+        Condition.TARGET_BLINDED,
+        Condition.TARGET_STUNNED,
+        Condition.TARGET_CURSED,
+        Condition.TARGET_BOGGED,
+        Condition.TARGET_SLEPT,
+        Condition.TARGET_FROSTBITTEN,
+        Condition.TARGET_FLASHBURNED,
+        Condition.TARGET_STORMLASHED,
+        Condition.TARGET_SHADOWBLIGHTED,
+        Condition.TARGET_AFFLICTED,
+        Condition.TARGET_DEF_DOWN,
+        Condition.TARGET_BUFFED,
+        Condition.TARGET_DEBUFFED,
+        Condition.TARGET_BK_STATE
     }
 
 
@@ -64,17 +64,17 @@ def test_max_allowed_count():
 
 def test_extract():
     conditions = [
-        SkillCondition.TARGET_PARALYZED,
-        SkillCondition.TARGET_STUNNED,
-        SkillCondition.SELF_BUFF_10,
-        SkillCondition.BULLET_HIT_1
+        Condition.TARGET_PARALYZED,
+        Condition.TARGET_STUNNED,
+        Condition.SELF_BUFF_10,
+        Condition.BULLET_HIT_1
     ]
 
     assert CondCat.target_status.extract(conditions) == \
-           {SkillCondition.TARGET_PARALYZED, SkillCondition.TARGET_STUNNED}
-    assert CondCat.self_buff_count.extract(conditions) == SkillCondition.SELF_BUFF_10
+           {Condition.TARGET_PARALYZED, Condition.TARGET_STUNNED}
+    assert CondCat.self_buff_count.extract(conditions) == Condition.SELF_BUFF_10
 
-    condition = [SkillCondition.TARGET_POISONED]
+    condition = [Condition.TARGET_POISONED]
 
-    assert CondCat.target_status.extract(condition) == {SkillCondition.TARGET_POISONED}
-    assert CondCat.target_status.extract([SkillCondition.BULLET_HIT_1]) == set()
+    assert CondCat.target_status.extract(condition) == {Condition.TARGET_POISONED}
+    assert CondCat.target_status.extract([Condition.BULLET_HIT_1]) == set()

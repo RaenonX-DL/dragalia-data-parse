@@ -1,4 +1,4 @@
-from dlparse.enums import BuffParameter, HitTargetSimple, SkillCondition, SkillConditionComposite
+from dlparse.enums import BuffParameter, Condition, ConditionComposite, HitTargetSimple
 from dlparse.transformer import SkillTransformer
 from tests.utils import BuffEffectInfo, check_buff_unit_match
 
@@ -11,7 +11,7 @@ def test_no_condition(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_buffs_lv_max = {
-        SkillConditionComposite(): {
+        ConditionComposite(): {
             BuffEffectInfo("BUF_ALL_ATK_SSR_30_LV03", HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0)
         },
     }
@@ -36,7 +36,7 @@ def test_element_restricted(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_buffs_lv_max = {
-        SkillConditionComposite(SkillCondition.TARGET_ELEM_FLAME): {
+        ConditionComposite(Condition.TARGET_ELEM_FLAME): {
             BuffEffectInfo("BUF_160_ATK_FIRE_LV03", HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0)
         },
     }
@@ -77,10 +77,10 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
     }
 
     expected_buffs_lv_max = {
-        SkillConditionComposite(SkillCondition.COVER_TEAMMATE_0): base_buffs_at_max | on_0_plus_buffs,
-        SkillConditionComposite(SkillCondition.COVER_TEAMMATE_1): base_buffs_at_max | on_1_plus_buffs,
-        SkillConditionComposite(SkillCondition.COVER_TEAMMATE_2): base_buffs_at_max | on_2_plus_buffs,
-        SkillConditionComposite(SkillCondition.COVER_TEAMMATE_3): base_buffs_at_max | on_2_plus_buffs,
+        ConditionComposite(Condition.COVER_TEAMMATE_0): base_buffs_at_max | on_0_plus_buffs,
+        ConditionComposite(Condition.COVER_TEAMMATE_1): base_buffs_at_max | on_1_plus_buffs,
+        ConditionComposite(Condition.COVER_TEAMMATE_2): base_buffs_at_max | on_2_plus_buffs,
+        ConditionComposite(Condition.COVER_TEAMMATE_3): base_buffs_at_max | on_2_plus_buffs,
     }
 
     assert set(expected_buffs_lv_max.keys()) == {entry.condition_comp for entry in possible_entries}
@@ -102,7 +102,7 @@ def test_has_pre_condition(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_buffs_lv_max = {
-        SkillConditionComposite(SkillCondition.SELF_HP_GTE_50): {
+        ConditionComposite(Condition.SELF_HP_GTE_50): {
             BuffEffectInfo("BUF_200_DMG_LV04", HitTargetSimple.SELF, BuffParameter.HP_DECREASE_BY_MAX, 0.1, 0, 0),
             BuffEffectInfo("BUF_200_SPC_LV04", HitTargetSimple.SELF, BuffParameter.SP_CHARGE_PCT_USED, 0.2, 0, 0)
         }

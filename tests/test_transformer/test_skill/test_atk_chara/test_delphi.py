@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.enums import Condition, ConditionComposite
 from dlparse.transformer import SkillTransformer
 
 
@@ -12,8 +12,8 @@ def test_iter_entries_s2(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        SkillConditionComposite(): 4.99,
-        SkillConditionComposite(SkillCondition.TARGET_ELEM_LIGHT): 4.99,
+        ConditionComposite(): 4.99,
+        ConditionComposite(Condition.TARGET_ELEM_LIGHT): 4.99,
     }
 
     expected = set(expected_addl_at_max.keys())

@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.enums import Condition, ConditionComposite
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
 
@@ -13,26 +13,26 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_0]): 3.76 + 2.93 * 3 + 2.93 * 0,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_1]): 3.76 + 2.93 * 3 + 2.93 * 1,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_2]): 3.76 + 2.93 * 3 + 2.93 * 2,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_3]): 3.76 + 2.93 * 3 + 2.93 * 3,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_4]): 3.76 + 2.93 * 3 + 2.93 * 4,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_5]): 3.76 + 2.93 * 3 + 2.93 * 5,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_6]): 3.76 + 2.93 * 3 + 2.93 * 6,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_0, SkillCondition.TARGET_BURNED]):
+        ConditionComposite([Condition.ADDL_INPUT_0]): 3.76 + 2.93 * 3 + 2.93 * 0,
+        ConditionComposite([Condition.ADDL_INPUT_1]): 3.76 + 2.93 * 3 + 2.93 * 1,
+        ConditionComposite([Condition.ADDL_INPUT_2]): 3.76 + 2.93 * 3 + 2.93 * 2,
+        ConditionComposite([Condition.ADDL_INPUT_3]): 3.76 + 2.93 * 3 + 2.93 * 3,
+        ConditionComposite([Condition.ADDL_INPUT_4]): 3.76 + 2.93 * 3 + 2.93 * 4,
+        ConditionComposite([Condition.ADDL_INPUT_5]): 3.76 + 2.93 * 3 + 2.93 * 5,
+        ConditionComposite([Condition.ADDL_INPUT_6]): 3.76 + 2.93 * 3 + 2.93 * 6,
+        ConditionComposite([Condition.ADDL_INPUT_0, Condition.TARGET_BURNED]):
             4.888 + 3.809 * 3 + 3.809 * 0,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_1, SkillCondition.TARGET_BURNED]):
+        ConditionComposite([Condition.ADDL_INPUT_1, Condition.TARGET_BURNED]):
             4.888 + 3.809 * 3 + 3.809 * 1,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_2, SkillCondition.TARGET_BURNED]):
+        ConditionComposite([Condition.ADDL_INPUT_2, Condition.TARGET_BURNED]):
             4.888 + 3.809 * 3 + 3.809 * 2,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_3, SkillCondition.TARGET_BURNED]):
+        ConditionComposite([Condition.ADDL_INPUT_3, Condition.TARGET_BURNED]):
             4.888 + 3.809 * 3 + 3.809 * 3,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_4, SkillCondition.TARGET_BURNED]):
+        ConditionComposite([Condition.ADDL_INPUT_4, Condition.TARGET_BURNED]):
             4.888 + 3.809 * 3 + 3.809 * 4,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_5, SkillCondition.TARGET_BURNED]):
+        ConditionComposite([Condition.ADDL_INPUT_5, Condition.TARGET_BURNED]):
             4.888 + 3.809 * 3 + 3.809 * 5,
-        SkillConditionComposite([SkillCondition.ADDL_INPUT_6, SkillCondition.TARGET_BURNED]):
+        ConditionComposite([Condition.ADDL_INPUT_6, Condition.TARGET_BURNED]):
             4.888 + 3.809 * 3 + 3.809 * 6,
     }
 
@@ -61,13 +61,13 @@ def test_s1(transformer_skill: SkillTransformer):
         [3.76] + [2.93] * 3
     ]
     addl_hits = {
-        SkillConditionComposite(SkillCondition.ADDL_INPUT_0): 0,
-        SkillConditionComposite(SkillCondition.ADDL_INPUT_1): 1,
-        SkillConditionComposite(SkillCondition.ADDL_INPUT_2): 2,
-        SkillConditionComposite(SkillCondition.ADDL_INPUT_3): 3,
-        SkillConditionComposite(SkillCondition.ADDL_INPUT_4): 4,
-        SkillConditionComposite(SkillCondition.ADDL_INPUT_5): 5,
-        SkillConditionComposite(SkillCondition.ADDL_INPUT_6): 6,
+        ConditionComposite(Condition.ADDL_INPUT_0): 0,
+        ConditionComposite(Condition.ADDL_INPUT_1): 1,
+        ConditionComposite(Condition.ADDL_INPUT_2): 2,
+        ConditionComposite(Condition.ADDL_INPUT_3): 3,
+        ConditionComposite(Condition.ADDL_INPUT_4): 4,
+        ConditionComposite(Condition.ADDL_INPUT_5): 5,
+        ConditionComposite(Condition.ADDL_INPUT_6): 6,
     }
     post_dmg = [
         [],

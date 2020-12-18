@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from dlparse.enums import BuffParameter, SkillConditionComposite
+from dlparse.enums import BuffParameter, ConditionComposite
 from dlparse.model import AbilityVariantEffectUnit
 from .unit_base import AbilityInfoBase, check_info_list_match
 
@@ -13,7 +13,7 @@ __all__ = ("AbilityEffectInfo", "check_ability_effect_unit_match")
 class AbilityEffectInfo(AbilityInfoBase):
     """A single affliction info entry."""
 
-    condition_comp: SkillConditionComposite
+    condition_comp: ConditionComposite
     parameter: BuffParameter
     rate: float
 

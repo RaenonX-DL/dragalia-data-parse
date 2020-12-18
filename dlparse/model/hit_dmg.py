@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from itertools import product
 from typing import Optional
 
-from dlparse.enums import SkillCondition, SkillConditionCategories, SkillConditionComposite
+from dlparse.enums import Condition, ConditionCategories, ConditionComposite
 from dlparse.errors import AppValueError, BulletEndOfLifeError, DamagingHitValidationFailedError
 from dlparse.mono.asset import (
     ActionBuffField, ActionBullet, ActionBulletStockFire, ActionComponentHasHitLabels, ActionConditionAsset,
@@ -149,7 +149,7 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
         return [self.mod_on_ally_buff_zone] * count
 
     def _damage_units_get_base_attributes(
-            self, condition_comp: SkillConditionComposite, unit_affliction: AfflictionEffectUnit,
+            self, condition_comp: ConditionComposite, unit_affliction: AfflictionEffectUnit,
             units_debuff: list[ActionConditionEffectUnit], /,
             asset_action_info: PlayerActionInfoAsset
     ) -> Optional[list[DamageUnit]]:
@@ -195,7 +195,7 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
         return None
 
     def _damage_units_get_base(
-            self, condition_comp: SkillConditionComposite, hit_count: int, /,
+            self, condition_comp: ConditionComposite, hit_count: int, /,
             asset_action_condition: ActionConditionAsset, asset_action_info: PlayerActionInfoAsset
     ) -> list[DamageUnit]:
         hit_attr = self.hit_attr
@@ -233,7 +233,7 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
         return [DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)]
 
     def _damage_units_apply_mod_boosts_target(
-            self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite
+            self, damage_units: list[DamageUnit], condition_comp: ConditionComposite
     ):
         hit_attr = self.hit_attr
 
@@ -253,7 +253,7 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
                 damage_unit.mod *= hit_attr.punisher_rate
 
     def _damage_units_apply_mod_boosts_self(
-            self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite, /,
+            self, damage_units: list[DamageUnit], condition_comp: ConditionComposite, /,
             asset_buff_count: BuffCountAsset
     ):
         hit_attr = self.hit_attr
@@ -284,14 +284,14 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
                 damage_unit.mod *= boost_rate
 
     def _damage_units_apply_mod_boosts(
-            self, damage_units: list[DamageUnit], condition_comp: SkillConditionComposite, /,
+            self, damage_units: list[DamageUnit], condition_comp: ConditionComposite, /,
             asset_buff_count: BuffCountAsset
     ):
         self._damage_units_apply_mod_boosts_target(damage_units, condition_comp)
         self._damage_units_apply_mod_boosts_self(damage_units, condition_comp, asset_buff_count=asset_buff_count)
 
     def to_damage_units(
-            self, condition_comp: SkillConditionComposite, hit_count: int, /,
+            self, condition_comp: ConditionComposite, hit_count: int, /,
             asset_action_condition: ActionConditionAsset, asset_action_info: PlayerActionInfoAsset,
             asset_buff_count: BuffCountAsset
     ) -> list[DamageUnit]:
@@ -306,14 +306,14 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
 
         if self.pre_condition:
             # Pre-condition available, perform checks
-            if self.pre_condition in SkillConditionCategories.skill_addl_inputs:
+            if self.pre_condition in ConditionCategories.skill_addl_inputs:
                 # Pre-condition is additional inputs, perform special check
-                pre_cond_addl_hit = SkillConditionCategories.skill_addl_inputs.convert(self.pre_condition)
+                pre_cond_addl_hit = ConditionCategories.skill_addl_inputs.convert(self.pre_condition)
                 if pre_cond_addl_hit > (condition_comp.addl_inputs_converted or 0):
                     # Required pre-conditional additional inputs > additional inputs count in the condition,
                     # hit invalid
                     return []
-            elif self.pre_condition == SkillCondition.MARK_EXPLODES and not condition_comp.mark_explode:
+            elif self.pre_condition == Condition.MARK_EXPLODES and not condition_comp.mark_explode:
                 # Get the damage unit that marks the enemy
                 return [DamageUnit(
                     0,
@@ -334,7 +334,7 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
             # If no cancellation is used, `991060` will be executed completely and no execution of `991061` instead.
             return []
 
-        if condition_comp.mark_explode and self.pre_condition != SkillCondition.MARK_EXPLODES:
+        if condition_comp.mark_explode and self.pre_condition != Condition.MARK_EXPLODES:
             # Mark explosion damage is requested, but the damaging hit is not the explosion damage
             return []
 

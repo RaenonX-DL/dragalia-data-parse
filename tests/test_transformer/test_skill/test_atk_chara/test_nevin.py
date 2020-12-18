@@ -2,7 +2,7 @@ from itertools import product
 
 import pytest
 
-from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.enums import Condition, ConditionComposite
 from dlparse.model import BuffZoneBoostData
 from dlparse.transformer import SkillTransformer
 
@@ -15,8 +15,8 @@ def test_iter_entries_s2_locked(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_max_total_mods = {
-        SkillConditionComposite(SkillCondition.SELF_SIGIL_RELEASED): 10,
-        SkillConditionComposite(SkillCondition.SELF_SIGIL_LOCKED): 10,
+        ConditionComposite(Condition.SELF_SIGIL_RELEASED): 10,
+        ConditionComposite(Condition.SELF_SIGIL_LOCKED): 10,
     }
 
     expected = set(expected_max_total_mods.keys())
@@ -41,30 +41,30 @@ def test_iter_entries_s2_released(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_0,
-                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_0]): 0,
-        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_0,
-                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_1]): 1,
-        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_0,
-                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 2,
-        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_0,
-                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 3,
-        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_1,
-                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_0]): 3,
-        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_1,
-                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_1]): 4,
-        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_1,
-                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 5,
-        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_1,
-                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 6,
-        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2,
-                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_0]): 6,
-        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2,
-                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_1]): 7,
-        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2,
-                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 8,
-        SkillConditionComposite([SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2,
-                                 SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 9,
+        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_0,
+                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_0]): 0,
+        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_0,
+                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_1]): 1,
+        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_0,
+                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 2,
+        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_0,
+                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 3,
+        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_1,
+                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_0]): 3,
+        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_1,
+                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_1]): 4,
+        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_1,
+                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 5,
+        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_1,
+                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 6,
+        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_2,
+                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_0]): 6,
+        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_2,
+                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_1]): 7,
+        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_2,
+                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 8,
+        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_2,
+                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 9,
     }
 
     expected = set(expected_addl_at_max.keys())
@@ -86,7 +86,7 @@ def test_iter_entries_s2_released(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        SkillConditionComposite(): 0,
+        ConditionComposite(): 0,
     }
 
     expected = set(expected_addl_at_max.keys())
@@ -139,7 +139,7 @@ def test_s2_locked(transformer_skill: SkillTransformer):
     assert skill_data.max_level == 2
 
     # Sigil locked
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_SIGIL_LOCKED))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.SELF_SIGIL_LOCKED))
 
     assert skill_data.hit_count == [1, 1]
     assert skill_data.hit_count_at_max == 1
@@ -150,7 +150,7 @@ def test_s2_locked(transformer_skill: SkillTransformer):
     assert skill_data.max_level == 2
 
     # Sigil released (in the actual gameplay, sigil release changed the unit's mode, this variant won't be used)
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_SIGIL_RELEASED))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.SELF_SIGIL_RELEASED))
 
     assert skill_data.hit_count == [1, 1]
     assert skill_data.hit_count_at_max == 1
@@ -167,33 +167,33 @@ def test_s2_released(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(103505044)
 
     additional_mods_self = {
-        SkillConditionComposite(): [
+        ConditionComposite(): [
             [],
             []
         ],
-        SkillConditionComposite(SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_1): [
+        ConditionComposite(Condition.SELF_IN_BUFF_ZONE_BY_SELF_1): [
             [2.7],
             [3]
         ],
-        SkillConditionComposite(SkillCondition.SELF_IN_BUFF_ZONE_BY_SELF_2): [
+        ConditionComposite(Condition.SELF_IN_BUFF_ZONE_BY_SELF_2): [
             [2.7] * 2,
             [3] * 2
         ],
     }
     additional_mods_ally = {
-        SkillConditionComposite(): [
+        ConditionComposite(): [
             [],
             []
         ],
-        SkillConditionComposite(SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_1): [
+        ConditionComposite(Condition.SELF_IN_BUFF_ZONE_BY_ALLY_1): [
             [0.9],
             [1]
         ],
-        SkillConditionComposite(SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_2): [
+        ConditionComposite(Condition.SELF_IN_BUFF_ZONE_BY_ALLY_2): [
             [0.9] * 2,
             [1] * 2
         ],
-        SkillConditionComposite(SkillCondition.SELF_IN_BUFF_ZONE_BY_ALLY_3): [
+        ConditionComposite(Condition.SELF_IN_BUFF_ZONE_BY_ALLY_3): [
             [0.9] * 3,
             [1] * 3
         ],

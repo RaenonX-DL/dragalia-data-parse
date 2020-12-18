@@ -52,18 +52,18 @@ class AbilityVariantUnconvertibleError(AppValueError):
 
 
 class AbilityConditionUnconvertibleError(AppValueError):
-    """Error to be raised if the ability condition cannot be converted to skill condition."""
+    """Error to be raised if the ability condition cannot be converted to condition."""
 
     def __init__(self, ability_condition: int, val_1: float, val_2: float):
-        super().__init__(f"Unable to convert ability condition to skill condition "
+        super().__init__(f"Unable to convert ability condition to condition "
                          f"(ability condition code: {ability_condition} / val 1: {val_1} / val 2: {val_2})")
 
 
 class AbilityOnSkillUnconvertibleError(AppValueError):
-    """Error to be raised if the on skill field of the ability cannot be converted to skill condition."""
+    """Error to be raised if the on skill field of the ability cannot be converted to condition."""
 
     def __init__(self, ability_id: int, on_skill: int):
-        super().__init__(f"Unable to convert ability on skill condition to skill condition "
+        super().__init__(f"Unable to convert ability on skill condition to condition "
                          f"(ability ID: {ability_id} / on skill: {on_skill}")
 
 

@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import InitVar, dataclass, field
 from typing import Generic, TypeVar, final
 
-from dlparse.enums import Element, SkillConditionComposite, SkillNumber
+from dlparse.enums import ConditionComposite, Element, SkillNumber
 from dlparse.mono.asset import CharaDataEntry, SkillDataEntry, SkillIdEntry, TextAsset
 
 __all__ = ("ExportEntryBase", "SkillExportEntryBase")
@@ -50,7 +50,7 @@ class SkillExportEntryBase(Generic[T], ExportEntryBase, ABC):
 
     skill_id_entry: InitVar[SkillIdEntry]
 
-    skill_condition_comp: SkillConditionComposite
+    condition_comp: ConditionComposite
 
     skill_data_to_parse: InitVar[T]
 
@@ -92,7 +92,7 @@ class SkillExportEntryBase(Generic[T], ExportEntryBase, ABC):
     def unique_id(self) -> str:
         return (
             f"{self.character_internal_id}{self.skill_internal_id}{self.skill_identifiers}"
-            f"{hash(self.skill_condition_comp)}"
+            f"{hash(self.condition_comp)}"
         )
 
     def to_csv_entry(self) -> list[str]:
@@ -105,7 +105,7 @@ class SkillExportEntryBase(Generic[T], ExportEntryBase, ABC):
             self.character_element,
             self.skill_internal_id,
             self.skill_identifiers,
-            self.skill_condition_comp,
+            self.condition_comp,
             self.sp_at_max,
             self.ss_sp
         ]
@@ -121,7 +121,7 @@ class SkillExportEntryBase(Generic[T], ExportEntryBase, ABC):
             "Character Element",
             "Skill Internal ID",
             "Skill Identifier",
-            "Skill Conditions",
+            "Conditions",
             "SP (at max lv)",
             "SS SP (at max lv)"
         ]

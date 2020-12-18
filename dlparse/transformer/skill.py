@@ -1,7 +1,7 @@
 """Skill data transformer."""
 from typing import Optional, TYPE_CHECKING, Type, TypeVar
 
-from dlparse.enums import SkillCondition, SkillConditionCategories
+from dlparse.enums import Condition, ConditionCategories
 from dlparse.errors import (
     ActionInfoNotFoundError, HitDataUnavailableError, PreconditionCollidedError, SkillDataNotFoundError,
 )
@@ -32,7 +32,7 @@ class SkillTransformer:
 
     def _get_hit_data_action_component(
             self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_ids: list[int], /,
-            additional_pre_condition: SkillCondition = SkillCondition.NONE
+            additional_pre_condition: Condition = Condition.NONE
     ) -> HitDataList:
         ret: HitDataList = []
 
@@ -103,12 +103,12 @@ class SkillTransformer:
             if prev_action_info.max_addl_input_count:
                 # Additional inputs available, list them all
                 pre_conditions = [
-                    SkillConditionCategories.skill_addl_inputs.convert_reversed(addl_input_count)
+                    ConditionCategories.skill_addl_inputs.convert_reversed(addl_input_count)
                     for addl_input_count in range(1, prev_action_info.max_addl_input_count + 1)
                 ]
             else:
                 # Additional inputs unavailable, have one dummy pre-condition to trigger the parse
-                pre_conditions = [SkillCondition.NONE]
+                pre_conditions = [Condition.NONE]
 
             # Iterate through all possible pre-conditions
             for pre_condition in pre_conditions:
@@ -155,7 +155,7 @@ class SkillTransformer:
                 # Parse to :class:`HitData` and attach it to the hit data list to be returned
                 ret.append(hit_data_cls(
                     hit_attr=hit_attr_data, action_component=None, action_id=action_id,
-                    pre_condition=ability_data.condition.to_skill_condition(),
+                    pre_condition=ability_data.condition.to_condition(),
                     ability_data=[ability_data]
                 ))
 

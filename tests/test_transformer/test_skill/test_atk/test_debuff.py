@@ -1,4 +1,4 @@
-from dlparse.enums import BuffParameter, SkillCondition, SkillConditionComposite
+from dlparse.enums import BuffParameter, Condition, ConditionComposite
 from dlparse.transformer import SkillTransformer
 from tests.utils import DebuffInfo, check_debuff_unit_match
 
@@ -96,7 +96,7 @@ def test_def_down_elemental_restricted(transformer_skill: SkillTransformer):
         check_debuff_unit_match(actual_buffs, expected_buffs)
 
     # Flame-attuned (should be ineffective)
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_ELEM_FLAME))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_ELEM_FLAME))
 
     expected_debuffs_lv_1 = []
     expected_debuffs_lv_2 = []
@@ -113,7 +113,7 @@ def test_def_down_elemental_restricted(transformer_skill: SkillTransformer):
         check_debuff_unit_match(actual_buffs, expected_buffs)
 
     # Shadow-attuned (should be effective)
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_ELEM_SHADOW))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_ELEM_SHADOW))
 
     expected_debuffs_lv_1 = [
         DebuffInfo("AXE_113_04_H01_LV01", BuffParameter.DEF, -0.15, 100, 15, False),

@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Generic, TypeVar, final
 
-from dlparse.enums import Element, ElementFlag, SkillCondition, SkillConditionCategories, SkillConditionComposite
+from dlparse.enums import Condition, ConditionCategories, ConditionComposite, Element, ElementFlag
 from dlparse.model import HitData
 from dlparse.mono.asset import ActionConditionAsset, SkillDataEntry
 
@@ -14,7 +14,7 @@ __all__ = ("SkillEntryBase", "SkillDataBase")
 class SkillEntryBase(ABC):
     """Base class for a single entry of a skill data."""
 
-    condition_comp: SkillConditionComposite
+    condition_comp: ConditionComposite
 
     max_level: int
 
@@ -33,34 +33,34 @@ class SkillDataBase(Generic[HT, ET], ABC):
 
     hit_data_mtx: list[list[HT]]
 
-    possible_conditions: set[SkillConditionComposite] = field(init=False, default_factory=SkillConditionComposite)
+    possible_conditions: set[ConditionComposite] = field(init=False, default_factory=ConditionComposite)
 
     @final
     def _init_possible_conditions_base_elems(self):
-        cond_elems: list[set[tuple[SkillCondition, ...]]] = []
+        cond_elems: list[set[tuple[Condition, ...]]] = []
 
         # Get all possible pre-conditions if any
-        pre_conditions: set[tuple[SkillCondition, ...]] = {
+        pre_conditions: set[tuple[Condition, ...]] = {
             (hit_data.pre_condition,)
             for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
             if hit_data.pre_condition
         }
         if pre_conditions:
-            if any(any(pre_condition in SkillConditionCategories.skill_addl_inputs
+            if any(any(pre_condition in ConditionCategories.skill_addl_inputs
                        for pre_condition in pre_condition_tuple) for pre_condition_tuple in pre_conditions):
                 # Pre-condition has additional inputs condition,
                 # no-additional-input (additional input = 0) condition is possible
                 # Used to handle Lathna S1 (`105505021`), Ramona S1 (`104501011`)
-                pre_conditions.add((SkillCondition.ADDL_INPUT_0,))
+                pre_conditions.add((Condition.ADDL_INPUT_0,))
 
-            if any(any(pre_condition in SkillConditionCategories.skill_action_cancel
+            if any(any(pre_condition in ConditionCategories.skill_action_cancel
                        for pre_condition in pre_condition_tuple) for pre_condition_tuple in pre_conditions):
                 # Pre-condition has action cancelling condition,
                 # no cancelling (no condition) is possible
                 # Used to handle Formal Joachim S1 (`109503011`)
                 pre_conditions.add(())
 
-            if any(any(pre_condition == SkillCondition.MARK_EXPLODES
+            if any(any(pre_condition == Condition.MARK_EXPLODES
                        for pre_condition in pre_condition_tuple) for pre_condition_tuple in pre_conditions):
                 # Mark explosion pre-condition, not exploding marks = skill itself
                 # Used to handle Nobunaga S1 (`102501031`)
@@ -86,10 +86,10 @@ class SkillDataBase(Generic[HT, ET], ABC):
             for elem_flag in action_conds_elem_flag:
                 action_conds_elem.update(Element.from_flag(elem_flag))
 
-            # Convert elements to skill conditions and add it
+            # Convert elements to conditions and add it
             # - Dummy condition tuple for pre-condition of none, meaning other elements
             cond_elems.append(
-                {(SkillConditionCategories.target_element.convert_reversed(elem),) for elem in action_conds_elem}
+                {(ConditionCategories.target_element.convert_reversed(elem),) for elem in action_conds_elem}
                 | {()}
             )
 
@@ -113,7 +113,7 @@ class SkillDataBase(Generic[HT, ET], ABC):
         return entries
 
     @abstractmethod
-    def with_conditions(self, condition_comp: SkillConditionComposite = None) -> ET:
+    def with_conditions(self, condition_comp: ConditionComposite = None) -> ET:
         """
         Get the skill data when all conditions in ``condition_comp`` hold.
 

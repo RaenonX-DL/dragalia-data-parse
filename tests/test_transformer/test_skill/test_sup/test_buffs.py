@@ -1,4 +1,4 @@
-from dlparse.enums import BuffParameter, HitTargetSimple, SkillCondition, SkillConditionComposite
+from dlparse.enums import BuffParameter, Condition, ConditionComposite, HitTargetSimple
 from dlparse.transformer import SkillTransformer
 from tests.utils import BuffEffectInfo, check_buff_unit_match
 
@@ -134,7 +134,7 @@ def test_shield_hp(transformer_skill: SkillTransformer):
 
     # HP >= 40%
 
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_GTE_40))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.SELF_HP_GTE_40))
 
     check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_3_gte_40)
 
@@ -146,7 +146,7 @@ def test_shield_hp(transformer_skill: SkillTransformer):
 
     # HP < 40%
 
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_LT_40))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.SELF_HP_LT_40))
 
     check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_3_lt_40)
 

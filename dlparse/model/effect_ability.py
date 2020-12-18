@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from dlparse.enums import AbilityVariantType, BuffParameter, HitTargetSimple, SkillConditionComposite, Status
+from dlparse.enums import AbilityVariantType, BuffParameter, ConditionComposite, HitTargetSimple, Status
 from dlparse.errors import AbilityVariantUnconvertibleError
 from .effect_base import EffectUnitBase
 
@@ -17,7 +17,7 @@ class AbilityVariantEffectUnit(EffectUnitBase):
     """The smallest unit of an ability effect coming from an ability variant."""
 
     source_ability_id: int
-    condition_comp: SkillConditionComposite
+    condition_comp: ConditionComposite
 
     rate_max: float
 
@@ -34,7 +34,7 @@ class AbilityVariantEffectUnit(EffectUnitBase):
 
     @staticmethod
     def _from_sp_charge(
-            ability_variant: "AbilityVariantEntry", ability_id: int, condition_comp: SkillConditionComposite, /,
+            ability_variant: "AbilityVariantEntry", ability_id: int, condition_comp: ConditionComposite, /,
             asset_ability_limit: "AbilityLimitGroupAsset"
     ) -> set["AbilityVariantEffectUnit"]:
         charge_params = {
@@ -62,7 +62,7 @@ class AbilityVariantEffectUnit(EffectUnitBase):
 
     @classmethod
     def from_ability_variant(
-            cls, ability_variant: "AbilityVariantEntry", ability_id: int, condition_comp: SkillConditionComposite, /,
+            cls, ability_variant: "AbilityVariantEntry", ability_id: int, condition_comp: ConditionComposite, /,
             asset_ability_limit: "AbilityLimitGroupAsset"
     ) -> set["AbilityVariantEffectUnit"]:
         """

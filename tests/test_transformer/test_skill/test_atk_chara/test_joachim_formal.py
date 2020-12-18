@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.enums import Condition, ConditionComposite
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
 
@@ -13,8 +13,8 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        SkillConditionComposite(): 10.12,
-        SkillConditionComposite(SkillCondition.CANCELS_FJOACHIM_S2): 20.64,
+        ConditionComposite(): 10.12,
+        ConditionComposite(Condition.CANCELS_FJOACHIM_S2): 20.64,
     }
 
     expected = set(expected_addl_at_max.keys())
@@ -53,7 +53,7 @@ def test_s1_explode(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(109503011)
 
     # Cancels S2
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.CANCELS_FJOACHIM_S2))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.CANCELS_FJOACHIM_S2))
 
     assert skill_data.hit_count == [1, 1, 1]
     assert skill_data.hit_count_at_max == 1

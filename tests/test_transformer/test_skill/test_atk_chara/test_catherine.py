@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillConditionComposite
+from dlparse.enums import ConditionComposite
 from dlparse.transformer import SkillTransformer
 
 
@@ -19,7 +19,7 @@ def test_iter_entries(transformer_skill: SkillTransformer):
         possible_entries = skill_data.get_all_possible_entries()
 
         expected_max_total_mods = {
-            SkillConditionComposite(): total_mod,
+            ConditionComposite(): total_mod,
         }
 
         expected = set(expected_max_total_mods.keys())

@@ -2,7 +2,7 @@
 from dataclasses import InitVar, dataclass, field
 from itertools import combinations, product, zip_longest
 
-from dlparse.enums import HitTargetSimple, SkillCondition, SkillConditionCategories, SkillConditionComposite, Status
+from dlparse.enums import Condition, ConditionCategories, ConditionComposite, HitTargetSimple, Status
 from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset, PlayerActionInfoAsset
 from .buff_boost import BuffCountBoostData, BuffZoneBoostData
 from .effect_action_cond import ActionConditionEffectUnit
@@ -59,7 +59,7 @@ class AttackingSkillDataEntry(SkillEntryBase):
 
                 # Action condition bound to the hit unit, check that
                 action_cond = asset_action_cond.get_data_by_id(hit_unit.hit_attr.action_condition_id)
-                action_cond_conditions = action_cond.skill_conditions
+                action_cond_conditions = action_cond.conditions
 
                 if (
                         action_cond_conditions
@@ -250,19 +250,19 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     _has_non_zero_mods: bool = field(init=False)
 
     def _init_all_possible_conditions_target(self):
-        cond_elems: list[set[tuple[SkillCondition, ...]]] = []
+        cond_elems: list[set[tuple[Condition, ...]]] = []
 
         # OD / BK boosts available
         od_boost_available: bool = any(
             hit_data.hit_attr.boost_in_od for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         )
         if od_boost_available:
-            cond_elems.append({(SkillCondition.TARGET_OD_STATE,)})
+            cond_elems.append({(Condition.TARGET_OD_STATE,)})
         bk_boost_available: bool = any(
             hit_data.hit_attr.boost_in_bk for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         )
         if bk_boost_available:
-            cond_elems.append({(SkillCondition.TARGET_BK_STATE,)})
+            cond_elems.append({(Condition.TARGET_BK_STATE,)})
 
         # Punishers available
         punishers_available: set[Status] = {
@@ -272,12 +272,12 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             for punisher_state in hit_data.hit_attr.punisher_states
         }
         if punishers_available:
-            conditions: set[SkillCondition] = {
-                SkillConditionCategories.target_status.convert_reversed(affliction)
+            conditions: set[Condition] = {
+                ConditionCategories.target_status.convert_reversed(affliction)
                 for affliction in punishers_available
             }
             # noinspection PyTypeChecker
-            affliction_combinations: set[tuple[SkillCondition, ...]] = set()
+            affliction_combinations: set[tuple[Condition, ...]] = set()
             for count in range(len(conditions) + 1):
                 affliction_combinations.update(combinations(conditions, count))
 
@@ -286,7 +286,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         return cond_elems
 
     def _init_all_possible_conditions_self_crisis_buff(self, is_exporting: bool):
-        cond_elems: list[set[tuple[SkillCondition, ...]]] = []
+        cond_elems: list[set[tuple[Condition, ...]]] = []
 
         # Crisis boosts available (skip adding sectioned HP if exporting)
         if not is_exporting:
@@ -294,7 +294,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
                 hit_data.hit_attr.boost_by_hp for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
             )
             if crisis_available:
-                cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_hp_status.members})
+                cond_elems.append({(buff_cond,) for buff_cond in ConditionCategories.self_hp_status.members})
 
         # Buff boosts available
         boost_by_buff_available: bool = any(
@@ -308,7 +308,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         if boost_by_buff_available:
             # Add direct boost conditions (only add the sectioned buff count condition if not exporting)
             if not is_exporting:
-                cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_buff_count.members})
+                cond_elems.append({(buff_cond,) for buff_cond in ConditionCategories.self_buff_count.members})
 
             # Check if any buff boost data available
             buff_boost_data_ids: set[int] = {hit_data.hit_attr.buff_boost_data_id
@@ -320,7 +320,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
                     cond_elems.append({
                         (buff_cond,) for buff_cond
-                        in SkillConditionCategories.get_category_action_condition(action_condition_id).members
+                        in ConditionCategories.get_category_action_condition(action_condition_id).members
                     })
         elif buff_up_bonus_hits_available:
             # Get all action IDs first, then get the max bullet counts
@@ -332,40 +332,40 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             )
             cond_elems.append({
                 (buff_cond,) for buff_cond
-                in SkillConditionCategories.self_buff_count.get_members_lte(max_count)
+                in ConditionCategories.self_buff_count.get_members_lte(max_count)
             })
 
         return cond_elems
 
     def _init_all_possible_conditions_self_others(self, is_exporting: bool):
-        cond_elems: list[set[tuple[SkillCondition, ...]]] = []
+        cond_elems: list[set[tuple[Condition, ...]]] = []
 
         # Combo boosts available
         combo_boost_available: bool = any(
             hit_data.is_boost_by_combo for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         )
         if combo_boost_available:
-            cond_elems.append({(combo_cond,) for combo_cond in SkillConditionCategories.self_combo_count.members})
+            cond_elems.append({(combo_cond,) for combo_cond in ConditionCategories.self_combo_count.members})
 
         # Gauge boosts available
         gauge_boost_available: bool = any(
             hit_data.is_boost_by_gauge_filled for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         )
         if gauge_boost_available:
-            cond_elems.append({(combo_cond,) for combo_cond in SkillConditionCategories.self_gauge_filled.members})
+            cond_elems.append({(combo_cond,) for combo_cond in ConditionCategories.self_gauge_filled.members})
 
         # In buff zone boosts available
         if not is_exporting and any(
                 hit_data.is_effective_inside_buff_zone
                 for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         ):
-            cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_in_buff_zone_self.members})
-            cond_elems.append({(buff_cond,) for buff_cond in SkillConditionCategories.self_in_buff_zone_ally.members})
+            cond_elems.append({(buff_cond,) for buff_cond in ConditionCategories.self_in_buff_zone_self.members})
+            cond_elems.append({(buff_cond,) for buff_cond in ConditionCategories.self_in_buff_zone_ally.members})
 
         return cond_elems
 
     def _init_all_possible_conditions_skill(self):
-        cond_elems: list[set[tuple[SkillCondition, ...]]] = []
+        cond_elems: list[set[tuple[Condition, ...]]] = []
 
         # Teammate coverage available
         teammate_coverage_available: bool = any(
@@ -373,7 +373,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         )
         if teammate_coverage_available:
             cond_elems.append({
-                (teammate_coverage,) for teammate_coverage in SkillConditionCategories.skill_teammates_covered.members
+                (teammate_coverage,) for teammate_coverage in ConditionCategories.skill_teammates_covered.members
             })
 
         # Deterioration available
@@ -386,7 +386,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             )
             cond_elems.append({
                 (bullet_hit,) for bullet_hit
-                in SkillConditionCategories.skill_bullet_hit.get_members_lte(max_bullet_hit)
+                in ConditionCategories.skill_bullet_hit.get_members_lte(max_bullet_hit)
             })
 
         # Bullet summon count dependent & available
@@ -400,7 +400,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             )
             cond_elems.append({
                 (bullet_on_map,) for bullet_on_map
-                in SkillConditionCategories.skill_bullets_on_map.get_members_lte(max_bullet_hit)
+                in ConditionCategories.skill_bullets_on_map.get_members_lte(max_bullet_hit)
             })
 
         # On-map bullet count dependent & available
@@ -412,14 +412,14 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             #   This has a limitation of the 9 butterflies limitation (not yet implemented).
             #   The parser uses the limited enums to do the limitating work for now.
             cond_elems.append({
-                (bullet_on_map,) for bullet_on_map in SkillConditionCategories.skill_bullets_on_map.members
+                (bullet_on_map,) for bullet_on_map in ConditionCategories.skill_bullets_on_map.members
             })
 
         return cond_elems
 
     def _init_all_possible_conditions(self, /, is_exporting: bool):
         # Initialization
-        cond_elems: list[set[tuple[SkillCondition, ...]]] = self._init_possible_conditions_base_elems()
+        cond_elems: list[set[tuple[Condition, ...]]] = self._init_possible_conditions_base_elems()
 
         cond_elems.extend(self._init_all_possible_conditions_target())
         cond_elems.extend(self._init_all_possible_conditions_self_crisis_buff(is_exporting))
@@ -428,7 +428,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         # Add combinations
         self.possible_conditions = {
-            SkillConditionComposite(tuple(subitem for item in item_combination for subitem in item))
+            ConditionComposite(tuple(subitem for item in item_combination for subitem in item))
             for item_combination in product(*cond_elems)
         }
 
@@ -441,7 +441,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     def __post_init__(self, is_exporting: bool):
         super().__post_init__(is_exporting=is_exporting)
 
-        self._unit_mtx_base, _ = self.calculate_units_matrix(SkillConditionComposite())
+        self._unit_mtx_base, _ = self.calculate_units_matrix(ConditionComposite())
 
         # Calculate the max level by getting the level which has the max total mods
         # -------------------------------------------------------------------------
@@ -457,14 +457,14 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         self._init_buff_zone_boost_mtx()
 
     def calculate_units_matrix(
-            self, condition_comp: SkillConditionComposite
+            self, condition_comp: ConditionComposite
     ) -> tuple[list[list[DamageUnit]], list[int]]:
         """Calculate the damage unit matrix and the hit count vector."""
         units: list[list[DamageUnit]] = []
         hit_counts: list[int] = []
 
         if not condition_comp:
-            condition_comp = SkillConditionComposite()  # Dummy empty condition composite
+            condition_comp = ConditionComposite()  # Dummy empty condition composite
 
         for hit_data_lv in self.hit_data_mtx:
             new_units_level = []  # Array of the units at the same level
@@ -515,7 +515,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return units, hit_counts
 
-    def with_conditions(self, condition_comp: SkillConditionComposite = None) -> AttackingSkillDataEntry:
+    def with_conditions(self, condition_comp: ConditionComposite = None) -> AttackingSkillDataEntry:
         """
         Get the skill data when all conditions in ``condition_comp`` hold.
 
@@ -525,7 +525,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         :raises BulletEndOfLifeError: if the bullet hit count condition is beyond the limit
         """
         if not condition_comp:
-            condition_comp = SkillConditionComposite()
+            condition_comp = ConditionComposite()
 
         hit_unit_mtx, hit_count_vct = self.calculate_units_matrix(condition_comp)
 

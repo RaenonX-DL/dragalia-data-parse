@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from dlparse.enums import SkillConditionComposite
+from dlparse.enums import ConditionComposite
 
 if TYPE_CHECKING:
     from .hit_dmg import DamagingHitData
@@ -42,7 +42,7 @@ class BuffCountBoostData(BuffBoostData):
 
     @staticmethod
     def from_hit_attr(
-            hit_attr: "HitAttrEntry", condition_comp: SkillConditionComposite,
+            hit_attr: "HitAttrEntry", condition_comp: ConditionComposite,
             asset_action_cond: "ActionConditionAsset", asset_buff_count: "BuffCountAsset"
     ) -> "BuffCountBoostData":
         """Get the buff count boost data of ``hit_attr``."""

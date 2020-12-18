@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 from typing import Optional, TextIO, TypeVar, Union
 
-from dlparse.enums import AbilityCondition, AbilityVariantType, SkillCondition, SkillConditionComposite, SkillNumber
+from dlparse.enums import AbilityCondition, AbilityVariantType, Condition, ConditionComposite, SkillNumber
 from dlparse.errors import AbilityConditionUnconvertibleError, AbilityOnSkillUnconvertibleError
 from dlparse.model import AbilityVariantEffectUnit, EffectUnitBase
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
@@ -27,61 +27,61 @@ class AbilityConditionEntry:
     def __post_init__(self):
         self.condition_type = AbilityCondition(self.condition_code)
 
-    def _skill_cond_self_hp_gt(self):
+    def _cond_self_hp_gt(self):
         if self.val_1 == 30:
-            return SkillCondition.SELF_HP_GT_30
+            return Condition.SELF_HP_GT_30
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
-    def _skill_cond_self_hp_gte(self):
+    def _cond_self_hp_gte(self):
         if self.val_1 == 40:
-            return SkillCondition.SELF_HP_GTE_40
+            return Condition.SELF_HP_GTE_40
         if self.val_1 == 50:
-            return SkillCondition.SELF_HP_GTE_50
+            return Condition.SELF_HP_GTE_50
         if self.val_1 == 60:
-            return SkillCondition.SELF_HP_GTE_60
+            return Condition.SELF_HP_GTE_60
         if self.val_1 == 85:
-            return SkillCondition.SELF_HP_GTE_85
+            return Condition.SELF_HP_GTE_85
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
-    def _skill_cond_self_hp_lt(self):
+    def _cond_self_hp_lt(self):
         if self.val_1 == 30:
-            return SkillCondition.SELF_HP_LT_30
+            return Condition.SELF_HP_LT_30
         if self.val_1 == 40:
-            return SkillCondition.SELF_HP_LT_40
+            return Condition.SELF_HP_LT_40
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
-    def to_skill_condition(self) -> SkillCondition:
+    def to_condition(self) -> Condition:
         """
-        Convert the ability condition to skill condition.
+        Convert the ability condition to condition.
 
         :raises AbilityConditionUnconvertibleError: if the ability condition is unconvertible
         """
         # No condition
         if self.condition_type == AbilityCondition.NONE:
-            return SkillCondition.NONE
+            return Condition.NONE
 
         # Self HP >
         if self.condition_type == AbilityCondition.SELF_HP_GT:
-            return self._skill_cond_self_hp_gt()
+            return self._cond_self_hp_gt()
 
         # Self HP >=
         if self.condition_type == AbilityCondition.SELF_HP_GTE:
-            return self._skill_cond_self_hp_gte()
+            return self._cond_self_hp_gte()
 
         # Self HP <
         if self.condition_type in (AbilityCondition.SELF_HP_LT, AbilityCondition.SELF_HP_LT_2):
-            return self._skill_cond_self_hp_lt()
+            return self._cond_self_hp_lt()
 
         # Quest start
         if self.condition_type == AbilityCondition.QUEST_START:
-            return SkillCondition.QUEST_START
+            return Condition.QUEST_START
 
         # User energized
         if self.condition_type == AbilityCondition.ENERGIZED_MOMENT:
-            return SkillCondition.SELF_ENERGIZED
+            return Condition.SELF_ENERGIZED
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
@@ -253,25 +253,25 @@ class AbilityEntry(MasterEntryBase):
         return [variant.type_id for variant in self.variants if variant.is_unknown_type]
 
     @property
-    def on_skill_condition(self) -> SkillCondition:
+    def on_skill_condition(self) -> Condition:
         """
-        Convert the on skill field to its corresponding skill condition.
+        Convert the on skill field to its corresponding condition.
 
-        :raises AbilityOnSkillUnconvertibleError: unable to convert on skill condition to skill condition
+        :raises AbilityOnSkillUnconvertibleError: unable to convert on skill condition to condition
         """
         # Value of `3` is a legacy one, usage unknown, currently no units are using it (2020/12/18)
 
         if self.on_skill == 0:
-            return SkillCondition.NONE
+            return Condition.NONE
 
         if self.on_skill == 1:
-            return SkillCondition.SKILL_USED_S1
+            return Condition.SKILL_USED_S1
 
         if self.on_skill == 2:
-            return SkillCondition.SKILL_USED_S2
+            return Condition.SKILL_USED_S2
 
         if self.on_skill == 99:
-            return SkillCondition.SKILL_USED_ALL
+            return Condition.SKILL_USED_ALL
 
         raise AbilityOnSkillUnconvertibleError(self.id, self.on_skill)
 
@@ -337,14 +337,14 @@ class AbilityEntry(MasterEntryBase):
                 continue  # Refer to the other ability, no variant effect
 
             # Get the conditions
-            conditions: list[SkillCondition] = []
+            conditions: list[Condition] = []
             if on_skill_cond := self.on_skill_condition:
                 conditions.append(on_skill_cond)
-            if ability_cond := self.condition.to_skill_condition():
+            if ability_cond := self.condition.to_condition():
                 conditions.append(ability_cond)
 
             effect_units.update(AbilityVariantEffectUnit.from_ability_variant(
-                variant, self.id, SkillConditionComposite(conditions),
+                variant, self.id, ConditionComposite(conditions),
                 asset_ability_limit=asset_ability_limit,
             ))
 

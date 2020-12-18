@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.enums import Condition, ConditionComposite
 from dlparse.errors import SkillDataNotFoundError
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
@@ -164,7 +164,7 @@ def test_has_punisher_1_2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(107505011)
 
     # Poisoned Punisher
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_POISONED))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_POISONED))
 
     assert skill_data.hit_count == [4, 4, 4, 4]
     assert skill_data.hit_count_at_max == 4
@@ -218,7 +218,7 @@ def test_has_punisher_2_2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503021)
 
     # Poisoned Punisher
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_POISONED))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_POISONED))
 
     assert skill_data.hit_count == [1, 1, 1, 2]
     assert skill_data.hit_count_at_max == 2
@@ -245,7 +245,7 @@ def test_has_punisher_2_3(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503021)
 
     # Stunned Punisher
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_STUNNED))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_STUNNED))
 
     assert skill_data.hit_count == [1, 1, 1, 2]
     assert skill_data.hit_count_at_max == 2
@@ -273,7 +273,7 @@ def test_has_punisher_2_4(transformer_skill: SkillTransformer):
 
     # Poisoned & Stunned Punisher
     skill_data = skill_data_base.with_conditions(
-        SkillConditionComposite([SkillCondition.TARGET_STUNNED, SkillCondition.TARGET_POISONED]))
+        ConditionComposite([Condition.TARGET_STUNNED, Condition.TARGET_POISONED]))
 
     assert skill_data.hit_count == [1, 1, 1, 2]
     assert skill_data.hit_count_at_max == 2
@@ -327,7 +327,7 @@ def test_has_punisher_3_2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106505011)
 
     # Blinded Punisher
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_BLINDED))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_BLINDED))
 
     assert skill_data.hit_count == [8, 8, 8, 8]
     assert skill_data.hit_count_at_max == 8
@@ -354,7 +354,7 @@ def test_has_punisher_3_3(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106505011)
 
     # Poisoned Punisher
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_POISONED))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_POISONED))
 
     assert skill_data.hit_count == [8, 8, 8, 8]
     assert skill_data.hit_count_at_max == 8
@@ -382,7 +382,7 @@ def test_has_punisher_3_4(transformer_skill: SkillTransformer):
 
     # Blinded or Poisoned Punisher
     skill_data = skill_data_base.with_conditions(
-        SkillConditionComposite([SkillCondition.TARGET_BLINDED, SkillCondition.TARGET_POISONED]))
+        ConditionComposite([Condition.TARGET_BLINDED, Condition.TARGET_POISONED]))
 
     assert skill_data.hit_count == [8, 8, 8, 8]
     assert skill_data.hit_count_at_max == 8
@@ -409,7 +409,7 @@ def test_hp_related_1_1(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(107505011)
 
     # 1 HP
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_1))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.SELF_HP_1))
 
     assert skill_data.hit_count == [4, 4, 4, 4]
     assert skill_data.hit_count_at_max == 4
@@ -437,7 +437,7 @@ def test_hp_related_1_2(transformer_skill: SkillTransformer):
 
     # 1 HP & Poisoned Punisher
     skill_data = skill_data_base.with_conditions(
-        SkillConditionComposite([SkillCondition.TARGET_POISONED, SkillCondition.SELF_HP_1]))
+        ConditionComposite([Condition.TARGET_POISONED, Condition.SELF_HP_1]))
 
     assert skill_data.hit_count == [4, 4, 4, 4]
     assert skill_data.hit_count_at_max == 4
@@ -489,7 +489,7 @@ def test_hp_related_2_2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503012)
 
     # Base data (Full HP)
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_FULL))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.SELF_HP_FULL))
 
     assert skill_data.hit_count == [3, 3, 3]
     assert skill_data.hit_count_at_max == 3
@@ -515,7 +515,7 @@ def test_hp_related_2_3(transformer_skill: SkillTransformer):
 
     # Poisoned Punisher (Full HP)
     skill_data = skill_data_base.with_conditions(
-        SkillConditionComposite([SkillCondition.TARGET_POISONED, SkillCondition.SELF_HP_FULL]))
+        ConditionComposite([Condition.TARGET_POISONED, Condition.SELF_HP_FULL]))
 
     assert skill_data.hit_count == [3, 3, 3]
     assert skill_data.hit_count_at_max == 3
@@ -540,7 +540,7 @@ def test_hp_related_2_4(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503012)
 
     # Base data (1 HP)
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.SELF_HP_1))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.SELF_HP_1))
 
     assert skill_data.hit_count == [3, 3, 3]
     assert skill_data.hit_count_at_max == 3
@@ -566,7 +566,7 @@ def test_hp_related_2_5(transformer_skill: SkillTransformer):
 
     # Poisoned Punisher (1 HP)
     skill_data = skill_data_base.with_conditions(
-        SkillConditionComposite([SkillCondition.TARGET_POISONED, SkillCondition.SELF_HP_1]))
+        ConditionComposite([Condition.TARGET_POISONED, Condition.SELF_HP_1]))
 
     assert skill_data.hit_count == [3, 3, 3]
     assert skill_data.hit_count_at_max == 3
@@ -605,20 +605,20 @@ def test_buff_related_1(transformer_skill: SkillTransformer):
 
     # With buffs
     condition_to_dmg_up_rate = {
-        (SkillCondition.SELF_BUFF_0,): 1 + 0,
-        (SkillCondition.SELF_BUFF_10,): 1 + 0.05 * 10,
-        (SkillCondition.SELF_BUFF_15,): 1 + 0.05 * 15,
-        (SkillCondition.SELF_BUFF_20,): 1 + 0.05 * 20,
-        (SkillCondition.SELF_BUFF_25,): 1 + 0.05 * 25,
-        (SkillCondition.SELF_BUFF_30,): 1 + 0.05 * 30,
-        (SkillCondition.SELF_BUFF_35,): 1 + 0.05 * 35,
-        (SkillCondition.SELF_BUFF_40,): 1 + 0.05 * 40,
-        (SkillCondition.SELF_BUFF_45,): 1 + 0.05 * 45,
-        (SkillCondition.SELF_BUFF_50,): 1 + 0.05 * 50,
+        (Condition.SELF_BUFF_0,): 1 + 0,
+        (Condition.SELF_BUFF_10,): 1 + 0.05 * 10,
+        (Condition.SELF_BUFF_15,): 1 + 0.05 * 15,
+        (Condition.SELF_BUFF_20,): 1 + 0.05 * 20,
+        (Condition.SELF_BUFF_25,): 1 + 0.05 * 25,
+        (Condition.SELF_BUFF_30,): 1 + 0.05 * 30,
+        (Condition.SELF_BUFF_35,): 1 + 0.05 * 35,
+        (Condition.SELF_BUFF_40,): 1 + 0.05 * 40,
+        (Condition.SELF_BUFF_45,): 1 + 0.05 * 45,
+        (Condition.SELF_BUFF_50,): 1 + 0.05 * 50,
     }
 
     for conditions, boost_rate in condition_to_dmg_up_rate.items():
-        skill_data = skill_data_base.with_conditions(SkillConditionComposite(conditions))
+        skill_data = skill_data_base.with_conditions(ConditionComposite(conditions))
 
         assert skill_data.hit_count == [2, 2, 2, 2]
         assert skill_data.hit_count_at_max == 2

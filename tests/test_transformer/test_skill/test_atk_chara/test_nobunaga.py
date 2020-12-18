@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import BuffParameter, SkillCondition, SkillConditionComposite
+from dlparse.enums import BuffParameter, Condition, ConditionComposite
 from dlparse.transformer import SkillTransformer
 from tests.utils import DebuffInfo, approx_matrix, check_debuff_unit_match
 
@@ -13,8 +13,8 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        SkillConditionComposite(): 7.13,
-        SkillConditionComposite(SkillCondition.MARK_EXPLODES): 15.65,
+        ConditionComposite(): 7.13,
+        ConditionComposite(Condition.MARK_EXPLODES): 15.65,
     }
 
     expected = set(expected_addl_at_max.keys())
@@ -48,7 +48,7 @@ def test_s1(transformer_skill: SkillTransformer):
     assert skill_data.max_level == 3
 
     # Mark exploded
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.MARK_EXPLODES))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.MARK_EXPLODES))
 
     assert skill_data.hit_count == [1, 1, 1]
     assert skill_data.hit_count_at_max == 1

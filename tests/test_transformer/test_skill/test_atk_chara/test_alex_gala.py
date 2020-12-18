@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.enums import Condition, ConditionComposite
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
 
@@ -72,7 +72,7 @@ def test_s1_chained(transformer_skill: SkillTransformer):
 
     # DEF down
 
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_DEF_DOWN))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_DEF_DOWN))
 
     assert skill_data.hit_count == [4, 4, 4]
     assert skill_data.hit_count_at_max == 4
@@ -116,7 +116,7 @@ def test_s2_chained(transformer_skill: SkillTransformer):
 
     # Poisoned
 
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_POISONED))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_POISONED))
 
     assert skill_data.hit_count == [2, 2]
     assert skill_data.hit_count_at_max == 2
@@ -160,7 +160,7 @@ def test_s1_has_buff(transformer_skill: SkillTransformer):
 
     # DEF down
 
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_DEF_DOWN))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_DEF_DOWN))
 
     assert skill_data.hit_count == [4, 4, 4]
     assert skill_data.hit_count_at_max == 4
@@ -204,7 +204,7 @@ def test_s2_has_buff(transformer_skill: SkillTransformer):
 
     # Poisoned
 
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_POISONED))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_POISONED))
 
     assert skill_data.hit_count == [2, 2]
     assert skill_data.hit_count_at_max == 2
@@ -248,7 +248,7 @@ def test_s1_break(transformer_skill: SkillTransformer):
 
     # Target BK
 
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_BK_STATE))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_BK_STATE))
 
     assert skill_data.hit_count == [4, 4, 4]
     assert skill_data.hit_count_at_max == 4
@@ -292,7 +292,7 @@ def test_s2_break(transformer_skill: SkillTransformer):
 
     # Target BK
 
-    skill_data = skill_data_base.with_conditions(SkillConditionComposite(SkillCondition.TARGET_BK_STATE))
+    skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.TARGET_BK_STATE))
 
     assert skill_data.hit_count == [2, 2]
     assert skill_data.hit_count_at_max == 2

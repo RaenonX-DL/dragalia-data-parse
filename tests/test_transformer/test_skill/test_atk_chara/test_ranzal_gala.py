@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.enums import Condition, ConditionComposite
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
 
@@ -13,7 +13,7 @@ def test_iter_entries_s1_no_ability(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        SkillConditionComposite(): 3.036 * 6
+        ConditionComposite(): 3.036 * 6
     }
 
     expected = set(expected_addl_at_max.keys())
@@ -38,9 +38,9 @@ def test_iter_entries_s1_with_ability(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        SkillConditionComposite(SkillCondition.SELF_GAUGE_FILLED_0): 3.036 * 6 * 1,
-        SkillConditionComposite(SkillCondition.SELF_GAUGE_FILLED_1): 3.036 * 6 * 1.2,
-        SkillConditionComposite(SkillCondition.SELF_GAUGE_FILLED_2): 3.036 * 6 * 2,
+        ConditionComposite(Condition.SELF_GAUGE_FILLED_0): 3.036 * 6 * 1,
+        ConditionComposite(Condition.SELF_GAUGE_FILLED_1): 3.036 * 6 * 1.2,
+        ConditionComposite(Condition.SELF_GAUGE_FILLED_2): 3.036 * 6 * 2,
     }
 
     expected = set(expected_addl_at_max.keys())
@@ -87,9 +87,9 @@ def test_s1_has_chara_ability(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(101503011, ability_ids=[124])
 
     dmg_up_rate = {
-        SkillConditionComposite(SkillCondition.SELF_GAUGE_FILLED_0): 1,
-        SkillConditionComposite(SkillCondition.SELF_GAUGE_FILLED_1): 1.2,
-        SkillConditionComposite(SkillCondition.SELF_GAUGE_FILLED_2): 2,
+        ConditionComposite(Condition.SELF_GAUGE_FILLED_0): 1,
+        ConditionComposite(Condition.SELF_GAUGE_FILLED_1): 1.2,
+        ConditionComposite(Condition.SELF_GAUGE_FILLED_2): 2,
     }
 
     for cond_comp, up_rate in dmg_up_rate.items():

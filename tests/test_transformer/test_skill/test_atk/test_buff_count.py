@@ -1,4 +1,4 @@
-from dlparse.enums import SkillCondition, SkillConditionComposite
+from dlparse.enums import Condition, ConditionComposite
 from dlparse.model import BuffCountBoostData
 from dlparse.transformer import SkillTransformer
 
@@ -9,10 +9,10 @@ def test_capped(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(109502012, is_exporting=True)
 
     expected_data = {
-        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_0): BuffCountBoostData(0, 0.8, 0.05, 1319, 3, 0.2),
-        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_1): BuffCountBoostData(0.2, 0.8, 0.05, 1319, 2, 0.2),
-        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_2): BuffCountBoostData(0.4, 0.8, 0.05, 1319, 1, 0.2),
-        SkillConditionComposite(SkillCondition.SELF_LAPIS_CARD_3): BuffCountBoostData(0.6, 0.8, 0.05, 1319, 0, 0.2),
+        ConditionComposite(Condition.SELF_LAPIS_CARD_0): BuffCountBoostData(0, 0.8, 0.05, 1319, 3, 0.2),
+        ConditionComposite(Condition.SELF_LAPIS_CARD_1): BuffCountBoostData(0.2, 0.8, 0.05, 1319, 2, 0.2),
+        ConditionComposite(Condition.SELF_LAPIS_CARD_2): BuffCountBoostData(0.4, 0.8, 0.05, 1319, 1, 0.2),
+        ConditionComposite(Condition.SELF_LAPIS_CARD_3): BuffCountBoostData(0.6, 0.8, 0.05, 1319, 0, 0.2),
     }
     skill_max_lv = skill_data_base.max_level
 

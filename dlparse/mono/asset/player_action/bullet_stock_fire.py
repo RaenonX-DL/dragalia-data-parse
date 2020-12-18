@@ -36,7 +36,7 @@ class ActionBulletStockFire(ActionBullet):
         if pattern.is_special_pattern:
             # -- Special pattern - Hit count is independent, do **NOT** expand the hit labels
             # Handle hit count during skill data processing instead,
-            # because player action info and skill condition are required to get the actual mods
+            # because player action info and condition are required to get the actual mods
             labels_possible = [data["_hitAttrLabel"]]
         else:
             # -- Normal case

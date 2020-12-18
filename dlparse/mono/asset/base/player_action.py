@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Callable, Optional, TextIO, Type, Union
 
-from dlparse.enums import ActionConditionType, SkillCondition, SkillConditionCategories
+from dlparse.enums import ActionConditionType, Condition, ConditionCategories
 from dlparse.errors import AssetKeyMissingError
 from .asset import AssetBase
 from .entry import EntryBase
@@ -31,20 +31,20 @@ class ActionComponentCondition(EntryBase):
         )
 
     @property
-    def skill_pre_condition(self) -> SkillCondition:
+    def skill_pre_condition(self) -> Condition:
         """Get the action executing pre-condition."""
         if self.type_condition == ActionConditionType.ACTION_CONDITION:
             # Appears in Nevin S2 (103505042 - 391330)
             if self.type_values[0] == 1152:
                 if self.type_values[2] == 1:
-                    return SkillCondition.SELF_SIGIL_LOCKED
+                    return Condition.SELF_SIGIL_LOCKED
                 if self.type_values[2] == 0:
-                    return SkillCondition.SELF_SIGIL_RELEASED
+                    return Condition.SELF_SIGIL_RELEASED
 
         if self.type_condition == ActionConditionType.ACTION_CANCEL:
-            return SkillConditionCategories.skill_action_cancel.convert_reversed(self.type_values[0])
+            return ConditionCategories.skill_action_cancel.convert_reversed(self.type_values[0])
 
-        return SkillCondition.NONE
+        return Condition.NONE
 
 
 @dataclass
@@ -82,10 +82,10 @@ class ActionComponentBase(EntryBase, ABC):
     loop_data: Optional[ActionComponentLoop]
 
     @property
-    def skill_pre_condition(self) -> SkillCondition:
+    def skill_pre_condition(self) -> Condition:
         """Get the pre-condition for this action component to be executed."""
         if not self.condition_data:
-            return SkillCondition.NONE
+            return Condition.NONE
 
         return self.condition_data.skill_pre_condition
 

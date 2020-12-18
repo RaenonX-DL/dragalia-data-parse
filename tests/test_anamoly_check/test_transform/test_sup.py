@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.enums import SkillCondition
+from dlparse.enums import Condition
 from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError
 from dlparse.model import SupportiveSkillEntry
 from dlparse.mono.asset import CharaDataEntry
@@ -26,7 +26,7 @@ def test_transform_all_supportive_skills(
                           in chara_data.get_skill_id_entries(asset_manager)])
 
     skill_ids_missing: dict[int, str] = skill_ids_sup.copy()
-    skill_no_buff: set[tuple[int, tuple[SkillCondition]]] = set()
+    skill_no_buff: set[tuple[int, tuple[Condition]]] = set()
     skill_entries: list[SupportiveSkillEntry] = []
 
     for skill_id in skill_ids:

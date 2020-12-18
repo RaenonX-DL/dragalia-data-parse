@@ -1,4 +1,4 @@
-from dlparse.enums import BuffParameter, SkillCondition, SkillConditionComposite
+from dlparse.enums import BuffParameter, Condition, ConditionComposite
 from dlparse.transformer import AbilityTransformer
 from tests.utils import AbilityEffectInfo, check_ability_effect_unit_match
 
@@ -9,8 +9,8 @@ def test_all_skill_prep(transformer_ability: AbilityTransformer):
 
     ability_data = transformer_ability.transform_ability(721)
 
-    cond_quest_start = SkillConditionComposite(SkillCondition.QUEST_START)
-    cond_skill_used = SkillConditionComposite(SkillCondition.SKILL_USED_ALL)
+    cond_quest_start = ConditionComposite(Condition.QUEST_START)
+    cond_skill_used = ConditionComposite(Condition.SKILL_USED_ALL)
 
     expected_info = {
         AbilityEffectInfo(721, cond_quest_start, BuffParameter.SP_CHARGE_PCT_S1, 1),
