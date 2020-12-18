@@ -37,7 +37,9 @@ Each variant has at most 1 group ID affliated. `0` for not used.
 
 Field: `_AbilityLimitedGroupIdN`. For example, `_AbilityLimitedGroupId1` for the 1st variant.
 
-> This is used for limiting the value. More information of the group ID can be found in `AbilityLimitedGroup.json`.
+> This is used for limiting the value. Data correspondence of the ID can be found in `AbilityLimitedGroup.json`.
+
+This is **only used** when up variant up value is given, for limiting the max value.
 
 ### Variant Target Action
 
@@ -60,7 +62,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 
 <pre>
 00. None
-01. StatusUp
+<a href="#01---statusup">01. StatusUp</a>
 02. ResistAbs
 03. ActAddAbs
 04. ResistTribe
@@ -136,8 +138,31 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 
 For the missing enums below, it means that the **documentation has not been created** yet, rather than fields not used.
 
-If the fields are not explicitly mentioned, it means that the unmentioned fields are not used.
+If the fields are not explicitly mentioned (except for limit group ID), it means that the unmentioned fields are not
+used.
 
+### `00` - `None`
+
+The variant is not used.
+
+### `01` - `StatusUp`
+
+Raise a certain status.
+
+If ID-A is `2`; up value is `10`, then it means `ATK +10%`.
+
+#### Variant ID - A
+
+Parameter to be raised. Check [the documentation of the target parameter](/notes/enums/TargetParam.md)
+for the ID correspondence.
+
+A value of `2` means to raise ATK.
+
+#### Variant Up Value
+
+Parameter raising rate.
+
+A value of `10` means to raise the parameter by 10%.
 
 ### `14` - `ChangeState`
 
@@ -164,10 +189,6 @@ A value of `BUF_222_LV01` means that to call the hit attribute `BUF_222_LV01` on
 ### `17` - `SpCharge`
 
 Charge all SP gauges.
-
-### Variant Limit Group
-
-ID of the value limiting group.
 
 # Variant Up Value
 

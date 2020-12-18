@@ -111,15 +111,21 @@ class BuffParameter(Enum):
     # region HP Control
     HP_FIX_BY_MAX = 501
     """
-    Directly fixes HP by specifying the desired rate.
+    Directly fixes HP by a certain rate.
 
     A value of 0.12 means the user's HP will be set to 12% of the max.
     """
     HP_DECREASE_BY_MAX = 502
     """
-    Decreases HP by a certain desired rate.
+    Decreases HP by a certain rate.
 
     A value of 0.12 means to decrease 12% HP.
+    """
+    HP_RAISE_BY_MAX = 503
+    """
+    Increases max HP by a certain rate.
+
+    A value of 0.12 means to increase the max HP by 12%.
     """
     # endregion
 
