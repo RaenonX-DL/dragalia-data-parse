@@ -66,10 +66,10 @@ Field: `_ConditionType`
 45. CAUSE_CRITICAL
 46. TAKE_DAMAGE_REACTION
 47. NO_DAMAGE_REACTION_TIME
-48. BUFFED_SPECIFIC_ID
+<a href="#48---buffed_specific_id">48. BUFFED_SPECIFIC_ID</a>
 49. DAMAGED
 50. DEBUFF
-51. RELEASE_DRAGONSHIFT
+<a href="#51---release_dragonshift">51. RELEASE_DRAGONSHIFT</a>
 52. UNIQUE_TRANS_MODE
 53. DAMAGED_MYSELF
 54. SP1_MORE_MOMENT
@@ -159,6 +159,23 @@ Check if the user's HP is < a certain threshold.
 `Val 1 = 40` means that the condition holds if the user's HP is < 40%.
 
 - **Val 1**: HP threshold.
+
+### `48` - `BUFFED_SPECIFIC_ID`
+
+Only effective if the user has a certain buff.
+
+`Val 1 = 977` means that the user needs to have the action condition ID `977` for making the ability effective.
+
+If both `val 1` and `val 2` are specified, the user needs to have them **BOTH**. Otherwise, ``val 2`` will be set
+to ``0`` meaning that the field is not effective.
+
+- **Val 1**: action condition ID of the required buff.
+
+- **Val 2**: secondary action condition ID of the required buff. `0` means ineffective.
+
+### `51` - `RELEASE_DRAGONSHIFT`
+
+The effects will be triggered once when the user completed shapeshifting.
 
 ### `60` - `HP_MORE_NO_SUPPORT_CHARA`
 

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from dlparse.enums import BuffParameter, HitTargetSimple
-from dlparse.model import ActionConditionEffectUnit
+from dlparse.model import HitActionConditionEffectUnit
 from .unit_base import BuffInfoBase
 
 __all__ = ("BuffEffectInfo", "check_buff_unit_match")
@@ -27,7 +27,7 @@ class BuffEffectInfo(BuffInfoBase):
 
 
 def check_buff_unit_match(
-        actual_units: set[ActionConditionEffectUnit], expected_info: set[BuffEffectInfo], /,
+        actual_units: set[HitActionConditionEffectUnit], expected_info: set[BuffEffectInfo], /,
         check_stack_count: bool = False, message: Any = None
 ):
     """Check if the info of the buff units match."""

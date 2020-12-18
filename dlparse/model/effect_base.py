@@ -1,4 +1,4 @@
-"""Base class of the effect unit."""
+"""Base classes of an effect unit."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 

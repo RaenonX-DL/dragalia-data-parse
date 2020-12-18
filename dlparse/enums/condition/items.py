@@ -198,6 +198,8 @@ class Condition(Enum):
     # region Action condition (Sigil released, lapis cards, etc.)
     SELF_SIGIL_LOCKED = 400  # ACID: 1152
     SELF_SIGIL_RELEASED = 401
+    SELF_SMIKOTO_CEL_SUN_WAVE = 402  # ACID: 977 (Sun) / 978 (Wave)
+    SELF_GLEONIDAS_FULL_STACKS = 403  # ACID: 1380
     SELF_LAPIS_CARD_0 = 410  # ACID: 1319
     SELF_LAPIS_CARD_1 = 411  # ACID: 1319
     SELF_LAPIS_CARD_2 = 412  # ACID: 1319
@@ -218,6 +220,7 @@ class Condition(Enum):
 
     # region Special (Energized, inspired)
     SELF_ENERGIZED = 490
+    SELF_SHAPESHIFT_COMPLETED = 495
     # endregion
     # endregion
 

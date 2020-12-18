@@ -8,5 +8,5 @@ __all__ = ("BuffingHitData",)
 
 
 @dataclass
-class BuffingHitData(UnitsConvertibleHitData[ActionComponentBase]):
+class BuffingHitData(UnitsConvertibleHitData[ActionComponentBase]):  # pylint: disable=too-many-ancestors
     """Class for the data of a single buffing hit."""

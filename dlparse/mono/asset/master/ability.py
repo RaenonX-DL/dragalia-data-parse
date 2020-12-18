@@ -1,16 +1,16 @@
 """Classes for handling the ability data."""
 from dataclasses import dataclass, field
-from typing import Optional, TextIO, TypeVar, Union
+from typing import Optional, TYPE_CHECKING, TextIO, Union
 
 from dlparse.enums import AbilityCondition, AbilityVariantType, Condition, ConditionComposite, SkillNumber
 from dlparse.errors import AbilityConditionUnconvertibleError, AbilityOnSkillUnconvertibleError
-from dlparse.model import AbilityVariantEffectUnit, EffectUnitBase
+from dlparse.model import AbilityVariantEffectConvertible, AbilityVariantEffectPayload, AbilityVariantEffectUnit
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from .ability_limit_group import AbilityLimitGroupAsset
+
+if TYPE_CHECKING:
+    from dlparse.mono.manager import AssetManager
 
 __all__ = ("AbilityVariantEntry", "AbilityEntry", "AbilityAsset", "AbilityParser")
-
-T = TypeVar("T", bound=EffectUnitBase)
 
 
 @dataclass
@@ -27,13 +27,38 @@ class AbilityConditionEntry:
     def __post_init__(self):
         self.condition_type = AbilityCondition(self.condition_code)
 
-    def _cond_self_hp_gt(self):
+    def _cond_self_buffed(self) -> Condition:
+        if self.val_1 == 977 and self.val_2 == 978:
+            # S!Mikoto, 977 for Illuminating Sunlight; 978 for Celestial Wavelight
+            return Condition.SELF_SMIKOTO_CEL_SUN_WAVE
+
+        if self.val_1 == 1380:
+            return Condition.SELF_GLEONIDAS_FULL_STACKS
+
+        raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
+
+    def _cond_self_hp(self) -> Optional[Condition]:
+        # Self HP >
+        if self.condition_type == AbilityCondition.SELF_HP_GT:
+            return self._cond_self_hp_gt()
+
+        # Self HP >=
+        if self.condition_type == AbilityCondition.SELF_HP_GTE:
+            return self._cond_self_hp_gte()
+
+        # Self HP <
+        if self.condition_type in (AbilityCondition.SELF_HP_LT, AbilityCondition.SELF_HP_LT_2):
+            return self._cond_self_hp_lt()
+
+        return None
+
+    def _cond_self_hp_gt(self) -> Condition:
         if self.val_1 == 30:
             return Condition.SELF_HP_GT_30
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
-    def _cond_self_hp_gte(self):
+    def _cond_self_hp_gte(self) -> Condition:
         if self.val_1 == 40:
             return Condition.SELF_HP_GTE_40
         if self.val_1 == 50:
@@ -45,7 +70,7 @@ class AbilityConditionEntry:
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
-    def _cond_self_hp_lt(self):
+    def _cond_self_hp_lt(self) -> Condition:
         if self.val_1 == 30:
             return Condition.SELF_HP_LT_30
         if self.val_1 == 40:
@@ -63,17 +88,13 @@ class AbilityConditionEntry:
         if self.condition_type == AbilityCondition.NONE:
             return Condition.NONE
 
-        # Self HP >
-        if self.condition_type == AbilityCondition.SELF_HP_GT:
-            return self._cond_self_hp_gt()
+        # Has specific buff
+        if self.condition_type == AbilityCondition.SELF_SPECIFICALLY_BUFFED:
+            return self._cond_self_buffed()
 
-        # Self HP >=
-        if self.condition_type == AbilityCondition.SELF_HP_GTE:
-            return self._cond_self_hp_gte()
-
-        # Self HP <
-        if self.condition_type in (AbilityCondition.SELF_HP_LT, AbilityCondition.SELF_HP_LT_2):
-            return self._cond_self_hp_lt()
+        # Self HP condition
+        if self_hp_cond := self._cond_self_hp():
+            return self_hp_cond
 
         # Quest start
         if self.condition_type == AbilityCondition.QUEST_START:
@@ -82,6 +103,10 @@ class AbilityConditionEntry:
         # User energized
         if self.condition_type == AbilityCondition.ENERGIZED_MOMENT:
             return Condition.SELF_ENERGIZED
+
+        # On shapeshift completed
+        if self.condition_type == AbilityCondition.ON_SHAPESHIFT_COMPLETED:
+            return Condition.SELF_SHAPESHIFT_COMPLETED
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
@@ -92,19 +117,8 @@ class AbilityConditionEntry:
 
 
 @dataclass
-class AbilityVariantEntry:
+class AbilityVariantEntry(AbilityVariantEffectConvertible):
     """A single ability variant class. This class is for a group of fields in :class:`AbilityEntry`."""
-
-    type_id: int
-    id_a: int
-    id_b: int
-    id_c: int
-    id_str: str
-    limited_group_id: int
-    target_action_id: int
-    up_value: float
-
-    type_enum: AbilityVariantType = field(init=False)
 
     # K = min combo count; V = damage boost rate
     # - Highest combo first
@@ -113,7 +127,7 @@ class AbilityVariantEntry:
     _skill_boost_data: list[int] = field(default_factory=list)
 
     def __post_init__(self):
-        self.type_enum = AbilityVariantType(self.type_id)
+        super().__post_init__()
 
         if self.type_enum == AbilityVariantType.DMG_UP_ON_COMBO:
             # Variant type is boost by combo
@@ -328,25 +342,28 @@ class AbilityEntry(MasterEntryBase):
         """
         return sum(variant.get_boost_by_gauge_filled_dmg(gauge_filled) for variant in self.variants)
 
-    def to_effect_units(self, asset_ability_limit: AbilityLimitGroupAsset) -> set[T]:
+    def to_effect_units(self, asset_manager: "AssetManager") -> set[AbilityVariantEffectUnit]:
         """Convert the current ability effects (usually in the variants) to effect units."""
-        effect_units: set[T] = set()
+        effect_units: set[AbilityVariantEffectUnit] = set()
+
+        # Get the conditions
+        conditions: list[Condition] = []
+        if on_skill_cond := self.on_skill_condition:
+            conditions.append(on_skill_cond)
+        if ability_cond := self.condition.to_condition():
+            conditions.append(ability_cond)
+
+        # Get the variant payload
+        payload = AbilityVariantEffectPayload(
+            condition_comp=ConditionComposite(conditions),
+            source_ability_id=self.id,
+        )
 
         for variant in self.variants:
             if variant.type_enum == AbilityVariantType.OTHER_ABILITY:
                 continue  # Refer to the other ability, no variant effect
 
-            # Get the conditions
-            conditions: list[Condition] = []
-            if on_skill_cond := self.on_skill_condition:
-                conditions.append(on_skill_cond)
-            if ability_cond := self.condition.to_condition():
-                conditions.append(ability_cond)
-
-            effect_units.update(AbilityVariantEffectUnit.from_ability_variant(
-                variant, self.id, ConditionComposite(conditions),
-                asset_ability_limit=asset_ability_limit,
-            ))
+            effect_units.update(variant.to_effect_units(asset_manager, payload))
 
         return effect_units
 
@@ -370,7 +387,8 @@ class AbilityEntry(MasterEntryBase):
                 data["_AbilityType2"],
                 data["_VariousId2a"], data["_VariousId2b"], data["_VariousId2c"],
                 data["_VariousId2str"], data["_AbilityLimitedGroupId2"], data["_TargetAction2"],
-                data["_AbilityType2UpValue"]),
+                data["_AbilityType2UpValue"]
+            ),
             variant_3=AbilityVariantEntry(
                 data["_AbilityType3"],
                 data["_VariousId3a"], data["_VariousId3b"], data["_VariousId3c"],

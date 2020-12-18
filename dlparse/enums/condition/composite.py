@@ -23,13 +23,18 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     """Composite class of various attacking conditions."""
 
     allowed_not_categorize_conds: ClassVar[set[Condition]] = {
+        # Target state
         Condition.TARGET_OD_STATE,
         Condition.TARGET_BK_STATE,
-        Condition.MARK_EXPLODES,
+        # Special self status
         Condition.SELF_ENERGIZED,
+        Condition.SELF_SHAPESHIFT_COMPLETED,
+        # Upon skill usage
         Condition.SKILL_USED_S1,
         Condition.SKILL_USED_S2,
         Condition.SKILL_USED_ALL,
+        # Misc
+        Condition.MARK_EXPLODES,
         Condition.QUEST_START
     }
 

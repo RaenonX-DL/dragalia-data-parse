@@ -1,11 +1,13 @@
 """Classes for handling the ability limit group data asset."""
 from dataclasses import dataclass
-from typing import Optional, TextIO, Union
+from typing import Any, Optional, TextIO, Union
 
 from dlparse.errors import AbilityLimitDataNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("AbilityLimitGroupEntry", "AbilityLimitGroupAsset", "AbilityLimitGroupParser")
+
+THROW_ERROR = object()
 
 
 @dataclass
@@ -33,16 +35,21 @@ class AbilityLimitGroupAsset(MasterAssetBase[AbilityLimitGroupEntry]):
     ):
         super().__init__(AbilityLimitGroupParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
-    def get_max_value(self, data_id: int) -> float:
+    def get_max_value(self, data_id: int, on_not_found: Any = THROW_ERROR) -> float:
         """
         Get the max value of ``data_id``.
 
-        :raises AbilityLimitDataNotFoundError: if the ability limit data is not found
+        If ``on_not_found`` is given, then the given value will be returned if the data is not found.
+
+        :raises AbilityLimitDataNotFoundError: if the ability limit data is not found and `on_not_found` is not given
         """
         if data := self.get_data_by_id(data_id):
             return data.max_value
 
-        raise AbilityLimitDataNotFoundError(data_id)
+        if on_not_found is THROW_ERROR:
+            raise AbilityLimitDataNotFoundError(data_id)
+
+        return on_not_found
 
 
 class AbilityLimitGroupParser(MasterParserBase[AbilityLimitGroupEntry]):

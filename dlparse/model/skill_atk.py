@@ -5,7 +5,7 @@ from itertools import combinations, product, zip_longest
 from dlparse.enums import Condition, ConditionCategories, ConditionComposite, HitTargetSimple, Status
 from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset, PlayerActionInfoAsset
 from .buff_boost import BuffCountBoostData, BuffZoneBoostData
-from .effect_action_cond import ActionConditionEffectUnit
+from .effect_action_cond import HitActionConditionEffectUnit
 from .hit_dmg import DamageUnit, DamagingHitData
 from .skill_base import SkillDataBase, SkillEntryBase
 from .unit_mod import DamageModifierUnit
@@ -40,8 +40,8 @@ class AttackingSkillDataEntry(SkillEntryBase):
 
     mod_unit_mtx: list[list[DamageModifierUnit]] = field(init=False)
 
-    afflictions: list[list[ActionConditionEffectUnit]] = field(init=False)
-    debuffs: list[list[ActionConditionEffectUnit]] = field(init=False)
+    afflictions: list[list[HitActionConditionEffectUnit]] = field(init=False)
+    debuffs: list[list[HitActionConditionEffectUnit]] = field(init=False)
 
     def _init_debuff(self, asset_action_cond: ActionConditionAsset):
         self.debuffs = []

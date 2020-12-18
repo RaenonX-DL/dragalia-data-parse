@@ -5,7 +5,8 @@ from typing import TYPE_CHECKING, TypeVar
 from .effect_base import EffectUnitBase
 
 if TYPE_CHECKING:
-    from dlparse.mono.asset import AbilityEntry, AbilityLimitGroupAsset
+    from dlparse.mono.asset import AbilityEntry
+    from dlparse.mono.manager import AssetManager
 
 __all__ = ("AbilityData",)
 
@@ -16,19 +17,19 @@ T = TypeVar("T", bound=EffectUnitBase)
 class AbilityData:
     """A transformed ability data."""
 
-    asset_ability_limit: InitVar["AbilityLimitGroupAsset"]  # Used for recording the max possible value
+    asset_manager: InitVar["AssetManager"]
 
     ability_data: dict[int, "AbilityEntry"]
 
     _effect_units: set[T] = field(init=False)
 
-    def _init_units(self, asset_ability_limit: "AbilityLimitGroupAsset"):
+    def _init_units(self, asset_manager: "AssetManager"):
         self._effect_units = set()
         for ability_entry in self.ability_data.values():
-            self._effect_units.update(ability_entry.to_effect_units(asset_ability_limit))
+            self._effect_units.update(ability_entry.to_effect_units(asset_manager))
 
-    def __post_init__(self, asset_ability_limit: "AbilityLimitGroupAsset"):
-        self._init_units(asset_ability_limit)
+    def __post_init__(self, asset_manager: "AssetManager"):
+        self._init_units(asset_manager)
 
     @property
     def unknown_condition_ids(self) -> dict[int, int]:

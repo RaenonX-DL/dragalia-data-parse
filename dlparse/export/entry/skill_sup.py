@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 
 from dlparse.enums import BuffParameter, HitTargetSimple
-from dlparse.model import ActionConditionEffectUnit
+from dlparse.model import HitActionConditionEffectUnit
 from dlparse.mono.asset import CharaDataEntry, SkillDataEntry, SkillIdEntry, TextAsset
 from .base import SkillExportEntryBase
 
@@ -10,7 +10,7 @@ __all__ = ("CharaSupportiveSkillEntry",)
 
 
 @dataclass
-class CharaSupportiveSkillEntry(SkillExportEntryBase[ActionConditionEffectUnit]):
+class CharaSupportiveSkillEntry(SkillExportEntryBase[HitActionConditionEffectUnit]):
     """A single entry of a supportive skill."""
 
     target: HitTargetSimple = field(init=False)
@@ -21,7 +21,7 @@ class CharaSupportiveSkillEntry(SkillExportEntryBase[ActionConditionEffectUnit])
     max_stack_count: int = field(init=False)
 
     def __post_init__(self, text_asset: TextAsset, chara_data: CharaDataEntry, skill_data: SkillDataEntry,
-                      skill_id_entry: SkillIdEntry, skill_data_to_parse: ActionConditionEffectUnit):
+                      skill_id_entry: SkillIdEntry, skill_data_to_parse: HitActionConditionEffectUnit):
         super().__post_init__(text_asset, chara_data, skill_data, skill_id_entry, skill_data_to_parse)
 
         self.target = skill_data_to_parse.target

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from dlparse.enums import Status
-from dlparse.model import ActionConditionEffectUnit
+from dlparse.model import HitActionConditionEffectUnit
 from .unit_base import BuffInfoBase, check_info_list_match
 
 __all__ = ("AfflictionInfo", "check_affliction_unit_match")
@@ -28,7 +28,7 @@ class AfflictionInfo(BuffInfoBase):
 
 
 def check_affliction_unit_match(
-        actual_units: list[ActionConditionEffectUnit], expected_info: list[AfflictionInfo], /,
+        actual_units: list[HitActionConditionEffectUnit], expected_info: list[AfflictionInfo], /,
         message: Any = None
 ):
     """Check if the info of the affliction units match."""

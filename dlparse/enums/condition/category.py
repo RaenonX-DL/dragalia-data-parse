@@ -397,6 +397,8 @@ class ConditionCategories:
             # Value is the corresponding Action Condition ID (not necessary means that it needs to exist)
             Condition.SELF_SIGIL_LOCKED: 1152,
             Condition.SELF_SIGIL_RELEASED: 1152,
+            Condition.SELF_SMIKOTO_CEL_SUN_WAVE: 977,
+            Condition.SELF_GLEONIDAS_FULL_STACKS: 1380,
             Condition.SELF_LAPIS_CARD_0: 1319,
             Condition.SELF_LAPIS_CARD_1: 1319,
             Condition.SELF_LAPIS_CARD_2: 1319,

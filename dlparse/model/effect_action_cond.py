@@ -1,14 +1,14 @@
-"""Classes for a single ability condition effect."""
+"""Classes for the effects of an action condition."""
 from dataclasses import dataclass, field
 
 from .effect_base import EffectUnitBase
 
-__all__ = ("ActionConditionEffectUnit", "AfflictionEffectUnit")
+__all__ = ("HitActionConditionEffectUnit", "HitAfflictionEffectUnitHit")
 
 
 @dataclass(eq=False)
-class ActionConditionEffectUnit(EffectUnitBase):
-    """The smallest unit of an effect of an action condition."""
+class HitActionConditionEffectUnit(EffectUnitBase):
+    """The smallest unit of an effect of an action condition coming from a hit attribute."""
 
     time: float
 
@@ -23,13 +23,13 @@ class ActionConditionEffectUnit(EffectUnitBase):
 
     def __lt__(self, other):
         if not isinstance(other, self.__class__):
-            raise ValueError(f"Cannot compare `ActionConditionEffectUnit` with {type(other)}")
+            raise ValueError(f"Cannot compare `HitActionConditionEffectUnit` with {type(other)}")
 
         return self.time < other.time
 
 
 @dataclass
-class AfflictionEffectUnit(ActionConditionEffectUnit):
+class HitAfflictionEffectUnitHit(HitActionConditionEffectUnit):
     """An action condition effect that afflicts the enemy."""
 
     rate: float = field(init=False)

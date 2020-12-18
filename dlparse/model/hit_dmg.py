@@ -10,7 +10,7 @@ from dlparse.mono.asset import (
     BuffCountAsset, HitAttrEntry, PlayerActionInfoAsset,
 )
 from dlparse.utils import calculate_crisis_mod
-from .effect_action_cond import ActionConditionEffectUnit, AfflictionEffectUnit
+from .effect_action_cond import HitActionConditionEffectUnit, HitAfflictionEffectUnitHit
 from .hit_unit import UnitsConvertibleHitData
 
 __all__ = ("DamagingHitData", "DamageUnit")
@@ -21,14 +21,14 @@ class DamageUnit:
     """Class for a single actual damage hit."""
 
     mod: float
-    unit_affliction: Optional[AfflictionEffectUnit]
-    unit_debuffs: list[ActionConditionEffectUnit]
+    unit_affliction: Optional[HitAfflictionEffectUnitHit]
+    unit_debuffs: list[HitActionConditionEffectUnit]
     hit_attr: HitAttrEntry
 
     counter_mod: float = field(init=False)
 
     def __post_init__(self):
-        if self.unit_affliction and not isinstance(self.unit_affliction, AfflictionEffectUnit):
+        if self.unit_affliction and not isinstance(self.unit_affliction, HitAfflictionEffectUnitHit):
             raise AppValueError(f"Unexpected affliction unit type {type(self.unit_affliction)}")
 
         self.counter_mod = self.hit_attr.damage_modifier_counter
@@ -41,7 +41,7 @@ class DamageUnit:
 
 
 @dataclass
-class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
+class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):  # pylint: disable=too-many-ancestors
     """
     Class for the data of a single raw damaging hit.
 
@@ -149,8 +149,8 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
         return [self.mod_on_ally_buff_zone] * count
 
     def _damage_units_get_base_attributes(
-            self, condition_comp: ConditionComposite, unit_affliction: AfflictionEffectUnit,
-            units_debuff: list[ActionConditionEffectUnit], /,
+            self, condition_comp: ConditionComposite, unit_affliction: HitAfflictionEffectUnitHit,
+            units_debuff: list[HitActionConditionEffectUnit], /,
             asset_action_info: PlayerActionInfoAsset
     ) -> Optional[list[DamageUnit]]:
         """
@@ -200,7 +200,13 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
     ) -> list[DamageUnit]:
         hit_attr = self.hit_attr
 
-        unit_affliction = self.to_affliction_unit(asset_action_condition)
+        # Get affliction unit
+        unit_affliction = None
+        if self.hit_attr.action_condition_id:
+            unit_affliction = self.to_affliction_unit(asset_action_condition.get_data_by_id(
+                self.hit_attr.action_condition_id
+            ))
+
         units_debuff = self.to_debuff_units(asset_action_condition)
 
         # EXNOTE: Bullet timings like `msl` in dl-sim may be added here
@@ -314,10 +320,17 @@ class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):
                     # hit invalid
                     return []
             elif self.pre_condition == Condition.MARK_EXPLODES and not condition_comp.mark_explode:
+                # Get affliction unit
+                unit_affliction = None
+                if self.hit_attr.action_condition_id:
+                    unit_affliction = self.to_affliction_unit(asset_action_condition.get_data_by_id(
+                        self.hit_attr.action_condition_id
+                    ))
+
                 # Get the damage unit that marks the enemy
                 return [DamageUnit(
                     0,
-                    self.to_affliction_unit(asset_action_condition),
+                    unit_affliction,
                     self.to_debuff_units(asset_action_condition),
                     self.hit_attr
                 )]

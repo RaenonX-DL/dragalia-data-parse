@@ -5,7 +5,7 @@ from typing import Any
 import pytest
 
 from dlparse.enums import BuffParameter
-from dlparse.model import ActionConditionEffectUnit
+from dlparse.model import HitActionConditionEffectUnit
 from .unit_base import BuffInfoBase, check_info_list_match
 
 __all__ = ("DebuffInfo", "check_debuff_unit_match")
@@ -28,7 +28,7 @@ class DebuffInfo(BuffInfoBase):
 
 
 def check_debuff_unit_match(
-        actual_units: list[ActionConditionEffectUnit], expected_info: list[DebuffInfo], /,
+        actual_units: list[HitActionConditionEffectUnit], expected_info: list[DebuffInfo], /,
         message: Any = None
 ):
     """

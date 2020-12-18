@@ -44,6 +44,16 @@ class AbilityCondition(Enum):
 
     Condition value 1 = 40 means that the condition matches if the user's HP is < 40% of the max HP.
     """
+    SELF_SPECIFICALLY_BUFFED = 48
+    """
+    Match if the user is buffed by some certain action condition(s).
+
+    Condition value 1 = 977 means that the condition matches if the user has action condition ID 977.
+
+    Note that if there are 2 values given, the user needs to have **BOTH** of them to match the condition.
+    """
+    ON_SHAPESHIFT_COMPLETED = 51
+    """Effects will be triggered once when the user completed shapeshifting."""
     SELF_HP_GTE = 60
     """
     Match if the user's HP is > certain percent of the max HP.

@@ -129,6 +129,31 @@ class BuffParameter(Enum):
     """
     # endregion
 
+    # region Dragon Control
+    DRAGON_TIME = 601
+    """
+    Increases the shapeshifting duration by a certain rate.
+
+    A value of 0.12 means to increase the shapeshifting duration by 12% (for example, 10s to 11.2s).
+    """
+    DRAGON_TIME_FINAL = 602
+    """
+    Change the shapeshifting duration after calculating `DRAGON_TIME`.
+
+    A value of 0.12 means to add 12% shapeshifting duration after calculating `DRAGON_TIME`.
+
+    If the original shapeshifting duration is 10s, `DRAGON_TIME` is 0.5 (+50%) and `DRAGON_TIME_FINAL` is 0.25 (+25%),
+    the duration will then becomes 18.75s (10 * (1 + 0.5) * (1 + 0.25)), instead of 17.5s (10 + (1 + 0.5 + 0.25)).
+    """
+    DP_CONSUMPTION = 603
+    """
+    Change the dragon gauge consumption for shapeshifting.
+
+    A value of 0.2 means that to increase the gauge consumption by 20%, which means that to shapeshift once,
+    70% of the dragon gauge is required (shapeshifting once consume 50% dragon gauge).
+    """
+    # endregion
+
     # region Special Sentinel
     AFFLICTION = 901
     """The buff is an affliction. Value does not have any meanings."""

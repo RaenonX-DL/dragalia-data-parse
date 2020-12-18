@@ -22,7 +22,8 @@ class AbilityUpParameter(Enum):
     DRAGON_TIME = 8  # DragonTime
     DAMAGE_REDUCTION = 9  # DamageCut
     ATK_SPEED = 10  # AttackSpeed
-    DP_RATE_CONSUMPTION = 13  # ConsumeDpRate
+    DP_CONSUMPTION = 13  # ConsumeDpRate
+    DRAGON_TIME_FINAL = 14  # FinalDragonTimeRate
 
     def to_buff_parameter(self) -> BuffParameter:
         """Convert the ability up parameter to the buff parameter."""
@@ -34,4 +35,7 @@ _TRANS_DICT: dict[AbilityUpParameter, BuffParameter] = {
     AbilityUpParameter.ATK: BuffParameter.ATK,
     AbilityUpParameter.DEF: BuffParameter.DEF,
     AbilityUpParameter.SP_RATE: BuffParameter.SP_RATE,
+    AbilityUpParameter.DRAGON_TIME: BuffParameter.DRAGON_TIME,
+    AbilityUpParameter.DRAGON_TIME_FINAL: BuffParameter.DRAGON_TIME_FINAL,
+    AbilityUpParameter.DP_CONSUMPTION: BuffParameter.DP_CONSUMPTION
 }
