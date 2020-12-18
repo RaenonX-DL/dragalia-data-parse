@@ -205,9 +205,13 @@ class HitAttrEntry(MasterEntryBase):
 
         - Deals damage to the enemy
         """
-        if self.damage_modifier:
-            # Deals damage
-            return True
+        # Known priority rules:
+        # - Dummy hit count > Hit exec type
+        #   - For Nadine S1 (`105501021`), the label used for counting the dummy hit is considered as buffing hit.
+        #     However, such hit should not be considered as *not effective* to the enemy such early.
+        # - Hit exec type > Damage modifier
+        #   - For Dragonyule Nefaria S2 (`106402022`), buffing hit attributes have damage modifiers,
+        #     although seems not used. Such hit must be considered as *ineffective* to the enemy.
 
         if self.dummy_hit_count:
             # If the hit attribute adds dummy hit count, return the desired effectiveness because
@@ -217,6 +221,16 @@ class HitAttrEntry(MasterEntryBase):
             # because the hit to add dummy counts will be missed.
             # Therefore, returning the desired effectiveness to keep the effectiveness being the desired one
             return desired_effectiveness
+
+        if self.hit_exec_type not in (HitExecType.DAMAGE, HitExecType.UNKNOWN):
+            # Not dealing damage
+            # > Some hit attributes (`BOW_CHR_09_H01_TENSION_LV03` and `BOW_CHR_09_H02_SIELD_LV03` of Nefaria S2
+            # > (`106402022`) has damage modifier yet it's a buffing hit
+            return False
+
+        if self.damage_modifier:
+            # Deals damage
+            return True
 
         if self.target_group != HitTarget.ENEMY:
             # Has action condition but the target is not enemy
