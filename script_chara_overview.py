@@ -9,15 +9,22 @@ def print_atk_data_entry(chara_data, skill_data, skill_entry):
     skill_level = skill_entry.max_level - 1
     skill_level_prev = skill_level - 1
 
-    print(f"# Attacking effects (at max lv) - Conditions: {skill_entry.condition_comp.conditions_sorted}")
+    current_mod = skill_entry.total_mod[skill_level]
+    prev_mod = skill_entry.total_mod[skill_level_prev]
+
+    inc_pct = (current_mod / prev_mod) - 1 if prev_mod else 1
+    inc_val = current_mod - prev_mod
+
+    print(f"# Attacking effects (Lv.{skill_entry.max_level}) - "
+          f"Conditions: {skill_entry.condition_comp.conditions_sorted}")
     print()
     sp_str = f"SP: {skill_data.skill_data_raw.get_sp_at_level(skill_level)}"
     if chara_data.ss_skill_id == skill_data.skill_data_raw.id:
         sp_str += f" / SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(skill_level)}"
     print(sp_str)
     print(f"Mods distribution: {skill_entry.mods[skill_level]}")
-    print(f"Total Mods: {skill_entry.total_mod[skill_level]:.0%} ({skill_entry.hit_count[skill_level]} hits) - "
-          f"{(skill_entry.total_mod[skill_level] / skill_entry.total_mod[skill_level_prev]) - 1:+.2%}")
+    print(f"Total Mods: {skill_entry.total_mod[skill_level]:.0%} "
+          f"({inc_val:+.0%}, {skill_entry.hit_count[skill_level]} hits) - {inc_pct:+.2%}")
     print()
 
     afflictions_lv = skill_entry.afflictions[skill_level]
@@ -121,4 +128,4 @@ def chara_skill_overview(chara_id):
 
 
 if __name__ == '__main__':
-    chara_skill_overview(10450101)
+    chara_skill_overview(10640202)
