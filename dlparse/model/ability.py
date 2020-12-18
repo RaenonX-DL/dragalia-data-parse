@@ -31,19 +31,35 @@ class AbilityData:
         self._init_units(asset_ability_limit)
 
     @property
-    def has_unknown_condition(self):
-        """Check if the ability data contains any unknown condition."""
-        return any(ability_entry.is_unknown_condition for ability_entry in self.ability_data.values())
+    def unknown_condition_ids(self) -> dict[int, int]:
+        """
+        Get a dict which key is the ability ID and value is the ID of the unknown condition.
+
+        If the ability does not have any unknown condition, an empty dict will be returned.
+        """
+        return {
+            ability_id: ability_entry.condition.condition_code
+            for ability_id, ability_entry in self.ability_data.items()
+            if ability_entry.condition.is_unknown_condition
+        }
 
     @property
-    def has_unknown_variants(self):
-        """Check if the ability data contains any unknown variants."""
-        return any(ability_entry.has_unknown_elements for ability_entry in self.ability_data.values())
+    def unknown_variant_ids(self) -> dict[int, list[int]]:
+        """
+        Get a dict which key is the ability ID and value is type ID of the unknown variants.
+
+        If the ability does not have any unknown variants, an empty dict will be returned.
+        """
+        return {
+            ability_id: ability_entry.unknown_variant_type_ids
+            for ability_id, ability_entry in self.ability_data.items()
+            if ability_entry.unknown_variant_type_ids
+        }
 
     @property
     def has_unknown_elements(self) -> bool:
         """Check if the ability data contains any unknown variants or condition."""
-        return self.has_unknown_condition or self.has_unknown_variants
+        return bool(self.unknown_condition_ids or self.unknown_variant_ids)
 
     @property
     def effect_units(self) -> set[T]:

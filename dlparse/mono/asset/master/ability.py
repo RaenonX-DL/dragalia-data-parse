@@ -248,6 +248,11 @@ class AbilityEntry(MasterEntryBase):
         return [variant for variant in (self.variant_1, self.variant_2, self.variant_3) if not variant.is_not_used]
 
     @property
+    def unknown_variant_type_ids(self) -> list[int]:
+        """Get a list of unknown variant type IDs."""
+        return [variant.type_id for variant in self.variants if variant.is_unknown_type]
+
+    @property
     def on_skill_condition(self) -> SkillCondition:
         """
         Convert the on skill field to its corresponding skill condition.
@@ -279,21 +284,6 @@ class AbilityEntry(MasterEntryBase):
     def is_boost_by_gauge_status(self) -> bool:
         """Check if the damage will be boosted according to the gauge status."""
         return any(variant.is_boosted_by_gauge_status for variant in self.variants)
-
-    @property
-    def is_unknown_condition(self) -> bool:
-        """Check if the ability condition is unknown."""
-        return self.condition.is_unknown_condition
-
-    @property
-    def has_unknown_variant(self) -> bool:
-        """Check if any of the ability variants is unknown."""
-        return any(variant.is_unknown_type for variant in self.variants)
-
-    @property
-    def has_unknown_elements(self) -> bool:
-        """Check if the ability data contains any unknown variants or condition."""
-        return self.is_unknown_condition or self.has_unknown_variant
 
     def get_variants(self, ability_asset: "AbilityAsset") -> list[AbilityVariantEntry]:
         """Get all variants bound to the ability."""
