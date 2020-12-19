@@ -30,5 +30,9 @@ def check_hit_attr_data(asset_manager: AssetManager, hit_attr_labels: list[str])
               f"Ability Condition ID: {hit_attr_data.action_condition_id}")
 
 
-if __name__ == '__main__':
+def main():
     check_hit_attr_data(manager, hit_attrs_to_check.strip().split("\n"))
+
+
+if __name__ == '__main__':
+    main()

@@ -127,5 +127,9 @@ def chara_skill_overview(chara_id):
         print("=" * 50)
 
 
-if __name__ == '__main__':
+def main():
     chara_skill_overview(10640202)
+
+
+if __name__ == '__main__':
+    main()

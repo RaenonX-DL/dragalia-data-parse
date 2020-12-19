@@ -10,8 +10,8 @@ from dlparse.mono.asset import (
     BuffCountAsset, HitAttrEntry, PlayerActionInfoAsset,
 )
 from dlparse.utils import calculate_crisis_mod
-from .effect_action_cond import HitActionConditionEffectUnit, HitAfflictionEffectUnitHit
-from .hit_unit import UnitsConvertibleHitData
+from .action_cond_effect import HitActionConditionEffectUnit, HitAfflictionEffectUnitHit
+from .hit_conv import HitDataEffectConvertible
 
 __all__ = ("DamagingHitData", "DamageUnit")
 
@@ -41,7 +41,7 @@ class DamageUnit:
 
 
 @dataclass
-class DamagingHitData(UnitsConvertibleHitData[ActionComponentHasHitLabels]):  # pylint: disable=too-many-ancestors
+class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  # pylint: disable=too-many-ancestors
     """
     Class for the data of a single raw damaging hit.
 

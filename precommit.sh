@@ -15,7 +15,7 @@ run_cmd_exit_on_err() {
   fi
 }
 
-# ------ Main
+# ------ Code linting
 
 echo "${CLR_CYN}Checking with pydocstyle (dlparse)...${CLR_NC}"
 run_cmd_exit_on_err "pydocstyle dlparse --count" "pydocstyle check (dlparse)"

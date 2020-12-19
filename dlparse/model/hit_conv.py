@@ -7,14 +7,14 @@ from dlparse.enums import BuffParameter, HitTargetSimple, SkillIndex, Status
 from dlparse.errors import UnhandledSelfDamageError
 from dlparse.mono.asset import ActionBuffBomb, ActionConditionAsset, ActionConditionEntry, HitAttrEntry
 from .action_cond_conv import ActionCondEffectConvertible
-from .effect_action_cond import HitActionConditionEffectUnit, HitAfflictionEffectUnitHit
-from .hit_base import HitData, T
+from .action_cond_effect import HitActionConditionEffectUnit, HitAfflictionEffectUnitHit
+from .base import HitData, T
 
-__all__ = ("UnitsConvertibleHitData",)
+__all__ = ("HitDataEffectConvertible",)
 
 
 @dataclass
-class UnitsConvertibleHitData(
+class HitDataEffectConvertible(
     HitData, ActionCondEffectConvertible[HitActionConditionEffectUnit, None], Generic[T], ABC
 ):
     """Base hit data class which can be converted to various units."""

@@ -33,5 +33,9 @@ def check_unparsed_skill(old_asset: AssetManager, new_asset: AssetManager):
             print(skill_id)
 
 
-if __name__ == '__main__':
+def main():
     check_unparsed_skill(manager_remote, manager_local)
+
+
+if __name__ == '__main__':
+    main()

@@ -1,6 +1,10 @@
+import time
+
 from dlparse.export import export_atk_skill_as_csv, export_sup_skill_as_csv
 from dlparse.mono.manager import AssetManager
 from tests.static import PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET
+
+_start = time.time()
 
 _asset_manager: AssetManager = AssetManager(PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET)
 
@@ -15,5 +19,10 @@ def export_sup():
     print(export_sup_skill_as_csv)
 
 
-if __name__ == '__main__':
+def main():
     export_atk()
+    print(f"{time.time() - _start:.3f} secs")
+
+
+if __name__ == '__main__':
+    main()

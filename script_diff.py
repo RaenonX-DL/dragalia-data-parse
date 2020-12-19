@@ -52,8 +52,12 @@ def check_diff(old_asset: "MasterAssetBase", new_asset: "MasterAssetBase"):
     check_diff_internal(old_asset, new_asset, "Removed data", manager_remote)
 
 
-if __name__ == '__main__':
+def main():
     check_diff(manager_remote.asset_hit_attr, manager_local.asset_hit_attr)
     check_diff(manager_remote.asset_skill_data, manager_local.asset_skill_data)
     check_diff(manager_remote.asset_chara_data, manager_local.asset_chara_data)
     check_diff(manager_remote.asset_text, manager_local.asset_text)
+
+
+if __name__ == '__main__':
+    main()

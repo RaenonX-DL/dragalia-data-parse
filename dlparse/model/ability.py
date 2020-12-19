@@ -2,7 +2,8 @@
 from dataclasses import InitVar, dataclass, field
 from typing import TYPE_CHECKING, TypeVar
 
-from .effect_base import EffectUnitBase
+from .ability_var import ability_to_effect_units
+from .base import EffectUnitBase
 
 if TYPE_CHECKING:
     from dlparse.mono.asset import AbilityEntry
@@ -26,7 +27,7 @@ class AbilityData:
     def _init_units(self, asset_manager: "AssetManager"):
         self._effect_units = set()
         for ability_entry in self.ability_data.values():
-            self._effect_units.update(ability_entry.to_effect_units(asset_manager))
+            self._effect_units.update(ability_to_effect_units(ability_entry, asset_manager))
 
     def __post_init__(self, asset_manager: "AssetManager"):
         self._init_units(asset_manager)

@@ -4,8 +4,8 @@ from dataclasses import dataclass, field
 from typing import Generic, TypeVar, final
 
 from dlparse.enums import Condition, ConditionCategories, ConditionComposite, Element, ElementFlag
-from dlparse.model import HitData
 from dlparse.mono.asset import ActionConditionAsset, SkillDataEntry
+from .hit_base import HitData
 
 __all__ = ("SkillEntryBase", "SkillDataBase")
 

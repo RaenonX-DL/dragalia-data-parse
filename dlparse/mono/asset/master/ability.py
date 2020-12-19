@@ -1,14 +1,10 @@
 """Classes for handling the ability data."""
 from dataclasses import dataclass, field
-from typing import Optional, TYPE_CHECKING, TextIO, Union
+from typing import Optional, TextIO, Union
 
-from dlparse.enums import AbilityCondition, AbilityVariantType, Condition, ConditionComposite, SkillNumber
+from dlparse.enums import AbilityCondition, AbilityVariantType, Condition, SkillNumber
 from dlparse.errors import AbilityConditionUnconvertibleError, AbilityOnSkillUnconvertibleError
-from dlparse.model import AbilityVariantEffectConvertible, AbilityVariantEffectPayload, AbilityVariantEffectUnit
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-
-if TYPE_CHECKING:
-    from dlparse.mono.manager import AssetManager
 
 __all__ = ("AbilityVariantEntry", "AbilityEntry", "AbilityAsset", "AbilityParser")
 
@@ -117,8 +113,17 @@ class AbilityConditionEntry:
 
 
 @dataclass
-class AbilityVariantEntry(AbilityVariantEffectConvertible):
+class AbilityVariantEntry:
     """A single ability variant class. This class is for a group of fields in :class:`AbilityEntry`."""
+
+    type_id: int
+    id_a: int
+    id_b: int
+    id_c: int
+    id_str: str
+    limited_group_id: int
+    target_action_id: int
+    up_value: float
 
     # K = min combo count; V = damage boost rate
     # - Highest combo first
@@ -126,8 +131,10 @@ class AbilityVariantEntry(AbilityVariantEffectConvertible):
     _def_boost_data: list[int] = field(default_factory=list)
     _skill_boost_data: list[int] = field(default_factory=list)
 
+    type_enum: AbilityVariantType = field(init=False)
+
     def __post_init__(self):
-        super().__post_init__()
+        self.type_enum = AbilityVariantType(self.type_id)
 
         if self.type_enum == AbilityVariantType.DMG_UP_ON_COMBO:
             # Variant type is boost by combo
@@ -341,31 +348,6 @@ class AbilityEntry(MasterEntryBase):
         The return of 0.05 means a total pf 5% boost.
         """
         return sum(variant.get_boost_by_gauge_filled_dmg(gauge_filled) for variant in self.variants)
-
-    def to_effect_units(self, asset_manager: "AssetManager") -> set[AbilityVariantEffectUnit]:
-        """Convert the current ability effects (usually in the variants) to effect units."""
-        effect_units: set[AbilityVariantEffectUnit] = set()
-
-        # Get the conditions
-        conditions: list[Condition] = []
-        if on_skill_cond := self.on_skill_condition:
-            conditions.append(on_skill_cond)
-        if ability_cond := self.condition.to_condition():
-            conditions.append(ability_cond)
-
-        # Get the variant payload
-        payload = AbilityVariantEffectPayload(
-            condition_comp=ConditionComposite(conditions),
-            source_ability_id=self.id,
-        )
-
-        for variant in self.variants:
-            if variant.type_enum == AbilityVariantType.OTHER_ABILITY:
-                continue  # Refer to the other ability, no variant effect
-
-            effect_units.update(variant.to_effect_units(asset_manager, payload))
-
-        return effect_units
 
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "AbilityEntry":

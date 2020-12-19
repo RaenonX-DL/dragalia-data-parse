@@ -1,7 +1,7 @@
 """Classes for the effects of an action condition."""
 from dataclasses import dataclass, field
 
-from .effect_base import EffectUnitBase
+from .base import EffectUnitBase
 
 __all__ = ("HitActionConditionEffectUnit", "HitAfflictionEffectUnitHit")
 

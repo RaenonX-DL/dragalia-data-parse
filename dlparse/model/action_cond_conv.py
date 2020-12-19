@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Generic, Optional, TYPE_CHECKING, TypeVar
 
 from dlparse.enums import BuffParameter
-from .effect_base import EffectUnitBase
+from .base import EffectUnitBase
 
 if TYPE_CHECKING:
     from dlparse.mono.asset import ActionConditionEntry
