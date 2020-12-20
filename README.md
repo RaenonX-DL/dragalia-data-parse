@@ -56,9 +56,18 @@ Check the data difference between different versions of the assets.
 
 One asset will be the local version, and another will be one of the [remote][data-depot] versions.
 
-### `script_export`
+### `script_export_local`
 
-Export all skill data as csv to the specified location.
+Export things (currently skills, and some enum texts) to a specific location.
+
+Note that this is intended to export things for non-pipelining purposes, such as data viewing or correcting. For data
+export to be pipelined, use `script_export_pipeline` instead.
+
+### `script_export_pipeline`
+
+Export resources for the use of the [DL info website][DL-info].
+
+For exporting things locally for viewing or other non-pipelining purposes, use `script_export_local` instead.
 
 ### `script_view_hit_attr`
 

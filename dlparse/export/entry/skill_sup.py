@@ -1,4 +1,4 @@
-"""Supportive skill data entry classes for export."""
+"""Supportive skill data entry classes for exporting."""
 from dataclasses import dataclass, field
 
 from dlparse.enums import BuffParameter, HitTargetSimple

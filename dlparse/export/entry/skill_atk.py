@@ -1,4 +1,4 @@
-"""Attacking skill data entry classes for export."""
+"""Attacking skill data entry classes for exporting."""
 from dataclasses import dataclass, field
 
 from dlparse.enums import BuffParameter, Status

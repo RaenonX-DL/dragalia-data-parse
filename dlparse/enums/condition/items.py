@@ -10,7 +10,7 @@ class Condition(Enum):
 
     .. note::
         Check https://github.com/PyCQA/pylint/issues/2306 for the reason of
-        enum values being casted in the categorical check, although redundant.
+        enum values being casted into int, although redundant.
     """
 
     NONE = 0
@@ -162,7 +162,7 @@ class Condition(Enum):
 
     # region Bullets left on the map
     # EXNOTE: Only Meene uses this implementation for now, may be more in the future.
-    # - Meene can only summon up to 9 butterflies on the map. This info has not yet been discovered by this parser.
+    #   - Meene can only summon up to 9 butterflies on the map. This info has not yet been discovered by this parser.
     BULLETS_ON_MAP_0 = 330
     BULLETS_ON_MAP_1 = 331
     BULLETS_ON_MAP_2 = 332

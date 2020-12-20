@@ -49,6 +49,7 @@ def test_get_members():
         Condition.TARGET_FLASHBURNED,
         Condition.TARGET_STORMLASHED,
         Condition.TARGET_SHADOWBLIGHTED,
+        Condition.TARGET_SCORCHRENT,
         Condition.TARGET_AFFLICTED,
         Condition.TARGET_DEF_DOWN,
         Condition.TARGET_BUFFED,

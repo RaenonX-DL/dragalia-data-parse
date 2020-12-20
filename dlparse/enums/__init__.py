@@ -9,6 +9,7 @@ from .chain_cond import SkillChainCondition
 from .condition import *  # noqa
 from .element import Element, ElementFlag
 from .hit_exec_type import HitExecType
+from .lang import Language
 from .skill_idx import SkillIndex
 from .skill_num import SkillNumber
 from .status import Status

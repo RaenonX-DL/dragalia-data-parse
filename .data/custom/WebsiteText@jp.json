@@ -1,0 +1,58 @@
+[
+  {
+    "id": "ENUM_TARGET_POISONED",
+    "text": "毒"
+  },
+  {
+    "id": "ENUM_TARGET_BURNED",
+    "text": "火傷"
+  },
+  {
+    "id": "ENUM_TARGET_FROZEN",
+    "text": "凍結"
+  },
+  {
+    "id": "ENUM_TARGET_PARALYZED",
+    "text": "麻痺"
+  },
+  {
+    "id": "ENUM_TARGET_BLINDED",
+    "text": "暗闇"
+  },
+  {
+    "id": "ENUM_TARGET_STUNNED",
+    "text": "気絶"
+  },
+  {
+    "id": "ENUM_TARGET_CURSED",
+    "text": "呪い"
+  },
+  {
+    "id": "ENUM_TARGET_BOGGED",
+    "text": "ずぶぬれ"
+  },
+  {
+    "id": "ENUM_TARGET_SLEPT",
+    "text": "睡眠"
+  },
+  {
+    "id": "ENUM_TARGET_FROSTBITTEN",
+    "text": "冷傷"
+  },
+  {
+    "id": "ENUM_TARGET_FLASHBURNED",
+    "text": "閃熱"
+  },
+  {
+    "id": "ENUM_TARGET_STORMLASHED",
+    "text": "裂風"
+  },
+  {
+    "id": "ENUM_TARGET_SHADOWBLIGHTED",
+    "text": "暗黒"
+  },
+  {
+    "id": "ENUM_TARGET_SCORCHRENT",
+    "text": "劫火"
+  }
+]

@@ -186,6 +186,8 @@ class ConditionCategoryTargetNumber(ConditionCategory[float]):
 class ConditionCategories:
     """Categories for various conditions (:class:`Condition`)."""
 
+    # Conditions that do not need additional functionalities should be placed in `collection.py` instead.
+
     # region 1xx - Target
     target_status = ConditionCategory[Status](
         {
@@ -203,6 +205,7 @@ class ConditionCategories:
             Condition.TARGET_FLASHBURNED: Status.FLASHBURN,
             Condition.TARGET_STORMLASHED: Status.STORMLASH,
             Condition.TARGET_SHADOWBLIGHTED: Status.SHADOWBLIGHT,
+            Condition.TARGET_SCORCHRENT: Status.SCORCHREND,
             # Special abnormal status
             Condition.TARGET_AFFLICTED: Status.AFFLICTED,
             Condition.TARGET_DEF_DOWN: Status.DEF_DOWNED,

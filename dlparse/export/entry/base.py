@@ -2,18 +2,46 @@
 import hashlib
 from abc import ABC, abstractmethod
 from dataclasses import InitVar, dataclass, field
-from typing import Generic, TYPE_CHECKING, TypeVar, final
+from typing import Any, Generic, TYPE_CHECKING, TypeVar, final
 
 from dlparse.enums import ConditionComposite, Element, SkillNumber
 
 if TYPE_CHECKING:
     from dlparse.mono.asset import CharaDataEntry, SkillDataEntry, SkillIdEntry, TextAsset
 
-__all__ = ("ExportEntryBase", "SkillExportEntryBase")
+__all__ = ("CsvExportableBase", "JsonExportableBase", "HashableEntryBase", "SkillExportEntryBase")
 
 
-class ExportEntryBase(ABC):
-    """Base class for an exported data entry."""
+class CsvExportableBase(ABC):
+    """Base class for an csv-exportable data entry."""
+
+    # pylint: disable=too-few-public-methods
+
+    @abstractmethod
+    def to_csv_entry(self) -> list[str]:
+        """Convert the current data to a csv entry."""
+        raise NotImplementedError(f"Entry `{self.__class__.__name__}` cannot be converted to a csv entry")
+
+    @classmethod
+    @abstractmethod
+    def csv_header(cls) -> list[str]:
+        """Get the header for CSV file containing this entry."""
+        raise NotImplementedError(f"Entry `{cls.__name__}` does not implement a csv header")
+
+
+class JsonExportableBase(ABC):
+    """Base class for an json-exportable data entry."""
+
+    # pylint: disable=too-few-public-methods
+
+    @abstractmethod
+    def to_json_entry(self) -> dict[str, Any]:
+        """Convert the current data to a json entry."""
+        raise NotImplementedError(f"Entry `{self.__class__.__name__}` cannot be converted to a json entry")
+
+
+class HashableEntryBase(ABC):
+    """Base class for an hashable exported data entry."""
 
     @property
     @abstractmethod
@@ -27,21 +55,12 @@ class ExportEntryBase(ABC):
         """A hash that uniquely identifies this entry."""
         return hashlib.sha256(self.unique_id.encode("utf-8")).hexdigest()
 
-    def to_csv_entry(self) -> list[str]:
-        """Convert the current data to a csv entry."""
-        raise NotImplementedError(f"Entry `{self.__class__.__name__}` cannot be converted to a csv entry")
-
-    @classmethod
-    def csv_header(cls) -> list[str]:
-        """Get the header for CSV file containing this entry."""
-        raise NotImplementedError(f"Entry `{cls.__name__}` does not implement a csv header")
-
 
 T = TypeVar("T")
 
 
 @dataclass
-class SkillExportEntryBase(Generic[T], ExportEntryBase, ABC):
+class SkillExportEntryBase(Generic[T], HashableEntryBase, CsvExportableBase, ABC):
     """Base class for an exported skill data entry."""
 
     text_asset: InitVar["TextAsset"]

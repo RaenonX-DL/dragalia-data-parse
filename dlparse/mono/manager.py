@@ -1,11 +1,14 @@
 """Classes for loading all the assets and loaders."""
 from typing import Optional
 
+from dlparse.enums import Language
+from dlparse.errors import ConfigError
 from dlparse.transformer import AbilityTransformer, SkillTransformer
 from .asset import (
     AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionPartsListAsset, BuffCountAsset, CharaDataAsset,
     CharaModeAsset, DragonDataAsset, HitAttrAsset, PlayerActionInfoAsset, SkillChainAsset, SkillDataAsset, TextAsset,
 )
+from .custom import WebsiteTextAsset
 from .loader import ActionFileLoader
 
 __all__ = ("AssetManager",)
@@ -18,7 +21,7 @@ class AssetManager:
             self, action_asset_dir: str, master_asset_dir: str, /,
             custom_asset_dir: Optional[str] = None
     ):
-        # Assets
+        # Master Assets
         self._asset_ability_data: AbilityAsset = AbilityAsset(asset_dir=master_asset_dir)
         self._asset_ability_limit: AbilityLimitGroupAsset = AbilityLimitGroupAsset(asset_dir=master_asset_dir)
         self._asset_action_cond: ActionConditionAsset = ActionConditionAsset(asset_dir=master_asset_dir)
@@ -33,6 +36,12 @@ class AssetManager:
         self._asset_pa_info: PlayerActionInfoAsset = PlayerActionInfoAsset(asset_dir=master_asset_dir)
         self._asset_action_list: ActionPartsListAsset = ActionPartsListAsset(asset_dir=action_asset_dir)
 
+        # Custom Assets
+        self._asset_text_website: WebsiteTextAsset = WebsiteTextAsset(
+            Language.get_all_available_codes(),
+            asset_dir=custom_asset_dir
+        ) if custom_asset_dir else None  # If custom asset directory is not provided, do not load the asset
+
         # Loaders
         self._loader_action: ActionFileLoader = ActionFileLoader(self._asset_action_list, action_asset_dir)
 
@@ -40,7 +49,7 @@ class AssetManager:
         self._transformer_ability: AbilityTransformer = AbilityTransformer(self)
         self._transformer_skill: SkillTransformer = SkillTransformer(self)
 
-    # region Assets
+    # region Master Assets
     @property
     def asset_ability_data(self) -> AbilityAsset:
         """Get the ability data asset."""
@@ -105,6 +114,24 @@ class AssetManager:
     def asset_action_list(self) -> ActionPartsListAsset:
         """Get the action parts list asset."""
         return self._asset_action_list
+
+    # endregion
+
+    # region Custom Assets
+    @property
+    def asset_text_website(self) -> WebsiteTextAsset:
+        """
+        Get the asset for the website texts.
+
+        :raises ConfigError: if custom asset directory was not given
+        """
+        if not self._asset_text_website:
+            # Case when the custom asset directory was not given
+            raise ConfigError("Custom asset directory was not given. "
+                              "Specify the custom asset directory then call this again.")
+
+        return self._asset_text_website
+
     # endregion
 
     # region Loaders

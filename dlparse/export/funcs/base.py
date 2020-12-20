@@ -1,22 +1,25 @@
 """Base exporting functions."""
 import csv
-from typing import Callable, TypeVar
+import json
+from json import JSONEncoder
+from typing import Any, Callable, TypeVar
 
 from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError
-from dlparse.export.entry import ExportEntryBase
-from dlparse.model import SkillDataBase, SkillEntryBase
+from dlparse.export.entry import CsvExportableBase, JsonExportableBase, SkillExportEntryBase
+from dlparse.model import SkillDataBase
 from dlparse.mono.asset import CharaDataEntry, SkillIdEntry
 from dlparse.mono.manager import AssetManager
 
-__all__ = ("export_as_csv", "export_skill_entries", "export_transform_skill_entries")
+__all__ = ("export_as_csv", "export_as_json", "export_skill_entries", "export_transform_skill_entries")
 
-T = TypeVar("T", bound=ExportEntryBase)
-ET = TypeVar("ET", bound=SkillEntryBase)
+CT = TypeVar("CT", bound=CsvExportableBase)
+JT = TypeVar("JT", bound=JsonExportableBase)
+ET = TypeVar("ET", bound=SkillExportEntryBase)
 DT = TypeVar("DT", bound=SkillDataBase)
 
-EntryParsingFunction = Callable[
+SkillEntryParsingFunction = Callable[
     [CharaDataEntry, AssetManager, bool],
-    tuple[list[T], list[str]]
+    tuple[list[ET], list[str]]
 ]
 
 TransformFunction = Callable[
@@ -66,10 +69,10 @@ def export_transform_skill_entries(
 
 
 def export_skill_entries(
-        entry_parse_fn: EntryParsingFunction, asset_manager: AssetManager, /, skip_unparsable: bool = True
-) -> list[T]:
+        skill_entry_parse_fn: SkillEntryParsingFunction, asset_manager: AssetManager, /, skip_unparsable: bool = True
+) -> list[ET]:
     """Export skill entries of all characters to a list of data entries ready to be exported."""
-    ret: list[T] = []
+    ret: list[ET] = []
 
     chara_count = asset_manager.chara_count
     skipped_messages: list[str] = []
@@ -82,7 +85,7 @@ def export_skill_entries(
 
         print(f"Exporting skill data... ({idx} / {chara_count} - {idx / chara_count:.2%})")
 
-        entries, messages = entry_parse_fn(chara_data, asset_manager, skip_unparsable)
+        entries, messages = skill_entry_parse_fn(chara_data, asset_manager, skip_unparsable)
 
         ret.extend(entries)
         skipped_messages.extend(messages)
@@ -97,10 +100,26 @@ def export_skill_entries(
     return ret
 
 
-def export_as_csv(entries: list[T], csv_header: list[str], file_path: str):
+def export_as_csv(entries: list[CT], csv_header: list[str], file_path: str):
     """Export all ``entries`` as a csv file to ``file_path``."""
     with open(file_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(csv_header)
 
         writer.writerows([entry.to_csv_entry() for entry in entries])
+
+
+class JsonEntryEncoder(JSONEncoder):
+    """Encoder class for entries inherited from :class:`JsonExportableBase`."""
+
+    def default(self, o: Any) -> Any:
+        if isinstance(o, JsonExportableBase):
+            return o.to_json_entry()
+
+        return super().default(o)
+
+
+def export_as_json(entries: list[JT], file_path: str):
+    """Export all ``entries`` as a json file to ``file_path``."""
+    with open(file_path, "w", encoding="utf-8", newline="") as f:
+        json.dump(entries, f, cls=JsonEntryEncoder, ensure_ascii=False)
