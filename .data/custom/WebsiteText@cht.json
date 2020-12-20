@@ -74,5 +74,13 @@
   {
     "id": "ENUM_TARGET_ELEM_SHADOW",
     "text": "暗"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_WEAK",
+    "text": "不利"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_EFFECTIVE",
+    "text": "有利"
   }
 ]

@@ -39,6 +39,8 @@ class Condition(Enum):
     TARGET_ELEM_WIND = 153
     TARGET_ELEM_LIGHT = 154
     TARGET_ELEM_SHADOW = 155
+    TARGET_ELEM_WEAK = 158
+    TARGET_ELEM_EFFECTIVE = 159
     # endregion
 
     # region State

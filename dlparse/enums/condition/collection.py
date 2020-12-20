@@ -33,4 +33,6 @@ cond_elements: tuple[Condition, ...] = (
     Condition.TARGET_ELEM_WIND,
     Condition.TARGET_ELEM_LIGHT,
     Condition.TARGET_ELEM_SHADOW,
+    Condition.TARGET_ELEM_WEAK,
+    Condition.TARGET_ELEM_EFFECTIVE,
 )

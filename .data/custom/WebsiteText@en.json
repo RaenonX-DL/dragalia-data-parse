@@ -74,5 +74,13 @@
   {
     "id": "ENUM_TARGET_ELEM_SHADOW",
     "text": "Shadow"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_WEAK",
+    "text": "Weak"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_EFFECTIVE",
+    "text": "Effective"
   }
 ]
