@@ -3,7 +3,7 @@ import csv
 import json
 import os
 from json import JSONEncoder
-from typing import Any, Callable, TypeVar
+from typing import Any, Callable, TypeVar, Union
 
 from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError
 from dlparse.export.entry import CsvExportableBase, JsonExportableBase, SkillExportEntryBase
@@ -120,7 +120,7 @@ class JsonEntryEncoder(JSONEncoder):
         return super().default(o)
 
 
-def export_as_json(entries: list[JT], file_path: str):
+def export_as_json(entries: Union[dict[str, list[JT]], list[JT]], file_path: str):
     """Export all ``entries`` as a json file to ``file_path``."""
     os.makedirs(os.path.dirname(file_path), exist_ok=True)  # Create directory if needed
 

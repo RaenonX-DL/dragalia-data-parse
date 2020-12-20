@@ -54,5 +54,25 @@
   {
     "id": "ENUM_TARGET_SCORCHRENT",
     "text": "劫火"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_FLAME",
+    "text": "火"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_WATER",
+    "text": "水"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_WIND",
+    "text": "風"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_LIGHT",
+    "text": "光"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_SHADOW",
+    "text": "暗"
   }
 ]

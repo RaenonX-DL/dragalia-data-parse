@@ -54,5 +54,25 @@
   {
     "id": "ENUM_TARGET_SCORCHRENT",
     "text": "Scorchrend"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_FLAME",
+    "text": "Flame"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_WATER",
+    "text": "Water"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_WIND",
+    "text": "Wind"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_LIGHT",
+    "text": "Light"
+  },
+  {
+    "id": "ENUM_TARGET_ELEM_SHADOW",
+    "text": "Shadow"
   }
 ]
