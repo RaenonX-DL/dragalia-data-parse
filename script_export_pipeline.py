@@ -1,11 +1,15 @@
 import argparse
 import os
 from configparser import ConfigParser
+from enum import Enum
+from typing import Sequence, TypeVar
 
 from dlparse.enums import cond_afflictions
 from dlparse.export import export_enums_json
 from dlparse.mono.manager import AssetManager
 from dlparse.utils import time_exec
+
+T = TypeVar("T", bound=Enum)
 
 
 class FileExporter:
@@ -33,13 +37,13 @@ class FileExporter:
         self._dir_export: str = dir_export
 
     @time_exec(title="Enums exporting time")
-    def _export_enums(self):
-        export_enums_json(self._asset_manager, cond_afflictions, os.path.join(self._dir_export, "enums.json"))
+    def _export_enums(self, enums: Sequence[T], name: str):
+        export_enums_json(self._asset_manager, enums, os.path.join(self._dir_export, "enums", f"{name}.json"))
 
     @time_exec(title="Total exporting time")
     def export(self):
         """Export the parsed assets."""
-        self._export_enums()
+        self._export_enums(cond_afflictions, "afflictions")
 
 
 # region Parser
