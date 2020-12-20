@@ -1,10 +1,10 @@
-name: DL Data Parser - CQA
+name: CI
 
 on: [push]
 
 jobs:
-  cqa:
-    name: CQA
+  quality-check:
+    name: Code Quality Check
 
     strategy:
       matrix:
@@ -30,3 +30,29 @@ jobs:
       - name: pylint checks (`dlparse`)
         run: |
           pylint dlparse
+
+  tests:
+    name: CI Tests
+
+    strategy:
+      matrix:
+        os: [ macos-latest, windows-latest, ubuntu-18.04 ]
+
+    runs-on: ${{ matrix.os }}
+
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-python@v2
+
+      - name: Install required packages
+        run: |
+          pip install -r requirements-dev.txt
+
+      - name: Run tests
+        run: |
+          pytest --slow

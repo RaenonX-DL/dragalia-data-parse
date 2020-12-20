@@ -1,6 +1,7 @@
 """Base exporting functions."""
 import csv
 import json
+import os
 from json import JSONEncoder
 from typing import Any, Callable, TypeVar
 
@@ -121,5 +122,7 @@ class JsonEntryEncoder(JSONEncoder):
 
 def export_as_json(entries: list[JT], file_path: str):
     """Export all ``entries`` as a json file to ``file_path``."""
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)  # Create directory if needed
+
     with open(file_path, "w", encoding="utf-8", newline="") as f:
         json.dump(entries, f, cls=JsonEntryEncoder, ensure_ascii=False)
