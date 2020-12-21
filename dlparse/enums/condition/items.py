@@ -40,12 +40,12 @@ class Condition(Enum):
     TARGET_ELEM_LIGHT = 154
     TARGET_ELEM_SHADOW = 155
     TARGET_ELEM_WEAK = 158
-    TARGET_ELEM_EFFECTIVE = 159
+    TARGET_ELEM_EFFECTIVE = 159  # Used by the website, DO NOT CHANGE
     # endregion
 
     # region State
-    TARGET_BK_STATE = 180
-    TARGET_OD_STATE = 181
+    TARGET_BK_STATE = 180  # Used by the website, DO NOT CHANGE
+    TARGET_OD_STATE = 181  # Used by the website, DO NOT CHANGE
     # endregion
 
     # region Abnormal

@@ -250,6 +250,11 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
         return f"{self.chara_base_id}/{self.chara_variation_id}"
 
     @property
+    def image_name(self) -> str:
+        """Get the name of the image at the original rarity, excluding the file extension."""
+        return f"{self.chara_base_id}_{self.chara_variation_id:02}_r{self.rarity:02}"
+
+    @property
     def element(self) -> Element:
         """Get the element of the character."""
         return Element(self.element_id)
