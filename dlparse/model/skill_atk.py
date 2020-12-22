@@ -113,6 +113,20 @@ class AttackingSkillDataEntry(SkillEntryBase):
         ]
 
     @property
+    def hit_timings(self) -> list[list[float]]:
+        """
+        Get the hit connecting timings at each level.
+
+        The 1st dimension is the skill level, and the 2nd dimension is each hit.
+
+        Mods = ``0`` will not be returned.
+        """
+        return [
+            [hit_unit.hit_time for hit_unit in hit_unit_lv if hit_unit.mod]
+            for hit_unit_lv in self.hit_unit_mtx
+        ]
+
+    @property
     def total_mod(self) -> list[float]:
         """Get the total original damage modifiers at each level."""
         return [sum(mods) for mods in self.mods]

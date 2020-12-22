@@ -91,8 +91,10 @@ class SkillExportEntryBase(Generic[T], HashableEntryBase, CsvExportableBase, ABC
     ss_cost: int = field(init=False)
     ss_sp: float = field(init=False)
 
-    def __post_init__(self, text_asset: "TextAsset", chara_data: "CharaDataEntry", skill_data: "SkillDataEntry",
-                      skill_id_entry: "SkillIdEntry", skill_data_to_parse: T):  # pylint: disable=unused-argument
+    def __post_init__(
+            self, text_asset: "TextAsset", chara_data: "CharaDataEntry", skill_data: "SkillDataEntry",
+            skill_id_entry: "SkillIdEntry", skill_data_to_parse: T
+    ):  # pylint: disable=unused-argument
         self.character_custom_id = chara_data.custom_id
         self.character_name = chara_data.get_chara_name(text_asset)
         self.character_internal_id = chara_data.id

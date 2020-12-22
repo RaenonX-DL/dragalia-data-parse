@@ -20,6 +20,8 @@ __all__ = ("DamagingHitData", "DamageUnit")
 class DamageUnit:
     """Class for a single actual damage hit."""
 
+    hit_time: float
+
     mod: float
     unit_affliction: Optional[HitAfflictionEffectUnitHit]
     unit_debuffs: list[HitActionConditionEffectUnit]
@@ -163,7 +165,9 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         if self.will_deteriorate and condition_comp.bullet_hit_count:
             # Deteriorating bullets
             return [
-                DamageUnit(self.damage_modifier_at_hit(hit_count), unit_affliction, units_debuff, hit_attr)
+                DamageUnit(
+                    self.action_time, self.damage_modifier_at_hit(hit_count), unit_affliction, units_debuff, hit_attr
+                )
                 for hit_count in range(1, condition_comp.bullet_hit_count_converted + 1)
             ]
 
@@ -172,12 +176,12 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
             mods = self.mods_in_self_buff_zone(condition_comp.buff_zone_self_converted or 0)
             mods += self.mods_in_ally_buff_zone(condition_comp.buff_zone_ally_converted or 0)
 
-            return [DamageUnit(mod, unit_affliction, units_debuff, hit_attr) for mod in mods]
+            return [DamageUnit(self.action_time, mod, unit_affliction, units_debuff, hit_attr) for mod in mods]
 
         if self.is_depends_on_bullet_summoned or self.is_depends_on_bullet_on_map:
             # Damage dealt depends on the bullets summoned / bullets on the map
             return [
-                DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
+                DamageUnit(self.action_time, hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
                 for _ in range(condition_comp.bullets_on_map_converted or 0)
             ]
 
@@ -188,7 +192,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
                 condition_comp.buff_count_converted or 0
             )
             return [
-                DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
+                DamageUnit(self.action_time, hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
                 for _ in range(effective_buff_count)
             ]
 
@@ -231,12 +235,12 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
             # Action component is exactly `ActionPartsBullet`, max hit count may be in effect
             # For example, Lin You S1 (`104503011`, AID `491040` and `491042`)
             return [
-                DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
+                DamageUnit(self.action_time, hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
                 for _ in range(self.max_hit_count or 1)
             ]
 
         # Cases not handled above
-        return [DamageUnit(hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)]
+        return [DamageUnit(self.action_time, hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)]
 
     def _damage_units_apply_mod_boosts_target(
             self, damage_units: list[DamageUnit], condition_comp: ConditionComposite
@@ -329,6 +333,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
 
                 # Get the damage unit that marks the enemy
                 return [DamageUnit(
+                    self.action_time,
                     0,
                     unit_affliction,
                     self.to_debuff_units(asset_action_condition),

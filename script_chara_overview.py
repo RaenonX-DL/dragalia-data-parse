@@ -23,6 +23,7 @@ def print_atk_data_entry(chara_data, skill_data, skill_entry):
         sp_str += f" / SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(skill_level)}"
     print(sp_str)
     print(f"Mods distribution: {skill_entry.mods[skill_level]}")
+    print(f"Hit timings (s): {skill_entry.hit_timings[skill_level]}")
     print(f"Total Mods: {skill_entry.total_mod[skill_level]:.0%} "
           f"({inc_val:+.0%}, {skill_entry.hit_count[skill_level]} hits) - {inc_pct:+.2%}")
     print()
@@ -128,7 +129,7 @@ def chara_skill_overview(chara_id):
 
 
 def main():
-    chara_skill_overview(10640202)
+    chara_skill_overview(10350402)
 
 
 if __name__ == '__main__':
