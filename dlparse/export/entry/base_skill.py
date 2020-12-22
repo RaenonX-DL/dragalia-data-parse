@@ -120,6 +120,7 @@ class SkillExportEntryBase(Generic[T], HashableEntryBase, CsvExportableEntryBase
             },
             "skill": {
                 "identifiers": self.skill_identifiers,
+                "internalId": self.skill_internal_id,
                 "name": self.skill_name.to_json_entry(),
                 "spMax": self.sp_at_max,
                 "sharable": self.sharable,

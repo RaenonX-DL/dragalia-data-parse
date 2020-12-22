@@ -13,6 +13,8 @@ class Condition(Enum):
         enum values being casted into int, although redundant.
     """
 
+    # WARNING: Codes are used by the website, DO NOT CHANGE
+
     NONE = 0
 
     # region 1xx - Target
@@ -24,7 +26,7 @@ class Condition(Enum):
     TARGET_BLINDED = 105
     TARGET_STUNNED = 106
     TARGET_CURSED = 107
-    TARGET_BOGGED = 109  # Used by the website, DO NOT CHANGE
+    TARGET_BOGGED = 109
     TARGET_SLEPT = 110
     TARGET_FROSTBITTEN = 111
     TARGET_FLASHBURNED = 112
@@ -41,12 +43,12 @@ class Condition(Enum):
     TARGET_ELEM_SHADOW = 155
     TARGET_ELEM_NEUTRAL = 157
     TARGET_ELEM_WEAK = 158
-    TARGET_ELEM_EFFECTIVE = 159  # Used by the website, DO NOT CHANGE
+    TARGET_ELEM_EFFECTIVE = 159
     # endregion
 
     # region State
-    TARGET_BK_STATE = 180  # Used by the website, DO NOT CHANGE
-    TARGET_OD_STATE = 181  # Used by the website, DO NOT CHANGE
+    TARGET_BK_STATE = 180
+    TARGET_OD_STATE = 181
     # endregion
 
     # region Abnormal

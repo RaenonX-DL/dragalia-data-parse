@@ -54,7 +54,7 @@ def test_exported_json(asset_manager: AssetManager):
 
         # Check for skill keys
         for skill_key in (
-                "identifiers", "name", "spMax", "sharable", "ssCost", "ssSp",
+                "internalId", "identifiers", "name", "spMax", "sharable", "ssCost", "ssSp",
                 "totalModsMax", "modsMax", "hitsMax", "afflictions"
         ):
             assert skill_key in json_entry["skill"]
