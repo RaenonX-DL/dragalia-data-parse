@@ -14,6 +14,37 @@ if TYPE_CHECKING:
 __all__ = ("CharaAttackingSkillEntry",)
 
 
+@dataclass
+class SkillBuffCountBoostEntry(JsonExportableEntryBase):
+    """A single entry representing the mods increment according to the user's buff count."""
+
+    rate_each: float
+
+    rate_in_effect: float
+    rate_limit: float
+
+    def to_json_entry(self) -> dict[str, Any]:
+        return {
+            "each": self.rate_each,
+            "inEffect": self.rate_in_effect,
+            "limit": self.rate_limit
+        }
+
+
+@dataclass
+class SkillBuffZoneBoostEntry(JsonExportableEntryBase):
+    """A single entry representing the mods increment according to the user's buff zone."""
+
+    rate_by_self: float
+    rate_by_ally: float
+
+    def to_json_entry(self) -> dict[str, Any]:
+        return {
+            "self": self.rate_by_self,
+            "ally": self.rate_by_ally
+        }
+
+
 @dataclass(unsafe_hash=True)
 class SkillAfflictionEntry(JsonExportableEntryBase):
     """A single entry for a single affliction of the skill."""
@@ -42,11 +73,15 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
     """A single entry of an attacking skill."""
 
     skill_mods_max: list[float] = field(init=False)
+    skill_crisis_max: list[float] = field(init=False)
     skill_total_mods_max: float = field(init=False)
     skill_total_hits_max: int = field(init=False)
 
     affliction_data_max: list[SkillAfflictionEntry] = field(init=False)
     debuff_data_max: list[tuple[BuffParameter, float, float, float, bool]] = field(init=False)
+
+    buff_count_data_max: list[SkillBuffCountBoostEntry] = field(init=False)
+    buff_zone_data_max: SkillBuffZoneBoostEntry = field(init=False)
 
     def __post_init__(
             self, asset_manager: "AssetManager", chara_data: CharaDataEntry, skill_data: SkillDataEntry,
@@ -54,10 +89,27 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
     ):
         super().__post_init__(asset_manager, chara_data, skill_data, skill_id_entry, skill_data_to_parse)
 
-        self.skill_mods_max = skill_data_to_parse.mods_at_max
+        # Leave for testing purpose, but not exported as json
         self.skill_total_mods_max = skill_data_to_parse.total_mod_at_max
-        self.skill_total_hits_max = skill_data_to_parse.hit_count_at_max
 
+        # Basic info to be exported
+        self.skill_total_hits_max = skill_data_to_parse.hit_count_at_max
+        self.skill_mods_max = skill_data_to_parse.mods_at_max
+        self.skill_crisis_max = skill_data_to_parse.crisis_mods[-1]
+
+        # Buff data
+        self.buff_count_data_max = [
+            SkillBuffCountBoostEntry(
+                rate_each=buff_count_data.rate_base,
+                rate_in_effect=buff_count_data.in_effect_rate,
+                rate_limit=buff_count_data.rate_limit
+            )
+            for buff_count_data in skill_data_to_parse.buff_count_boost_mtx[-1]
+        ]
+        buff_zone_data = skill_data_to_parse.buff_zone_boost_mtx[-1]
+        self.buff_zone_data_max = SkillBuffZoneBoostEntry(buff_zone_data.rate_by_self, buff_zone_data.rate_by_ally)
+
+        # Getting affliction and debuff units
         afflictions = []
         for affliction in skill_data_to_parse.afflictions[-1]:
             afflictions.append(SkillAfflictionEntry(
@@ -68,7 +120,6 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
                 duration=affliction.duration_time,
                 stackable=affliction.stackable
             ))
-
         self.affliction_data_max = list(dict.fromkeys(afflictions))
         self.debuff_data_max = list(dict.fromkeys([
             (debuff.parameter, debuff.probability_pct, debuff.rate, debuff.duration_time, debuff.stackable)
@@ -99,10 +150,12 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
         json_dict = super().to_json_entry()
 
         json_dict["skill"].update({
-            "totalModsMax": self.skill_total_mods_max,
             "modsMax": self.skill_mods_max,
+            "crisisMax": self.skill_crisis_max,
             "hitsMax": self.skill_total_hits_max,
-            "afflictions": [affliction_data.to_json_entry() for affliction_data in self.affliction_data_max]
+            "afflictions": [affliction_data.to_json_entry() for affliction_data in self.affliction_data_max],
+            "buffCountBoost": [buff_count_data.to_json_entry() for buff_count_data in self.buff_count_data_max],
+            "buffZoneBoost": self.buff_zone_data_max.to_json_entry()
         })
 
         return json_dict

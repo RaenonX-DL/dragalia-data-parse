@@ -55,7 +55,7 @@ def test_exported_json(asset_manager: AssetManager):
         # Check for skill keys
         for skill_key in (
                 "internalId", "identifiers", "name", "spMax", "sharable", "ssCost", "ssSp",
-                "totalModsMax", "modsMax", "hitsMax", "afflictions"
+                "modsMax", "crisisMax", "hitsMax", "afflictions", "buffCountBoost", "buffZoneBoost",
         ):
             assert skill_key in json_entry["skill"]
 
@@ -65,6 +65,15 @@ def test_exported_json(asset_manager: AssetManager):
         ):
             for affliction_data in json_entry["skill"]["afflictions"]:
                 assert affliction_key in affliction_data
+
+        # Check for buff count boost keys
+        for buff_count_key in ("each", "inEffect", "limit"):
+            for buff_count_data in json_entry["skill"]["buffCountBoost"]:
+                assert buff_count_key in buff_count_data
+
+        # Check for buff zone boost keys
+        for buff_zone_key in ("self", "ally"):
+            assert buff_zone_key in json_entry["skill"]["buffZoneBoost"]
 
         # Check for the keys in the names
         for lang_key in ("cht", "en", "jp"):
