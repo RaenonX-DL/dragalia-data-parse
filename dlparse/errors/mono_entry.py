@@ -4,7 +4,7 @@ from typing import Optional
 from .base import AppValueError, EntryNotFoundError
 
 __all__ = ("SkillDataNotFoundError", "ActionDataNotFoundError", "TextLabelNotFoundError",
-           "AbilityLimitDataNotFoundError", "AbilityOnSkillUnconvertibleError",
+           "AbilityLimitDataNotFoundError", "AbilityOnSkillUnconvertibleError", "LanguageAssetNotFoundError",
            "AbilityConditionUnconvertibleError", "BulletMaxCountUnavailableError", "AbilityVariantUnconvertibleError")
 
 
@@ -27,6 +27,13 @@ class ActionDataNotFoundError(EntryNotFoundError):
 
     def __init__(self, action_id: int, skill_id: Optional[int] = None):
         super().__init__(f"Action data of action ID `{action_id}` / skill ID `{skill_id}` not found")
+
+
+class LanguageAssetNotFoundError(EntryNotFoundError):
+    """Error to be raised if the language asset is not found."""
+
+    def __init__(self, lang_code: str):
+        super().__init__(f"Language asset in code `{lang_code}` not found")
 
 
 class TextLabelNotFoundError(EntryNotFoundError):

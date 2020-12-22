@@ -100,8 +100,10 @@ class PlayerActionPrefab(ActionAssetBase):
         # Sort hitting components by its starting time
         for action_hit in sorted(self._damaging_hits, key=lambda component: component.time_start):
             for hit_label in filter(self.is_effective_label, action_hit.hit_labels):  # Effective labels only
-                if (action_hit.use_same_component
-                        or not action_hit.use_same_component and self.get_hit_label_skill_lv(hit_label) == skill_lv):
+                if (
+                        action_hit.use_same_component
+                        or not action_hit.use_same_component and self.get_hit_label_skill_lv(hit_label) == skill_lv
+                ):
                     hit_actions.append((self.get_hit_label_at_skill_lv(hit_label, skill_lv), action_hit))
 
         return hit_actions

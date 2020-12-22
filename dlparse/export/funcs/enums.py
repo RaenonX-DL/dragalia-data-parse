@@ -2,8 +2,7 @@
 from enum import Enum
 from typing import Sequence, TYPE_CHECKING, TypeVar
 
-from dlparse.enums import Language
-from dlparse.export.entry import EnumEntry
+from dlparse.export.entry import EnumEntry, TextEntry
 from .base import export_as_json
 
 if TYPE_CHECKING:
@@ -25,15 +24,9 @@ def export_enums_entries(
             ret[enum_name] = []
 
         for enum in enum_list:
-            # Get all translations for each enum
-            trans = {
-                lang_code: asset_manager.asset_text_website.get_text(lang_code, f"ENUM_{enum.name}")
-                for lang_code in Language.get_all_available_codes()
-            }
-
             ret[enum_name].append(EnumEntry(
                 enum_name=enum.name, enum_code=enum.value,
-                trans=trans
+                trans=TextEntry(asset_manager.asset_text_website, f"ENUM_{enum.name}")
             ))
 
     return ret

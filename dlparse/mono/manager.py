@@ -7,6 +7,7 @@ from dlparse.transformer import AbilityTransformer, SkillTransformer
 from .asset import (
     AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionPartsListAsset, BuffCountAsset, CharaDataAsset,
     CharaModeAsset, DragonDataAsset, HitAttrAsset, PlayerActionInfoAsset, SkillChainAsset, SkillDataAsset, TextAsset,
+    TextAssetMultilingual,
 )
 from .custom import WebsiteTextAsset
 from .loader import ActionFileLoader
@@ -35,6 +36,13 @@ class AssetManager:
         self._asset_text: TextAsset = TextAsset(asset_dir=master_asset_dir, custom_asset_dir=custom_asset_dir)
         self._asset_pa_info: PlayerActionInfoAsset = PlayerActionInfoAsset(asset_dir=master_asset_dir)
         self._asset_action_list: ActionPartsListAsset = ActionPartsListAsset(asset_dir=action_asset_dir)
+
+        lang_code_mapping = {
+            "en": Language.EN.value,
+            "tw": Language.CHT.value,
+            "": Language.JP.value
+        }
+        self._asset_text_multi: TextAssetMultilingual = TextAssetMultilingual(lang_code_mapping, master_asset_dir)
 
         # Custom Assets
         self._asset_text_website: WebsiteTextAsset = WebsiteTextAsset(
@@ -104,6 +112,11 @@ class AssetManager:
     def asset_text(self) -> TextAsset:
         """Get the text label asset."""
         return self._asset_text
+
+    @property
+    def asset_text_multi(self) -> TextAssetMultilingual:
+        """Get the multilingual text label asset."""
+        return self._asset_text_multi
 
     @property
     def asset_pa_info(self) -> PlayerActionInfoAsset:

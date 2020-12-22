@@ -6,15 +6,15 @@ from json import JSONEncoder
 from typing import Any, Callable, TypeVar, Union
 
 from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError
-from dlparse.export.entry import CsvExportableBase, JsonExportableBase, SkillExportEntryBase
+from dlparse.export.entry import CsvExportableEntryBase, JsonExportableEntryBase, SkillExportEntryBase
 from dlparse.model import SkillDataBase
 from dlparse.mono.asset import CharaDataEntry, SkillIdEntry
 from dlparse.mono.manager import AssetManager
 
 __all__ = ("export_as_csv", "export_as_json", "export_skill_entries", "export_transform_skill_entries")
 
-CT = TypeVar("CT", bound=CsvExportableBase)
-JT = TypeVar("JT", bound=JsonExportableBase)
+CT = TypeVar("CT", bound=CsvExportableEntryBase)
+JT = TypeVar("JT", bound=JsonExportableEntryBase)
 ET = TypeVar("ET", bound=SkillExportEntryBase)
 DT = TypeVar("DT", bound=SkillDataBase)
 
@@ -111,10 +111,10 @@ def export_as_csv(entries: list[CT], csv_header: list[str], file_path: str):
 
 
 class JsonEntryEncoder(JSONEncoder):
-    """Encoder class for entries inherited from :class:`JsonExportableBase`."""
+    """Encoder class for entries inherited from :class:`JsonExportableEntryBase`."""
 
     def default(self, o: Any) -> Any:
-        if isinstance(o, JsonExportableBase):
+        if isinstance(o, JsonExportableEntryBase):
             return o.to_json_entry()
 
         return super().default(o)

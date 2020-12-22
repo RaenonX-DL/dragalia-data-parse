@@ -1,18 +1,19 @@
 """Classes for handling the text label asset."""
 from dataclasses import dataclass
-from typing import Optional, TextIO
+from typing import Optional, TextIO, Union
 
 from dlparse.errors import TextLabelNotFoundError
-from dlparse.mono.asset.base import CustomParserBase, MasterAssetBase, MasterEntryBase, MasterParserBase
+from dlparse.mono.asset.base import (
+    CustomParserBase, MasterAssetBase, MasterEntryBase, MasterParserBase, MultilingualAssetBase, TextEntryBase,
+    get_file_like, get_file_path,
+)
 
-__all__ = ("TextEntry", "TextAsset", "MasterTextParser")
+__all__ = ("TextEntry", "TextAsset", "MasterTextParser", "TextAssetMultilingual")
 
 
 @dataclass
-class TextEntry(MasterEntryBase):
+class TextEntry(TextEntryBase, MasterEntryBase):
     """Single entry of a text label."""
-
-    text: str
 
     @staticmethod
     def parse_raw(data: dict[str, str]) -> "TextEntry":
@@ -41,11 +42,11 @@ class TextAsset(MasterAssetBase[TextEntry]):
         super().__init__(MasterTextParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
         # Read in and overwrite the data by custom assets
-        custom_file_path = self.get_file_path(
-            file_location=custom_file_location, asset_dir=custom_asset_dir, on_fail=None
+        custom_file_path = get_file_path(
+            self.asset_file_name, file_location=custom_file_location, asset_dir=custom_asset_dir, on_fail=None
         )
         if custom_file_like or custom_file_path:
-            self._data.update(CustomTextParser.parse_file(custom_file_like or self.get_file_like(custom_file_path)))
+            self._data.update(CustomTextParser.parse_file(custom_file_like or get_file_like(custom_file_path)))
 
     def to_text(self, label: str, /, silent_fail: bool = True) -> str:
         """
@@ -84,3 +85,12 @@ class CustomTextParser(CustomParserBase):
         entries = cls.get_entries_dict(file_like)
 
         return {key: TextEntry.parse_raw(value) for key, value in entries.items()}
+
+
+class TextAssetMultilingual(MultilingualAssetBase[TextEntry]):
+    """Multilingual text asset class."""
+
+    # pylint: disable=too-few-public-methods
+
+    def __init__(self, lang_codes: Union[list[str], dict[str, str]], asset_dir: str):
+        super().__init__(MasterTextParser, lang_codes, asset_dir, "TextLabel")

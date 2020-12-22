@@ -36,3 +36,30 @@ def test_exported_entries(asset_manager: AssetManager):
             assert info == entry.skill_total_mods_max, f"Skill info mismatch: {key}"
 
     assert len(skill_ids_missing) == 0, f"Skill IDs missing: {skill_ids_missing}"
+
+
+def test_exported_json(asset_manager: AssetManager):
+    entries = export_atk_skills_as_entries(asset_manager)
+
+    for entry in entries:
+        json_entry = entry.to_json_entry()
+
+        # Check for first level keys
+        for first_level_key in ("uniqueHash", "condition", "chara", "skill"):
+            assert first_level_key in json_entry
+
+        # Check for character keys
+        for chara_key in ("imageWide", "name", "element"):
+            assert chara_key in json_entry["chara"]
+
+        # Check for skill keys
+        for skill_key in (
+                "identifiers", "name", "spMax", "sharable", "ssCost", "ssSp",
+                "totalModsMax", "modsMax", "hitsMax", "afflictions"
+        ):
+            assert skill_key in json_entry["skill"]
+
+        # Check for the keys in the names
+        for lang_key in ("cht", "en", "jp"):
+            assert lang_key in json_entry["skill"]["name"]
+            assert lang_key in json_entry["chara"]["name"]

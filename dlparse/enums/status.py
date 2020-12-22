@@ -63,3 +63,8 @@ class Status(IntEnum):
         """Check if the status is one of the abnormal statuses."""
         # Assumes that 16~20 (not yet used as of 2020/12/05) will still be abnormal status
         return 1 <= int(self.value) <= 20
+
+    @property
+    def icon_name(self) -> str:
+        """Get the file name of the status icon, excluding the file extension."""
+        return f"Icon_Status_01_{self.value:02}"

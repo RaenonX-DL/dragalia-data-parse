@@ -62,8 +62,10 @@ class MasterParserBase(Generic[T], ParserBase, ABC):
 class MasterAssetBase(Generic[T], AssetBase, ABC):
     """Base class for a master mono behavior asset."""
 
-    def __init__(self, parser_cls: Type[MasterParserBase[T]], file_location: Optional[str] = None, /,
-                 asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None):
+    def __init__(
+            self, parser_cls: Type[MasterParserBase[T]], file_location: Optional[str] = None, /,
+            asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
+    ):
         super().__init__(parser_cls, file_location, asset_dir=asset_dir, file_like=file_like)
 
     def __iter__(self):

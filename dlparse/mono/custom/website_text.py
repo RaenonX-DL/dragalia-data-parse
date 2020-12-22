@@ -1,15 +1,14 @@
 """Classes for handling the custom website text asset."""
-import os
 from dataclasses import dataclass
 from typing import TextIO, Union
 
-from dlparse.mono.asset.base import AssetBase, CustomParserBase, MasterEntryBase
+from dlparse.mono.asset.base import CustomParserBase, MasterEntryBase, MultilingualAssetBase, TextEntryBase
 
 __all__ = ("WebsiteTextEntry", "WebsiteTextAsset", "WebsiteTextParser")
 
 
 @dataclass
-class WebsiteTextEntry(MasterEntryBase):
+class WebsiteTextEntry(TextEntryBase, MasterEntryBase):
     """Single entry of a website text data."""
 
     text: str
@@ -22,23 +21,13 @@ class WebsiteTextEntry(MasterEntryBase):
         )
 
 
-class WebsiteTextAsset:
+class WebsiteTextAsset(MultilingualAssetBase[WebsiteTextEntry]):
     """Website text asset class."""
 
     # pylint: disable=too-few-public-methods
 
-    def __init__(self, lang_codes: list[str], asset_dir: str):
-        self._assets: dict[str, dict[str, WebsiteTextEntry]] = {}
-
-        for lang_code in lang_codes:
-            file_path = os.path.join(asset_dir, f"WebsiteText@{lang_code}.json")
-            file_like = AssetBase.get_file_like(file_path)
-
-            self._assets[lang_code] = WebsiteTextParser.parse_file(file_like)
-
-    def get_text(self, lang_code: str, label: str) -> str:
-        """Get the text labeled as ``label`` in ``lang_code``."""
-        return self._assets[lang_code][label].text
+    def __init__(self, lang_codes: Union[list[str], dict[str, str]], asset_dir: str):
+        super().__init__(WebsiteTextParser, lang_codes, asset_dir, "WebsiteText")
 
 
 class WebsiteTextParser(CustomParserBase):

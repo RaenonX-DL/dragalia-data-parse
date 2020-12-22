@@ -250,9 +250,9 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
         return f"{self.chara_base_id}/{self.chara_variation_id}"
 
     @property
-    def image_name(self) -> str:
-        """Get the name of the image at the original rarity, excluding the file extension."""
-        return f"{self.chara_base_id}_{self.chara_variation_id:02}_r{self.rarity:02}"
+    def image_name_wide(self) -> str:
+        """Get the name of the wide image, excluding the file extension."""
+        return f"{self.chara_base_id}_{self.chara_variation_id:02}"
 
     @property
     def element(self) -> Element:
@@ -308,6 +308,15 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
                 self.ability_3_lv_1_id, self.ability_3_lv_2_id, self.ability_3_lv_3_id, self.ability_3_lv_4_id,
             ) if ability_id
         ]
+
+    @property
+    def name_labels(self) -> list[str]:
+        """
+        Get a list of name labels to be used for getting the character name.
+
+        Note that the first one should be used first to get the character name. The order matters.
+        """
+        return [self.name_label_2, self.name_label]
 
     def max_skill_level(self, skill_num: SkillNumber):
         if skill_num == SkillNumber.ABILITY:

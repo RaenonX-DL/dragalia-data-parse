@@ -2,9 +2,9 @@
 from dlparse.export.entry import CharaAttackingSkillEntry
 from dlparse.mono.asset import CharaDataEntry
 from dlparse.mono.manager import AssetManager
-from .base import export_as_csv, export_skill_entries, export_transform_skill_entries
+from .base import export_as_csv, export_as_json, export_skill_entries, export_transform_skill_entries
 
-__all__ = ("export_atk_skill_as_csv", "export_atk_skills_as_entries")
+__all__ = ("export_atk_skill_as_csv", "export_atk_skill_as_json", "export_atk_skills_as_entries")
 
 
 def export_atk_skills_of_chara(
@@ -21,7 +21,7 @@ def export_atk_skills_of_chara(
     for id_entry, skill_data, skill_entries in skill_entries_data:
         for skill_entry in skill_entries:
             ret.append(CharaAttackingSkillEntry(
-                text_asset=asset_manager.asset_text,
+                asset_manager=asset_manager,
                 chara_data=chara_data,
                 condition_comp=skill_entry.condition_comp,
                 skill_id_entry=id_entry,
@@ -47,3 +47,13 @@ def export_atk_skill_as_csv(
     entries = export_atk_skills_as_entries(asset_manager, skip_unparsable)
 
     export_as_csv(entries, CharaAttackingSkillEntry.csv_header(), file_path)
+
+
+def export_atk_skill_as_json(
+        file_path: str, /,
+        asset_manager: AssetManager, skip_unparsable: bool = True
+):
+    """Export the entries of the attacking skills as json."""
+    entries = export_atk_skills_as_entries(asset_manager, skip_unparsable)
+
+    export_as_json(entries, file_path)

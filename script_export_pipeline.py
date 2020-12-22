@@ -5,7 +5,7 @@ from enum import Enum
 from typing import Sequence, TypeVar
 
 from dlparse.enums import cond_afflictions, cond_elements
-from dlparse.export import export_enums_json
+from dlparse.export import export_atk_skill_as_json, export_enums_json
 from dlparse.mono.manager import AssetManager
 from dlparse.utils import time_exec
 
@@ -40,10 +40,18 @@ class FileExporter:
     def _export_enums(self, enums: dict[str, Sequence[T]], name: str):
         export_enums_json(self._asset_manager, enums, os.path.join(self._dir_export, "enums", f"{name}.json"))
 
+    @time_exec(title="ATK skill exporting time")
+    def _export_atk_skill(self):
+        export_atk_skill_as_json(
+            os.path.join(self._dir_export, "skills", "attacking.json"), self._asset_manager,
+            skip_unparsable=False
+        )
+
     @time_exec(title="Total exporting time")
     def export(self):
         """Export the parsed assets."""
         self._export_enums({"afflictions": cond_afflictions, "elements": cond_elements}, "conditions")
+        self._export_atk_skill()
 
 
 # region Parser
