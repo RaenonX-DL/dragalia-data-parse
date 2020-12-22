@@ -82,5 +82,25 @@
   {
     "id": "ENUM_TARGET_ELEM_EFFECTIVE",
     "text": "Effective"
+  },
+  {
+    "id": "ENUM_FLAME",
+    "text": "Flame"
+  },
+  {
+    "id": "ENUM_WATER",
+    "text": "Water"
+  },
+  {
+    "id": "ENUM_WIND",
+    "text": "Wind"
+  },
+  {
+    "id": "ENUM_LIGHT",
+    "text": "Light"
+  },
+  {
+    "id": "ENUM_SHADOW",
+    "text": "Shadow"
   }
 ]

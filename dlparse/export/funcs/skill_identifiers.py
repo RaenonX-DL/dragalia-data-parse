@@ -2,4 +2,5 @@
 
 
 def generate_skill_identifier_translation_skeletion():
-    pass  # FIXME
+    """No doc."""
+    # FIXME

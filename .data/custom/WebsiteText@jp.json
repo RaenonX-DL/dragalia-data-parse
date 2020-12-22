@@ -82,5 +82,25 @@
   {
     "id": "ENUM_TARGET_ELEM_EFFECTIVE",
     "text": "有利"
+  },
+  {
+    "id": "ENUM_FLAME",
+    "text": "火"
+  },
+  {
+    "id": "ENUM_WATER",
+    "text": "水"
+  },
+  {
+    "id": "ENUM_WIND",
+    "text": "風"
+  },
+  {
+    "id": "ENUM_LIGHT",
+    "text": "光"
+  },
+  {
+    "id": "ENUM_SHADOW",
+    "text": "闇"
   }
 ]

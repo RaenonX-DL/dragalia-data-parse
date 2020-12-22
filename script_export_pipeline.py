@@ -4,7 +4,7 @@ from configparser import ConfigParser
 from enum import Enum
 from typing import Sequence, TypeVar
 
-from dlparse.enums import cond_afflictions, cond_elements
+from dlparse.enums import Element, cond_afflictions, cond_elements
 from dlparse.export import export_atk_skill_as_json, export_elem_bonus_as_json, export_enums_json
 from dlparse.mono.manager import AssetManager
 from dlparse.utils import time_exec
@@ -56,6 +56,7 @@ class FileExporter:
         """Export the parsed assets."""
         # Enums
         self._export_enums({"afflictions": cond_afflictions, "elements": cond_elements}, "conditions")
+        self._export_enums({"elemental": Element.get_all_valid_elements()}, "elements")
         # Misc
         self._export_elem_bonus()
         # Skill
