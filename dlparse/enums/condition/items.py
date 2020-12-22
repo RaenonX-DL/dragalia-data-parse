@@ -33,12 +33,13 @@ class Condition(Enum):
     TARGET_SCORCHRENT = 115
     # endregion
 
-    # region Elemental
+    # region Element
     TARGET_ELEM_FLAME = 151
     TARGET_ELEM_WATER = 152
     TARGET_ELEM_WIND = 153
     TARGET_ELEM_LIGHT = 154
     TARGET_ELEM_SHADOW = 155
+    TARGET_ELEM_NEUTRAL = 157
     TARGET_ELEM_WEAK = 158
     TARGET_ELEM_EFFECTIVE = 159  # Used by the website, DO NOT CHANGE
     # endregion

@@ -19,16 +19,17 @@ class SkillAfflictionEntry(JsonExportableEntryBase):
     """A single entry for a single affliction of the skill."""
 
     status_condition_code: int
-    status_image: str
+    status_icon: str
     action_time: float
     probability_pct: float
     duration: float
     stackable: bool
 
     def to_json_entry(self) -> dict[str, Any]:
+        # Used by the website, DO NOT CHANGE
         return {
             "statusConditionCode": self.status_condition_code,
-            "statusImage": self.status_image,
+            "statusIcon": self.status_icon,
             "actionTime": self.action_time,
             "probabilityPct": self.probability_pct,
             "duration": self.duration,
@@ -61,7 +62,7 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
         for affliction in skill_data_to_parse.afflictions[-1]:
             afflictions.append(SkillAfflictionEntry(
                 status_condition_code=ConditionCategories.target_status.convert_reversed(affliction.status).value,
-                status_image=affliction.status.icon_name,
+                status_icon=affliction.status.icon_name,
                 action_time=affliction.time,
                 probability_pct=affliction.probability_pct,
                 duration=affliction.duration_time,
@@ -94,7 +95,7 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
         ]
 
     def to_json_entry(self) -> dict[str, Any]:
-        # Synced with the website, DO NOT CHANGE
+        # Used by the website, DO NOT CHANGE
         json_dict = super().to_json_entry()
 
         json_dict["skill"].update({

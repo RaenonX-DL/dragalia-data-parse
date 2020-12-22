@@ -59,6 +59,13 @@ def test_exported_json(asset_manager: AssetManager):
         ):
             assert skill_key in json_entry["skill"]
 
+        # Check for affliction keys
+        for affliction_key in (
+                "statusConditionCode", "statusIcon", "actionTime", "probabilityPct", "duration", "stackable"
+        ):
+            for affliction_data in json_entry["skill"]["afflictions"]:
+                assert affliction_key in affliction_data
+
         # Check for the keys in the names
         for lang_key in ("cht", "en", "jp"):
             assert lang_key in json_entry["skill"]["name"]

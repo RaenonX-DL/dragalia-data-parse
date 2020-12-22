@@ -18,7 +18,7 @@ class EnumEntry(JsonExportableEntryBase):
     trans: TextEntry
 
     def to_json_entry(self) -> dict[str, Any]:
-        # Synced with the website, DO NOT CHANGE
+        # Used by the website, DO NOT CHANGE
         return {
             "name": self.enum_name,
             "code": self.enum_code,

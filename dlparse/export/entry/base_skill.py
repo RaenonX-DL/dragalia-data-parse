@@ -109,7 +109,7 @@ class SkillExportEntryBase(Generic[T], HashableEntryBase, CsvExportableEntryBase
         ]
 
     def to_json_entry(self) -> dict[str, Any]:
-        # Synced with the website, DO NOT CHANGE
+        # Used by the website, DO NOT CHANGE
         return {
             "uniqueHash": self.unique_hash,
             "condition": [condition.value for condition in self.condition_comp.conditions_sorted],
