@@ -24,12 +24,15 @@ elem_bonus_data = {
     Element.N_A.value: elem_bonus_data_template,
     Element.NO_ELEMENT.value: elem_bonus_data_template,
     Element.FLAME.value: elem_bonus_data_template | {
+        Condition.TARGET_ELEM_WATER.value: 0.5,
         Condition.TARGET_ELEM_WIND.value: 1.5,
     },
     Element.WATER.value: elem_bonus_data_template | {
+        Condition.TARGET_ELEM_WIND.value: 0.5,
         Condition.TARGET_ELEM_FLAME.value: 1.5,
     },
     Element.WIND.value: elem_bonus_data_template | {
+        Condition.TARGET_ELEM_FLAME.value: 0.5,
         Condition.TARGET_ELEM_WATER.value: 1.5,
     },
     Element.LIGHT.value: elem_bonus_data_template | {
