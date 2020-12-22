@@ -1,4 +1,4 @@
-"""Function to export the elemental bonuses."""
+"""Function to export the elemental bonus data."""
 import json
 import os
 

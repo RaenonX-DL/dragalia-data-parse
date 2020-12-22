@@ -102,5 +102,509 @@
   {
     "id": "ENUM_SHADOW",
     "text": "暗"
+  },
+  {
+    "id": "ENUM_COND_NONE",
+    "text": "無"
+  },
+  {
+    "id": "ENUM_COND_TARGET_POISONED",
+    "text": "目標異常: 毒"
+  },
+  {
+    "id": "ENUM_COND_TARGET_BURNED",
+    "text": "目標異常: 火燒"
+  },
+  {
+    "id": "ENUM_COND_TARGET_FROZEN",
+    "text": "目標異常: 冰凍"
+  },
+  {
+    "id": "ENUM_COND_TARGET_PARALYZED",
+    "text": "目標異常: 麻痺"
+  },
+  {
+    "id": "ENUM_COND_TARGET_BLINDED",
+    "text": "目標異常: 黑暗"
+  },
+  {
+    "id": "ENUM_COND_TARGET_STUNNED",
+    "text": "目標異常: 暈眩"
+  },
+  {
+    "id": "ENUM_COND_TARGET_CURSED",
+    "text": "目標異常: 詛咒"
+  },
+  {
+    "id": "ENUM_COND_TARGET_BOGGED",
+    "text": "目標異常: 濕身"
+  },
+  {
+    "id": "ENUM_COND_TARGET_SLEPT",
+    "text": "目標異常: 睡眠"
+  },
+  {
+    "id": "ENUM_COND_TARGET_FROSTBITTEN",
+    "text": "目標異常: 凍傷"
+  },
+  {
+    "id": "ENUM_COND_TARGET_FLASHBURNED",
+    "text": "目標異常: 閃熱"
+  },
+  {
+    "id": "ENUM_COND_TARGET_STORMLASHED",
+    "text": "目標異常: 裂風"
+  },
+  {
+    "id": "ENUM_COND_TARGET_SHADOWBLIGHTED",
+    "text": "目標異常: 暗黑"
+  },
+  {
+    "id": "ENUM_COND_TARGET_SCORCHRENT",
+    "text": "目標異常: 劫火"
+  },
+  {
+    "id": "ENUM_COND_TARGET_ELEM_FLAME",
+    "text": "目標屬性: 火"
+  },
+  {
+    "id": "ENUM_COND_TARGET_ELEM_WATER",
+    "text": "目標屬性: 水"
+  },
+  {
+    "id": "ENUM_COND_TARGET_ELEM_WIND",
+    "text": "目標屬性: 風"
+  },
+  {
+    "id": "ENUM_COND_TARGET_ELEM_LIGHT",
+    "text": "目標屬性: 光"
+  },
+  {
+    "id": "ENUM_COND_TARGET_ELEM_SHADOW",
+    "text": "目標屬性: 暗"
+  },
+  {
+    "id": "ENUM_COND_TARGET_ELEM_NEUTRAL",
+    "text": "目標屬性: 無"
+  },
+  {
+    "id": "ENUM_COND_TARGET_ELEM_WEAK",
+    "text": "目標屬性: 逆屬"
+  },
+  {
+    "id": "ENUM_COND_TARGET_ELEM_EFFECTIVE",
+    "text": "目標屬性: 剋屬"
+  },
+  {
+    "id": "ENUM_COND_TARGET_BK_STATE",
+    "text": "目標狀態: BK"
+  },
+  {
+    "id": "ENUM_COND_TARGET_OD_STATE",
+    "text": "目標狀態: OD"
+  },
+  {
+    "id": "ENUM_COND_TARGET_AFFLICTED",
+    "text": "目標減益: 被異常"
+  },
+  {
+    "id": "ENUM_COND_TARGET_DEF_DOWN",
+    "text": "目標減益: 降防"
+  },
+  {
+    "id": "ENUM_COND_TARGET_BUFFED",
+    "text": "目標有 Buff"
+  },
+  {
+    "id": "ENUM_COND_TARGET_DEBUFFED",
+    "text": "目標減益中"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_1",
+    "text": "自身 HP 1"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_EQ_10",
+    "text": "自身 HP = 10%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_EQ_20",
+    "text": "自身 HP = 20%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_EQ_30",
+    "text": "自身 HP = 30%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_EQ_50",
+    "text": "自身 HP = 50%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_EQ_70",
+    "text": "自身 HP = 70%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_FULL",
+    "text": "自身 HP = 100%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_LT_40",
+    "text": "自身 HP < 40%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_LT_30",
+    "text": "自身 HP < 30%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_GT_30",
+    "text": "自身 HP > 30%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_GTE_40",
+    "text": "自身 HP >= 40%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_GTE_50",
+    "text": "自身 HP >= 50%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_GTE_60",
+    "text": "自身 HP >= 60%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_GTE_85",
+    "text": "自身 HP >= 85%"
+  },
+  {
+    "id": "ENUM_COND_COMBO_0",
+    "text": "自身 Combo = 0"
+  },
+  {
+    "id": "ENUM_COND_COMBO_5",
+    "text": "自身 Combo = 5"
+  },
+  {
+    "id": "ENUM_COND_COMBO_10",
+    "text": "自身 Combo = 10"
+  },
+  {
+    "id": "ENUM_COND_COMBO_15",
+    "text": "自身 Combo = 15"
+  },
+  {
+    "id": "ENUM_COND_COMBO_20",
+    "text": "自身 Combo = 20"
+  },
+  {
+    "id": "ENUM_COND_COMBO_25",
+    "text": "自身 Combo = 25"
+  },
+  {
+    "id": "ENUM_COND_COMBO_30",
+    "text": "自身 Combo = 30"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_0",
+    "text": "自身 0 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_1",
+    "text": "自身 1 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_2",
+    "text": "自身 2 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_3",
+    "text": "自身 3 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_4",
+    "text": "自身 4 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_5",
+    "text": "自身 5 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_6",
+    "text": "自身 6 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_7",
+    "text": "自身 7 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_8",
+    "text": "自身 8 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_9",
+    "text": "自身 9 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_10",
+    "text": "自身 10 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_15",
+    "text": "自身 15 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_20",
+    "text": "自身 20 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_25",
+    "text": "自身 25 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_30",
+    "text": "自身 30 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_35",
+    "text": "自身 35 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_40",
+    "text": "自身 40 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_45",
+    "text": "自身 45 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_BUFF_50",
+    "text": "自身 50 個 Buff"
+  },
+  {
+    "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_SELF_0",
+    "text": "自身 自建 0 Buff 區內"
+  },
+  {
+    "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_SELF_1",
+    "text": "自身 自建 1 Buff 區內"
+  },
+  {
+    "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_SELF_2",
+    "text": "自身 自建 2 Buff 區內"
+  },
+  {
+    "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_ALLY_0",
+    "text": "自身 友建 0 Buff 區內"
+  },
+  {
+    "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_ALLY_1",
+    "text": "自身 友建 1 Buff 區內"
+  },
+  {
+    "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_ALLY_2",
+    "text": "自身 友建 2 Buff 區內"
+  },
+  {
+    "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_ALLY_3",
+    "text": "自身 友建 3 Buff 區內"
+  },
+  {
+    "id": "ENUM_COND_BULLET_HIT_1",
+    "text": "命中 1 次"
+  },
+  {
+    "id": "ENUM_COND_BULLET_HIT_2",
+    "text": "命中 2 次"
+  },
+  {
+    "id": "ENUM_COND_BULLET_HIT_3",
+    "text": "命中 3 次"
+  },
+  {
+    "id": "ENUM_COND_BULLET_HIT_4",
+    "text": "命中 4 次"
+  },
+  {
+    "id": "ENUM_COND_BULLET_HIT_5",
+    "text": "命中 5 次"
+  },
+  {
+    "id": "ENUM_COND_BULLET_HIT_6",
+    "text": "命中 6 次"
+  },
+  {
+    "id": "ENUM_COND_BULLET_HIT_7",
+    "text": "命中 7 次"
+  },
+  {
+    "id": "ENUM_COND_BULLET_HIT_8",
+    "text": "命中 8 次"
+  },
+  {
+    "id": "ENUM_COND_BULLET_HIT_9",
+    "text": "命中 9 次"
+  },
+  {
+    "id": "ENUM_COND_BULLET_HIT_10",
+    "text": "命中 10 次"
+  },
+  {
+    "id": "ENUM_COND_COVER_TEAMMATE_0",
+    "text": "覆蓋 0 名隊友"
+  },
+  {
+    "id": "ENUM_COND_COVER_TEAMMATE_1",
+    "text": "覆蓋 1 名隊友"
+  },
+  {
+    "id": "ENUM_COND_COVER_TEAMMATE_2",
+    "text": "覆蓋 2 名隊友"
+  },
+  {
+    "id": "ENUM_COND_COVER_TEAMMATE_3",
+    "text": "覆蓋 3 名隊友"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_ON_MAP_0",
+    "text": "場中 0 彈"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_ON_MAP_1",
+    "text": "場中 1 彈"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_ON_MAP_2",
+    "text": "場中 2 彈"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_ON_MAP_3",
+    "text": "場中 3 彈"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_ON_MAP_4",
+    "text": "場中 4 彈"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_ON_MAP_5",
+    "text": "場中 5 彈"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_ON_MAP_6",
+    "text": "場中 6 彈"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_ON_MAP_7",
+    "text": "場中 7 彈"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_ON_MAP_8",
+    "text": "場中 8 彈"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_ON_MAP_9",
+    "text": "場中 9 彈"
+  },
+  {
+    "id": "ENUM_COND_ADDL_INPUT_0",
+    "text": "追加輸入 0 次"
+  },
+  {
+    "id": "ENUM_COND_ADDL_INPUT_1",
+    "text": "追加輸入 1 次"
+  },
+  {
+    "id": "ENUM_COND_ADDL_INPUT_2",
+    "text": "追加輸入 2 次"
+  },
+  {
+    "id": "ENUM_COND_ADDL_INPUT_3",
+    "text": "追加輸入 3 次"
+  },
+  {
+    "id": "ENUM_COND_ADDL_INPUT_4",
+    "text": "追加輸入 4 次"
+  },
+  {
+    "id": "ENUM_COND_ADDL_INPUT_5",
+    "text": "追加輸入 5 次"
+  },
+  {
+    "id": "ENUM_COND_ADDL_INPUT_6",
+    "text": "追加輸入 6 次"
+  },
+  {
+    "id": "ENUM_COND_CANCELS_FJOACHIM_S2",
+    "text": "[禮服約爾希姆] 取消 S2"
+  },
+  {
+    "id": "ENUM_COND_MARK_EXPLODES",
+    "text": "印記爆炸"
+  },
+  {
+    "id": "ENUM_COND_SELF_SIGIL_LOCKED",
+    "text": "聖痕枷鎖"
+  },
+  {
+    "id": "ENUM_COND_SELF_SIGIL_RELEASED",
+    "text": "聖痕解放"
+  },
+  {
+    "id": "ENUM_COND_SELF_SMIKOTO_CEL_SUN_WAVE",
+    "text": "[泳裝尊] 雙閃存在"
+  },
+  {
+    "id": "ENUM_COND_SELF_GLEONIDAS_FULL_STACKS",
+    "text": "[龍絆雷歐尼特] S1 5 層"
+  },
+  {
+    "id": "ENUM_COND_SELF_LAPIS_CARD_0",
+    "text": "[拉碧絲] 0 卡牌"
+  },
+  {
+    "id": "ENUM_COND_SELF_LAPIS_CARD_1",
+    "text": "[拉碧絲] 1 卡牌"
+  },
+  {
+    "id": "ENUM_COND_SELF_LAPIS_CARD_2",
+    "text": "[拉碧絲] 2 卡牌"
+  },
+  {
+    "id": "ENUM_COND_SELF_LAPIS_CARD_3",
+    "text": "[拉碧絲] 3 卡牌"
+  },
+  {
+    "id": "ENUM_COND_SELF_GAUGE_FILLED_0",
+    "text": "量條 0 條滿"
+  },
+  {
+    "id": "ENUM_COND_SELF_GAUGE_FILLED_1",
+    "text": "量條 1 條滿"
+  },
+  {
+    "id": "ENUM_COND_SELF_GAUGE_FILLED_2",
+    "text": "量條 2 條滿"
+  },
+  {
+    "id": "ENUM_COND_SKILL_USED_S1",
+    "text": "S1 使用後"
+  },
+  {
+    "id": "ENUM_COND_SKILL_USED_S2",
+    "text": "S2 使用後"
+  },
+  {
+    "id": "ENUM_COND_SKILL_USED_ALL",
+    "text": "技能使用後"
+  },
+  {
+    "id": "ENUM_COND_SELF_ENERGIZED",
+    "text": "超活力"
+  },
+  {
+    "id": "ENUM_COND_SELF_SHAPESHIFT_COMPLETED",
+    "text": "龍化結束"
+  },
+  {
+    "id": "ENUM_COND_QUEST_START",
+    "text": "任務開始"
   }
 ]

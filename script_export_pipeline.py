@@ -5,7 +5,9 @@ from enum import Enum
 from typing import Sequence, TypeVar
 
 from dlparse.enums import Element, cond_afflictions, cond_elements
-from dlparse.export import export_atk_skill_as_json, export_elem_bonus_as_json, export_enums_json
+from dlparse.export import (
+    export_atk_skill_as_json, export_condition_as_json, export_elem_bonus_as_json, export_enums_json,
+)
 from dlparse.mono.manager import AssetManager
 from dlparse.utils import time_exec
 
@@ -37,8 +39,15 @@ class FileExporter:
         self._dir_export: str = dir_export
 
     @time_exec(title="Enums exporting time")
-    def _export_enums(self, enums: dict[str, Sequence[T]], name: str):
-        export_enums_json(self._asset_manager, enums, os.path.join(self._dir_export, "enums", f"{name}.json"))
+    def _export_enums(self, enums: dict[str, Sequence[T]], name: str, /, prefix: str = "ENUM_"):
+        export_enums_json(
+            self._asset_manager, enums, os.path.join(self._dir_export, "enums", f"{name}.json"),
+            prefix=prefix
+        )
+
+    @time_exec(title="Condition enums exporting time")
+    def _export_enums_condition(self, name: str):
+        export_condition_as_json(self._asset_manager, os.path.join(self._dir_export, "enums", f"{name}.json"))
 
     @time_exec(title="Element bonus exporting time")
     def _export_elem_bonus(self):
@@ -57,6 +66,7 @@ class FileExporter:
         # Enums
         self._export_enums({"afflictions": cond_afflictions, "elements": cond_elements}, "conditions")
         self._export_enums({"elemental": Element.get_all_valid_elements()}, "elements")
+        self._export_enums_condition("allCondition")
         # Misc
         self._export_elem_bonus()
         # Skill

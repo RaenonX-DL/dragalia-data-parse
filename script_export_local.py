@@ -23,7 +23,7 @@ def export_sup():
 
 
 def export_enums():
-    export_enums_json(_asset_manager, cond_afflictions, "exported/enums.json")
+    export_enums_json(_asset_manager, {"affliction": cond_afflictions}, "exported/enums.json")
 
 
 def main():

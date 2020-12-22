@@ -1,4 +1,4 @@
-"""Enums for the language codes available on the website."""
+"""Enums of the language codes available on the website."""
 from enum import Enum
 
 __all__ = ("Language",)

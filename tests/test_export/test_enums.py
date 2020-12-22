@@ -1,5 +1,6 @@
-from dlparse.enums import Language, cond_afflictions
-from dlparse.export import export_enums_entries
+from dlparse.enums import Condition, Language, cond_afflictions
+from dlparse.export import export_condition_entries, export_enums_entries
+from dlparse.export.funcs.enum_cond import condition_theme
 from dlparse.mono.manager import AssetManager
 
 
@@ -20,3 +21,17 @@ def test_export_affliction_conditions(asset_manager: AssetManager):
         assert Language.JP.value in entry.trans.text_dict
 
     assert len(conditions_missing) == 0, f"Missing conditions: {conditions_missing}"
+
+
+def test_export_condition_enums(asset_manager: AssetManager):
+    entries = export_condition_entries(asset_manager)
+
+    assert len(entries) == len(Condition)
+
+    for cond_code, entry in entries.items():
+        condition = Condition(cond_code)
+
+        if condition not in condition_theme:
+            continue
+
+        assert condition_theme[condition] == entry.color_theme
