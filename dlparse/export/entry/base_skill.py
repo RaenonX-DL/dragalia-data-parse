@@ -34,7 +34,7 @@ class SkillExportEntryBase(Generic[T], HashableEntryBase, CsvExportableEntryBase
 
     character_custom_id: str = field(init=False)
     character_name: TextEntry = field(init=False)
-    character_image_name_wide: str = field(init=False)
+    character_icon_name: str = field(init=False)
     character_internal_id: int = field(init=False)
     character_element: Element = field(init=False)
 
@@ -55,7 +55,7 @@ class SkillExportEntryBase(Generic[T], HashableEntryBase, CsvExportableEntryBase
     ):  # pylint: disable=unused-argument
         self.character_custom_id = chara_data.custom_id
         self.character_name = TextEntry(asset_manager.asset_text_multi, chara_data.name_labels)
-        self.character_image_name_wide = chara_data.image_name_wide
+        self.character_icon_name = chara_data.icon_name
         self.character_internal_id = chara_data.id
         self.character_element = chara_data.element
 
@@ -114,7 +114,7 @@ class SkillExportEntryBase(Generic[T], HashableEntryBase, CsvExportableEntryBase
             "uniqueHash": self.unique_hash,
             "condition": [condition.value for condition in self.condition_comp.conditions_sorted],
             "chara": {
-                "imageWide": self.character_image_name_wide,
+                "iconName": self.character_icon_name,
                 "name": self.character_name.to_json_entry(),
                 "element": self.character_element.value,
             },

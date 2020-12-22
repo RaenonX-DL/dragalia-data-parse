@@ -49,7 +49,7 @@ def test_exported_json(asset_manager: AssetManager):
             assert first_level_key in json_entry
 
         # Check for character keys
-        for chara_key in ("imageWide", "name", "element"):
+        for chara_key in ("iconName", "name", "element"):
             assert chara_key in json_entry["chara"]
 
         # Check for skill keys
