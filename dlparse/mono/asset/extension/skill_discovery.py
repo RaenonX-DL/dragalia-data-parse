@@ -459,7 +459,7 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
         for target_skill_id, target_skill_num in ability_data.enhanced_skills:
             ret.append(SkillIdEntry(
                 target_skill_id, target_skill_num,
-                SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S1, ability_id)
+                SkillIdentifierLabel.skill_enhanced_by_ability(target_skill_num, ability_id)
             ))
 
         return ret

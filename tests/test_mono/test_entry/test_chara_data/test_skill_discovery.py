@@ -288,6 +288,30 @@ def test_via_ability_3(asset_manager: AssetManager):
     assert actual_identifiers == expected_identifiers
 
 
+def test_via_ability_4(asset_manager: AssetManager):
+    """
+    Get the skill IDs which variants are buried in the ability data.
+
+    These can be found from the ability variants of an ability data.
+    """
+    # Original Maribelle
+    # https://dragalialost.gamepedia.com/Maribelle
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10750301)
+
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
+
+    expected_identifiers = [
+        # S1 Base
+        SkillIdEntry(107503011, SkillNumber.S1, [SkillIdentifierLabel.S1_BASE, SkillIdentifierLabel.SHARED]),
+        # S2 Base
+        SkillIdEntry(107503012, SkillNumber.S2, SkillIdentifierLabel.S2_BASE),
+        # S2 @ Energized
+        SkillIdEntry(107503013, SkillNumber.S2, SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S2, 1398)),
+    ]
+
+    assert actual_identifiers == expected_identifiers
+
+
 def test_via_chain(asset_manager: AssetManager):
     """
     Get the skill IDs which variants are buried in the skill chain data.
