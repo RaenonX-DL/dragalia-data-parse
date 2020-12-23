@@ -33,6 +33,7 @@ class TextEntry(JsonExportableEntryBase):
             for label in labels:
                 try:
                     self.text_dict[lang_code] = asset_multilingual.get_text(lang_code, label)
+                    break  # Name found, early terminate the loop
                 except TextLabelNotFoundError:
                     continue  # Label not found, try to use the next label
 
