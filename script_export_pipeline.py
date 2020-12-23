@@ -7,6 +7,7 @@ from typing import Sequence, TypeVar
 from dlparse.enums import Element, cond_afflictions, cond_elements
 from dlparse.export import (
     export_atk_skill_as_json, export_condition_as_json, export_elem_bonus_as_json, export_enums_json,
+    export_skill_identifiers_as_json,
 )
 from dlparse.mono.manager import AssetManager
 from dlparse.utils import time_exec
@@ -53,6 +54,10 @@ class FileExporter:
     def _export_elem_bonus(self):
         export_elem_bonus_as_json(os.path.join(self._dir_export, "misc", "elementBonus.json"))
 
+    @time_exec(title="Skill identifiers exporting time")
+    def _export_skill_identifiers(self, name: str):
+        export_skill_identifiers_as_json(self._asset_manager, os.path.join(self._dir_export, "skills", f"{name}.json"))
+
     @time_exec(title="ATK skill exporting time")
     def _export_atk_skill(self):
         export_atk_skill_as_json(
@@ -71,6 +76,7 @@ class FileExporter:
         self._export_elem_bonus()
         # Skill
         self._export_atk_skill()
+        self._export_skill_identifiers("identifiers")
 
 
 # region Parser

@@ -70,5 +70,5 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN_SITE_RESOURCE }}
           repository: RaenonX-DL/dragalia-site-resources
-          event-type: data-updated
+          event-type: parser-updated
           client-payload: '{"message": "${{ github.repository }}@${{ github.sha }} - ${{ github.run_number }}"}'
