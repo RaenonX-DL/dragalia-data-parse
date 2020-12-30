@@ -6,7 +6,7 @@ from tests.utils import approx_matrix
 
 def test_s1(transformer_skill: SkillTransformer):
     # Wedding Aoi S1
-    # https://dragalialost.gamepedia.com/Zena
+    # https://dragalialost.gamepedia.com/Wedding_Aoi
     skill_data_base = transformer_skill.transform_attacking(103503011)
 
     # Base data

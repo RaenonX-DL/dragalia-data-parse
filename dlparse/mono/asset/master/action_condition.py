@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
-from dlparse.enums import Condition, ConditionCategories, Element, ElementFlag, Status
+from dlparse.enums import Condition, ConditionCategories, EfficacyType, Element, ElementFlag, Status
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("ActionConditionEntry", "ActionConditionAsset", "ActionConditionParser")
@@ -33,6 +33,8 @@ class ActionConditionEntry(MasterEntryBase):
     """
 
     probability_pct: float
+
+    efficacy_type: EfficacyType
 
     slip_interval: float
     slip_damage_mod: float
@@ -81,6 +83,7 @@ class ActionConditionEntry(MasterEntryBase):
             duration_count=data["_DurationNum"],
             duration_count_max=duration_count_max,
             probability_pct=data["_Rate"],
+            efficacy_type=EfficacyType(data["_EfficacyType"]),
             slip_interval=data["_SlipDamageIntervalSec"],
             slip_damage_mod=data["_SlipDamagePower"],
             buff_atk=data["_RateAttack"],
@@ -135,6 +138,11 @@ class ActionConditionEntry(MasterEntryBase):
         return (self.duration_count_max
                 or int(bool(self.overwrite_group_id))
                 or int(bool(self.overwrite_identical_owner)))
+
+    @property
+    def is_dispel_buff(self) -> bool:
+        """Check if the action condition dispelling the buff."""
+        return self.efficacy_type == EfficacyType.DISPEL
 
 
 class ActionConditionAsset(MasterAssetBase[ActionConditionEntry]):

@@ -43,6 +43,8 @@ class AttackingSkillDataEntry(SkillEntryBase):
     afflictions: list[list[HitActionConditionEffectUnit]] = field(init=False)
     debuffs: list[list[HitActionConditionEffectUnit]] = field(init=False)
 
+    dispel_timings: list[list[float]] = field(init=False)
+
     def _init_debuff(self, asset_action_cond: ActionConditionAsset):
         self.debuffs = []
         for hit_unit_lv in self.hit_unit_mtx:
@@ -89,8 +91,26 @@ class AttackingSkillDataEntry(SkillEntryBase):
 
             self.mod_unit_mtx.append(mod_unit_lv)
 
+    def _init_dispel_buff_timings(self, asset_action_cond: ActionConditionAsset):
+        self.dispel_timings = []
+        for hit_unit_lv in self.hit_unit_mtx:
+            dispel_timing_lv = []
+
+            for hit_unit in hit_unit_lv:
+                if not hit_unit.hit_attr.has_action_condition:
+                    continue
+
+                action_cond = asset_action_cond.get_data_by_id(hit_unit.hit_attr.action_condition_id)
+
+                if action_cond.is_dispel_buff:
+                    dispel_timing_lv.append(hit_unit.hit_time)
+
+            self.dispel_timings.append(dispel_timing_lv)
+
     def __post_init__(self, asset_action_cond: ActionConditionAsset, asset_buff_count: BuffCountAsset):
         self._init_mod_unit_mtx(asset_action_cond, asset_buff_count)
+
+        self._init_dispel_buff_timings(asset_action_cond)
 
         self.afflictions = [
             [hit_unit.unit_affliction for hit_unit in hit_unit_lv if hit_unit.unit_affliction]
@@ -223,6 +243,17 @@ class AttackingSkillDataEntry(SkillEntryBase):
             return True
 
         return False
+
+    @property
+    def dispel_buff(self) -> list[bool]:
+        """Check if dispel is available at each level."""
+        # Dispel timing could be 0.0, therefore calling any() doesn't work because it gives false negative
+        return [len(dispel_timings) > 0 for dispel_timings in self.dispel_timings]
+
+    @property
+    def dispel_buff_at_max(self) -> bool:
+        """Check if dispel is available at the maximum level."""
+        return self.dispel_buff[-1]
 
 
 @dataclass

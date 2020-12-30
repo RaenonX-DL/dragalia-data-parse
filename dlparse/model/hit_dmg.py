@@ -27,6 +27,8 @@ class DamageUnit:
     unit_debuffs: list[HitActionConditionEffectUnit]
     hit_attr: HitAttrEntry
 
+    dispel: bool = False
+
     counter_mod: float = field(init=False)
 
     def __post_init__(self):
@@ -39,7 +41,7 @@ class DamageUnit:
     def is_empty(self) -> bool:
         """Check if the damage unit is empty. Empty here means that the mod is ``0`` and both units are ``None``."""
         # NOR to slightly save the performance
-        return not (self.mod or self.unit_affliction or self.unit_debuffs)
+        return not (self.mod or self.unit_affliction or self.unit_debuffs or self.dispel)
 
 
 @dataclass
@@ -204,12 +206,14 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
     ) -> list[DamageUnit]:
         hit_attr = self.hit_attr
 
-        # Get affliction unit
+        # Get affliction unit & buff dispel
         unit_affliction = None
+        dispel = False
         if self.hit_attr.action_condition_id:
-            unit_affliction = self.to_affliction_unit(asset_action_condition.get_data_by_id(
-                self.hit_attr.action_condition_id
-            ))
+            action_cond = asset_action_condition.get_data_by_id(self.hit_attr.action_condition_id)
+
+            dispel = action_cond.is_dispel_buff
+            unit_affliction = self.to_affliction_unit(action_cond)
 
         units_debuff = self.to_debuff_units(asset_action_condition)
 
@@ -231,16 +235,17 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
             # Class attributes can determine the base damage units, return it
             return base_units_by_attr
 
+        damage_units = [DamageUnit(
+            self.action_time, hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr, dispel=dispel
+        )]
+
         if type(self.action_component) is ActionBullet:  # pylint: disable=unidiomatic-typecheck
             # Action component is exactly `ActionPartsBullet`, max hit count may be in effect
             # For example, Lin You S1 (`104503011`, AID `491040` and `491042`)
-            return [
-                DamageUnit(self.action_time, hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
-                for _ in range(self.max_hit_count or 1)
-            ]
+            return damage_units * (self.max_hit_count or 1)
 
         # Cases not handled above
-        return [DamageUnit(self.action_time, hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)]
+        return damage_units
 
     def _damage_units_apply_mod_boosts_target(
             self, damage_units: list[DamageUnit], condition_comp: ConditionComposite
@@ -300,6 +305,26 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         self._damage_units_apply_mod_boosts_target(damage_units, condition_comp)
         self._damage_units_apply_mod_boosts_self(damage_units, condition_comp, asset_buff_count=asset_buff_count)
 
+    def _damage_units_from_action_cond(self, asset_action_condition: ActionConditionAsset):
+        # Get affliction unit & dispel
+        unit_affliction = None
+        dispel = False
+        if self.hit_attr.action_condition_id:
+            action_cond = asset_action_condition.get_data_by_id(self.hit_attr.action_condition_id)
+
+            dispel = action_cond.is_dispel_buff
+            unit_affliction = self.to_affliction_unit(action_cond)
+
+        # Get the damage unit that marks the enemy
+        return [DamageUnit(
+            self.action_time,
+            0,
+            unit_affliction,
+            self.to_debuff_units(asset_action_condition),
+            self.hit_attr,
+            dispel=dispel
+        )]
+
     def to_damage_units(
             self, condition_comp: ConditionComposite, hit_count: int, /,
             asset_action_condition: ActionConditionAsset, asset_action_info: PlayerActionInfoAsset,
@@ -312,8 +337,9 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         However, under some special circumstances (for example, deteriorating bullets),
         having multiple damage modifiers is possible.
         """
-        # Early terminations / checks
+        # --- Early terminations / checks
 
+        # Has precondition
         if self.pre_condition:
             # Pre-condition available, perform checks
             if self.pre_condition in ConditionCategories.skill_addl_inputs:
@@ -324,25 +350,12 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
                     # hit invalid
                     return []
             elif self.pre_condition == Condition.MARK_EXPLODES and not condition_comp.mark_explode:
-                # Get affliction unit
-                unit_affliction = None
-                if self.hit_attr.action_condition_id:
-                    unit_affliction = self.to_affliction_unit(asset_action_condition.get_data_by_id(
-                        self.hit_attr.action_condition_id
-                    ))
-
-                # Get the damage unit that marks the enemy
-                return [DamageUnit(
-                    self.action_time,
-                    0,
-                    unit_affliction,
-                    self.to_debuff_units(asset_action_condition),
-                    self.hit_attr
-                )]
+                return self._damage_units_from_action_cond(asset_action_condition)
             elif self.pre_condition not in condition_comp:
                 # Other pre-conditions & not listed in the given condition composite i.e. pre-condition mismatch
                 return []
 
+        # Action cancel
         if condition_comp.action_cancel and self.pre_condition != condition_comp.action_cancel:
             # If action canceling is included in the conditions,
             # only the actions to be executed after the cancel should be returned
@@ -352,19 +365,20 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
             # If no cancellation is used, `991060` will be executed completely and no execution of `991061` instead.
             return []
 
+        # Mark explosion
         if condition_comp.mark_explode and self.pre_condition != Condition.MARK_EXPLODES:
             # Mark explosion damage is requested, but the damaging hit is not the explosion damage
             return []
 
-        # Get base units
+        # --- Calculate mods
 
+        # Get base units
         damage_units = self._damage_units_get_base(
             condition_comp, hit_count,
             asset_action_condition=asset_action_condition, asset_action_info=asset_action_info
         )
 
         # Apply boosts
-
         self._damage_units_apply_mod_boosts(damage_units, condition_comp, asset_buff_count=asset_buff_count)
 
         # Return non-empty units only
