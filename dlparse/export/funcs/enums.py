@@ -2,6 +2,7 @@
 from enum import Enum
 from typing import Sequence, TYPE_CHECKING, Type, TypeVar
 
+from dlparse.enums import get_image_path
 from dlparse.export.entry import EnumEntry, TextEntry
 from .base import export_as_json
 
@@ -27,7 +28,7 @@ def export_enums_entries(
 
         for enum in enum_list:
             ret[enum_name].append(enum_entry_class(
-                enum_name=enum.name, enum_code=enum.value,
+                enum_name=enum.name, enum_code=enum.value, enum_image_path=get_image_path(enum),
                 trans=TextEntry(asset_manager.asset_text_website, f"{prefix}{enum.name}")
             ))
 

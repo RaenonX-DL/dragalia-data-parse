@@ -27,7 +27,7 @@ def export_enums():
 
 
 def main():
-    export_enums()
+    export_sup()
     print(f"{time.time() - _start:.3f} secs")
 
 

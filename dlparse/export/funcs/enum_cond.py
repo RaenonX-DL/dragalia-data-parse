@@ -3,7 +3,7 @@ import json
 import os
 from typing import TYPE_CHECKING
 
-from dlparse.enums import ColorTheme, Condition
+from dlparse.enums import ColorTheme, Condition, get_image_path
 from dlparse.export.entry import ConditionEnumEntry, TextEntry
 
 if TYPE_CHECKING:
@@ -120,7 +120,7 @@ def export_condition_entries(asset_manager: "AssetManager") -> dict[int, Conditi
     """Export the condition enums as a dict with key as the code and the value as the entry."""
     return {
         condition.value: ConditionEnumEntry(
-            enum_name=condition.name, enum_code=condition.value,
+            enum_name=condition.name, enum_code=condition.value, enum_image_path=get_image_path(condition),
             color_theme=condition_theme.get(condition, default_theme),
             trans=TextEntry(asset_manager.asset_text_website, f"ENUM_COND_{condition.name}")
         )

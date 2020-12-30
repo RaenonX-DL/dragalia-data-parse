@@ -105,527 +105,527 @@
   },
   {
     "id": "ENUM_COND_NONE",
-    "text": "無"
+    "text": "None"
   },
   {
     "id": "ENUM_COND_TARGET_POISONED",
-    "text": "目標異常: 毒"
+    "text": "Affliction: Poison"
   },
   {
     "id": "ENUM_COND_TARGET_BURNED",
-    "text": "目標異常: 火燒"
+    "text": "Affliction: Burn"
   },
   {
     "id": "ENUM_COND_TARGET_FROZEN",
-    "text": "目標異常: 冰凍"
+    "text": "Affliction: Frozen"
   },
   {
     "id": "ENUM_COND_TARGET_PARALYZED",
-    "text": "目標異常: 麻痺"
+    "text": "Affliction: Paralyze"
   },
   {
     "id": "ENUM_COND_TARGET_BLINDED",
-    "text": "目標異常: 黑暗"
+    "text": "Affliction: Blind"
   },
   {
     "id": "ENUM_COND_TARGET_STUNNED",
-    "text": "目標異常: 暈眩"
+    "text": "Affliction: Stun"
   },
   {
     "id": "ENUM_COND_TARGET_CURSED",
-    "text": "目標異常: 詛咒"
+    "text": "Affliction: Curse"
   },
   {
     "id": "ENUM_COND_TARGET_BOGGED",
-    "text": "目標異常: 濕身"
+    "text": "Affliction: Bog"
   },
   {
     "id": "ENUM_COND_TARGET_SLEPT",
-    "text": "目標異常: 睡眠"
+    "text": "Affliction: Sleep"
   },
   {
     "id": "ENUM_COND_TARGET_FROSTBITTEN",
-    "text": "目標異常: 凍傷"
+    "text": "Affliction: Frostbite"
   },
   {
     "id": "ENUM_COND_TARGET_FLASHBURNED",
-    "text": "目標異常: 閃熱"
+    "text": "Affliction: Flashburn"
   },
   {
     "id": "ENUM_COND_TARGET_STORMLASHED",
-    "text": "目標異常: 裂風"
+    "text": "Affliction: Stormlash"
   },
   {
     "id": "ENUM_COND_TARGET_SHADOWBLIGHTED",
-    "text": "目標異常: 暗黑"
+    "text": "Affliction: Shadowblight"
   },
   {
     "id": "ENUM_COND_TARGET_SCORCHRENT",
-    "text": "目標異常: 劫火"
+    "text": "Affliction: Scorchrend"
   },
   {
     "id": "ENUM_COND_TARGET_ELEM_FLAME",
-    "text": "目標屬性: 火"
+    "text": "Element: Flame"
   },
   {
     "id": "ENUM_COND_TARGET_ELEM_WATER",
-    "text": "目標屬性: 水"
+    "text": "Element: Water"
   },
   {
     "id": "ENUM_COND_TARGET_ELEM_WIND",
-    "text": "目標屬性: 風"
+    "text": "Element: Wind"
   },
   {
     "id": "ENUM_COND_TARGET_ELEM_LIGHT",
-    "text": "目標屬性: 光"
+    "text": "Element: Light"
   },
   {
     "id": "ENUM_COND_TARGET_ELEM_SHADOW",
-    "text": "目標屬性: 暗"
+    "text": "Element: Shadow"
   },
   {
     "id": "ENUM_COND_TARGET_ELEM_NEUTRAL",
-    "text": "目標屬性: 無"
+    "text": "Element: None"
   },
   {
     "id": "ENUM_COND_TARGET_ELEM_WEAK",
-    "text": "目標屬性: 逆屬"
+    "text": "Element: Weak"
   },
   {
     "id": "ENUM_COND_TARGET_ELEM_EFFECTIVE",
-    "text": "目標屬性: 剋屬"
+    "text": "Element: Effective"
   },
   {
     "id": "ENUM_COND_TARGET_BK_STATE",
-    "text": "目標狀態: BK"
+    "text": "Target State: BK"
   },
   {
     "id": "ENUM_COND_TARGET_OD_STATE",
-    "text": "目標狀態: OD"
+    "text": "Target State: OD"
   },
   {
     "id": "ENUM_COND_TARGET_AFFLICTED",
-    "text": "目標減益: 被異常"
+    "text": "Target State: Afflicted"
   },
   {
     "id": "ENUM_COND_TARGET_DEF_DOWN",
-    "text": "目標減益: 降防"
+    "text": "Target State: Def Down"
   },
   {
     "id": "ENUM_COND_TARGET_BUFFED",
-    "text": "目標有 Buff"
+    "text": "Target Buffed"
   },
   {
     "id": "ENUM_COND_TARGET_DEBUFFED",
-    "text": "目標減益中"
+    "text": "Target Debuffed"
   },
   {
     "id": "ENUM_COND_SELF_HP_1",
-    "text": "自身 HP 1"
+    "text": "Self HP 1"
   },
   {
     "id": "ENUM_COND_SELF_HP_EQ_10",
-    "text": "自身 HP = 10%"
+    "text": "Self HP = 10%"
   },
   {
     "id": "ENUM_COND_SELF_HP_EQ_20",
-    "text": "自身 HP = 20%"
+    "text": "Self HP = 20%"
   },
   {
     "id": "ENUM_COND_SELF_HP_EQ_30",
-    "text": "自身 HP = 30%"
+    "text": "Self HP = 30%"
   },
   {
     "id": "ENUM_COND_SELF_HP_EQ_50",
-    "text": "自身 HP = 50%"
+    "text": "Self HP = 50%"
   },
   {
     "id": "ENUM_COND_SELF_HP_EQ_70",
-    "text": "自身 HP = 70%"
+    "text": "Self HP = 70%"
   },
   {
     "id": "ENUM_COND_SELF_HP_FULL",
-    "text": "自身 HP = 100%"
+    "text": "Self HP = 100%"
   },
   {
     "id": "ENUM_COND_SELF_HP_LT_40",
-    "text": "自身 HP < 40%"
+    "text": "Self HP < 40%"
   },
   {
     "id": "ENUM_COND_SELF_HP_LT_30",
-    "text": "自身 HP < 30%"
+    "text": "Self HP < 30%"
   },
   {
     "id": "ENUM_COND_SELF_HP_GT_30",
-    "text": "自身 HP > 30%"
+    "text": "Self HP > 30%"
   },
   {
     "id": "ENUM_COND_SELF_HP_GTE_40",
-    "text": "自身 HP >= 40%"
+    "text": "Self HP >= 40%"
   },
   {
     "id": "ENUM_COND_SELF_HP_GTE_50",
-    "text": "自身 HP >= 50%"
+    "text": "Self HP >= 50%"
   },
   {
     "id": "ENUM_COND_SELF_HP_GTE_60",
-    "text": "自身 HP >= 60%"
+    "text": "Self HP >= 60%"
   },
   {
     "id": "ENUM_COND_SELF_HP_GTE_85",
-    "text": "自身 HP >= 85%"
+    "text": "Self HP >= 85%"
   },
   {
     "id": "ENUM_COND_COMBO_0",
-    "text": "自身 Combo = 0"
+    "text": "Self Combo = 0"
   },
   {
     "id": "ENUM_COND_COMBO_5",
-    "text": "自身 Combo = 5"
+    "text": "Self Combo = 5"
   },
   {
     "id": "ENUM_COND_COMBO_10",
-    "text": "自身 Combo = 10"
+    "text": "Self Combo = 10"
   },
   {
     "id": "ENUM_COND_COMBO_15",
-    "text": "自身 Combo = 15"
+    "text": "Self Combo = 15"
   },
   {
     "id": "ENUM_COND_COMBO_20",
-    "text": "自身 Combo = 20"
+    "text": "Self Combo = 20"
   },
   {
     "id": "ENUM_COND_COMBO_25",
-    "text": "自身 Combo = 25"
+    "text": "Self Combo = 25"
   },
   {
     "id": "ENUM_COND_COMBO_30",
-    "text": "自身 Combo = 30"
+    "text": "Self Combo = 30"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_0",
-    "text": "自身 0 個 Buff"
+    "text": "Self 0 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_1",
-    "text": "自身 1 個 Buff"
+    "text": "Self 1 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_2",
-    "text": "自身 2 個 Buff"
+    "text": "Self 2 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_3",
-    "text": "自身 3 個 Buff"
+    "text": "Self 3 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_4",
-    "text": "自身 4 個 Buff"
+    "text": "Self 4 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_5",
-    "text": "自身 5 個 Buff"
+    "text": "Self 5 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_6",
-    "text": "自身 6 個 Buff"
+    "text": "Self 6 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_7",
-    "text": "自身 7 個 Buff"
+    "text": "Self 7 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_8",
-    "text": "自身 8 個 Buff"
+    "text": "Self 8 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_9",
-    "text": "自身 9 個 Buff"
+    "text": "Self 9 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_10",
-    "text": "自身 10 個 Buff"
+    "text": "Self 10 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_15",
-    "text": "自身 15 個 Buff"
+    "text": "Self 15 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_20",
-    "text": "自身 20 個 Buff"
+    "text": "Self 20 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_25",
-    "text": "自身 25 個 Buff"
+    "text": "Self 25 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_30",
-    "text": "自身 30 個 Buff"
+    "text": "Self 30 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_35",
-    "text": "自身 35 個 Buff"
+    "text": "Self 35 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_40",
-    "text": "自身 40 個 Buff"
+    "text": "Self 40 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_45",
-    "text": "自身 45 個 Buff"
+    "text": "Self 45 Buff"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_50",
-    "text": "自身 50 個 Buff"
+    "text": "Self 50 Buff"
   },
   {
     "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_SELF_0",
-    "text": "自身 自建 0 Buff 區內"
+    "text": "Self in 0 Self Buff Zone"
   },
   {
     "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_SELF_1",
-    "text": "自身 自建 1 Buff 區內"
+    "text": "Self in 1 Self Buff Zone"
   },
   {
     "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_SELF_2",
-    "text": "自身 自建 2 Buff 區內"
+    "text": "Self in 2 Self Buff Zone"
   },
   {
     "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_ALLY_0",
-    "text": "自身 友建 0 Buff 區內"
+    "text": "Self in 0 Ally Buff Zone"
   },
   {
     "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_ALLY_1",
-    "text": "自身 友建 1 Buff 區內"
+    "text": "Self in 1 Ally Buff Zone"
   },
   {
     "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_ALLY_2",
-    "text": "自身 友建 2 Buff 區內"
+    "text": "Self in 2 Ally Buff Zone"
   },
   {
     "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_ALLY_3",
-    "text": "自身 友建 3 Buff 區內"
+    "text": "Self in 3 Ally Buff Zone"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_1",
-    "text": "命中 1 次"
+    "text": "Hit 1 time"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_2",
-    "text": "命中 2 次"
+    "text": "Hit 2 times"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_3",
-    "text": "命中 3 次"
+    "text": "Hit 3 times"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_4",
-    "text": "命中 4 次"
+    "text": "Hit 4 times"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_5",
-    "text": "命中 5 次"
+    "text": "Hit 5 times"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_6",
-    "text": "命中 6 次"
+    "text": "Hit 6 times"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_7",
-    "text": "命中 7 次"
+    "text": "Hit 7 times"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_8",
-    "text": "命中 8 次"
+    "text": "Hit 8 times"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_9",
-    "text": "命中 9 次"
+    "text": "Hit 9 times"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_10",
-    "text": "命中 10 次"
+    "text": "Hit 10 times"
   },
   {
     "id": "ENUM_COND_COVER_TEAMMATE_0",
-    "text": "覆蓋 0 名隊友"
+    "text": "Cover 0 Teammates"
   },
   {
     "id": "ENUM_COND_COVER_TEAMMATE_1",
-    "text": "覆蓋 1 名隊友"
+    "text": "Cover 1 Teammate"
   },
   {
     "id": "ENUM_COND_COVER_TEAMMATE_2",
-    "text": "覆蓋 2 名隊友"
+    "text": "Cover 2 Teammates"
   },
   {
     "id": "ENUM_COND_COVER_TEAMMATE_3",
-    "text": "覆蓋 3 名隊友"
+    "text": "Cover 3 Teammates"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_0",
-    "text": "場中 0 彈"
+    "text": "0 bullets on field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_1",
-    "text": "場中 1 彈"
+    "text": "1 bullet on field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_2",
-    "text": "場中 2 彈"
+    "text": "2 bullets on field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_3",
-    "text": "場中 3 彈"
+    "text": "3 bullets on field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_4",
-    "text": "場中 4 彈"
+    "text": "4 bullets on field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_5",
-    "text": "場中 5 彈"
+    "text": "5 bullets on field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_6",
-    "text": "場中 6 彈"
+    "text": "6 bullets on field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_7",
-    "text": "場中 7 彈"
+    "text": "7 bullets on field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_8",
-    "text": "場中 8 彈"
+    "text": "8 bullets on field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_9",
-    "text": "場中 9 彈"
+    "text": "9 bullets on field"
   },
   {
     "id": "ENUM_COND_ADDL_INPUT_0",
-    "text": "追加輸入 0 次"
+    "text": "0 Additional Hits"
   },
   {
     "id": "ENUM_COND_ADDL_INPUT_1",
-    "text": "追加輸入 1 次"
+    "text": "1 Additional Hit"
   },
   {
     "id": "ENUM_COND_ADDL_INPUT_2",
-    "text": "追加輸入 2 次"
+    "text": "2 Additional Hits"
   },
   {
     "id": "ENUM_COND_ADDL_INPUT_3",
-    "text": "追加輸入 3 次"
+    "text": "3 Additional Hits"
   },
   {
     "id": "ENUM_COND_ADDL_INPUT_4",
-    "text": "追加輸入 4 次"
+    "text": "4 Additional Hits"
   },
   {
     "id": "ENUM_COND_ADDL_INPUT_5",
-    "text": "追加輸入 5 次"
+    "text": "5 Additional Hits"
   },
   {
     "id": "ENUM_COND_ADDL_INPUT_6",
-    "text": "追加輸入 6 次"
+    "text": "6 Additional Hits"
   },
   {
     "id": "ENUM_COND_CANCELS_FJOACHIM_S2",
-    "text": "[禮服約爾希姆] 取消 S2"
+    "text": "[FJoachim] Cancel S2"
   },
   {
     "id": "ENUM_COND_MARK_EXPLODES",
-    "text": "印記爆炸"
+    "text": "Mark Explode"
   },
   {
     "id": "ENUM_COND_SELF_SIGIL_LOCKED",
-    "text": "聖痕枷鎖"
+    "text": "Sigil Locked"
   },
   {
     "id": "ENUM_COND_SELF_SIGIL_RELEASED",
-    "text": "聖痕解放"
+    "text": "Sigil Released"
   },
   {
     "id": "ENUM_COND_SELF_SMIKOTO_CEL_SUN_WAVE",
-    "text": "[泳裝尊] 雙閃存在"
+    "text": "[SMikoto] Both Buffs"
   },
   {
     "id": "ENUM_COND_SELF_GLEONIDAS_FULL_STACKS",
-    "text": "[龍絆雷歐尼特] S1 5 層"
+    "text": "[GLeonidas] S1 5 Stacks"
   },
   {
     "id": "ENUM_COND_SELF_LAPIS_CARD_0",
-    "text": "[拉碧絲] 0 卡牌"
+    "text": "[Lapis] 0 Cards"
   },
   {
     "id": "ENUM_COND_SELF_LAPIS_CARD_1",
-    "text": "[拉碧絲] 1 卡牌"
+    "text": "[Lapis] 1 Card"
   },
   {
     "id": "ENUM_COND_SELF_LAPIS_CARD_2",
-    "text": "[拉碧絲] 2 卡牌"
+    "text": "[Lapis] 2 Cards"
   },
   {
     "id": "ENUM_COND_SELF_LAPIS_CARD_3",
-    "text": "[拉碧絲] 3 卡牌"
+    "text": "[Lapis] 3 Cards"
   },
   {
     "id": "ENUM_COND_SELF_GAUGE_FILLED_0",
-    "text": "量條 0 條滿"
+    "text": "Gauge 0 bars"
   },
   {
     "id": "ENUM_COND_SELF_GAUGE_FILLED_1",
-    "text": "量條 1 條滿"
+    "text": "Gauge 1 bar"
   },
   {
     "id": "ENUM_COND_SELF_GAUGE_FILLED_2",
-    "text": "量條 2 條滿"
+    "text": "Gauge 2 bars"
   },
   {
     "id": "ENUM_COND_SKILL_USED_S1",
-    "text": "S1 使用後"
+    "text": "After S1 Used"
   },
   {
     "id": "ENUM_COND_SKILL_USED_S2",
-    "text": "S2 使用後"
+    "text": "After S2 Used"
   },
   {
     "id": "ENUM_COND_SKILL_USED_ALL",
-    "text": "技能使用後"
+    "text": "After Skill Used"
   },
   {
     "id": "ENUM_COND_SELF_ENERGIZED",
-    "text": "超活力"
+    "text": "Energized"
   },
   {
     "id": "ENUM_COND_SELF_SHAPESHIFT_COMPLETED",
-    "text": "龍化結束"
+    "text": "After Shapeshift"
   },
   {
     "id": "ENUM_COND_QUEST_START",
-    "text": "任務開始"
+    "text": "Start of Quest"
   },
   {
     "id": "SKILL_IDENTIFIER_helper",
-    "text": "戰友"
+    "text": "Helper"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_0s",
-    "text": "S1 0 層"
+    "text": "S1 0 Stacks"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_1s",
-    "text": "S1 1 層"
+    "text": "S1 1 Stack"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_2s",
-    "text": "S1 2 層"
+    "text": "S1 2 Stacks"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_3s",
-    "text": "S1 3 層"
+    "text": "S1 3 Stacks"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_base",
@@ -633,31 +633,31 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s1_chain_none",
-    "text": "S1 無連鎖"
+    "text": "S1 No Chain"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_chain_target_bk",
-    "text": "S1 連鎖 (目標 BK)"
+    "text": "S1 Chain (Target BK)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_chain_target_buffed",
-    "text": "S1 連鎖 (目標有 Buff)"
+    "text": "S1 Chain (Target Buffed)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_dragon",
-    "text": "龍化 S1"
+    "text": "Dragon S1"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1047",
-    "text": "S1 (雙閃)"
+    "text": "S1 (Both Buffs)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1268",
-    "text": "S1 (6+ 蝶)"
+    "text": "S1 (6+ Butterflies)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1293",
-    "text": "S1 (超活力)"
+    "text": "S1 (Energized)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1398",
@@ -665,99 +665,99 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1416",
-    "text": "S2 (滿血)"
+    "text": "S2 (Full HP)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab281",
-    "text": "S1 (超活力)"
+    "text": "S1 (Energized)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab963",
-    "text": "強化 S1"
+    "text": "Enhanced S1"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_s2",
-    "text": "S1 (S2 強化後)"
+    "text": "S1 (S2 Enhanced)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_12",
-    "text": "S1 (爆能中)"
+    "text": "S1 (Dragon Drive)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_13",
-    "text": "S1 (爆能中)"
+    "text": "S1 (Dragon Drive)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_15",
-    "text": "S1 (低輸出)"
+    "text": "S1 (Low Power)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_16",
-    "text": "S1 (高輸出)"
+    "text": "S1 (High Power)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_21",
-    "text": "S1 (一般)"
+    "text": "S1 (Normal)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_22",
-    "text": "S1 (攻啄)"
+    "text": "S1 (Soaring Sparrow)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_31",
-    "text": "S1 (一般)"
+    "text": "S1 (Normal)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_33",
-    "text": "S1 (伊甸園)"
+    "text": "S1 (Eden Mode)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_34",
-    "text": "S1 (一般)"
+    "text": "S1 (Normal)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_35",
-    "text": "S1 (覆面)"
+    "text": "S1 (Masked)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_4",
-    "text": "S1 (前菜)"
+    "text": "S1 (Appetizer)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_5",
-    "text": "S1 (主菜)"
+    "text": "S1 (Entrée)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_59",
-    "text": "S1 (一般)"
+    "text": "S1 (Normal)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_6",
-    "text": "S1 (點心)"
+    "text": "S1 (Dessert)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_60",
-    "text": "S1 (煉金 1)"
+    "text": "S1 (1 Cartridge)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_61",
-    "text": "S1 (煉金 2)"
+    "text": "S1 (2 Cartridges)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_62",
-    "text": "S1 (煉金 3)"
+    "text": "S1 (3 Cartridges)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_65",
-    "text": "S1 (吃飽)"
+    "text": "S1 (Full Gourmand)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_7",
-    "text": "S1 (生魚片)"
+    "text": "S1 (Sashimi)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_8",
-    "text": "S1 (天婦羅)"
+    "text": "S1 (Tempura)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_p2",
@@ -777,39 +777,39 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s2_1s_1g",
-    "text": "S2 1 層 1 槽"
+    "text": "S2 1 Stack 1 SP"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_1s_2g",
-    "text": "S2 1 層 2 槽"
+    "text": "S2 1 Stack 2 SP"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_1s_3g",
-    "text": "S2 1 層 3 槽"
+    "text": "S2 1 Stack 3 SP"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_2s_1g",
-    "text": "S2 2 層 1 槽"
+    "text": "S2 2 Stacks 1 SP"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_2s_2g",
-    "text": "S2 2 層 2 槽"
+    "text": "S2 2 Stacks 2 SP"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_2s_3g",
-    "text": "S2 2 層 3 槽"
+    "text": "S2 2 Stacks 3 SP"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_3s_1g",
-    "text": "S2 3 層 1 槽"
+    "text": "S2 3 Stacks 1 SP"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_3s_2g",
-    "text": "S2 3 層 2 槽"
+    "text": "S2 3 Stacks 2 SP"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_3s_3g",
-    "text": "S2 3 層 3 槽"
+    "text": "S2 3 Stacks 3 SP"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_base",
@@ -817,91 +817,91 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s2_chain_none",
-    "text": "S2 無連鎖"
+    "text": "S2 No Chain"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_chain_target_bk",
-    "text": "S2 連鎖 (目標 BK)"
+    "text": "S2 Chain (Target BK)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_chain_target_buffed",
-    "text": "S2 連鎖 (目標有 Buff)"
+    "text": "S2 Chain (Target Buffed)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_dragon",
-    "text": "龍化 S2"
+    "text": "Dragon S2"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1302",
-    "text": "S2 (6+ 蝶)"
+    "text": "S2 (6+ Butterflies)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab240",
-    "text": "S2 (龍化後)"
+    "text": "S2 (After Shapeshift)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_enhanced_by_s1",
-    "text": "S2 (S1 強化後)"
+    "text": "S2 (S1 Enhanced)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_12",
-    "text": "S2 (爆能中)"
+    "text": "S2 (Dragon Drive)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_16",
-    "text": "S2 (高輸出)"
+    "text": "S2 (High Power)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_21",
-    "text": "S2 (爆能)"
+    "text": "S2 (Dragon Drive)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_22",
-    "text": "S2 (攻啄)"
+    "text": "S2 (Soaring Sparrow)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_23",
-    "text": "S2 (守翼)"
+    "text": "S2 (Mighty Sparrow)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_26",
-    "text": "S2 0 層"
+    "text": "S2 0 Stacks"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_27",
-    "text": "S2 1 層"
+    "text": "S2 1 Stack"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_28",
-    "text": "S2 2 層"
+    "text": "S2 2 Stacks"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_29",
-    "text": "S2 3 層"
+    "text": "S2 3 Stacks"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_33",
-    "text": "S2 (伊甸園)"
+    "text": "S2 (Eden Mode)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_35",
-    "text": "S2 (覆面)"
+    "text": "S2 (Masked)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_37",
-    "text": "S2 (聖痕解放)"
+    "text": "S2 (Sigil Released)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_60",
-    "text": "S2 (煉金 1)"
+    "text": "S2 (1 Cartridge)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_61",
-    "text": "S2 (煉金 2)"
+    "text": "S2 (2 Cartridges)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_62",
-    "text": "S2 (煉金 3)"
+    "text": "S2 (3 Cartridges)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_p2",
@@ -937,6 +937,6 @@
   },
   {
     "id": "SKILL_IDENTIFIER_shared",
-    "text": "共享"
+    "text": "Skill Share"
   }
 ]

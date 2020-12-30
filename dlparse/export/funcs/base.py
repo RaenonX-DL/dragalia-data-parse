@@ -75,16 +75,12 @@ def export_skill_entries(
     """Export skill entries of all characters to a list of data entries ready to be exported."""
     ret: list[ET] = []
 
-    chara_count = asset_manager.chara_count
     skipped_messages: list[str] = []
 
-    for idx, chara_data in enumerate(asset_manager.asset_chara_data):
+    for chara_data in asset_manager.asset_chara_data:
         chara_data: CharaDataEntry
         if not chara_data.is_playable:
-            print(f"Character ID: {chara_data.id} not playable, skipping.")
             continue
-
-        print(f"Exporting skill data... ({idx} / {chara_count} - {idx / chara_count:.2%})")
 
         entries, messages = skill_entry_parse_fn(chara_data, asset_manager, skip_unparsable)
 

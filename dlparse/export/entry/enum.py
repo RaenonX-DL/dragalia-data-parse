@@ -15,6 +15,7 @@ class EnumEntry(JsonExportableEntryBase):
 
     enum_name: str
     enum_code: int
+    enum_image_path: str
 
     trans: TextEntry
 
@@ -23,6 +24,7 @@ class EnumEntry(JsonExportableEntryBase):
         return {
             "name": self.enum_name,
             "code": self.enum_code,
+            "imagePath": self.enum_image_path,
             "trans": self.trans.to_json_entry()
         }
 
