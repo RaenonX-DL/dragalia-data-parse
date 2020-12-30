@@ -22,5 +22,5 @@ class EfficacyType(Enum):
     DISPEL = 100
 
     @classmethod
-    def _missing_(cls, value):
+    def _missing_(cls, _):
         return EfficacyType.UNKNOWN
