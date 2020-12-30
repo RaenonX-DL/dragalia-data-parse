@@ -80,6 +80,9 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
     affliction_data_max: list[SkillAfflictionEntry] = field(init=False)
     debuff_data_max: list[tuple[BuffParameter, float, float, float, bool]] = field(init=False)
 
+    dispel_max: bool = field(init=False)
+    dispel_timing_max: list[float] = field(init=False)
+
     buff_count_data_max: list[SkillBuffCountBoostEntry] = field(init=False)
     buff_zone_data_max: SkillBuffZoneBoostEntry = field(init=False)
 
@@ -89,27 +92,15 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
     ):
         super().__post_init__(asset_manager, chara_data, skill_data, skill_id_entry, skill_data_to_parse)
 
-        # Leave for testing purpose, but not exported as json
+        # [SPECIAL] Leave for testing purpose, but not exported as json
         self.skill_total_mods_max = skill_data_to_parse.total_mod_at_max
 
-        # Basic info to be exported
+        # Get basic info
         self.skill_total_hits_max = skill_data_to_parse.hit_count_at_max
         self.skill_mods_max = skill_data_to_parse.mods_at_max
         self.skill_crisis_max = skill_data_to_parse.crisis_mods[-1]
 
-        # Buff data
-        self.buff_count_data_max = [
-            SkillBuffCountBoostEntry(
-                rate_each=buff_count_data.rate_base,
-                rate_in_effect=buff_count_data.in_effect_rate,
-                rate_limit=buff_count_data.rate_limit
-            )
-            for buff_count_data in skill_data_to_parse.buff_count_boost_mtx[-1]
-        ]
-        buff_zone_data = skill_data_to_parse.buff_zone_boost_mtx[-1]
-        self.buff_zone_data_max = SkillBuffZoneBoostEntry(buff_zone_data.rate_by_self, buff_zone_data.rate_by_ally)
-
-        # Getting affliction and debuff units
+        # Get affliction and debuff data
         afflictions = []
         for affliction in skill_data_to_parse.afflictions[-1]:
             afflictions.append(SkillAfflictionEntry(
@@ -125,6 +116,22 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
             (debuff.parameter, debuff.probability_pct, debuff.rate, debuff.duration_time, debuff.stackable)
             for debuff in skill_data_to_parse.debuffs[-1]
         ]))
+
+        # Get dispel data
+        self.dispel_max = skill_data_to_parse.dispel_buff_at_max
+        self.dispel_timing_max = skill_data_to_parse.dispel_timings[-1]
+
+        # Get buff data
+        self.buff_count_data_max = [
+            SkillBuffCountBoostEntry(
+                rate_each=buff_count_data.rate_base,
+                rate_in_effect=buff_count_data.in_effect_rate,
+                rate_limit=buff_count_data.rate_limit
+            )
+            for buff_count_data in skill_data_to_parse.buff_count_boost_mtx[-1]
+        ]
+        buff_zone_data = skill_data_to_parse.buff_zone_boost_mtx[-1]
+        self.buff_zone_data_max = SkillBuffZoneBoostEntry(buff_zone_data.rate_by_self, buff_zone_data.rate_by_ally)
 
     def to_csv_entry(self) -> list[str]:
         """Convert the current data to a csv entry."""
@@ -155,7 +162,9 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
             "hitsMax": self.skill_total_hits_max,
             "afflictions": [affliction_data.to_json_entry() for affliction_data in self.affliction_data_max],
             "buffCountBoost": [buff_count_data.to_json_entry() for buff_count_data in self.buff_count_data_max],
-            "buffZoneBoost": self.buff_zone_data_max.to_json_entry()
+            "buffZoneBoost": self.buff_zone_data_max.to_json_entry(),
+            "dispelMax": self.dispel_max,
+            "dispelTimingMax": self.dispel_timing_max
         })
 
         return json_dict

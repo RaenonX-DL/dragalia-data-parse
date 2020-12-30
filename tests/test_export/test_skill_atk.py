@@ -56,6 +56,7 @@ def test_exported_json(asset_manager: AssetManager):
         for skill_key in (
                 "internalId", "identifiers", "name", "spMax", "sharable", "ssCost", "ssSp",
                 "modsMax", "crisisMax", "hitsMax", "afflictions", "buffCountBoost", "buffZoneBoost",
+                "dispelMax", "dispelTimingMax",
         ):
             assert skill_key in json_entry["skill"]
 
