@@ -37,7 +37,7 @@ class PlayerActionParser(ActionParserBase):
         "ActionPartsFormationBullet": ActionBulletFormation,
         "ActionPartsParabolaBullet": ActionBulletParabola,
         # Active actions
-        "ActionActiveCancel": ActionActiveCancel,
+        "ActionPartsActiveCancel": ActionActiveCancel,
         "ActionPartsTerminateOtherParts": ActionTerminateOthers,
         # Any other hits
         "ActionPartsSettingHit": ActionSettingHit,
@@ -116,6 +116,10 @@ class PlayerActionPrefab(ActionAssetBase):
         Return ``None`` if not applicable.
         """
         return self._terminate_others
+
+    @property
+    def cancel_actions(self) -> list[ActionActiveCancel]:
+        return self._cancel_actions
 
     @classmethod
     def is_effective_label(cls, label: str) -> bool:

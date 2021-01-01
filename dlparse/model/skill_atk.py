@@ -8,6 +8,7 @@ from .action_cond_effect import HitActionConditionEffectUnit
 from .base import SkillDataBase, SkillEntryBase
 from .buff_boost import BuffCountBoostData, BuffZoneBoostData
 from .hit_dmg import DamageUnit, DamagingHitData
+from .unit_cancel import SkillCancelActionUnit
 from .unit_mod import DamageModifierUnit
 
 __all__ = ("AttackingSkillDataEntry", "AttackingSkillData")
@@ -35,6 +36,8 @@ class AttackingSkillDataEntry(SkillEntryBase):
 
     hit_unit_mtx: list[list[DamageUnit]]
     hit_count: list[int]
+
+    cancel_unit_mtx: list[list[SkillCancelActionUnit]]
 
     buff_zone_boost_mtx: list[BuffZoneBoostData]
 
@@ -287,6 +290,8 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
     # Indicate if the sectioned conditions should be included in possible conditions
     is_exporting: InitVar[bool]
+
+    cancel_unit_mtx: list[list[SkillCancelActionUnit]]
 
     _unit_mtx_base: list[list[DamageUnit]] = field(init=False)
     _buff_zone_boost_mtx: list[BuffZoneBoostData] = field(init=False)
@@ -580,6 +585,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             buff_zone_boost_mtx=self._buff_zone_boost_mtx,
             condition_comp=condition_comp,
             hit_unit_mtx=hit_unit_mtx,
+            cancel_unit_mtx=self.cancel_unit_mtx,
             hit_count=hit_count_vct,
             max_level=self.max_level
         )

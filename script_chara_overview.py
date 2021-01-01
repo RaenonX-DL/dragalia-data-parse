@@ -15,6 +15,11 @@ def print_atk_data_entry(chara_data, skill_data, skill_entry):
     inc_pct = (current_mod / prev_mod) - 1 if prev_mod else 1
     inc_val = current_mod - prev_mod
 
+    cancel_actions = [
+        (cancel_unit.action, cancel_unit.time)
+        for cancel_unit in skill_entry.cancel_unit_mtx[skill_level]
+    ]
+
     print(f"# Attacking effects (Lv.{skill_entry.max_level}) - "
           f"Conditions: {skill_entry.condition_comp.conditions_sorted}")
     print()
@@ -24,6 +29,7 @@ def print_atk_data_entry(chara_data, skill_data, skill_entry):
     print(sp_str)
     print(f"Mods distribution: {skill_entry.mods[skill_level]}")
     print(f"Hit timings (s): {skill_entry.hit_timings[skill_level]}")
+    print(f"Cancel actions: {cancel_actions or '(not cancellable)'}")
     print(f"Total Mods: {skill_entry.total_mod[skill_level]:.0%} "
           f"({inc_val:+.0%}, {skill_entry.hit_count[skill_level]} hits) - {inc_pct:+.2%}")
     print()

@@ -5,7 +5,9 @@ from dlparse.enums import Condition, ConditionCategories
 from dlparse.errors import (
     ActionInfoNotFoundError, HitDataUnavailableError, PreconditionCollidedError, SkillDataNotFoundError,
 )
-from dlparse.model import AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SupportiveSkillData
+from dlparse.model import (
+    AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SkillCancelActionUnit, SupportiveSkillData,
+)
 from dlparse.mono.asset import SkillDataEntry
 
 if TYPE_CHECKING:
@@ -233,6 +235,16 @@ class SkillTransformer:
 
         return skill_data, hit_data_mtx[:highest_available_level + 1]
 
+    def get_skill_cancel_unit_matrix(self, skill_data: SkillDataEntry) -> list[list[SkillCancelActionUnit]]:
+        cancel_units: list[list[SkillCancelActionUnit]] = []
+
+        for action_id in skill_data.action_id_1_by_level:
+            prefab = self._loader_action.get_prefab(action_id)
+
+            cancel_units.append(SkillCancelActionUnit.from_player_action_prefab(prefab))
+
+        return cancel_units
+
     def transform_supportive(
             self, skill_id: int, max_lv: int = 0, ability_ids: Optional[list[int]] = None
     ) -> SupportiveSkillData:
@@ -293,7 +305,8 @@ class SkillTransformer:
             asset_action_info=self._asset_pa_info,
             asset_action_cond=self._asset_action_cond,
             asset_buff_count=self._asset_buff_count,
-            is_exporting=is_exporting
+            is_exporting=is_exporting,
+            cancel_unit_mtx=self.get_skill_cancel_unit_matrix(skill_data)
         )
 
         if not any(entry.has_effects_on_enemy for entry in ret.get_all_possible_entries()):

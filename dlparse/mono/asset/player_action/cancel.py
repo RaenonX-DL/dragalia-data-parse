@@ -1,11 +1,11 @@
 """Class for ``ActionPartsActiveCancel`` action component."""
 from dataclasses import dataclass
 
-from dlparse.mono.asset.base import ActionComponentHasHitLabels
+from dlparse.mono.asset.base import ActionComponentBase
 
 
 @dataclass
-class ActionActiveCancel(ActionComponentHasHitLabels):
+class ActionActiveCancel(ActionComponentBase):
     """Class of ``ActionPartsActiveCancel`` component in the player action asset."""
 
     action_id: int
