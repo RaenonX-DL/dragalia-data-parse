@@ -2,7 +2,7 @@
 import json
 from abc import ABC
 from dataclasses import dataclass
-from typing import Callable, Generic, Optional, TextIO, Type, TypeVar, Union
+from typing import Callable, Generic, Iterable, Optional, TextIO, Type, TypeVar, Union
 
 from dlparse.errors import AssetKeyMissingError
 from .asset import AssetBase
@@ -68,7 +68,7 @@ class MasterAssetBase(Generic[T], AssetBase, ABC):
     ):
         super().__init__(parser_cls, file_location, asset_dir=asset_dir, file_like=file_like)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable[T]:
         return iter(self._data.values())
 
     def __contains__(self, item):

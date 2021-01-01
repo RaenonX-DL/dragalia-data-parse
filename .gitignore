@@ -13,3 +13,6 @@ exported/
 # Compiled Python
 __pycache__
 *.pyc
+
+# Sandbox
+sandbox.py

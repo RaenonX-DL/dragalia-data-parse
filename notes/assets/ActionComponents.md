@@ -228,6 +228,8 @@ This does **not** deal damage.
 
 Some motion connects to animation clip (by [Mushymato]).
 
+This will be used when [parsing the character skill camera duration](/others/CharaSkillCameraDuration.md).
+
 #### Attribute notes
 
 - `_motionState` **may** corresponds to some AnimationClip.
@@ -257,10 +259,6 @@ Seems to be the texts appear above the head.
 ### `ActionPartsEffect`
 
 Seems to be the skill effect.
-
-### `ActionPartsMotion`
-
-Unknown.
 
 ### `ActionPartsMoveTimeCurve`
 
