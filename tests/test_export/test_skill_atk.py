@@ -21,7 +21,7 @@ expected_contained_info: dict[tuple[int, ConditionComposite], pytest.approx] = {
 
 
 def test_exported_entries(asset_manager: AssetManager):
-    entries = export_atk_skills_as_entries(asset_manager)
+    entries = export_atk_skills_as_entries(asset_manager, skip_unparsable=False)
 
     assert len(entries) > 0
 

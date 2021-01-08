@@ -235,10 +235,16 @@ class SkillTransformer:
 
         return skill_data, hit_data_mtx[:highest_available_level + 1]
 
-    def get_skill_cancel_unit_matrix(self, skill_data: SkillDataEntry) -> list[list[SkillCancelActionUnit]]:
+    def get_skill_cancel_unit_matrix(
+            self, skill_data: SkillDataEntry, max_lv: int = 0
+    ) -> list[list[SkillCancelActionUnit]]:
         cancel_units: list[list[SkillCancelActionUnit]] = []
 
-        for action_id in skill_data.action_id_1_by_level:
+        action_ids = skill_data.action_id_1_by_level
+        if max_lv:
+            action_ids = action_ids[:max_lv]
+
+        for action_id in action_ids:
             prefab = self._loader_action.get_prefab(action_id)
 
             cancel_units.append(SkillCancelActionUnit.from_player_action_prefab(prefab))
@@ -306,7 +312,7 @@ class SkillTransformer:
             asset_action_cond=self._asset_action_cond,
             asset_buff_count=self._asset_buff_count,
             is_exporting=is_exporting,
-            cancel_unit_mtx=self.get_skill_cancel_unit_matrix(skill_data)
+            cancel_unit_mtx=self.get_skill_cancel_unit_matrix(skill_data, max_lv)
         )
 
         if not any(entry.has_effects_on_enemy for entry in ret.get_all_possible_entries()):
