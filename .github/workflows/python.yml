@@ -12,8 +12,6 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    continue-on-error: true
-
     steps:
       - uses: actions/checkout@v2
 
@@ -39,8 +37,6 @@ jobs:
         os: [ macos-latest, windows-latest, ubuntu-18.04 ]
 
     runs-on: ${{ matrix.os }}
-
-    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v2

@@ -10,7 +10,7 @@ from tests.static import (
 if TYPE_CHECKING:
     from dlparse.mono.asset.base import MasterAssetBase
 
-version_tag = "2020.12.28-zD3NCu1eqObsWSK4"
+version_tag = "2020.12.31-SAcWiaRBfYDT4FGS"
 
 manager_local = AssetManager(
     PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
