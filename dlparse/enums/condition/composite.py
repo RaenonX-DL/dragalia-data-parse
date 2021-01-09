@@ -35,6 +35,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         Condition.SKILL_USED_ALL,
         # Misc
         Condition.MARK_EXPLODES,
+        Condition.COUNTER_RED_ATTACK,
         Condition.QUEST_START
     }
 
@@ -75,12 +76,12 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     addl_inputs: Optional[Condition] = field(init=False)
     addl_inputs_converted: int = field(init=False)
     action_cancel: Optional[Condition] = field(init=False)
+    action_counter: bool = field(init=False)
     mark_explode: bool = field(init=False)
     # endregion
 
     # region Other fields
     _has_buff_boost_condition: bool = field(init=False)
-
     # endregion
 
     @staticmethod
@@ -189,6 +190,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.bullets_on_map = CondCat.skill_bullets_on_map.extract(conditions)
         self.addl_inputs = CondCat.skill_addl_inputs.extract(conditions)
         self.action_cancel = CondCat.skill_action_cancel.extract(conditions)
+        self.action_counter = Condition.COUNTER_RED_ATTACK in conditions
         self.mark_explode = Condition.MARK_EXPLODES in conditions
         # endregion
 
@@ -277,6 +279,9 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.action_cancel:
             ret += (self.action_cancel,)
 
+        if self.action_counter:
+            ret += (Condition.COUNTER_RED_ATTACK,)
+
         if self.mark_explode:
             ret += (Condition.MARK_EXPLODES,)
 
@@ -306,6 +311,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         - [Skill] Teammate coverage
         - [Skill] Bullets on map
         - [Skill] Additional inputs
+        - [Skill] Action canceling
+        - [Skill] Action countering
         - [Skill] Mark explosion
         """
         return (self._cond_sorted_target()

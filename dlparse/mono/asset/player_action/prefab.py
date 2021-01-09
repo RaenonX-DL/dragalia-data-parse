@@ -119,6 +119,7 @@ class PlayerActionPrefab(ActionAssetBase):
 
     @property
     def cancel_actions(self) -> list[ActionActiveCancel]:
+        """Get a list of active cancel action components."""
         return self._cancel_actions
 
     @classmethod

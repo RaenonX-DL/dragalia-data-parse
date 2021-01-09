@@ -536,6 +536,10 @@
     "text": "[FJoachim] Cancel S2"
   },
   {
+    "id": "ENUM_COND_COUNTER_RED_ATTACK",
+    "text": "Counter Red Attack"
+  },
+  {
     "id": "ENUM_COND_MARK_EXPLODES",
     "text": "Mark Explode"
   },

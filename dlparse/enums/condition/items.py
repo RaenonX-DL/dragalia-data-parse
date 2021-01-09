@@ -196,6 +196,7 @@ class Condition(Enum):
 
     # region Miscellaneous
     MARK_EXPLODES = 390
+    COUNTER_RED_ATTACK = 391
     # endregion
     # endregion
 

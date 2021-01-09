@@ -536,6 +536,10 @@
     "text": "[禮服約爾希姆] 取消 S2"
   },
   {
+    "id": "ENUM_COND_COUNTER_RED_ATTACK",
+    "text": "反擊紅圈攻擊"
+  },
+  {
     "id": "ENUM_COND_MARK_EXPLODES",
     "text": "印記爆炸"
   },

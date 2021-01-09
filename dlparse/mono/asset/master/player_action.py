@@ -25,8 +25,9 @@ class PlayerActionInfoEntry(MasterEntryBase):
     is_next_action_shift_by_input: bool
     min_addl_input_count_for_next: int
     max_addl_input_count: int
-    is_loop_action: bool
 
+    is_action_loop: bool
+    is_action_counter: bool
     is_ally_target: bool
 
     @staticmethod
@@ -44,7 +45,8 @@ class PlayerActionInfoEntry(MasterEntryBase):
             is_next_action_shift_by_input=bool(data["_IsNextActionShiftByInput"]),
             min_addl_input_count_for_next=data["_MinAdditionalInputNumForNextActionShift"],
             max_addl_input_count=data["_MaxAdditionalInput"],
-            is_loop_action=bool(data["_IsLoopAction"]),
+            is_action_loop=bool(data["_IsLoopAction"]),
+            is_action_counter=bool(data["_IsCounterAction"]),
             is_ally_target=bool(data["_IsAllyTarget"]),
         )
 

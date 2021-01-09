@@ -14,7 +14,7 @@ PATH_LOCAL_DIR_CUSTOM_ASSET = os.path.join(PATH_LOCAL_ROOT_DATA, "custom")
 
 PATH_REMOTE_GH = "https://raw.githubusercontent.com/RaenonX-DL/dragalia-data-depot/"
 
-REMOTE_VERSION_TAG = "2020.12.11-Sh3XK6NMv7neVgaf"
+REMOTE_VERSION_TAG = "2021.01.07-wp3GuzxBjCGZ6woB"
 
 
 def get_remote_dir_action_asset(version_tag: str = None) -> str:

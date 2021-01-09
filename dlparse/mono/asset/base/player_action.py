@@ -40,12 +40,14 @@ class ActionComponentCondition(EntryBase):
                     return Condition.SELF_SIGIL_LOCKED
                 if self.type_values[2] == 0:
                     return Condition.SELF_SIGIL_RELEASED
+
         elif self.type_condition == ActionConditionType.SEIMEI_SHIKIGAMI_LEVEL:
             # Appears in Seimei S2 (107501042 - 791270)
             if self.type_values[1] == 1:
                 return Condition.SELF_SEIMEI_SHIKIGAMI_LV_1
-            elif self.type_values[1] == 2:
+            if self.type_values[1] == 2:
                 return Condition.SELF_SEIMEI_SHIKIGAMI_LV_2
+
         elif self.type_condition == ActionConditionType.ACTION_CANCEL:
             return ConditionCategories.skill_action_cancel.convert_reversed(self.type_values[0])
 

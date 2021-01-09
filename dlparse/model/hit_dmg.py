@@ -325,6 +325,62 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
             dispel=dispel
         )]
 
+    def _check_early_return_pre_cond(
+            self, condition_comp: ConditionComposite, asset_action_condition: ActionConditionAsset
+    ) -> Optional[list[DamageUnit]]:
+        # Pre-condition available, perform checks
+        if self.pre_condition in ConditionCategories.skill_addl_inputs:
+            # Pre-condition is additional inputs, perform special check
+            pre_cond_addl_hit = ConditionCategories.skill_addl_inputs.convert(self.pre_condition)
+            if pre_cond_addl_hit > (condition_comp.addl_inputs_converted or 0):
+                # Required pre-conditional additional inputs > additional inputs count in the condition,
+                # hit invalid
+                return []
+        elif self.pre_condition == Condition.MARK_EXPLODES and not condition_comp.mark_explode:
+            return self._damage_units_from_action_cond(asset_action_condition)
+        elif self.pre_condition not in condition_comp:
+            # Other pre-conditions & not listed in the given condition composite i.e. pre-condition mismatch
+            return []
+
+        return None
+
+    def _check_early_return(
+            self, condition_comp: ConditionComposite, asset_action_condition: ActionConditionAsset
+    ) -> Optional[list[DamageUnit]]:
+        # Has precondition
+        if self.pre_condition:
+            damage_units_pre_cond = self._check_early_return_pre_cond(condition_comp, asset_action_condition)
+            # Explicit check to distinguish "not to early return" and "return an empty array"
+            if damage_units_pre_cond is not None:
+                return damage_units_pre_cond
+
+        # Action cancel
+        if condition_comp.action_cancel and self.pre_condition != condition_comp.action_cancel:
+            # If action canceling is included in the conditions,
+            # only the actions to be executed after the cancel should be returned.
+            # -------------------------------------------------------------------
+            # For example, `991061` is executed only if Formal Joachim S1 (109503011) is used
+            # to cancel his S2 `991070` (and `991060` will not be executed / will be interrupted).
+            # If no cancellation is used, `991060` will be executed completely and no execution of `991061` instead.
+            return []
+
+        # Counter action
+        if condition_comp.action_counter and self.pre_condition != Condition.COUNTER_RED_ATTACK:
+            # If counter action is included in the conditions,
+            # only the actions to be executed after countering should be returned.
+            # -------------------------------------------------------------------
+            # For example, `991101` is executed only if Yoshitsune S1 (109502021)
+            # successfully countered an red attack during `991100`.
+            # If the counter is failed, `991100` should be fully executed, and `991101` will not execute.
+            return []
+
+        # Mark explosion
+        if condition_comp.mark_explode and self.pre_condition != Condition.MARK_EXPLODES:
+            # Mark explosion damage is requested, but the damaging hit is not the explosion damage
+            return []
+
+        return None
+
     def to_damage_units(
             self, condition_comp: ConditionComposite, hit_count: int, /,
             asset_action_condition: ActionConditionAsset, asset_action_info: PlayerActionInfoAsset,
@@ -337,38 +393,12 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         However, under some special circumstances (for example, deteriorating bullets),
         having multiple damage modifiers is possible.
         """
-        # --- Early terminations / checks
+        # --- Early return check
 
-        # Has precondition
-        if self.pre_condition:
-            # Pre-condition available, perform checks
-            if self.pre_condition in ConditionCategories.skill_addl_inputs:
-                # Pre-condition is additional inputs, perform special check
-                pre_cond_addl_hit = ConditionCategories.skill_addl_inputs.convert(self.pre_condition)
-                if pre_cond_addl_hit > (condition_comp.addl_inputs_converted or 0):
-                    # Required pre-conditional additional inputs > additional inputs count in the condition,
-                    # hit invalid
-                    return []
-            elif self.pre_condition == Condition.MARK_EXPLODES and not condition_comp.mark_explode:
-                return self._damage_units_from_action_cond(asset_action_condition)
-            elif self.pre_condition not in condition_comp:
-                # Other pre-conditions & not listed in the given condition composite i.e. pre-condition mismatch
-                return []
-
-        # Action cancel
-        if condition_comp.action_cancel and self.pre_condition != condition_comp.action_cancel:
-            # If action canceling is included in the conditions,
-            # only the actions to be executed after the cancel should be returned
-            # -------------------------------------------------------------------
-            # For example, `991061` is executed only if Formal Joachim S1 (109503011) is used
-            # to cancel his S2 `991070` (and `991060` will not be executed / will be interrupted).
-            # If no cancellation is used, `991060` will be executed completely and no execution of `991061` instead.
-            return []
-
-        # Mark explosion
-        if condition_comp.mark_explode and self.pre_condition != Condition.MARK_EXPLODES:
-            # Mark explosion damage is requested, but the damaging hit is not the explosion damage
-            return []
+        damage_units = self._check_early_return(condition_comp, asset_action_condition)
+        # Explicit check to distinguish "not to early return" and "return an empty array"
+        if damage_units is not None:
+            return damage_units
 
         # --- Calculate mods
 

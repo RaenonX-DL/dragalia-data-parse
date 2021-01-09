@@ -108,6 +108,8 @@ class SkillTransformer:
                     ConditionCategories.skill_addl_inputs.convert_reversed(addl_input_count)
                     for addl_input_count in range(1, prev_action_info.max_addl_input_count + 1)
                 ]
+            elif prev_action_info.is_action_counter:
+                pre_conditions = [Condition.COUNTER_RED_ATTACK]
             else:
                 # Additional inputs unavailable, have one dummy pre-condition to trigger the parse
                 pre_conditions = [Condition.NONE]
@@ -238,6 +240,7 @@ class SkillTransformer:
     def get_skill_cancel_unit_matrix(
             self, skill_data: SkillDataEntry, max_lv: int = 0
     ) -> list[list[SkillCancelActionUnit]]:
+        """Get the matrix of skill cancel action units."""
         cancel_units: list[list[SkillCancelActionUnit]] = []
 
         action_ids = skill_data.action_id_1_by_level

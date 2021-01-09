@@ -6,10 +6,11 @@ from dlparse.transformer import SkillTransformer
 from tests.expected_skills_lookup import skill_ids_atk
 
 allowed_no_base_mods_sid = {
-    103505042,  # Nevin S2, only has either sigil released or unlocked
-    109503012,  # Formal Joachim S2, only poison
-    105401022,  # Xuan Zang S2, only debuffs the enemy
-    105404022,  # Sha Wujing S2, only debuffs the enemy
+    103505042,  # Nevin S2, only has mods when sigil released or unlocked
+    109503012,  # Formal Joachim S2, only has poisoning effect
+    105401022,  # Xuan Zang S2, only debuff the enemy
+    105404022,  # Sha Wujing S2, only debuff the enemy
+    107501042,  # Seimei S2, only has mods when Shikigami is summoned
 }
 
 

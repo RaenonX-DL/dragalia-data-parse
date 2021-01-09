@@ -4,7 +4,7 @@ from tests.static import (
     get_remote_dir_master_asset,
 )
 
-version_tag = "2020.11.23-08NV7KO9YyXMIlB2"
+version_tag = "2021.01.07-wp3GuzxBjCGZ6woB"
 
 manager_local = AssetManager(
     PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
