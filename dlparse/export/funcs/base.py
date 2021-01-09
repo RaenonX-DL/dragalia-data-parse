@@ -121,4 +121,4 @@ def export_as_json(entries: Union[dict[str, list[JT]], list[JT]], file_path: str
     os.makedirs(os.path.dirname(file_path), exist_ok=True)  # Create directory if needed
 
     with open(file_path, "w", encoding="utf-8", newline="") as f:
-        json.dump(entries, f, cls=JsonEntryEncoder, ensure_ascii=False)
+        json.dump(entries, f, cls=JsonEntryEncoder, ensure_ascii=False, sort_keys=True)
