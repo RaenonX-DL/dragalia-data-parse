@@ -194,7 +194,7 @@ class Condition(Enum):
     CANCELS_FJOACHIM_S2 = 370
     # endregion
 
-    # region Miscellaneous
+    # region Miscellaneous variant
     MARK_EXPLODES = 390
     COUNTER_RED_ATTACK = 391
     # endregion

@@ -50,20 +50,20 @@ class SkillDataBase(Generic[HT, ET], ABC):
                        for pre_condition in pre_condition_tuple) for pre_condition_tuple in pre_conditions):
                 # Pre-condition has additional inputs condition,
                 # no-additional-input (additional input = 0) condition is possible
-                # Used to handle Lathna S1 (`105505021`), Ramona S1 (`104501011`)
+                # Appears in Lathna S1 (`105505021`), Ramona S1 (`104501011`)
                 pre_conditions.add((Condition.ADDL_INPUT_0,))
 
             if any(any(pre_condition in ConditionCategories.skill_action_cancel
                        for pre_condition in pre_condition_tuple) for pre_condition_tuple in pre_conditions):
                 # Pre-condition has action cancelling condition,
                 # no cancelling (no condition) is possible
-                # Used to handle Formal Joachim S1 (`109503011`)
+                # Appears in handle Formal Joachim S1 (`109503011`)
                 pre_conditions.add(())
 
-            if any(any(pre_condition == Condition.MARK_EXPLODES
+            if any(any(pre_condition in ConditionCategories.skill_action_misc_var
                        for pre_condition in pre_condition_tuple) for pre_condition_tuple in pre_conditions):
-                # Mark explosion pre-condition, not exploding marks = skill itself
-                # Used to handle Nobunaga S1 (`102501031`)
+                # Skill has some variants. However, the skill can be used without triggering the variants.
+                # Appears in Nobunaga S1 (`102501031`), Yoshitsune S1 (`109502021`)
                 pre_conditions.add(())
 
             cond_elems.append(pre_conditions)

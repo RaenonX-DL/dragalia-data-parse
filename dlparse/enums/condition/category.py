@@ -2,8 +2,9 @@
 from enum import Enum, auto
 from typing import Any, Generic, Iterable, Optional, TypeVar, Union
 
-from dlparse.errors import EnumConversionError
+from dlparse.errors import EnumConversionError, OperationInvalidError
 from .items import Condition
+# Relative import to avoid circular import
 from ..ability_condition import AbilityCondition
 from ..condition_base import ConditionCheckResultMixin
 from ..element import Element
@@ -29,6 +30,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_BULLETS_ON_MAP = auto()
     MULTIPLE_ADDL_INPUTS = auto()
     MULTIPLE_ACTION_CANCEL = auto()
+    MULTIPLE_ACTION_MISC_VAR = auto()
     MULTIPLE_ACTION_CONDITION = auto()
     MULTIPLE_GAUGE_FILLED = auto()
     MULTIPLE_LAPIS_CARD = auto()
@@ -75,8 +77,10 @@ class ConditionCategory(Generic[T]):
 
     RAISE_ERROR = object()  # Dummy object for conversion on missing
 
-    def __init__(self, data: dict[Condition, T], max_count: ConditionMaxCount, name: str,
-                 result_on_invalid: ConditionCheckResult):
+    def __init__(
+            self, data: dict[Condition, T], max_count: ConditionMaxCount, name: str,
+            result_on_invalid: ConditionCheckResult
+    ):
         self._members = data
         self._max_count = max_count
         self._name = name
@@ -176,11 +180,35 @@ class ConditionCategory(Generic[T]):
 
 
 class ConditionCategoryTargetNumber(ConditionCategory[float]):
-    """A condition category which target is :class:`float`."""
+    """A condition category whose target is :class:`float`."""
 
     def get_members_lte(self, threshold: float) -> list[Condition]:
         """Get the members which target is less than or equal to ``threshold``."""
         return [cond_enum for cond_enum, target in self._members.items() if target <= threshold]
+
+
+class ConditionCategoryGroup(ConditionCategory[None]):
+    """A condition category whose target does not have any meaning."""
+
+    def __init__(
+            self, data: Iterable[Condition], max_count: ConditionMaxCount, name: str,
+            result_on_invalid: ConditionCheckResult
+    ):
+        super().__init__({condition: None for condition in data}, max_count, name, result_on_invalid)
+
+    @property
+    def targets(self):
+        raise OperationInvalidError("Condition category group does not have targets")
+
+    @property
+    def conversion_dict(self) -> dict[Condition, T]:
+        raise OperationInvalidError("Condition category group does not allow conversion")
+
+    def convert(self, item: Condition, **_) -> T:
+        raise OperationInvalidError("Condition category group does not allow conversion")
+
+    def convert_reversed(self, item: T) -> Condition:
+        raise OperationInvalidError("Condition category group does not allow conversion")
 
 
 class ConditionCategories:
@@ -391,6 +419,15 @@ class ConditionCategories:
         ConditionMaxCount.SINGLE,
         "Skill - action cancel",
         ConditionCheckResult.MULTIPLE_ACTION_CANCEL
+    )
+    skill_action_misc_var = ConditionCategoryGroup(
+        {
+            Condition.MARK_EXPLODES,
+            Condition.COUNTER_RED_ATTACK
+        },
+        ConditionMaxCount.SINGLE,
+        "Skill - miscellaneous variant (skill can be used without using the variant)",
+        ConditionCheckResult.MULTIPLE_ACTION_MISC_VAR
     )
     # endregion
 

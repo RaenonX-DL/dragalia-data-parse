@@ -21,7 +21,7 @@ def export_skill_identifiers_as_json(
     for entry in export_atk_skills_as_entries(asset_manager):
         skill_identifiers.update(entry.skill_identifiers)
 
-    # Obtain its translations
+    # Obtain skill identifier entries
     json_dict = {
         skill_identifier: SkillIdentifierEntry(
             skill_identifier,

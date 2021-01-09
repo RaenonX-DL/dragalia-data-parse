@@ -9,6 +9,7 @@ from .cancel_action import SkillCancelAction
 from .chain_cond import SkillChainCondition
 from .color_theme import ColorTheme
 from .condition import *  # noqa
+from .condition_base import ConditionCheckResultMixin
 from .efficacy import EfficacyType
 from .element import Element, ElementFlag
 from .hit_exec_type import HitExecType
