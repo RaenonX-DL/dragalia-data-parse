@@ -33,15 +33,20 @@ class ActionComponentCondition(EntryBase):
     @property
     def skill_pre_condition(self) -> Condition:
         """Get the action executing pre-condition."""
-        if self.type_condition == ActionConditionType.ACTION_CONDITION:
+        if self.type_condition == ActionConditionType.ACTION_CONDITION_COUNT:
             # Appears in Nevin S2 (103505042 - 391330)
             if self.type_values[0] == 1152:
                 if self.type_values[2] == 1:
                     return Condition.SELF_SIGIL_LOCKED
                 if self.type_values[2] == 0:
                     return Condition.SELF_SIGIL_RELEASED
-
-        if self.type_condition == ActionConditionType.ACTION_CANCEL:
+        elif self.type_condition == ActionConditionType.SEIMEI_SHIKIGAMI_LEVEL:
+            # Appears in Seimei S2 (107501042 - 791270)
+            if self.type_values[1] == 1:
+                return Condition.SELF_SEIMEI_SHIKIGAMI_LV_1
+            elif self.type_values[1] == 2:
+                return Condition.SELF_SEIMEI_SHIKIGAMI_LV_2
+        elif self.type_condition == ActionConditionType.ACTION_CANCEL:
             return ConditionCategories.skill_action_cancel.convert_reversed(self.type_values[0])
 
         return Condition.NONE

@@ -1,4 +1,4 @@
-[submodule "data-depot"]
+[submodule "dragalia-data-depot"]
 	path = .data/media
 	url = https://github.com/RaenonX-DL/dragalia-data-depot
 	branch = main

@@ -556,6 +556,14 @@
     "text": "[龍絆雷歐尼特] S1 5 層"
   },
   {
+    "id": "ENUM_COND_SELF_SEIMEI_SHIKIGAMI_LV_1",
+    "text": "[晴明] 式神レベル 1"
+  },
+  {
+    "id": "ENUM_COND_SELF_SEIMEI_SHIKIGAMI_LV_2",
+    "text": "[晴明] 式神レベル 2"
+  },
+  {
     "id": "ENUM_COND_SELF_LAPIS_CARD_0",
     "text": "[拉碧絲] 0 卡牌"
   },

@@ -36,10 +36,12 @@ class ActionConditionType(Enum):
 
     NONE = 0
     """The action component is always effective."""
-    ACTION_CONDITION = 1
+    ACTION_CONDITION_COUNT = 1
     """The action component is effective only if the user has certain instances of the action condition."""
     ACTION_CANCEL = 6
     """The action component is effective only if it is executed to cancel the other action."""
+    SEIMEI_SHIKIGAMI_LEVEL = 7
+    """The action component effectiveness depends on Seimei's Shikigami level."""
 
     @classmethod
     def _missing_(cls, _):

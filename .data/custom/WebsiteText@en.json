@@ -556,6 +556,14 @@
     "text": "[GLeonidas] S1 5 Stacks"
   },
   {
+    "id": "ENUM_COND_SELF_SEIMEI_SHIKIGAMI_LV_1",
+    "text": "[Seimei] Shikigami Lv 1"
+  },
+  {
+    "id": "ENUM_COND_SELF_SEIMEI_SHIKIGAMI_LV_2",
+    "text": "[Seimei] Shikigami Lv 2"
+  },
+  {
     "id": "ENUM_COND_SELF_LAPIS_CARD_0",
     "text": "[Lapis] 0 Cards"
   },

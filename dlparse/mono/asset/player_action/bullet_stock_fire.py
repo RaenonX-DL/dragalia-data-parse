@@ -17,8 +17,8 @@ class ActionBulletStockFire(ActionBullet):
     pattern: FireStockPattern = FireStockPattern.NONE
 
     is_depends_on_bullet_summoned: bool = False
-    is_depends_on_user_buff_count: bool = False
     is_depends_on_bullet_on_map: bool = False
+    is_depends_on_user_buff_count: bool = False
 
     bullet_num: int = 0  # Used only if `pattern` is `FireStockPattern.BULLET_COUNT_SUMMONED`
 
@@ -51,8 +51,8 @@ class ActionBulletStockFire(ActionBullet):
             hit_labels=[label for label in labels_possible if label],
             pattern=pattern,
             is_depends_on_bullet_summoned=pattern == FireStockPattern.BULLET_COUNT_SUMMONED,
-            is_depends_on_user_buff_count=pattern == FireStockPattern.USER_BUFF_COUNT_DEPENDENT,
             is_depends_on_bullet_on_map=pattern == FireStockPattern.BULLET_TRANSFORM_TO_SKILL,
+            is_depends_on_user_buff_count=pattern == FireStockPattern.USER_BUFF_COUNT_DEPENDENT,
             bullet_num=bullet_num,
             **kwargs
         )
