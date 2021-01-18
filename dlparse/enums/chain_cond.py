@@ -13,6 +13,8 @@ class SkillChainCondition(Enum):
     This corresponds to the field ``_ActivateCondition`` in the skill chain data asset.
     """
 
+    UNKNOWN = -1
+
     NONE = 0
     TARGET_HAS_BUFF = 1
     TARGET_BK_STATE = 2
@@ -31,3 +33,7 @@ class SkillChainCondition(Enum):
             return "target_bk"
 
         raise AppValueError(f"Representation for `{self}` not available")
+
+    @classmethod
+    def _missing_(cls, _):
+        return SkillChainCondition.UNKNOWN

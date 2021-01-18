@@ -489,11 +489,11 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
 
         return ret
 
-    def _from_base(self) -> list[SkillIdEntry]:
+    def _from_base(self, include_base_if_mode: bool = False) -> list[SkillIdEntry]:
         """Get the base skills."""
         ret: list[SkillIdEntry] = []
 
-        if not self.has_mode_change:
+        if not self.has_mode_change or include_base_if_mode:
             ret.extend([
                 SkillIdEntry(self.skill_1_id, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
                 SkillIdEntry(self.skill_2_id, SkillNumber.S2, SkillIdentifierLabel.S2_BASE)
@@ -601,17 +601,24 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
 
         return ret
 
-    def get_skill_id_entries(self, asset_manager: "AssetManager") -> list[SkillIdEntry]:
-        """Get all possible skill ID entries of a skill."""
+    def get_skill_id_entries(
+            self, asset_manager: "AssetManager", /, include_dragon: bool = True, include_base_if_mode: bool = False
+    ) -> list[SkillIdEntry]:
+        """
+        Get all possible skill ID entries of a skill.
+
+        ``include_base_if_mode`` determines if the base skills should be included if the character has mode(s).
+        """
         if identifiers := _manual_identifiers.get(self.id):
             # Early return for manual discovery
             return identifiers
 
-        ret: list[SkillIdEntry] = self._from_base()
+        ret: list[SkillIdEntry] = self._from_base(include_base_if_mode)
 
         if self.has_mode_change:
             ret.extend(self._from_mode(asset_manager))
-        ret.extend(self._from_dragon(asset_manager))
+        if include_dragon:
+            ret.extend(self._from_dragon(asset_manager))
         ret.extend(self._from_skill_ext(asset_manager))
         ret.extend(self._from_ability(asset_manager))
 

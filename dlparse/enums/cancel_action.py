@@ -11,7 +11,10 @@ class SkillCancelAction(Enum):
     The value of this corresponds to the field ``_actionId`` of the action component ``ActionPartsActiveCancel``.
     """
 
-    UNCLASSIFIED = -1
+    UNCLASSIFIED = -999
+
+    # Not triggered by action ID
+    MOTION_ENDS = -1
 
     # Misc
     ANY_ACTION = 0

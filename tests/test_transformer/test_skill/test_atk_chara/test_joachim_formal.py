@@ -46,12 +46,9 @@ def test_cancel_s1_data(transformer_skill: SkillTransformer):
         for cancel_unit_lv in skill_data.cancel_unit_mtx
     ]
 
-    main_symmetric_diff = [
-        expected_lv.symmetric_difference(actual_lv)
-        for expected_lv, actual_lv in zip_longest(main_expected, main_actual)
-    ]
-
-    assert not any(main_symmetric_diff), main_symmetric_diff
+    for expected_lv, actual_lv in zip_longest(main_expected, main_actual):
+        diff = expected_lv.symmetric_difference(actual_lv)
+        assert len(diff) == 0, diff
 
 
 def test_cancel_s1_entries(transformer_skill: SkillTransformer):
@@ -68,12 +65,9 @@ def test_cancel_s1_entries(transformer_skill: SkillTransformer):
             for cancel_unit_lv in entry.cancel_unit_mtx
         ]
 
-        entry_symmetric_diff = [
-            expected_lv.symmetric_difference(actual_lv)
-            for expected_lv, actual_lv in zip_longest(entry_expected, entry_actual)
-        ]
-
-        assert not any(entry_symmetric_diff), entry_symmetric_diff
+        for expected_lv, actual_lv in zip_longest(entry_expected, entry_actual):
+            diff = expected_lv.symmetric_difference(actual_lv)
+            assert len(diff) == 0, diff
 
 
 def test_cancel_s2_data(transformer_skill: SkillTransformer):
@@ -93,12 +87,9 @@ def test_cancel_s2_data(transformer_skill: SkillTransformer):
             for cancel_unit_lv in entry.cancel_unit_mtx
         ]
 
-        entry_symmetric_diff = [
-            expected_lv.symmetric_difference(actual_lv)
-            for expected_lv, actual_lv in zip_longest(entry_expected, entry_actual)
-        ]
-
-        assert not any(entry_symmetric_diff), entry_symmetric_diff
+        for expected_lv, actual_lv in zip_longest(entry_expected, entry_actual):
+            diff = expected_lv.symmetric_difference(actual_lv)
+            assert len(diff) == 0, diff
 
 
 def test_cancel_s2_entries(transformer_skill: SkillTransformer):
@@ -118,12 +109,9 @@ def test_cancel_s2_entries(transformer_skill: SkillTransformer):
             for cancel_unit_lv in entry.cancel_unit_mtx
         ]
 
-        entry_symmetric_diff = [
-            expected_lv.symmetric_difference(actual_lv)
-            for expected_lv, actual_lv in zip_longest(entry_expected, entry_actual)
-        ]
-
-        assert not any(entry_symmetric_diff), entry_symmetric_diff
+        for expected_lv, actual_lv in zip_longest(entry_expected, entry_actual):
+            diff = expected_lv.symmetric_difference(actual_lv)
+            assert len(diff) == 0, diff
 
 
 def test_s1(transformer_skill: SkillTransformer):

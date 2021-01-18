@@ -2,9 +2,28 @@ from itertools import product
 
 import pytest
 
-from dlparse.enums import Condition, ConditionComposite
+from dlparse.enums import Condition, ConditionComposite, SkillNumber
 from dlparse.model import BuffZoneBoostData
+from dlparse.mono.asset import SkillIdEntry, SkillIdentifierLabel
+from dlparse.mono.manager import AssetManager
 from dlparse.transformer import SkillTransformer
+
+
+def test_skill_id_entries(asset_manager: AssetManager):
+    # Nevin
+    # https://dragalialost.gamepedia.com/Nevin
+    chara_data = asset_manager.asset_chara_data.get_data_by_id(10350504)
+
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
+
+    expected_identifiers = [
+        SkillIdEntry(103505043, SkillNumber.S1, SkillIdentifierLabel.of_mode(SkillNumber.S1, 37)),
+        SkillIdEntry(
+            103505044, SkillNumber.S2, [SkillIdentifierLabel.SHARED, SkillIdentifierLabel.of_mode(SkillNumber.S2, 37)]
+        )
+    ]
+
+    assert actual_identifiers == expected_identifiers
 
 
 def test_iter_entries_s2_locked(transformer_skill: SkillTransformer):

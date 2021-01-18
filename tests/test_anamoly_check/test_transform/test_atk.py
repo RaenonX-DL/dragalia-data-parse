@@ -24,7 +24,7 @@ def test_transform_all_attack_skills(transformer_skill: SkillTransformer, asset_
 
         skill_ids.extend([
             skill_entry.skill_id for skill_entry
-            in chara_data.get_skill_id_entries(asset_manager)
+            in chara_data.get_skill_id_entries(asset_manager, include_dragon=False)
         ])
 
     skill_ids_missing: dict[int, str] = skill_ids_atk.copy()

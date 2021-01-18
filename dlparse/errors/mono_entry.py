@@ -3,9 +3,19 @@ from typing import Optional
 
 from .base import AppValueError, EntryNotFoundError
 
-__all__ = ("SkillDataNotFoundError", "ActionDataNotFoundError", "TextLabelNotFoundError",
-           "AbilityLimitDataNotFoundError", "AbilityOnSkillUnconvertibleError", "LanguageAssetNotFoundError",
-           "AbilityConditionUnconvertibleError", "BulletMaxCountUnavailableError", "AbilityVariantUnconvertibleError")
+__all__ = (
+    "CharaDataNotFoundError", "SkillDataNotFoundError", "ActionDataNotFoundError", "MotionDataNotFoundError",
+    "TextLabelNotFoundError",
+    "AbilityLimitDataNotFoundError", "AbilityOnSkillUnconvertibleError", "LanguageAssetNotFoundError",
+    "AbilityConditionUnconvertibleError", "BulletMaxCountUnavailableError", "AbilityVariantUnconvertibleError"
+)
+
+
+class CharaDataNotFoundError(EntryNotFoundError):
+    """Error to be raised if the character data is not found."""
+
+    def __init__(self, chara_id: int, message: str = ""):
+        super().__init__(f"Character data of ID `{chara_id}` not found: {message}")
 
 
 class SkillDataNotFoundError(EntryNotFoundError):
@@ -17,9 +27,16 @@ class SkillDataNotFoundError(EntryNotFoundError):
         self._skill_id = skill_id
 
     @property
-    def skill_id(self):
+    def skill_id(self) -> int:
         """Get the skill ID that causes this error."""
         return self._skill_id
+
+
+class MotionDataNotFoundError(EntryNotFoundError):
+    """Error to be raised if the motion data file is not found."""
+
+    def __init__(self, motion_name: str, message: str = ""):
+        super().__init__(f"Motion data `{motion_name}` not found: {message}")
 
 
 class ActionDataNotFoundError(EntryNotFoundError):

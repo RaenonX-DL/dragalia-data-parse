@@ -130,9 +130,9 @@ class MultilingualAssetBase(Generic[T], ABC):
             asset_dir: str, file_name: str
     ):
         """
-        Initializa a multilingual text asset.
+        Initializes a multilingual text asset.
 
-        The file to be loaded should be a json. ``file_name`` must **not** include the extension.
+        Files to be loaded should be a json. ``file_name`` must **not** include the extension.
 
         If ``lang_codes`` is a dict, its key will be the language code for loading the asset,
         and the value is the language code to use for getting the entry.

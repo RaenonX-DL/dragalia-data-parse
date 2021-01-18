@@ -3,21 +3,23 @@ from typing import TYPE_CHECKING
 from dlparse.mono.asset import CharaDataEntry, SkillDataEntry
 from dlparse.mono.manager import AssetManager
 from tests.static import (
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, get_remote_dir_action_asset,
+    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET,
+    PATH_LOCAL_DIR_MASTER_ASSET, get_remote_dir_action_asset, get_remote_dir_chara_motion_asset,
     get_remote_dir_master_asset,
 )
 
 if TYPE_CHECKING:
     from dlparse.mono.asset.base import MasterAssetBase
 
-version_tag = "2020.12.31-SAcWiaRBfYDT4FGS"
+version_tag = "2021.01.13-YDqw9udArvIfUZfh"
 
 manager_local = AssetManager(
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
+    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET,
     custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET
 )
 manager_remote = AssetManager(
     get_remote_dir_action_asset(version_tag), get_remote_dir_master_asset(version_tag),
+    get_remote_dir_chara_motion_asset(version_tag),
     custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET
 )
 

@@ -1,17 +1,19 @@
 from dlparse.mono.manager import AssetManager
 from tests.static import (
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, get_remote_dir_action_asset,
+    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET,
+    PATH_LOCAL_DIR_MASTER_ASSET, get_remote_dir_action_asset, get_remote_dir_chara_motion_asset,
     get_remote_dir_master_asset,
 )
 
-version_tag = "2021.01.07-wp3GuzxBjCGZ6woB"
+version_tag = "2021.01.18-blAHaHz3JJzPrQ4t"
 
 manager_local = AssetManager(
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
+    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET,
     custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET
 )
 manager_remote = AssetManager(
     get_remote_dir_action_asset(version_tag), get_remote_dir_master_asset(version_tag),
+    get_remote_dir_chara_motion_asset(version_tag),
     custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET
 )
 

@@ -1,5 +1,5 @@
 """Implementations of getting the related image of an enum."""
-from typing import Dict, Optional, Union
+from typing import Optional, Union
 
 from .condition import Condition
 from .element import Element
@@ -8,7 +8,7 @@ __all__ = ("get_image_path",)
 
 TransformableEnums = Union[Condition, Element]
 
-path_dict: Dict[TransformableEnums, str] = {
+path_dict: dict[TransformableEnums, str] = {
     Element.FLAME: "/icon/element/m/Icon_02_Flame.png",
     Element.WATER: "/icon/element/m/Icon_02_Water.png",
     Element.WIND: "/icon/element/m/Icon_02_Wind.png",

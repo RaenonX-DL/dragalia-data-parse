@@ -2,10 +2,13 @@ import pytest
 
 from dlparse.mono.manager import AssetManager
 from dlparse.transformer import AbilityTransformer, SkillTransformer
-from tests.static import PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET, PATH_LOCAL_DIR_MASTER_ASSET
+from tests.static import (
+    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET,
+    PATH_LOCAL_DIR_MASTER_ASSET,
+)
 
 _asset_manager: AssetManager = AssetManager(
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
+    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET,
     custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET
 )
 

@@ -1,6 +1,8 @@
+from itertools import zip_longest
+
 import pytest
 
-from dlparse.enums import Condition, ConditionComposite
+from dlparse.enums import Condition, ConditionComposite, SkillCancelAction
 from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
 
@@ -29,6 +31,24 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
         del expected_addl_at_max[entry.condition_comp]
 
     assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
+
+
+def test_cancel_s1_data(transformer_skill: SkillTransformer):
+    # Dragonyule Malora S1
+    # https://dragalialost.gamepedia.com/Dragonyule_Malora
+    skill_data = transformer_skill.transform_attacking(104504021)
+
+    expected_cancel_action_data = {(SkillCancelAction.MOTION_ENDS, 2.266667)}
+
+    main_expected = [set(expected_cancel_action_data)] * 4
+    main_actual = [
+        {(cancel_unit.action, cancel_unit.time) for cancel_unit in cancel_unit_lv}
+        for cancel_unit_lv in skill_data.cancel_unit_mtx
+    ]
+
+    for expected_lv, actual_lv in zip_longest(main_expected, main_actual):
+        diff = expected_lv.symmetric_difference(actual_lv)
+        assert len(diff) == 0, diff
 
 
 def test_s2(transformer_skill: SkillTransformer):

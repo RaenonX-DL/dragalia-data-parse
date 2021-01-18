@@ -27,7 +27,7 @@ unplayable_chara_ids: list[int] = [
 
 
 def test_max_lv(asset_manager: AssetManager):
-    entries = export_atk_skills_as_entries(asset_manager, skip_unparsable=True)
+    entries = export_atk_skills_as_entries(asset_manager, skip_unparsable=True, include_dragon=False)
 
     for entry in entries:
         if test_entry := skill_max_lv.get(entry.skill_internal_id):
@@ -39,7 +39,7 @@ def test_max_lv(asset_manager: AssetManager):
 
 
 def test_no_unplayable(asset_manager: AssetManager):
-    entries = export_atk_skills_as_entries(asset_manager, skip_unparsable=True)
+    entries = export_atk_skills_as_entries(asset_manager, skip_unparsable=True, include_dragon=False)
 
     for entry in entries:
         if entry.character_internal_id in unplayable_chara_ids:

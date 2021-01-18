@@ -232,9 +232,9 @@ This will be used when [parsing the character skill camera duration](/others/Cha
 
 #### Attribute notes
 
-- `_motionState` **may** corresponds to some AnimationClip.
+- `_motionState` corresponds to an `AnimationClip` linked via `AnimationController`.
 
-  This may be used for camera duration calculation.
+  `m_MuscleClip.m_StopTime` can be used for camera duration calculation.
 
   - `skill_A` takes exactly 1 second, which is commonly used for buffs.
 

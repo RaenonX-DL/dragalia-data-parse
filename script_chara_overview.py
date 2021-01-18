@@ -1,8 +1,10 @@
 from dlparse.errors import HitDataUnavailableError
 from dlparse.mono.manager import AssetManager
-from tests.static import PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET
+from tests.static import PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET
 
-_asset_manager: AssetManager = AssetManager(PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET)
+_asset_manager: AssetManager = AssetManager(
+    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET
+)
 
 
 def print_atk_data_entry(chara_data, skill_data, skill_entry):
@@ -113,6 +115,10 @@ def print_skill_id_entry(chara_data, skill_id_entry):
 def chara_skill_overview(chara_id):
     chara_data = _asset_manager.asset_chara_data.get_data_by_id(chara_id)
 
+    if not chara_data:
+        print(f"Chara data with ID {chara_id} not found")
+        return
+
     skill_id_entries = chara_data.get_skill_id_entries(_asset_manager)
     skill_identifiers = [
         id_label for skill_id_entry in skill_id_entries for id_label in skill_id_entry.skill_identifier_labels
@@ -135,7 +141,7 @@ def chara_skill_overview(chara_id):
 
 
 def main():
-    chara_skill_overview(10950202)
+    chara_skill_overview(10450402)
 
 
 if __name__ == '__main__':

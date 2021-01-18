@@ -1,4 +1,4 @@
-"""Classes for getting the player action file path."""
+"""Classes for managing the action files."""
 import os
 
 from dlparse.errors import ActionDataNotFoundError

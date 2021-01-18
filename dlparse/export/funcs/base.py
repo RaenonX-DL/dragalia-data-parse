@@ -19,7 +19,7 @@ ET = TypeVar("ET", bound=SkillExportEntryBase)
 DT = TypeVar("DT", bound=SkillDataBase)
 
 SkillEntryParsingFunction = Callable[
-    [CharaDataEntry, AssetManager, bool],
+    [CharaDataEntry, AssetManager, bool, bool],
     tuple[list[ET], list[str]]
 ]
 
@@ -33,14 +33,14 @@ SkillEntriesReturn = list[tuple[SkillIdEntry, SkillDataBase, list[ET]]]
 
 def export_transform_skill_entries(
         transform_fn: TransformFunction, chara_data: CharaDataEntry, asset_manager: AssetManager,
-        skip_unparsable: bool = True
+        skip_unparsable: bool = True, include_dragon: bool = True
 ) -> tuple[SkillEntriesReturn, list[str]]:
     """Get a list of skill entries to be parsed to exported data entries."""
     ret: SkillEntriesReturn = []
     skipped_messages: list[str] = []
 
     # Get all skills and iterate them
-    skill_identifiers = chara_data.get_skill_id_entries(asset_manager)
+    skill_identifiers = chara_data.get_skill_id_entries(asset_manager, include_dragon=include_dragon)
     for id_entry in skill_identifiers:
         chara_name = chara_data.get_chara_name(asset_manager.asset_text)
 
@@ -70,7 +70,8 @@ def export_transform_skill_entries(
 
 
 def export_skill_entries(
-        skill_entry_parse_fn: SkillEntryParsingFunction, asset_manager: AssetManager, /, skip_unparsable: bool = True
+        skill_entry_parse_fn: SkillEntryParsingFunction, asset_manager: AssetManager, /,
+        skip_unparsable: bool = True, include_dragon: bool = True
 ) -> list[ET]:
     """Export skill entries of all characters to a list of data entries ready to be exported."""
     ret: list[ET] = []
@@ -82,7 +83,7 @@ def export_skill_entries(
         if not chara_data.is_playable:
             continue
 
-        entries, messages = skill_entry_parse_fn(chara_data, asset_manager, skip_unparsable)
+        entries, messages = skill_entry_parse_fn(chara_data, asset_manager, skip_unparsable, include_dragon)
 
         ret.extend(entries)
         skipped_messages.extend(messages)

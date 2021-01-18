@@ -1,3 +1,4 @@
+from dlparse.enums import Weapon
 from dlparse.mono.asset import CharaDataEntry
 from dlparse.mono.manager import AssetManager
 
@@ -8,7 +9,7 @@ def create_dummy(**kwargs) -> CharaDataEntry:
         "name_label": "Dummy",
         "name_label_2": "Dummy",
         "emblem_id": 0,
-        "weapon_type_id": 0,
+        "weapon": Weapon.SWD,
         "rarity": 0,
         "max_limit_break_count": 0,
         "element_id": 0,

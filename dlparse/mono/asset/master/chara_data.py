@@ -1,15 +1,18 @@
 """Classes for handling the character data asset."""
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional, TextIO, Union
+from typing import Optional, TYPE_CHECKING, TextIO, Union
 
-from dlparse.enums import Element, SkillNumber
+from dlparse.enums import Element, SkillNumber, Weapon
 from dlparse.errors import InvalidSkillNumError, TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 from dlparse.mono.asset.extension import NamedEntry, SkillDiscoverableEntry
 from .dragon_data import DRAGON_SKILL_MAX_LEVEL
 from .skill_data import CHARA_SKILL_MAX_LEVEL
 from .text_label import TextAsset
+
+if TYPE_CHECKING:
+    from dlparse.mono.manager import AssetManager
 
 __all__ = ("CharaDataEntry", "CharaDataAsset", "CharaDataParser")
 
@@ -19,7 +22,7 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
     """Single entry of a character data."""
 
     # region Attributes
-    weapon_type_id: int
+    weapon: Weapon
     rarity: int
 
     max_limit_break_count: int
@@ -353,7 +356,7 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
             name_label=data["_Name"],
             name_label_2=data["_SecondName"],
             emblem_id=data["_EmblemId"],
-            weapon_type_id=data["_WeaponType"],
+            weapon=Weapon(data["_WeaponType"]),
             rarity=data["_Rarity"],
             max_limit_break_count=data["_MaxLimitBreakCount"],
             element_id=data["_ElementalType"],
@@ -445,6 +448,48 @@ class CharaDataAsset(MasterAssetBase[CharaDataEntry]):
             asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
     ):
         super().__init__(CharaDataParser, file_location, asset_dir=asset_dir, file_like=file_like)
+
+        # Cache for getting the chara data by skill ID
+        self._cache_skill_id: dict[int, CharaDataEntry] = {}  # K = skill ID
+        self._traversed_chara_id: set[int] = set()
+
+    def get_chara_data_by_skill_id(
+            self, asset_manager: "AssetManager", skill_id: int, /,
+            playable_only: bool = True
+    ) -> Optional[CharaDataEntry]:
+        """
+        Get the character data whose any of the skill is ``skill_id``.
+
+        Returns ``None`` if none of the character data has a skill of ``skill_id``.
+        """
+        # Get the corresponding chara data from the cache, if exists
+        if skill_id in self._cache_skill_id:
+            return self._cache_skill_id[skill_id]
+
+        # Traverse all un-traversed chara data
+        # - Traversed results will be stored in the cache
+        chara_data: CharaDataEntry
+        for chara_data in filter(lambda data: data.id not in self._traversed_chara_id, self):
+            # Record that the chara data has been traversed
+            self._traversed_chara_id.add(chara_data.id)
+
+            # Don't continue if ``playable_only`` and the character is not playable
+            if playable_only and not chara_data.is_playable:
+                continue
+
+            # Get the skill ID entries
+            entries = chara_data.get_skill_id_entries(asset_manager, include_base_if_mode=True)
+
+            # Store each result to the cache
+            for entry in entries:
+                self._cache_skill_id[entry.skill_id] = chara_data
+
+            # Return if the data is stored in the cache (found in the previous code)
+            if skill_id in self._cache_skill_id:
+                return self._cache_skill_id[skill_id]
+
+        # Chara data not found, returns ``None``
+        return None
 
 
 class CharaDataParser(MasterParserBase[CharaDataEntry]):

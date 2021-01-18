@@ -1,2 +1,3 @@
-"""Classes for getting the file path."""
-from .player_action import ActionFileLoader
+"""Classes for loading some file collections."""
+from .action import ActionFileLoader
+from .motion import *  # noqa

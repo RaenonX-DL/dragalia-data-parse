@@ -11,8 +11,10 @@ class ParserBase(ABC):
     # pylint: disable=too-few-public-methods
 
     def __init__(self):
-        raise RuntimeError("Parser class is not allowed to be instantiated. "
-                           "Use the class methods or static methods directly instead.")
+        raise RuntimeError(
+            "Parser class is not allowed to be instantiated. "
+            "Use the class methods or static methods directly instead."
+        )
 
     @staticmethod
     @abstractmethod

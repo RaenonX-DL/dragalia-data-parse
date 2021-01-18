@@ -3,12 +3,16 @@ import time
 from dlparse.enums import cond_afflictions
 from dlparse.export import export_atk_skill_as_csv, export_enums_json, export_sup_skill_as_csv
 from dlparse.mono.manager import AssetManager
-from tests.static import PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET, PATH_LOCAL_DIR_MASTER_ASSET
+from tests.static import (
+    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET,
+    PATH_LOCAL_DIR_MASTER_ASSET,
+)
 
 _start = time.time()
 
 _asset_manager: AssetManager = AssetManager(
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET
+    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET,
+    PATH_LOCAL_DIR_CHARA_MOTION_ASSET
 )
 
 

@@ -8,14 +8,16 @@ __all__ = ("export_sup_skill_as_csv", "export_sup_skills_as_entries")
 
 
 def export_sup_skills_of_chara(
-        chara_data: CharaDataEntry, asset_manager: AssetManager, skip_unparsable: bool = True
+        chara_data: CharaDataEntry, asset_manager: AssetManager, /,
+        skip_unparsable: bool = True, include_dragon: bool = False
 ) -> tuple[list[CharaSupportiveSkillEntry], list[str]]:
     """Export attacking skills of a character as entries."""
     ret: list[CharaSupportiveSkillEntry] = []
 
     # Transform every skill entries
     skill_entries_data, skipped_messages = export_transform_skill_entries(
-        asset_manager.transformer_skill.transform_supportive, chara_data, asset_manager, skip_unparsable
+        asset_manager.transformer_skill.transform_supportive, chara_data, asset_manager,
+        skip_unparsable=skip_unparsable, include_dragon=include_dragon
     )
 
     for id_entry, skill_data, skill_entries in skill_entries_data:
@@ -34,17 +36,22 @@ def export_sup_skills_of_chara(
 
 
 def export_sup_skills_as_entries(
-        asset_manager: AssetManager, skip_unparsable: bool = True
+        asset_manager: AssetManager, /,
+        skip_unparsable: bool = True, include_dragon: bool = False
 ) -> list[CharaSupportiveSkillEntry]:
     """Export attacking skills of all characters to be a list of data entries ready to be exported."""
-    return export_skill_entries(export_sup_skills_of_chara, asset_manager, skip_unparsable=skip_unparsable)
+    return export_skill_entries(
+        export_sup_skills_of_chara, asset_manager, skip_unparsable=skip_unparsable, include_dragon=include_dragon
+    )
 
 
 def export_sup_skill_as_csv(
         file_path: str, /,
-        asset_manager: AssetManager, skip_unparsable: bool = True
+        asset_manager: AssetManager, skip_unparsable: bool = True, include_dragon: bool = False
 ):
     """Export the entries of the attacking skills as csv."""
-    entries = export_sup_skills_as_entries(asset_manager, skip_unparsable)
+    entries = export_sup_skills_as_entries(
+        asset_manager, skip_unparsable=skip_unparsable, include_dragon=include_dragon
+    )
 
     export_as_csv(entries, CharaSupportiveSkillEntry.csv_header(), file_path)

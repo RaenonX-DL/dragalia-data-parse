@@ -6,11 +6,11 @@ from dlparse.errors import ConfigError
 from dlparse.transformer import AbilityTransformer, SkillTransformer
 from .asset import (
     AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionPartsListAsset, BuffCountAsset, CharaDataAsset,
-    CharaModeAsset, DragonDataAsset, HitAttrAsset, PlayerActionInfoAsset, SkillChainAsset, SkillDataAsset, TextAsset,
-    TextAssetMultilingual,
-)
+    CharaModeAsset, DragonDataAsset, HitAttrAsset, MotionSelectorWeapon, PlayerActionInfoAsset, SkillChainAsset,
+    SkillDataAsset, TextAsset, TextAssetMultilingual,
+)  # Master; Motion
 from .custom import WebsiteTextAsset
-from .loader import ActionFileLoader
+from .loader import ActionFileLoader, CharacterMotionLoader
 
 __all__ = ("AssetManager",)
 
@@ -18,31 +18,36 @@ __all__ = ("AssetManager",)
 class AssetManager:
     """A class for loading and managing all the assets and loaders."""
 
+    # pylint: disable=too-many-public-methods
+
     def __init__(
-            self, action_asset_dir: str, master_asset_dir: str, /,
+            self, action_asset_dir: str, master_asset_dir: str, chara_motion_asset_dir: str, /,
             custom_asset_dir: Optional[str] = None
     ):
         # Master Assets
-        self._asset_ability_data: AbilityAsset = AbilityAsset(asset_dir=master_asset_dir)
-        self._asset_ability_limit: AbilityLimitGroupAsset = AbilityLimitGroupAsset(asset_dir=master_asset_dir)
-        self._asset_action_cond: ActionConditionAsset = ActionConditionAsset(asset_dir=master_asset_dir)
-        self._asset_buff_count: BuffCountAsset = BuffCountAsset(asset_dir=master_asset_dir)
-        self._asset_chara_data: CharaDataAsset = CharaDataAsset(asset_dir=master_asset_dir)
-        self._asset_chara_mode: CharaModeAsset = CharaModeAsset(asset_dir=master_asset_dir)
-        self._asset_dragon: DragonDataAsset = DragonDataAsset(asset_dir=master_asset_dir)
-        self._asset_hit_attr: HitAttrAsset = HitAttrAsset(asset_dir=master_asset_dir)
-        self._asset_skill_data: SkillDataAsset = SkillDataAsset(asset_dir=master_asset_dir)
-        self._asset_skill_chain: SkillChainAsset = SkillChainAsset(asset_dir=master_asset_dir)
-        self._asset_text: TextAsset = TextAsset(asset_dir=master_asset_dir, custom_asset_dir=custom_asset_dir)
-        self._asset_pa_info: PlayerActionInfoAsset = PlayerActionInfoAsset(asset_dir=master_asset_dir)
-        self._asset_action_list: ActionPartsListAsset = ActionPartsListAsset(asset_dir=action_asset_dir)
+        self._asset_ability_data = AbilityAsset(asset_dir=master_asset_dir)
+        self._asset_ability_limit = AbilityLimitGroupAsset(asset_dir=master_asset_dir)
+        self._asset_action_cond = ActionConditionAsset(asset_dir=master_asset_dir)
+        self._asset_buff_count = BuffCountAsset(asset_dir=master_asset_dir)
+        self._asset_chara_data = CharaDataAsset(asset_dir=master_asset_dir)
+        self._asset_chara_mode = CharaModeAsset(asset_dir=master_asset_dir)
+        self._asset_dragon = DragonDataAsset(asset_dir=master_asset_dir)
+        self._asset_hit_attr = HitAttrAsset(asset_dir=master_asset_dir)
+        self._asset_skill_data = SkillDataAsset(asset_dir=master_asset_dir)
+        self._asset_skill_chain = SkillChainAsset(asset_dir=master_asset_dir)
+        self._asset_text = TextAsset(asset_dir=master_asset_dir, custom_asset_dir=custom_asset_dir)
+        self._asset_pa_info = PlayerActionInfoAsset(asset_dir=master_asset_dir)
+        self._asset_action_list = ActionPartsListAsset(asset_dir=action_asset_dir)
 
         lang_code_mapping = {
             "en": Language.EN.value,
             "tw": Language.CHT.value,
             "": Language.JP.value
         }
-        self._asset_text_multi: TextAssetMultilingual = TextAssetMultilingual(lang_code_mapping, master_asset_dir)
+        self._asset_text_multi = TextAssetMultilingual(lang_code_mapping, master_asset_dir)
+
+        # Motion Assets
+        self._motion_weapon = MotionSelectorWeapon(chara_motion_asset_dir)
 
         # Custom Assets
         self._asset_text_website: WebsiteTextAsset = WebsiteTextAsset(
@@ -51,11 +56,12 @@ class AssetManager:
         ) if custom_asset_dir else None  # If custom asset directory is not provided, do not load the asset
 
         # Loaders
-        self._loader_action: ActionFileLoader = ActionFileLoader(self._asset_action_list, action_asset_dir)
+        self._loader_action = ActionFileLoader(self._asset_action_list, action_asset_dir)
+        self._loader_chara_motion = CharacterMotionLoader(chara_motion_asset_dir)
 
         # Transformers
-        self._transformer_ability: AbilityTransformer = AbilityTransformer(self)
-        self._transformer_skill: SkillTransformer = SkillTransformer(self)
+        self._transformer_ability = AbilityTransformer(self)
+        self._transformer_skill = SkillTransformer(self)
 
     # region Master Assets
     @property
@@ -130,6 +136,14 @@ class AssetManager:
 
     # endregion
 
+    # region Motion Assets
+    @property
+    def motion_weapon(self):
+        """Get the character weapon motion asset."""
+        return self._motion_weapon
+
+    # endregion
+
     # region Custom Assets
     @property
     def asset_text_website(self) -> WebsiteTextAsset:
@@ -152,6 +166,11 @@ class AssetManager:
     def loader_action(self) -> ActionFileLoader:
         """Get the action file loader."""
         return self._loader_action
+
+    @property
+    def loader_chara_motion(self) -> CharacterMotionLoader:
+        """Get the character motion loader."""
+        return self._loader_chara_motion
 
     # endregion
 

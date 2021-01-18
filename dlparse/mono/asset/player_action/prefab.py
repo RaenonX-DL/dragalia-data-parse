@@ -15,6 +15,7 @@ from .bullet_pivot import ActionBulletPivot
 from .bullet_stock_fire import ActionBulletStockFire
 from .cancel import ActionActiveCancel
 from .hit import ActionHit
+from .motion import ActionMotion
 from .set_hit import ActionSettingHit
 from .terminate import ActionTerminateOthers
 
@@ -42,7 +43,9 @@ class PlayerActionParser(ActionParserBase):
         # Any other hits
         "ActionPartsSettingHit": ActionSettingHit,
         "ActionPartsBuffFieldAttachment": ActionBuffField,
-        "ActionPartsRemoveBuffTriggerBomb": ActionBuffBomb
+        "ActionPartsRemoveBuffTriggerBomb": ActionBuffBomb,
+        # Non-hitting action parts
+        "ActionPartsMotion": ActionMotion
     }
 
     @classmethod
@@ -87,6 +90,9 @@ class PlayerActionPrefab(ActionAssetBase):
             (component for component in self if isinstance(component, ActionTerminateOthers)),
             None
         )
+        self._motions: list[ActionMotion] = [
+            component for component in self if isinstance(component, ActionMotion)
+        ]
 
     def get_hit_actions(self, skill_lv: int) -> list[tuple[str, ActionComponentHasHitLabels]]:
         """
@@ -121,6 +127,11 @@ class PlayerActionPrefab(ActionAssetBase):
     def cancel_actions(self) -> list[ActionActiveCancel]:
         """Get a list of active cancel action components."""
         return self._cancel_actions
+
+    @property
+    def motions(self) -> list[ActionMotion]:
+        """Sort the motions by its starting time, then return it as a list."""
+        return list(sorted(self._motions, key=lambda motion: motion.time_start))
 
     @classmethod
     def is_effective_label(cls, label: str) -> bool:

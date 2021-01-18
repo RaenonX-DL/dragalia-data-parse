@@ -3,12 +3,13 @@ from typing import Optional, TYPE_CHECKING, Type, TypeVar
 
 from dlparse.enums import Condition, ConditionCategories
 from dlparse.errors import (
-    ActionInfoNotFoundError, HitDataUnavailableError, PreconditionCollidedError, SkillDataNotFoundError,
+    ActionInfoNotFoundError, CharaDataNotFoundError, HitDataUnavailableError, PreconditionCollidedError,
+    SkillDataNotFoundError,
 )
 from dlparse.model import (
     AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SkillCancelActionUnit, SupportiveSkillData,
 )
-from dlparse.mono.asset import SkillDataEntry
+from dlparse.mono.asset import CharaDataEntry, SkillDataEntry
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -24,13 +25,18 @@ class SkillTransformer:
     """Class to transform the skill data."""
 
     def __init__(self, asset_manager: "AssetManager"):
+        self._asset_manager = asset_manager
+
         self._asset_ability = asset_manager.asset_ability_data
         self._asset_action_cond = asset_manager.asset_action_cond
         self._asset_buff_count = asset_manager.asset_buff_count
+        self._asset_chara_data = asset_manager.asset_chara_data
         self._asset_hit_attr = asset_manager.asset_hit_attr
         self._asset_pa_info = asset_manager.asset_pa_info
         self._asset_skill = asset_manager.asset_skill_data
+
         self._loader_action = asset_manager.loader_action
+        self._loader_chara_motion = asset_manager.loader_chara_motion
 
     def _get_hit_data_action_component(
             self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_ids: list[int], /,
@@ -177,10 +183,54 @@ class SkillTransformer:
 
         return ret
 
+    def _get_chara_skill_data(self, skill_id: int) -> tuple[CharaDataEntry, SkillDataEntry]:
+        """
+        Get the character data and the skill data of ``skill_id``.
+
+        :raises SkillDataNotFoundError: if the skill data of `skill_id` is not found
+        """
+        # Get the character data
+        chara_data: Optional[CharaDataEntry] = self._asset_chara_data.get_chara_data_by_skill_id(
+            self._asset_manager, skill_id
+        )
+        if not chara_data:
+            skill_error = SkillDataNotFoundError(skill_id)
+            chara_error = CharaDataNotFoundError(int(str(skill_id)[:-1]), "(Chara ID guessed from skill ID)")
+
+            raise skill_error from chara_error
+
+        # Get the skill data
+        skill_data: Optional[SkillDataEntry] = self._asset_skill.get_data_by_id(skill_id)
+        if not skill_data:
+            raise SkillDataNotFoundError(skill_id)
+
+        return chara_data, skill_data
+
+    @staticmethod
+    def _get_highest_skill_level(hit_data_mtx: list[list[HitData]]) -> int:
+        """
+        Get the highest level where the skill hit data is available.
+
+        :raises HitDataUnavailableError: if no hit data is available across all levels
+        """
+        max_level = -1
+
+        for level, hit_data_lv in enumerate(hit_data_mtx):
+            if not hit_data_lv:
+                continue
+
+            max_level = max(max_level, level)
+
+        if max_level == -1:
+            # No hit data available at all levels
+            raise HitDataUnavailableError()
+
+        return max_level + 1
+
     def get_hit_data_matrix(
             self, skill_id: int, hit_data_cls: Type[T], /,
             effective_to_enemy: bool = True, max_lv: int = 0, ability_ids: Optional[list[int]] = None
-    ) -> tuple[SkillDataEntry, list[list[T]]]:
+    ) -> tuple[CharaDataEntry, SkillDataEntry, list[list[T]]]:
         """
         Get a matrix of the hit data.
 
@@ -193,13 +243,11 @@ class SkillTransformer:
         The first index of the matrix is the skill level (Skill level 1 = index 0).
 
         :raises SkillDataNotFoundError: skill data not found
+        :raises CharaDataNotFoundError: chara data not found
         :raises ActionDataNotFoundError: action file not found
         :raises HitDataUnavailableError: no hit data available
         """
-        # Get the skill data
-        skill_data: Optional[SkillDataEntry] = self._asset_skill.get_data_by_id(skill_id)
-        if not skill_data:
-            raise SkillDataNotFoundError(skill_id)
+        chara_data, skill_data = self._get_chara_skill_data(skill_id)
 
         if not ability_ids:
             ability_ids = []
@@ -229,16 +277,10 @@ class SkillTransformer:
                 if hit_data.is_effective_to_enemy(effective_to_enemy) == effective_to_enemy:
                     hit_data_mtx[skill_lv - 1].append(hit_data)
 
-        if not any(hit_data for hit_data in hit_data_mtx):
-            # No hit data available at all levels
-            raise HitDataUnavailableError()
-
-        highest_available_level = max(idx for idx, hit_data_lv in enumerate(hit_data_mtx) if hit_data_lv)
-
-        return skill_data, hit_data_mtx[:highest_available_level + 1]
+        return chara_data, skill_data, hit_data_mtx[:self._get_highest_skill_level(hit_data_mtx)]
 
     def get_skill_cancel_unit_matrix(
-            self, skill_data: SkillDataEntry, max_lv: int = 0
+            self, chara_data: CharaDataEntry, skill_data: SkillDataEntry, max_lv: int = 0
     ) -> list[list[SkillCancelActionUnit]]:
         """Get the matrix of skill cancel action units."""
         cancel_units: list[list[SkillCancelActionUnit]] = []
@@ -250,7 +292,9 @@ class SkillTransformer:
         for action_id in action_ids:
             prefab = self._loader_action.get_prefab(action_id)
 
-            cancel_units.append(SkillCancelActionUnit.from_player_action_prefab(prefab))
+            cancel_units.append(SkillCancelActionUnit.from_player_action_prefab(
+                self._loader_chara_motion, chara_data, prefab
+            ))
 
         return cancel_units
 
@@ -268,9 +312,9 @@ class SkillTransformer:
 
         :raises SkillDataNotFoundError: if the skill data is not found
         :raises ActionDataNotFoundError: if the action data file of the skill is not found
-        :raises HitDataUnavailableError: if no hit data available
+        :raises HitDataUnavailableError: if no hit data is available
         """
-        skill_data, hit_data_mtx = self.get_hit_data_matrix(
+        _, skill_data, hit_data_mtx = self.get_hit_data_matrix(
             skill_id, BuffingHitData,
             effective_to_enemy=False, max_lv=max_lv, ability_ids=ability_ids
         )
@@ -302,9 +346,9 @@ class SkillTransformer:
 
         :raises SkillDataNotFoundError: if the skill data is not found
         :raises ActionDataNotFoundError: if the action data file of the skill is not found
-        :raises HitDataUnavailableError: if no hit data available
+        :raises HitDataUnavailableError: if no hit data is available
         """
-        skill_data, hit_data_mtx = self.get_hit_data_matrix(
+        chara_data, skill_data, hit_data_mtx = self.get_hit_data_matrix(
             skill_id, DamagingHitData, max_lv=max_lv, ability_ids=ability_ids
         )
 
@@ -315,7 +359,7 @@ class SkillTransformer:
             asset_action_cond=self._asset_action_cond,
             asset_buff_count=self._asset_buff_count,
             is_exporting=is_exporting,
-            cancel_unit_mtx=self.get_skill_cancel_unit_matrix(skill_data, max_lv)
+            cancel_unit_mtx=self.get_skill_cancel_unit_matrix(chara_data, skill_data, max_lv)
         )
 
         if not any(entry.has_effects_on_enemy for entry in ret.get_all_possible_entries()):
