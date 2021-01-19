@@ -67,7 +67,7 @@ condition_theme = {
     Condition.SELF_HP_FULL: theme_self_hp,
     Condition.SELF_HP_LT_40: theme_self_hp,
     Condition.SELF_HP_LT_30: theme_self_hp,
-    Condition.SELF_HP_GT_30: theme_self_hp,
+    Condition.SELF_HP_GTE_30: theme_self_hp,
     Condition.SELF_HP_GTE_40: theme_self_hp,
     Condition.SELF_HP_GTE_50: theme_self_hp,
     Condition.SELF_HP_GTE_60: theme_self_hp,

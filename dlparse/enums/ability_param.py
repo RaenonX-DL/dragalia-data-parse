@@ -32,8 +32,8 @@ class AbilityUpParameter(Enum):
 
 _TRANS_DICT: dict[AbilityUpParameter, BuffParameter] = {
     AbilityUpParameter.HP: BuffParameter.HP_RAISE_BY_MAX,
-    AbilityUpParameter.ATK: BuffParameter.ATK_BUFF,
-    AbilityUpParameter.DEF: BuffParameter.DEF_BUFF,
+    AbilityUpParameter.ATK: BuffParameter.ATK_PASSIVE,
+    AbilityUpParameter.DEF: BuffParameter.DEF_PASSIVE,
     AbilityUpParameter.SP_RATE: BuffParameter.SP_RATE,
     AbilityUpParameter.DRAGON_TIME: BuffParameter.DRAGON_TIME,
     AbilityUpParameter.DRAGON_TIME_FINAL: BuffParameter.DRAGON_TIME_FINAL,

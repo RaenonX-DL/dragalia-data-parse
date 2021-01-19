@@ -13,33 +13,6 @@ def test_dummy(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ability_data.effect_units, expected_info)
 
 
-def test_dragon_control(transformer_ability: AbilityTransformer):
-    # Gala Leonidas (AB1 @ Lv2 - Shapeshifting time -50%, DP consumption -50%)
-    # https://dragalialost.gamepedia.com/Gala_Leonidas
-    ability_data = transformer_ability.transform_ability(1461)
-
-    condition = ConditionComposite(Condition.SELF_GLEONIDAS_FULL_STACKS)
-
-    expected_info = {
-        AbilityEffectInfo(1461, condition, BuffParameter.DP_CONSUMPTION, -0.5),
-        AbilityEffectInfo(1461, condition, BuffParameter.DRAGON_TIME_FINAL, -0.5),
-    }
-
-    check_ability_effect_unit_match(ability_data.effect_units, expected_info)
-
-
-def test_sp_rate_up(transformer_ability: AbilityTransformer):
-    # Marty (AB1 @ Max - SP Rate +10%)
-    # https://dragalialost.gamepedia.com/Marty
-    ability_data = transformer_ability.transform_ability(938)
-
-    expected_info = {
-        AbilityEffectInfo(938, ConditionComposite(), BuffParameter.SP_RATE, 0.1),
-    }
-
-    check_ability_effect_unit_match(ability_data.effect_units, expected_info)
-
-
 def test_resist_1(transformer_ability: AbilityTransformer):
     # Marty (AB3 @ Max - Stun Res +50%)
     # https://dragalialost.gamepedia.com/Marty
@@ -115,6 +88,42 @@ def test_potent_resist_3(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ability_data.effect_units, expected_info)
 
 
+def test_sp_rate_up(transformer_ability: AbilityTransformer):
+    # Marty (AB1 @ Max - SP Rate +10%)
+    # https://dragalialost.gamepedia.com/Marty
+    ability_data = transformer_ability.transform_ability(938)
+
+    expected_info = {
+        AbilityEffectInfo(938, ConditionComposite(), BuffParameter.SP_RATE, 0.1),
+    }
+
+    check_ability_effect_unit_match(ability_data.effect_units, expected_info)
+
+
+def test_atk_up_full_hp(transformer_ability: AbilityTransformer):
+    # Yukata Cassandra (AB1 @ Max - ATK +20% when HP = 100%)
+    # https://dragalialost.gamepedia.com/Yukata_Cassandra
+    ability_data = transformer_ability.transform_ability(210000307)
+
+    expected_info = {
+        AbilityEffectInfo(210000307, ConditionComposite(Condition.SELF_HP_FULL), BuffParameter.ATK_PASSIVE, 0.2),
+    }
+
+    check_ability_effect_unit_match(ability_data.effect_units, expected_info)
+
+
+def test_atk_up_gte_70_hp(transformer_ability: AbilityTransformer):
+    # Karl (AB1 @ Max - RP +13% when HP = 100%)
+    # https://dragalialost.gamepedia.com/Karl
+    ability_data = transformer_ability.transform_ability(719)
+
+    expected_info = {
+        AbilityEffectInfo(719, ConditionComposite(Condition.SELF_HP_GTE_70), BuffParameter.ATK_PASSIVE, 0.15),
+    }
+
+    check_ability_effect_unit_match(ability_data.effect_units, expected_info)
+
+
 def test_on_def_buffed(transformer_ability: AbilityTransformer):
     # Valentine's Orion (AB1 @ Max - DEF doublebuff - ATK +15% (Buff))
     # https://dragalialost.gamepedia.com/Valentine%27s_Orion
@@ -122,6 +131,21 @@ def test_on_def_buffed(transformer_ability: AbilityTransformer):
 
     expected_info = {
         AbilityEffectInfo(210000607, ConditionComposite(Condition.ON_SELF_BUFFED_DEF), BuffParameter.ATK_BUFF, 0.15),
+    }
+
+    check_ability_effect_unit_match(ability_data.effect_units, expected_info)
+
+
+def test_dragon_control(transformer_ability: AbilityTransformer):
+    # Gala Leonidas (AB1 @ Lv2 - Shapeshifting time -50%, DP consumption -50%)
+    # https://dragalialost.gamepedia.com/Gala_Leonidas
+    ability_data = transformer_ability.transform_ability(1461)
+
+    condition = ConditionComposite(Condition.SELF_GLEONIDAS_FULL_STACKS)
+
+    expected_info = {
+        AbilityEffectInfo(1461, condition, BuffParameter.DP_CONSUMPTION, -0.5),
+        AbilityEffectInfo(1461, condition, BuffParameter.DRAGON_TIME_FINAL, -0.5),
     }
 
     check_ability_effect_unit_match(ability_data.effect_units, expected_info)

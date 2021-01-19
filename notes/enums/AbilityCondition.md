@@ -122,9 +122,9 @@ Missing value(s) means that the corresponding value is not used.
 
 ### `01` - `HP_MORE`
 
-Effective if the user's HP is > a certain threshold.
+Effective if the user's HP is >= a certain threshold.
 
-`Val 1 = 40` means that the condition holds if the user's HP is > 40%.
+`Val 1 = 40` means that the condition holds if the user's HP is >= 40%.
 
 - **Val 1**: HP threshold.
 

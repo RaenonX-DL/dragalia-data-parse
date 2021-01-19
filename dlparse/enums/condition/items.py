@@ -81,15 +81,16 @@ class Condition(Enum):
     SELF_HP_LT_30 = 211
     """User's HP < 30% max."""
 
-    SELF_HP_GT_30 = 220
-    """User's HP > 30% max."""
-
+    SELF_HP_GTE_30 = 220
+    """User's HP >= 30% max."""
     SELF_HP_GTE_40 = 225
     """User's HP >= 40% max."""
     SELF_HP_GTE_50 = 226
     """User's HP >= 50% max."""
     SELF_HP_GTE_60 = 227
     """User's HP >= 60% max."""
+    SELF_HP_GTE_70 = 229
+    """User's HP >= 70% max."""
     SELF_HP_GTE_85 = 228
     """User's HP >= 85% max."""
     # endregion

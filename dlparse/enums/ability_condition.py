@@ -25,7 +25,7 @@ class AbilityCondition(Enum):
 
     NONE = 0
 
-    EFF_SELF_HP_GT = 1
+    EFF_SELF_HP_GTE = 1
     TRG_RECEIVED_BUFF_DEF = 8
     TRG_QUEST_START = 15
     EFF_ENERGIZED = 18
@@ -34,7 +34,7 @@ class AbilityCondition(Enum):
     EFF_SELF_HP_LT = 37
     EFF_SELF_SPECIFICALLY_BUFFED = 48
     TRG_SHAPESHIFT_COMPLETED = 51
-    EFF_SELF_HP_GTE = 60
+    EFF_SELF_HP_GTE_2 = 60
     EFF_SELF_HP_LT_2 = 61
 
     @classmethod

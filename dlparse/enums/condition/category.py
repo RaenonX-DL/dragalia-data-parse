@@ -283,10 +283,11 @@ class ConditionCategories:
         {
             Condition.SELF_HP_LT_30: 0.3,
             Condition.SELF_HP_LT_40: 0.4,
-            Condition.SELF_HP_GT_30: 0.3,
+            Condition.SELF_HP_GTE_30: 0.3,
             Condition.SELF_HP_GTE_40: 0.4,
             Condition.SELF_HP_GTE_50: 0.5,
             Condition.SELF_HP_GTE_60: 0.6,
+            Condition.SELF_HP_GTE_70: 0.7,
             Condition.SELF_HP_GTE_85: 0.85,
         },
         ConditionMaxCount.SINGLE,

@@ -16,11 +16,22 @@ _ability_condition_map: dict[AbilityCondition, Condition] = {
     AbilityCondition.TRG_SHAPESHIFT_COMPLETED: Condition.SELF_SHAPESHIFT_COMPLETED,
 }
 """
-A dict mapping :class:`AbilityCondition` directly to :class:`Condition`.
+A dict that maps :class:`AbilityCondition` to :class:`Condition`.
 
 This only contains :class:`AbilityCondition` that do not require additional parameter checks.
 Missing key in this map does not mean that it is not handled.
 """
+
+_hp_gte_map: dict[float, Condition] = {
+    30: Condition.SELF_HP_GTE_30,
+    40: Condition.SELF_HP_GTE_40,
+    50: Condition.SELF_HP_GTE_50,
+    60: Condition.SELF_HP_GTE_60,
+    70: Condition.SELF_HP_GTE_70,
+    85: Condition.SELF_HP_GTE_85,
+    100: Condition.SELF_HP_FULL,
+}
+"""A dict that maps a certain HP threshold percentage to a :class:`Condition`."""
 
 
 @dataclass
@@ -50,12 +61,8 @@ class AbilityConditionEntry:
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
     def _cond_self_hp(self) -> Optional[Condition]:
-        # Self HP >
-        if self.condition_type == AbilityCondition.EFF_SELF_HP_GT:
-            return self._cond_self_hp_gt()
-
         # Self HP >=
-        if self.condition_type == AbilityCondition.EFF_SELF_HP_GTE:
+        if self.condition_type in (AbilityCondition.EFF_SELF_HP_GTE, AbilityCondition.EFF_SELF_HP_GTE_2):
             return self._cond_self_hp_gte()
 
         # Self HP <
@@ -64,21 +71,9 @@ class AbilityConditionEntry:
 
         return None
 
-    def _cond_self_hp_gt(self) -> Condition:
-        if self.val_1 == 30:
-            return Condition.SELF_HP_GT_30
-
-        raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
-
     def _cond_self_hp_gte(self) -> Condition:
-        if self.val_1 == 40:
-            return Condition.SELF_HP_GTE_40
-        if self.val_1 == 50:
-            return Condition.SELF_HP_GTE_50
-        if self.val_1 == 60:
-            return Condition.SELF_HP_GTE_60
-        if self.val_1 == 85:
-            return Condition.SELF_HP_GTE_85
+        if condition := _hp_gte_map.get(self.val_1):
+            return condition
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 

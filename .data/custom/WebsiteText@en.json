@@ -256,8 +256,8 @@
     "text": "Self HP < 30%"
   },
   {
-    "id": "ENUM_COND_SELF_HP_GT_30",
-    "text": "Self HP > 30%"
+    "id": "ENUM_COND_SELF_HP_GTE_30",
+    "text": "Self HP >= 30%"
   },
   {
     "id": "ENUM_COND_SELF_HP_GTE_40",
@@ -270,6 +270,10 @@
   {
     "id": "ENUM_COND_SELF_HP_GTE_60",
     "text": "Self HP >= 60%"
+  },
+  {
+    "id": "ENUM_COND_SELF_HP_GTE_70",
+    "text": "Self HP >= 70%"
   },
   {
     "id": "ENUM_COND_SELF_HP_GTE_85",
