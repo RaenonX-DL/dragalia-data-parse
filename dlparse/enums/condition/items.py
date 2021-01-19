@@ -233,7 +233,26 @@ class Condition(Enum):
     # endregion
 
     # region 8xx - Trigger
-    ON_DEF_BUFFED = 801
+    # region Effect on self
+    ON_SELF_BUFFED_DEF = 801
+    # endregion
+
+    # region Effect by others
+    ON_HIT_BY_POISON = 851
+    ON_HIT_BY_BURN = 852
+    ON_HIT_BY_FREEZE = 853
+    ON_HIT_BY_PARALYZE = 854
+    ON_HIT_BY_BLIND = 855
+    ON_HIT_BY_STUN = 856
+    ON_HIT_BY_CURSE = 857
+    ON_HIT_BY_BOG = 859
+    ON_HIT_BY_SLEEP = 860
+    ON_HIT_BY_FROSTBITE = 861
+    ON_HIT_BY_FLASHBURN = 862
+    ON_HIT_BY_STORMLASH = 863
+    ON_HIT_BY_SHADOWBLIGHT = 864
+    ON_HIT_BY_SCORCHREND = 865
+    # endregion
     # endregion
 
     # region 9xx - Miscellaneous (e.g. quest start)

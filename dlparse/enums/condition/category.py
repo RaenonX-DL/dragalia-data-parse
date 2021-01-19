@@ -35,6 +35,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_GAUGE_FILLED = auto()
     MULTIPLE_LAPIS_CARD = auto()
     MULTIPLE_TRIGGER = auto()
+    MULTIPLE_TRIGGER_HIT_BY_AFFLICTION = auto()
     MULTIPLE_MISC = auto()
 
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
@@ -54,6 +55,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_GAUGE_FILLED = auto()
     INTERNAL_NOT_LAPIS_CARD = auto()
     INTERNAL_NOT_TRIGGER = auto()
+    INTERNAL_NOT_TRIGGER_HIT_BY_AFFLICTION = auto()
 
     HAS_CONDITIONS_LEFT = auto()
 
@@ -478,18 +480,54 @@ class ConditionCategories:
     # region 8xx - Trigger
     trigger = ConditionCategoryGroup(
         {
-            Condition.ON_DEF_BUFFED,
+            Condition.ON_SELF_BUFFED_DEF,
+            Condition.ON_HIT_BY_POISON,
+            Condition.ON_HIT_BY_BURN,
+            Condition.ON_HIT_BY_FREEZE,
+            Condition.ON_HIT_BY_PARALYZE,
+            Condition.ON_HIT_BY_BLIND,
+            Condition.ON_HIT_BY_STUN,
+            Condition.ON_HIT_BY_CURSE,
+            Condition.ON_HIT_BY_BOG,
+            Condition.ON_HIT_BY_SLEEP,
+            Condition.ON_HIT_BY_FROSTBITE,
+            Condition.ON_HIT_BY_FLASHBURN,
+            Condition.ON_HIT_BY_STORMLASH,
+            Condition.ON_HIT_BY_SHADOWBLIGHT,
+            Condition.ON_HIT_BY_SCORCHREND,
         },
         ConditionMaxCount.SINGLE,
         "Triggers",
         ConditionCheckResult.MULTIPLE_TRIGGER
+    )
+
+    trigger_hit_by_affliction = ConditionCategory[Status](
+        {
+            Condition.ON_HIT_BY_POISON: Status.POISON,
+            Condition.ON_HIT_BY_BURN: Status.BURN,
+            Condition.ON_HIT_BY_FREEZE: Status.FREEZE,
+            Condition.ON_HIT_BY_PARALYZE: Status.PARALYZE,
+            Condition.ON_HIT_BY_BLIND: Status.BLIND,
+            Condition.ON_HIT_BY_STUN: Status.STUN,
+            Condition.ON_HIT_BY_CURSE: Status.CURSE,
+            Condition.ON_HIT_BY_BOG: Status.BOG,
+            Condition.ON_HIT_BY_SLEEP: Status.SLEEP,
+            Condition.ON_HIT_BY_FROSTBITE: Status.FROSTBITE,
+            Condition.ON_HIT_BY_FLASHBURN: Status.FLASHBURN,
+            Condition.ON_HIT_BY_STORMLASH: Status.STORMLASH,
+            Condition.ON_HIT_BY_SHADOWBLIGHT: Status.SHADOWBLIGHT,
+            Condition.ON_HIT_BY_SCORCHREND: Status.SCORCHREND,
+        },
+        ConditionMaxCount.SINGLE,
+        "Triggers - hit by affliction",
+        ConditionCheckResult.MULTIPLE_TRIGGER_HIT_BY_AFFLICTION
     )
     # endregion
 
     # region 9xx - Miscellaneous
     misc = ConditionCategory[AbilityCondition](
         {
-            Condition.QUEST_START: AbilityCondition.QUEST_START,
+            Condition.QUEST_START: AbilityCondition.TRG_QUEST_START,
         },
         ConditionMaxCount.SINGLE,
         "Miscellaneous",

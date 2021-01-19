@@ -616,8 +616,64 @@
     "text": "龍化結束"
   },
   {
-    "id": "ENUM_COND_ON_DEF_BUFFED",
+    "id": "ENUM_COND_ON_SELF_BUFFED_DEF",
     "text": "守護鍊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_POISON",
+    "text": "被毒攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_BURN",
+    "text": "被燒傷攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_FREEZE",
+    "text": "被冰凍攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_PARALYZE",
+    "text": "被麻痺攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_BLIND",
+    "text": "被黑暗攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_STUN",
+    "text": "被暈眩攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_CURSE",
+    "text": "被詛咒攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_BOG",
+    "text": "被濕身攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_SLEEP",
+    "text": "被睡眠攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_FROSTBITE",
+    "text": "被凍傷攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_FLASHBURN",
+    "text": "被閃熱攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_STORMLASH",
+    "text": "被裂風攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_SHADOWBLIGHT",
+    "text": "被暗黑攻擊"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_SCORCHREND",
+    "text": "被劫火攻擊"
   },
   {
     "id": "ENUM_COND_QUEST_START",

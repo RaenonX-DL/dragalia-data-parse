@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import InitVar, dataclass
 from enum import Enum
-from typing import Optional, Union, Sequence, Generic, TypeVar
+from typing import Generic, Iterable, Optional, Sequence, TypeVar, Union
 
 __all__ = ("ConditionCompositeBase", "ConditionCheckResultMixin")
 
@@ -31,10 +31,10 @@ class ConditionCheckResultMixin:
 class ConditionCompositeBase(Generic[T], ABC):
     """Base condition composite class."""
 
-    conditions: InitVar[Optional[Union[Sequence[T], T]]] = None
+    conditions: InitVar[Optional[Union[Iterable[T], T]]] = None
 
     @classmethod
-    def _init_process_conditions(cls, conditions: Optional[Union[Sequence[T], T]]) -> tuple[T]:
+    def _init_process_conditions(cls, conditions: Optional[Union[Iterable[T], T]]) -> tuple[T]:
         """
         This processes ``conditions`` and validates it.
 

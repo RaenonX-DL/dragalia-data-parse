@@ -186,9 +186,7 @@ A value of `50` means to resist a certain affliction by 50%.
 
 ### `14` - `ChangeState`
 
-Call the assigned items once the condition is satisifed.
-
-Items to be called could be:
+Call the assigned items, which may be:
 
 - Action condition if given in the ID - A field
 

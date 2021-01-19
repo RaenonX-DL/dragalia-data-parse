@@ -616,8 +616,64 @@
     "text": "After Shapeshift"
   },
   {
-    "id": "ENUM_COND_ON_DEF_BUFFED",
+    "id": "ENUM_COND_ON_SELF_BUFFED_DEF",
     "text": "DEF Doublebuff"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_POISON",
+    "text": "Hit by Poison"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_BURN",
+    "text": "Hit by Burn"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_FREEZE",
+    "text": "Hit by Freeze"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_PARALYZE",
+    "text": "Hit by Paralyze"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_BLIND",
+    "text": "Hit by Blind"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_STUN",
+    "text": "Hit by Stun"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_CURSE",
+    "text": "Hit by Curse"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_BOG",
+    "text": "Hit by Bog"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_SLEEP",
+    "text": "Hit by Sleep"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_FROSTBITE",
+    "text": "Hit by Frostbite"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_FLASHBURN",
+    "text": "Hit by Flashburn"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_STORMLASH",
+    "text": "Hit by Stormlash"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_SHADOWBLIGHT",
+    "text": "Hit by Shadowblight"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT_BY_SCORCHREND",
+    "text": "Hit by Scorchrend"
   },
   {
     "id": "ENUM_COND_QUEST_START",

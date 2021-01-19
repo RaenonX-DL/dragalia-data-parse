@@ -22,6 +22,7 @@ class AbilityVariantEffectUnit(EffectUnitBase):
 
     source_ability_id: int
     condition_comp: ConditionComposite
+    cooldown_sec: float
 
     rate_max: float
 
@@ -42,6 +43,7 @@ class AbilityVariantEffectPayload(ActionCondEffectConvertPayload):
     """Payload object for variant effect conversion."""
 
     condition_comp: ConditionComposite
+    condition_cooldown: float
     source_ability_id: int
 
 
@@ -65,6 +67,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
 
         return AbilityVariantEffectUnit(
             condition_comp=payload.condition_comp,
+            cooldown_sec=payload.condition_cooldown,
             source_ability_id=payload.source_ability_id,
             status=Status.NONE,
             target=HitTargetSimple.SELF,  # Effects of the ability from action condition should all targeted to self
@@ -85,6 +88,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
     ) -> Optional[AbilityVariantEffectUnit]:
         return AbilityVariantEffectUnit(
             condition_comp=payload.condition_comp,
+            cooldown_sec=payload.condition_cooldown,
             source_ability_id=payload.source_ability_id,
             status=action_cond.afflict_status,
             target=HitTargetSimple.SELF,  # Effects of the ability from action condition should all targeted to self
@@ -116,6 +120,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             AbilityVariantEffectUnit(
                 source_ability_id=payload.source_ability_id,
                 condition_comp=payload.condition_comp,
+                cooldown_sec=payload.condition_cooldown,
                 parameter=ability_param.to_buff_parameter(),
                 probability_pct=100,
                 rate=self.variant.up_value / 100,  # Original data is percentage
@@ -141,6 +146,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             AbilityVariantEffectUnit(
                 source_ability_id=payload.source_ability_id,
                 condition_comp=payload.condition_comp,
+                cooldown_sec=payload.condition_cooldown,
                 parameter=resist_param,
                 probability_pct=100,  # Absolutely applicable
                 rate=self.variant.up_value / 100,  # Original data is percentage
@@ -158,7 +164,22 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
     def _from_change_state(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
-        return set(self.to_buff_units(asset_manager.asset_action_cond.get_data_by_id(self.variant.id_a), payload))
+        # Add action condition IDs
+        action_cond_ids: set[int] = set()
+        # --- From action condition
+        if action_cond_id := self.variant.assigned_action_condition:
+            action_cond_ids.add(action_cond_id)
+        # --- From hit label
+        if hit_label := self.variant.assigned_hit_label:
+            if hit_attr := asset_manager.asset_hit_attr.get_data_by_id(hit_label):
+                if hit_attr.has_action_condition:
+                    action_cond_ids.add(hit_attr.action_condition_id)
+
+        # Get units from action condition IDs
+        ret: set[AbilityVariantEffectUnit] = set()
+        for action_cond_id in action_cond_ids:
+            ret.update(self.to_buff_units(asset_manager.asset_action_cond.get_data_by_id(action_cond_id), payload))
+        return ret
 
     def _from_sp_charge(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
@@ -172,6 +193,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             AbilityVariantEffectUnit(
                 source_ability_id=payload.source_ability_id,
                 condition_comp=payload.condition_comp,
+                cooldown_sec=payload.condition_cooldown,
                 parameter=param,
                 probability_pct=100,
                 rate=self.variant.up_value / 100,  # Original data is percentage
@@ -217,14 +239,17 @@ def ability_to_effect_units(
 
     # Get the conditions
     conditions: list[Condition] = []
+    cooldown_sec: float = 0
     if on_skill_cond := ability_entry.on_skill_condition:
         conditions.append(on_skill_cond)
     if ability_cond := ability_entry.condition.to_condition():
         conditions.append(ability_cond)
+        cooldown_sec = ability_entry.condition.cooldown_sec
 
     # Get the variant payload
     payload = AbilityVariantEffectPayload(
         condition_comp=ConditionComposite(conditions),
+        condition_cooldown=cooldown_sec,
         source_ability_id=ability_entry.id,
     )
 

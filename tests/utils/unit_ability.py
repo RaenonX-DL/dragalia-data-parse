@@ -17,6 +17,7 @@ class AbilityEffectInfo(AbilityInfoBase):
     parameter: BuffParameter
     rate: float
     probability: Optional[float] = None
+    cooldown_sec: Optional[float] = None
 
     def __hash__(self):
         # x 1E5 for error tolerance
@@ -36,11 +37,13 @@ def check_ability_effect_unit_match(
 ):
     """Check if the info of the affliction units match."""
     has_probability = any(info.probability for info in expected_info)
+    has_cooldown = any(info.cooldown_sec for info in expected_info)
 
     actual_info = [
         AbilityEffectInfo(
             unit.source_ability_id, unit.condition_comp, unit.parameter, unit.rate,
-            unit.probability_pct if has_probability else None
+            unit.probability_pct if has_probability else None,
+            unit.cooldown_sec if has_cooldown else None
         )
         for unit in actual_units
     ]

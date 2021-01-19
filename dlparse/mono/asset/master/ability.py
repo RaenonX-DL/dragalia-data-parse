@@ -2,18 +2,18 @@
 from dataclasses import dataclass, field
 from typing import Optional, TextIO, Union
 
-from dlparse.enums import AbilityCondition, AbilityVariantType, Condition, SkillNumber
-from dlparse.errors import AbilityConditionUnconvertibleError, AbilityOnSkillUnconvertibleError
+from dlparse.enums import AbilityCondition, AbilityVariantType, Condition, ConditionCategories, SkillNumber, Status
+from dlparse.errors import AbilityConditionUnconvertibleError, AbilityOnSkillUnconvertibleError, EnumConversionError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("AbilityVariantEntry", "AbilityEntry", "AbilityAsset", "AbilityParser")
 
 _ability_condition_map: dict[AbilityCondition, Condition] = {
     AbilityCondition.NONE: Condition.NONE,
-    AbilityCondition.ON_RECEIVED_BUFF_DEF: Condition.ON_DEF_BUFFED,
-    AbilityCondition.QUEST_START: Condition.QUEST_START,
-    AbilityCondition.ENERGIZED_MOMENT: Condition.SELF_ENERGIZED,
-    AbilityCondition.ON_SHAPESHIFT_COMPLETED: Condition.SELF_SHAPESHIFT_COMPLETED,
+    AbilityCondition.TRG_RECEIVED_BUFF_DEF: Condition.ON_SELF_BUFFED_DEF,
+    AbilityCondition.TRG_QUEST_START: Condition.QUEST_START,
+    AbilityCondition.TRG_ENERGIZED: Condition.SELF_ENERGIZED,
+    AbilityCondition.TRG_SHAPESHIFT_COMPLETED: Condition.SELF_SHAPESHIFT_COMPLETED,
 }
 """
 A dict mapping :class:`AbilityCondition` directly to :class:`Condition`.
@@ -32,6 +32,8 @@ class AbilityConditionEntry:
     val_1: float
     val_2: float
 
+    cooldown_sec: float
+
     condition_type: AbilityCondition = field(init=False)
 
     def __post_init__(self):
@@ -49,15 +51,15 @@ class AbilityConditionEntry:
 
     def _cond_self_hp(self) -> Optional[Condition]:
         # Self HP >
-        if self.condition_type == AbilityCondition.SELF_HP_GT:
+        if self.condition_type == AbilityCondition.EFF_SELF_HP_GT:
             return self._cond_self_hp_gt()
 
         # Self HP >=
-        if self.condition_type == AbilityCondition.SELF_HP_GTE:
+        if self.condition_type == AbilityCondition.EFF_SELF_HP_GTE:
             return self._cond_self_hp_gte()
 
         # Self HP <
-        if self.condition_type in (AbilityCondition.SELF_HP_LT, AbilityCondition.SELF_HP_LT_2):
+        if self.condition_type in (AbilityCondition.EFF_SELF_HP_LT, AbilityCondition.EFF_SELF_HP_LT_2):
             return self._cond_self_hp_lt()
 
         return None
@@ -88,6 +90,12 @@ class AbilityConditionEntry:
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
+    def _cond_hit_by_affliction(self) -> Condition:
+        try:
+            return ConditionCategories.trigger_hit_by_affliction.convert_reversed(Status(self.val_1))
+        except EnumConversionError as ex:
+            raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2) from ex
+
     def to_condition(self) -> Condition:
         """
         Convert the ability condition to condition.
@@ -102,8 +110,12 @@ class AbilityConditionEntry:
         if self_hp_cond := self._cond_self_hp():
             return self_hp_cond
 
+        # Hit by attack with affliction
+        if self.condition_type == AbilityCondition.TRG_HIT_WITH_AFFLICTION:
+            return self._cond_hit_by_affliction()
+
         # Has specific buff
-        if self.condition_type == AbilityCondition.SELF_SPECIFICALLY_BUFFED:
+        if self.condition_type == AbilityCondition.EFF_SELF_SPECIFICALLY_BUFFED:
             return self._cond_self_buffed()
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
@@ -358,7 +370,7 @@ class AbilityEntry(MasterEntryBase):
             name_label=data["_Name"],
             details_label=data["_Details"],
             condition=AbilityConditionEntry(
-                data["_ConditionType"], data["_ConditionValue"], data["_ConditionValue2"]
+                data["_ConditionType"], data["_ConditionValue"], data["_ConditionValue2"], data["_CoolTime"]
             ),
             on_skill=data["_OnSkill"],
             variant_1=AbilityVariantEntry(

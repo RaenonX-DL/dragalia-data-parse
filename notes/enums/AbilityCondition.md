@@ -48,7 +48,7 @@ Field: `_ConditionType`
 27. SP2_UNDER
 28. SP2_LESS
 29. CAUSE_ABNORMAL_STATUS
-30. DAMAGED_ABNORMAL_STATUS
+<a href="#30---damaged_abnormal_status">30. DAMAGED_ABNORMAL_STATUS</a>
 31. DRAGONSHIFT_MOMENT
 32. PARTY_ALIVE_NUM_OVER
 33. PARTY_ALIVE_NUM_UNDER
@@ -122,7 +122,7 @@ Missing value(s) means that the corresponding value is not used.
 
 ### `01` - `HP_MORE`
 
-Check if the user's HP is > a certain threshold.
+Effective if the user's HP is > a certain threshold.
 
 `Val 1 = 40` means that the condition holds if the user's HP is > 40%.
 
@@ -130,22 +130,22 @@ Check if the user's HP is > a certain threshold.
 
 ### `08` - `GET_BUFF_DEF`
 
-Effects of the variants will be triggered once when a user receives a buff.
+Triggered once when the user receives a buff.
 
 ### `15` - `QUEST_START`
 
-Apply all the effects once at the beginning of the quest.
+Triggered once at the beginning of the quest.
 
 ### `18` - `TENSION_MAX`
 
-Check if the user **is** energized.
+Effective if the user **is** energized.
 
 Note that the effect will be effective as long as the user is energized. This is different
 from [`19. TENSION_MAX_MOMENT`](#19---tension_max_moment), which only triggers when the user got energized.
 
 ### `19` - `TENSION_MAX_MOMENT`
 
-Check if the user **got** energized.
+Triggered once when the user **got** energized.
 
 Note that the effect will be granted once the user got energized. This is different
 from [`18. TENSION_MAX`](#18---tension_max), which effects will be effective as long as the user is energized.
@@ -156,9 +156,18 @@ from [`18. TENSION_MAX`](#18---tension_max), which effects will be effective as 
 
   For all usages as of 2020/12/12, this only has a value of `1`.
 
+### `30` - `DAMAGED_ABNORMAL_STATUS`
+
+Triggered once when the user is hit by an attack with the specified affliction status.
+
+`Val 1 = 6` means that the ability will be triggered once the user is hit by an attack that stuns the target.
+
+- **Val 1**: Enum number of the affliction status to trigger this condition.
+  Check [the enum of the affliction statuses](/dlparse/enums/status.py) for the ID correspondence.
+
 ### `37` - `HP_NOREACH`
 
-Check if the user's HP is < a certain threshold.
+Effective if the user's HP is < a certain threshold.
 
 `Val 1 = 40` means that the condition holds if the user's HP is < 40%.
 
@@ -166,12 +175,12 @@ Check if the user's HP is < a certain threshold.
 
 ### `48` - `BUFFED_SPECIFIC_ID`
 
-Only effective if the user has a certain buff.
+Effective if the user has a certain buff.
 
 `Val 1 = 977` means that the user needs to have the action condition ID `977` for making the ability effective.
 
 If both `val 1` and `val 2` are specified, the user needs to have them **BOTH**. Otherwise, ``val 2`` will be set
-to ``0`` meaning that the field is not effective.
+to ``0`` meaning that the field is not in use.
 
 - **Val 1**: action condition ID of the required buff.
 
@@ -179,7 +188,7 @@ to ``0`` meaning that the field is not effective.
 
 ### `51` - `RELEASE_DRAGONSHIFT`
 
-The effects will be triggered once when the user completed shapeshifting.
+Triggered once when the user completed shapeshifting.
 
 ### `60` - `HP_MORE_NO_SUPPORT_CHARA`
 
@@ -193,8 +202,9 @@ However, this condition always fail if the unit is being used as a helper.
 
 ### `61` - `HP_NOREACH_NO_SUPPORT_CHARA`
 
-Another branch of [`37. HP_NOREACH`](#37---hp_noreach). However, this condition always fail if the unit is being used
-as a helper.
+Another branch of [`37. HP_NOREACH`](#37---hp_noreach).
+
+However, this condition always fail if the unit is being used as a helper.
 
 > Awaits confirmation. One known usage is Grace (`10850503`).
 > The meaning of **no support** here can also mean "no shared skill" available,
@@ -202,7 +212,7 @@ as a helper.
 
 ### `73` - `BUTTERFLYBULLET_NUM_OVER`
 
-Check if the butterflies on the map is over a certain threshold.
+Effective if the butterflies on the map is over a certain threshold.
 
 `Val 1 = 6` means that the condition holds if the butterfly count is > 6.
 

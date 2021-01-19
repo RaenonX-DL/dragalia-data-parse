@@ -1,6 +1,6 @@
 """Condition composite class."""
 from dataclasses import dataclass, field
-from typing import ClassVar, Optional, Sequence, TYPE_CHECKING, Union
+from typing import ClassVar, Iterable, Optional, TYPE_CHECKING, Union
 
 from dlparse.enums.condition_base import ConditionCompositeBase
 from dlparse.errors import ConditionValidationFailedError
@@ -178,7 +178,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if cond_not_categorized := (set(conditions) - set(self.conditions_sorted) - self.allowed_not_categorize_conds):
             raise ConditionValidationFailedError(ConditionCheckResult.HAS_CONDITIONS_LEFT, cond_not_categorized)
 
-    def __post_init__(self, conditions: Optional[Union[Sequence[Condition], Condition]]):
+    def __post_init__(self, conditions: Optional[Union[Iterable[Condition], Condition]]):
         conditions = self._init_process_conditions(conditions)
 
         # region Categorized condition fields

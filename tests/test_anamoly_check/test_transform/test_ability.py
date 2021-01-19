@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 import pytest
 
@@ -15,6 +16,8 @@ class UnknownAbilityData:
     condition_ids: dict[int, int]
     variant_ids: dict[int, list[int]]
 
+    error: Optional[Exception] = None
+
     def __str__(self):
         return repr(self)
 
@@ -26,6 +29,9 @@ class UnknownAbilityData:
 
         for source_ab_id, variant_type_ids in self.variant_ids.items():
             ret += f"\n  - Variant type IDs: {variant_type_ids} from #{source_ab_id}"
+
+        if self.error:
+            ret += f"\n  - Error: {self.error}"
 
         return ret
 
@@ -49,7 +55,7 @@ def test_transform_all_character_ability(transformer_ability: AbilityTransformer
                         ability_data.unknown_condition_ids,
                         ability_data.unknown_variant_ids
                     ))
-            except (AbilityConditionUnconvertibleError, AbilityVariantUnconvertibleError):
+            except (AbilityConditionUnconvertibleError, AbilityVariantUnconvertibleError) as ex:
                 # Condition/Variant unconvertible (most likely due to unknown/unhandled condition/variant)
                 ability_data = asset_manager.asset_ability_data.get_data_by_id(ability_id)
 
@@ -57,9 +63,10 @@ def test_transform_all_character_ability(transformer_ability: AbilityTransformer
                     chara_data.id, ability_id,
                     ({ability_id: ability_data.condition.condition_code}
                      if ability_data.condition.is_unknown_condition else {}),
-                    {ability_id: ability_data.unknown_variant_type_ids}
+                    {ability_id: ability_data.unknown_variant_type_ids},
+                    ex
                 ))
 
     if unknown_abilities:
         unknown_str = "\n".join([str(entry) for entry in unknown_abilities])
-        pytest.fail(f"Some abilities have unknown elements:\n{unknown_str}")
+        pytest.fail(f"Some abilities have {len(unknown_abilities)} unknown elements:\n{unknown_str}")
