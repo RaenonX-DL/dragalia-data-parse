@@ -94,7 +94,7 @@ class BuffParameter(Enum):
     """
     # endregion
 
-    # region Resistance
+    # region Element Resistance
     RESISTANCE_FLAME = 411
     """Flame resistance up. A value of 0.12 means that the user reduces flame damage taken by 12%."""
     RESISTANCE_WATER = 412
@@ -105,6 +105,41 @@ class BuffParameter(Enum):
     """Light resistance up. A value of 0.12 means that the user reduces light damage taken by 12%."""
     RESISTANCE_SHADOW = 415
     """Shadow resistance up. A value of 0.12 means that the user reduces shadow damage taken by 12%."""
+    # endregion
+
+    # region Affliction Resistance
+    RESISTANCE_POISON = 431
+    """Poison resistance up. A value of 0.12 means that the probability of being posioned is reduced by 12%."""
+    RESISTANCE_BURN = 432
+    """Burn resistance up. A value of 0.12 means that the probability of being burned is reduced by 12%."""
+    RESISTANCE_FREEZE = 433
+    """Freeze resistance up. A value of 0.12 means that the probability of being frozen is reduced by 12%."""
+    RESISTANCE_PARALYZE = 434
+    """Paralyze resistance up. A value of 0.12 means that the probability of being paralyzed is reduced by 12%."""
+    RESISTANCE_BLIND = 435
+    """Blind resistance up. A value of 0.12 means that the probability of being blinded is reduced by 12%."""
+    RESISTANCE_STUN = 436
+    """Stun resistance up. A value of 0.12 means that the probability of being stunned is reduced by 12%."""
+    RESISTANCE_CURSE = 437
+    """Curse resistance up. A value of 0.12 means that the probability of being cursed is reduced by 12%."""
+    RESISTANCE_BOG = 439
+    """Bog resistance up. A value of 0.12 means that the probability of being bogged is reduced by 12%."""
+    RESISTANCE_SLEEP = 440
+    """Sleep resistance up. A value of 0.12 means that the probability of being slept is reduced by 12%."""
+    RESISTANCE_FROSTBITE = 441
+    """Frostbite resistance up. A value of 0.12 means that the probability of being frostbitten is reduced by 12%."""
+    RESISTANCE_FLASHBURN = 442
+    """Flashburn resistance up. A value of 0.12 means that the probability of being flashburned is reduced by 12%."""
+    RESISTANCE_STORMLASH = 443
+    """Stormlash resistance up. A value of 0.12 means that the probability of being stormlashed is reduced by 12%."""
+    RESISTANCE_SHADOWBLIGHT = 444
+    """
+    Shadowblight resistance up.
+
+    A value of 0.12 means that the probability of being shadowblighted is reduced by 12%.
+    """
+    RESISTANCE_SCORCHREND = 445
+    """Scorchrend resistance up. A value of 0.12 means that the probability of being scorchrent is reduced by 12%."""
     # endregion
     # endregion
 

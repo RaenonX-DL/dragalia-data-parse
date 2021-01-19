@@ -1,6 +1,6 @@
 """Implementations for checking the affliction effects."""
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Optional
 
 from dlparse.enums import BuffParameter, ConditionComposite
 from dlparse.model import AbilityVariantEffectUnit
@@ -16,6 +16,7 @@ class AbilityEffectInfo(AbilityInfoBase):
     condition_comp: ConditionComposite
     parameter: BuffParameter
     rate: float
+    probability: Optional[float] = None
 
     def __hash__(self):
         # x 1E5 for error tolerance
@@ -34,8 +35,13 @@ def check_ability_effect_unit_match(
         message: Any = None
 ):
     """Check if the info of the affliction units match."""
+    has_probability = any(info.probability for info in expected_info)
+
     actual_info = [
-        AbilityEffectInfo(unit.source_ability_id, unit.condition_comp, unit.parameter, unit.rate)
+        AbilityEffectInfo(
+            unit.source_ability_id, unit.condition_comp, unit.parameter, unit.rate,
+            unit.probability_pct if has_probability else None
+        )
         for unit in actual_units
     ]
 

@@ -1,6 +1,9 @@
 """Status enums."""
 from enum import IntEnum
 
+from dlparse.errors import EnumConversionError
+from .buff_parameter import BuffParameter
+
 __all__ = ("Status",)
 
 
@@ -68,3 +71,32 @@ class Status(IntEnum):
     def icon_name(self) -> str:
         """Get the file name of the status icon, excluding the file extension."""
         return f"Icon_Status_01_{self.value:02}"
+
+    def to_buff_param_resist(self) -> BuffParameter:
+        """
+        Convert the current status to resistance buff parameter.
+
+        :raises EnumConversionError: if the current status cannot be converted to resistance buff parameter
+        """
+        if self not in _TRANS_DICT:
+            raise EnumConversionError(self, Status, BuffParameter)
+
+        return _TRANS_DICT[self]
+
+
+_TRANS_DICT: dict[Status, BuffParameter] = {
+    Status.POISON: BuffParameter.RESISTANCE_POISON,
+    Status.BURN: BuffParameter.RESISTANCE_BURN,
+    Status.FREEZE: BuffParameter.RESISTANCE_FREEZE,
+    Status.PARALYZE: BuffParameter.RESISTANCE_PARALYZE,
+    Status.BLIND: BuffParameter.RESISTANCE_BLIND,
+    Status.STUN: BuffParameter.RESISTANCE_STUN,
+    Status.CURSE: BuffParameter.RESISTANCE_CURSE,
+    Status.BOG: BuffParameter.RESISTANCE_BOG,
+    Status.SLEEP: BuffParameter.RESISTANCE_SLEEP,
+    Status.FROSTBITE: BuffParameter.RESISTANCE_FROSTBITE,
+    Status.FLASHBURN: BuffParameter.RESISTANCE_FLASHBURN,
+    Status.STORMLASH: BuffParameter.RESISTANCE_STORMLASH,
+    Status.SHADOWBLIGHT: BuffParameter.RESISTANCE_SHADOWBLIGHT,
+    Status.SCORCHREND: BuffParameter.RESISTANCE_SCORCHREND
+}

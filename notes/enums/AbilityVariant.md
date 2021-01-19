@@ -63,7 +63,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 <pre>
 00. None
 <a href="#01---statusup">01. StatusUp</a>
-02. ResistAbs
+<a href="#02---resistabs">02. ResistAbs</a>
 03. ActAddAbs
 04. ResistTribe
 05. ActKillerTribe
@@ -163,6 +163,26 @@ A value of `2` means to raise ATK.
 Parameter raising rate.
 
 A value of `10` means to raise the parameter by 10%.
+
+### `02` - `ResistAbs`
+
+Resistance of a certain status.
+
+If ID-A is `6`; up value is `25`, then it means `Stun Resistance +25%`
+(`6` corresponds to the affliction code of Stun).
+
+#### Variant ID - A
+
+Code of the affliction to resist. Check [the enum of the affliction statuses](/dlparse/enums/status.py)
+for the ID correspondence.
+
+A value of `6` means to resist Stun.
+
+#### Variant Up Value
+
+Probability rate of the affliction resistance in percentage.
+
+A value of `50` means to resist a certain affliction by 50%.
 
 ### `14` - `ChangeState`
 

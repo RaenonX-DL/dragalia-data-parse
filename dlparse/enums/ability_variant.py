@@ -25,6 +25,9 @@ class AbilityVariantType(Enum):
     STATUS_UP = 1
     """Raise a certain status."""
 
+    RESISTANCE_UP = 2
+    """Raise the resistance toward a certain affliction."""
+
     CHANGE_STATE = 14
     """Calls the hit attribute (at str field) or the action condition (ID at ID-A field) if the condition holds."""
 
