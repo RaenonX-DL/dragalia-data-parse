@@ -236,6 +236,7 @@ class Condition(Enum):
     # region 8xx - Trigger
     # region Effect on self
     ON_SELF_BUFFED_DEF = 801
+    ON_SELF_HP_LTE_30 = 810
     # endregion
 
     # region Effect by others

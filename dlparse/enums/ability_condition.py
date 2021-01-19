@@ -27,6 +27,7 @@ class AbilityCondition(Enum):
 
     EFF_SELF_HP_GTE = 1
     TRG_RECEIVED_BUFF_DEF = 8
+    TRG_SELF_HP_LTE = 14
     TRG_QUEST_START = 15
     EFF_ENERGIZED = 18
     TRG_ENERGIZED = 19

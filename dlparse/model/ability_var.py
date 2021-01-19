@@ -23,6 +23,7 @@ class AbilityVariantEffectUnit(EffectUnitBase):
     source_ability_id: int
     condition_comp: ConditionComposite
     cooldown_sec: float
+    max_occurrences: int
 
     rate_max: float
 
@@ -45,6 +46,7 @@ class AbilityVariantEffectPayload(ActionCondEffectConvertPayload):
     condition_comp: ConditionComposite
     condition_cooldown: float
     source_ability_id: int
+    max_occurrences: int
 
 
 @dataclass
@@ -68,6 +70,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         return AbilityVariantEffectUnit(
             condition_comp=payload.condition_comp,
             cooldown_sec=payload.condition_cooldown,
+            max_occurrences=payload.max_occurrences,
             source_ability_id=payload.source_ability_id,
             status=Status.NONE,
             target=HitTargetSimple.SELF,  # Effects of the ability from action condition should all targeted to self
@@ -89,6 +92,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         return AbilityVariantEffectUnit(
             condition_comp=payload.condition_comp,
             cooldown_sec=payload.condition_cooldown,
+            max_occurrences=payload.max_occurrences,
             source_ability_id=payload.source_ability_id,
             status=action_cond.afflict_status,
             target=HitTargetSimple.SELF,  # Effects of the ability from action condition should all targeted to self
@@ -121,6 +125,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 source_ability_id=payload.source_ability_id,
                 condition_comp=payload.condition_comp,
                 cooldown_sec=payload.condition_cooldown,
+                max_occurrences=payload.max_occurrences,
                 parameter=ability_param.to_buff_parameter(),
                 probability_pct=100,
                 rate=self.variant.up_value / 100,  # Original data is percentage
@@ -147,6 +152,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 source_ability_id=payload.source_ability_id,
                 condition_comp=payload.condition_comp,
                 cooldown_sec=payload.condition_cooldown,
+                max_occurrences=payload.max_occurrences,
                 parameter=resist_param,
                 probability_pct=100,  # Absolutely applicable
                 rate=self.variant.up_value / 100,  # Original data is percentage
@@ -194,6 +200,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 source_ability_id=payload.source_ability_id,
                 condition_comp=payload.condition_comp,
                 cooldown_sec=payload.condition_cooldown,
+                max_occurrences=payload.max_occurrences,
                 parameter=param,
                 probability_pct=100,
                 rate=self.variant.up_value / 100,  # Original data is percentage
@@ -240,17 +247,20 @@ def ability_to_effect_units(
     # Get the conditions
     conditions: list[Condition] = []
     cooldown_sec: float = 0
+    max_occurrences: int = 0
     if on_skill_cond := ability_entry.on_skill_condition:
         conditions.append(on_skill_cond)
     if ability_cond := ability_entry.condition.to_condition():
         conditions.append(ability_cond)
         cooldown_sec = ability_entry.condition.cooldown_sec
+        max_occurrences = ability_entry.condition.max_occurrences
 
     # Get the variant payload
     payload = AbilityVariantEffectPayload(
         condition_comp=ConditionComposite(conditions),
         condition_cooldown=cooldown_sec,
         source_ability_id=ability_entry.id,
+        max_occurrences=max_occurrences,
     )
 
     for variant in ability_entry.variants:

@@ -124,6 +124,21 @@ def test_atk_up_gte_70_hp(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ability_data.effect_units, expected_info)
 
 
+def test_def_up_lte_30_hp(transformer_ability: AbilityTransformer):
+    # Raemond (AB1 @ Max - DEF +50% for 15s when HP <= 30%)
+    # https://dragalialost.gamepedia.com/Karl
+    ability_data = transformer_ability.transform_ability(210001704)
+
+    expected_info = {
+        AbilityEffectInfo(
+            210001704, ConditionComposite(Condition.ON_SELF_HP_LTE_30), BuffParameter.DEF_BUFF, 0.5,
+            max_occurrences=1
+        ),
+    }
+
+    check_ability_effect_unit_match(ability_data.effect_units, expected_info)
+
+
 def test_on_def_buffed(transformer_ability: AbilityTransformer):
     # Valentine's Orion (AB1 @ Max - DEF doublebuff - ATK +15% (Buff))
     # https://dragalialost.gamepedia.com/Valentine%27s_Orion

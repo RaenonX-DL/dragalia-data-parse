@@ -10,6 +10,7 @@ __all__ = ("AbilityVariantEntry", "AbilityEntry", "AbilityAsset", "AbilityParser
 
 _ability_condition_map: dict[AbilityCondition, Condition] = {
     AbilityCondition.NONE: Condition.NONE,
+    AbilityCondition.TRG_SELF_HP_LTE: Condition.ON_SELF_HP_LTE_30,
     AbilityCondition.TRG_RECEIVED_BUFF_DEF: Condition.ON_SELF_BUFFED_DEF,
     AbilityCondition.TRG_QUEST_START: Condition.QUEST_START,
     AbilityCondition.TRG_ENERGIZED: Condition.SELF_ENERGIZED,
@@ -44,6 +45,7 @@ class AbilityConditionEntry:
     val_2: float
 
     cooldown_sec: float
+    max_occurrences: int
 
     condition_type: AbilityCondition = field(init=False)
 
@@ -365,7 +367,8 @@ class AbilityEntry(MasterEntryBase):
             name_label=data["_Name"],
             details_label=data["_Details"],
             condition=AbilityConditionEntry(
-                data["_ConditionType"], data["_ConditionValue"], data["_ConditionValue2"], data["_CoolTime"]
+                data["_ConditionType"], data["_ConditionValue"], data["_ConditionValue2"],
+                data["_CoolTime"], data["_OccurenceNum"]
             ),
             on_skill=data["_OnSkill"],
             variant_1=AbilityVariantEntry(

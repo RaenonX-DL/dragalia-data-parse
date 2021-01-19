@@ -32,7 +32,7 @@ Field: `_ConditionType`
 11. KILL_ENEMY
 12. TRANSFORM_DRAGON
 13. HP_MORE_MOMENT
-14. HP_LESS_MOMENT
+<a href="#14---hp_less_moment">14. HP_LESS_MOMENT</a>
 <a href="#15---quest_start">15. QUEST_START</a>
 16. OVERDRIVE
 17. ABNORMAL_STATUS
@@ -122,15 +122,23 @@ Missing value(s) means that the corresponding value is not used.
 
 ### `01` - `HP_MORE`
 
-Effective if the user's HP is >= a certain threshold.
+Effective if the user's HP is greater or equal to a certain threshold.
 
-`Val 1 = 40` means that the condition holds if the user's HP is >= 40%.
+`Val 1 = 40` means that the ability is effective if the user's HP is >= 40%.
 
 - **Val 1**: HP threshold.
 
 ### `08` - `GET_BUFF_DEF`
 
 Triggered once when the user receives a buff.
+
+### `14` - `HP_LESS_MOMENT`
+
+Triggered once when the user's HP drops under a certain threshold.
+
+`Val 1 = 30` means that the ability will be triggered once when the user's HP drops <= 30%.
+
+- **Val 1**: HP threshold.
 
 ### `15` - `QUEST_START`
 

@@ -39,12 +39,15 @@ class UnknownAbilityData:
 @pytest.mark.skip
 def test_transform_all_character_ability(transformer_ability: AbilityTransformer, asset_manager: AssetManager):
     unknown_abilities: list[UnknownAbilityData] = []
+    counter: int = 0
 
     # Not checking all abilities in the ability asset directly
     # because there are some unused or deprecated ability inside.
     # We don't want to spend time handling unused things.
     for chara_data in asset_manager.asset_chara_data:
         for ability_id in chara_data.ability_ids_all_level:
+            counter += 1
+
             try:
                 ability_data = transformer_ability.transform_ability(ability_id)
 
@@ -69,4 +72,8 @@ def test_transform_all_character_ability(transformer_ability: AbilityTransformer
 
     if unknown_abilities:
         unknown_str = "\n".join([str(entry) for entry in unknown_abilities])
-        pytest.fail(f"Some abilities have {len(unknown_abilities)} unknown elements:\n{unknown_str}")
+        pytest.fail(
+            f"{len(unknown_abilities)} abilities have unknown elements "
+            f"(total {counter}, {1 - len(unknown_abilities) / counter:.2%} parsed):\n"
+            f"{unknown_str}"
+        )

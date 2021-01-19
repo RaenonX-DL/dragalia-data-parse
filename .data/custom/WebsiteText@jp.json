@@ -624,6 +624,10 @@
     "text": "DEF Doublebuff"
   },
   {
+    "id": "ENUM_COND_ON_SELF_HP_LTE_30",
+    "text": "Upon HP <= 30%"
+  },
+  {
     "id": "ENUM_COND_ON_HIT_BY_POISON",
     "text": "被毒攻擊"
   },
