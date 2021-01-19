@@ -26,7 +26,7 @@ Field: `_ConditionType`
 05. DRAGON_MODE
 06. BREAKDOWN
 07. GET_BUFF_ATK
-08. GET_BUFF_DEF
+<a href="#08---get_buff_def">08. GET_BUFF_DEF</a>
 09. TOTAL_HITCOUNT_MORE
 10. TOTAL_HITCOUNT_LESS
 11. KILL_ENEMY
@@ -127,6 +127,10 @@ Check if the user's HP is > a certain threshold.
 `Val 1 = 40` means that the condition holds if the user's HP is > 40%.
 
 - **Val 1**: HP threshold.
+
+### `08` - `GET_BUFF_DEF`
+
+Effects of the variants will be triggered once when a user receives a buff.
 
 ### `15` - `QUEST_START`
 

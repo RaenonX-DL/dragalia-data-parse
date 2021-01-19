@@ -27,6 +27,8 @@ class AbilityCondition(Enum):
 
     Condition value 1 = 40 means that the condition matches if the user's HP is > 40% of the max HP.
     """
+    ON_RECEIVED_BUFF_DEF = 8
+    """Trigger all variants once when the user received a DEF buff."""
     QUEST_START = 15
     """Apply all the effects once at the beginning of the quest."""
     ENERGIZED = 18

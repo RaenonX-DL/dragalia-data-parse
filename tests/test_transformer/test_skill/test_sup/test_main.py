@@ -21,13 +21,13 @@ def test_single_effect_to_team(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 3
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo("BUF_ALL_ATK_SSR_30_LV01", HitTargetSimple.TEAM, BuffParameter.ATK, 0.15, 15, 0)
+        BuffEffectInfo("BUF_ALL_ATK_SSR_30_LV01", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.15, 15, 0)
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo("BUF_ALL_ATK_SSR_30_LV02", HitTargetSimple.TEAM, BuffParameter.ATK, 0.2, 15, 0)
+        BuffEffectInfo("BUF_ALL_ATK_SSR_30_LV02", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.2, 15, 0)
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo("BUF_ALL_ATK_SSR_30_LV03", HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0)
+        BuffEffectInfo("BUF_ALL_ATK_SSR_30_LV03", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.25, 15, 0)
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
 
@@ -50,13 +50,13 @@ def test_single_effect_to_team_limited(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 3
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo("BUF_160_ATK_FIRE_LV01", HitTargetSimple.TEAM, BuffParameter.ATK, 0.15, 15, 0)
+        BuffEffectInfo("BUF_160_ATK_FIRE_LV01", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.15, 15, 0)
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo("BUF_160_ATK_FIRE_LV02", HitTargetSimple.TEAM, BuffParameter.ATK, 0.20, 15, 0)
+        BuffEffectInfo("BUF_160_ATK_FIRE_LV02", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.20, 15, 0)
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo("BUF_160_ATK_FIRE_LV03", HitTargetSimple.TEAM, BuffParameter.ATK, 0.25, 15, 0)
+        BuffEffectInfo("BUF_160_ATK_FIRE_LV03", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.25, 15, 0)
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
 
@@ -92,13 +92,13 @@ def test_single_effect_area(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 3
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo("SWD_115_04_ATK_FLD_LV01", HitTargetSimple.AREA, BuffParameter.ATK, 0.10, 10, 0)
+        BuffEffectInfo("SWD_115_04_ATK_FLD_LV01", HitTargetSimple.AREA, BuffParameter.ATK_BUFF, 0.10, 10, 0)
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo("SWD_115_04_ATK_FLD_LV02", HitTargetSimple.AREA, BuffParameter.ATK, 0.15, 10, 0)
+        BuffEffectInfo("SWD_115_04_ATK_FLD_LV02", HitTargetSimple.AREA, BuffParameter.ATK_BUFF, 0.15, 10, 0)
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo("SWD_115_04_ATK_FLD_LV03", HitTargetSimple.AREA, BuffParameter.ATK, 0.20, 10, 0)
+        BuffEffectInfo("SWD_115_04_ATK_FLD_LV03", HitTargetSimple.AREA, BuffParameter.ATK_BUFF, 0.20, 10, 0)
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
 
@@ -121,17 +121,17 @@ def test_multi_effect_to_team(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 4
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo("BUF_184_DEF_LV01", HitTargetSimple.TEAM, BuffParameter.DEF, 0.15, 15, 0)
+        BuffEffectInfo("BUF_184_DEF_LV01", HitTargetSimple.TEAM, BuffParameter.DEF_BUFF, 0.15, 15, 0)
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo("BUF_184_DEF_LV02", HitTargetSimple.TEAM, BuffParameter.DEF, 0.2, 15, 0)
+        BuffEffectInfo("BUF_184_DEF_LV02", HitTargetSimple.TEAM, BuffParameter.DEF_BUFF, 0.2, 15, 0)
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo("BUF_184_DEF_LV03", HitTargetSimple.TEAM, BuffParameter.DEF, 0.25, 15, 0)
+        BuffEffectInfo("BUF_184_DEF_LV03", HitTargetSimple.TEAM, BuffParameter.DEF_BUFF, 0.25, 15, 0)
     }
     expected_buffs_lv_4 = {
-        BuffEffectInfo("BUF_184_DEF_LV04", HitTargetSimple.TEAM, BuffParameter.DEF, 0.25, 15, 0),
-        BuffEffectInfo("BUF_184_ATK_LV04", HitTargetSimple.TEAM, BuffParameter.ATK, 0.15, 15, 0)
+        BuffEffectInfo("BUF_184_DEF_LV04", HitTargetSimple.TEAM, BuffParameter.DEF_BUFF, 0.25, 15, 0),
+        BuffEffectInfo("BUF_184_ATK_LV04", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.15, 15, 0)
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3, expected_buffs_lv_4]
 
@@ -154,13 +154,13 @@ def test_multi_effect_to_nearby_1(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 3
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo("BUF_166_ATK_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.15, 15, 0)
+        BuffEffectInfo("BUF_166_ATK_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15, 15, 0)
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo("BUF_166_ATK_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.20, 15, 0)
+        BuffEffectInfo("BUF_166_ATK_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.20, 15, 0)
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo("BUF_166_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.25, 15, 0)
+        BuffEffectInfo("BUF_166_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.25, 15, 0)
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
 
@@ -181,21 +181,21 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_supportive(106504012)
 
     expected_base_buffs_lv_1 = {
-        BuffEffectInfo("BOW_108_04_ATK_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.03, 10, 0),
+        BuffEffectInfo("BOW_108_04_ATK_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.03, 10, 0),
         BuffEffectInfo("BOW_108_04_CRT_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.02, 10, 0),
         BuffEffectInfo("BOW_108_04_SKILL_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE,
                        0.1, 10, 99),
         BuffEffectInfo("BOW_108_04_SPB_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0),
     }
     expected_base_buffs_lv_2 = {
-        BuffEffectInfo("BOW_108_04_ATK_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.05, 10, 0),
+        BuffEffectInfo("BOW_108_04_ATK_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.05, 10, 0),
         BuffEffectInfo("BOW_108_04_CRT_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.03, 10, 0),
         BuffEffectInfo("BOW_108_04_SKILL_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE,
                        0.1, 10, 99),
         BuffEffectInfo("BOW_108_04_SPB_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0),
     }
     expected_base_buffs_lv_3 = {
-        BuffEffectInfo("BOW_108_04_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.05, 10, 0),
+        BuffEffectInfo("BOW_108_04_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.05, 10, 0),
         BuffEffectInfo("BOW_108_04_CRT_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.03, 10, 0),
         BuffEffectInfo("BOW_108_04_SKILL_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE,
                        0.1, 10, 99),
@@ -203,7 +203,7 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
     }
 
     on_0_plus_buffs = {
-        BuffEffectInfo("BOW_108_04_DEF_LV03", HitTargetSimple.SELF, BuffParameter.DEF, 0.1, 10, 0),
+        BuffEffectInfo("BOW_108_04_DEF_LV03", HitTargetSimple.SELF, BuffParameter.DEF_BUFF, 0.1, 10, 0),
     }
     on_1_plus_buffs = on_0_plus_buffs | {
         BuffEffectInfo("BOW_108_04_CRTDMG_LV03", HitTargetSimple.SELF, BuffParameter.CRT_DAMAGE, 0.1, 10, 0),
@@ -242,13 +242,13 @@ def test_has_phase_1(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_supportive(104502012)
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo("AXE_107_04_ATK_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.15, 15, 0),
+        BuffEffectInfo("AXE_107_04_ATK_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15, 15, 0),
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo("AXE_107_04_ATK_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.15, 15, 0),
+        BuffEffectInfo("AXE_107_04_ATK_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15, 15, 0),
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo("AXE_107_04_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.15, 15, 0),
+        BuffEffectInfo("AXE_107_04_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15, 15, 0),
     }
 
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
@@ -270,13 +270,13 @@ def test_has_phase_2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_supportive(104502013)
 
     expected_base_buffs_lv_1 = {
-        BuffEffectInfo("AXE_107_04_ATK_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.15, 15, 0),
+        BuffEffectInfo("AXE_107_04_ATK_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15, 15, 0),
     }
     expected_base_buffs_lv_2 = {
-        BuffEffectInfo("AXE_107_04_ATK_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.15, 15, 0),
+        BuffEffectInfo("AXE_107_04_ATK_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15, 15, 0),
     }
     expected_base_buffs_lv_3 = {
-        BuffEffectInfo("AXE_107_04_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.15, 15, 0),
+        BuffEffectInfo("AXE_107_04_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15, 15, 0),
     }
 
     addl_buffs = [
@@ -315,13 +315,13 @@ def test_has_phase_3(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_supportive(104502014)
 
     expected_base_buffs_lv_1 = {
-        BuffEffectInfo("AXE_107_04_ATK_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.15, 15, 0),
+        BuffEffectInfo("AXE_107_04_ATK_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15, 15, 0),
     }
     expected_base_buffs_lv_2 = {
-        BuffEffectInfo("AXE_107_04_ATK_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.15, 15, 0),
+        BuffEffectInfo("AXE_107_04_ATK_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15, 15, 0),
     }
     expected_base_buffs_lv_3 = {
-        BuffEffectInfo("AXE_107_04_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.15, 15, 0),
+        BuffEffectInfo("AXE_107_04_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15, 15, 0),
     }
 
     addl_buffs = [
@@ -367,15 +367,15 @@ def test_with_attack(transformer_skill: SkillTransformer):
 
     expected_buffs_lv_1 = {
         BuffEffectInfo("SWD_107_04_ALL_SPD_LV01", HitTargetSimple.TEAM, BuffParameter.ATK_SPD, 0.2, 10, 0),
-        BuffEffectInfo("SWD_107_04_ALL_ATK_LV01", HitTargetSimple.TEAM, BuffParameter.ATK, 0.1, 10, 0),
+        BuffEffectInfo("SWD_107_04_ALL_ATK_LV01", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.1, 10, 0),
     }
     expected_buffs_lv_2 = {
         BuffEffectInfo("SWD_107_04_ALL_SPD_LV02", HitTargetSimple.TEAM, BuffParameter.ATK_SPD, 0.3, 10, 0),
-        BuffEffectInfo("SWD_107_04_ALL_ATK_LV02", HitTargetSimple.TEAM, BuffParameter.ATK, 0.1, 10, 0),
+        BuffEffectInfo("SWD_107_04_ALL_ATK_LV02", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.1, 10, 0),
     }
     expected_buffs_lv_3 = {
         BuffEffectInfo("SWD_107_04_ALL_SPD_LV03", HitTargetSimple.TEAM, BuffParameter.ATK_SPD, 0.3, 10, 0),
-        BuffEffectInfo("SWD_107_04_ALL_ATK_LV03", HitTargetSimple.TEAM, BuffParameter.ATK, 0.1, 10, 0),
+        BuffEffectInfo("SWD_107_04_ALL_ATK_LV03", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.1, 10, 0),
     }
 
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]

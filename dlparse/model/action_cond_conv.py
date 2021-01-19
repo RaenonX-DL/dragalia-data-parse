@@ -39,9 +39,11 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
     ) -> list[Optional[UT]]:
         return [
             # ATK
-            self.to_param_up(BuffParameter.ATK, action_cond.buff_atk, action_cond, payload),
+            self.to_param_up(BuffParameter.ATK_BUFF, action_cond.buff_atk, action_cond, payload),
             # DEF & DEF (B) - I don't know why the fuck they need two of this
-            self.to_param_up(BuffParameter.DEF, action_cond.buff_def + action_cond.buff_def_b, action_cond, payload),
+            self.to_param_up(
+                BuffParameter.DEF_BUFF, action_cond.buff_def + action_cond.buff_def_b, action_cond, payload
+            ),
             # CRT rate
             self.to_param_up(BuffParameter.CRT_RATE, action_cond.buff_crt_rate, action_cond, payload),
             # CRT damage

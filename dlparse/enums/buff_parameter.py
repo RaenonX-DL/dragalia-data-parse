@@ -14,22 +14,31 @@ class BuffParameter(Enum):
     # WARNING: The number should not be changed frequently because the changes need to be reflected at the frontend
 
     # region Common
-    ATK = 101
-    """ATK up. A value of 0.12 means ATK +12%."""
-    DEF = 102
-    """DEF up. A value of 0.12 means DEF +12%."""
+    # region Buff
+    ATK_BUFF = 101
+    """ATK up (calculated as buff). A value of 0.12 means ATK +12%."""
+    DEF_BUFF = 102
+    """DEF up (calculated as buff). A value of 0.12 means DEF +12%."""
     CRT_RATE = 103
-    """Critical rate up. A value of 0.12 means CRT +12%."""
+    """Critical rate up (calculated as buff). A value of 0.12 means CRT +12%."""
     CRT_DAMAGE = 104
-    """Critical damage up. A value of 0.12 means CRT DMG +12%."""
+    """Critical damage up (calculated as buff). A value of 0.12 means CRT DMG +12%."""
     SKILL_DAMAGE = 105
-    """Skill damage up. A value of 0.12 means SDMG +12%."""
+    """Skill damage up (calculated as buff). A value of 0.12 means SDMG +12%."""
     ATK_SPD = 106
-    """Attack speed up. A value of 0.12 means ASPD +12%."""
+    """Attack speed up (calculated as buff). A value of 0.12 means ASPD +12%."""
     FS_DAMAGE = 107
-    """Force strike damage up. A value of 0.12 means FS DMG +12%."""
+    """Force strike damage up (calculated as buff). A value of 0.12 means FS DMG +12%."""
     FS_SPD = 108
-    """Force strike charging speed up. A value of 0.12 means FS SPD +12%."""
+    """Force strike charging speed up (calculated as buff). A value of 0.12 means FS SPD +12%."""
+    # endregion
+
+    # region Passive
+    ATK_PASSIVE = 151
+    """ATK up (calculated as passive). A value of 0.12 means ATK +12%."""
+    DEF_PASSIVE = 152
+    """DEF up (calculated as passive). A value of 0.12 means DEF +12%."""
+    # endregion
     # endregion
 
     # region SP Control

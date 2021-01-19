@@ -8,6 +8,20 @@ from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterPars
 
 __all__ = ("AbilityVariantEntry", "AbilityEntry", "AbilityAsset", "AbilityParser")
 
+_ability_condition_map: dict[AbilityCondition, Condition] = {
+    AbilityCondition.NONE: Condition.NONE,
+    AbilityCondition.ON_RECEIVED_BUFF_DEF: Condition.ON_DEF_BUFFED,
+    AbilityCondition.QUEST_START: Condition.QUEST_START,
+    AbilityCondition.ENERGIZED_MOMENT: Condition.SELF_ENERGIZED,
+    AbilityCondition.ON_SHAPESHIFT_COMPLETED: Condition.SELF_SHAPESHIFT_COMPLETED,
+}
+"""
+A dict mapping :class:`AbilityCondition` directly to :class:`Condition`.
+
+This only contains :class:`AbilityCondition` that do not require additional parameter checks.
+Missing key in this map does not mean that it is not handled.
+"""
+
 
 @dataclass
 class AbilityConditionEntry:
@@ -80,29 +94,17 @@ class AbilityConditionEntry:
 
         :raises AbilityConditionUnconvertibleError: if the ability condition is unconvertible
         """
-        # No condition
-        if self.condition_type == AbilityCondition.NONE:
-            return Condition.NONE
-
-        # Has specific buff
-        if self.condition_type == AbilityCondition.SELF_SPECIFICALLY_BUFFED:
-            return self._cond_self_buffed()
+        ability_condition = _ability_condition_map.get(self.condition_type)
+        if ability_condition is not None:  # Explicit check because ``Condition.NONE`` is falsy
+            return ability_condition
 
         # Self HP condition
         if self_hp_cond := self._cond_self_hp():
             return self_hp_cond
 
-        # Quest start
-        if self.condition_type == AbilityCondition.QUEST_START:
-            return Condition.QUEST_START
-
-        # User energized
-        if self.condition_type == AbilityCondition.ENERGIZED_MOMENT:
-            return Condition.SELF_ENERGIZED
-
-        # On shapeshift completed
-        if self.condition_type == AbilityCondition.ON_SHAPESHIFT_COMPLETED:
-            return Condition.SELF_SHAPESHIFT_COMPLETED
+        # Has specific buff
+        if self.condition_type == AbilityCondition.SELF_SPECIFICALLY_BUFFED:
+            return self._cond_self_buffed()
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 

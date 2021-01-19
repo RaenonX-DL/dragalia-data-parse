@@ -8,32 +8,32 @@ ExpectedInfoLookup = dict[tuple[int, ConditionComposite], set[tuple[HitTargetSim
 expected_contained_info: ExpectedInfoLookup = {
     # Kirsty S2
     (105503022, ConditionComposite()): {
-        (HitTargetSimple.TEAM, BuffParameter.ATK, 0.2)
+        (HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.2)
     },
     # Patia S1
     (105405021, ConditionComposite()): {
-        (HitTargetSimple.TEAM, BuffParameter.ATK, 0.15),
-        (HitTargetSimple.TEAM, BuffParameter.DEF, 0.25)
+        (HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.15),
+        (HitTargetSimple.TEAM, BuffParameter.DEF_BUFF, 0.25)
     },
     # S!Julietta S2 P3
     (104502014, ConditionComposite()): {
-        (HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.15),
+        (HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.13),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.SHIELD_SINGLE_DMG, 0.4)
     },
     # S!Cleo S2
     (106504012, ConditionComposite(Condition.COVER_TEAMMATE_3)): {
-        (HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK, 0.05),
+        (HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.05),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.03),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE, 0.1),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1),
-        (HitTargetSimple.SELF, BuffParameter.DEF, 0.1),
+        (HitTargetSimple.SELF, BuffParameter.DEF_BUFF, 0.1),
         (HitTargetSimple.SELF, BuffParameter.CRT_DAMAGE, 0.1),
         (HitTargetSimple.SELF, BuffParameter.SP_CHARGE_PCT_S1, 1),
     },
     # Emma S1
     (105401031, ConditionComposite(Condition.TARGET_ELEM_FLAME)): {
-        (HitTargetSimple.TEAM, BuffParameter.ATK, 0.25),
+        (HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.25),
     }
 }
 

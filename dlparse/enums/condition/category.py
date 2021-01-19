@@ -34,6 +34,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_ACTION_CONDITION = auto()
     MULTIPLE_GAUGE_FILLED = auto()
     MULTIPLE_LAPIS_CARD = auto()
+    MULTIPLE_TRIGGER = auto()
     MULTIPLE_MISC = auto()
 
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
@@ -52,6 +53,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_ACTION_CONDITION = auto()
     INTERNAL_NOT_GAUGE_FILLED = auto()
     INTERNAL_NOT_LAPIS_CARD = auto()
+    INTERNAL_NOT_TRIGGER = auto()
 
     HAS_CONDITIONS_LEFT = auto()
 
@@ -470,6 +472,17 @@ class ConditionCategories:
         ConditionMaxCount.SINGLE,
         "Self - gauge status",
         ConditionCheckResult.MULTIPLE_LAPIS_CARD
+    )
+    # endregion
+
+    # region 8xx - Trigger
+    trigger = ConditionCategoryGroup(
+        {
+            Condition.ON_DEF_BUFFED,
+        },
+        ConditionMaxCount.SINGLE,
+        "Triggers",
+        ConditionCheckResult.MULTIPLE_TRIGGER
     )
     # endregion
 

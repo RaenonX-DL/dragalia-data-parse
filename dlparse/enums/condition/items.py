@@ -232,6 +232,10 @@ class Condition(Enum):
     # endregion
     # endregion
 
+    # region 8xx - Trigger
+    ON_DEF_BUFFED = 801
+    # endregion
+
     # region 9xx - Miscellaneous (e.g. quest start)
     QUEST_START = 901
 

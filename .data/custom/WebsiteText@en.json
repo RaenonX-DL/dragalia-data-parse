@@ -616,6 +616,10 @@
     "text": "After Shapeshift"
   },
   {
+    "id": "ENUM_COND_ON_DEF_BUFFED",
+    "text": "DEF Doublebuff"
+  },
+  {
     "id": "ENUM_COND_QUEST_START",
     "text": "Start of Quest"
   },

@@ -81,7 +81,12 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     # endregion
 
     # region Other fields
+    trigger: Condition = field(init=False)
+    # endregion
+
+    # region Other fields (hidden)
     _has_buff_boost_condition: bool = field(init=False)
+
     # endregion
 
     @staticmethod
@@ -159,10 +164,16 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.action_cancel and self.action_cancel not in CondCat.skill_action_cancel:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_ACTION_CANCEL)
 
+    def _init_validate_others(self):
+        # Check `self.trigger`
+        if self.trigger and self.trigger not in CondCat.trigger:
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_TRIGGER)
+
     def _init_validate_fields(self, conditions: tuple[Condition]):
         self._init_validate_target()
         self._init_validate_self()
         self._init_validate_skill()
+        self._init_validate_others()
 
         if cond_not_categorized := (set(conditions) - set(self.conditions_sorted) - self.allowed_not_categorize_conds):
             raise ConditionValidationFailedError(ConditionCheckResult.HAS_CONDITIONS_LEFT, cond_not_categorized)
@@ -192,6 +203,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.action_cancel = CondCat.skill_action_cancel.extract(conditions)
         self.action_counter = Condition.COUNTER_RED_ATTACK in conditions
         self.mark_explode = Condition.MARK_EXPLODES in conditions
+
+        self.trigger = CondCat.trigger.extract(conditions)
         # endregion
 
         self._init_validate_fields(conditions)
@@ -287,6 +300,14 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
 
         return ret
 
+    def _cond_sorted_others(self) -> tuple[Condition]:
+        ret: tuple[Condition] = tuple()
+
+        if self.trigger:
+            ret += (self.trigger,)
+
+        return ret
+
     @property
     def has_buff_boost_condition(self) -> bool:
         """Check if the composite has any condition that boosts damage by the buff count."""
@@ -314,10 +335,12 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         - [Skill] Action canceling
         - [Skill] Action countering
         - [Skill] Mark explosion
+        - [Other] Trigger
         """
         return (self._cond_sorted_target()
                 + self._cond_sorted_self_status()
-                + self._cond_sorted_skill())
+                + self._cond_sorted_skill()
+                + self._cond_sorted_others())
 
     def get_boost_rate_by_buff(self, hit_attr: "HitAttrEntry", asset_buff_count: "BuffCountAsset"):
         """Get the damage boost rate of ``hit_attr`` under the given condition."""
