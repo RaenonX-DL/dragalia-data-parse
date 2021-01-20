@@ -24,10 +24,15 @@ class WebsiteTextEntry(TextEntryBase, MasterEntryBase):
 class WebsiteTextAsset(MultilingualAssetBase[WebsiteTextEntry]):
     """Website text asset class."""
 
-    # pylint: disable=too-few-public-methods
-
     def __init__(self, lang_codes: Union[list[str], dict[str, str]], asset_dir: str):
         super().__init__(WebsiteTextParser, lang_codes, asset_dir, "WebsiteText")
+
+    def get_all_ids(self, lang_code: str) -> list[str]:
+        """Get all text entry IDs in ``lang_code``. If ``lang_code`` is unavailable, returns empty list."""
+        if lang_code not in self._assets:
+            return []
+
+        return list(self._assets[lang_code].keys())
 
 
 class WebsiteTextParser(CustomParserBase):

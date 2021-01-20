@@ -600,18 +600,6 @@
     "text": "量條 2 條滿"
   },
   {
-    "id": "ENUM_COND_SELF_SHAPESHIFT_COMPLETED",
-    "text": "龍化結束後"
-  },
-  {
-    "id": "ENUM_COND_SELF_SHAPESHIFTED_1_TIME_IN_DRAGON",
-    "text": "龍化 1 次後 (龍形)"
-  },
-  {
-    "id": "ENUM_COND_SELF_SHAPESHIFTED_2_TIMES_IN_DRAGON",
-    "text": "龍化 2 次後 (龍形)"
-  },
-  {
     "id": "ENUM_COND_SELF_SHAPESHIFTED_1_TIME",
     "text": "龍化 1 次後"
   },
@@ -622,6 +610,18 @@
   {
     "id": "ENUM_COND_SELF_SHAPESHIFTED_3_TIMES",
     "text": "龍化 3 次後"
+  },
+  {
+    "id": "ENUM_COND_SELF_SHAPESHIFTED_1_TIME_IN_DRAGON",
+    "text": "龍化 1 次後 (龍形)"
+  },
+  {
+    "id": "ENUM_COND_SELF_SHAPESHIFTED_2_TIMES_IN_DRAGON",
+    "text": "龍化 2 次後 (龍形)"
+  },
+  {
+    "id": "ENUM_COND_SELF_SHAPESHIFT_COMPLETED",
+    "text": "龍化結束"
   },
   {
     "id": "ENUM_COND_SKILL_USED_S1",
@@ -638,10 +638,6 @@
   {
     "id": "ENUM_COND_SELF_ENERGIZED",
     "text": "超活力"
-  },
-  {
-    "id": "ENUM_COND_SELF_SHAPESHIFT_COMPLETED",
-    "text": "龍化結束"
   },
   {
     "id": "ENUM_COND_ON_SELF_BUFFED_DEF",

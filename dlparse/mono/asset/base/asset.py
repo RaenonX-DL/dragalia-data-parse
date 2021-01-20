@@ -118,6 +118,7 @@ class AssetBase(ABC):
 
 
 T = TypeVar("T", bound=TextEntryBase)
+P = TypeVar("P", bound=ParserBase)  # pylint: disable=invalid-name
 
 
 class MultilingualAssetBase(Generic[T], ABC):
@@ -126,7 +127,7 @@ class MultilingualAssetBase(Generic[T], ABC):
     # pylint: disable=too-few-public-methods
 
     def __init__(
-            self, parser_cls: Type[ParserBase], lang_codes: Union[list[str], dict[str, str]],
+            self, parser_cls: Type[P], lang_codes: Union[list[str], dict[str, str]],
             asset_dir: str, file_name: str
     ):
         """
