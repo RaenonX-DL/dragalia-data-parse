@@ -30,7 +30,7 @@ Field: `_ConditionType`
 09. TOTAL_HITCOUNT_MORE
 10. TOTAL_HITCOUNT_LESS
 11. KILL_ENEMY
-12. TRANSFORM_DRAGON
+<a href="#12---transform_dragon">12. TRANSFORM_DRAGON</a>
 13. HP_MORE_MOMENT
 <a href="#14---hp_less_moment">14. HP_LESS_MOMENT</a>
 <a href="#15---quest_start">15. QUEST_START</a>
@@ -131,6 +131,16 @@ Effective if the user's HP is greater or equal to a certain threshold.
 ### `08` - `GET_BUFF_DEF`
 
 Triggered once when the user receives a buff.
+
+### `12` - `TRANSFORM_DRAGON`
+
+Triggered once when the user done transforming a certain amount of dragon.
+
+`Val 1 = 1` means that the ability will be triggered once when the user done transforming one dragon.
+
+- **Val 1**: Amount of dragon to transform.
+
+  - As of 2021/01/19, all abilities only have this as `1`.
 
 ### `14` - `HP_LESS_MOMENT`
 

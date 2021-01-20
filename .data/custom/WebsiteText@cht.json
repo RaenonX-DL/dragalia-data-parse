@@ -600,6 +600,22 @@
     "text": "量條 2 條滿"
   },
   {
+    "id": "ENUM_COND_SELF_SHAPESHIFTED",
+    "text": "龍化後"
+  },
+  {
+    "id": "ENUM_COND_SELF_SHAPESHIFTED_1_TIME",
+    "text": "龍化 1 次後"
+  },
+  {
+    "id": "ENUM_COND_SELF_SHAPESHIFTED_2_TIMES",
+    "text": "龍化 2 次後"
+  },
+  {
+    "id": "ENUM_COND_SELF_SHAPESHIFTED_3_TIMES",
+    "text": "龍化 3 次後"
+  },
+  {
     "id": "ENUM_COND_SKILL_USED_S1",
     "text": "S1 使用後"
   },

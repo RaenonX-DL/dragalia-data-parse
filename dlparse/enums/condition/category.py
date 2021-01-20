@@ -34,6 +34,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_ACTION_CONDITION = auto()
     MULTIPLE_GAUGE_FILLED = auto()
     MULTIPLE_LAPIS_CARD = auto()
+    MULTIPLE_SHAPESHIFT_COUNT = auto()
     MULTIPLE_TRIGGER = auto()
     MULTIPLE_TRIGGER_HIT_BY_AFFLICTION = auto()
     MULTIPLE_MISC = auto()
@@ -54,6 +55,8 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_ACTION_CONDITION = auto()
     INTERNAL_NOT_GAUGE_FILLED = auto()
     INTERNAL_NOT_LAPIS_CARD = auto()
+    INTERNAL_NOT_SHAPESHIFT_COUNT = auto()
+    INTERNAL_SHAPESHIFT_NOT_SET = auto()
     INTERNAL_NOT_TRIGGER = auto()
     INTERNAL_NOT_TRIGGER_HIT_BY_AFFLICTION = auto()
 
@@ -475,6 +478,16 @@ class ConditionCategories:
         ConditionMaxCount.SINGLE,
         "Self - gauge status",
         ConditionCheckResult.MULTIPLE_LAPIS_CARD
+    )
+    shapeshifted_count = ConditionCategoryTargetNumber(
+        {
+            Condition.SELF_SHAPESHIFTED_1_TIME: 1,
+            Condition.SELF_SHAPESHIFTED_2_TIMES: 2,
+            Condition.SELF_SHAPESHIFTED_3_TIMES: 3,
+        },
+        ConditionMaxCount.SINGLE,
+        "Self - shapeshift count",
+        ConditionCheckResult.MULTIPLE_SHAPESHIFT_COUNT
     )
     # endregion
 

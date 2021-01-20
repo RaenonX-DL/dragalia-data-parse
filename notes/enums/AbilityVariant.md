@@ -188,15 +188,38 @@ A value of `50` means to resist a certain affliction by 50%.
 
 Call the assigned items, which may be:
 
-- Action condition if given in the ID - A field
+- Single action condition if given ID-A
+
+- Multiple action conditions if given ID-A, ID-B and ID-C
+
+  - This only happens for Dragon's Claws. ID-A, ID-B and ID-C will be called sequentially. Loopback to ID-A or not is
+    unknown because `_MaxCount` is set to `3` for all variant type `14` with ID-A, ID-B and ID-C assigned, as of
+    2020/01/19.
 
 - Hit attribute if given in the string field
 
 #### Variant ID - A
 
-The action condition ID to be called (if given).
+If ID-B and ID-C is not given, this is the action condition ID to be called.
+
+If ID-B and ID-C is given, this is the 1st action condition ID to be called. Action condition of ID-B will be the next
+one to be called.
 
 A value of `888` means that to call the action condition ID `888` once the condition satifies.
+
+#### Variant ID - B
+
+Action condition ID to be called, after the action condition of ID-A is called, and the condition satisfies again.
+
+A value of `889` means that to call the action condition ID `889` once the condition satifies, and the action condition
+of ID-A is already called.
+
+#### Variant ID - C
+
+Action condition ID to be called, after the action condition of ID-B is called, and the condition satisfies again.
+
+A value of `890` means that to call the action condition ID `890` once the condition satifies, and the action condition
+of ID-B is already called.
 
 #### Variant String
 

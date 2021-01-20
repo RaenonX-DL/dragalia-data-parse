@@ -10,6 +10,7 @@ __all__ = ("AbilityVariantEntry", "AbilityEntry", "AbilityAsset", "AbilityParser
 
 _ability_condition_map: dict[AbilityCondition, Condition] = {
     AbilityCondition.NONE: Condition.NONE,
+    AbilityCondition.TRG_SHAPESHIFTED: Condition.SELF_SHAPESHIFTED,
     AbilityCondition.TRG_SELF_HP_LTE: Condition.ON_SELF_HP_LTE_30,
     AbilityCondition.TRG_RECEIVED_BUFF_DEF: Condition.ON_SELF_BUFFED_DEF,
     AbilityCondition.TRG_QUEST_START: Condition.QUEST_START,
@@ -178,6 +179,22 @@ class AbilityVariantEntry:
     def is_boosted_by_gauge_status(self) -> bool:
         """Check if the damage will be boosted according to the gauge status."""
         return self.type_enum == AbilityVariantType.GAUGE_STATUS
+
+    @property
+    def has_multiple_action_conditions(self) -> bool:
+        """
+        Check if the variant type is ``AbilityVariantType.CHANGE_STATE`` and has multiple action conditions.
+
+        If the above holds, it is likely that the action conditions will be used sequentially.
+        The action condition at ID-A will be used upon triggering,
+        then the action condition at ID-B will be used if re-triggered.
+        After the action condition at ID-C is used, the variant will never trigger again.
+        (This the pattern used for Dragon's Claws)
+        """
+        if self.type_enum != AbilityVariantType.CHANGE_STATE:
+            return False
+
+        return bool(self.id_a and self.id_b and self.id_c)
 
     @property
     def assigned_hit_label(self) -> Optional[str]:

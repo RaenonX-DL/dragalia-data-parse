@@ -22,14 +22,27 @@ class AbilityEffectInfo(AbilityInfoBase):
 
     def __hash__(self):
         # x 1E5 for error tolerance
-        return hash((self.condition_comp, self.parameter, int(self.rate * 1E5)))
+        return hash((self.condition_comp.conditions_sorted, self.parameter, int(self.rate * 1E5)))
 
     def __lt__(self, other):
         if not isinstance(other, self.__class__):
             raise TypeError(f"Unable to compare {type(self.__class__)} with {type(other)}")
 
-        return ((self.source_ability_id, int(self.parameter.value), self.rate)
-                < (other.source_ability_id, int(other.parameter.value), other.rate))
+        data_self = (
+            self.condition_comp.conditions_sorted,
+            self.source_ability_id,
+            int(self.parameter.value),
+            self.rate
+        )
+
+        data_other = (
+            other.condition_comp.conditions_sorted,
+            other.source_ability_id,
+            int(other.parameter.value),
+            other.rate
+        )
+
+        return data_self < data_other
 
 
 def check_ability_effect_unit_match(

@@ -221,6 +221,13 @@ class Condition(Enum):
     SELF_GAUGE_FILLED_2 = 452
     # endregion
 
+    # region Shapeshift
+    SELF_SHAPESHIFTED = 470
+    SELF_SHAPESHIFTED_1_TIME = 471
+    SELF_SHAPESHIFTED_2_TIMES = 472
+    SELF_SHAPESHIFTED_3_TIMES = 473
+    # endregion
+
     # region Skill usage
     SKILL_USED_S1 = 481
     SKILL_USED_S2 = 482

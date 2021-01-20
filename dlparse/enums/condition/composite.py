@@ -28,6 +28,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         Condition.TARGET_BK_STATE,
         # Special self status
         Condition.SELF_ENERGIZED,
+        Condition.SELF_SHAPESHIFTED,
         Condition.SELF_SHAPESHIFT_COMPLETED,
         # Upon skill usage
         Condition.SKILL_USED_S1,
@@ -64,6 +65,9 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     action_cond_id: int = field(init=False)
     gauge_filled: Optional[Condition] = field(init=False)
     gauge_filled_converted: int = field(init=False)
+    is_shapeshifted: bool = field(init=False)
+    shapeshift_count: Optional[Condition] = field(init=False)
+    shapeshift_count_converted: int = field(init=False)
     # endregion
 
     # region Skill effect / animation
@@ -106,7 +110,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.target_element and self.target_element not in CondCat.target_element:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_TARGET_ELEMENTAL)
 
-    def _init_validate_self(self):
+    def _init_validate_self_general(self):
         # Check `self.hp_status`
         if self.hp_status and self.hp_status not in CondCat.self_hp_status:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_HP_STATUS)
@@ -135,6 +139,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.buff_zone_ally and self.buff_zone_ally not in CondCat.self_in_buff_zone_ally:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BUFF_ZONE_ALLY)
 
+    def _init_validate_self_special(self):
         # Check `self.action_cond`
         if self.action_cond and self.action_cond not in CondCat.action_condition:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_ACTION_CONDITION)
@@ -142,6 +147,12 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         # Check `self.gauge_filled`
         if self.gauge_filled and self.gauge_filled not in CondCat.self_gauge_filled:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_GAUGE_FILLED)
+
+        # Check `self.shapeshift_count`
+        if not self.is_shapeshifted and self.shapeshift_count:
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_SHAPESHIFT_NOT_SET)
+        if self.shapeshift_count and self.shapeshift_count not in CondCat.shapeshifted_count:
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_SHAPESHIFT_COUNT)
 
     def _init_validate_skill(self):
         # Check `self.teammate_coverage`
@@ -171,7 +182,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
 
     def _init_validate_fields(self, conditions: tuple[Condition]):
         self._init_validate_target()
-        self._init_validate_self()
+        self._init_validate_self_general()
+        self._init_validate_self_special()
         self._init_validate_skill()
         self._init_validate_others()
 
@@ -195,6 +207,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.buff_zone_ally = CondCat.self_in_buff_zone_ally.extract(conditions)
         self.action_cond = CondCat.action_condition.extract(conditions)
         self.gauge_filled = CondCat.self_gauge_filled.extract(conditions)
+        self.shapeshift_count = CondCat.shapeshifted_count.extract(conditions)
+        self.is_shapeshifted = Condition.SELF_SHAPESHIFTED in conditions or self.shapeshift_count
 
         self.teammate_coverage = CondCat.skill_teammates_covered.extract(conditions)
         self.bullet_hit_count = CondCat.skill_bullet_hit.extract(conditions)
@@ -222,6 +236,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.buff_zone_ally_converted = CondCat.self_in_buff_zone_ally.convert(self.buff_zone_ally, on_missing=0)
         self.action_cond_id = CondCat.action_condition.convert(self.action_cond, on_missing=None)
         self.gauge_filled_converted = CondCat.self_gauge_filled.convert(self.gauge_filled, on_missing=0)
+        self.shapeshift_count_converted = CondCat.shapeshifted_count.convert(self.shapeshift_count, on_missing=0)
 
         self.teammate_coverage_converted = CondCat.skill_teammates_covered.convert(self.teammate_coverage,
                                                                                    on_missing=None)
@@ -245,7 +260,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
 
         return ret
 
-    def _cond_sorted_self_status(self) -> tuple[Condition]:
+    def _cond_sorted_self_general(self) -> tuple[Condition]:
         ret: tuple[Condition] = tuple()
 
         if self.hp_status:
@@ -266,11 +281,22 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.buff_zone_ally:
             ret += (self.buff_zone_ally,)
 
+        return ret
+
+    def _cond_sorted_self_special(self) -> tuple[Condition]:
+        ret: tuple[Condition] = tuple()
+
         if self.action_cond:
             ret += (self.action_cond,)
 
         if self.gauge_filled:
             ret += (self.gauge_filled,)
+
+        if self.is_shapeshifted:
+            ret += (Condition.SELF_SHAPESHIFTED,)
+
+        if self.shapeshift_count:
+            ret += (self.shapeshift_count,)
 
         return ret
 
@@ -328,6 +354,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         - [Self] Buff zone built by self / ally
         - [Self] Self action condition
         - [Self] Gauge status
+        - [Self] Shapeshift
         - [Skill] Bullet hit count
         - [Skill] Teammate coverage
         - [Skill] Bullets on map
@@ -338,7 +365,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         - [Other] Trigger
         """
         return (self._cond_sorted_target()
-                + self._cond_sorted_self_status()
+                + self._cond_sorted_self_general()
+                + self._cond_sorted_self_special()
                 + self._cond_sorted_skill()
                 + self._cond_sorted_others())
 
@@ -358,6 +386,9 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         return bool(self.conditions_sorted)
 
     def __add__(self, other):
+        if other is None:
+            return self
+
         if not isinstance(other, ConditionComposite):
             raise TypeError(f"Cannot add `ConditionComposite` with type {type(other)}")
 

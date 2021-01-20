@@ -600,6 +600,22 @@
     "text": "Gauge 2 bars"
   },
   {
+    "id": "ENUM_COND_SELF_SHAPESHIFTED",
+    "text": "Shapeshifted"
+  },
+  {
+    "id": "ENUM_COND_SELF_SHAPESHIFTED_1_TIME",
+    "text": "Shapeshifted once"
+  },
+  {
+    "id": "ENUM_COND_SELF_SHAPESHIFTED_2_TIMES",
+    "text": "Shapeshifted twice"
+  },
+  {
+    "id": "ENUM_COND_SELF_SHAPESHIFTED_3_TIMES",
+    "text": "Shapeshifted 3 times"
+  },
+  {
     "id": "ENUM_COND_SKILL_USED_S1",
     "text": "After S1 Used"
   },

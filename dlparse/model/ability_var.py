@@ -29,7 +29,7 @@ class AbilityVariantEffectUnit(EffectUnitBase):
 
     def __hash__(self):
         # x 1E5 for handling floating errors
-        return hash((self.source_ability_id, self.parameter, int(self.rate * 1E5)))
+        return hash((self.source_ability_id, self.condition_comp, self.parameter, int(self.rate * 1E5)))
 
     def __lt__(self, other):
         if not isinstance(other, self.__class__):
@@ -62,13 +62,13 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
 
     def to_param_up(
             self, param_enum: BuffParameter, param_rate: float, action_cond: ActionConditionEntry,
-            payload: AbilityVariantEffectPayload = None
+            payload: AbilityVariantEffectPayload = None, additional_conditions: Optional[ConditionComposite] = None
     ) -> Optional[AbilityVariantEffectUnit]:
         if not param_rate:
             return None  # Rate is 0, parameter not raised
 
         return AbilityVariantEffectUnit(
-            condition_comp=payload.condition_comp,
+            condition_comp=payload.condition_comp + additional_conditions,
             cooldown_sec=payload.condition_cooldown,
             max_occurrences=payload.max_occurrences,
             source_ability_id=payload.source_ability_id,
@@ -167,24 +167,48 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             )
         }
 
+    def _from_change_state_dragons_claws(self) -> set[tuple[int, Optional[Condition]]]:
+        action_cond_ids: set[tuple[int, Optional[Condition]]] = set()
+
+        variant_ids = [self.variant.id_a, self.variant.id_b, self.variant.id_c]
+        conditions = [
+            Condition.SELF_SHAPESHIFTED_1_TIME,
+            Condition.SELF_SHAPESHIFTED_2_TIMES,
+            Condition.SELF_SHAPESHIFTED_3_TIMES
+        ]
+
+        for action_cond_id, condition in zip(variant_ids, conditions):
+            action_cond_ids.add((action_cond_id, condition))
+
+        return action_cond_ids
+
     def _from_change_state(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
         # Add action condition IDs
-        action_cond_ids: set[int] = set()
+        action_cond_ids: set[tuple[int, Optional[Condition]]] = set()
+
         # --- From action condition
-        if action_cond_id := self.variant.assigned_action_condition:
-            action_cond_ids.add(action_cond_id)
+        if self.variant.has_multiple_action_conditions and Condition.SELF_SHAPESHIFTED in payload.condition_comp:
+            # Dragon's Claws
+            action_cond_ids.update(self._from_change_state_dragons_claws())
+        elif action_cond_id := self.variant.assigned_action_condition:
+            # Normal change state assignment
+            action_cond_ids.add((action_cond_id, None))
+
         # --- From hit label
         if hit_label := self.variant.assigned_hit_label:
             if hit_attr := asset_manager.asset_hit_attr.get_data_by_id(hit_label):
                 if hit_attr.has_action_condition:
-                    action_cond_ids.add(hit_attr.action_condition_id)
+                    action_cond_ids.add((hit_attr.action_condition_id, None))
 
         # Get units from action condition IDs
         ret: set[AbilityVariantEffectUnit] = set()
-        for action_cond_id in action_cond_ids:
-            ret.update(self.to_buff_units(asset_manager.asset_action_cond.get_data_by_id(action_cond_id), payload))
+        for action_cond_id, condition in action_cond_ids:
+            ret.update(self.to_buff_units(
+                asset_manager.asset_action_cond.get_data_by_id(action_cond_id), payload,
+                ConditionComposite(condition) if condition else None
+            ))
         return ret
 
     def _from_sp_charge(
@@ -250,6 +274,7 @@ def ability_to_effect_units(
     max_occurrences: int = 0
     if on_skill_cond := ability_entry.on_skill_condition:
         conditions.append(on_skill_cond)
+
     if ability_cond := ability_entry.condition.to_condition():
         conditions.append(ability_cond)
         cooldown_sec = ability_entry.condition.cooldown_sec

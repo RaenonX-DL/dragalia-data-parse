@@ -3,7 +3,7 @@ from abc import ABC
 from dataclasses import dataclass
 from typing import Generic, Optional
 
-from dlparse.enums import BuffParameter, HitTargetSimple, SkillIndex, Status
+from dlparse.enums import BuffParameter, ConditionComposite, HitTargetSimple, SkillIndex, Status
 from dlparse.errors import UnhandledSelfDamageError
 from dlparse.mono.asset import ActionBuffBomb, ActionConditionAsset, ActionConditionEntry, HitAttrEntry
 from .action_cond_conv import ActionCondEffectConvertible
@@ -21,7 +21,7 @@ class HitDataEffectConvertible(
 
     def to_param_up(
             self, param_enum: BuffParameter, param_rate: float, action_cond: ActionConditionEntry,
-            payload: None = None
+            payload: None = None, additional_conditions: Optional[ConditionComposite] = None
     ) -> Optional[HitActionConditionEffectUnit]:
         """
         Create an effect unit (if applicable) based on the given action condition and the related data.

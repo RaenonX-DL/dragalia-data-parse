@@ -124,6 +124,29 @@ def test_atk_up_gte_70_hp(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ability_data.effect_units, expected_info)
 
 
+def test_atk_up_shapeshifted(transformer_ability: AbilityTransformer):
+    # Euden (AB1 @ Max - ATK +10%/+15%/+15% for each transform)
+    # https://dragalialost.gamepedia.com/The_Prince
+    ability_data = transformer_ability.transform_ability(700)
+
+    expected_info = {
+        AbilityEffectInfo(
+            700, ConditionComposite([Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_1_TIME]),
+            BuffParameter.ATK_BUFF, 0.1
+        ),
+        AbilityEffectInfo(
+            700, ConditionComposite([Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_2_TIMES]),
+            BuffParameter.ATK_BUFF, 0.15
+        ),
+        AbilityEffectInfo(
+            700, ConditionComposite([Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_3_TIMES]),
+            BuffParameter.ATK_BUFF, 0.15
+        ),
+    }
+
+    check_ability_effect_unit_match(ability_data.effect_units, expected_info)
+
+
 def test_def_up_lte_30_hp(transformer_ability: AbilityTransformer):
     # Raemond (AB1 @ Max - DEF +50% for 15s when HP <= 30%)
     # https://dragalialost.gamepedia.com/Karl
