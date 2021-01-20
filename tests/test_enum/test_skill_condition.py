@@ -58,23 +58,6 @@ def test_validity_multi_afflictions():
     assert validate_conditions(conditions) == ConditionCheckResult.PASS
 
 
-def test_composite_order_shapeshift():
-    composite = ConditionComposite([Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_1_TIME])
-    assert composite.conditions_sorted == (Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_1_TIME)
-    composite = ConditionComposite([Condition.SELF_SHAPESHIFTED_1_TIME, Condition.SELF_SHAPESHIFTED])
-    assert composite.conditions_sorted == (Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_1_TIME)
-
-    composite = ConditionComposite([Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_2_TIMES])
-    assert composite.conditions_sorted == (Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_2_TIMES)
-    composite = ConditionComposite([Condition.SELF_SHAPESHIFTED_2_TIMES, Condition.SELF_SHAPESHIFTED])
-    assert composite.conditions_sorted == (Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_2_TIMES)
-
-    composite = ConditionComposite([Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_3_TIMES])
-    assert composite.conditions_sorted == (Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_3_TIMES)
-    composite = ConditionComposite([Condition.SELF_SHAPESHIFTED_3_TIMES, Condition.SELF_SHAPESHIFTED])
-    assert composite.conditions_sorted == (Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_3_TIMES)
-
-
 def test_composite_none():
     composite = ConditionComposite()
 

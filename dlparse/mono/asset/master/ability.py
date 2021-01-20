@@ -10,7 +10,6 @@ __all__ = ("AbilityVariantEntry", "AbilityEntry", "AbilityAsset", "AbilityParser
 
 _ability_condition_map: dict[AbilityCondition, Condition] = {
     AbilityCondition.NONE: Condition.NONE,
-    AbilityCondition.TRG_SHAPESHIFTED: Condition.SELF_SHAPESHIFTED,
     AbilityCondition.TRG_SELF_HP_LTE: Condition.ON_SELF_HP_LTE_30,
     AbilityCondition.TRG_RECEIVED_BUFF_DEF: Condition.ON_SELF_BUFFED_DEF,
     AbilityCondition.TRG_QUEST_START: Condition.QUEST_START,

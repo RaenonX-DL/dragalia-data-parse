@@ -222,7 +222,6 @@ class Condition(Enum):
     # endregion
 
     # region Shapeshift
-    SELF_SHAPESHIFTED = 470
     SELF_SHAPESHIFTED_1_TIME = 471
     SELF_SHAPESHIFTED_2_TIMES = 472
     SELF_SHAPESHIFTED_3_TIMES = 473

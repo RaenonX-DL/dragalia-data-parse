@@ -56,7 +56,6 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_GAUGE_FILLED = auto()
     INTERNAL_NOT_LAPIS_CARD = auto()
     INTERNAL_NOT_SHAPESHIFT_COUNT = auto()
-    INTERNAL_SHAPESHIFT_NOT_SET = auto()
     INTERNAL_NOT_TRIGGER = auto()
     INTERNAL_NOT_TRIGGER_HIT_BY_AFFLICTION = auto()
 

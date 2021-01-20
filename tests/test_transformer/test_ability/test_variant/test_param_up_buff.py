@@ -25,15 +25,15 @@ def test_atk_up_shapeshifted(transformer_ability: AbilityTransformer):
 
     expected_info = {
         AbilityEffectInfo(
-            700, ConditionComposite([Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_1_TIME]),
+            700, ConditionComposite(Condition.SELF_SHAPESHIFTED_1_TIME),
             BuffParameter.ATK_BUFF, 0.1
         ),
         AbilityEffectInfo(
-            700, ConditionComposite([Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_2_TIMES]),
+            700, ConditionComposite(Condition.SELF_SHAPESHIFTED_2_TIMES),
             BuffParameter.ATK_BUFF, 0.15
         ),
         AbilityEffectInfo(
-            700, ConditionComposite([Condition.SELF_SHAPESHIFTED, Condition.SELF_SHAPESHIFTED_3_TIMES]),
+            700, ConditionComposite(Condition.SELF_SHAPESHIFTED_3_TIMES),
             BuffParameter.ATK_BUFF, 0.15
         ),
     }

@@ -3,7 +3,8 @@ from dataclasses import dataclass, field
 from typing import Optional, TYPE_CHECKING
 
 from dlparse.enums import (
-    AbilityUpParameter, AbilityVariantType, BuffParameter, Condition, ConditionComposite, HitTargetSimple, Status,
+    AbilityCondition, AbilityUpParameter, AbilityVariantType, BuffParameter, Condition, ConditionComposite,
+    HitTargetSimple, Status,
 )
 from dlparse.errors import AbilityVariantUnconvertibleError
 from dlparse.mono.asset import AbilityEntry, AbilityVariantEntry, ActionConditionEntry
@@ -167,8 +168,14 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             )
         }
 
-    def _from_change_state_dragons_claws(self) -> set[tuple[int, Optional[Condition]]]:
-        action_cond_ids: set[tuple[int, Optional[Condition]]] = set()
+    def _from_change_state_dragons_claws(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        # As of 2020/01/20, all ``CHANGE_STATE`` ability variants that have all 3 ID slots set
+        # is condition type 12 (``TRANSFORM_DRAGON``).
+        # Therefore, we are not checking if the condition type matches,
+        # and we overwrite the conditions in the payload.
+        ret: set[AbilityVariantEffectUnit] = set()
 
         variant_ids = [self.variant.id_a, self.variant.id_b, self.variant.id_c]
         conditions = [
@@ -178,9 +185,19 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         ]
 
         for action_cond_id, condition in zip(variant_ids, conditions):
-            action_cond_ids.add((action_cond_id, condition))
+            payload_new = AbilityVariantEffectPayload(
+                condition_comp=ConditionComposite(condition),
+                condition_cooldown=payload.condition_cooldown,
+                source_ability_id=payload.source_ability_id,
+                max_occurrences=payload.max_occurrences
+            )
 
-        return action_cond_ids
+            ret.update(self.to_buff_units(
+                asset_manager.asset_action_cond.get_data_by_id(action_cond_id), payload_new,
+                ConditionComposite(condition) if condition else None
+            ))
+
+        return ret
 
     def _from_change_state(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
@@ -189,10 +206,14 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         action_cond_ids: set[tuple[int, Optional[Condition]]] = set()
 
         # --- From action condition
-        if self.variant.has_multiple_action_conditions and Condition.SELF_SHAPESHIFTED in payload.condition_comp:
-            # Dragon's Claws
-            action_cond_ids.update(self._from_change_state_dragons_claws())
-        elif action_cond_id := self.variant.assigned_action_condition:
+        if self.variant.has_multiple_action_conditions:
+            # --- Dragon's Claws
+            # As of 2020/01/20, all ``CHANGE_STATE`` ability variants that have all 3 ID slots set
+            # is condition type 12 (``TRANSFORM_DRAGON``).
+            # Therefore, we are not checking if the condition type matches,
+            # and we overwrite the conditions in the payload.
+            return self._from_change_state_dragons_claws(asset_manager, payload)
+        if action_cond_id := self.variant.assigned_action_condition:
             # Normal change state assignment
             action_cond_ids.add((action_cond_id, None))
 
@@ -303,10 +324,11 @@ def ability_to_effect_units(
     if on_skill_cond := ability_entry.on_skill_condition:
         conditions.append(on_skill_cond)
 
-    if ability_cond := ability_entry.condition.to_condition():
-        conditions.append(ability_cond)
-        cooldown_sec = ability_entry.condition.cooldown_sec
-        max_occurrences = ability_entry.condition.max_occurrences
+    if not ability_entry.condition.condition_type == AbilityCondition.TRG_SHAPESHIFTED:
+        if ability_cond := ability_entry.condition.to_condition():
+            conditions.append(ability_cond)
+            cooldown_sec = ability_entry.condition.cooldown_sec
+            max_occurrences = ability_entry.condition.max_occurrences
 
     # Get the variant payload
     payload = AbilityVariantEffectPayload(
