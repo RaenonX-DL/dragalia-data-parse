@@ -1,5 +1,6 @@
 # dragalia-data-parse
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8525f8d32271464a80c1f384162de8df)](https://app.codacy.com/gh/RaenonX-DL/dragalia-data-parse?utm_source=github.com&utm_medium=referral&utm_content=RaenonX-DL/dragalia-data-parse&utm_campaign=Badge_Grade)
 [![time tracker](https://wakatime.com/badge/github/RaenonX-DL/dragalia-data-parse.svg)](https://wakatime.com/badge/github/RaenonX-DL/dragalia-data-parse)
 
 ------
