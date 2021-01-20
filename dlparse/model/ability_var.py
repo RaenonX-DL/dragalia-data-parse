@@ -211,6 +211,31 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             ))
         return ret
 
+    def _from_player_exp_up(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        max_value = asset_manager.asset_ability_limit.get_max_value(self.variant.limited_group_id, on_not_found=0)
+
+        return {
+            AbilityVariantEffectUnit(
+                source_ability_id=payload.source_ability_id,
+                condition_comp=payload.condition_comp,
+                cooldown_sec=payload.condition_cooldown,
+                max_occurrences=payload.max_occurrences,
+                parameter=BuffParameter.PLAYER_EXP,
+                probability_pct=100,
+                rate=self.variant.up_value / 100,  # Original data is percentage
+                rate_max=max_value,
+                target=HitTargetSimple.SELF,
+                status=Status.NONE,
+                duration_time=0,
+                duration_count=0,
+                max_stack_count=0,
+                slip_damage_mod=0,
+                slip_interval=0,
+            )
+        }
+
     def _from_sp_charge(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
@@ -255,6 +280,9 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
 
         if self.type_enum == AbilityVariantType.CHANGE_STATE:
             return self._from_change_state(asset_manager, payload)
+
+        if self.type_enum == AbilityVariantType.PLAYER_EXP_UP:
+            return self._from_player_exp_up(asset_manager, payload)
 
         if self.type_enum == AbilityVariantType.SP_CHARGE:
             return self._from_sp_charge(asset_manager, payload)

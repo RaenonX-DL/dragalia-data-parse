@@ -198,9 +198,16 @@ class BuffParameter(Enum):
     """
     # endregion
 
+    # region Miscellaneous
     # region Special Sentinel
     AFFLICTION = 901
     """The buff is an affliction. Value does not have any meanings."""
     MARK = 902
     """The buff is a mark. Value does not have any meanings. This is used by Nobunaga only as of 2020/12/10."""
+    # endregion
+
+    # region Miscellaneous
+    PLAYER_EXP = 990
+    """Raises the player EXP gain upon clearing a quest. A value of 0.12 to raise the player EXP gain by 12%."""
+    # endregion
     # endregion

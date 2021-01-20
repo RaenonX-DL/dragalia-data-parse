@@ -23,7 +23,7 @@ Field: `_ConditionType`
 02. HP_LESS
 03. BUFF_SKILL1
 04. BUFF_SKILL2
-05. DRAGON_MODE
+<a href="#05---dragon_mode">05. DRAGON_MODE</a>
 06. BREAKDOWN
 07. GET_BUFF_ATK
 <a href="#08---get_buff_def">08. GET_BUFF_DEF</a>
@@ -127,6 +127,17 @@ Effective if the user's HP is greater or equal to a certain threshold.
 `Val 1 = 40` means that the ability is effective if the user's HP is >= 40%.
 
 - **Val 1**: HP threshold.
+
+### `05` - `DRAGON_MODE`
+
+Effective if the user is in dragon shape. Certain shapeshift count is also required if `Val 1` is set.
+
+`Val 1 = 2` means that the ability is effective if the user has been shapeshifted for 2 times or more, including the
+current shapeshifting action.
+
+Note that `Val 1` can be `0`, which means that the shapeshift count doesn't matter. The ability is always active.
+
+- **Val 1**: Minimum dragon transform count required.
 
 ### `08` - `GET_BUFF_DEF`
 

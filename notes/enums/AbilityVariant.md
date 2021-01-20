@@ -82,7 +82,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 18. BuffExtension
 19. DebuffExtension
 20. AbnormalKiller
-21. UserExpUp
+<a href="#21---userexpup">21. UserExpUp</a>
 22. CharaExpUp
 23. CoinUp
 24. ManaUp
@@ -236,6 +236,16 @@ Charge all SP gauges.
 The percentage of the SP to charge for all skills.
 
 A value of `100` means to charge all skills with 100% SP (immediately ready the skill).
+
+### `21` - `UserExpUp`
+
+Raise the player EXP gain upon clearing a quest.
+
+# Variant Up Value
+
+The percentage of the player EXP gain.
+
+A value of `10` means to gain additional 10% of the player EXP upon clearing a quest.
 
 ### `40` - `ActiveGaugeStatusUp`
 

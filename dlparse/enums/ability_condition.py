@@ -26,6 +26,7 @@ class AbilityCondition(Enum):
     NONE = 0
 
     EFF_SELF_HP_GTE = 1
+    EFF_IS_DRAGON = 5
     TRG_RECEIVED_BUFF_DEF = 8
     TRG_SHAPESHIFTED = 12
     TRG_SELF_HP_LTE = 14

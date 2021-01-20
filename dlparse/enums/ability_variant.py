@@ -34,6 +34,9 @@ class AbilityVariantType(Enum):
     SP_CHARGE = 17
     """Charge the SP gauges."""
 
+    PLAYER_EXP_UP = 21
+    """Raises the player EXP gain upon clearing a quest."""
+
     GAUGE_STATUS = 40
     """Grants different effects according to the user's gauge status."""
 
