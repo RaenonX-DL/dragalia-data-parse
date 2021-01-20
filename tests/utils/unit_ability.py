@@ -29,15 +29,15 @@ class AbilityEffectInfo(AbilityInfoBase):
             raise TypeError(f"Unable to compare {type(self.__class__)} with {type(other)}")
 
         data_self = (
-            self.condition_comp.conditions_sorted,
             self.source_ability_id,
+            self.condition_comp.conditions_sorted,
             int(self.parameter.value),
             self.rate
         )
 
         data_other = (
-            other.condition_comp.conditions_sorted,
             other.source_ability_id,
+            other.condition_comp.conditions_sorted,
             int(other.parameter.value),
             other.rate
         )

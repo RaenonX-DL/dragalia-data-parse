@@ -221,10 +221,13 @@ class Condition(Enum):
     SELF_GAUGE_FILLED_2 = 452
     # endregion
 
-    # region Shapeshift
+    # region Dragon / Shapeshift
     SELF_SHAPESHIFTED_1_TIME = 471
     SELF_SHAPESHIFTED_2_TIMES = 472
     SELF_SHAPESHIFTED_3_TIMES = 473
+    SELF_SHAPESHIFTED_1_TIME_IN_DRAGON = 475
+    SELF_SHAPESHIFTED_2_TIMES_IN_DRAGON = 476
+    SELF_SHAPESHIFT_COMPLETED = 478
     # endregion
 
     # region Skill usage
@@ -235,7 +238,6 @@ class Condition(Enum):
 
     # region Special (Energized, inspired)
     SELF_ENERGIZED = 490
-    SELF_SHAPESHIFT_COMPLETED = 495
     # endregion
     # endregion
 

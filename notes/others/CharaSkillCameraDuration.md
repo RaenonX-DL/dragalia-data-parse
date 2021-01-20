@@ -47,7 +47,7 @@ where:
 - There are a thing named `AnimationController` that actually handle this (by [Mushymato]).
 
 - There are some skills failed to match using this stepflow (by [Mushymato]):
-    - Gala Mym - S2
-    - Megaman - All skills
+  - Gala Mym S2  (`105501012`)
+  - Megaman - All skills
 
 [Mushymato]: https://github.com/Mushymato

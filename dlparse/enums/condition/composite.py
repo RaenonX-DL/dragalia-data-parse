@@ -66,6 +66,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     gauge_filled_converted: int = field(init=False)
     shapeshift_count: Optional[Condition] = field(init=False)
     shapeshift_count_converted: int = field(init=False)
+    in_dragon_count: Optional[Condition] = field(init=False)
+    in_dragon_count_converted: int = field(init=False)
     # endregion
 
     # region Skill effect / animation
@@ -150,6 +152,10 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.shapeshift_count and self.shapeshift_count not in CondCat.shapeshifted_count:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_SHAPESHIFT_COUNT)
 
+        # Check `self.in_dragon_count`
+        if self.in_dragon_count and self.in_dragon_count not in CondCat.in_dragon_count:
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_SHAPESHIFT_COUNT_IN_DRAGON)
+
     def _init_validate_skill(self):
         # Check `self.teammate_coverage`
         if self.teammate_coverage and self.teammate_coverage not in CondCat.skill_teammates_covered:
@@ -204,6 +210,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.action_cond = CondCat.action_condition.extract(conditions)
         self.gauge_filled = CondCat.self_gauge_filled.extract(conditions)
         self.shapeshift_count = CondCat.shapeshifted_count.extract(conditions)
+        self.in_dragon_count = CondCat.in_dragon_count.extract(conditions)
 
         self.teammate_coverage = CondCat.skill_teammates_covered.extract(conditions)
         self.bullet_hit_count = CondCat.skill_bullet_hit.extract(conditions)
@@ -232,6 +239,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.action_cond_id = CondCat.action_condition.convert(self.action_cond, on_missing=None)
         self.gauge_filled_converted = CondCat.self_gauge_filled.convert(self.gauge_filled, on_missing=0)
         self.shapeshift_count_converted = CondCat.shapeshifted_count.convert(self.shapeshift_count, on_missing=0)
+        self.in_dragon_count_converted = CondCat.in_dragon_count.convert(self.in_dragon_count, on_missing=0)
 
         self.teammate_coverage_converted = CondCat.skill_teammates_covered.convert(self.teammate_coverage,
                                                                                    on_missing=None)
@@ -289,6 +297,9 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
 
         if self.shapeshift_count:
             ret += (self.shapeshift_count,)
+
+        if self.in_dragon_count:
+            ret += (self.in_dragon_count,)
 
         return ret
 

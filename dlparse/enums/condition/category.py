@@ -35,6 +35,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_GAUGE_FILLED = auto()
     MULTIPLE_LAPIS_CARD = auto()
     MULTIPLE_SHAPESHIFT_COUNT = auto()
+    MULTIPLE_SHAPESHIFT_COUNT_IN_DRAGON = auto()
     MULTIPLE_TRIGGER = auto()
     MULTIPLE_TRIGGER_HIT_BY_AFFLICTION = auto()
     MULTIPLE_MISC = auto()
@@ -56,6 +57,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_GAUGE_FILLED = auto()
     INTERNAL_NOT_LAPIS_CARD = auto()
     INTERNAL_NOT_SHAPESHIFT_COUNT = auto()
+    INTERNAL_NOT_SHAPESHIFT_COUNT_IN_DRAGON = auto()
     INTERNAL_NOT_TRIGGER = auto()
     INTERNAL_NOT_TRIGGER_HIT_BY_AFFLICTION = auto()
 
@@ -487,6 +489,15 @@ class ConditionCategories:
         ConditionMaxCount.SINGLE,
         "Self - shapeshift count",
         ConditionCheckResult.MULTIPLE_SHAPESHIFT_COUNT
+    )
+    in_dragon_count = ConditionCategoryTargetNumber(
+        {
+            Condition.SELF_SHAPESHIFTED_1_TIME_IN_DRAGON: 1,
+            Condition.SELF_SHAPESHIFTED_2_TIMES_IN_DRAGON: 2,
+        },
+        ConditionMaxCount.SINGLE,
+        "Self - shapeshift count (in dragon)",
+        ConditionCheckResult.MULTIPLE_SHAPESHIFT_COUNT_IN_DRAGON
     )
     # endregion
 

@@ -366,15 +366,15 @@ def test_with_attack(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_supportive(101501024)
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo("SWD_107_04_ALL_SPD_LV01", HitTargetSimple.TEAM, BuffParameter.ATK_SPD, 0.2, 10, 0),
+        BuffEffectInfo("SWD_107_04_ALL_SPD_LV01", HitTargetSimple.TEAM, BuffParameter.ASPD_BUFF, 0.2, 10, 0),
         BuffEffectInfo("SWD_107_04_ALL_ATK_LV01", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.1, 10, 0),
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo("SWD_107_04_ALL_SPD_LV02", HitTargetSimple.TEAM, BuffParameter.ATK_SPD, 0.3, 10, 0),
+        BuffEffectInfo("SWD_107_04_ALL_SPD_LV02", HitTargetSimple.TEAM, BuffParameter.ASPD_BUFF, 0.3, 10, 0),
         BuffEffectInfo("SWD_107_04_ALL_ATK_LV02", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.1, 10, 0),
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo("SWD_107_04_ALL_SPD_LV03", HitTargetSimple.TEAM, BuffParameter.ATK_SPD, 0.3, 10, 0),
+        BuffEffectInfo("SWD_107_04_ALL_SPD_LV03", HitTargetSimple.TEAM, BuffParameter.ASPD_BUFF, 0.3, 10, 0),
         BuffEffectInfo("SWD_107_04_ALL_ATK_LV03", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.1, 10, 0),
     }
 

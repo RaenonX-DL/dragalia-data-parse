@@ -28,17 +28,23 @@ class AbilityCondition(Enum):
     EFF_SELF_HP_GTE = 1
     EFF_IS_DRAGON = 5
     TRG_RECEIVED_BUFF_DEF = 8
-    TRG_SHAPESHIFTED = 12
+    TRG_SHAPESHIFTED_TO_DRAGON = 12
     TRG_SELF_HP_LTE = 14
     TRG_QUEST_START = 15
     EFF_ENERGIZED = 18
     TRG_ENERGIZED = 19
     TRG_HIT_WITH_AFFLICTION = 30
+    TRG_SHAPESHIFTED_TO_DRAGON_2 = 31
     EFF_SELF_HP_LT = 37
     EFF_SELF_SPECIFICALLY_BUFFED = 48
     TRG_SHAPESHIFT_COMPLETED = 51
     EFF_SELF_HP_GTE_2 = 60
     EFF_SELF_HP_LT_2 = 61
+
+    @property
+    def is_shapeshifted_to_dragon(self) -> bool:
+        """Check if the ability condition is "triggered when shapeshifted to dragon"."""
+        return self in (AbilityCondition.TRG_SHAPESHIFTED_TO_DRAGON, AbilityCondition.TRG_SHAPESHIFTED_TO_DRAGON_2)
 
     @classmethod
     def _missing_(cls, _):

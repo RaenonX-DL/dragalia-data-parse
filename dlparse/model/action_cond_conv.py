@@ -70,7 +70,7 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
             ),
             # ATK SPD
             self.to_param_up(
-                BuffParameter.ATK_SPD, action_cond.buff_atk_spd, action_cond, payload,
+                BuffParameter.ASPD_BUFF, action_cond.buff_atk_spd, action_cond, payload,
                 additional_conditions
             ),
             # FS SPD

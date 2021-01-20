@@ -87,6 +87,14 @@ class AbilityConditionEntry:
 
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
 
+    def _cond_self_in_dragon(self) -> Condition:
+        if self.val_1 == 0 or self.val_1 == 1:
+            return Condition.SELF_SHAPESHIFTED_1_TIME_IN_DRAGON
+        if self.val_1 == 2:
+            return Condition.SELF_SHAPESHIFTED_2_TIMES_IN_DRAGON
+
+        raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1, self.val_2)
+
     def _cond_hit_by_affliction(self) -> Condition:
         try:
             return ConditionCategories.trigger_hit_by_affliction.convert_reversed(Status(self.val_1))
@@ -102,6 +110,10 @@ class AbilityConditionEntry:
         ability_condition = _ability_condition_map.get(self.condition_type)
         if ability_condition is not None:  # Explicit check because ``Condition.NONE`` is falsy
             return ability_condition
+
+        # Self in-dragon
+        if self.condition_type == AbilityCondition.EFF_IS_DRAGON:
+            return self._cond_self_in_dragon()
 
         # Self HP condition
         if self_hp_cond := self._cond_self_hp():
@@ -178,22 +190,6 @@ class AbilityVariantEntry:
     def is_boosted_by_gauge_status(self) -> bool:
         """Check if the damage will be boosted according to the gauge status."""
         return self.type_enum == AbilityVariantType.GAUGE_STATUS
-
-    @property
-    def has_multiple_action_conditions(self) -> bool:
-        """
-        Check if the variant type is ``AbilityVariantType.CHANGE_STATE`` and has multiple action conditions.
-
-        If the above holds, it is likely that the action conditions will be used sequentially.
-        The action condition at ID-A will be used upon triggering,
-        then the action condition at ID-B will be used if re-triggered.
-        After the action condition at ID-C is used, the variant will never trigger again.
-        (This the pattern used for Dragon's Claws)
-        """
-        if self.type_enum != AbilityVariantType.CHANGE_STATE:
-            return False
-
-        return bool(self.id_a and self.id_b and self.id_c)
 
     @property
     def assigned_hit_label(self) -> Optional[str]:

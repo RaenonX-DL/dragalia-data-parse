@@ -40,6 +40,9 @@ class AbilityVariantType(Enum):
     GAUGE_STATUS = 40
     """Grants different effects according to the user's gauge status."""
 
+    HIT_ATTR_SHIFT = 42
+    """Shifts the hit attributes."""
+
     OTHER_ABILITY = 43
     """Link to another ability (at ID-A field)."""
 

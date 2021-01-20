@@ -34,6 +34,7 @@ _TRANS_DICT: dict[AbilityUpParameter, BuffParameter] = {
     AbilityUpParameter.HP: BuffParameter.HP_RAISE_BY_MAX,
     AbilityUpParameter.ATK: BuffParameter.ATK_PASSIVE,
     AbilityUpParameter.DEF: BuffParameter.DEF_PASSIVE,
+    AbilityUpParameter.ATK_SPEED: BuffParameter.ASPD_PASSIVE,
     AbilityUpParameter.SP_RATE: BuffParameter.SP_RATE,
     AbilityUpParameter.DRAGON_TIME: BuffParameter.DRAGON_TIME,
     AbilityUpParameter.DRAGON_TIME_FINAL: BuffParameter.DRAGON_TIME_FINAL,

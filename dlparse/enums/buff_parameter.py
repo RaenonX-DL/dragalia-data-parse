@@ -25,7 +25,7 @@ class BuffParameter(Enum):
     """Critical damage up (calculated as buff). A value of 0.12 means CRT DMG +12%."""
     SKILL_DAMAGE = 105
     """Skill damage up (calculated as buff). A value of 0.12 means SDMG +12%."""
-    ATK_SPD = 106
+    ASPD_BUFF = 106
     """Attack speed up (calculated as buff). A value of 0.12 means ASPD +12%."""
     FS_DAMAGE = 107
     """Force strike damage up (calculated as buff). A value of 0.12 means FS DMG +12%."""
@@ -38,6 +38,8 @@ class BuffParameter(Enum):
     """ATK up (calculated as passive). A value of 0.12 means ATK +12%."""
     DEF_PASSIVE = 152
     """DEF up (calculated as passive). A value of 0.12 means DEF +12%."""
+    ASPD_PASSIVE = 156
+    """Attack speed up (calculated as passive). A value of 0.12 means ASPD +12%."""
     # endregion
     # endregion
 

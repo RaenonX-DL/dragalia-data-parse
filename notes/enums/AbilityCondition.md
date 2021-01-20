@@ -120,6 +120,8 @@ not used.
 
 Missing value(s) means that the corresponding value is not used.
 
+-----
+
 ### `01` - `HP_MORE`
 
 Effective if the user's HP is greater or equal to a certain threshold.
@@ -127,6 +129,8 @@ Effective if the user's HP is greater or equal to a certain threshold.
 `Val 1 = 40` means that the ability is effective if the user's HP is >= 40%.
 
 - **Val 1**: HP threshold.
+
+-----
 
 ### `05` - `DRAGON_MODE`
 
@@ -139,19 +143,27 @@ Note that `Val 1` can be `0`, which means that the shapeshift count doesn't matt
 
 - **Val 1**: Minimum dragon transform count required.
 
+-----
+
 ### `08` - `GET_BUFF_DEF`
 
 Triggered once when the user receives a buff.
 
+-----
+
 ### `12` - `TRANSFORM_DRAGON`
 
-Triggered once when the user done transforming a certain amount of dragon.
+Triggered once when the user shapeshifts and has been shapeshifted for a certain amount of times, including the one
+that triggers this.
 
-`Val 1 = 1` means that the ability will be triggered once when the user done transforming one dragon.
+`Val 1 = 2` means that the ability will be triggered once the user shapeshifted and already shapeshifted twice,
+including the one that triggers this.
 
-- **Val 1**: Amount of dragon to transform.
+- **Val 1**: Amount of dragon transformed.
 
   - As of 2021/01/19, all abilities only have this as `1`.
+
+-----
 
 ### `14` - `HP_LESS_MOMENT`
 
@@ -161,9 +173,13 @@ Triggered once when the user's HP drops under a certain threshold.
 
 - **Val 1**: HP threshold.
 
+-----
+
 ### `15` - `QUEST_START`
 
 Triggered once at the beginning of the quest.
+
+-----
 
 ### `18` - `TENSION_MAX`
 
@@ -171,6 +187,8 @@ Effective if the user **is** energized.
 
 Note that the effect will be effective as long as the user is energized. This is different
 from [`19. TENSION_MAX_MOMENT`](#19---tension_max_moment), which only triggers when the user got energized.
+
+-----
 
 ### `19` - `TENSION_MAX_MOMENT`
 
@@ -185,6 +203,8 @@ from [`18. TENSION_MAX`](#18---tension_max), which effects will be effective as 
 
   For all usages as of 2020/12/12, this only has a value of `1`.
 
+-----
+
 ### `30` - `DAMAGED_ABNORMAL_STATUS`
 
 Triggered once when the user is hit by an attack with the specified affliction status.
@@ -194,6 +214,20 @@ Triggered once when the user is hit by an attack with the specified affliction s
 - **Val 1**: Enum number of the affliction status to trigger this condition.
   Check [the enum of the affliction statuses](/dlparse/enums/status.py) for the ID correspondence.
 
+-----
+
+### `31` - `DRAGONSHIFT_MOMENT`
+
+Triggered once when the user shapeshifts and has been shapeshifted for a certain amount of times, including the one
+that triggers this.
+
+`Val 1 = 2` means that the ability will be triggered once the user shapeshifted and already shapeshifted twice,
+including the one that triggers this.
+
+- **Val 1**: Amount of dragon transformed.
+
+-----
+
 ### `37` - `HP_NOREACH`
 
 Effective if the user's HP is < a certain threshold.
@@ -201,6 +235,8 @@ Effective if the user's HP is < a certain threshold.
 `Val 1 = 40` means that the condition holds if the user's HP is < 40%.
 
 - **Val 1**: HP threshold.
+
+-----
 
 ### `48` - `BUFFED_SPECIFIC_ID`
 
@@ -215,9 +251,13 @@ to ``0`` meaning that the field is not in use.
 
 - **Val 2**: secondary action condition ID of the required buff. `0` means ineffective.
 
+-----
+
 ### `51` - `RELEASE_DRAGONSHIFT`
 
 Triggered once when the user completed shapeshifting.
+
+-----
 
 ### `60` - `HP_MORE_NO_SUPPORT_CHARA`
 
@@ -229,6 +269,8 @@ However, this condition always fail if the unit is being used as a helper.
 > The meaning of **no support** here can also mean "no shared skill" available.
 > although it doesn't make sense that why this needs an individual condition type.
 
+-----
+
 ### `61` - `HP_NOREACH_NO_SUPPORT_CHARA`
 
 Another branch of [`37. HP_NOREACH`](#37---hp_noreach).
@@ -238,6 +280,8 @@ However, this condition always fail if the unit is being used as a helper.
 > Awaits confirmation. One known usage is Grace (`10850503`).
 > The meaning of **no support** here can also mean "no shared skill" available,
 > although it doesn't make sense that why this needs an individual condition type.
+
+-----
 
 ### `73` - `BUTTERFLYBULLET_NUM_OVER`
 

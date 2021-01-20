@@ -600,6 +600,18 @@
     "text": "量條 2 條滿"
   },
   {
+    "id": "ENUM_COND_SELF_SHAPESHIFT_COMPLETED",
+    "text": "龍化結束後"
+  },
+  {
+    "id": "ENUM_COND_SELF_SHAPESHIFTED_1_TIME_IN_DRAGON",
+    "text": "龍化 1 次後 (龍形)"
+  },
+  {
+    "id": "ENUM_COND_SELF_SHAPESHIFTED_2_TIMES_IN_DRAGON",
+    "text": "龍化 2 次後 (龍形)"
+  },
+  {
     "id": "ENUM_COND_SELF_SHAPESHIFTED_1_TIME",
     "text": "龍化 1 次後"
   },

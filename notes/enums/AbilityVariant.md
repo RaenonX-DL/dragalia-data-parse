@@ -86,7 +86,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 22. CharaExpUp
 23. CoinUp
 24. ManaUp
-25. ActionGrant
+<a href="#25---actiongrant">25. ActionGrant</a>
 26. CriticalDamageUp
 27. DpCharge
 28. ResistElement
@@ -141,9 +141,13 @@ For the missing enums below, it means that the **documentation has not been crea
 If the fields are not explicitly mentioned (except for limit group ID), it means that the unmentioned fields are not
 used.
 
+-----
+
 ### `00` - `None`
 
 The variant is not used.
+
+-----
 
 ### `01` - `StatusUp`
 
@@ -164,6 +168,8 @@ Parameter raising rate.
 
 A value of `10` means to raise the parameter by 10%.
 
+-----
+
 ### `02` - `ResistAbs`
 
 Resistance of a certain status.
@@ -183,6 +189,8 @@ A value of `6` means to resist Stun.
 Probability rate of the affliction resistance in percentage.
 
 A value of `50` means to resist a certain affliction by 50%.
+
+-----
 
 ### `14` - `ChangeState`
 
@@ -227,25 +235,49 @@ The hit attribute to be called (if given).
 
 A value of `BUF_222_LV01` means that to call the hit attribute `BUF_222_LV01` once the condition satisifes.
 
+-----
+
 ### `17` - `SpCharge`
 
 Charge all SP gauges.
 
-# Variant Up Value
+#### Variant Up Value
 
 The percentage of the SP to charge for all skills.
 
 A value of `100` means to charge all skills with 100% SP (immediately ready the skill).
 
+-----
+
 ### `21` - `UserExpUp`
 
 Raise the player EXP gain upon clearing a quest.
 
-# Variant Up Value
+#### Variant Up Value
 
 The percentage of the player EXP gain.
 
 A value of `10` means to gain additional 10% of the player EXP upon clearing a quest.
+
+-----
+
+### `25` - `ActionGrant`
+
+Grant the user an action condition to a certain action.
+
+#### Variant ID - A
+
+ID of the action to grant. This ID links to the asset `ActionGrant`.
+
+In this asset, the ID of the action condition ID, target action, and the duration is specified.
+
+A value of `16` means to grant the effect listed in `ActionGrant` where ID is `16`.
+
+- ID `16` in `ActionGrant` will allow the user's auto
+  (`_TargetAction` = 1, corresponds to `Gluon.AbilityTargetAction`)
+  to have the effect of action condition ID `1497`.
+
+-----
 
 ### `40` - `ActiveGaugeStatusUp`
 
@@ -272,6 +304,20 @@ Gauge(s) filled | DEF | Action Damage Boost
 
 Action to receive the damage boost.
 
+### `42` - `HitAttributeShift`
+
+Shift the hit attribute.
+
+This does not have any parameters.
+
+This is only used by Lathna passive 1 (`752` at level 3 of `10550502`)
+and Gala Mym passive 1 (`237` at level 1 of `10550101` / `238` at level 2 of `10550101`), as of 2020/01/20.
+
+This causes some "shifts" to the hit attributes (including autos and the skill) of the unique Mym (of Gala Mym) and the
+unique Nyarlathotep (of Lathna), so these unique dragons are stronger.
+
+-----
+
 ### `43` - `ReferenceOther`
 
 Refer to the other ability.
@@ -279,6 +325,8 @@ Refer to the other ability.
 #### Variant ID - A
 
 The other ability ID. A value of `1307` means that there is an additional ability which ID is `1307`.
+
+-----
 
 ### `44` - `EnhancedSkill`
 
@@ -295,6 +343,8 @@ after the enhancement.
 
 For Menee (`10650303`), Enhanced S1 (`106503033`, available if 6+ butterflies exist on the map) have this as `3` while
 Enhanced S2 (`106503036`, available if 6+ butterflies exist on the map) have this as `4`.
+
+-----
 
 ### `54` - `ActDamageUpDependsOnHitCount`
 

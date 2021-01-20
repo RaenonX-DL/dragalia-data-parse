@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from typing import Optional, TYPE_CHECKING
 
 from dlparse.enums import (
-    AbilityCondition, AbilityUpParameter, AbilityVariantType, BuffParameter, Condition, ConditionComposite,
+    AbilityUpParameter, AbilityVariantType, BuffParameter, Condition, ConditionComposite,
     HitTargetSimple, Status,
 )
 from dlparse.errors import AbilityVariantUnconvertibleError
@@ -46,8 +46,13 @@ class AbilityVariantEffectPayload(ActionCondEffectConvertPayload):
 
     condition_comp: ConditionComposite
     condition_cooldown: float
-    source_ability_id: int
+    source_ability: AbilityEntry
     max_occurrences: int
+
+    source_ability_id: int = field(init=False)
+
+    def __post_init__(self):
+        self.source_ability_id = self.source_ability.id
 
 
 @dataclass
@@ -177,7 +182,11 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         # and we overwrite the conditions in the payload.
         ret: set[AbilityVariantEffectUnit] = set()
 
-        variant_ids = [self.variant.id_a, self.variant.id_b, self.variant.id_c]
+        variant_ids = [
+            var_id for var_id
+            in (self.variant.id_a, self.variant.id_b, self.variant.id_c)
+            if var_id  # Filter ineffective variant ID, because sometimes ID-C is not used
+        ]
         conditions = [
             Condition.SELF_SHAPESHIFTED_1_TIME,
             Condition.SELF_SHAPESHIFTED_2_TIMES,
@@ -188,13 +197,12 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             payload_new = AbilityVariantEffectPayload(
                 condition_comp=ConditionComposite(condition),
                 condition_cooldown=payload.condition_cooldown,
-                source_ability_id=payload.source_ability_id,
+                source_ability=payload.source_ability,
                 max_occurrences=payload.max_occurrences
             )
 
             ret.update(self.to_buff_units(
-                asset_manager.asset_action_cond.get_data_by_id(action_cond_id), payload_new,
-                ConditionComposite(condition) if condition else None
+                asset_manager.asset_action_cond.get_data_by_id(action_cond_id), payload_new
             ))
 
         return ret
@@ -206,12 +214,8 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         action_cond_ids: set[tuple[int, Optional[Condition]]] = set()
 
         # --- From action condition
-        if self.variant.has_multiple_action_conditions:
+        if payload.source_ability.condition.condition_type.is_shapeshifted_to_dragon:
             # --- Dragon's Claws
-            # As of 2020/01/20, all ``CHANGE_STATE`` ability variants that have all 3 ID slots set
-            # is condition type 12 (``TRANSFORM_DRAGON``).
-            # Therefore, we are not checking if the condition type matches,
-            # and we overwrite the conditions in the payload.
             return self._from_change_state_dragons_claws(asset_manager, payload)
         if action_cond_id := self.variant.assigned_action_condition:
             # Normal change state assignment
@@ -308,6 +312,9 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         if self.type_enum == AbilityVariantType.SP_CHARGE:
             return self._from_sp_charge(asset_manager, payload)
 
+        if self.type_enum == AbilityVariantType.HIT_ATTR_SHIFT:
+            return set()
+
         raise AbilityVariantUnconvertibleError(payload.source_ability_id, self.variant.type_id)
 
 
@@ -319,22 +326,25 @@ def ability_to_effect_units(
 
     # Get the conditions
     conditions: list[Condition] = []
-    cooldown_sec: float = 0
-    max_occurrences: int = 0
     if on_skill_cond := ability_entry.on_skill_condition:
         conditions.append(on_skill_cond)
 
-    if not ability_entry.condition.condition_type == AbilityCondition.TRG_SHAPESHIFTED:
+    # Delay the determination of the ability variant effect condition
+    # if the ability condition type relates to "shapeshifted to dragon"
+    if not ability_entry.condition.condition_type.is_shapeshifted_to_dragon:
+        # If the ability does not have condition, skip adding it
         if ability_cond := ability_entry.condition.to_condition():
             conditions.append(ability_cond)
-            cooldown_sec = ability_entry.condition.cooldown_sec
-            max_occurrences = ability_entry.condition.max_occurrences
+
+    # Get the condition information
+    cooldown_sec = ability_entry.condition.cooldown_sec
+    max_occurrences = ability_entry.condition.max_occurrences
 
     # Get the variant payload
     payload = AbilityVariantEffectPayload(
         condition_comp=ConditionComposite(conditions),
         condition_cooldown=cooldown_sec,
-        source_ability_id=ability_entry.id,
+        source_ability=ability_entry,
         max_occurrences=max_occurrences,
     )
 
