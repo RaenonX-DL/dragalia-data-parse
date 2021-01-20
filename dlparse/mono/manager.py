@@ -19,6 +19,7 @@ class AssetManager:
     """A class for loading and managing all the assets and loaders."""
 
     # pylint: disable=too-many-public-methods
+    # Public methods are actually properties.
 
     def __init__(
             self, action_asset_dir: str, master_asset_dir: str, chara_motion_asset_dir: str, /,

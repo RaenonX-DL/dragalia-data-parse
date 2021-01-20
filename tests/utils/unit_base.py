@@ -68,4 +68,4 @@ def check_info_list_match(actual_info: Iterable[T], expected_info: Iterable[T], 
     if message is not None:
         assert_expr = f"{message}\n{assert_expr}"
 
-    assert actual_info == expected_info, assert_expr
+    assert actual_info == expected_info, assert_expr  # nosec

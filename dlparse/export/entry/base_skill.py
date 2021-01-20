@@ -53,6 +53,8 @@ class SkillExportEntryBase(Generic[T], HashableEntryBase, CsvExportableEntryBase
             self, asset_manager: "AssetManager", chara_data: "CharaDataEntry", skill_data: "SkillDataEntry",
             skill_id_entry: "SkillIdEntry", skill_data_to_parse: T
     ):  # pylint: disable=unused-argument
+        # ``skill_data_to_parse`` is marked as unused by pylint.
+        # However, it will be used by the classes that inherit this class.
         self.character_custom_id = chara_data.custom_id
         self.character_name = TextEntry(asset_manager.asset_text_multi, chara_data.name_labels)
         self.character_icon_name = chara_data.icon_name

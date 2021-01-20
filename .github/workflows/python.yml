@@ -30,7 +30,7 @@ jobs:
           pylint dlparse
 
   tests:
-    name: CI Tests
+    name: Tests
 
     strategy:
       matrix:

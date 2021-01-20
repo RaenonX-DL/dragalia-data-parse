@@ -46,4 +46,4 @@ def check_buff_unit_match(
     if message is not None:
         assert_expr = f"{message}\n{assert_expr}"
 
-    assert actual_info == expected_info, assert_expr
+    assert actual_info == expected_info, assert_expr  # nosec

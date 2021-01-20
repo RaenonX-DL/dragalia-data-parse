@@ -1,9 +1,10 @@
-# CQA check
+# Code quality check
 pydocstyle
 flake8
 pylint
+bandit
 
-# CI
+# Testing framework
 pytest
 
 # Other necessary requirements

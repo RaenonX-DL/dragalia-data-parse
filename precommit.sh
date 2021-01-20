@@ -23,6 +23,9 @@ run_cmd_exit_on_err "pydocstyle dlparse --count" "pydocstyle check (dlparse)"
 echo "${CLR_CYN}Checking with flake8 (dlparse)...${CLR_NC}"
 run_cmd_exit_on_err "flake8 dlparse --count" "flake8 check (dlparse)"
 
+echo "${CLR_CYN}Checking with bandit (dlparse)...${CLR_NC}"
+run_cmd_exit_on_err "bandit -r dlparse" "bandit check (dlparse)"
+
 echo "${CLR_CYN}Checking with pylint (dlparse)...${CLR_NC}"
 run_cmd_exit_on_err "pylint dlparse" "pylint check (dlparse)"
 
@@ -31,6 +34,9 @@ run_cmd_exit_on_err "pydocstyle tests.utils --count" "pydocstyle check (tests.ut
 
 echo "${CLR_CYN}Checking with flake8 (tests.utils)...${CLR_NC}"
 run_cmd_exit_on_err "flake8 tests/utils --count" "flake8 check (tests.utils)"
+
+echo "${CLR_CYN}Checking with bandit (tests.utils)...${CLR_NC}"
+run_cmd_exit_on_err "bandit -r tests/utils" "bandit check (tests.utils)"
 
 echo "${CLR_CYN}Checking with pylint (tests.utils)...${CLR_NC}"
 run_cmd_exit_on_err "pylint tests.utils" "pylint check (tests.utils)"

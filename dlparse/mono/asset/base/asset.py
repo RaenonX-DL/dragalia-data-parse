@@ -28,7 +28,9 @@ def get_file_like(file_location: str) -> TextIO:
     """
     if is_url(file_location):
         try:
-            return io.TextIOWrapper(urlopen(file_location), encoding='utf-8')
+            # `is_url()` already validate ``file_location`` to start with ``http``,
+            # no risk of passing ftp:// or file:// here
+            return io.TextIOWrapper(urlopen(file_location), encoding='utf-8')  # nosec
         except HTTPError as ex:
             if ex.code == 404:
                 raise ValueError(f"URL: {file_location} not found") from ex
