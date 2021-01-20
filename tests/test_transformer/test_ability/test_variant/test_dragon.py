@@ -1,4 +1,4 @@
-from dlparse.enums import BuffParameter, Condition, ConditionComposite
+from dlparse.enums import AbilityTargetAction, BuffParameter, Condition, ConditionComposite
 from dlparse.transformer import AbilityTransformer
 from tests.utils import AbilityEffectInfo, check_ability_effect_unit_match
 
@@ -13,6 +13,24 @@ def test_gala_leonidas_ab1_lv2(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(1461, condition, BuffParameter.DP_CONSUMPTION, -0.5),
         AbilityEffectInfo(1461, condition, BuffParameter.DRAGON_TIME_FINAL, -0.5),
+    }
+
+    check_ability_effect_unit_match(ability_data.effect_units, expected_info)
+
+
+def test_euden_ab3_max(transformer_ability: AbilityTransformer):
+    # Euden (AB3 @ Max - Player EXP +15% / Normal attack dispel buffs in dragon)
+    # https://dragalialost.gamepedia.com/The_Prince
+    ability_data = transformer_ability.transform_ability(688)
+
+    expected_info = {
+        AbilityEffectInfo(
+            688, ConditionComposite(), BuffParameter.PLAYER_EXP, 0.15, target_action=AbilityTargetAction.NONE
+        ),
+        AbilityEffectInfo(
+            689, ConditionComposite(Condition.SELF_SHAPESHIFTED_1_TIME_IN_DRAGON), BuffParameter.DISPEL, 0,
+            target_action=AbilityTargetAction.AUTO
+        ),
     }
 
     check_ability_effect_unit_match(ability_data.effect_units, expected_info)

@@ -5,9 +5,9 @@ from dlparse.enums import Language
 from dlparse.errors import ConfigError
 from dlparse.transformer import AbilityTransformer, SkillTransformer
 from .asset import (
-    AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionPartsListAsset, BuffCountAsset, CharaDataAsset,
-    CharaModeAsset, DragonDataAsset, HitAttrAsset, MotionSelectorWeapon, PlayerActionInfoAsset, SkillChainAsset,
-    SkillDataAsset, TextAsset, TextAssetMultilingual,
+    AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionGrantAsset, ActionPartsListAsset, BuffCountAsset,
+    CharaDataAsset, CharaModeAsset, DragonDataAsset, HitAttrAsset, MotionSelectorWeapon, PlayerActionInfoAsset,
+    SkillChainAsset, SkillDataAsset, TextAsset, TextAssetMultilingual,
 )  # Master; Motion
 from .custom import WebsiteTextAsset
 from .loader import ActionFileLoader, CharacterMotionLoader
@@ -29,6 +29,7 @@ class AssetManager:
         self._asset_ability_data = AbilityAsset(asset_dir=master_asset_dir)
         self._asset_ability_limit = AbilityLimitGroupAsset(asset_dir=master_asset_dir)
         self._asset_action_cond = ActionConditionAsset(asset_dir=master_asset_dir)
+        self._asset_action_grant = ActionGrantAsset(asset_dir=master_asset_dir)
         self._asset_buff_count = BuffCountAsset(asset_dir=master_asset_dir)
         self._asset_chara_data = CharaDataAsset(asset_dir=master_asset_dir)
         self._asset_chara_mode = CharaModeAsset(asset_dir=master_asset_dir)
@@ -79,6 +80,11 @@ class AssetManager:
     def asset_action_cond(self) -> ActionConditionAsset:
         """Get the action condition data asset."""
         return self._asset_action_cond
+
+    @property
+    def asset_action_grant(self) -> ActionGrantAsset:
+        """Get the action grant asset."""
+        return self._asset_action_grant
 
     @property
     def asset_buff_count(self) -> BuffCountAsset:

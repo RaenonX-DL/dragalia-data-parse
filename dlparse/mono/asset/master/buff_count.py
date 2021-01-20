@@ -6,7 +6,7 @@ from dlparse.enums import ConditionCategories, ConditionComposite
 from dlparse.errors import AppValueError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
-__all__ = ("BuffCountEntry", "BuffCountAsset", "BuffCountParser")
+__all__ = ("BuffCountEntry", "BuffCountAsset")
 
 
 @dataclass

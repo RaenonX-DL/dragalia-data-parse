@@ -37,6 +37,9 @@ class AbilityVariantType(Enum):
     PLAYER_EXP_UP = 21
     """Raises the player EXP gain upon clearing a quest."""
 
+    ACTION_GRANT = 25
+    """Grant a action condition to a specific action."""
+
     GAUGE_STATUS = 40
     """Grants different effects according to the user's gauge status."""
 

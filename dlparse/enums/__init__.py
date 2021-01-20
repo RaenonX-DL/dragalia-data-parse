@@ -2,6 +2,7 @@
 from .ability_condition import AbilityCondition
 from .ability_param import AbilityUpParameter
 from .ability_variant import AbilityVariantType
+from .action import AbilityTargetAction
 from .action_component import ActionCommandType, ActionConditionType
 from .buff_parameter import BuffParameter
 from .bullet import FireStockPattern

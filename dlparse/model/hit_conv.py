@@ -3,7 +3,7 @@ from abc import ABC
 from dataclasses import dataclass
 from typing import Generic, Optional
 
-from dlparse.enums import BuffParameter, ConditionComposite, HitTargetSimple, SkillIndex, Status
+from dlparse.enums import BuffParameter, HitTargetSimple, SkillIndex, Status
 from dlparse.errors import UnhandledSelfDamageError
 from dlparse.mono.asset import ActionBuffBomb, ActionConditionAsset, ActionConditionEntry, HitAttrEntry
 from .action_cond_conv import ActionCondEffectConvertible
@@ -21,7 +21,7 @@ class HitDataEffectConvertible(
 
     def to_param_up(
             self, param_enum: BuffParameter, param_rate: float, action_cond: ActionConditionEntry,
-            payload: None = None, additional_conditions: Optional[ConditionComposite] = None
+            payload: None = None
     ) -> Optional[HitActionConditionEffectUnit]:
         """
         Create an effect unit (if applicable) based on the given action condition and the related data.
@@ -70,6 +70,23 @@ class HitDataEffectConvertible(
             target=self.target_simple,
             probability_pct=action_cond.probability_pct,
             parameter=BuffParameter.AFFLICTION,
+            duration_time=action_cond.duration_sec,
+            slip_interval=action_cond.slip_interval,
+            slip_damage_mod=action_cond.slip_damage_mod,
+            max_stack_count=action_cond.max_stack_count,
+            hit_attr_label=self.hit_attr.id,
+            action_cond_id=self.hit_attr.action_condition_id
+        )
+
+    def to_dispel_unit(
+            self, param_enum: BuffParameter, action_cond: ActionConditionEntry, payload: None = None
+    ) -> Optional[HitAfflictionEffectUnitHit]:
+        return HitAfflictionEffectUnitHit(
+            time=self.action_component.time_start,
+            status=action_cond.afflict_status,
+            target=self.target_simple,
+            probability_pct=action_cond.probability_pct,
+            parameter=BuffParameter.DISPEL,
             duration_time=action_cond.duration_sec,
             slip_interval=action_cond.slip_interval,
             slip_damage_mod=action_cond.slip_damage_mod,

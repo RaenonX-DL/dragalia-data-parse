@@ -2,6 +2,7 @@
 from .ability import AbilityAsset, AbilityEntry, AbilityVariantEntry
 from .ability_limit_group import AbilityLimitGroupAsset, AbilityLimitGroupEntry
 from .action_condition import ActionConditionAsset, ActionConditionEntry
+from .action_grant import ActionGrantAsset, ActionGrantEntry
 from .action_hit_attr import HitAttrAsset, HitAttrEntry
 from .buff_count import BuffCountAsset, BuffCountEntry
 from .chara_data import CharaDataAsset, CharaDataEntry

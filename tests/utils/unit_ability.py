@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from dlparse.enums import BuffParameter, ConditionComposite
+from dlparse.enums import AbilityTargetAction, BuffParameter, ConditionComposite
 from dlparse.model import AbilityVariantEffectUnit
 from .unit_base import AbilityInfoBase, check_info_list_match
 
@@ -19,6 +19,7 @@ class AbilityEffectInfo(AbilityInfoBase):
     probability: Optional[float] = None
     cooldown_sec: Optional[float] = None
     max_occurrences: Optional[int] = None
+    target_action: Optional[AbilityTargetAction] = None
 
     def __hash__(self):
         # x 1E5 for error tolerance
@@ -52,14 +53,16 @@ def check_ability_effect_unit_match(
     """Check if the info of the affliction units match."""
     has_probability = any(info.probability for info in expected_info)
     has_cooldown = any(info.cooldown_sec for info in expected_info)
-    has_max_max_occurrences = any(info.max_occurrences for info in expected_info)
+    has_max_occurrences = any(info.max_occurrences for info in expected_info)
+    has_target_action = any(info.target_action for info in expected_info)
 
     actual_info = [
         AbilityEffectInfo(
             unit.source_ability_id, unit.condition_comp, unit.parameter, unit.rate,
             unit.probability_pct if has_probability else None,
             unit.cooldown_sec if has_cooldown else None,
-            unit.max_occurrences if has_max_max_occurrences else None,
+            unit.max_occurrences if has_max_occurrences else None,
+            unit.target_action if has_target_action else None,
         )
         for unit in actual_units
     ]

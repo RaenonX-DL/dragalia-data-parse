@@ -14,7 +14,7 @@ from .text_label import TextAsset
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
 
-__all__ = ("CharaDataEntry", "CharaDataAsset", "CharaDataParser")
+__all__ = ("CharaDataEntry", "CharaDataAsset")
 
 
 @dataclass

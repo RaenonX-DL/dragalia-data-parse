@@ -203,9 +203,11 @@ class BuffParameter(Enum):
     # region Miscellaneous
     # region Special Sentinel
     AFFLICTION = 901
-    """The buff is an affliction. Value does not have any meanings."""
+    """The buff is an affliction. Value does not have any meaning."""
     MARK = 902
     """The buff is a mark. Value does not have any meanings. This is used by Nobunaga only as of 2020/12/10."""
+    DISPEL = 903
+    """Dispels a buff. Value does not have any meaning."""
     # endregion
 
     # region Miscellaneous

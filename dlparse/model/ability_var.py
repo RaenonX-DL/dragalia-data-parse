@@ -1,9 +1,9 @@
 """Classes for ability variant data."""
 from dataclasses import dataclass, field
-from typing import Optional, TYPE_CHECKING
+from typing import Callable, Optional, TYPE_CHECKING
 
 from dlparse.enums import (
-    AbilityUpParameter, AbilityVariantType, BuffParameter, Condition, ConditionComposite,
+    AbilityTargetAction, AbilityUpParameter, AbilityVariantType, BuffParameter, Condition, ConditionComposite,
     HitTargetSimple, Status,
 )
 from dlparse.errors import AbilityVariantUnconvertibleError
@@ -28,6 +28,8 @@ class AbilityVariantEffectUnit(EffectUnitBase):
 
     rate_max: float
 
+    target_action: AbilityTargetAction
+
     def __hash__(self):
         # x 1E5 for handling floating errors
         return hash((self.source_ability_id, self.condition_comp, self.parameter, int(self.rate * 1E5)))
@@ -49,6 +51,8 @@ class AbilityVariantEffectPayload(ActionCondEffectConvertPayload):
     source_ability: AbilityEntry
     max_occurrences: int
 
+    target_action: AbilityTargetAction = AbilityTargetAction.NONE
+
     source_ability_id: int = field(init=False)
 
     def __post_init__(self):
@@ -68,16 +72,17 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
 
     def to_param_up(
             self, param_enum: BuffParameter, param_rate: float, action_cond: ActionConditionEntry,
-            payload: AbilityVariantEffectPayload = None, additional_conditions: Optional[ConditionComposite] = None
+            payload: AbilityVariantEffectPayload = None
     ) -> Optional[AbilityVariantEffectUnit]:
         if not param_rate:
             return None  # Rate is 0, parameter not raised
 
         return AbilityVariantEffectUnit(
-            condition_comp=payload.condition_comp + additional_conditions,
+            condition_comp=payload.condition_comp,
             cooldown_sec=payload.condition_cooldown,
             max_occurrences=payload.max_occurrences,
             source_ability_id=payload.source_ability_id,
+            target_action=payload.target_action,
             status=Status.NONE,
             target=HitTargetSimple.SELF,  # Effects of the ability from action condition should all targeted to self
             parameter=param_enum,
@@ -100,11 +105,35 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             cooldown_sec=payload.condition_cooldown,
             max_occurrences=payload.max_occurrences,
             source_ability_id=payload.source_ability_id,
+            target_action=payload.target_action,
             status=action_cond.afflict_status,
             target=HitTargetSimple.SELF,  # Effects of the ability from action condition should all targeted to self
             probability_pct=action_cond.probability_pct,
             rate=0,
             parameter=BuffParameter.AFFLICTION,
+            duration_time=action_cond.duration_sec,
+            duration_count=action_cond.duration_count,
+            slip_interval=action_cond.slip_interval,
+            slip_damage_mod=action_cond.slip_damage_mod,
+            max_stack_count=action_cond.max_stack_count,
+            rate_max=0
+        )
+
+    def to_dispel_unit(
+            self, param_enum: BuffParameter, action_cond: "ActionConditionEntry",
+            payload: AbilityVariantEffectPayload = None
+    ) -> Optional[AbilityVariantEffectUnit]:
+        return AbilityVariantEffectUnit(
+            condition_comp=payload.condition_comp,
+            cooldown_sec=payload.condition_cooldown,
+            max_occurrences=payload.max_occurrences,
+            source_ability_id=payload.source_ability_id,
+            target_action=payload.target_action,
+            status=action_cond.afflict_status,
+            target=HitTargetSimple.ENEMY,  # Buff dispel always target the enemy
+            probability_pct=action_cond.probability_pct,
+            rate=0,
+            parameter=param_enum,
             duration_time=action_cond.duration_sec,
             duration_count=action_cond.duration_count,
             slip_interval=action_cond.slip_interval,
@@ -132,6 +161,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 condition_comp=payload.condition_comp,
                 cooldown_sec=payload.condition_cooldown,
                 max_occurrences=payload.max_occurrences,
+                target_action=payload.target_action,
                 parameter=ability_param.to_buff_parameter(),
                 probability_pct=100,
                 rate=self.variant.up_value / 100,  # Original data is percentage
@@ -159,6 +189,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 condition_comp=payload.condition_comp,
                 cooldown_sec=payload.condition_cooldown,
                 max_occurrences=payload.max_occurrences,
+                target_action=payload.target_action,
                 parameter=resist_param,
                 probability_pct=100,  # Absolutely applicable
                 rate=self.variant.up_value / 100,  # Original data is percentage
@@ -211,7 +242,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
         # Add action condition IDs
-        action_cond_ids: set[tuple[int, Optional[Condition]]] = set()
+        action_cond_ids: set[int] = set()
 
         # --- From action condition
         if payload.source_ability.condition.condition_type.is_shapeshifted_to_dragon:
@@ -219,20 +250,19 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             return self._from_change_state_dragons_claws(asset_manager, payload)
         if action_cond_id := self.variant.assigned_action_condition:
             # Normal change state assignment
-            action_cond_ids.add((action_cond_id, None))
+            action_cond_ids.add(action_cond_id)
 
         # --- From hit label
         if hit_label := self.variant.assigned_hit_label:
             if hit_attr := asset_manager.asset_hit_attr.get_data_by_id(hit_label):
                 if hit_attr.has_action_condition:
-                    action_cond_ids.add((hit_attr.action_condition_id, None))
+                    action_cond_ids.add(hit_attr.action_condition_id)
 
         # Get units from action condition IDs
         ret: set[AbilityVariantEffectUnit] = set()
-        for action_cond_id, condition in action_cond_ids:
+        for action_cond_id in action_cond_ids:
             ret.update(self.to_buff_units(
-                asset_manager.asset_action_cond.get_data_by_id(action_cond_id), payload,
-                ConditionComposite(condition) if condition else None
+                asset_manager.asset_action_cond.get_data_by_id(action_cond_id), payload
             ))
         return ret
 
@@ -247,6 +277,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 condition_comp=payload.condition_comp,
                 cooldown_sec=payload.condition_cooldown,
                 max_occurrences=payload.max_occurrences,
+                target_action=payload.target_action,
                 parameter=BuffParameter.PLAYER_EXP,
                 probability_pct=100,
                 rate=self.variant.up_value / 100,  # Original data is percentage
@@ -275,6 +306,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 condition_comp=payload.condition_comp,
                 cooldown_sec=payload.condition_cooldown,
                 max_occurrences=payload.max_occurrences,
+                target_action=payload.target_action,
                 parameter=param,
                 probability_pct=100,
                 rate=self.variant.up_value / 100,  # Original data is percentage
@@ -289,6 +321,19 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             ) for param in charge_params
         }
 
+    def _from_action_grant(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        action_grant_data = asset_manager.asset_action_grant.get_data_by_id(self.variant.id_a)
+        action_cond_data = asset_manager.asset_action_cond.get_data_by_id(action_grant_data.action_condition_id)
+
+        payload.target_action = action_grant_data.target_action
+
+        units: set[AbilityVariantEffectUnit] = set(self.to_buff_units(action_cond_data, payload))
+        units.update(self.to_dispel_units(action_cond_data, payload))
+
+        return units
+
     def to_effect_units(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
@@ -297,23 +342,22 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
 
         :raises AbilityVariantUnconvertibleError: if the variant type is not handled / unconvertible
         """
-        if self.type_enum == AbilityVariantType.STATUS_UP:
-            return self._from_status_up(asset_manager, payload)
-
-        if self.type_enum == AbilityVariantType.RESISTANCE_UP:
-            return self._from_resist_up(asset_manager, payload)
-
-        if self.type_enum == AbilityVariantType.CHANGE_STATE:
-            return self._from_change_state(asset_manager, payload)
-
-        if self.type_enum == AbilityVariantType.PLAYER_EXP_UP:
-            return self._from_player_exp_up(asset_manager, payload)
-
-        if self.type_enum == AbilityVariantType.SP_CHARGE:
-            return self._from_sp_charge(asset_manager, payload)
-
         if self.type_enum == AbilityVariantType.HIT_ATTR_SHIFT:
             return set()
+
+        unit_method = Callable[["AssetManager", AbilityVariantEffectPayload], set[AbilityVariantEffectUnit]]
+        method_dict: dict[AbilityVariantType, unit_method] = {
+            AbilityVariantType.STATUS_UP: self._from_status_up,
+            AbilityVariantType.RESISTANCE_UP: self._from_resist_up,
+            AbilityVariantType.CHANGE_STATE: self._from_change_state,
+            AbilityVariantType.PLAYER_EXP_UP: self._from_player_exp_up,
+            AbilityVariantType.SP_CHARGE: self._from_sp_charge,
+            AbilityVariantType.ACTION_GRANT: self._from_action_grant
+        }
+
+        for var_type, method in method_dict.items():
+            if self.type_enum == var_type:
+                return method(asset_manager, payload)
 
         raise AbilityVariantUnconvertibleError(payload.source_ability_id, self.variant.type_id)
 

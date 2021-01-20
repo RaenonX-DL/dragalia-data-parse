@@ -5,7 +5,7 @@ from typing import Optional, TextIO, Union
 from dlparse.errors import InvalidSkillLevelError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
-__all__ = ("SkillDataEntry", "SkillDataAsset", "SkillDataParser", "CHARA_SKILL_MAX_LEVEL")
+__all__ = ("SkillDataEntry", "SkillDataAsset", "CHARA_SKILL_MAX_LEVEL")
 
 CHARA_SKILL_MAX_LEVEL = 4
 

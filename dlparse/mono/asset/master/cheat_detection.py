@@ -4,7 +4,7 @@ from typing import Optional, TextIO, Union
 
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
-__all__ = ("CheatDetectionEntry", "CheatDetectionAsset", "CheatDetectionParser")
+__all__ = ("CheatDetectionEntry", "CheatDetectionAsset")
 
 
 @dataclass

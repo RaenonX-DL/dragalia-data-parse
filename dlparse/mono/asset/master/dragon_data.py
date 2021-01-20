@@ -5,7 +5,7 @@ from typing import Optional, TextIO, Union
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 from dlparse.mono.asset.extension import NamedEntry, SkillEntry
 
-__all__ = ("DragonDataEntry", "DragonDataAsset", "DragonDataParser", "DRAGON_SKILL_MAX_LEVEL")
+__all__ = ("DragonDataEntry", "DragonDataAsset", "DRAGON_SKILL_MAX_LEVEL")
 
 DRAGON_SKILL_MAX_LEVEL = 2
 

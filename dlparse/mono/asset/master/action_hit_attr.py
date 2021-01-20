@@ -5,7 +5,7 @@ from typing import Optional, TextIO, Union
 from dlparse.enums import HitExecType, HitTarget, Status
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
-__all__ = ("HitAttrEntry", "HitAttrAsset", "HitAttrParser")
+__all__ = ("HitAttrEntry", "HitAttrAsset")
 
 
 @dataclass

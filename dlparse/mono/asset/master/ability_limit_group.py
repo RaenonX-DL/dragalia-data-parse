@@ -5,7 +5,7 @@ from typing import Any, Optional, TextIO, Union
 from dlparse.errors import AbilityLimitDataNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
-__all__ = ("AbilityLimitGroupEntry", "AbilityLimitGroupAsset", "AbilityLimitGroupParser")
+__all__ = ("AbilityLimitGroupEntry", "AbilityLimitGroupAsset")
 
 THROW_ERROR = object()
 

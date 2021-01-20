@@ -8,7 +8,7 @@ from dlparse.mono.asset.base import (
     get_file_like, get_file_path,
 )
 
-__all__ = ("TextEntry", "TextAsset", "MasterTextParser", "TextAssetMultilingual")
+__all__ = ("TextEntry", "TextAsset", "TextAssetMultilingual")
 
 
 @dataclass

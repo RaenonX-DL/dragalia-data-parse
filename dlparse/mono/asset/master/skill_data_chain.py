@@ -5,7 +5,7 @@ from typing import Optional, TextIO, Union
 from dlparse.enums import SkillChainCondition
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
-__all__ = ("SkillChainEntry", "SkillChainAsset", "SkillChainParser")
+__all__ = ("SkillChainEntry", "SkillChainAsset")
 
 
 @dataclass
