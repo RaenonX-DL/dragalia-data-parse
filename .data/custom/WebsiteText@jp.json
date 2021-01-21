@@ -644,6 +644,10 @@
     "text": "DEF Doublebuff"
   },
   {
+    "id": "ENUM_COND_ON_SELF_REVIVED",
+    "text": "Upon revived"
+  },
+  {
     "id": "ENUM_COND_ON_SELF_HP_LTE_30",
     "text": "Upon HP <= 30%"
   },

@@ -21,6 +21,8 @@ __all__ = ("CharaDataEntry", "CharaDataAsset")
 class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
     """Single entry of a character data."""
 
+    # pylint: disable=too-many-public-methods
+
     # region Attributes
     weapon: Weapon
     rarity: int
@@ -311,6 +313,11 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
                 self.ability_3_lv_1_id, self.ability_3_lv_2_id, self.ability_3_lv_3_id, self.ability_3_lv_4_id,
             ) if ability_id
         ]
+
+    @property
+    def ex_id_at_max_level(self) -> int:
+        """Get the ID of the EX ability at the max level."""
+        return self.ex_5_id
 
     @property
     def name_labels(self) -> list[str]:

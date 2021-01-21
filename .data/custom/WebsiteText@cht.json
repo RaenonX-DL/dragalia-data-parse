@@ -644,8 +644,12 @@
     "text": "守護鍊"
   },
   {
+    "id": "ENUM_COND_ON_SELF_REVIVED",
+    "text": "復活時"
+  },
+  {
     "id": "ENUM_COND_ON_SELF_HP_LTE_30",
-    "text": "當自身 HP <= 30%"
+    "text": "HP <= 30% 時"
   },
   {
     "id": "ENUM_COND_ON_HIT_BY_POISON",

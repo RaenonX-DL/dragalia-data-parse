@@ -25,8 +25,11 @@ class AbilityUpParameter(Enum):
     DP_CONSUMPTION = 13  # ConsumeDpRate
     DRAGON_TIME_FINAL = 14  # FinalDragonTimeRate
 
-    def to_buff_parameter(self) -> BuffParameter:
+    def to_buff_parameter(self, is_ex_ability: bool = False) -> BuffParameter:
         """Convert the ability up parameter to the buff parameter."""
+        if is_ex_ability and self in _TRANS_DICT_EX_OVERRIDE:
+            return _TRANS_DICT_EX_OVERRIDE[self]
+
         return _TRANS_DICT[self]
 
 
@@ -38,5 +41,10 @@ _TRANS_DICT: dict[AbilityUpParameter, BuffParameter] = {
     AbilityUpParameter.SP_RATE: BuffParameter.SP_RATE,
     AbilityUpParameter.DRAGON_TIME: BuffParameter.DRAGON_TIME,
     AbilityUpParameter.DRAGON_TIME_FINAL: BuffParameter.DRAGON_TIME_FINAL,
-    AbilityUpParameter.DP_CONSUMPTION: BuffParameter.DP_CONSUMPTION
+    AbilityUpParameter.DP_CONSUMPTION: BuffParameter.DP_CONSUMPTION,
+    AbilityUpParameter.DP_RATE: BuffParameter.DP_RATE,
+}
+
+_TRANS_DICT_EX_OVERRIDE: dict[AbilityUpParameter, BuffParameter] = {
+    AbilityUpParameter.ATK: BuffParameter.ATK_EX,
 }

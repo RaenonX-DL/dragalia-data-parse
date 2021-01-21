@@ -67,10 +67,10 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 03. ActAddAbs
 04. ResistTribe
 05. ActKillerTribe
-06. ActDamageUp
-07. ActCriticalUp
-08. ActRecoveryUp
-09. ActBreakUp
+<a href="#06---actdamageup">06. ActDamageUp</a>
+<a href="#07---actcriticalup">07. ActCriticalUp</a>
+<a href="#08---actrecoveryup">08. ActRecoveryUp</a>
+<a href="#09---actbreakup">09. ActBreakUp</a>
 10. ResistTrap
 11. AddRecoverySp
 12. AddRecoveryDp
@@ -172,7 +172,7 @@ A value of `10` means to raise the parameter by 10%.
 
 ### `02` - `ResistAbs`
 
-Resistance of a certain status.
+Gives resistance toward a certain affliction status.
 
 If ID-A is `6`; up value is `25`, then it means `Stun Resistance +25%`
 (`6` corresponds to the affliction code of Stun).
@@ -189,6 +189,55 @@ A value of `6` means to resist Stun.
 Probability rate of the affliction resistance in percentage.
 
 A value of `50` means to resist a certain affliction by 50%.
+
+-----
+
+### `06` - `ActDamageUp`
+
+Buff the character's skill damage. If the variant is inside an ex ability entry, the effect is team-wide.
+
+#### Variant Up Value
+
+Skill damage boost in percentage.
+
+A value of `10` means SDMG +10%.
+
+-----
+
+### `07` - `ActCriticalUp`
+
+Buff the character's CRT rate. If the variant is inside an ex ability entry, the effect is team-wide.
+
+#### Variant Up Value
+
+Critical rate boost in percentage.
+
+A value of `10` means CRT +10%.
+
+-----
+
+### `08` - `ActRecoveryUp`
+
+Buff the character's recovery potency of their skills. If the variant is inside an ex ability entry, the effect is
+team-wide.
+
+#### Variant Up Value
+
+Recovery potency boost in percentage.
+
+A value of `10` means RP +10%.
+
+-----
+
+### `09` - `ActBreakUp`
+
+Buff the damage dealt toward the OD gauge. If the variant is inside an ex ability entry, the effect is team-wide.
+
+#### Variant Up Value
+
+Damage boost toward the OD gauge in percentage.
+
+A value of `10` means OD gauge damage +10%.
 
 -----
 

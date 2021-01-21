@@ -14,7 +14,7 @@ from dlparse.enums import (
     HitTargetSimple, Status,
 )
 from dlparse.errors import AbilityVariantUnconvertibleError
-from dlparse.mono.asset import AbilityVariantEntry, ActionConditionEntry
+from dlparse.mono.asset import AbilityVariantEntry, ActionConditionEntry, ExAbilityEntry
 from dlparse.mono.asset.base import AbilityEntryBase, AbilityVariantEntryBase
 from .action_cond_conv import ActionCondEffectConvertPayload, ActionCondEffectConvertible
 from .base import EffectUnitBase
@@ -69,6 +69,11 @@ class AbilityVariantEffectPayload(ActionCondEffectConvertPayload):
     def __post_init__(self):
         self.source_ability_id = self.source_ability.id
 
+    @property
+    def is_source_ex_ability(self) -> bool:
+        """Check if the source ability of this payload is an ex ability."""
+        return isinstance(self.source_ability, ExAbilityEntry)
+
 
 @dataclass
 class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, AbilityVariantEffectPayload]):
@@ -95,7 +100,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             source_ability_id=payload.source_ability_id,
             target_action=payload.target_action,
             status=Status.NONE,
-            target=HitTargetSimple.SELF,  # Effects of the ability from action condition should all targeted to self
+            target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
             parameter=param_enum,
             probability_pct=action_cond.probability_pct,
             rate=param_rate,
@@ -174,11 +179,11 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 cooldown_sec=payload.condition_cooldown,
                 max_occurrences=payload.max_occurrences,
                 target_action=payload.target_action,
-                parameter=ability_param.to_buff_parameter(),
+                parameter=ability_param.to_buff_parameter(payload.is_source_ex_ability),
                 probability_pct=100,
                 rate=self.variant.up_value / 100,  # Original data is percentage
                 rate_max=max_value,
-                target=HitTargetSimple.SELF,
+                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
                 status=Status.NONE,
                 duration_time=0,
                 duration_count=0,
@@ -187,6 +192,52 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 slip_interval=0,
             )
         }
+
+    def _direct_effect_by_type(
+            self, buff_param: BuffParameter, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        max_value = 0
+        if isinstance(self.variant, AbilityVariantEntry):
+            max_value = asset_manager.asset_ability_limit.get_max_value(self.variant.limited_group_id, on_not_found=0)
+
+        return {
+            AbilityVariantEffectUnit(
+                source_ability_id=payload.source_ability_id,
+                condition_comp=payload.condition_comp,
+                cooldown_sec=payload.condition_cooldown,
+                max_occurrences=payload.max_occurrences,
+                target_action=payload.target_action,
+                parameter=buff_param,
+                probability_pct=100,  # Absolutely applicable
+                rate=self.variant.up_value / 100,  # Original data is percentage
+                rate_max=max_value,
+                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
+                status=Status.NONE,
+                duration_time=0,
+                duration_count=0,
+                max_stack_count=0,
+                slip_damage_mod=0,
+                slip_interval=0,
+            )
+        }
+
+    def _from_skill_dmg_up(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        return self._direct_effect_by_type(BuffParameter.SKILL_DAMAGE, asset_manager, payload)
+
+    def _from_crt_up(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        return self._direct_effect_by_type(BuffParameter.CRT_RATE, asset_manager, payload)
+
+    def _from_rp_up(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        return self._direct_effect_by_type(BuffParameter.HEAL_RP, asset_manager, payload)
+
+    def _from_od_gauge_dmg_up(self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload):
+        return self._direct_effect_by_type(BuffParameter.OD_GAUGE_DAMAGE, asset_manager, payload)
 
     def _from_resist_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
@@ -208,7 +259,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 probability_pct=100,  # Absolutely applicable
                 rate=self.variant.up_value / 100,  # Original data is percentage
                 rate_max=max_value,
-                target=HitTargetSimple.SELF,
+                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
                 status=Status.NONE,
                 duration_time=0,
                 duration_count=0,
@@ -300,7 +351,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 probability_pct=100,
                 rate=self.variant.up_value / 100,  # Original data is percentage
                 rate_max=max_value,
-                target=HitTargetSimple.SELF,
+                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
                 status=Status.NONE,
                 duration_time=0,
                 duration_count=0,
@@ -333,7 +384,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 probability_pct=100,
                 rate=self.variant.up_value / 100,  # Original data is percentage
                 rate_max=max_value,
-                target=HitTargetSimple.SELF,
+                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
                 status=Status.NONE,
                 duration_time=0,
                 duration_count=0,
@@ -370,6 +421,10 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         unit_method = Callable[["AssetManager", AbilityVariantEffectPayload], set[AbilityVariantEffectUnit]]
         method_dict: dict[AbilityVariantType, unit_method] = {
             AbilityVariantType.STATUS_UP: self._from_status_up,
+            AbilityVariantType.SKILL_DMG_UP: self._from_skill_dmg_up,
+            AbilityVariantType.CRT_RATE_UP: self._from_crt_up,
+            AbilityVariantType.OD_GAUGE_DMG_UP: self._from_od_gauge_dmg_up,
+            AbilityVariantType.RP_UP: self._from_rp_up,
             AbilityVariantType.RESISTANCE_UP: self._from_resist_up,
             AbilityVariantType.CHANGE_STATE: self._from_change_state,
             AbilityVariantType.PLAYER_EXP_UP: self._from_player_exp_up,
@@ -384,12 +439,11 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         raise AbilityVariantUnconvertibleError(payload.source_ability_id, self.variant.type_id)
 
 
-E = TypeVar("E", bound=AbilityEntryBase)  # pylint: disable=invalid-name
-T = TypeVar("T", bound=ActionCondEffectConvertPayload)
+T = TypeVar("T", bound=AbilityEntryBase)
 
 
 def ability_to_effect_units(
-        ability_entry: E, asset_manager: "AssetManager", payload: T
+        ability_entry: T, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
 ) -> set[AbilityVariantEffectUnit]:
     """Convert ``ability_entry`` to a set of variant effect units."""
     effect_units: set[AbilityVariantEffectUnit] = set()

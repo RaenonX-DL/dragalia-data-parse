@@ -13,8 +13,8 @@ class BuffParameter(Enum):
 
     # WARNING: The number should not be changed frequently because the changes need to be reflected at the frontend
 
-    # region Common
-    # region Buff
+    # region General (to Self)
+    # region Buff / Undistinguished
     ATK_BUFF = 101
     """ATK up (calculated as buff). A value of 0.12 means ATK +12%."""
     DEF_BUFF = 102
@@ -31,6 +31,31 @@ class BuffParameter(Enum):
     """Force strike damage up (calculated as buff). A value of 0.12 means FS DMG +12%."""
     FS_SPD = 108
     """Force strike charging speed up (calculated as buff). A value of 0.12 means FS SPD +12%."""
+    OD_GAUGE_DAMAGE = 109
+    """Deals more damage to the OD gauge. A value of 0.12 means OD gauge damage +12%."""
+    AUTO_DAMAGE = 110
+    """Auto damage up. A value of 0.12 means auto / normal attack damage +12%."""
+    TARGETED_BUFF_TIME = 111
+    """
+    Targeted buff time extension. A value of 0.12 means buff time +12%.
+
+    Note that the "targeted" here means that the extension is only effective to the buff that targets the players,
+    such as ATK up buffs.
+    The duration of the zoned buffs like the one built by Gala Euden (10150403) will **not** be affected by this.
+    """
+    # endregion
+
+    # region Elemental
+    FLAME_ELEM_DMG_UP = 120
+    """Flame elemental damage up. A value of 0.12 means flame elemental damage +12%."""
+    WATER_ELEM_DMG_UP = 121
+    """Water elemental damage up. A value of 0.12 means water elemental damage +12%."""
+    WIND_ELEM_DMG_UP = 122
+    """Wind elemental damage up. A value of 0.12 means wind elemental damage +12%."""
+    LIGHT_ELEM_DMG_UP = 123
+    """Light elemental damage up. A value of 0.12 means light elemental damage +12%."""
+    SHADOW_ELEM_DMG_UP = 124
+    """Shadow elemental damage up. A value of 0.12 means shadow elemental damage +12%."""
     # endregion
 
     # region Passive
@@ -40,6 +65,11 @@ class BuffParameter(Enum):
     """DEF up (calculated as passive). A value of 0.12 means DEF +12%."""
     ASPD_PASSIVE = 156
     """Attack speed up (calculated as passive). A value of 0.12 means ASPD +12%."""
+    # endregion
+
+    # region EX
+    ATK_EX = 191
+    """ATK up (calculated as EX). A value of 0.12 means ATK +12%."""
     # endregion
     # endregion
 
@@ -82,7 +112,9 @@ class BuffParameter(Enum):
 
     # region Recovery
     HEAL_RP = 301
-    """Heal the target using Recovery Potency. A value of 0.12 means that the target will be healed with 12% RP."""
+    """Heal the target by Recovery Potency. A value of 0.12 means to heal with 12% RP."""
+    HEAL_MAX_HP = 302
+    """Heal the target by max HP. A value of 0.12 means to heal with 12% max HP."""
     # endregion
 
     # region Defensive
@@ -195,9 +227,41 @@ class BuffParameter(Enum):
     """
     Change the dragon gauge consumption for shapeshifting.
 
-    A value of 0.2 means that to increase the gauge consumption by 20%, which means that to shapeshift once,
-    70% of the dragon gauge is required (shapeshifting once consume 50% dragon gauge).
+    A value of 0.2 means to increase the gauge consumption by 20%.
+    This means that to shapeshift once, 70% of the dragon gauge is required
+    (shapeshifting once consume 50% dragon gauge normally).
     """
+    DP_RATE = 604
+    """Change the rate of the dragon point gain. A value of 0.2 means to increase the dragon point gain by 20%."""
+    DRAGON_DAMAGE = 605
+    """Increased the damage dealt in the dragon form. A value of 0.12 means damage in dragon +12%."""
+    # endregion
+
+    # region Punishers
+    # region Afflicted
+    POISONED_PUNISHER = 701
+    BURNED_PUNISHER = 702
+    FROZEN_PUNISHER = 703
+    PARALYZED_PUNISHER = 704
+    BLINDED_PUNISHER = 705
+    STUNNED_PUNISHER = 706
+    CURSED_PUNISHER = 707
+    BOGGED_PUNISHER = 709
+    SLEPT_PUNISHER = 710
+    FROSTBITTEN_PUNISHER = 711
+    FLASHBURNED_PUNISHER = 712
+    STORMLASHED_PUNISHER = 713
+    SHADOWBLIGHTED_PUNISHER = 714
+    SCORCHRENT_PUNISHER = 715
+    AFFLICTED_PUNISHER = 729
+    # endregion
+
+    # region Status
+    DEF_DOWN_PUNISHER = 740
+    DEF_OR_ATK_DOWN_PUNISHER = 741
+    OD_STATE_PUNISHER = 742
+    BK_STATE_PUNISHER = 743
+    # endregion
     # endregion
 
     # region Miscellaneous

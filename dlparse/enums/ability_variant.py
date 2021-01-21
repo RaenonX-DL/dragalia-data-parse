@@ -28,6 +28,22 @@ class AbilityVariantType(Enum):
     RESISTANCE_UP = 2
     """Raise the resistance toward a certain affliction."""
 
+    SKILL_DMG_UP = 6
+    """Raise the character's skill damage. If the variant is inside an ex ability entry, the effect is team-wide."""
+
+    CRT_RATE_UP = 7
+    """Raise the character's CRT rate. If the variant is inside an ex ability entry, the effect is team-wide."""
+
+    RP_UP = 8
+    """
+    Raise the character's Recovery Potency of their skills.
+
+    If the variant is inside an ex ability entry, the effect is team-wide.
+    """
+
+    OD_GAUGE_DMG_UP = 9
+    """Raise the damage toward the OD gauge. If the variant is inside an ex ability entry, the effect is team-wide."""
+
     CHANGE_STATE = 14
     """Calls the hit attribute (at str field) or the action condition (ID at ID-A field) if the condition holds."""
 
