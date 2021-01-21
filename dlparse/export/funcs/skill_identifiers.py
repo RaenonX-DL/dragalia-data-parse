@@ -1,9 +1,8 @@
 """Function to export the skill identifiers."""
-import json
-import os
 from typing import TYPE_CHECKING
 
 from dlparse.export.entry import SkillIdentifierEntry, TextEntry
+from .base import export_as_json
 from .skill_atk import export_atk_skills_as_entries
 
 if TYPE_CHECKING:
@@ -30,6 +29,4 @@ def export_skill_identifiers_as_json(
         for skill_identifier in skill_identifiers
     }
 
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)  # Create directory if needed
-    with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(json_dict, f, ensure_ascii=False)
+    export_as_json(json_dict, file_path)

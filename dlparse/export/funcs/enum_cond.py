@@ -1,10 +1,9 @@
 """Function to export the condition enums."""
-import json
-import os
 from typing import TYPE_CHECKING
 
 from dlparse.enums import ColorTheme, Condition, get_image_path
 from dlparse.export.entry import ConditionEnumEntry, TextEntry
+from .base import export_as_json
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -134,10 +133,6 @@ def export_condition_as_json(asset_manager: "AssetManager", file_path: str):
 
     Data is hard-coded in the module.
     """
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)  # Create directory if needed
+    json_dict = {key: entry.to_json_entry() for key, entry in export_condition_entries(asset_manager).items()}
 
-    with open(file_path, "w", encoding="utf-8", newline="") as f:
-        json.dump(
-            {key: entry.to_json_entry() for key, entry in export_condition_entries(asset_manager).items()},
-            f, ensure_ascii=False
-        )
+    export_as_json(json_dict, file_path)

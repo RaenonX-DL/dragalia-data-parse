@@ -117,9 +117,13 @@ class JsonEntryEncoder(JSONEncoder):
         return super().default(o)
 
 
-def export_as_json(entries: Union[dict[str, list[JT]], list[JT]], file_path: str):
-    """Export all ``entries`` as a json file to ``file_path``."""
+def export_as_json(obj: Union[dict[str, list[JT]], list[JT]], file_path: str):
+    """
+    Export ``obj`` as json to ``file_path``.
+
+    Every json export should use this function to export the data.
+    """
     os.makedirs(os.path.dirname(file_path), exist_ok=True)  # Create directory if needed
 
     with open(file_path, "w", encoding="utf-8", newline="") as f:
-        json.dump(entries, f, cls=JsonEntryEncoder, ensure_ascii=False, sort_keys=True)
+        json.dump(obj, f, cls=JsonEntryEncoder, ensure_ascii=False, sort_keys=True)

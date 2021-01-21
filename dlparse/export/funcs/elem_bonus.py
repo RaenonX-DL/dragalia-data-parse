@@ -1,8 +1,7 @@
 """Function to export the elemental bonus data."""
-import json
-import os
-
 from dlparse.enums import Condition, Element
+
+from .base import export_as_json
 
 __all__ = ("export_elem_bonus_as_json",)
 
@@ -46,7 +45,4 @@ elem_bonus_data = {
 
 def export_elem_bonus_as_json(file_path: str):
     """Export the element bonus data as a json file to ``file_path``."""
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)  # Create directory if needed
-
-    with open(file_path, "w", encoding="utf-8", newline="") as f:
-        json.dump(elem_bonus_data, f, ensure_ascii=False)
+    export_as_json(elem_bonus_data, file_path)
