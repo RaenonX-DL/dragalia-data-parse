@@ -5,7 +5,7 @@ from typing import Generic, TypeVar, final
 
 from dlparse.enums import Condition, ConditionCategories, ConditionComposite, Element, ElementFlag
 from dlparse.mono.asset import ActionConditionAsset, SkillDataEntry
-from .hit_base import HitData
+from .hit import HitData
 
 __all__ = ("SkillEntryBase", "SkillDataBase")
 

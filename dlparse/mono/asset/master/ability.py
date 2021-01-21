@@ -1,11 +1,16 @@
 """Classes for handling the ability data."""
 from dataclasses import dataclass, field
-from typing import Optional, TextIO, Union
+from typing import Optional, TYPE_CHECKING, TextIO, Union
 
 from dlparse.enums import AbilityCondition, AbilityVariantType, Condition, SkillNumber
 from dlparse.errors import AbilityConditionUnconvertibleError, AbilityOnSkillUnconvertibleError
-from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from .ability_common import AbilityConditionEntryBase, AbilityVariantEntryBase
+from dlparse.mono.asset.base import (
+    AbilityConditionEntryBase, AbilityEntryBase, AbilityVariantEntryBase, MasterAssetBase, MasterEntryBase,
+    MasterParserBase,
+)
+
+if TYPE_CHECKING:
+    from dlparse.mono.manager import AssetManager
 
 __all__ = ("AbilityVariantEntry", "AbilityEntry", "AbilityAsset")
 
@@ -73,6 +78,26 @@ class AbilityVariantEntry(AbilityVariantEntryBase):
         """Get the assigned hit label. Return ``None`` if unavailable."""
         return self.id_str if self.type_enum == AbilityVariantType.CHANGE_STATE else None
 
+    def get_action_cond_id_hit_label(self, asset_manager: "AssetManager") -> Optional[int]:
+        """Get the action condition ID of the hit label, if assigned. Return ``None`` if inapplicable."""
+        # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
+        # pylint: disable=superfluous-parens
+        # Check if the hit label is assigned & available
+        if not (hit_label := self.assigned_hit_label):
+            return None
+
+        # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
+        # pylint: disable=superfluous-parens
+        # Check if the hit attribute data is available
+        if not (hit_attr := asset_manager.asset_hit_attr.get_data_by_id(hit_label)):
+            return None
+
+        # Check if the hit attribute has action condition assigned
+        if not hit_attr.has_action_condition:
+            return None
+
+        return hit_attr.action_condition_id
+
     def get_boost_by_combo(self, combo_count: int) -> float:
         """
         Get the total damage boost rate when the user combo count is ``combo_count``.
@@ -99,13 +124,11 @@ class AbilityVariantEntry(AbilityVariantEntryBase):
 
 
 @dataclass
-class AbilityEntry(MasterEntryBase):
+class AbilityEntry(AbilityEntryBase[AbilityConditionEntry, AbilityVariantEntry], MasterEntryBase):
     """Single entry of an ability data."""
 
     name_label: str
     details_label: str
-
-    condition: AbilityConditionEntry
 
     on_skill: int
 
@@ -142,18 +165,7 @@ class AbilityEntry(MasterEntryBase):
 
     @property
     def variants(self) -> list[AbilityVariantEntry]:
-        """
-        Get all in-use ability variants as a list.
-
-        Note that this does **not** give the other variants that come from different ability linked by the variants.
-        To get all possible variants, call ``get_variants()`` instead.
-        """
         return [variant for variant in (self.variant_1, self.variant_2, self.variant_3) if not variant.is_not_used]
-
-    @property
-    def unknown_variant_type_ids(self) -> list[int]:
-        """Get a list of unknown variant type IDs."""
-        return [variant.type_id for variant in self.variants if variant.is_unknown_type]
 
     @property
     def on_skill_condition(self) -> Condition:
@@ -189,7 +201,7 @@ class AbilityEntry(MasterEntryBase):
         return any(variant.is_boosted_by_gauge_status for variant in self.variants)
 
     def get_variants(self, ability_asset: "AbilityAsset") -> list[AbilityVariantEntry]:
-        """Get all variants bound to the ability."""
+        """Get all variants bound to the ability, including the ones that branched from a certain ability."""
         variants_traverse: list[AbilityVariantEntry] = self.variants
         variants_return: list[AbilityVariantEntry] = []
 
@@ -239,7 +251,7 @@ class AbilityEntry(MasterEntryBase):
             details_label=data["_Details"],
             condition=AbilityConditionEntry(
                 condition_code=data["_ConditionType"], val_1=data["_ConditionValue"], val_2=data["_ConditionValue2"],
-                cooldown_sec=data["_CoolTime"], max_occurrences=data["_OccurenceNum"]
+                probability=data["_Probability"], cooldown_sec=data["_CoolTime"], max_occurrences=data["_OccurenceNum"]
             ),
             on_skill=data["_OnSkill"],
             variant_1=AbilityVariantEntry(

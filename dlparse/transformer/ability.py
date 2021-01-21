@@ -1,7 +1,7 @@
 """Class to transform abilities."""
 from typing import TYPE_CHECKING
 
-from dlparse.model import AbilityData
+from dlparse.model import AbilityData, ExAbilityData
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -25,3 +25,9 @@ class AbilityTransformer:
             self._asset_manager,
             ability_data.get_all_ability(self._asset_manager.asset_ability_data)
         )
+
+    def transform_ex_ability(self, ex_ability_id: int) -> ExAbilityData:
+        """Transform ``ex_ability_id`` to an ex ability data."""
+        ex_ability_data = self._asset_manager.asset_ex_ability.get_data_by_id(ex_ability_id)
+
+        return ExAbilityData(self._asset_manager, ex_ability_data)

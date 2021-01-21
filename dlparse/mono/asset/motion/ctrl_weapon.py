@@ -73,6 +73,6 @@ class MotionSelectorWeapon(MotionSelectorBase[Weapon, MotionControllerWeapon]):
     """Class to select the controller to be used based on the weapon type."""
 
     def __init__(self, motion_dir: str):
-        motion_map = {weapon: f"{weapon.weapon_str}.json" for weapon in Weapon}
+        motion_map = {weapon: f"{weapon.weapon_str}.json" for weapon in Weapon.get_all_valid_weapons()}
 
         super().__init__(MotionControllerWeapon, motion_dir, motion_map)

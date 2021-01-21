@@ -1,4 +1,5 @@
 """Base classes for mono behavior scripts."""
+from .ability import AbilityConditionEntryBase, AbilityEntryBase, AbilityVariantEntryBase
 from .asset import AssetBase, MultilingualAssetBase, get_file_like, get_file_path
 from .custom import CustomParserBase
 from .entry import TextEntryBase

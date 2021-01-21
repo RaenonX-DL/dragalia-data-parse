@@ -6,9 +6,9 @@ from dlparse.errors import ConfigError
 from dlparse.transformer import AbilityTransformer, SkillTransformer
 from .asset import (
     AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionGrantAsset, ActionPartsListAsset, BuffCountAsset,
-    CharaDataAsset, CharaModeAsset, DragonDataAsset, HitAttrAsset, MotionSelectorWeapon, PlayerActionInfoAsset,
-    SkillChainAsset, SkillDataAsset, TextAsset, TextAssetMultilingual,
-)  # Master; Motion
+    CharaDataAsset, CharaModeAsset, DragonDataAsset, ExAbilityAsset, HitAttrAsset, MotionSelectorWeapon,
+    PlayerActionInfoAsset, SkillChainAsset, SkillDataAsset, TextAsset, TextAssetMultilingual,
+)
 from .custom import WebsiteTextAsset
 from .loader import ActionFileLoader, CharacterMotionLoader
 
@@ -34,6 +34,7 @@ class AssetManager:
         self._asset_chara_data = CharaDataAsset(asset_dir=master_asset_dir)
         self._asset_chara_mode = CharaModeAsset(asset_dir=master_asset_dir)
         self._asset_dragon = DragonDataAsset(asset_dir=master_asset_dir)
+        self._asset_ex_ability = ExAbilityAsset(asset_dir=master_asset_dir)
         self._asset_hit_attr = HitAttrAsset(asset_dir=master_asset_dir)
         self._asset_skill_data = SkillDataAsset(asset_dir=master_asset_dir)
         self._asset_skill_chain = SkillChainAsset(asset_dir=master_asset_dir)
@@ -105,6 +106,11 @@ class AssetManager:
     def asset_dragon(self) -> DragonDataAsset:
         """Get the dragon data asset."""
         return self._asset_dragon
+
+    @property
+    def asset_ex_ability(self) -> ExAbilityAsset:
+        """Get the ex ability data asset."""
+        return self._asset_ex_ability
 
     @property
     def asset_hit_attr(self) -> HitAttrAsset:

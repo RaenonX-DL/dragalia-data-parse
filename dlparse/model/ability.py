@@ -1,9 +1,10 @@
 """Models for ability data."""
-from dataclasses import InitVar, dataclass, field
-from typing import TYPE_CHECKING, TypeVar
+from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from .ability_var import ability_to_effect_units
-from .base import EffectUnitBase
+from .ability_common import AbilityDataBase
+from .ability_var import make_payload_ability
+from .ability_var_common import ability_to_effect_units
 
 if TYPE_CHECKING:
     from dlparse.mono.asset import AbilityEntry
@@ -11,26 +12,19 @@ if TYPE_CHECKING:
 
 __all__ = ("AbilityData",)
 
-T = TypeVar("T", bound=EffectUnitBase)
-
 
 @dataclass
-class AbilityData:
+class AbilityData(AbilityDataBase):
     """A transformed ability data."""
 
-    asset_manager: InitVar["AssetManager"]
-
     ability_data: dict[int, "AbilityEntry"]
-
-    _effect_units: set[T] = field(init=False)
 
     def _init_units(self, asset_manager: "AssetManager"):
         self._effect_units = set()
         for ability_entry in self.ability_data.values():
-            self._effect_units.update(ability_to_effect_units(ability_entry, asset_manager))
+            payload = make_payload_ability(ability_entry)
 
-    def __post_init__(self, asset_manager: "AssetManager"):
-        self._init_units(asset_manager)
+            self._effect_units.update(ability_to_effect_units(ability_entry, asset_manager, payload))
 
     @property
     def unknown_condition_ids(self) -> dict[int, int]:
@@ -57,13 +51,3 @@ class AbilityData:
             for ability_id, ability_entry in self.ability_data.items()
             if ability_entry.unknown_variant_type_ids
         }
-
-    @property
-    def has_unknown_elements(self) -> bool:
-        """Check if the ability data contains any unknown variants or condition."""
-        return bool(self.unknown_condition_ids or self.unknown_variant_ids)
-
-    @property
-    def effect_units(self) -> set[T]:
-        """Get all effect units of the ability."""
-        return self._effect_units

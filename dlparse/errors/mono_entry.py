@@ -78,7 +78,7 @@ class AbilityVariantUnconvertibleError(AppValueError):
 class AbilityConditionUnconvertibleError(AppValueError):
     """Error to be raised if the ability condition cannot be converted to condition."""
 
-    def __init__(self, ability_condition: int, val_1: float, val_2: float):
+    def __init__(self, ability_condition: int, val_1: float, val_2: Optional[float] = None):
         super().__init__(f"Unable to convert ability condition to condition "
                          f"(ability condition code: {ability_condition} / val 1: {val_1} / val 2: {val_2})")
 

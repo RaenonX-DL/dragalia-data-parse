@@ -9,6 +9,8 @@ __all__ = ("Weapon",)
 class Weapon(Enum):
     """Enums for the weapons."""
 
+    NONE = 0
+
     SWD = 1  # Sword
     KAT = 2  # Katana
     DAG = 3  # Dagger
@@ -30,6 +32,15 @@ class Weapon(Enum):
             raise EnumConversionError(self, Weapon, "weapon string")
 
         return _weapon_conv_dict[self]
+
+    @classmethod
+    def get_all_valid_weapons(cls) -> list["Weapon"]:
+        """
+        Get all valid weapons.
+
+        This will **not** return ``Weapon.NONE`` as it serves as a sentinel value in the data only.
+        """
+        return [enum for enum in cls if enum != Weapon.NONE]
 
     @staticmethod
     def from_str(weapon_str: str) -> "Weapon":
