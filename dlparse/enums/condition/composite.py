@@ -256,7 +256,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         # endregion
 
     def _cond_sorted_target(self) -> tuple[Condition]:
-        ret: tuple[Condition] = tuple(self.afflictions_condition)
+        ret: tuple[Condition] = tuple(sorted(self.afflictions_condition))
 
         if self.target_element:
             ret += (self.target_element,)
