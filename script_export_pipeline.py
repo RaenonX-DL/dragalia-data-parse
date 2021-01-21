@@ -67,7 +67,7 @@ class FileExporter:
     def _export_atk_skill(self):
         export_atk_skill_as_json(
             os.path.join(self._dir_export, "skills", "attacking.json"), self._asset_manager,
-            skip_unparsable=False
+            skip_unparsable=True
         )
 
     @time_exec(title="Total exporting time")

@@ -5,7 +5,7 @@ import os
 from json import JSONEncoder
 from typing import Any, Callable, TypeVar, Union
 
-from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError
+from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError, MotionDataNotFoundError
 from dlparse.export.entry import CsvExportableEntryBase, JsonExportableEntryBase, SkillExportEntryBase
 from dlparse.model import SkillDataBase
 from dlparse.mono.asset import CharaDataEntry, SkillIdEntry
@@ -53,8 +53,8 @@ def export_transform_skill_entries(
         except HitDataUnavailableError:
             # No attacking data available, skipping that / the skill is not an attacking skill
             continue
-        except ActionDataNotFoundError as ex:
-            # Action file not found (ActionDataNotFoundError)
+        except (MotionDataNotFoundError, ActionDataNotFoundError) as ex:
+            # Motion file not found / Action file not found (MotionDataNotFoundError, ActionDataNotFoundError)
 
             if skip_unparsable:
                 skipped_messages.append(f"[Skill] {id_entry.skill_identifier_labels} ({id_entry.skill_id}) "
