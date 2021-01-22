@@ -1,0 +1,31 @@
+# Doc: https://coverage.readthedocs.io/en/coverage-5.0.4/config.html
+
+[run]
+
+# More precise result as this checks for the branch coverage
+# Doc: https://coverage.readthedocs.io/en/coverage-5.0.4/branch.html#branch
+branch = True
+
+# Files to be included. Mutually exclusive to `source`
+source =
+    dlparse/
+
+[report]
+
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # debug-only
+    def __repr__
+
+    # ABC implementations
+    raise NotImplementedError
+
+# Coverage percentage precision
+precision = 2
+
+# Emits exit code 2 if the coverage is below the threshold
+fail_under = 80
+
+[xml]
+
+output = cobertura.xml

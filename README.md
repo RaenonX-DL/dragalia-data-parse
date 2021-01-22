@@ -1,7 +1,8 @@
 # dragalia-data-parse
 
 ![CI](https://github.com/RaenonX-DL/dragalia-data-parse/workflows/CI/badge.svg)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/0053d85597a740c393a6bfd007e4033b)](https://www.codacy.com/gh/RaenonX-DL/dragalia-data-parse/dashboard)
+[![Codacy Badge - Coverage](https://app.codacy.com/project/badge/Grade/0053d85597a740c393a6bfd007e4033b)](https://www.codacy.com/gh/RaenonX-DL/dragalia-data-parse/dashboard)
+[![Codacy Badge - Quality](https://app.codacy.com/project/badge/Coverage/0053d85597a740c393a6bfd007e4033b)](https://www.codacy.com/gh/RaenonX-DL/dragalia-data-parse/dashboard)
 [![time tracker](https://wakatime.com/badge/github/RaenonX-DL/dragalia-data-parse.svg)](https://wakatime.com/badge/github/RaenonX-DL/dragalia-data-parse)
 
 ------

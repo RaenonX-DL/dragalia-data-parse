@@ -4,8 +4,11 @@ exported/
 # Wakatime
 .wakatime-project
 
-# Test cache
+# Test cache / coverage database
 .pytest_cache
+.coverage
+coverage.xml
+cobertura.xml
 
 # IntelliJ project files
 .idea

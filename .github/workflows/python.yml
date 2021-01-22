@@ -1,6 +1,6 @@
 name: CI
 
-on: [push]
+on: [ push ]
 
 jobs:
   quality-check:
@@ -8,14 +8,16 @@ jobs:
 
     strategy:
       matrix:
-        os: [ macos-latest, windows-latest, ubuntu-18.04 ]
+        os: [ macos-latest, windows-latest, ubuntu-latest ]
 
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - uses: actions/setup-python@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
 
       - name: Install required packages
         run: |
@@ -34,24 +36,58 @@ jobs:
 
     strategy:
       matrix:
-        os: [ macos-latest, windows-latest, ubuntu-18.04 ]
+        os: [ macos-latest, windows-latest, ubuntu-latest ]
 
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
           submodules: recursive
 
-      - uses: actions/setup-python@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
 
-      - name: Install required packages
+      - name: Install required dev packages
         run: |
           pip install -r requirements-dev.txt
 
       - name: Run tests
         run: |
           pytest --slow
+
+  coverage:
+    name: Coverage
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+
+      - name: Install required dev packages
+        run: |
+          pip install -r requirements-dev.txt
+
+      - name: Generate Coverage database
+        run: |
+          coverage run -m pytest --slow
+
+      - name: Generate Coverage report
+        run: |
+          coverage xml
+
+      - name: Send Coverage report
+        uses: codacy/codacy-coverage-reporter-action@master
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: cobertura.xml
 
   send-signal:
     name: Send Resource CI/CD signal
