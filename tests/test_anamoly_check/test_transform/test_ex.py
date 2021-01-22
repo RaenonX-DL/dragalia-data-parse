@@ -36,7 +36,7 @@ class UnknownAbilityData:
         return ret
 
 
-def test_transform_all_character_ex_ability(transformer_ability: AbilityTransformer, asset_manager: AssetManager):
+def test_transform_all_character_ex(transformer_ability: AbilityTransformer, asset_manager: AssetManager):
     unknown_abilities: list[UnknownAbilityData] = []
     counter: int = 0
 
