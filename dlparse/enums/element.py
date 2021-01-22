@@ -2,6 +2,7 @@
 from enum import Enum, Flag
 
 from dlparse.errors import EnumConversionError
+from .buff_parameter import BuffParameter
 
 __all__ = ("Element", "ElementFlag")
 
@@ -54,10 +55,21 @@ class Element(Enum):
 
         :raises EnumConversionError: if this :class:`Element` cannot convert to :class:`ElementFlag`
         """
-        if self not in TRANS_DICT_TO_FLAG:
+        if self not in _TRANS_DICT_TO_FLAG:
             raise EnumConversionError(self, Element, "Element flag")
 
-        return TRANS_DICT_TO_FLAG[self]
+        return _TRANS_DICT_TO_FLAG[self]
+
+    def to_elem_dmg_up(self) -> BuffParameter:
+        """
+        Convert this :class:`Element` to :class:`BuffParameter`.
+
+        :raises EnumConversionError: if this :class:`Element` cannot convert to :class:`BuffParameter`
+        """
+        if self not in _TRANS_DICT_TO_ELEM_DMG:
+            raise EnumConversionError(self, Element, "Element damage buff parameter")
+
+        return _TRANS_DICT_TO_ELEM_DMG[self]
 
     @classmethod
     def _missing_(cls, _):
@@ -74,7 +86,7 @@ class Element(Enum):
         return [Element.FLAME, Element.WATER, Element.WIND, Element.LIGHT, Element.SHADOW]
 
 
-TRANS_DICT_TO_FLAG: dict[Element, ElementFlag] = {
+_TRANS_DICT_TO_FLAG: dict[Element, ElementFlag] = {
     Element.FLAME: ElementFlag.FLAME,
     Element.WATER: ElementFlag.WATER,
     Element.WIND: ElementFlag.WIND,
@@ -82,3 +94,12 @@ TRANS_DICT_TO_FLAG: dict[Element, ElementFlag] = {
     Element.SHADOW: ElementFlag.SHADOW,
 }
 """A :class:`dict` to convert :class:`Element` to :class:`ElementFlag`."""
+
+_TRANS_DICT_TO_ELEM_DMG: dict[Element, BuffParameter] = {
+    Element.FLAME: BuffParameter.FLAME_ELEM_DMG_UP,
+    Element.WATER: BuffParameter.WATER_ELEM_DMG_UP,
+    Element.WIND: BuffParameter.WIND_ELEM_DMG_UP,
+    Element.LIGHT: BuffParameter.LIGHT_ELEM_DMG_UP,
+    Element.SHADOW: BuffParameter.SHADOW_ELEM_DMG_UP,
+}
+"""A :class:`dict` to convert :class:`Element` to its corresponding elemental damage buff parameter."""

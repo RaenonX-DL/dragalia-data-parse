@@ -54,6 +54,7 @@ class Condition(Enum):
     # region Abnormal
     TARGET_AFFLICTED = 191
     TARGET_DEF_DOWN = 192
+    TARGET_ATK_OR_DEF_DOWN = 195
     TARGET_BUFFED = 193
     TARGET_DEBUFFED = 194
     # endregion

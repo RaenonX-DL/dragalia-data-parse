@@ -28,11 +28,6 @@ class AbilityData(AbilityDataBase):
 
     @property
     def unknown_condition_ids(self) -> dict[int, int]:
-        """
-        Get a dict which key is the ability ID and value is the ID of the unknown condition.
-
-        If the ability does not have any unknown condition, an empty dict will be returned.
-        """
         return {
             ability_id: ability_entry.condition.condition_code
             for ability_id, ability_entry in self.ability_data.items()
@@ -41,11 +36,6 @@ class AbilityData(AbilityDataBase):
 
     @property
     def unknown_variant_ids(self) -> dict[int, list[int]]:
-        """
-        Get a dict which key is the ability ID and value is type ID of the unknown variants.
-
-        If the ability does not have any unknown variants, an empty dict will be returned.
-        """
         return {
             ability_id: ability_entry.unknown_variant_type_ids
             for ability_id, ability_entry in self.ability_data.items()

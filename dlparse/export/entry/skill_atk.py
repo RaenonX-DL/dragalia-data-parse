@@ -5,6 +5,7 @@ from typing import Any, TYPE_CHECKING
 from dlparse.enums import BuffParameter, ConditionCategories
 from dlparse.model import AttackingSkillDataEntry
 from dlparse.mono.asset import CharaDataEntry, SkillDataEntry, SkillIdEntry
+from dlparse.utils import remove_duplicates_preserve_order
 from .base import JsonExportableEntryBase
 from .base_skill import SkillExportEntryBase
 
@@ -111,11 +112,11 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
                 duration=affliction.duration_time,
                 stackable=affliction.stackable
             ))
-        self.affliction_data_max = list(dict.fromkeys(afflictions))
-        self.debuff_data_max = list(dict.fromkeys([
+        self.affliction_data_max = remove_duplicates_preserve_order(afflictions)
+        self.debuff_data_max = remove_duplicates_preserve_order([
             (debuff.parameter, debuff.probability_pct, debuff.rate, debuff.duration_time, debuff.stackable)
             for debuff in skill_data_to_parse.debuffs[-1]
-        ]))
+        ])
 
         # Get dispel data
         self.dispel_max = skill_data_to_parse.dispel_buff_at_max

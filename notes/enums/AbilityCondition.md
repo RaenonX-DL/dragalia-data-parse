@@ -34,7 +34,7 @@ Field: `_ConditionType`
 13. HP_MORE_MOMENT
 <a href="#14---hp_less_moment">14. HP_LESS_MOMENT</a>
 <a href="#15---quest_start">15. QUEST_START</a>
-16. OVERDRIVE
+<a href="#16---overdrive">16. OVERDRIVE</a>
 17. ABNORMAL_STATUS
 <a href="#18---tension_max">18. TENSION_MAX</a>
 <a href="#19---tension_max_moment">19. TENSION_MAX_MOMENT</a>
@@ -68,7 +68,7 @@ Field: `_ConditionType`
 47. NO_DAMAGE_REACTION_TIME
 <a href="#48---buffed_specific_id">48. BUFFED_SPECIFIC_ID</a>
 49. DAMAGED
-50. DEBUFF
+<a href="#50---debuff">50. DEBUFF</a>
 <a href="#51---release_dragonshift">51. RELEASE_DRAGONSHIFT</a>
 52. UNIQUE_TRANS_MODE
 53. DAMAGED_MYSELF
@@ -181,6 +181,12 @@ Triggered once at the beginning of the quest.
 
 -----
 
+### `16` - `OVERDRIVE`
+
+Effective if the target is in Overdrive state.
+
+-----
+
 ### `18` - `TENSION_MAX`
 
 Effective if the user **is** energized.
@@ -250,6 +256,19 @@ to ``0`` meaning that the field is not in use.
 - **Val 1**: action condition ID of the required buff.
 
 - **Val 2**: secondary action condition ID of the required buff. `0` means ineffective.
+
+-----
+
+### `50` - `DEBUFF`
+
+Effective if the enemy is in a certain type of the debuff.
+
+`Val 1 = 3` means that the ability is effective if the enemy DEF is debuffed.
+
+- `3` corresponds to ``ActionDefDebuff.Defense``.
+
+- **Val 1**: Type of the debuff. For the ID correspondance,
+  check [the implementation of the enum.](/dlparse/enums/action_debuff_type.py)
 
 -----
 

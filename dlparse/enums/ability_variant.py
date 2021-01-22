@@ -23,16 +23,16 @@ class AbilityVariantType(Enum):
     """Variant not used."""
 
     STATUS_UP = 1
-    """Raise a certain status."""
+    """Buff a certain status."""
 
     RESISTANCE_UP = 2
-    """Raise the resistance toward a certain affliction."""
+    """Buff the resistance toward a certain affliction."""
 
-    SKILL_DMG_UP = 6
-    """Raise the character's skill damage. If the variant is inside an ex ability entry, the effect is team-wide."""
+    DAMAGE_UP = 6
+    """Buff the target action damage. If the variant is inside an ex ability entry, the effect is team-wide."""
 
     CRT_RATE_UP = 7
-    """Raise the character's CRT rate. If the variant is inside an ex ability entry, the effect is team-wide."""
+    """Buff the character's CRT rate. If the variant is inside an ex ability entry, the effect is team-wide."""
 
     RP_UP = 8
     """
@@ -42,25 +42,43 @@ class AbilityVariantType(Enum):
     """
 
     OD_GAUGE_DMG_UP = 9
-    """Raise the damage toward the OD gauge. If the variant is inside an ex ability entry, the effect is team-wide."""
+    """Buff the damage toward the OD gauge. If the variant is inside an ex ability entry, the effect is team-wide."""
 
     CHANGE_STATE = 14
-    """Calls the hit attribute (at str field) or the action condition (ID at ID-A field) if the condition holds."""
+    """Call the hit attribute (at str field) or the action condition (ID at ID-A field) if the condition holds."""
 
     SP_CHARGE = 17
     """Charge the SP gauges."""
 
+    BUFF_TIME_UP = 18
+    """
+    Extend the buff time.
+
+    If the variant is inside an ex ability entry, the effect is team-wide.
+    This only applies to the buffs that are directly applied to the user.
+    Zoned buff like Gala Euden S1 (`10150403`) will not be affected by this.
+    """
+
+    AFFLICTION_PUNISHER = 20
+    """Buff the damage dealt to the target if the target is afflicted by a certain affliction."""
+
     PLAYER_EXP_UP = 21
-    """Raises the player EXP gain upon clearing a quest."""
+    """Buff the player EXP gain upon clearing a quest."""
 
     ACTION_GRANT = 25
     """Grant a action condition to a specific action."""
 
+    CRT_DMG_UP = 26
+    """Buff the character's CRT damage. If the variant is inside an ex ability entry, the effect is team-wide."""
+
+    DRAGON_DMG_UP = 36
+    """Buff the dragon damage."""
+
     GAUGE_STATUS = 40
-    """Grants different effects according to the user's gauge status."""
+    """Grant different effects according to the user's gauge status."""
 
     HIT_ATTR_SHIFT = 42
-    """Shifts the hit attributes."""
+    """Shift the hit attributes."""
 
     OTHER_ABILITY = 43
     """Link to another ability (at ID-A field)."""
@@ -71,8 +89,14 @@ class AbilityVariantType(Enum):
     DMG_UP_ON_COMBO = 54
     """Damage up by user combo count."""
 
+    ELEM_DMG_UP = 57
+    """Buff the elemental damage."""
+
     REMOVE_ALL_STOCK_BULLETS = 60
     """Remove all stock bullets."""
+
+    ADDITIONAL_HEAL_ON_REVIVE = 66
+    """Receives additional healing based on the receiver's max HP."""
 
     @classmethod
     def _missing_(cls, _):

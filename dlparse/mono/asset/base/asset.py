@@ -119,17 +119,17 @@ class AssetBase(ABC):
         return self._data
 
 
-T = TypeVar("T", bound=TextEntryBase)
-P = TypeVar("P", bound=ParserBase)  # pylint: disable=invalid-name
+XT = TypeVar("XT", bound=TextEntryBase)
+PT = TypeVar("PT", bound=ParserBase)
 
 
-class MultilingualAssetBase(Generic[T], ABC):
+class MultilingualAssetBase(Generic[XT], ABC):
     """Multilingual text asset base class."""
 
     # pylint: disable=too-few-public-methods
 
     def __init__(
-            self, parser_cls: Type[P], lang_codes: Union[list[str], dict[str, str]],
+            self, parser_cls: Type[PT], lang_codes: Union[list[str], dict[str, str]],
             asset_dir: str, file_name: str
     ):
         """
@@ -142,7 +142,7 @@ class MultilingualAssetBase(Generic[T], ABC):
 
         An empty ``lang_code`` means to use the default file.
         """
-        self._assets: dict[str, dict[str, T]] = {}
+        self._assets: dict[str, dict[str, XT]] = {}
 
         if isinstance(lang_codes, list):
             # Force lang codes to be a `dict`. If it's a list, cast it to a dict

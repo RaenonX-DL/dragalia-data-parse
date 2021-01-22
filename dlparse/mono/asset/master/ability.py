@@ -25,6 +25,8 @@ class AbilityConditionEntry(AbilityConditionEntryBase):
     max_occurrences: int
 
     def __post_init__(self):
+        super().__post_init__()
+
         self.condition_type = AbilityCondition(self.condition_code)
 
     def _condition_unconvertible(self, ex: Optional[Exception] = None):

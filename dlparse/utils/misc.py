@@ -1,8 +1,9 @@
 """Miscellaneous utility functions."""
 import time
 from functools import wraps
+from typing import Any, Sequence, TypeVar
 
-__all__ = ("time_exec",)
+__all__ = ("time_exec", "remove_duplicates_preserve_order")
 
 
 def time_exec(title: str):
@@ -19,3 +20,17 @@ def time_exec(title: str):
         return wrapper
 
     return decorator
+
+
+T = TypeVar("T", bound=Sequence[Any])
+
+
+def remove_duplicates_preserve_order(seq: T) -> T:
+    """
+    Remove the duplicates in ``seq`` while preserving the sequential order.
+
+    Copied from https://stackoverflow.com/a/17016257/11571888.
+    """
+    seq_type = type(seq)
+
+    return seq_type(dict.fromkeys(seq))

@@ -35,11 +35,11 @@ class MotionControllerBase(EntryBase, ABC):
         raise NotImplementedError()
 
 
-K = TypeVar("K")  # pylint: disable=invalid-name
-C = TypeVar("C", bound=MotionControllerBase)  # pylint: disable=invalid-name
+KT = TypeVar("KT")
+CT = TypeVar("CT", bound=MotionControllerBase)
 
 
-class MotionSelectorBase(Generic[K, C], ABC):
+class MotionSelectorBase(Generic[KT, CT], ABC):
     """
     Base class of a motion selector.
 
@@ -48,14 +48,14 @@ class MotionSelectorBase(Generic[K, C], ABC):
 
     # pylint: disable=too-few-public-methods
 
-    def __init__(self, controller_cls: Type[C], motion_dir: str, motion_map: dict[K, str]):
+    def __init__(self, controller_cls: Type[CT], motion_dir: str, motion_map: dict[KT, str]):
         """
         Initializes a motion selector.
 
         The key of ``motion_map`` will be used for selecting the motion controller;
         the value of ``motion_map`` is the file path of the motion controller excluding ``motion_dir``.
         """
-        self._motion_controller: dict[K, C] = {}
+        self._motion_controller: dict[KT, CT] = {}
 
         for motion_key, motion_file_path in motion_map.items():
             file_path = get_file_path(motion_file_path, asset_dir=motion_dir)
@@ -63,6 +63,6 @@ class MotionSelectorBase(Generic[K, C], ABC):
 
             self._motion_controller[motion_key] = controller_cls.parse_raw(parse_motion_data(file_like))
 
-    def get_controller(self, key: K) -> C:
+    def get_controller(self, key: KT) -> CT:
         """Get the controller mapped to ``key``. Returns ``None`` if not found."""
         return self._motion_controller.get(key)

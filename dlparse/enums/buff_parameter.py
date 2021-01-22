@@ -41,7 +41,7 @@ class BuffParameter(Enum):
 
     Note that the "targeted" here means that the extension is only effective to the buff that targets the players,
     such as ATK up buffs.
-    The duration of the zoned buffs like the one built by Gala Euden (10150403) will **not** be affected by this.
+    The duration of the zoned buffs like the one built by Gala Euden S1 (101504031) will **not** be affected by this.
     """
     # endregion
 
@@ -258,7 +258,7 @@ class BuffParameter(Enum):
 
     # region Status
     DEF_DOWN_PUNISHER = 740
-    DEF_OR_ATK_DOWN_PUNISHER = 741
+    ATK_OR_DEF_DOWN_PUNISHER = 741
     OD_STATE_PUNISHER = 742
     BK_STATE_PUNISHER = 743
     # endregion

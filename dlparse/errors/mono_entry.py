@@ -70,9 +70,11 @@ class AbilityLimitDataNotFoundError(EntryNotFoundError):
 class AbilityVariantUnconvertibleError(AppValueError):
     """Error to be raised if the ability variant cannot be converted to ability variant effect unit."""
 
-    def __init__(self, ability_id: int, variant_type: int):
-        super().__init__(f"Unable to convert ability variant to effect units "
-                         f"(ability ID: {ability_id} / variant type ID {variant_type})")
+    def __init__(self, ability_id: int, variant_type: int, message: Optional[str] = None):
+        super().__init__(
+            f"Unable to convert ability variant to effect units "
+            f"(ability ID: {ability_id} / variant type ID {variant_type}): {message or ''}"
+        )
 
 
 class AbilityConditionUnconvertibleError(AppValueError):

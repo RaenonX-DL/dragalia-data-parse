@@ -78,13 +78,24 @@ class Status(IntEnum):
 
         :raises EnumConversionError: if the current status cannot be converted to resistance buff parameter
         """
-        if self not in _TRANS_DICT:
+        if self not in _TRANS_DICT_RESIST:
             raise EnumConversionError(self, Status, BuffParameter)
 
-        return _TRANS_DICT[self]
+        return _TRANS_DICT_RESIST[self]
+
+    def to_buff_param_punisher(self) -> BuffParameter:
+        """
+        Convert the current status to punisher buff parameter.
+
+        :raises EnumConversionError: if the current status cannot be converted to punisher buff parameter
+        """
+        if self not in _TRANS_DICT_PUNISHER:
+            raise EnumConversionError(self, Status, BuffParameter)
+
+        return _TRANS_DICT_PUNISHER[self]
 
 
-_TRANS_DICT: dict[Status, BuffParameter] = {
+_TRANS_DICT_RESIST: dict[Status, BuffParameter] = {
     Status.POISON: BuffParameter.RESISTANCE_POISON,
     Status.BURN: BuffParameter.RESISTANCE_BURN,
     Status.FREEZE: BuffParameter.RESISTANCE_FREEZE,
@@ -99,4 +110,21 @@ _TRANS_DICT: dict[Status, BuffParameter] = {
     Status.STORMLASH: BuffParameter.RESISTANCE_STORMLASH,
     Status.SHADOWBLIGHT: BuffParameter.RESISTANCE_SHADOWBLIGHT,
     Status.SCORCHREND: BuffParameter.RESISTANCE_SCORCHREND
+}
+
+_TRANS_DICT_PUNISHER: dict[Status, BuffParameter] = {
+    Status.POISON: BuffParameter.POISONED_PUNISHER,
+    Status.BURN: BuffParameter.BURNED_PUNISHER,
+    Status.FREEZE: BuffParameter.FROZEN_PUNISHER,
+    Status.PARALYZE: BuffParameter.PARALYZED_PUNISHER,
+    Status.BLIND: BuffParameter.BLINDED_PUNISHER,
+    Status.STUN: BuffParameter.STUNNED_PUNISHER,
+    Status.CURSE: BuffParameter.CURSED_PUNISHER,
+    Status.BOG: BuffParameter.BOGGED_PUNISHER,
+    Status.SLEEP: BuffParameter.SLEPT_PUNISHER,
+    Status.FROSTBITE: BuffParameter.FROSTBITTEN_PUNISHER,
+    Status.FLASHBURN: BuffParameter.FLASHBURNED_PUNISHER,
+    Status.STORMLASH: BuffParameter.STORMLASHED_PUNISHER,
+    Status.SHADOWBLIGHT: BuffParameter.SHADOWBLIGHTED_PUNISHER,
+    Status.SCORCHREND: BuffParameter.SCORCHRENT_PUNISHER
 }

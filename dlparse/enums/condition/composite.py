@@ -4,9 +4,12 @@ from typing import ClassVar, Iterable, Optional, TYPE_CHECKING, Union
 
 from dlparse.enums.condition_base import ConditionCompositeBase
 from dlparse.errors import ConditionValidationFailedError
+from dlparse.utils import remove_duplicates_preserve_order
 from .category import ConditionCategories as CondCat, ConditionCheckResult
 from .items import Condition
 from .validate import validate_conditions
+# Relative import to avoid circular import
+from ..action_debuff_type import ActionDebuffType
 from ..element import Element
 from ..status import Status
 
@@ -23,9 +26,6 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     """Composite class of various attacking conditions."""
 
     allowed_not_categorize_conds: ClassVar[set[Condition]] = {
-        # Target state
-        Condition.TARGET_OD_STATE,
-        Condition.TARGET_BK_STATE,
         # Special self status
         Condition.SELF_ENERGIZED,
         Condition.SELF_SHAPESHIFT_COMPLETED,
@@ -46,6 +46,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     target_element_converted: Element = field(init=False)
     target_in_od: bool = field(init=False)
     target_in_bk: bool = field(init=False)
+    target_debuff: Optional[Condition] = field(init=False)
+    target_debuff_converted: ActionDebuffType = field(init=False)
     # endregion
 
     # region Self status
@@ -108,7 +110,11 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
 
         # Check `self.target_element`
         if self.target_element and self.target_element not in CondCat.target_element:
-            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_TARGET_ELEMENTAL)
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_TARGET_ELEMENT)
+
+        # Check `self.target_debuff`
+        if self.target_debuff and self.target_debuff not in CondCat.target_debuff:
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_TARGET_DEBUFF)
 
     def _init_validate_self_general(self):
         # Check `self.hp_status`
@@ -200,6 +206,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.target_element = CondCat.target_element.extract(conditions)
         self.target_in_od = Condition.TARGET_OD_STATE in conditions
         self.target_in_bk = Condition.TARGET_BK_STATE in conditions
+        self.target_debuff = CondCat.target_debuff.extract(conditions)
 
         self.hp_status = CondCat.self_hp_status.extract(conditions)
         self.hp_condition = CondCat.self_hp_cond.extract(conditions)
@@ -230,6 +237,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
             CondCat.target_status.convert(condition) for condition in self.afflictions_condition
         }
         self.target_element_converted = CondCat.target_element.convert(self.target_element, on_missing=None)
+        self.target_debuff_converted = CondCat.target_debuff.convert(self.target_debuff, on_missing=None)
 
         self.hp_status_converted = CondCat.self_hp_status.convert(self.hp_status, on_missing=1)
         self.combo_count_converted = CondCat.self_combo_count.convert(self.combo_count, on_missing=0)
@@ -260,6 +268,15 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
 
         if self.target_element:
             ret += (self.target_element,)
+
+        if self.target_in_od:
+            ret += (Condition.TARGET_OD_STATE,)
+
+        if self.target_in_bk:
+            ret += (Condition.TARGET_BK_STATE,)
+
+        if self.target_debuff:
+            ret += (self.target_debuff,)
 
         return ret
 
@@ -367,11 +384,16 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         - [Skill] Mark explosion
         - [Other] Trigger
         """
-        return (self._cond_sorted_target()
-                + self._cond_sorted_self_general()
-                + self._cond_sorted_self_special()
-                + self._cond_sorted_skill()
-                + self._cond_sorted_others())
+        # ``Condition.TARGET_DEF_DOWN`` is categorized into both target status and debuff.
+        # Sorted conditions may yield this condition twice. Therefore removing the duplicates.
+
+        conditions: tuple[Condition, ...] = (self._cond_sorted_target()
+                                             + self._cond_sorted_self_general()
+                                             + self._cond_sorted_self_special()
+                                             + self._cond_sorted_skill()
+                                             + self._cond_sorted_others())
+
+        return remove_duplicates_preserve_order(conditions)
 
     def get_boost_rate_by_buff(self, hit_attr: "HitAttrEntry", asset_buff_count: "BuffCountAsset"):
         """Get the damage boost rate of ``hit_attr`` under the given condition."""
@@ -388,7 +410,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     def __bool__(self):
         return bool(self.conditions_sorted)
 
-    def __add__(self, other):
+    def __add__(self, other: Optional["ConditionComposite"]):
         if other is None:
             return self
 

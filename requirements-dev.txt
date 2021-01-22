@@ -1,8 +1,9 @@
 # Code quality check
+bandit
 pydocstyle
 flake8
 pylint
-bandit
+coverage
 
 # Testing framework
 pytest

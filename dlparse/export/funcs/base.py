@@ -14,7 +14,6 @@ from dlparse.mono.manager import AssetManager
 __all__ = ("export_as_csv", "export_as_json", "export_skill_entries", "export_transform_skill_entries")
 
 CT = TypeVar("CT", bound=CsvExportableEntryBase)
-JT = TypeVar("JT", bound=JsonExportableEntryBase)
 ET = TypeVar("ET", bound=SkillExportEntryBase)
 DT = TypeVar("DT", bound=SkillDataBase)
 
@@ -117,7 +116,7 @@ class JsonEntryEncoder(JSONEncoder):
         return super().default(o)
 
 
-def export_as_json(obj: Union[dict[str, list[JT]], list[JT]], file_path: str):
+def export_as_json(obj: Union[dict, list], file_path: str):
     """
     Export ``obj`` as json to ``file_path``.
 

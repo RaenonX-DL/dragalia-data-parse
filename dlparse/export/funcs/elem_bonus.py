@@ -8,7 +8,7 @@ __all__ = ("export_elem_bonus_as_json",)
 # Hard-coded the data to be exported to avoid unnecessary implementations,
 # because this almost never change.
 
-elem_bonus_data_template = {
+elem_bonus_data_template: dict[int, float] = {
     Condition.TARGET_ELEM_FLAME.value: 1,
     Condition.TARGET_ELEM_WATER.value: 1,
     Condition.TARGET_ELEM_WIND.value: 1,
@@ -19,7 +19,7 @@ elem_bonus_data_template = {
     Condition.TARGET_ELEM_NEUTRAL.value: 1,
 }
 
-elem_bonus_data = {
+elem_bonus_data: dict[int, dict[int, float]] = {
     Element.N_A.value: elem_bonus_data_template,
     Element.NO_ELEMENT.value: elem_bonus_data_template,
     Element.FLAME.value: elem_bonus_data_template | {

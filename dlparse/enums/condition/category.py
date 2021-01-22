@@ -6,6 +6,7 @@ from dlparse.errors import EnumConversionError, OperationInvalidError
 from .items import Condition
 # Relative import to avoid circular import
 from ..ability_condition import AbilityCondition
+from ..action_debuff_type import ActionDebuffType
 from ..condition_base import ConditionCheckResultMixin
 from ..element import Element
 from ..status import Status
@@ -19,6 +20,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     PASS = auto()
 
     MULTIPLE_TARGET_ELEMENT = auto()
+    MULTIPLE_TARGET_DEBUFF = auto()
     MULTIPLE_HP_CONDITION = auto()
     MULTIPLE_HP_STATUS = auto()
     MULTIPLE_COMBO_COUNT = auto()
@@ -41,7 +43,8 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_MISC = auto()
 
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
-    INTERNAL_NOT_TARGET_ELEMENTAL = auto()
+    INTERNAL_NOT_TARGET_ELEMENT = auto()
+    INTERNAL_NOT_TARGET_DEBUFF = auto()
     INTERNAL_NOT_HP_STATUS = auto()
     INTERNAL_NOT_HP_CONDITION = auto()
     INTERNAL_NOT_COMBO_COUNT = auto()
@@ -227,7 +230,7 @@ class ConditionCategories:
     # region 1xx - Target
     target_status = ConditionCategory[Status](
         {
-            # Abnormal statuses
+            # Afflictions
             Condition.TARGET_POISONED: Status.POISON,
             Condition.TARGET_BURNED: Status.BURN,
             Condition.TARGET_FROZEN: Status.FREEZE,
@@ -265,6 +268,15 @@ class ConditionCategories:
         ConditionMaxCount.SINGLE,
         "Target - element",
         ConditionCheckResult.MULTIPLE_TARGET_ELEMENT
+    )
+    target_debuff = ConditionCategory[ActionDebuffType](
+        {
+            Condition.TARGET_ATK_OR_DEF_DOWN: ActionDebuffType.ATK_OR_DEF_DOWN,
+            Condition.TARGET_DEF_DOWN: ActionDebuffType.DEF_DOWN,
+        },
+        ConditionMaxCount.SINGLE,
+        "Target - debuff",
+        ConditionCheckResult.MULTIPLE_TARGET_DEBUFF
     )
     # endregion
 
@@ -505,6 +517,7 @@ class ConditionCategories:
     trigger = ConditionCategoryGroup(
         {
             Condition.ON_SELF_BUFFED_DEF,
+            Condition.ON_SELF_REVIVED,
             Condition.ON_SELF_HP_LTE_30,
             Condition.ON_HIT_BY_POISON,
             Condition.ON_HIT_BY_BURN,

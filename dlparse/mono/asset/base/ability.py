@@ -1,30 +1,16 @@
 """Common classes for the ability data."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Generic, Optional, TypeVar
+from typing import Callable, Generic, Optional, TypeVar
 
 from dlparse.enums import (
-    AbilityCondition, AbilityTargetAction, AbilityVariantType, Condition, ConditionCategories, SkillNumber, Status,
+    AbilityCondition, AbilityTargetAction, AbilityVariantType, ActionDebuffType,
+    Condition, ConditionCategories, SkillNumber, Status,
 )
 from dlparse.errors import EnumConversionError
 from .master import MasterEntryBase
 
 __all__ = ("AbilityConditionEntryBase", "AbilityVariantEntryBase", "AbilityEntryBase")
-
-_ability_condition_map: dict[AbilityCondition, Condition] = {
-    AbilityCondition.NONE: Condition.NONE,
-    AbilityCondition.TRG_SELF_HP_LTE: Condition.ON_SELF_HP_LTE_30,
-    AbilityCondition.TRG_RECEIVED_BUFF_DEF: Condition.ON_SELF_BUFFED_DEF,
-    AbilityCondition.TRG_QUEST_START: Condition.QUEST_START,
-    AbilityCondition.TRG_ENERGIZED: Condition.SELF_ENERGIZED,
-    AbilityCondition.TRG_SHAPESHIFT_COMPLETED: Condition.SELF_SHAPESHIFT_COMPLETED,
-}
-"""
-A dict that maps :class:`AbilityCondition` to :class:`Condition`.
-
-This only contains :class:`AbilityCondition` that do not require additional parameter checks.
-Missing key in this map does not mean that it is not handled.
-"""
 
 _hp_gte_map: dict[float, Condition] = {
     30: Condition.SELF_HP_GTE_30,
@@ -50,8 +36,28 @@ class AbilityConditionEntryBase(ABC):
 
     condition_type: AbilityCondition = field(init=False)
 
+    _cond_map: dict[AbilityCondition, Condition] = field(init=False)
+    _cond_method_map: dict[AbilityCondition, Callable[[], Condition]] = field(init=False)
+
     def __post_init__(self):
         self.condition_type = AbilityCondition(self.condition_code)
+
+        self._cond_map: dict[AbilityCondition, Condition] = {
+            AbilityCondition.NONE: Condition.NONE,
+            AbilityCondition.EFF_TARGET_OVERDRIVE: Condition.TARGET_OD_STATE,
+            AbilityCondition.TRG_SELF_HP_LTE: Condition.ON_SELF_HP_LTE_30,
+            AbilityCondition.TRG_RECEIVED_BUFF_DEF: Condition.ON_SELF_BUFFED_DEF,
+            AbilityCondition.TRG_QUEST_START: Condition.QUEST_START,
+            AbilityCondition.TRG_ENERGIZED: Condition.SELF_ENERGIZED,
+            AbilityCondition.TRG_SHAPESHIFT_COMPLETED: Condition.SELF_SHAPESHIFT_COMPLETED,
+        }
+        self._cond_method_map = {
+            AbilityCondition.EFF_IN_DRAGON: self._cond_self_in_dragon,
+            AbilityCondition.EFF_TARGET_DEBUFFED: self._cond_target_debuffed,
+            AbilityCondition.EFF_TARGET_AFFLICTED: self._cond_target_afflicted,
+            AbilityCondition.EFF_SELF_BUFFED_ACTION_COND: self._cond_self_buffed,
+            AbilityCondition.TRG_GOT_HIT_WITH_AFFLICTION: self._cond_hit_by_affliction,
+        }
 
     @abstractmethod
     def _condition_unconvertible(self, ex: Optional[Exception] = None):
@@ -112,6 +118,20 @@ class AbilityConditionEntryBase(ABC):
 
         raise self._condition_unconvertible()
 
+    def _cond_target_debuffed(self) -> Condition:
+        debuff_type = ActionDebuffType(self.val_1)
+
+        if debuff_type == ActionDebuffType.DEF_DOWN:
+            return Condition.TARGET_DEF_DOWN
+
+        if debuff_type == ActionDebuffType.ATK_OR_DEF_DOWN:
+            return Condition.TARGET_ATK_OR_DEF_DOWN
+
+        raise self._condition_unconvertible()
+
+    def _cond_target_afflicted(self) -> Condition:
+        return ConditionCategories.target_status.convert_reversed(Status(self.val_1))
+
     def _cond_hit_by_affliction(self) -> Condition:
         try:
             return ConditionCategories.trigger_hit_by_affliction.convert_reversed(Status(self.val_1))
@@ -124,25 +144,16 @@ class AbilityConditionEntryBase(ABC):
 
         :raises AbilityConditionUnconvertibleError: if the ability condition is unconvertible
         """
-        ability_condition = _ability_condition_map.get(self.condition_type)
+        ability_condition = self._cond_map.get(self.condition_type)
         if ability_condition is not None:  # Explicit check because ``Condition.NONE`` is falsy
             return ability_condition
 
-        # Self in-dragon
-        if self.condition_type == AbilityCondition.EFF_IS_DRAGON:
-            return self._cond_self_in_dragon()
+        if cond_method := self._cond_method_map.get(self.condition_type):
+            return cond_method()
 
         # Self HP condition
         if self_hp_cond := self._cond_self_hp():
             return self_hp_cond
-
-        # Hit by attack with affliction
-        if self.condition_type == AbilityCondition.TRG_HIT_WITH_AFFLICTION:
-            return self._cond_hit_by_affliction()
-
-        # Has specific buff
-        if self.condition_type == AbilityCondition.EFF_SELF_SPECIFICALLY_BUFFED:
-            return self._cond_self_buffed()
 
         raise self._condition_unconvertible()
 
@@ -207,19 +218,19 @@ class AbilityVariantEntryBase(ABC):
         )
 
 
-C = TypeVar("C", bound=AbilityConditionEntryBase)  # pylint: disable=invalid-name
-V = TypeVar("V", bound=AbilityVariantEntryBase)  # pylint: disable=invalid-name
+CT = TypeVar("CT", bound=AbilityConditionEntryBase)
+VT = TypeVar("VT", bound=AbilityVariantEntryBase)
 
 
 @dataclass
-class AbilityEntryBase(Generic[C, V], MasterEntryBase, ABC):
+class AbilityEntryBase(Generic[CT, VT], MasterEntryBase, ABC):
     """Base class of an ability entry."""
 
-    condition: C
+    condition: CT
 
     @property
     @abstractmethod
-    def variants(self) -> list[V]:
+    def variants(self) -> list[VT]:
         """
         Get all in-use ability variants as a list.
 

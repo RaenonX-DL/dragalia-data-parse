@@ -45,6 +45,10 @@ def test_transform_all_character_ability(transformer_ability: AbilityTransformer
     # because there are some unused or deprecated ability inside.
     # We don't want to spend time handling unused things.
     for chara_data in asset_manager.asset_chara_data:
+        # Skip unplayable characters
+        if not chara_data.is_playable:
+            continue
+
         for ability_id in chara_data.ability_ids_all_level:
             counter += 1
 

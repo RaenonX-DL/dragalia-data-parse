@@ -1,11 +1,8 @@
-import pytest
-
 from dlparse.enums import BuffParameter, Condition, ConditionComposite
 from dlparse.transformer import AbilityTransformer
 from tests.utils import AbilityEffectInfo, check_ability_effect_unit_match
 
 
-@pytest.mark.skip
 def test_od_punisher(transformer_ability: AbilityTransformer):
     # Seimei - 10750104
     # https://dragalialost.gamepedia.com/Seimei
@@ -13,19 +10,18 @@ def test_od_punisher(transformer_ability: AbilityTransformer):
 
     expected_info = {
         AbilityEffectInfo(
-            106000008, ConditionComposite(),
+            106000008, ConditionComposite(Condition.TARGET_OD_STATE),
             BuffParameter.OD_GAUGE_DAMAGE, 0.10, max_occurrences=1
         ),
         AbilityEffectInfo(
-            106000008, ConditionComposite(),
-            BuffParameter.PUNISHER_OD_STATE, 0.15, max_occurrences=1
+            106000008, ConditionComposite(Condition.TARGET_OD_STATE),
+            BuffParameter.OD_STATE_PUNISHER, 0.15, max_occurrences=1
         ),
     }
 
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-@pytest.mark.skip
 def test_debuffed_punisher(transformer_ability: AbilityTransformer):
     # Gala Leif - 10150303
     # https://dragalialost.gamepedia.com/Gala_Leif
@@ -33,15 +29,14 @@ def test_debuffed_punisher(transformer_ability: AbilityTransformer):
 
     expected_info = {
         AbilityEffectInfo(
-            106080008, ConditionComposite(),
-            BuffParameter.PUNISHER_DEF_OR_ATK_DOWN, 0.08, max_occurrences=1
+            106080008, ConditionComposite(Condition.TARGET_ATK_OR_DEF_DOWN),
+            BuffParameter.ATK_OR_DEF_DOWN_PUNISHER, 0.08, max_occurrences=1
         ),
     }
 
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-@pytest.mark.skip
 def test_paralyzed_punisher(transformer_ability: AbilityTransformer):
     # Sharena - 10550404
     # https://dragalialost.gamepedia.com/Sharena
@@ -50,14 +45,13 @@ def test_paralyzed_punisher(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(
             120040008, ConditionComposite(),
-            BuffParameter.PUNISHER_PARALYZED, 0.08, max_occurrences=1
+            BuffParameter.PARALYZED_PUNISHER, 0.08, max_occurrences=1
         ),
     }
 
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-@pytest.mark.skip
 def test_auto_dmg_up(transformer_ability: AbilityTransformer):
     # Gala Laxi - 10350102
     # https://dragalialost.gamepedia.com/Gala_Laxi
@@ -73,7 +67,6 @@ def test_auto_dmg_up(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-@pytest.mark.skip
 def test_fs_dmg_up(transformer_ability: AbilityTransformer):
     # Grace - 10850503
     # https://dragalialost.gamepedia.com/Grace
@@ -82,14 +75,13 @@ def test_fs_dmg_up(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(
             106000016, ConditionComposite(),
-            BuffParameter.FS_DAMAGE, 0.3, max_occurrences=1
+            BuffParameter.FS_DAMAGE, 0.2, max_occurrences=1
         ),
     }
 
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-@pytest.mark.skip
 def test_crt_dmg_up(transformer_ability: AbilityTransformer):
     # Halloween Mym - 10450102
     # https://dragalialost.gamepedia.com/Halloween_Mym
@@ -105,7 +97,6 @@ def test_crt_dmg_up(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-@pytest.mark.skip
 def test_light_dmg_up(transformer_ability: AbilityTransformer):
     # Peony - 10750402
     # https://dragalialost.gamepedia.com/Peony
@@ -114,14 +105,13 @@ def test_light_dmg_up(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(
             157570408, ConditionComposite(),
-            BuffParameter.LIGHT_ELEM_DMG_UP, 0.13, max_occurrences=1
+            BuffParameter.LIGHT_ELEM_DMG_UP, 0.2, max_occurrences=1
         ),
     }
 
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-@pytest.mark.skip
 def test_hp_and_def(transformer_ability: AbilityTransformer):
     # Chrom - 10150105
     # https://dragalialost.gamepedia.com/Chrom
@@ -141,7 +131,6 @@ def test_hp_and_def(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-@pytest.mark.skip
 def test_hp_on_revival(transformer_ability: AbilityTransformer):
     # Kimono Elisanne - 10550103
     # https://dragalialost.gamepedia.com/Kimono_Elisanne
@@ -157,7 +146,6 @@ def test_hp_on_revival(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-@pytest.mark.skip
 def test_shapeshifting_boost(transformer_ability: AbilityTransformer):
     # Gala Euden - 10150403
     # https://dragalialost.gamepedia.com/Gala_Euden
@@ -177,7 +165,6 @@ def test_shapeshifting_boost(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-@pytest.mark.skip
 def test_buff_time(transformer_ability: AbilityTransformer):
     # Tobias
     # https://dragalialost.gamepedia.com/Tobias

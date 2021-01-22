@@ -212,6 +212,10 @@
     "text": "目標減益: 降防"
   },
   {
+    "id": "ENUM_COND_TARGET_ATK_OR_DEF_DOWN",
+    "text": "目標減益: 降攻/降防"
+  },
+  {
     "id": "ENUM_COND_TARGET_BUFFED",
     "text": "目標有 Buff"
   },

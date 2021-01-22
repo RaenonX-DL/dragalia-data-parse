@@ -79,15 +79,15 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 15. ResistInstantDeath
 16. DebuffGrantUp
 <a href="#17---spcharge">17. SpCharge</a>
-18. BuffExtension
+<a href="#18---buffextension">18. BuffExtension</a>
 19. DebuffExtension
-20. AbnormalKiller
+<a href="#20---abnormalkiller">20. AbnormalKiller</a>
 <a href="#21---userexpup">21. UserExpUp</a>
 22. CharaExpUp
 23. CoinUp
 24. ManaUp
 <a href="#25---actiongrant">25. ActionGrant</a>
-26. CriticalDamageUp
+<a href="#26---criticaldamageup">26. CriticalDamageUp</a>
 27. DpCharge
 28. ResistElement
 29. ResistUnique
@@ -127,7 +127,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 63. ModifyBuffDebuffDurationTime
 64. CpCoef
 65. UniqueAvoid
-66. RebornHpRateUp
+<a href="#66---rebornhprateup">66. RebornHpRateUp</a>
 67. AttackBaseOnHPUpRate
 68. ChangeStateHostile
 69. CpContinuationDown
@@ -194,7 +194,13 @@ A value of `50` means to resist a certain affliction by 50%.
 
 ### `06` - `ActDamageUp`
 
-Buff the character's skill damage. If the variant is inside an ex ability entry, the effect is team-wide.
+Buff the target action damage. If the variant is inside an ex ability entry, the effect is team-wide.
+
+#### Variant Target Action
+
+Action to receive the damage boost.
+
+For the number correspondance, check [the ability target action implementation.](/dlparse/enums/action.py)
 
 #### Variant Up Value
 
@@ -298,6 +304,40 @@ A value of `100` means to charge all skills with 100% SP (immediately ready the 
 
 -----
 
+##### `18` - `BuffExtension`
+
+Extend the buff effective time. If the variant is inside an ex ability entry, the effect is team-wide.
+
+This only applies to the buffs that are directly applied to the user. Zoned buff like Gala Euden S1 (`10150403`) will
+not be affected by this.
+
+#### Variant Up Value
+
+Buff extension ratio in percentage.
+
+A value of `20` means to extend the buff time by 20%.
+
+-----
+
+### `20` - `AbnormalKiller`
+
+Apply punisher damage boost if the target has the specific affliction status.
+
+If `ID-A = 4`, `Up value = 8.0`, then if the damage will be boosted by 8% if the target is afflicted with paralysis
+(actual example of Sharena (`10550404`) EX `120040008`).
+
+#### Variant ID - A
+
+Affliction status enum. For the ID correspondance, check [the implementation of the enum](/dlparse/enums/status.py).
+
+#### Variant Up Value
+
+Rate of the damage boost in percentage.
+
+A value of `20` means damage boost 20%.
+
+-----
+
 ### `21` - `UserExpUp`
 
 Raise the player EXP gain upon clearing a quest.
@@ -328,6 +368,30 @@ A value of `16` means to grant the effect listed in `ActionGrant` where ID is `1
 
 -----
 
+### `26` - `CriticalDamageUp`
+
+Buff the character's critical damage. If the variant is inside an ex ability entry, the effect is team-wide.
+
+#### Variant Up Value
+
+Critical damage boost rate in percentage.
+
+A value of `20` means CRT DMG (CDMG) +20%.
+
+-----
+
+### `36` - `DragonDamageUp`
+
+Buff the damage dealt by the dragon.
+
+#### Variant Up Value
+
+Dragon damage boost rate in percentage.
+
+A value of `20` means dragon damage +20%.
+
+-----
+
 ### `40` - `ActiveGaugeStatusUp`
 
 Get the status up information according to the user gauge status.
@@ -352,6 +416,10 @@ Gauge(s) filled | DEF | Action Damage Boost
 #### Variant Target Action
 
 Action to receive the damage boost.
+
+For the number correspondance, check [the ability target action implementation.](/dlparse/enums/action.py)
+
+-----
 
 ### `42` - `HitAttributeShift`
 
@@ -422,3 +490,33 @@ A value of `5_5/10_10/15_20/20_30/25_40/30_50` means that:
 - +50% damage if combo >= 30
 
 The highest damage boost will be picked. For example, if the user's combo count is 27, then the damage boost is 40%.
+
+-----
+
+### `57` - `EnhancedElementDamage`
+
+Buff the elemental damage.
+
+`ID-A = 4` with `Up Value = 20` means light elemental damage +20% (actual example of Peony EX - `157570408`).
+
+#### Variant ID - A
+
+Element enum. For the ID correspondance, check [the implementation of the enum](/dlparse/enums/element.py).
+
+#### Variant Up Value
+
+Rate of the damage boost in percentage.
+
+A value of `20` means elemental damage +20%.
+
+-----
+
+### `66` - `RebornHpRateUp`
+
+Recover an additional portion of the HP based on the healing receiver's max HP upon revival.
+
+#### Variant Up Value
+
+Rate of the additional healing based on the headling receiver's max HP upon revival in percentage.
+
+A value of `10` means to gain additional 10% of the max HP upon revival.

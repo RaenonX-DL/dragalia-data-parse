@@ -11,7 +11,7 @@ from typing import Callable, Optional, TYPE_CHECKING, TypeVar
 
 from dlparse.enums import (
     AbilityTargetAction, AbilityUpParameter, AbilityVariantType, BuffParameter, Condition, ConditionComposite,
-    HitTargetSimple, Status,
+    Element, HitTargetSimple, Status,
 )
 from dlparse.errors import AbilityVariantUnconvertibleError
 from dlparse.mono.asset import AbilityVariantEntry, ActionConditionEntry, ExAbilityEntry
@@ -50,7 +50,7 @@ class AbilityVariantEffectUnit(EffectUnitBase):
                 < (other.source_ability_id, other.condition_comp, int(other.parameter.value), other.rate))
 
 
-A = TypeVar("A", bound=AbilityEntryBase)  # pylint: disable=invalid-name
+AT = TypeVar("AT", bound=AbilityEntryBase)
 
 
 @dataclass
@@ -59,7 +59,7 @@ class AbilityVariantEffectPayload(ActionCondEffectConvertPayload):
 
     condition_comp: ConditionComposite
     condition_cooldown: float
-    source_ability: A
+    source_ability: AT
     max_occurrences: int
 
     target_action: AbilityTargetAction = AbilityTargetAction.NONE
@@ -157,6 +157,34 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             rate_max=0
         )
 
+    def _direct_buff_unit(
+            self, buff_param: BuffParameter, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        max_value = 0
+        if isinstance(self.variant, AbilityVariantEntry):
+            max_value = asset_manager.asset_ability_limit.get_max_value(self.variant.limited_group_id, on_not_found=0)
+
+        return {
+            AbilityVariantEffectUnit(
+                source_ability_id=payload.source_ability_id,
+                condition_comp=payload.condition_comp,
+                cooldown_sec=payload.condition_cooldown,
+                max_occurrences=payload.max_occurrences,
+                target_action=payload.target_action,
+                parameter=buff_param,
+                probability_pct=100,  # Absolutely applicable
+                rate=self.variant.up_value / 100,  # Original data is percentage
+                rate_max=max_value,
+                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
+                status=Status.NONE,
+                duration_time=0,
+                duration_count=0,
+                max_stack_count=0,
+                slip_damage_mod=0,
+                slip_interval=0,
+            )
+        }
+
     def _from_status_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
@@ -193,51 +221,66 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             )
         }
 
-    def _direct_effect_by_type(
-            self, buff_param: BuffParameter, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
-    ) -> set[AbilityVariantEffectUnit]:
-        max_value = 0
-        if isinstance(self.variant, AbilityVariantEntry):
-            max_value = asset_manager.asset_ability_limit.get_max_value(self.variant.limited_group_id, on_not_found=0)
-
-        return {
-            AbilityVariantEffectUnit(
-                source_ability_id=payload.source_ability_id,
-                condition_comp=payload.condition_comp,
-                cooldown_sec=payload.condition_cooldown,
-                max_occurrences=payload.max_occurrences,
-                target_action=payload.target_action,
-                parameter=buff_param,
-                probability_pct=100,  # Absolutely applicable
-                rate=self.variant.up_value / 100,  # Original data is percentage
-                rate_max=max_value,
-                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
-                status=Status.NONE,
-                duration_time=0,
-                duration_count=0,
-                max_stack_count=0,
-                slip_damage_mod=0,
-                slip_interval=0,
-            )
-        }
-
-    def _from_skill_dmg_up(
+    def _from_dmg_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
-        return self._direct_effect_by_type(BuffParameter.SKILL_DAMAGE, asset_manager, payload)
+        buff_param = None
+
+        # Set the buff param
+        if self.variant.target_action_enum == AbilityTargetAction.AUTO:
+            buff_param = BuffParameter.AUTO_DAMAGE
+        elif self.variant.target_action_enum == AbilityTargetAction.FORCE_STRIKE:
+            buff_param = BuffParameter.FS_DAMAGE
+        elif self.variant.target_action_enum == AbilityTargetAction.SKILL_ALL:
+            buff_param = BuffParameter.SKILL_DAMAGE
+        elif self.variant.target_action_enum == AbilityTargetAction.NONE:
+            if Condition.TARGET_ATK_OR_DEF_DOWN in payload.condition_comp:
+                buff_param = BuffParameter.ATK_OR_DEF_DOWN_PUNISHER
+            if Condition.TARGET_OD_STATE in payload.condition_comp:
+                buff_param = BuffParameter.OD_STATE_PUNISHER
+
+        if not buff_param:
+            # Raise error if buff param not defined (behavior not defined)
+            raise AbilityVariantUnconvertibleError(
+                payload.source_ability_id, self.variant.type_id, f"Target action: {self.variant.target_action_enum}"
+            )
+
+        return self._direct_buff_unit(buff_param, asset_manager, payload)
 
     def _from_crt_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
-        return self._direct_effect_by_type(BuffParameter.CRT_RATE, asset_manager, payload)
+        return self._direct_buff_unit(BuffParameter.CRT_RATE, asset_manager, payload)
+
+    def _from_crt_dmg_up(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        return self._direct_buff_unit(BuffParameter.CRT_DAMAGE, asset_manager, payload)
+
+    def _from_elem_dmg_up(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        return self._direct_buff_unit(Element(self.variant.id_a).to_elem_dmg_up(), asset_manager, payload)
 
     def _from_rp_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
-        return self._direct_effect_by_type(BuffParameter.HEAL_RP, asset_manager, payload)
+        return self._direct_buff_unit(BuffParameter.HEAL_RP, asset_manager, payload)
 
-    def _from_od_gauge_dmg_up(self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload):
-        return self._direct_effect_by_type(BuffParameter.OD_GAUGE_DAMAGE, asset_manager, payload)
+    def _from_dragon_dmg_up(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        return self._direct_buff_unit(BuffParameter.DRAGON_DAMAGE, asset_manager, payload)
+
+    def _from_od_gauge_dmg_up(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        return self._direct_buff_unit(BuffParameter.OD_GAUGE_DAMAGE, asset_manager, payload)
+
+    def _from_buff_time_up(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        return self._direct_buff_unit(BuffParameter.TARGETED_BUFF_TIME, asset_manager, payload)
 
     def _from_resist_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
@@ -268,6 +311,11 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 slip_interval=0,
             )
         }
+
+    def _from_affliction_punisher(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        return self._direct_buff_unit(Status(self.variant.id_a).to_buff_param_punisher(), asset_manager, payload)
 
     def _from_change_state_dragons_claws(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
@@ -407,6 +455,33 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
 
         return units
 
+    def _from_addl_heal_on_revive(
+            self, _: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        # The parameter for the ``AssetManager`` is still needed in the signature although redundant
+        # because ``_from_*`` methods are called with the same set of the parameters.
+
+        return {
+            AbilityVariantEffectUnit(
+                source_ability_id=payload.source_ability_id,
+                condition_comp=payload.condition_comp + ConditionComposite(Condition.ON_SELF_REVIVED),
+                cooldown_sec=payload.condition_cooldown,
+                max_occurrences=payload.max_occurrences,
+                target_action=payload.target_action,
+                parameter=BuffParameter.HEAL_MAX_HP,
+                probability_pct=100,  # Absolutely applicable
+                rate=self.variant.up_value / 100,  # Original data is percentage
+                rate_max=0,
+                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
+                status=Status.NONE,
+                duration_time=0,
+                duration_count=0,
+                max_stack_count=0,
+                slip_damage_mod=0,
+                slip_interval=0,
+            )
+        }
+
     def to_effect_units(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
@@ -421,15 +496,21 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         unit_method = Callable[["AssetManager", AbilityVariantEffectPayload], set[AbilityVariantEffectUnit]]
         method_dict: dict[AbilityVariantType, unit_method] = {
             AbilityVariantType.STATUS_UP: self._from_status_up,
-            AbilityVariantType.SKILL_DMG_UP: self._from_skill_dmg_up,
+            AbilityVariantType.DAMAGE_UP: self._from_dmg_up,
             AbilityVariantType.CRT_RATE_UP: self._from_crt_up,
+            AbilityVariantType.CRT_DMG_UP: self._from_crt_dmg_up,
+            AbilityVariantType.ELEM_DMG_UP: self._from_elem_dmg_up,
             AbilityVariantType.OD_GAUGE_DMG_UP: self._from_od_gauge_dmg_up,
             AbilityVariantType.RP_UP: self._from_rp_up,
+            AbilityVariantType.DRAGON_DMG_UP: self._from_dragon_dmg_up,
+            AbilityVariantType.BUFF_TIME_UP: self._from_buff_time_up,
             AbilityVariantType.RESISTANCE_UP: self._from_resist_up,
-            AbilityVariantType.CHANGE_STATE: self._from_change_state,
             AbilityVariantType.PLAYER_EXP_UP: self._from_player_exp_up,
+            AbilityVariantType.AFFLICTION_PUNISHER: self._from_affliction_punisher,
+            AbilityVariantType.CHANGE_STATE: self._from_change_state,
             AbilityVariantType.SP_CHARGE: self._from_sp_charge,
-            AbilityVariantType.ACTION_GRANT: self._from_action_grant
+            AbilityVariantType.ACTION_GRANT: self._from_action_grant,
+            AbilityVariantType.ADDITIONAL_HEAL_ON_REVIVE: self._from_addl_heal_on_revive
         }
 
         for var_type, method in method_dict.items():

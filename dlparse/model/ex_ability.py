@@ -28,18 +28,14 @@ class ExAbilityData(AbilityDataBase):
 
     @property
     def unknown_condition_ids(self) -> dict[int, int]:
-        """
-        Get a dict which key is the ability ID and value is the ID of the unknown condition.
+        if self.ex_ability_data.condition.is_unknown_condition:
+            return {self.ex_ability_data.id: self.ex_ability_data.condition.condition_code}
 
-        If the ability does not have any unknown condition, an empty dict will be returned.
-        """
-        return {self.ex_ability_data.id: self.ex_ability_data.condition.is_unknown_condition}
+        return {}
 
     @property
     def unknown_variant_ids(self) -> dict[int, list[int]]:
-        """
-        Get a dict which key is the ability ID and value is type ID of the unknown variants.
+        if unknown_variants := self.ex_ability_data.unknown_variant_type_ids:
+            return {self.ex_ability_data.id: unknown_variants}
 
-        If the ability does not have any unknown variants, an empty dict will be returned.
-        """
-        return {self.ex_ability_data.id: self.ex_ability_data.unknown_variant_type_ids}
+        return {}

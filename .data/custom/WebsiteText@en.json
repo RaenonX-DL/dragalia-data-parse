@@ -209,7 +209,11 @@
   },
   {
     "id": "ENUM_COND_TARGET_DEF_DOWN",
-    "text": "Target State: Def Down"
+    "text": "Target State: DEF Down"
+  },
+  {
+    "id": "ENUM_COND_TARGET_ATK_OR_DEF_DOWN",
+    "text": "Target State: ATK/DEF Down"
   },
   {
     "id": "ENUM_COND_TARGET_BUFFED",

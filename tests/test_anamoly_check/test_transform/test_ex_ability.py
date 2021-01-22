@@ -36,7 +36,6 @@ class UnknownAbilityData:
         return ret
 
 
-@pytest.mark.skip
 def test_transform_all_character_ex_ability(transformer_ability: AbilityTransformer, asset_manager: AssetManager):
     unknown_abilities: list[UnknownAbilityData] = []
     counter: int = 0
@@ -45,6 +44,10 @@ def test_transform_all_character_ex_ability(transformer_ability: AbilityTransfor
     # because there are some unused or deprecated ability inside.
     # We don't want to spend time handling unused things.
     for chara_data in asset_manager.asset_chara_data:
+        # Skip unplayable characters
+        if not chara_data.is_playable:
+            continue
+
         ex_id = chara_data.ex_id_at_max_level
         counter += 1
 
@@ -54,20 +57,24 @@ def test_transform_all_character_ex_ability(transformer_ability: AbilityTransfor
             # Check if any unknown elements exist but no error yielded
             if ex_ability_data.has_unknown_elements:
                 unknown_abilities.append(UnknownAbilityData(
-                    chara_data.id, ex_id,
-                    ex_ability_data.unknown_condition_ids,
-                    ex_ability_data.unknown_variant_ids
+                    chara_id=chara_data.id, ex_ability_id=ex_id,
+                    condition_ids=ex_ability_data.unknown_condition_ids,
+                    variant_ids=ex_ability_data.unknown_variant_ids
                 ))
         except (AbilityConditionUnconvertibleError, AbilityVariantUnconvertibleError) as ex:
             # Condition/Variant unconvertible (most likely due to unknown/unhandled condition/variant)
             ex_ability_data = asset_manager.asset_ex_ability.get_data_by_id(ex_id)
 
+            condition_ids = (
+                {ex_id: ex_ability_data.condition.condition_code}
+                if ex_ability_data.condition.is_unknown_condition else {}
+            )
+
             unknown_abilities.append(UnknownAbilityData(
-                chara_data.id, ex_id,
-                ({ex_id: ex_ability_data.condition.condition_code}
-                 if ex_ability_data.condition.is_unknown_condition else {}),
-                {ex_id: ex_ability_data.unknown_variant_type_ids},
-                ex
+                chara_id=chara_data.id, ex_ability_id=ex_id,
+                condition_ids=condition_ids,
+                variant_ids={ex_id: ex_ability_data.unknown_variant_type_ids},
+                error=ex
             ))
 
     if unknown_abilities:
