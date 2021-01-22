@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from itertools import product
 from typing import Optional
 
-from dlparse.enums import Condition, ConditionCategories, ConditionComposite
+from dlparse.enums import ConditionComposite
 from dlparse.errors import AppValueError, BulletEndOfLifeError, DamagingHitValidationFailedError
 from dlparse.mono.asset import (
     ActionBuffField, ActionBullet, ActionBulletStockFire, ActionComponentHasHitLabels, ActionConditionAsset,
@@ -263,7 +263,10 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
                 damage_unit.mod *= hit_attr.rate_boost_in_bk
 
         # Punisher boosts
-        if hit_attr.boost_on_target_afflicted and condition_comp.afflictions_converted & hit_attr.punisher_states:
+        if (
+                hit_attr.boost_on_target_afflicted
+                and condition_comp.target_afflictions_converted & hit_attr.punisher_states
+        ):
             for damage_unit in damage_units:
                 damage_unit.mod *= hit_attr.punisher_rate
 
@@ -329,17 +332,16 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
             self, condition_comp: ConditionComposite, asset_action_condition: ActionConditionAsset
     ) -> Optional[list[DamageUnit]]:
         # Pre-condition available, perform checks
-        if self.pre_condition in ConditionCategories.skill_addl_inputs:
+        if pre_cond_addl_hit := self.pre_condition_comp.addl_inputs_converted:
             # Pre-condition is additional inputs, perform special check
-            pre_cond_addl_hit = ConditionCategories.skill_addl_inputs.convert(self.pre_condition)
             if pre_cond_addl_hit > (condition_comp.addl_inputs_converted or 0):
                 # Required pre-conditional additional inputs > additional inputs count in the condition,
                 # hit invalid
                 return []
-        elif self.pre_condition == Condition.MARK_EXPLODES and not condition_comp.mark_explode:
+        elif self.pre_condition_comp.mark_explode and not condition_comp.mark_explode:
             return self._damage_units_from_action_cond(asset_action_condition)
-        elif self.pre_condition not in condition_comp:
-            # Other pre-conditions & not listed in the given condition composite i.e. pre-condition mismatch
+        elif self.pre_condition_comp not in condition_comp:
+            # Other pre-conditions & not fully listed in the given condition composite i.e. pre-condition mismatch
             return []
 
         return None
@@ -348,14 +350,14 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
             self, condition_comp: ConditionComposite, asset_action_condition: ActionConditionAsset
     ) -> Optional[list[DamageUnit]]:
         # Has precondition
-        if self.pre_condition:
+        if self.pre_condition_comp:
             damage_units_pre_cond = self._check_early_return_pre_cond(condition_comp, asset_action_condition)
             # Explicit check to distinguish "not to early return" and "return an empty array"
             if damage_units_pre_cond is not None:
                 return damage_units_pre_cond
 
         # Action cancel
-        if condition_comp.action_cancel and self.pre_condition != condition_comp.action_cancel:
+        if condition_comp.action_cancel and not self.pre_condition_comp.action_cancel:
             # If action canceling is included in the conditions,
             # only the actions to be executed after the cancel should be returned.
             # -------------------------------------------------------------------
@@ -365,7 +367,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
             return []
 
         # Counter action
-        if condition_comp.action_counter and self.pre_condition != Condition.COUNTER_RED_ATTACK:
+        if condition_comp.action_counter_red and not self.pre_condition_comp.action_counter_red:
             # If counter action is included in the conditions,
             # only the actions to be executed after countering should be returned.
             # -------------------------------------------------------------------
@@ -375,7 +377,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
             return []
 
         # Mark explosion
-        if condition_comp.mark_explode and self.pre_condition != Condition.MARK_EXPLODES:
+        if condition_comp.mark_explode and not self.pre_condition_comp.mark_explode:
             # Mark explosion damage is requested, but the damaging hit is not the explosion damage
             return []
 

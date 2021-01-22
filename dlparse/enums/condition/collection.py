@@ -28,11 +28,11 @@ cond_afflictions: tuple[Condition, ...] = (
 
 # Used for target element on the website
 cond_elements: tuple[Condition, ...] = (
-    Condition.TARGET_ELEM_FLAME,
-    Condition.TARGET_ELEM_WATER,
-    Condition.TARGET_ELEM_WIND,
-    Condition.TARGET_ELEM_LIGHT,
-    Condition.TARGET_ELEM_SHADOW,
+    Condition.TARGET_FLAME,
+    Condition.TARGET_WATER,
+    Condition.TARGET_WIND,
+    Condition.TARGET_LIGHT,
+    Condition.TARGET_SHADOW,
     Condition.TARGET_ELEM_WEAK,
     Condition.TARGET_ELEM_EFFECTIVE,
 )

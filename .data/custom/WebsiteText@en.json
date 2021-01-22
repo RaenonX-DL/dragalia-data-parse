@@ -164,23 +164,23 @@
     "text": "Affliction: Scorchrend"
   },
   {
-    "id": "ENUM_COND_TARGET_ELEM_FLAME",
+    "id": "ENUM_COND_TARGET_FLAME",
     "text": "Element: Flame"
   },
   {
-    "id": "ENUM_COND_TARGET_ELEM_WATER",
+    "id": "ENUM_COND_TARGET_WATER",
     "text": "Element: Water"
   },
   {
-    "id": "ENUM_COND_TARGET_ELEM_WIND",
+    "id": "ENUM_COND_TARGET_WIND",
     "text": "Element: Wind"
   },
   {
-    "id": "ENUM_COND_TARGET_ELEM_LIGHT",
+    "id": "ENUM_COND_TARGET_LIGHT",
     "text": "Element: Light"
   },
   {
-    "id": "ENUM_COND_TARGET_ELEM_SHADOW",
+    "id": "ENUM_COND_TARGET_SHADOW",
     "text": "Element: Shadow"
   },
   {
@@ -414,6 +414,42 @@
   {
     "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_ALLY_3",
     "text": "Self in 3 Ally Buff Zone"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_SWORD",
+    "text": "Weapon: Sword"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_KATANA",
+    "text": "Weapon: Katana"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_DAGGER",
+    "text": "Weapon: Dagger"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_AXE",
+    "text": "Weapon: Axe"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_LANCE",
+    "text": "Weapon: Lance"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_BOW",
+    "text": "Weapon: Bow"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_ROD",
+    "text": "Weapon: Wand"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_CANE",
+    "text": "Weapon: Cane"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_GUN",
+    "text": "Weapon: Gun"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_1",
@@ -652,8 +688,68 @@
     "text": "Upon revived"
   },
   {
-    "id": "ENUM_COND_ON_SELF_HP_LTE_30",
-    "text": "Upon HP <= 30%"
+    "id": "ENUM_COND_ON_SELF_HP_LT_30",
+    "text": "Upon HP < 30%"
+  },
+  {
+    "id": "ENUM_COND_ON_SELF_HP_GTE_60",
+    "text": "Upon HP >= 60%"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_POISON",
+    "text": "Inflicted Poison"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_BURN",
+    "text": "Inflicted Burn"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_FREEZE",
+    "text": "Inflicted Freeze"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_PARALYZE",
+    "text": "Inflicted Paralyze"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_BLIND",
+    "text": "Inflicted Blind"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_STUN",
+    "text": "Inflicted Stun"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_CURSE",
+    "text": "Inflicted Curse"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_BOG",
+    "text": "Inflicted Bog"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_SLEEP",
+    "text": "Inflicted Sleep"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_FROSTBITE",
+    "text": "Inflicted Frostbite"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_FLASHBURN",
+    "text": "Inflicted Flashburn"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_STORMLASH",
+    "text": "Inflicted Stormlash"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_SHADOWBLIGHT",
+    "text": "Inflicted Shadowblight"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_SCORCHREND",
+    "text": "Inflicted Scorchrend"
   },
   {
     "id": "ENUM_COND_ON_HIT_BY_POISON",

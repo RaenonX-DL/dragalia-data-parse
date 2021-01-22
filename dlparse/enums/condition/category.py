@@ -10,6 +10,7 @@ from ..action_debuff_type import ActionDebuffType
 from ..condition_base import ConditionCheckResultMixin
 from ..element import Element
 from ..status import Status
+from ..weapon import Weapon
 
 __all__ = ("ConditionCheckResult", "ConditionCategories", "ConditionMaxCount")
 
@@ -21,12 +22,14 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
 
     MULTIPLE_TARGET_ELEMENT = auto()
     MULTIPLE_TARGET_DEBUFF = auto()
+    MULTIPLE_TARGET_INFLICTION = auto()
     MULTIPLE_HP_CONDITION = auto()
     MULTIPLE_HP_STATUS = auto()
     MULTIPLE_COMBO_COUNT = auto()
     MULTIPLE_BUFF_COUNT = auto()
     MULTIPLE_BUFF_ZONE_SELF = auto()
     MULTIPLE_BUFF_ZONE_ALLY = auto()
+    MULTIPLE_WEAPON_TYPE = auto()
     MULTIPLE_BULLET_HIT = auto()
     MULTIPLE_TEAMMATE_COVERAGE = auto()
     MULTIPLE_BULLETS_ON_MAP = auto()
@@ -45,12 +48,14 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
     INTERNAL_NOT_TARGET_ELEMENT = auto()
     INTERNAL_NOT_TARGET_DEBUFF = auto()
+    INTERNAL_NOT_TARGET_INFLICTION = auto()
     INTERNAL_NOT_HP_STATUS = auto()
     INTERNAL_NOT_HP_CONDITION = auto()
     INTERNAL_NOT_COMBO_COUNT = auto()
     INTERNAL_NOT_BUFF_COUNT = auto()
     INTERNAL_NOT_BUFF_ZONE_SELF = auto()
     INTERNAL_NOT_BUFF_ZONE_ALLY = auto()
+    INTERNAL_NOT_WEAPON_TYPE = auto()
     INTERNAL_NOT_BULLET_HIT_COUNT = auto()
     INTERNAL_NOT_TEAMMATE_COVERAGE = auto()
     INTERNAL_NOT_BULLETS_ON_MAP = auto()
@@ -257,13 +262,34 @@ class ConditionCategories:
         "Target - status",
         ConditionCheckResult.UNEXPECTED  # Impossible to fail (current only invalid reason is multiple conditions)
     )
+    target_status_infliction = ConditionCategory[Status](
+        {
+            Condition.ON_INFLICTED_POISON: Status.POISON,
+            Condition.ON_INFLICTED_BURN: Status.BURN,
+            Condition.ON_INFLICTED_FREEZE: Status.FREEZE,
+            Condition.ON_INFLICTED_PARALYZE: Status.PARALYZE,
+            Condition.ON_INFLICTED_BLIND: Status.BLIND,
+            Condition.ON_INFLICTED_STUN: Status.STUN,
+            Condition.ON_INFLICTED_CURSE: Status.CURSE,
+            Condition.ON_INFLICTED_BOG: Status.BOG,
+            Condition.ON_INFLICTED_SLEEP: Status.SLEEP,
+            Condition.ON_INFLICTED_FROSTBITE: Status.FROSTBITE,
+            Condition.ON_INFLICTED_FLASHBURN: Status.FLASHBURN,
+            Condition.ON_INFLICTED_STORMLASH: Status.STORMLASH,
+            Condition.ON_INFLICTED_SHADOWBLIGHT: Status.SHADOWBLIGHT,
+            Condition.ON_INFLICTED_SCORCHREND: Status.SCORCHREND,
+        },
+        ConditionMaxCount.SINGLE,
+        "Target - infliction",
+        ConditionCheckResult.MULTIPLE_TARGET_INFLICTION
+    )
     target_element = ConditionCategory[Element](
         {
-            Condition.TARGET_ELEM_FLAME: Element.FLAME,
-            Condition.TARGET_ELEM_WATER: Element.WATER,
-            Condition.TARGET_ELEM_WIND: Element.WIND,
-            Condition.TARGET_ELEM_LIGHT: Element.LIGHT,
-            Condition.TARGET_ELEM_SHADOW: Element.SHADOW,
+            Condition.TARGET_FLAME: Element.FLAME,
+            Condition.TARGET_WATER: Element.WATER,
+            Condition.TARGET_WIND: Element.WIND,
+            Condition.TARGET_LIGHT: Element.LIGHT,
+            Condition.TARGET_SHADOW: Element.SHADOW,
         },
         ConditionMaxCount.SINGLE,
         "Target - element",
@@ -370,6 +396,22 @@ class ConditionCategories:
         ConditionMaxCount.SINGLE,
         "Self - count of ally-built buff zones inside",
         ConditionCheckResult.MULTIPLE_BUFF_ZONE_ALLY
+    )
+    self_weapon_type = ConditionCategory[Weapon](
+        {
+            Condition.WEAPON_SWORD: Weapon.SWD,
+            Condition.WEAPON_KATANA: Weapon.KAT,
+            Condition.WEAPON_DAGGER: Weapon.DAG,
+            Condition.WEAPON_AXE: Weapon.AXE,
+            Condition.WEAPON_LANCE: Weapon.LAN,
+            Condition.WEAPON_BOW: Weapon.BOW,
+            Condition.WEAPON_ROD: Weapon.ROD,
+            Condition.WEAPON_CANE: Weapon.CAN,
+            Condition.WEAPON_GUN: Weapon.GUN,
+        },
+        ConditionMaxCount.SINGLE,
+        "Self - weapon type",
+        ConditionCheckResult.MULTIPLE_WEAPON_TYPE
     )
     # endregion
 
@@ -518,7 +560,7 @@ class ConditionCategories:
         {
             Condition.ON_SELF_BUFFED_DEF,
             Condition.ON_SELF_REVIVED,
-            Condition.ON_SELF_HP_LTE_30,
+            Condition.ON_SELF_HP_LT_30,
             Condition.ON_HIT_BY_POISON,
             Condition.ON_HIT_BY_BURN,
             Condition.ON_HIT_BY_FREEZE,

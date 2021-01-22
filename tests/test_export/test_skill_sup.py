@@ -32,7 +32,7 @@ expected_contained_info: ExpectedInfoLookup = {
         (HitTargetSimple.SELF, BuffParameter.SP_CHARGE_PCT_S1, 1),
     },
     # Emma S1
-    (105401031, ConditionComposite(Condition.TARGET_ELEM_FLAME)): {
+    (105401031, ConditionComposite(Condition.TARGET_FLAME)): {
         (HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.25),
     }
 }

@@ -5,7 +5,7 @@ from typing import Callable, Generic, Optional, TypeVar
 
 from dlparse.enums import (
     AbilityCondition, AbilityTargetAction, AbilityVariantType, ActionDebuffType,
-    Condition, ConditionCategories, SkillNumber, Status,
+    Condition, ConditionComposite, ConditionCategories, Element, SkillNumber, Status, UnitType, Weapon,
 )
 from dlparse.errors import EnumConversionError
 from .master import MasterEntryBase
@@ -30,6 +30,10 @@ class AbilityConditionEntryBase(ABC):
 
     condition_code: int
 
+    unit_type: UnitType
+    elemental_restriction: Element
+    weapon_restriction: Weapon
+
     val_1: float
 
     probability: float
@@ -45,7 +49,6 @@ class AbilityConditionEntryBase(ABC):
         self._cond_map: dict[AbilityCondition, Condition] = {
             AbilityCondition.NONE: Condition.NONE,
             AbilityCondition.EFF_TARGET_OVERDRIVE: Condition.TARGET_OD_STATE,
-            AbilityCondition.TRG_SELF_HP_LTE: Condition.ON_SELF_HP_LTE_30,
             AbilityCondition.TRG_RECEIVED_BUFF_DEF: Condition.ON_SELF_BUFFED_DEF,
             AbilityCondition.TRG_QUEST_START: Condition.QUEST_START,
             AbilityCondition.TRG_ENERGIZED: Condition.SELF_ENERGIZED,
@@ -57,6 +60,7 @@ class AbilityConditionEntryBase(ABC):
             AbilityCondition.EFF_TARGET_AFFLICTED: self._cond_target_afflicted,
             AbilityCondition.EFF_SELF_BUFFED_ACTION_COND: self._cond_self_buffed,
             AbilityCondition.TRG_GOT_HIT_WITH_AFFLICTION: self._cond_hit_by_affliction,
+            AbilityCondition.TRG_INFLICTED_TARGET: self._cond_inflicted_target,
         }
 
     @abstractmethod
@@ -86,13 +90,21 @@ class AbilityConditionEntryBase(ABC):
         raise self._condition_unconvertible()
 
     def _cond_self_hp(self) -> Optional[Condition]:
-        # Self HP >=
+        # Self HP >= (effect)
         if self.condition_type in (AbilityCondition.EFF_SELF_HP_GTE, AbilityCondition.EFF_SELF_HP_GTE_2):
             return self._cond_self_hp_gte()
 
-        # Self HP <
+        # Self HP >= (trigger)
+        if self.condition_type in (AbilityCondition.TRG_SELF_HP_GT, AbilityCondition.TRG_SELF_HP_GTE):
+            return self._cond_self_hp_gte_trigger()
+
+        # Self HP < (effect)
         if self.condition_type in (AbilityCondition.EFF_SELF_HP_LT, AbilityCondition.EFF_SELF_HP_LT_2):
             return self._cond_self_hp_lt()
+
+        # Self HP < (trigger)
+        if self.condition_type in (AbilityCondition.TRG_SELF_HP_LT, AbilityCondition.TRG_SELF_HP_LTE):
+            return self._cond_self_hp_lt_trigger()
 
         return None
 
@@ -102,11 +114,23 @@ class AbilityConditionEntryBase(ABC):
 
         raise self._condition_unconvertible()
 
+    def _cond_self_hp_gte_trigger(self) -> Condition:
+        if self.val_1 == 60:
+            return Condition.ON_SELF_HP_GTE_60
+
+        raise self._condition_unconvertible()
+
     def _cond_self_hp_lt(self) -> Condition:
         if self.val_1 == 30:
             return Condition.SELF_HP_LT_30
         if self.val_1 == 40:
             return Condition.SELF_HP_LT_40
+
+        raise self._condition_unconvertible()
+
+    def _cond_self_hp_lt_trigger(self) -> Condition:
+        if self.val_1 == 30:
+            return Condition.ON_SELF_HP_LT_30
 
         raise self._condition_unconvertible()
 
@@ -132,30 +156,61 @@ class AbilityConditionEntryBase(ABC):
     def _cond_target_afflicted(self) -> Condition:
         return ConditionCategories.target_status.convert_reversed(Status(self.val_1))
 
+    def _cond_inflicted_target(self) -> Condition:
+        return ConditionCategories.target_status_infliction.convert_reversed(Status(self.val_1))
+
     def _cond_hit_by_affliction(self) -> Condition:
         try:
             return ConditionCategories.trigger_hit_by_affliction.convert_reversed(Status(self.val_1))
         except EnumConversionError as ex:
             raise self._condition_unconvertible(ex)
 
-    def to_condition(self) -> Condition:
+    def _from_elem_restriction(self) -> Optional[Condition]:
+        if not self.elemental_restriction.is_valid:
+            return None
+
+        return ConditionCategories.target_element.convert_reversed(self.elemental_restriction)
+
+    def _from_weapon_restriction(self) -> Optional[Condition]:
+        if not self.weapon_restriction.is_valid:
+            return None
+
+        return ConditionCategories.self_weapon_type.convert_reversed(self.weapon_restriction)
+
+    def to_condition_comp(self) -> ConditionComposite:
         """
-        Convert the ability condition to condition.
+        Convert this ability condition to a condition composite.
 
         :raises AbilityConditionUnconvertibleError: if the ability condition is unconvertible
         """
+        base_conds: list[Condition] = []
+
+        # Get condition from the condition type fields
         ability_condition = self._cond_map.get(self.condition_type)
         if ability_condition is not None:  # Explicit check because ``Condition.NONE`` is falsy
-            return ability_condition
+            # Direct single condition
+            base_conds.append(ability_condition)
+        elif cond_method := self._cond_method_map.get(self.condition_type):
+            # Mapped condition
+            base_conds.append(cond_method())
+        elif self_hp_cond := self._cond_self_hp():
+            # Self HP condition
+            base_conds.append(self_hp_cond)
 
-        if cond_method := self._cond_method_map.get(self.condition_type):
-            return cond_method()
+        # Raise error if no conditions are yielded (condition unrecognizable)
+        # Note that "none" condition is returned from ``self._cond_map`` (direct single condition)
+        if not base_conds:
+            raise self._condition_unconvertible()
 
-        # Self HP condition
-        if self_hp_cond := self._cond_self_hp():
-            return self_hp_cond
+        # Get additional conditions from the elemental and weapon restriction
+        if elem_cond := self._from_elem_restriction():
+            base_conds.append(elem_cond)
 
-        raise self._condition_unconvertible()
+        if weapon_cond := self._from_weapon_restriction():
+            base_conds.append(weapon_cond)
+
+        # Create a condition composite and return it
+        return ConditionComposite(base_conds)
 
     @property
     def is_unknown_condition(self) -> bool:

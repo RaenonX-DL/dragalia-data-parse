@@ -12,6 +12,7 @@ from .validate import validate_conditions
 from ..action_debuff_type import ActionDebuffType
 from ..element import Element
 from ..status import Status
+from ..weapon import Weapon
 
 if TYPE_CHECKING:
     from dlparse.mono.asset import BuffCountAsset, HitAttrEntry
@@ -26,6 +27,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     """Composite class of various attacking conditions."""
 
     allowed_not_categorize_conds: ClassVar[set[Condition]] = {
+        # None condition
+        Condition.NONE,
         # Special self status
         Condition.SELF_ENERGIZED,
         Condition.SELF_SHAPESHIFT_COMPLETED,
@@ -40,10 +43,12 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     }
 
     # region Target
-    afflictions_condition: set[Condition] = field(init=False)
-    afflictions_converted: set[Status] = field(init=False)
+    target_afflictions: set[Condition] = field(init=False)
+    target_afflictions_converted: set[Status] = field(init=False)
     target_element: Optional[Condition] = field(init=False)
     target_element_converted: Element = field(init=False)
+    target_infliction: Optional[Condition] = field(init=False)
+    target_infliction_converted: Status = field(init=False)
     target_in_od: bool = field(init=False)
     target_in_bk: bool = field(init=False)
     target_debuff: Optional[Condition] = field(init=False)
@@ -62,6 +67,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     buff_zone_self_converted: int = field(init=False)
     buff_zone_ally: Optional[Condition] = field(init=False)
     buff_zone_ally_converted: int = field(init=False)
+    weapon_type: Optional[Condition] = field(init=False)
+    weapon_type_converted: Weapon = field(init=False)
     action_cond: Optional[Condition] = field(init=False)
     action_cond_id: int = field(init=False)
     gauge_filled: Optional[Condition] = field(init=False)
@@ -82,7 +89,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     addl_inputs: Optional[Condition] = field(init=False)
     addl_inputs_converted: int = field(init=False)
     action_cancel: Optional[Condition] = field(init=False)
-    action_counter: bool = field(init=False)
+    action_counter_red: bool = field(init=False)
     mark_explode: bool = field(init=False)
     # endregion
 
@@ -105,7 +112,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     def _init_validate_target(self):
         # Check `self.afflictions_condition`
         if any(condition not in CondCat.target_status
-               for condition in self.afflictions_condition):
+               for condition in self.target_afflictions):
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_AFFLICTION_ONLY)
 
         # Check `self.target_element`
@@ -202,58 +209,80 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         conditions = self._init_process_conditions(conditions)
 
         # region Categorized condition fields
-        self.afflictions_condition = CondCat.target_status.extract(conditions)
+        # region Target status
+        self.target_afflictions = CondCat.target_status.extract(conditions)
         self.target_element = CondCat.target_element.extract(conditions)
+        self.target_infliction = CondCat.target_status_infliction.extract(conditions)
         self.target_in_od = Condition.TARGET_OD_STATE in conditions
         self.target_in_bk = Condition.TARGET_BK_STATE in conditions
         self.target_debuff = CondCat.target_debuff.extract(conditions)
+        # endregion
 
+        # region Self status
         self.hp_status = CondCat.self_hp_status.extract(conditions)
         self.hp_condition = CondCat.self_hp_cond.extract(conditions)
         self.combo_count = CondCat.self_combo_count.extract(conditions)
         self.buff_count = CondCat.self_buff_count.extract(conditions)
         self.buff_zone_self = CondCat.self_in_buff_zone_self.extract(conditions)
         self.buff_zone_ally = CondCat.self_in_buff_zone_ally.extract(conditions)
+        self.weapon_type = CondCat.self_weapon_type.extract(conditions)
         self.action_cond = CondCat.action_condition.extract(conditions)
         self.gauge_filled = CondCat.self_gauge_filled.extract(conditions)
         self.shapeshift_count = CondCat.shapeshifted_count.extract(conditions)
         self.in_dragon_count = CondCat.in_dragon_count.extract(conditions)
+        # endregion
 
+        # region Skill effect / animation
         self.teammate_coverage = CondCat.skill_teammates_covered.extract(conditions)
         self.bullet_hit_count = CondCat.skill_bullet_hit.extract(conditions)
         self.bullets_on_map = CondCat.skill_bullets_on_map.extract(conditions)
         self.addl_inputs = CondCat.skill_addl_inputs.extract(conditions)
         self.action_cancel = CondCat.skill_action_cancel.extract(conditions)
-        self.action_counter = Condition.COUNTER_RED_ATTACK in conditions
+        self.action_counter_red = Condition.COUNTER_RED_ATTACK in conditions
         self.mark_explode = Condition.MARK_EXPLODES in conditions
+        # endregion
 
+        # region Others
         self.trigger = CondCat.trigger.extract(conditions)
+        # endregion
         # endregion
 
         self._init_validate_fields(conditions)
 
         # region Converted fields
-        self.afflictions_converted = {
-            CondCat.target_status.convert(condition) for condition in self.afflictions_condition
+        # region Target status
+        self.target_afflictions_converted = {
+            CondCat.target_status.convert(condition) for condition in self.target_afflictions
         }
         self.target_element_converted = CondCat.target_element.convert(self.target_element, on_missing=None)
+        self.target_infliction_converted = CondCat.target_status_infliction.convert(
+            self.target_infliction, on_missing=None
+        )
         self.target_debuff_converted = CondCat.target_debuff.convert(self.target_debuff, on_missing=None)
+        # endregion
 
+        # region Self status
         self.hp_status_converted = CondCat.self_hp_status.convert(self.hp_status, on_missing=1)
         self.combo_count_converted = CondCat.self_combo_count.convert(self.combo_count, on_missing=0)
         self.buff_count_converted = CondCat.self_buff_count.convert(self.buff_count, on_missing=0)
         self.buff_zone_self_converted = CondCat.self_in_buff_zone_self.convert(self.buff_zone_self, on_missing=0)
         self.buff_zone_ally_converted = CondCat.self_in_buff_zone_ally.convert(self.buff_zone_ally, on_missing=0)
+        self.weapon_type_converted = CondCat.self_weapon_type.convert(self.weapon_type, on_missing=None)
         self.action_cond_id = CondCat.action_condition.convert(self.action_cond, on_missing=None)
         self.gauge_filled_converted = CondCat.self_gauge_filled.convert(self.gauge_filled, on_missing=0)
         self.shapeshift_count_converted = CondCat.shapeshifted_count.convert(self.shapeshift_count, on_missing=0)
         self.in_dragon_count_converted = CondCat.in_dragon_count.convert(self.in_dragon_count, on_missing=0)
+        # endregion
 
-        self.teammate_coverage_converted = CondCat.skill_teammates_covered.convert(self.teammate_coverage,
-                                                                                   on_missing=None)
+        # region Skill effect / animation
+        self.teammate_coverage_converted = CondCat.skill_teammates_covered.convert(
+            self.teammate_coverage, on_missing=None
+        )
         self.bullet_hit_count_converted = CondCat.skill_bullet_hit.convert(self.bullet_hit_count, on_missing=None)
         self.bullets_on_map_converted = CondCat.skill_bullets_on_map.convert(self.bullets_on_map, on_missing=None)
+        # 0 instead of 1 to trigger the error faster if attempting to compare when additional input is not available
         self.addl_inputs_converted = CondCat.skill_addl_inputs.convert(self.addl_inputs, on_missing=None)
+        # endregion
         # endregion
 
         # region Other fields
@@ -264,10 +293,13 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         # endregion
 
     def _cond_sorted_target(self) -> tuple[Condition]:
-        ret: tuple[Condition] = tuple(sorted(self.afflictions_condition))
+        ret: tuple[Condition] = tuple(sorted(self.target_afflictions))
 
         if self.target_element:
             ret += (self.target_element,)
+
+        if self.target_infliction:
+            ret += (self.target_infliction,)
 
         if self.target_in_od:
             ret += (Condition.TARGET_OD_STATE,)
@@ -338,7 +370,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.action_cancel:
             ret += (self.action_cancel,)
 
-        if self.action_counter:
+        if self.action_counter_red:
             ret += (Condition.COUNTER_RED_ATTACK,)
 
         if self.mark_explode:
@@ -410,14 +442,26 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     def __bool__(self):
         return bool(self.conditions_sorted)
 
-    def __add__(self, other: Optional["ConditionComposite"]):
+    def __add__(self, other: Union["ConditionComposite", Condition, None]):
         if other is None:
             return self
+
+        if isinstance(other, Condition):
+            other = ConditionComposite(other)
 
         if not isinstance(other, ConditionComposite):
             raise TypeError(f"Cannot add `ConditionComposite` with type {type(other)}")
 
         return ConditionComposite(self.conditions_sorted + other.conditions_sorted)
+
+    def __contains__(self, item: Union["ConditionComposite", Condition]):
+        if isinstance(item, Condition):
+            item = ConditionComposite(item)
+
+        if not isinstance(item, ConditionComposite):
+            raise TypeError(f"Cannot check if {item} ({type(item)}) contains this `ConditionComposite`")
+
+        return set(item) - set(self) == set()
 
     def __lt__(self, other):
         if not isinstance(other, ConditionComposite):

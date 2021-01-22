@@ -11,6 +11,10 @@ class Condition(Enum):
     .. note::
         Check https://github.com/PyCQA/pylint/issues/2306 for the reason of
         enum values being casted into int, although redundant.
+
+        For all HP threshold handling, because the difference of having or not having equality in the comparison
+        rarely impact the gameplay, therefore, all breakpoints with comparison are
+        partitioned as either ``<`` (LT) or ``>=`` (GTE).
     """
 
     # WARNING: Codes are used by the website, DO NOT CHANGE
@@ -36,11 +40,11 @@ class Condition(Enum):
     # endregion
 
     # region Element
-    TARGET_ELEM_FLAME = 151
-    TARGET_ELEM_WATER = 152
-    TARGET_ELEM_WIND = 153
-    TARGET_ELEM_LIGHT = 154
-    TARGET_ELEM_SHADOW = 155
+    TARGET_FLAME = 151
+    TARGET_WATER = 152
+    TARGET_WIND = 153
+    TARGET_LIGHT = 154
+    TARGET_SHADOW = 155
     TARGET_ELEM_NEUTRAL = 157
     TARGET_ELEM_WEAK = 158
     TARGET_ELEM_EFFECTIVE = 159
@@ -144,6 +148,18 @@ class Condition(Enum):
     SELF_IN_BUFF_ZONE_BY_ALLY_2 = 275
     SELF_IN_BUFF_ZONE_BY_ALLY_3 = 276
     # endregion
+
+    # region Weapon type
+    WEAPON_SWORD = 291
+    WEAPON_KATANA = 292
+    WEAPON_DAGGER = 293
+    WEAPON_AXE = 294
+    WEAPON_LANCE = 295
+    WEAPON_BOW = 296
+    WEAPON_ROD = 297
+    WEAPON_CANE = 298
+    WEAPON_GUN = 299
+    # endregion
     # endregion
 
     # region 3xx - Skill animation/effect
@@ -243,13 +259,35 @@ class Condition(Enum):
     # endregion
 
     # region 8xx - Trigger
-    # region Effect on self
+    # region Effect triggered by self
     ON_SELF_BUFFED_DEF = 801
     ON_SELF_REVIVED = 802
-    ON_SELF_HP_LTE_30 = 810
     # endregion
 
-    # region Effect by others
+    # region HP change
+    ON_SELF_HP_LT_30 = 810
+    ON_SELF_HP_GTE_60 = 827
+    # endregion
+
+    # region Infliction
+    ON_INFLICTED_POISON = 831
+    ON_INFLICTED_BURN = 832
+    ON_INFLICTED_FREEZE = 833
+    ON_INFLICTED_PARALYZE = 834
+    ON_INFLICTED_BLIND = 835
+    ON_INFLICTED_STUN = 836
+    ON_INFLICTED_CURSE = 837
+    ON_INFLICTED_BOG = 839
+    ON_INFLICTED_SLEEP = 840
+    ON_INFLICTED_FROSTBITE = 841
+    ON_INFLICTED_FLASHBURN = 842
+    ON_INFLICTED_STORMLASH = 843
+    ON_INFLICTED_SHADOWBLIGHT = 844
+    ON_INFLICTED_SCORCHREND = 845
+    # endregion
+    # endregion
+
+    # region Effect triggered by others
     ON_HIT_BY_POISON = 851
     ON_HIT_BY_BURN = 852
     ON_HIT_BY_FREEZE = 853

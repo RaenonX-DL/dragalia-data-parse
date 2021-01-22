@@ -22,6 +22,15 @@ class Weapon(Enum):
     GUN = 9  # Gun
 
     @property
+    def is_valid(self) -> bool:
+        """
+        Check if the current weapon is valid.
+
+        "Valid" means that this needs to be one of Sword, Karana, Dagger, Axe, Lance, Bow, Row or Gun.
+        """
+        return self in self.get_all_valid_weapons()
+
+    @property
     def weapon_str(self) -> str:
         """
         Get the weapon string.

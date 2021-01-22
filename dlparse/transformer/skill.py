@@ -1,10 +1,9 @@
 """Skill data transformer."""
 from typing import Optional, TYPE_CHECKING, Type, TypeVar
 
-from dlparse.enums import Condition, ConditionCategories
+from dlparse.enums import Condition, ConditionCategories, ConditionComposite
 from dlparse.errors import (
-    ActionInfoNotFoundError, CharaDataNotFoundError, HitDataUnavailableError, PreconditionCollidedError,
-    SkillDataNotFoundError,
+    ActionInfoNotFoundError, CharaDataNotFoundError, HitDataUnavailableError, SkillDataNotFoundError,
 )
 from dlparse.model import (
     AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SkillCancelActionUnit, SupportiveSkillData,
@@ -48,11 +47,10 @@ class SkillTransformer:
 
         # Convert hit actions of ``action_id`` to hit data
         for hit_label, action_component in prefab.get_hit_actions(skill_lv):
-            # Check for multiple pre-conditions, raise error if needed
-            if additional_pre_condition and action_component.skill_pre_condition:
-                raise PreconditionCollidedError(additional_pre_condition, action_component.skill_pre_condition)
+            pre_condition: ConditionComposite = ConditionComposite(additional_pre_condition)
 
-            pre_condition = additional_pre_condition or action_component.skill_pre_condition
+            if action_component.skill_pre_condition:
+                pre_condition += action_component.skill_pre_condition
 
             # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
             # pylint: disable=superfluous-parens
@@ -63,7 +61,7 @@ class SkillTransformer:
 
             ret.append(hit_data_cls(
                 hit_attr=hit_attr_data, action_component=action_component,
-                action_id=action_id, pre_condition=pre_condition,
+                action_id=action_id, pre_condition_comp=pre_condition,
                 ability_data=[self._asset_ability.get_data_by_id(ability_id) for ability_id in ability_ids]
             ))
 
@@ -165,7 +163,7 @@ class SkillTransformer:
                 # Parse to :class:`HitData` and attach it to the hit data list to be returned
                 ret.append(hit_data_cls(
                     hit_attr=hit_attr_data, action_component=None, action_id=action_id,
-                    pre_condition=ability_data.condition.to_condition(),
+                    pre_condition_comp=ability_data.condition.to_condition_comp(),
                     ability_data=[ability_data]
                 ))
 

@@ -164,23 +164,23 @@
     "text": "目標異常: 劫火"
   },
   {
-    "id": "ENUM_COND_TARGET_ELEM_FLAME",
+    "id": "ENUM_COND_TARGET_FLAME",
     "text": "目標屬性: 火"
   },
   {
-    "id": "ENUM_COND_TARGET_ELEM_WATER",
+    "id": "ENUM_COND_TARGET_WATER",
     "text": "目標屬性: 水"
   },
   {
-    "id": "ENUM_COND_TARGET_ELEM_WIND",
+    "id": "ENUM_COND_TARGET_WIND",
     "text": "目標屬性: 風"
   },
   {
-    "id": "ENUM_COND_TARGET_ELEM_LIGHT",
+    "id": "ENUM_COND_TARGET_LIGHT",
     "text": "目標屬性: 光"
   },
   {
-    "id": "ENUM_COND_TARGET_ELEM_SHADOW",
+    "id": "ENUM_COND_TARGET_SHADOW",
     "text": "目標屬性: 暗"
   },
   {
@@ -414,6 +414,42 @@
   {
     "id": "ENUM_COND_SELF_IN_BUFF_ZONE_BY_ALLY_3",
     "text": "自身 友建 3 Buff 區內"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_SWORD",
+    "text": "武器: 劍"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_KATANA",
+    "text": "武器: 刀"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_DAGGER",
+    "text": "武器: 短劍"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_AXE",
+    "text": "武器: 斧"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_LANCE",
+    "text": "武器: 槍"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_BOW",
+    "text": "武器: 弓"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_ROD",
+    "text": "武器: 法"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_CANE",
+    "text": "武器: 補"
+  },
+  {
+    "id": "ENUM_COND_WEAPON_GUN",
+    "text": "武器: 銃"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_1",
@@ -652,8 +688,68 @@
     "text": "復活時"
   },
   {
-    "id": "ENUM_COND_ON_SELF_HP_LTE_30",
-    "text": "HP <= 30% 時"
+    "id": "ENUM_COND_ON_SELF_HP_LT_30",
+    "text": "HP < 30% 時"
+  },
+  {
+    "id": "ENUM_COND_ON_SELF_HP_GTE_60",
+    "text": "HP >= 60% 時"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_POISON",
+    "text": "毒成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_BURN",
+    "text": "燒傷成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_FREEZE",
+    "text": "冰凍成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_PARALYZE",
+    "text": "麻痺成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_BLIND",
+    "text": "黑暗成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_STUN",
+    "text": "暈眩成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_CURSE",
+    "text": "詛咒成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_BOG",
+    "text": "濕身成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_SLEEP",
+    "text": "睡眠成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_FROSTBITE",
+    "text": "凍傷成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_FLASHBURN",
+    "text": "閃熱成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_STORMLASH",
+    "text": "裂風成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_SHADOWBLIGHT",
+    "text": "暗黑成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_SCORCHREND",
+    "text": "劫火成功"
   },
   {
     "id": "ENUM_COND_ON_HIT_BY_POISON",

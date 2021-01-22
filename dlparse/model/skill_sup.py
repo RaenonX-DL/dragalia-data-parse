@@ -62,7 +62,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
     Calling ``buffs_elemental[skill_lv][element_enum]`` will return a set of buffs at ``skill_lv``
     when the target element is ``element_enum``.
     """
-    buffs_pre_conditioned: list[dict[Condition, set[HitActionConditionEffectUnit]]] = field(init=False)
+    buffs_pre_conditioned: list[dict[ConditionComposite, set[HitActionConditionEffectUnit]]] = field(init=False)
     """
     Buffs to be granted only if the condition matches.
 
@@ -78,10 +78,10 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
         )
         # noinspection PyUnboundLocalVariable
         has_elemental_restriction: bool = any(
-            entry.target_limited_by_element
+            action_cond.target_limited_by_element
             for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
             if (hit_data.hit_attr.has_action_condition
-                and (entry := action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id)))
+                and (action_cond := action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id)))
         )
 
         # Initialization
@@ -126,7 +126,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                         # Skip conditions that require certain elements, let ``buffs_elemental`` handles this
                         continue
 
-                if hit_data.pre_condition:
+                if hit_data.pre_condition_comp:
                     # Skip conditions that has pre condition, let ``buffs_pre_conditioned`` handles this
                     continue
 
@@ -188,13 +188,17 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
             self.buffs_elemental.append(buff_lv)
 
     def _init_pre_conditioned_buffs(self, action_condition_asset: ActionConditionAsset):
-        self.buffs_pre_conditioned: list[dict[Condition, set[HitActionConditionEffectUnit]]] = []
+        self.buffs_pre_conditioned = []
 
         for hit_data_lv in self.hit_data_mtx:
-            buff_lv: dict[Condition, set[HitActionConditionEffectUnit]] = defaultdict(set)
+            buff_lv: dict[ConditionComposite, set[HitActionConditionEffectUnit]] = defaultdict(set)
 
             for hit_data in hit_data_lv:
-                buff_lv[hit_data.pre_condition].update(hit_data.to_buffing_units(action_condition_asset))
+                if not hit_data.pre_condition_comp:
+                    # Skip adding the hit data that does not have pre-condition
+                    continue
+
+                buff_lv[hit_data.pre_condition_comp].update(hit_data.to_buffing_units(action_condition_asset))
 
             self.buffs_pre_conditioned.append(dict(buff_lv))
 
@@ -227,9 +231,11 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
         # Attach pre-conditioned buffs, if matches
         for skill_lv in range(self.max_level):
-            for condition in condition_comp:
-                # Conditions in ``condition_comp`` could be non-pre-condition
-                buffs[skill_lv].update(self.buffs_pre_conditioned[skill_lv].get(condition, set()))
+            for pre_cond, effect_units in self.buffs_pre_conditioned[skill_lv].items():
+                if pre_cond not in condition_comp:
+                    continue
+
+                buffs[skill_lv].update(effect_units)
 
         return SupportiveSkillEntry(condition_comp=condition_comp, buffs=buffs)
 

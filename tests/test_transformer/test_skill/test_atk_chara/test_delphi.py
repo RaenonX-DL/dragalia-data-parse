@@ -13,7 +13,7 @@ def test_iter_entries_s2(transformer_skill: SkillTransformer):
 
     expected_addl_at_max = {
         ConditionComposite(): 4.99,
-        ConditionComposite(Condition.TARGET_ELEM_LIGHT): 4.99,
+        ConditionComposite(Condition.TARGET_LIGHT): 4.99,
     }
 
     expected = set(expected_addl_at_max.keys())

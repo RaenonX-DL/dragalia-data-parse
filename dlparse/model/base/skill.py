@@ -39,11 +39,11 @@ class SkillDataBase(Generic[HT, ET], ABC):
     def _init_possible_conditions_base_elems(self):
         cond_elems: list[set[tuple[Condition, ...]]] = []
 
-        # Get all possible pre-conditions if any
+        # Get all possible pre-conditions
         pre_conditions: set[tuple[Condition, ...]] = {
-            (hit_data.pre_condition,)
+            tuple(hit_data.pre_condition_comp)
             for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
-            if hit_data.pre_condition
+            if hit_data.pre_condition_comp
         }
         if pre_conditions:
             if any(any(pre_condition in ConditionCategories.skill_addl_inputs

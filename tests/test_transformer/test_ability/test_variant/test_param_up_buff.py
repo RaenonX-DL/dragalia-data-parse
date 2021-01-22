@@ -3,14 +3,14 @@ from dlparse.transformer import AbilityTransformer
 from tests.utils import AbilityEffectInfo, check_ability_effect_unit_match
 
 
-def test_def_up_lte_30_hp(transformer_ability: AbilityTransformer):
-    # Raemond (AB1 @ Max - DEF +50% for 15s when HP <= 30%)
+def test_def_up_on_lt_30_hp(transformer_ability: AbilityTransformer):
+    # Raemond (AB1 @ Max - DEF +50% for 15s when HP < 30%)
     # https://dragalialost.gamepedia.com/Karl
     ability_data = transformer_ability.transform_ability(210001704)
 
     expected_info = {
         AbilityEffectInfo(
-            210001704, ConditionComposite(Condition.ON_SELF_HP_LTE_30), BuffParameter.DEF_BUFF, 0.5,
+            210001704, ConditionComposite(Condition.ON_SELF_HP_LT_30), BuffParameter.DEF_BUFF, 0.5,
             max_occurrences=1
         ),
     }

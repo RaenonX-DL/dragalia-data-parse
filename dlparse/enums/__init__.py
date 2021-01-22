@@ -21,4 +21,5 @@ from .skill_num import SkillNumber
 from .status import Status
 from .target import HitTarget, HitTargetSimple
 from .trans_image import get_image_path
+from .unit_type import UnitType
 from .weapon import Weapon

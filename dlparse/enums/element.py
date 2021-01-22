@@ -49,6 +49,15 @@ class Element(Enum):
 
     NO_ELEMENT = 99
 
+    @property
+    def is_valid(self) -> bool:
+        """
+        Check if the element is valid.
+
+        A valid element must be one of Flame, Water, Wind, Light, or Shadow.
+        """
+        return self in self.get_all_valid_elements()
+
     def to_flag(self) -> ElementFlag:
         """
         Convert this :class:`Element` to :class:`ElementFlag`.

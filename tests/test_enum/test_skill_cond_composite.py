@@ -7,7 +7,7 @@ from dlparse.errors import ConditionValidationFailedError
 def test_composite_none():
     composite = ConditionComposite()
 
-    assert composite.afflictions_condition == set()
+    assert composite.target_afflictions == set()
     assert composite.buff_count is None
     assert composite.bullet_hit_count is None
     assert composite.hp_condition is None
@@ -16,7 +16,7 @@ def test_composite_none():
 def test_composite_empty():
     composite = ConditionComposite(conditions=[])
 
-    assert composite.afflictions_condition == set()
+    assert composite.target_afflictions == set()
     assert composite.buff_count is None
     assert composite.bullet_hit_count is None
     assert composite.hp_condition is None
@@ -25,7 +25,7 @@ def test_composite_empty():
 def test_composite_partial():
     composite = ConditionComposite(conditions=[Condition.TARGET_STUNNED, Condition.SELF_HP_1])
 
-    assert composite.afflictions_condition == {Condition.TARGET_STUNNED}
+    assert composite.target_afflictions == {Condition.TARGET_STUNNED}
     assert composite.buff_count is None
     assert composite.bullet_hit_count is None
     assert composite.hp_status == Condition.SELF_HP_1
@@ -37,7 +37,7 @@ def test_composite_mix():
         Condition.SELF_HP_1, Condition.BULLET_HIT_8, Condition.SELF_BUFF_10
     ])
 
-    assert composite.afflictions_condition == {Condition.TARGET_BLINDED, Condition.TARGET_STUNNED}
+    assert composite.target_afflictions == {Condition.TARGET_BLINDED, Condition.TARGET_STUNNED}
     assert composite.buff_count == Condition.SELF_BUFF_10
     assert composite.bullet_hit_count == Condition.BULLET_HIT_8
     assert composite.hp_status == Condition.SELF_HP_1
@@ -59,6 +59,19 @@ def test_composite_add():
 
     with pytest.raises(ConditionValidationFailedError):
         assert ConditionComposite(Condition.SELF_HP_1) + ConditionComposite(Condition.SELF_HP_FULL)
+
+
+def test_composite_contains():
+    assert ConditionComposite() in ConditionComposite()
+    assert ConditionComposite() in ConditionComposite(Condition.SELF_HP_1)
+    assert ConditionComposite(Condition.SELF_HP_1) not in ConditionComposite()
+
+    assert ConditionComposite(Condition.SELF_HP_1) in ConditionComposite([Condition.SELF_HP_1, Condition.COMBO_0])
+    assert ConditionComposite(Condition.SELF_HP_1) in ConditionComposite(Condition.SELF_HP_1)
+    assert ConditionComposite(Condition.SELF_HP_1) not in ConditionComposite(Condition.COMBO_5)
+
+    assert ConditionComposite([Condition.COMBO_0, Condition.SELF_BUFF_2]) not in ConditionComposite(Condition.COMBO_0)
+    assert ConditionComposite([Condition.COMBO_0, Condition.SELF_BUFF_2]) not in ConditionComposite(Condition.COMBO_5)
 
 
 def test_composite_def_down_sorted():

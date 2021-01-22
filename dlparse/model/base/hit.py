@@ -3,7 +3,7 @@ from abc import ABC
 from dataclasses import dataclass
 from typing import Generic, Optional, TypeVar
 
-from dlparse.enums import Condition, HitTargetSimple
+from dlparse.enums import ConditionComposite, HitTargetSimple
 from dlparse.mono.asset import (
     AbilityEntry, ActionBuffBomb, ActionComponentBase, ActionConditionEntry, ActionHit, ActionSettingHit, HitAttrEntry,
 )
@@ -20,13 +20,13 @@ class HitData(Generic[T], ABC):
     hit_attr: HitAttrEntry
     action_id: int
     action_component: Optional[T]
-    pre_condition: Condition
+    pre_condition_comp: ConditionComposite
     """
-    Condition for the hits to be effective.
+    Conditions for the hits to be effective.
 
     This may come from:
     - Condition from the action component
-    - Ability condition embedded on the skill data
+    - Ability condition embedded in the skill data
     """
 
     ability_data: list[AbilityEntry]

@@ -16,7 +16,7 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
 
     expected_addl_at_max = {
         ConditionComposite(): 4.67 * 2,
-        ConditionComposite(Condition.TARGET_ELEM_SHADOW): 4.67 * 2,
+        ConditionComposite(Condition.TARGET_SHADOW): 4.67 * 2,
     }
 
     expected = set(expected_addl_at_max.keys())

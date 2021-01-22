@@ -36,7 +36,7 @@ def test_element_restricted(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_buffs_lv_max = {
-        ConditionComposite(Condition.TARGET_ELEM_FLAME): {
+        ConditionComposite(Condition.TARGET_FLAME): {
             BuffEffectInfo("BUF_160_ATK_FIRE_LV03", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.25, 15, 0)
         },
     }

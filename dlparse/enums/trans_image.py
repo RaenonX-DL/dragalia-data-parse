@@ -28,11 +28,11 @@ path_dict: dict[TransformableEnums, str] = {
     Condition.TARGET_STORMLASHED: "/icon/status/Icon_Status_01_13.png",
     Condition.TARGET_SHADOWBLIGHTED: "/icon/status/Icon_Status_01_14.png",
     Condition.TARGET_SCORCHRENT: "/icon/status/Icon_Status_01_15.png",
-    Condition.TARGET_ELEM_FLAME: "/icon/element/m/Icon_02_Flame.png",
-    Condition.TARGET_ELEM_WATER: "/icon/element/m/Icon_02_Water.png",
-    Condition.TARGET_ELEM_WIND: "/icon/element/m/Icon_02_Wind.png",
-    Condition.TARGET_ELEM_LIGHT: "/icon/element/m/Icon_02_Light.png",
-    Condition.TARGET_ELEM_SHADOW: "/icon/element/m/Icon_02_Dark.png",
+    Condition.TARGET_FLAME: "/icon/element/m/Icon_02_Flame.png",
+    Condition.TARGET_WATER: "/icon/element/m/Icon_02_Water.png",
+    Condition.TARGET_WIND: "/icon/element/m/Icon_02_Wind.png",
+    Condition.TARGET_LIGHT: "/icon/element/m/Icon_02_Light.png",
+    Condition.TARGET_SHADOW: "/icon/element/m/Icon_02_Dark.png",
 }
 
 

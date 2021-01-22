@@ -320,6 +320,11 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
         return self.ex_5_id
 
     @property
+    def cex_id_at_max_level(self) -> int:
+        """Get the ID of the chained EX ability at the max level."""
+        return self.cex_5_id
+
+    @property
     def name_labels(self) -> list[str]:
         """
         Get a list of name labels to be used for getting the character name.

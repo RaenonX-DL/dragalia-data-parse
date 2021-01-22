@@ -5,6 +5,7 @@ from .action_cond_conv import ActionCondEffectConvertPayload, ActionCondEffectCo
 from .action_cond_effect import HitActionConditionEffectUnit, HitAfflictionEffectUnitHit
 from .base import HitData, SkillDataBase, SkillEntryBase
 from .buff_boost import BuffCountBoostData, BuffZoneBoostData
+from .chained_ex_ability import ChainedExAbilityData
 from .ex_ability import ExAbilityData
 from .hit_buff import BuffingHitData
 from .hit_dmg import DamagingHitData

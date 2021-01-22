@@ -31,7 +31,7 @@ Field: `_ConditionType`
 10. TOTAL_HITCOUNT_LESS
 11. KILL_ENEMY
 <a href="#12---transform_dragon">12. TRANSFORM_DRAGON</a>
-13. HP_MORE_MOMENT
+<a href="#13---hp_more_moment">13. HP_MORE_MOMENT</a>
 <a href="#14---hp_less_moment">14. HP_LESS_MOMENT</a>
 <a href="#15---quest_start">15. QUEST_START</a>
 <a href="#16---overdrive">16. OVERDRIVE</a>
@@ -47,7 +47,7 @@ Field: `_ConditionType`
 26. SP2_OVER
 27. SP2_UNDER
 28. SP2_LESS
-29. CAUSE_ABNORMAL_STATUS
+<a href="#29---cause_abnormal_status">29. CAUSE_ABNORMAL_STATUS</a>
 <a href="#30---damaged_abnormal_status">30. DAMAGED_ABNORMAL_STATUS</a>
 31. DRAGONSHIFT_MOMENT
 32. PARTY_ALIVE_NUM_OVER
@@ -76,8 +76,8 @@ Field: `_ConditionType`
 55. SP1_UNDER_MOMENT
 56. SP2_MORE_MOMENT
 57. SP2_UNDER_MOMENT
-58. HP_MORE_NOT_EQ_MOMENT
-59. HP_LESS_NOT_EQ_MOMENT
+<a href="#58---hp_more_not_eq_moment">58. HP_MORE_NOT_EQ_MOMENT</a>
+<a href="#59---hp_less_not_eq_moment">59. HP_LESS_NOT_EQ_MOMENT</a>
 <a href="#60---hp_more_no_support_chara">60. HP_MORE_NO_SUPPORT_CHARA</a>
 <a href="#61---hp_noreach_no_support_chara">61. HP_NOREACH_NO_SUPPORT_CHARA</a>
 62. CP1_CONDITION
@@ -165,11 +165,21 @@ including the one that triggers this.
 
 -----
 
+### `13` - `HP_MORE_MOMENT`
+
+Triggered once when the user's HP goes beyond a certain threshold.
+
+`Val 1 = 30` means that the ability will be triggered once when the user's HP is > 30%.
+
+- **Val 1**: HP threshold.
+
+-----
+
 ### `14` - `HP_LESS_MOMENT`
 
 Triggered once when the user's HP drops under a certain threshold.
 
-`Val 1 = 30` means that the ability will be triggered once when the user's HP drops <= 30%.
+`Val 1 = 30` means that the ability will be triggered once when the user's HP drops < 30%.
 
 - **Val 1**: HP threshold.
 
@@ -208,6 +218,18 @@ from [`18. TENSION_MAX`](#18---tension_max), which effects will be effective as 
 - **Val 1**: *Used but meaning unknown. Could be the count of effects to grant.*
 
   For all usages as of 2020/12/12, this only has a value of `1`.
+
+-----
+
+### `29` - `CAUSE_ABNORMAL_STATUS`
+
+Triggered once when the user successfully inflicted a certain affliction status.
+
+`Val 1 = 2` means that the ability will be triggered once when the user successfully burned the target (`2` is the enum
+value of burn).
+
+- **Val 1**: Enum value of the affliction status to trigger.
+  Check [the implementation of the enum](/dlparse/enums/status.py) for the correspondance.
 
 -----
 
@@ -275,6 +297,26 @@ Effective if the enemy is in a certain type of the debuff.
 ### `51` - `RELEASE_DRAGONSHIFT`
 
 Triggered once when the user completed shapeshifting.
+
+-----
+
+### `58` - `HP_MORE_NOT_EQ_MOMENT`
+
+Triggered once when the user's HP goes beyond or equal to a certain threshold.
+
+`Val 1 = 30` means that the ability will be triggered once when the user's HP is >= 30%.
+
+- **Val 1**: HP threshold.
+
+-----
+
+### `59` - `HP_LESS_NOT_EQ_MOMENT`
+
+Triggered once when the user's HP drops under or equal to a certain threshold.
+
+`Val 1 = 30` means that the ability will be triggered once when the user's HP is <= 30%.
+
+- **Val 1**: HP threshold.
 
 -----
 
