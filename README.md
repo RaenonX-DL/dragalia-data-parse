@@ -9,7 +9,7 @@
 
 This parses the original Dragalia Lost assets to be the file usable for [DL info website][DL-info].
 
-Developed under Python 3.9.
+Developed under Python 3.9 (or higher).
 
 [DL-info]: http://dl.raenonx.cc
 
@@ -19,19 +19,37 @@ Developed under Python 3.9.
 
 # Prerequisites
 
-- Install Python 3.9.
+- Install Python 3.9 or higher.
 
-- **No dependencies required for now (2020/12/07).**
+- **No dependencies required for now (2021/01/22).**
 
     - If you want to develop this instead, run the below for installing the development dependencies.
 
-      ```commandline
+      ```bash
       pip install -r requirements-dev.txt
       ```
 
-- Get all the data from the [data depot][data-depot], and place it inside `.data/media`.
+- Get all the data from the [data depot][data-depot].
 
-    - You should have a valid path like this: `.data/media/assets`.
+    - This will be done by using `git submodule`.
+
+      Initialize the submodule:
+
+      ```bash
+      git submodule init
+      ```
+
+      Update (download) the content of the submodule:
+
+      ```bash
+      git submoule update --remote
+      ```
+
+    - To update the data, simply run the `git submodule update` command:
+
+      ```bash
+      git submoule update --remote
+      ```
 
 [data-depot]: https://github.com/RaenonX-DL/dragalia-data-depot
 
@@ -41,7 +59,7 @@ Developed under Python 3.9.
 
 Currently, there are *no* interactional scripts or CLI exists.
 
-Instead, there are some express scripts. To use them, directly modify the paramters inside.
+Instead, there are some express scripts. To configure them, directly modify the paramters inside.
 
 > These express scripts will be named as `script_*` where `*` will be the purpose of that script.
 
@@ -63,8 +81,8 @@ One asset will be the local version, and another will be one of the [remote][dat
 
 Export things (currently skills, and some enum texts) to a specific location.
 
-Note that this is intended to export things for non-pipelining purposes, such as data viewing or correcting. For data
-export to be pipelined, use `script_export_pipeline` instead.
+Note that this is intended to export things for non-pipelining purposes, such as data viewing or correcting. For the
+pipelined data exporting, use `script_export_pipeline` instead.
 
 ### `script_export_pipeline`
 
@@ -136,10 +154,7 @@ Also thanks to everyone who had contributed to [Gamepedia].
 
 # Notes
 
-Most of the sample skill data for correctness checking will locate at `test_transformer/test_skill`.
-
-Some skill data will be different from what is on [Gamepedia][Gamepedia]. This is most likely due to some human reading
-errors or outdated information because of the v2.0 update.
+Some skill data in the tests is different from what is on [Gamepedia][Gamepedia].
 
 [Gamepedia]: https://dragalialost.gamepedia.com/
 
@@ -153,10 +168,10 @@ errors or outdated information because of the v2.0 update.
 - As few dependencies as possible to run the parser.
 
   > Doing so reduces the difficulty to deploy the data processing pipeline,
-  > since Python native packages only has a few calls which results will differ across different platforms.
+  > since native Python packages seldom have cross-platform problems.
   >
-  > This assumes that any possible additional dependency will not significantly boost the data processing speed
-  > (if necessary), which rarely happens in general.
+  > This assumes that additional dependencies do not significantly boost the data processing speed
+  > or impact the security, which rarely happens in general.
 
 For some asset notes or explanations, try visiting the [notes] section. Note that these documents may be incomplete or
 inaccurate.
@@ -171,10 +186,18 @@ inaccurate.
 
 - `2020/11/19 PM 07:04 CST`: First commit of the project ([v0.1]).
 
-- `2020/12/14 AM 06:09 CST`: Completed all skill damage parsing with afflictions ([v1.0]).
+- `2020/12/14 AM 06:09 CST`: Completed attacking skills parsing ([v1.0]).
 
   > This excludes Gala Laxi S2. Also, debuffs are not yet confirmed at this point.
+
+- `2020/12/22 PM 08:31 CST`: Completed parsed data exporting ([v1.1]).
+
+- `2021/01/22 AM 10:58 CST`: Completed EX ability/Co-ability parsing ([v1.2]).
 
 [v0.1]: https://github.com/RaenonX-DL/dragalia-data-parse/releases/tag/v0.1
 
 [v1.0]: https://github.com/RaenonX-DL/dragalia-data-parse/releases/tag/v1.0
+
+[v1.1]: https://github.com/RaenonX-DL/dragalia-data-parse/releases/tag/v1.1
+
+[v1.2]: https://github.com/RaenonX-DL/dragalia-data-parse/releases/tag/v1.2
