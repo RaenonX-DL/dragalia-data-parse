@@ -41,7 +41,7 @@ def print_atk_data_entry(chara_data, skill_data, skill_entry):
         for affliction in afflictions_lv:
             print(f"{affliction.status.name} @ {affliction.time:.3f} s "
                   f"(Rate: {affliction.probability_pct} % |"
-                  f" Duration: {affliction.duration_time} secs)")
+                  f" Duration: {affliction.duration_sec} secs)")
         print()
 
     debuffs_lv = skill_entry.debuffs[skill_level]
@@ -49,7 +49,7 @@ def print_atk_data_entry(chara_data, skill_data, skill_entry):
         for debuff in debuffs_lv:
             print(f"{debuff.parameter.name} {debuff.rate} @ {debuff.time:.3f} s "
                   f"(Rate: {debuff.probability_pct} % |"
-                  f" Duration: {debuff.duration_time} secs)")
+                  f" Duration: {debuff.duration_sec} secs)")
         print()
 
 
@@ -68,8 +68,8 @@ def print_sup_data_entry(chara_data, skill_data, skill_entry, max_level):
 
     for buff_unit in buff_units:
         print(f"{buff_unit.target} - {buff_unit.parameter} {buff_unit.rate}")
-        if buff_unit.duration_time:
-            print(f"Duration: {buff_unit.duration_time} secs")
+        if buff_unit.duration_sec:
+            print(f"Duration: {buff_unit.duration_sec} secs")
         if buff_unit.duration_count:
             print(f"{buff_unit.duration_count} stacks (max {buff_unit.max_stack_count})")
     print()

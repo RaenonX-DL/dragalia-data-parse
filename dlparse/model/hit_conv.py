@@ -28,7 +28,7 @@ class HitDataEffectConvertible(
 
         If ``param_rate`` is ``0`` (meaning not used), ``None`` will be returned instead.
 
-        if ``cond_entry`` is ``None``, both ``duration_time`` and ``duration_count`` will set to 0.
+        if ``cond_entry`` is ``None``, both ``duration_sec`` and ``duration_count`` will set to 0.
         """
         if not param_rate:  # Param rate = 0 means not applicable
             return None

@@ -16,13 +16,13 @@ class BuffEffectInfo(BuffInfoBase):
     target: HitTargetSimple
     param: BuffParameter
     rate: float
-    duration_time: float
+    duration_sec: float
     duration_count: float
 
     max_stack_count: int = 0
 
     def __hash__(self):
-        return hash((self.target, self.param, self.rate, self.duration_time, self.duration_count, self.hit_label,
+        return hash((self.target, self.param, self.rate, self.duration_sec, self.duration_count, self.hit_label,
                      self.max_stack_count))
 
 

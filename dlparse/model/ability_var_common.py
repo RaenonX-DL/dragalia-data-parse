@@ -158,7 +158,8 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         )
 
     def _direct_buff_unit(
-            self, buff_param: BuffParameter, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+            self, buff_param: BuffParameter, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload, /,
+            addl_cond_comp: Optional[ConditionComposite] = None
     ) -> set[AbilityVariantEffectUnit]:
         max_value = 0
         if isinstance(self.variant, AbilityVariantEntry):
@@ -167,7 +168,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         return {
             AbilityVariantEffectUnit(
                 source_ability_id=payload.source_ability_id,
-                condition_comp=payload.condition_comp,
+                condition_comp=payload.condition_comp + addl_cond_comp,
                 cooldown_sec=payload.condition_cooldown,
                 max_occurrences=payload.max_occurrences,
                 target_action=payload.target_action,
@@ -196,30 +197,9 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             # > "Leonidas only shapeshift to Mars." In this case, this serves as a dummy ability variant.
             return set()
 
-        max_value = 0
-        if isinstance(self.variant, AbilityVariantEntry):
-            max_value = asset_manager.asset_ability_limit.get_max_value(self.variant.limited_group_id, on_not_found=0)
-
-        return {
-            AbilityVariantEffectUnit(
-                source_ability_id=payload.source_ability_id,
-                condition_comp=payload.condition_comp,
-                cooldown_sec=payload.condition_cooldown,
-                max_occurrences=payload.max_occurrences,
-                target_action=payload.target_action,
-                parameter=ability_param.to_buff_parameter(payload.is_source_ex_ability),
-                probability_pct=100,
-                rate=self.variant.up_value / 100,  # Original data is percentage
-                rate_max=max_value,
-                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
-                status=Status.NONE,
-                duration_sec=0,
-                duration_count=0,
-                max_stack_count=0,
-                slip_damage_mod=0,
-                slip_interval=0,
-            )
-        }
+        return self._direct_buff_unit(
+            ability_param.to_buff_parameter(payload.is_source_ex_ability), asset_manager, payload
+        )
 
     def _from_dmg_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
@@ -287,30 +267,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
     ) -> set[AbilityVariantEffectUnit]:
         resist_param = Status(self.variant.id_a).to_buff_param_resist()
 
-        max_value = 0
-        if isinstance(self.variant, AbilityVariantEntry):
-            max_value = asset_manager.asset_ability_limit.get_max_value(self.variant.limited_group_id, on_not_found=0)
-
-        return {
-            AbilityVariantEffectUnit(
-                source_ability_id=payload.source_ability_id,
-                condition_comp=payload.condition_comp,
-                cooldown_sec=payload.condition_cooldown,
-                max_occurrences=payload.max_occurrences,
-                target_action=payload.target_action,
-                parameter=resist_param,
-                probability_pct=100,  # Absolutely applicable
-                rate=self.variant.up_value / 100,  # Original data is percentage
-                rate_max=max_value,
-                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
-                status=Status.NONE,
-                duration_sec=0,
-                duration_count=0,
-                max_stack_count=0,
-                slip_damage_mod=0,
-                slip_interval=0,
-            )
-        }
+        return self._direct_buff_unit(resist_param, asset_manager, payload)
 
     def _from_affliction_punisher(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
@@ -384,30 +341,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
     def _from_player_exp_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
-        max_value = 0
-        if isinstance(self.variant, AbilityVariantEntry):
-            max_value = asset_manager.asset_ability_limit.get_max_value(self.variant.limited_group_id, on_not_found=0)
-
-        return {
-            AbilityVariantEffectUnit(
-                source_ability_id=payload.source_ability_id,
-                condition_comp=payload.condition_comp,
-                cooldown_sec=payload.condition_cooldown,
-                max_occurrences=payload.max_occurrences,
-                target_action=payload.target_action,
-                parameter=BuffParameter.PLAYER_EXP,
-                probability_pct=100,
-                rate=self.variant.up_value / 100,  # Original data is percentage
-                rate_max=max_value,
-                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
-                status=Status.NONE,
-                duration_sec=0,
-                duration_count=0,
-                max_stack_count=0,
-                slip_damage_mod=0,
-                slip_interval=0,
-            )
-        }
+        return self._direct_buff_unit(BuffParameter.PLAYER_EXP, asset_manager, payload)
 
     def _from_sp_charge(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
@@ -417,30 +351,12 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             BuffParameter.SP_CHARGE_PCT_S3, BuffParameter.SP_CHARGE_PCT_S4
         }
 
-        max_value = 0
-        if isinstance(self.variant, AbilityVariantEntry):
-            max_value = asset_manager.asset_ability_limit.get_max_value(self.variant.limited_group_id, on_not_found=0)
+        ret: set[AbilityVariantEffectUnit] = set()
 
-        return {
-            AbilityVariantEffectUnit(
-                source_ability_id=payload.source_ability_id,
-                condition_comp=payload.condition_comp,
-                cooldown_sec=payload.condition_cooldown,
-                max_occurrences=payload.max_occurrences,
-                target_action=payload.target_action,
-                parameter=param,
-                probability_pct=100,
-                rate=self.variant.up_value / 100,  # Original data is percentage
-                rate_max=max_value,
-                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
-                status=Status.NONE,
-                duration_sec=0,
-                duration_count=0,
-                max_stack_count=0,
-                slip_damage_mod=0,
-                slip_interval=0,
-            ) for param in charge_params
-        }
+        for param in charge_params:
+            ret.update(self._direct_buff_unit(param, asset_manager, payload))
+
+        return ret
 
     def _from_action_grant(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
@@ -456,31 +372,15 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         return units
 
     def _from_addl_heal_on_revive(
-            self, _: "AssetManager", payload: AbilityVariantEffectPayload
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
         # The parameter for the ``AssetManager`` is still needed in the signature although redundant
         # because ``_from_*`` methods are called with the same set of the parameters.
 
-        return {
-            AbilityVariantEffectUnit(
-                source_ability_id=payload.source_ability_id,
-                condition_comp=payload.condition_comp + ConditionComposite(Condition.ON_SELF_REVIVED),
-                cooldown_sec=payload.condition_cooldown,
-                max_occurrences=payload.max_occurrences,
-                target_action=payload.target_action,
-                parameter=BuffParameter.HEAL_MAX_HP,
-                probability_pct=100,  # Absolutely applicable
-                rate=self.variant.up_value / 100,  # Original data is percentage
-                rate_max=0,
-                target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
-                status=Status.NONE,
-                duration_sec=0,
-                duration_count=0,
-                max_stack_count=0,
-                slip_damage_mod=0,
-                slip_interval=0,
-            )
-        }
+        return self._direct_buff_unit(
+            BuffParameter.HEAL_MAX_HP, asset_manager, payload,
+            addl_cond_comp=ConditionComposite(Condition.ON_SELF_REVIVED)
+        )
 
     def to_effect_units(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload

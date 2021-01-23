@@ -21,7 +21,7 @@ class CharaSupportiveSkillEntry(SkillExportEntryBase[HitActionConditionEffectUni
     buff_parameter: BuffParameter = field(init=False)
     rate: float = field(init=False)
     duration_count: float = field(init=False)
-    duration_time: float = field(init=False)
+    duration_sec: float = field(init=False)
     max_stack_count: int = field(init=False)
 
     def __post_init__(
@@ -34,7 +34,7 @@ class CharaSupportiveSkillEntry(SkillExportEntryBase[HitActionConditionEffectUni
         self.buff_parameter = skill_data_to_parse.parameter
         self.rate = skill_data_to_parse.rate
         self.duration_count = skill_data_to_parse.duration_count
-        self.duration_time = skill_data_to_parse.duration_sec
+        self.duration_sec = skill_data_to_parse.duration_sec
         self.max_stack_count = skill_data_to_parse.max_stack_count
 
     @property
@@ -48,7 +48,7 @@ class CharaSupportiveSkillEntry(SkillExportEntryBase[HitActionConditionEffectUni
             self.buff_parameter.name,
             self.rate,
             self.duration_count,
-            self.duration_time,
+            self.duration_sec,
             self.max_stack_count
         ]
 
