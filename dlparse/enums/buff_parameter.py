@@ -73,6 +73,79 @@ class BuffParameter(Enum):
     """Attack speed up (calculated as passive). A value of 0.12 means ASPD +12%."""
     # endregion
 
+    # region Infliction probability
+    INFLICT_PROB_POISON = 161
+    """
+    Poison infliction probability up. 
+    A value of 0.12 means that the probability of inflicting posion is boosted by 12%.
+    """
+    INFLICT_PROB_BURN = 162
+    """
+    Burn infliction probability up. 
+    A value of 0.12 means that the probability of inflicting burn is boosted by 12%.
+    """
+    INFLICT_PROB_FREEZE = 163
+    """
+    Freeze infliction probability up. 
+    A value of 0.12 means that the probability of inflicting freeze is boosted by 12%.
+    """
+    INFLICT_PROB_PARALYZE = 164
+    """
+    Paralyze infliction probability up. 
+    A value of 0.12 means that the probability of inflicting paralyze is boosted by 12%.
+    """
+    INFLICT_PROB_BLIND = 165
+    """
+    Blind infliction probability up. 
+    A value of 0.12 means that the probability of inflicting blind is boosted by 12%.
+    """
+    INFLICT_PROB_STUN = 166
+    """
+    Stun infliction probability up. 
+    A value of 0.12 means that the probability of inflicting posion is boosted by 12%.
+    """
+    INFLICT_PROB_CURSE = 167
+    """
+    Curse infliction probability up. 
+    A value of 0.12 means that the probability of inflicting curse is boosted by 12%.
+    """
+    INFLICT_PROB_BOG = 169
+    """
+    Bog infliction probability up. 
+    A value of 0.12 means that the probability of inflicting bog is boosted by 12%.
+    """
+    INFLICT_PROB_SLEEP = 170
+    """
+    Sleep infliction probability up. 
+    A value of 0.12 means that the probability of inflicting sleep is boosted by 12%.
+    """
+    INFLICT_PROB_FROSTBITE = 171
+    """
+    Frostbite infliction probability up. 
+    A value of 0.12 means that the probability of inflicting frostbite is boosted by 12%.
+    """
+    INFLICT_PROB_FLASHBURN = 172
+    """
+    Flashburn infliction probability up. 
+    A value of 0.12 means that the probability of inflicting flashburn is boosted by 12%.
+    """
+    INFLICT_PROB_STORMLASH = 173
+    """
+    Stormlash infliction probability up. 
+    A value of 0.12 means that the probability of inflicting stormlash is boosted by 12%.
+    """
+    INFLICT_PROB_SHADOWBLIGHT = 174
+    """
+    Shadowblight infliction probability up. 
+    A value of 0.12 means that the probability of inflicting shadowblight is boosted by 12%.
+    """
+    INFLICT_PROB_SCORCHREND = 175
+    """
+    Scorchrend infliction probability up. 
+    A value of 0.12 means that the probability of inflicting scorchrend is boosted by 12%.
+    """
+    # endregion
+
     # region EX
     ATK_EX = 191
     """ATK up (calculated as EX). A value of 0.12 means ATK +12%."""
@@ -184,7 +257,6 @@ class BuffParameter(Enum):
     RESISTANCE_SHADOWBLIGHT = 444
     """
     Shadowblight resistance up.
-
     A value of 0.12 means that the probability of being shadowblighted is reduced by 12%.
     """
     RESISTANCE_SCORCHREND = 445
@@ -283,5 +355,20 @@ class BuffParameter(Enum):
     # region Miscellaneous
     PLAYER_EXP = 990
     """Raises the player EXP gain upon clearing a quest. A value of 0.12 to raise the player EXP gain by 12%."""
+    ENERGIZE = 991
+    """
+    Energize the user. A value of 2 means to raise the energize level by 2.
+
+    Note that the max of the energize level is 5. Upon reaching the max level, the user is energized.
+    The power of the next attacking or recovery skill will have either an 50% passive skill damage buff
+    or 50% recovery potency buff.
+    """
+    INSPIRE = 992
+    """
+    Inspire the user. A value of 2 means to raise the inspiration level by 2.
+    
+    Note that the max of the inspire level is 5. Upon reaching the max level, the user is inspired.
+    The next attacking skill is guaranteed to be critical for every hit, if the user is inspired.
+    """
     # endregion
     # endregion

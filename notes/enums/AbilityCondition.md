@@ -39,7 +39,7 @@ Field: `_ConditionType`
 <a href="#18---tension_max">18. TENSION_MAX</a>
 <a href="#19---tension_max_moment">19. TENSION_MAX_MOMENT</a>
 20. DEBUFF_SLIP_HP
-21. HITCOUNT_MOMENT
+<a href="#21---hitcount_moment">21. HITCOUNT_MOMENT</a>
 22. GET_HEAL_SKILL
 23. SP1_OVER
 24. SP1_UNDER
@@ -253,6 +253,16 @@ from [`18. TENSION_MAX`](#18---tension_max), which effects will be effective as 
 - **Val 1**: *Used but meaning unknown. Could be the count of effects to grant.*
 
   For all usages as of 2020/12/12, this only has a value of `1`.
+
+-----
+
+### `21` - `HITCOUNT_MOMENT`
+
+Triggered once for every X combo, where X is a designated number of combo count.
+
+`Val 1 = 20` means that the ability will be triggered once for every 20 combo.
+
+- **Val 1**: Combo count base number to trigger the ability.
 
 -----
 

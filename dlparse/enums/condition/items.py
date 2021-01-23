@@ -269,8 +269,10 @@ class Condition(Enum):
 
     # region HP change
     ON_SELF_HP_LT_30 = 810
-    ON_SELF_HP_LT_40 = 820
-    ON_SELF_HP_GTE_60 = 827
+    ON_SELF_HP_LT_40 = 811
+    ON_SELF_HP_LT_60 = 812
+    ON_SELF_HP_GTE_40 = 820
+    ON_SELF_HP_GTE_60 = 821
     # endregion
 
     # region Infliction
@@ -293,6 +295,7 @@ class Condition(Enum):
     # region Combo count
     ON_COMBO_RESET = 850
     ON_COMBO_GTE_10 = 851
+    ON_COMBO_COUNT_DIV_BY_20 = 855
     # endregion
     # endregion
 

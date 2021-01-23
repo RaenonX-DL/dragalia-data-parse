@@ -278,6 +278,13 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
 
         return self._direct_buff_unit(resist_param, asset_manager, payload)
 
+    def _from_infliction_prob_up(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        inflict_param = Status(self.variant.id_a).to_buff_param_inflict()
+
+        return self._direct_buff_unit(inflict_param, asset_manager, payload)
+
     def _from_affliction_punisher(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
@@ -420,6 +427,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             AbilityVariantType.DRAGON_DMG_UP: self._from_dragon_dmg_up,
             AbilityVariantType.BUFF_TIME_UP: self._from_buff_time_up,
             AbilityVariantType.RESISTANCE_UP: self._from_resist_up,
+            AbilityVariantType.INFLICTION_PROB_UP: self._from_infliction_prob_up,
             AbilityVariantType.PLAYER_EXP_UP: self._from_player_exp_up,
             AbilityVariantType.AFFLICTION_PUNISHER: self._from_affliction_punisher,
             AbilityVariantType.CHANGE_STATE: self._from_change_state,

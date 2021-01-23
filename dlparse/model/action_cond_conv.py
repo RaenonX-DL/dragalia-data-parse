@@ -69,7 +69,7 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
             # FS SPD
             self.to_param_up(BuffParameter.FS_SPD, action_cond.buff_fs_spd, action_cond, payload),
             # SP rate
-            self.to_param_up(BuffParameter.SP_RATE, action_cond.buff_sp_rate, action_cond, payload, )
+            self.to_param_up(BuffParameter.SP_RATE, action_cond.buff_sp_rate, action_cond, payload)
         ]
 
     def _units_defensive_buffs(
@@ -93,6 +93,16 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
             self.to_param_up(BuffParameter.RESISTANCE_SHADOW, action_cond.resistance_shadow, action_cond, payload)
         ]
 
+    def _units_special_buffs(
+            self, action_cond: "ActionConditionEntry", payload: Optional[PT] = None
+    ) -> list[Optional[UT]]:
+        return [
+            # Energize
+            self.to_param_up(BuffParameter.ENERGIZE, action_cond.energize_lv, action_cond, payload),
+            # Inspire
+            self.to_param_up(BuffParameter.INSPIRE, action_cond.inspire_lv, action_cond, payload),
+        ]
+
     def to_buff_units(
             self, action_cond: "ActionConditionEntry", payload: Optional[PT] = None
     ) -> list[UT]:
@@ -101,6 +111,7 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
             unit for unit in
             self._units_common_buffs(action_cond, payload)
             + self._units_defensive_buffs(action_cond, payload)
+            + self._units_special_buffs(action_cond, payload)
             if unit  # Skipping empty unit
         ]
 

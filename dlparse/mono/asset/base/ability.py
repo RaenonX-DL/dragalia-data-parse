@@ -61,6 +61,7 @@ class AbilityConditionEntryBase(ABC):
         self._cond_method_map = {
             AbilityCondition.EFF_IN_DRAGON: self._cond_self_in_dragon,
             AbilityCondition.TRG_COMBO_COUNT_GTE: self._cond_combo_count_gte,
+            AbilityCondition.TRG_COMBO_COUNT_DIV: self._cond_combo_count_div,
             AbilityCondition.EFF_TARGET_DEBUFFED: self._cond_target_debuffed,
             AbilityCondition.EFF_TARGET_AFFLICTED: self._cond_target_afflicted,
             AbilityCondition.EFF_SELF_BUFFED_ACTION_COND: self._cond_self_buffed,
@@ -125,6 +126,8 @@ class AbilityConditionEntryBase(ABC):
         raise self._condition_unconvertible()
 
     def _cond_self_hp_gte_trigger(self) -> Condition:
+        if self.val_1 == 40:
+            return Condition.ON_SELF_HP_GTE_40
         if self.val_1 == 60:
             return Condition.ON_SELF_HP_GTE_60
 
@@ -143,6 +146,8 @@ class AbilityConditionEntryBase(ABC):
             return Condition.ON_SELF_HP_LT_30
         if self.val_1 == 40:
             return Condition.ON_SELF_HP_LT_40
+        if self.val_1 == 60:
+            return Condition.ON_SELF_HP_LT_60
 
         raise self._condition_unconvertible()
 
@@ -157,6 +162,12 @@ class AbilityConditionEntryBase(ABC):
     def _cond_combo_count_gte(self) -> Condition:
         if self.val_1 == 10:
             return Condition.ON_COMBO_GTE_10
+
+        raise self._condition_unconvertible()
+
+    def _cond_combo_count_div(self) -> Condition:
+        if self.val_1 == 20:
+            return Condition.ON_COMBO_COUNT_DIV_BY_20
 
         raise self._condition_unconvertible()
 

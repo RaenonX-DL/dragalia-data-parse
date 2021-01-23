@@ -28,6 +28,9 @@ class AbilityVariantType(Enum):
     RESISTANCE_UP = 2
     """Buff the resistance toward a certain affliction."""
 
+    INFLICTION_PROB_UP = 3
+    """Buff the infliction probability."""
+
     DAMAGE_UP = 6
     """Buff the target action damage. If the variant is inside an ex ability entry, the effect is team-wide."""
 

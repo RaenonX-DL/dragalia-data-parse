@@ -63,6 +63,9 @@ class ActionConditionEntry(MasterEntryBase):
     enhance_skill_1_id: int
     enhance_skill_2_id: int
 
+    energize_lv: int
+    inspire_lv: int
+
     elemental_target: ElementFlag
 
     @staticmethod
@@ -106,6 +109,8 @@ class ActionConditionEntry(MasterEntryBase):
             enhance_fs_action_id=data["_EnhancedBurstAttack"],
             enhance_skill_1_id=data["_EnhancedSkill1"],
             enhance_skill_2_id=data["_EnhancedSkill2"],
+            energize_lv=data["_Tension"],
+            inspire_lv=data["_Inspiration"],
             elemental_target=ElementFlag(data["_TargetElemental"])
         )
 

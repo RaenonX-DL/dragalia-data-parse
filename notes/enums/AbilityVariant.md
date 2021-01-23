@@ -64,7 +64,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 00. None
 <a href="#01---statusup">01. StatusUp</a>
 <a href="#02---resistabs">02. ResistAbs</a>
-03. ActAddAbs
+<a href="#03---actaddabs">03. ActAddAbs</a>
 04. ResistTribe
 05. ActKillerTribe
 <a href="#06---actdamageup">06. ActDamageUp</a>
@@ -189,6 +189,28 @@ A value of `6` means to resist Stun.
 Probability rate of the affliction resistance in percentage.
 
 A value of `50` means to resist a certain affliction by 50%.
+
+-----
+
+### `03` - `ActAddAbs`
+
+Buff the status inflicting probability.
+
+If `ID-A = 1`, `Up value = 50`, then it means that the probability of inflicting poison will be boosted by 50%.
+(`1` corresponds to the affliction code of Poison).
+
+#### Variant ID - A
+
+Code of the status boost the infliction probability.
+Check [the enum of the affliction statuses](/dlparse/enums/status.py) for the ID correspondence.
+
+A value of `1` means to boost the poison infliction probability.
+
+#### Variant Up Value
+
+Probability rate to boost in percentage.
+
+A value of `50` means to boost the infliction probability by 50%.
 
 -----
 

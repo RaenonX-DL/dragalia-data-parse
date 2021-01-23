@@ -83,6 +83,17 @@ class Status(IntEnum):
 
         return _TRANS_DICT_RESIST[self]
 
+    def to_buff_param_inflict(self) -> BuffParameter:
+        """
+        Convert the current status to infliction probability buff parameter.
+
+        :raises EnumConversionError: if the current status cannot be converted to infliction probability buff parameter
+        """
+        if self not in _TRANS_DICT_INFLICT:
+            raise EnumConversionError(self, Status, BuffParameter)
+
+        return _TRANS_DICT_INFLICT[self]
+
     def to_buff_param_punisher(self) -> BuffParameter:
         """
         Convert the current status to punisher buff parameter.
@@ -110,6 +121,23 @@ _TRANS_DICT_RESIST: dict[Status, BuffParameter] = {
     Status.STORMLASH: BuffParameter.RESISTANCE_STORMLASH,
     Status.SHADOWBLIGHT: BuffParameter.RESISTANCE_SHADOWBLIGHT,
     Status.SCORCHREND: BuffParameter.RESISTANCE_SCORCHREND
+}
+
+_TRANS_DICT_INFLICT: dict[Status, BuffParameter] = {
+    Status.POISON: BuffParameter.INFLICT_PROB_POISON,
+    Status.BURN: BuffParameter.INFLICT_PROB_BURN,
+    Status.FREEZE: BuffParameter.INFLICT_PROB_FREEZE,
+    Status.PARALYZE: BuffParameter.INFLICT_PROB_PARALYZE,
+    Status.BLIND: BuffParameter.INFLICT_PROB_BLIND,
+    Status.STUN: BuffParameter.INFLICT_PROB_STUN,
+    Status.CURSE: BuffParameter.INFLICT_PROB_CURSE,
+    Status.BOG: BuffParameter.INFLICT_PROB_BOG,
+    Status.SLEEP: BuffParameter.INFLICT_PROB_SLEEP,
+    Status.FROSTBITE: BuffParameter.INFLICT_PROB_FROSTBITE,
+    Status.FLASHBURN: BuffParameter.INFLICT_PROB_FLASHBURN,
+    Status.STORMLASH: BuffParameter.INFLICT_PROB_STORMLASH,
+    Status.SHADOWBLIGHT: BuffParameter.INFLICT_PROB_SHADOWBLIGHT,
+    Status.SCORCHREND: BuffParameter.INFLICT_PROB_SCORCHREND
 }
 
 _TRANS_DICT_PUNISHER: dict[Status, BuffParameter] = {
