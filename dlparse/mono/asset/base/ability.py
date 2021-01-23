@@ -4,8 +4,8 @@ from dataclasses import dataclass, field
 from typing import Callable, Generic, Optional, TypeVar
 
 from dlparse.enums import (
-    AbilityCondition, AbilityTargetAction, AbilityVariantType, ActionDebuffType,
-    Condition, ConditionComposite, ConditionCategories, Element, SkillNumber, Status, UnitType, Weapon,
+    AbilityCondition, AbilityTargetAction, AbilityVariantType, ActionDebuffType, Condition, ConditionCategories,
+    ConditionComposite, Element, SkillNumber, Status, UnitType, Weapon,
 )
 from dlparse.errors import EnumConversionError
 from .master import MasterEntryBase
@@ -49,6 +49,9 @@ class AbilityConditionEntryBase(ABC):
         self._cond_map: dict[AbilityCondition, Condition] = {
             AbilityCondition.NONE: Condition.NONE,
             AbilityCondition.EFF_TARGET_OVERDRIVE: Condition.TARGET_OD_STATE,
+            # Directly returns ``Condition.ON_COMBO_RESET`` and disregard the value because
+            # combo count "resets" instead of gradually decreasing
+            AbilityCondition.TRG_COMBO_COUNT_LT: Condition.ON_COMBO_RESET,
             AbilityCondition.TRG_RECEIVED_BUFF_DEF: Condition.ON_SELF_BUFFED_DEF,
             AbilityCondition.TRG_QUEST_START: Condition.QUEST_START,
             AbilityCondition.TRG_ENERGIZED: Condition.SELF_ENERGIZED,
@@ -56,6 +59,7 @@ class AbilityConditionEntryBase(ABC):
         }
         self._cond_method_map = {
             AbilityCondition.EFF_IN_DRAGON: self._cond_self_in_dragon,
+            AbilityCondition.TRG_COMBO_COUNT_GTE: self._cond_combo_count_gte,
             AbilityCondition.EFF_TARGET_DEBUFFED: self._cond_target_debuffed,
             AbilityCondition.EFF_TARGET_AFFLICTED: self._cond_target_afflicted,
             AbilityCondition.EFF_SELF_BUFFED_ACTION_COND: self._cond_self_buffed,
@@ -139,6 +143,12 @@ class AbilityConditionEntryBase(ABC):
             return Condition.SELF_SHAPESHIFTED_1_TIME_IN_DRAGON
         if self.val_1 == 2:
             return Condition.SELF_SHAPESHIFTED_2_TIMES_IN_DRAGON
+
+        raise self._condition_unconvertible()
+
+    def _cond_combo_count_gte(self) -> Condition:
+        if self.val_1 == 10:
+            return Condition.ON_COMBO_GTE_10
 
         raise self._condition_unconvertible()
 

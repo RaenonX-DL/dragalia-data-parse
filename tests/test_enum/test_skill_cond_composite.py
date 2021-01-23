@@ -66,12 +66,14 @@ def test_composite_contains():
     assert ConditionComposite() in ConditionComposite(Condition.SELF_HP_1)
     assert ConditionComposite(Condition.SELF_HP_1) not in ConditionComposite()
 
-    assert ConditionComposite(Condition.SELF_HP_1) in ConditionComposite([Condition.SELF_HP_1, Condition.COMBO_0])
+    assert ConditionComposite(Condition.SELF_HP_1) in ConditionComposite([Condition.SELF_HP_1, Condition.COMBO_GTE_0])
     assert ConditionComposite(Condition.SELF_HP_1) in ConditionComposite(Condition.SELF_HP_1)
-    assert ConditionComposite(Condition.SELF_HP_1) not in ConditionComposite(Condition.COMBO_5)
+    assert ConditionComposite(Condition.SELF_HP_1) not in ConditionComposite(Condition.COMBO_GTE_5)
 
-    assert ConditionComposite([Condition.COMBO_0, Condition.SELF_BUFF_2]) not in ConditionComposite(Condition.COMBO_0)
-    assert ConditionComposite([Condition.COMBO_0, Condition.SELF_BUFF_2]) not in ConditionComposite(Condition.COMBO_5)
+    assert ConditionComposite([Condition.COMBO_GTE_0, Condition.SELF_BUFF_2]) not in ConditionComposite(
+        Condition.COMBO_GTE_0)
+    assert ConditionComposite([Condition.COMBO_GTE_0, Condition.SELF_BUFF_2]) not in ConditionComposite(
+        Condition.COMBO_GTE_5)
 
 
 def test_composite_def_down_sorted():

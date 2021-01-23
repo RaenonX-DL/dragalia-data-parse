@@ -15,13 +15,13 @@ expected_contained_info: ExpectedInfoLookup = {
         (HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.15),
         (HitTargetSimple.TEAM, BuffParameter.DEF_BUFF, 0.25)
     },
-    # S!Julietta S2 P3
+    # Summer Julietta S2 P3
     (104502014, ConditionComposite()): {
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.13),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.SHIELD_SINGLE_DMG, 0.4)
     },
-    # S!Cleo S2
+    # Summer Cleo S2
     (106504012, ConditionComposite(Condition.COVER_TEAMMATE_3)): {
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.05),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.03),

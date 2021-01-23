@@ -13,13 +13,13 @@ def test_iter_entries_s2(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        ConditionComposite(Condition.COMBO_0): 13.56 * 1.00,
-        ConditionComposite(Condition.COMBO_5): 13.56 * 1.05,
-        ConditionComposite(Condition.COMBO_10): 13.56 * 1.10,
-        ConditionComposite(Condition.COMBO_15): 13.56 * 1.20,
-        ConditionComposite(Condition.COMBO_20): 13.56 * 1.30,
-        ConditionComposite(Condition.COMBO_25): 13.56 * 1.40,
-        ConditionComposite(Condition.COMBO_30): 13.56 * 1.50,
+        ConditionComposite(Condition.COMBO_GTE_0): 13.56 * 1.00,
+        ConditionComposite(Condition.COMBO_GTE_5): 13.56 * 1.05,
+        ConditionComposite(Condition.COMBO_GTE_10): 13.56 * 1.10,
+        ConditionComposite(Condition.COMBO_GTE_15): 13.56 * 1.20,
+        ConditionComposite(Condition.COMBO_GTE_20): 13.56 * 1.30,
+        ConditionComposite(Condition.COMBO_GTE_25): 13.56 * 1.40,
+        ConditionComposite(Condition.COMBO_GTE_30): 13.56 * 1.50,
     }
 
     expected = set(expected_addl_at_max.keys())
@@ -42,13 +42,13 @@ def test_s2(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(103504022)
 
     combo_dmg_bonus = {
-        ConditionComposite(Condition.COMBO_0): 1,
-        ConditionComposite(Condition.COMBO_5): 1.05,
-        ConditionComposite(Condition.COMBO_10): 1.10,
-        ConditionComposite(Condition.COMBO_15): 1.20,
-        ConditionComposite(Condition.COMBO_20): 1.30,
-        ConditionComposite(Condition.COMBO_25): 1.40,
-        ConditionComposite(Condition.COMBO_30): 1.50,
+        ConditionComposite(Condition.COMBO_GTE_0): 1,
+        ConditionComposite(Condition.COMBO_GTE_5): 1.05,
+        ConditionComposite(Condition.COMBO_GTE_10): 1.10,
+        ConditionComposite(Condition.COMBO_GTE_15): 1.20,
+        ConditionComposite(Condition.COMBO_GTE_20): 1.30,
+        ConditionComposite(Condition.COMBO_GTE_25): 1.40,
+        ConditionComposite(Condition.COMBO_GTE_30): 1.50,
     }
 
     for condition, dmg_rate in combo_dmg_bonus.items():

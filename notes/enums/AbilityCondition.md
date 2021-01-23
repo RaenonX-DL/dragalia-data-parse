@@ -27,7 +27,7 @@ Field: `_ConditionType`
 06. BREAKDOWN
 07. GET_BUFF_ATK
 <a href="#08---get_buff_def">08. GET_BUFF_DEF</a>
-09. TOTAL_HITCOUNT_MORE
+<a href="#09---total_hitcount_more">09. TOTAL_HITCOUNT_MORE</a>
 10. TOTAL_HITCOUNT_LESS
 11. KILL_ENEMY
 <a href="#12---transform_dragon">12. TRANSFORM_DRAGON</a>
@@ -148,6 +148,28 @@ Note that `Val 1` can be `0`, which means that the shapeshift count doesn't matt
 ### `08` - `GET_BUFF_DEF`
 
 Triggered once when the user receives a buff.
+
+-----
+
+### `09` - `TOTAL_HITCOUNT_MORE`
+
+Triggered once when the user's combo count goes beyond or equal to the designated combo count.
+
+`Val 1 = 20` means that the ability will be triggered upon the user's combo count goes beyond 20.
+
+- **Val 1**: Minimum combo count required.
+
+-----
+
+### `10` - `TOTAL_HITCOUNT_LESS`
+
+Triggered once when the user's combo count drops below the designated combo count.
+
+`Val 1 = 20` means that the ability will be triggered upon the user's combo count drops below 20.
+
+- **Val 1**: Combo count threshold to trigger the ability.
+
+  - Usually all values are applicable, since combo counter is directly set to `0` upon expired.
 
 -----
 

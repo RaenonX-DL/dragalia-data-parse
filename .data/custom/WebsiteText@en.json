@@ -284,32 +284,32 @@
     "text": "Self HP >= 85%"
   },
   {
-    "id": "ENUM_COND_COMBO_0",
-    "text": "Self Combo = 0"
+    "id": "ENUM_COND_COMBO_GTE_0",
+    "text": "Self Combo >= 0"
   },
   {
-    "id": "ENUM_COND_COMBO_5",
-    "text": "Self Combo = 5"
+    "id": "ENUM_COND_COMBO_GTE_5",
+    "text": "Self Combo >= 5"
   },
   {
-    "id": "ENUM_COND_COMBO_10",
-    "text": "Self Combo = 10"
+    "id": "ENUM_COND_COMBO_GTE_10",
+    "text": "Self Combo >= 10"
   },
   {
-    "id": "ENUM_COND_COMBO_15",
-    "text": "Self Combo = 15"
+    "id": "ENUM_COND_COMBO_GTE_15",
+    "text": "Self Combo >= 15"
   },
   {
-    "id": "ENUM_COND_COMBO_20",
-    "text": "Self Combo = 20"
+    "id": "ENUM_COND_COMBO_GTE_20",
+    "text": "Self Combo >= 20"
   },
   {
-    "id": "ENUM_COND_COMBO_25",
-    "text": "Self Combo = 25"
+    "id": "ENUM_COND_COMBO_GTE_25",
+    "text": "Self Combo >= 25"
   },
   {
-    "id": "ENUM_COND_COMBO_30",
-    "text": "Self Combo = 30"
+    "id": "ENUM_COND_COMBO_GTE_30",
+    "text": "Self Combo >= 30"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_0",
@@ -750,6 +750,14 @@
   {
     "id": "ENUM_COND_ON_INFLICTED_SCORCHREND",
     "text": "Inflicted Scorchrend"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_GTE_10",
+    "text": "Upon Combo >= 10"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_RESET",
+    "text": "Upon Combo Reset"
   },
   {
     "id": "ENUM_COND_ON_HIT_BY_POISON",

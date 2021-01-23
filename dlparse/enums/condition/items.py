@@ -101,19 +101,19 @@ class Condition(Enum):
     # endregion
 
     # region Combo count
-    COMBO_0 = 240
+    COMBO_GTE_0 = 240
     """User's combo count = 0."""
-    COMBO_5 = 241
+    COMBO_GTE_5 = 241
     """User's combo count = 5."""
-    COMBO_10 = 242
+    COMBO_GTE_10 = 242
     """User's combo count = 10."""
-    COMBO_15 = 243
+    COMBO_GTE_15 = 243
     """User's combo count = 15."""
-    COMBO_20 = 244
+    COMBO_GTE_20 = 244
     """User's combo count = 20."""
-    COMBO_25 = 245
+    COMBO_GTE_25 = 245
     """User's combo count = 25."""
-    COMBO_30 = 246
+    COMBO_GTE_30 = 246
     """User's combo count = 30."""
     # endregion
 
@@ -260,6 +260,7 @@ class Condition(Enum):
 
     # region 8xx - Trigger
     # region Effect triggered by self
+    # region Miscellaneoous
     ON_SELF_BUFFED_DEF = 801
     ON_SELF_REVIVED = 802
     # endregion
@@ -285,23 +286,28 @@ class Condition(Enum):
     ON_INFLICTED_SHADOWBLIGHT = 844
     ON_INFLICTED_SCORCHREND = 845
     # endregion
+
+    # region Combo count
+    ON_COMBO_RESET = 850
+    ON_COMBO_GTE_10 = 851
+    # endregion
     # endregion
 
     # region Effect triggered by others
-    ON_HIT_BY_POISON = 851
-    ON_HIT_BY_BURN = 852
-    ON_HIT_BY_FREEZE = 853
-    ON_HIT_BY_PARALYZE = 854
-    ON_HIT_BY_BLIND = 855
-    ON_HIT_BY_STUN = 856
-    ON_HIT_BY_CURSE = 857
-    ON_HIT_BY_BOG = 859
-    ON_HIT_BY_SLEEP = 860
-    ON_HIT_BY_FROSTBITE = 861
-    ON_HIT_BY_FLASHBURN = 862
-    ON_HIT_BY_STORMLASH = 863
-    ON_HIT_BY_SHADOWBLIGHT = 864
-    ON_HIT_BY_SCORCHREND = 865
+    ON_HIT_BY_POISON = 861
+    ON_HIT_BY_BURN = 862
+    ON_HIT_BY_FREEZE = 863
+    ON_HIT_BY_PARALYZE = 864
+    ON_HIT_BY_BLIND = 865
+    ON_HIT_BY_STUN = 866
+    ON_HIT_BY_CURSE = 867
+    ON_HIT_BY_BOG = 869
+    ON_HIT_BY_SLEEP = 870
+    ON_HIT_BY_FROSTBITE = 871
+    ON_HIT_BY_FLASHBURN = 872
+    ON_HIT_BY_STORMLASH = 873
+    ON_HIT_BY_SHADOWBLIGHT = 874
+    ON_HIT_BY_SCORCHREND = 875
     # endregion
     # endregion
 

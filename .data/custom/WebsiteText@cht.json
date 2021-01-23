@@ -284,32 +284,32 @@
     "text": "自身 HP >= 85%"
   },
   {
-    "id": "ENUM_COND_COMBO_0",
-    "text": "自身 Combo = 0"
+    "id": "ENUM_COND_COMBO_GTE_0",
+    "text": "自身 Combo >= 0"
   },
   {
-    "id": "ENUM_COND_COMBO_5",
-    "text": "自身 Combo = 5"
+    "id": "ENUM_COND_COMBO_GTE_5",
+    "text": "自身 Combo >= 5"
   },
   {
-    "id": "ENUM_COND_COMBO_10",
-    "text": "自身 Combo = 10"
+    "id": "ENUM_COND_COMBO_GTE_10",
+    "text": "自身 Combo >= 10"
   },
   {
-    "id": "ENUM_COND_COMBO_15",
-    "text": "自身 Combo = 15"
+    "id": "ENUM_COND_COMBO_GTE_15",
+    "text": "自身 Combo >= 15"
   },
   {
-    "id": "ENUM_COND_COMBO_20",
-    "text": "自身 Combo = 20"
+    "id": "ENUM_COND_COMBO_GTE_20",
+    "text": "自身 Combo >= 20"
   },
   {
-    "id": "ENUM_COND_COMBO_25",
-    "text": "自身 Combo = 25"
+    "id": "ENUM_COND_COMBO_GTE_25",
+    "text": "自身 Combo >= 25"
   },
   {
-    "id": "ENUM_COND_COMBO_30",
-    "text": "自身 Combo = 30"
+    "id": "ENUM_COND_COMBO_GTE_30",
+    "text": "自身 Combo >= 30"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_0",
@@ -750,6 +750,14 @@
   {
     "id": "ENUM_COND_ON_INFLICTED_SCORCHREND",
     "text": "劫火成功"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_GTE_10",
+    "text": "Combo >= 10 時"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_RESET",
+    "text": "Combo 重設時"
   },
   {
     "id": "ENUM_COND_ON_HIT_BY_POISON",
