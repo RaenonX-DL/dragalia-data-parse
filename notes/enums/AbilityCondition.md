@@ -20,7 +20,7 @@ Field: `_ConditionType`
 <pre>
 00. NONE
 <a href="#01---hp_more">01. HP_MORE</a>
-02. HP_LESS
+<a href="#02---hp_less">02. HP_LESS</a>
 03. BUFF_SKILL1
 04. BUFF_SKILL2
 <a href="#05---dragon_mode">05. DRAGON_MODE</a>
@@ -124,9 +124,22 @@ Missing value(s) means that the corresponding value is not used.
 
 ### `01` - `HP_MORE`
 
-Effective if the user's HP is greater or equal to a certain threshold.
+Effective if the user's HP is greater than a certain threshold.
 
-`Val 1 = 40` means that the ability is effective if the user's HP is >= 40%.
+`Val 1 = 40` means that the ability is effective if the user's HP is > 40%.
+
+- **Val 1**: HP threshold.
+
+-----
+
+### `02` - `HP_LESS`
+
+Triggered once when the user's HP drops below a certain threshold.
+
+`Val 1 = 40` means that the ability will be triggered upon the user's HP < 40%.
+
+> Despite that `01. HP_MORE` is effective instead of triggering, Grace (`10850503`) CEX (`400000657`),
+> which is using this condition, is triggered upon HP drops below a certain threshold, instead of effective.
 
 - **Val 1**: HP threshold.
 

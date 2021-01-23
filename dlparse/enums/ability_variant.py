@@ -71,6 +71,9 @@ class AbilityVariantType(Enum):
     CRT_DMG_UP = 26
     """Buff the character's CRT damage. If the variant is inside an ex ability entry, the effect is team-wide."""
 
+    ELEM_RESIST_UP = 28
+    """Buff the character's elemental damage resistance."""
+
     DRAGON_DMG_UP = 36
     """Buff the dragon damage."""
 
@@ -88,6 +91,9 @@ class AbilityVariantType(Enum):
 
     DMG_UP_ON_COMBO = 54
     """Damage up by user combo count."""
+
+    COMBO_TIME_EXT = 55
+    """Extend the combo counter valid time."""
 
     ELEM_DMG_UP = 57
     """Buff the elemental damage."""

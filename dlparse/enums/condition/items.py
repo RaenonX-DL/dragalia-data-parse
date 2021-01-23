@@ -96,6 +96,8 @@ class Condition(Enum):
     """User's HP >= 60% max."""
     SELF_HP_GTE_70 = 229
     """User's HP >= 70% max."""
+    SELF_HP_GTE_80 = 224
+    """User's HP >= 80% max."""
     SELF_HP_GTE_85 = 228
     """User's HP >= 85% max."""
     # endregion
@@ -267,6 +269,7 @@ class Condition(Enum):
 
     # region HP change
     ON_SELF_HP_LT_30 = 810
+    ON_SELF_HP_LT_40 = 820
     ON_SELF_HP_GTE_60 = 827
     # endregion
 

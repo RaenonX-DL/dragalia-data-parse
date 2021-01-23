@@ -71,14 +71,25 @@ class Element(Enum):
 
     def to_elem_dmg_up(self) -> BuffParameter:
         """
-        Convert this :class:`Element` to :class:`BuffParameter`.
+        Convert this :class:`Element` to the corrsponding damage buff :class:`BuffParameter`.
 
-        :raises EnumConversionError: if this :class:`Element` cannot convert to :class:`BuffParameter`
+        :raises EnumConversionError: if this element does not correspond to any elemental damage buff
         """
         if self not in _TRANS_DICT_TO_ELEM_DMG:
             raise EnumConversionError(self, Element, "Element damage buff parameter")
 
         return _TRANS_DICT_TO_ELEM_DMG[self]
+
+    def to_elem_res_up(self) -> BuffParameter:
+        """
+        Convert this :class:`Element` to corrsponding damage resistance :class:`BuffParameter`.
+
+        :raises EnumConversionError: if this element does not correspond to any elemental resistance buff
+        """
+        if self not in _TRANS_DICT_TO_ELEM_RES:
+            raise EnumConversionError(self, Element, "Element damage resistance parameter")
+
+        return _TRANS_DICT_TO_ELEM_RES[self]
 
     @classmethod
     def _missing_(cls, _):
@@ -111,4 +122,13 @@ _TRANS_DICT_TO_ELEM_DMG: dict[Element, BuffParameter] = {
     Element.LIGHT: BuffParameter.LIGHT_ELEM_DMG_UP,
     Element.SHADOW: BuffParameter.SHADOW_ELEM_DMG_UP,
 }
-"""A :class:`dict` to convert :class:`Element` to its corresponding elemental damage buff parameter."""
+"""A :class:`dict` to convert :class:`Element` to its corresponding elemental damage up buff parameter."""
+
+_TRANS_DICT_TO_ELEM_RES: dict[Element, BuffParameter] = {
+    Element.FLAME: BuffParameter.RESISTANCE_FLAME,
+    Element.WATER: BuffParameter.RESISTANCE_WATER,
+    Element.WIND: BuffParameter.RESISTANCE_WIND,
+    Element.LIGHT: BuffParameter.RESISTANCE_LIGHT,
+    Element.SHADOW: BuffParameter.RESISTANCE_SHADOW,
+}
+"""A :class:`dict` to convert :class:`Element` to its corresponding elemental damage resistance buff parameter."""

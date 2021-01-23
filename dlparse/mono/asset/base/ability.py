@@ -18,6 +18,7 @@ _hp_gte_map: dict[float, Condition] = {
     50: Condition.SELF_HP_GTE_50,
     60: Condition.SELF_HP_GTE_60,
     70: Condition.SELF_HP_GTE_70,
+    80: Condition.SELF_HP_GTE_80,
     85: Condition.SELF_HP_GTE_85,
     100: Condition.SELF_HP_FULL,
 }
@@ -95,7 +96,7 @@ class AbilityConditionEntryBase(ABC):
 
     def _cond_self_hp(self) -> Optional[Condition]:
         # Self HP >= (effect)
-        if self.condition_type in (AbilityCondition.EFF_SELF_HP_GTE, AbilityCondition.EFF_SELF_HP_GTE_2):
+        if self.condition_type in (AbilityCondition.EFF_SELF_HP_GT, AbilityCondition.EFF_SELF_HP_GTE_2):
             return self._cond_self_hp_gte()
 
         # Self HP >= (trigger)
@@ -107,7 +108,12 @@ class AbilityConditionEntryBase(ABC):
             return self._cond_self_hp_lt()
 
         # Self HP < (trigger)
-        if self.condition_type in (AbilityCondition.TRG_SELF_HP_LT, AbilityCondition.TRG_SELF_HP_LTE):
+        trg_cond_hp_lt = (
+            AbilityCondition.TRG_SELF_HP_LT,
+            AbilityCondition.TRG_SELF_HP_LT_2,
+            AbilityCondition.TRG_SELF_HP_LTE
+        )
+        if self.condition_type in trg_cond_hp_lt:
             return self._cond_self_hp_lt_trigger()
 
         return None
@@ -135,6 +141,8 @@ class AbilityConditionEntryBase(ABC):
     def _cond_self_hp_lt_trigger(self) -> Condition:
         if self.val_1 == 30:
             return Condition.ON_SELF_HP_LT_30
+        if self.val_1 == 40:
+            return Condition.ON_SELF_HP_LT_40
 
         raise self._condition_unconvertible()
 

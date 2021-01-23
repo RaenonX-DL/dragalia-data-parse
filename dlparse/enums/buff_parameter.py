@@ -43,6 +43,12 @@ class BuffParameter(Enum):
     such as ATK up buffs.
     The duration of the zoned buffs like the one built by Gala Euden S1 (101504031) will **not** be affected by this.
     """
+    COMBO_TIME = 112
+    """
+    Combo counter valid time extension.
+
+    A value of 2.5 means combo counter will not reset for additional 2.5 seconds.
+    """
     # endregion
 
     # region Elemental

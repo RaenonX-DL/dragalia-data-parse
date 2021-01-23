@@ -159,11 +159,15 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
 
     def _direct_buff_unit(
             self, buff_param: BuffParameter, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload, /,
-            addl_cond_comp: Optional[ConditionComposite] = None
+            addl_cond_comp: Optional[ConditionComposite] = None, val_div_100: bool = True
     ) -> set[AbilityVariantEffectUnit]:
         max_value = 0
         if isinstance(self.variant, AbilityVariantEntry):
             max_value = asset_manager.asset_ability_limit.get_max_value(self.variant.limited_group_id, on_not_found=0)
+
+        up_value = self.variant.up_value
+        if val_div_100:
+            up_value /= 100
 
         return {
             AbilityVariantEffectUnit(
@@ -174,7 +178,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 target_action=payload.target_action,
                 parameter=buff_param,
                 probability_pct=100,  # Absolutely applicable
-                rate=self.variant.up_value / 100,  # Original data is percentage
+                rate=up_value,
                 rate_max=max_value,
                 target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
                 status=Status.NONE,
@@ -241,6 +245,11 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
         return self._direct_buff_unit(Element(self.variant.id_a).to_elem_dmg_up(), asset_manager, payload)
+
+    def _from_elem_resist_up(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        return self._direct_buff_unit(Element(self.variant.id_a).to_elem_res_up(), asset_manager, payload)
 
     def _from_rp_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
@@ -371,6 +380,11 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
 
         return units
 
+    def _from_combo_time_ext(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        return self._direct_buff_unit(BuffParameter.COMBO_TIME, asset_manager, payload, val_div_100=False)
+
     def _from_addl_heal_on_revive(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
@@ -400,6 +414,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             AbilityVariantType.CRT_RATE_UP: self._from_crt_up,
             AbilityVariantType.CRT_DMG_UP: self._from_crt_dmg_up,
             AbilityVariantType.ELEM_DMG_UP: self._from_elem_dmg_up,
+            AbilityVariantType.ELEM_RESIST_UP: self._from_elem_resist_up,
             AbilityVariantType.OD_GAUGE_DMG_UP: self._from_od_gauge_dmg_up,
             AbilityVariantType.RP_UP: self._from_rp_up,
             AbilityVariantType.DRAGON_DMG_UP: self._from_dragon_dmg_up,
@@ -410,6 +425,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             AbilityVariantType.CHANGE_STATE: self._from_change_state,
             AbilityVariantType.SP_CHARGE: self._from_sp_charge,
             AbilityVariantType.ACTION_GRANT: self._from_action_grant,
+            AbilityVariantType.COMBO_TIME_EXT: self._from_combo_time_ext,
             AbilityVariantType.ADDITIONAL_HEAL_ON_REVIVE: self._from_addl_heal_on_revive
         }
 

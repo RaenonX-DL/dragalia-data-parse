@@ -89,7 +89,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 <a href="#25---actiongrant">25. ActionGrant</a>
 <a href="#26---criticaldamageup">26. CriticalDamageUp</a>
 27. DpCharge
-28. ResistElement
+<a href="#28---resistelement">28. ResistElement</a>
 29. ResistUnique
 30. UniqueKiller
 31. Dummy01
@@ -116,7 +116,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 52. CriticalUpDependsOnBuffTypeCount
 53. InvalidDragonAbility
 <a href="#54---actdamageupdependsonhitcount">54. ActDamageUpDependsOnHitCount</a>
-55. ChainTimeExtension
+<a href="#55---chaintimeextension">55. ChainTimeExtension</a>
 56. UniqueTransform
 57. EnhancedElementDamage
 58. UtpCharge
@@ -380,6 +380,26 @@ A value of `20` means CRT DMG (CDMG) +20%.
 
 -----
 
+### `28` - `ResistElement`
+
+Buff the character's damage resistance by the specified element.
+
+If `ID-A = 1`, `Up value = 8`, then it means flame elemental damage resistance +8%.
+(`1` in `ID-A` corresponds to flame)
+
+#### Variant ID - A
+
+Element of the damage resistance. Check [the implementation of the enum](/dlparse/enums/element.py) for the ID
+corresponance.
+
+#### Variant Up Value
+
+Elemental damage resistance rate in percentage.
+
+A value of `20` means damage resistance +20%.
+
+-----
+
 ### `36` - `DragonDamageUp`
 
 Buff the damage dealt by the dragon.
@@ -490,6 +510,18 @@ A value of `5_5/10_10/15_20/20_30/25_40/30_50` means that:
 - +50% damage if combo >= 30
 
 The highest damage boost will be picked. For example, if the user's combo count is 27, then the damage boost is 40%.
+
+-----
+
+### `55` - `ChainTimeExtension`
+
+Extend the valid time of the combo counter.
+
+#### Variant Up Value
+
+Time to extned in seconds.
+
+A value of `2.5` means combo counter valid time +2.5 secs.
 
 -----
 
