@@ -21,7 +21,7 @@ class AbilityEffectInfo(AbilityInfoBase):
     max_occurrences: Optional[int] = None
     target: Optional[HitTargetSimple] = None
     target_action: Optional[AbilityTargetAction] = None
-    duration_time: Optional[float] = None
+    duration_sec: Optional[float] = None
 
     def __hash__(self):
         # x 1E5 for error tolerance
@@ -53,12 +53,13 @@ def check_ability_effect_unit_match(
         message: Any = None
 ):
     """Check if the info of the affliction units match."""
-    has_probability = any(info.probability for info in expected_info)
-    has_cooldown = any(info.cooldown_sec for info in expected_info)
-    has_max_occurrences = any(info.max_occurrences for info in expected_info)
-    has_target = any(info.target for info in expected_info)
-    has_target_action = any(info.target_action for info in expected_info)
-    has_duration = any(info.duration_time for info in expected_info)
+    # Explicit ``None`` checks because ``0`` is falsy
+    has_probability = any(info.probability is not None for info in expected_info)
+    has_cooldown = any(info.cooldown_sec is not None for info in expected_info)
+    has_max_occurrences = any(info.max_occurrences is not None for info in expected_info)
+    has_target = any(info.target is not None for info in expected_info)
+    has_target_action = any(info.target_action is not None for info in expected_info)
+    has_duration = any(info.duration_sec is not None for info in expected_info)
 
     actual_info = [
         AbilityEffectInfo(
@@ -70,7 +71,7 @@ def check_ability_effect_unit_match(
             max_occurrences=unit.max_occurrences if has_max_occurrences else None,
             target=unit.target if has_target else None,
             target_action=unit.target_action if has_target_action else None,
-            duration_time=unit.duration_time if has_duration else None,
+            duration_sec=unit.duration_sec if has_duration else None,
         )
         for unit in actual_units
     ]

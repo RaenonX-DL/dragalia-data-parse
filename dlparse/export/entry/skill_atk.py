@@ -109,12 +109,12 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
                 status_icon=affliction.status.icon_name,
                 action_time=affliction.time,
                 probability_pct=affliction.probability_pct,
-                duration=affliction.duration_time,
+                duration=affliction.duration_sec,
                 stackable=affliction.stackable
             ))
         self.affliction_data_max = remove_duplicates_preserve_order(afflictions)
         self.debuff_data_max = remove_duplicates_preserve_order([
-            (debuff.parameter, debuff.probability_pct, debuff.rate, debuff.duration_time, debuff.stackable)
+            (debuff.parameter, debuff.probability_pct, debuff.rate, debuff.duration_sec, debuff.stackable)
             for debuff in skill_data_to_parse.debuffs[-1]
         ])
 

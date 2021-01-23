@@ -561,6 +561,7 @@ class ConditionCategories:
             Condition.ON_SELF_BUFFED_DEF,
             Condition.ON_SELF_REVIVED,
             Condition.ON_SELF_HP_LT_30,
+            Condition.ON_SELF_HP_GTE_60,
             Condition.ON_HIT_BY_POISON,
             Condition.ON_HIT_BY_BURN,
             Condition.ON_HIT_BY_FREEZE,

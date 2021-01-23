@@ -21,7 +21,7 @@ class EffectUnitBase(ABC):
     slip_interval: float
     slip_damage_mod: float
 
-    duration_time: float
+    duration_sec: float
     duration_count: float
 
     max_stack_count: int

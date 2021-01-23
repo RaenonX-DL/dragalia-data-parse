@@ -34,7 +34,7 @@ class CharaSupportiveSkillEntry(SkillExportEntryBase[HitActionConditionEffectUni
         self.buff_parameter = skill_data_to_parse.parameter
         self.rate = skill_data_to_parse.rate
         self.duration_count = skill_data_to_parse.duration_count
-        self.duration_time = skill_data_to_parse.duration_time
+        self.duration_time = skill_data_to_parse.duration_sec
         self.max_stack_count = skill_data_to_parse.max_stack_count
 
     @property

@@ -32,7 +32,7 @@ def check_buff_unit_match(
 ):
     """Check if the info of the buff units match."""
     actual_info = {
-        BuffEffectInfo(unit.hit_attr_label, unit.target, unit.parameter, unit.rate, unit.duration_time,
+        BuffEffectInfo(unit.hit_attr_label, unit.target, unit.parameter, unit.rate, unit.duration_sec,
                        unit.duration_count, unit.max_stack_count if check_stack_count else 0)
         for unit in actual_units
     }

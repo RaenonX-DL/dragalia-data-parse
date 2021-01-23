@@ -50,7 +50,7 @@ def check_debuff_unit_match(
 
     actual_info = [
         DebuffInfo(
-            unit.hit_attr_label, unit.parameter, unit.rate, unit.probability_pct, unit.duration_time, unit.stackable
+            unit.hit_attr_label, unit.parameter, unit.rate, unit.probability_pct, unit.duration_sec, unit.stackable
         )
         for unit in actual_units
     ]

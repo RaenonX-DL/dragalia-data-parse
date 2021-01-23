@@ -33,7 +33,7 @@ def check_affliction_unit_match(
 ):
     """Check if the info of the affliction units match."""
     actual_info = [
-        AfflictionInfo(unit.hit_attr_label, unit.status, unit.probability_pct, unit.duration_time, unit.slip_interval,
+        AfflictionInfo(unit.hit_attr_label, unit.status, unit.probability_pct, unit.duration_sec, unit.slip_interval,
                        unit.slip_damage_mod, unit.stackable)
         for unit in actual_units
     ]
