@@ -142,6 +142,22 @@ def test_elem_res_in_buff_zone(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
+def test_fill_dragon_gauge_by_combo_count(transformer_ability: AbilityTransformer):
+    # Gala Leonidas - 10950101
+    # https://dragalialost.gamepedia.com/Gala_Leonidas
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000823)
+
+    expected_info = {
+        # The effect of clearing the action condition when the combo counter resets is omitted
+        AbilityEffectInfo(
+            400000823, ConditionComposite([Condition.TARGET_FLAME, Condition.ON_COMBO_DIV_BY_50]),
+            BuffParameter.DRAGON_GAUGE_FILL, 0.03
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
 def test_energy_level_up_by_combo_count(transformer_ability: AbilityTransformer):
     # Gala Sarisse - 10650101
     # https://dragalialost.gamepedia.com/Gala_Sarisse

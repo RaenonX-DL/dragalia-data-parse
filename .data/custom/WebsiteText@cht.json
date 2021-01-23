@@ -788,6 +788,10 @@
     "text": "每 20 Combo"
   },
   {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_50",
+    "text": "每 50 Combo"
+  },
+  {
     "id": "ENUM_COND_ON_COMBO_RESET",
     "text": "Combo 重設時"
   },

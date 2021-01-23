@@ -571,6 +571,7 @@ class ConditionCategories:
             Condition.ON_COMBO_RESET,
             Condition.ON_COMBO_GTE_10,
             Condition.ON_COMBO_DIV_BY_20,
+            Condition.ON_COMBO_DIV_BY_50,
             Condition.ON_HIT,
             Condition.ON_HIT_BY_POISON,
             Condition.ON_HIT_BY_BURN,

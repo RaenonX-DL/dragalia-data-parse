@@ -298,6 +298,7 @@ class Condition(Enum):
     ON_COMBO_RESET = 850
     ON_COMBO_GTE_10 = 851
     ON_COMBO_DIV_BY_20 = 855
+    ON_COMBO_DIV_BY_50 = 856
     # endregion
     # endregion
 

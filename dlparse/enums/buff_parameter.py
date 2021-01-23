@@ -313,6 +313,11 @@ class BuffParameter(Enum):
     """Change the rate of the dragon point gain. A value of 0.2 means to increase the dragon point gain by 20%."""
     DRAGON_DAMAGE = 605
     """Increased the damage dealt in the dragon form. A value of 0.12 means damage in dragon +12%."""
+    DRAGON_GAUGE_FILL = 606
+    """
+    Fill the dragon gauge by a certain percentage. A value of 0.12 means to fill 12% of the dragon gauge. 
+    (Shapeshifting once takes 50% of the dragon gauge)
+    """
     # endregion
 
     # region Punishers

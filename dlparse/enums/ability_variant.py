@@ -92,6 +92,9 @@ class AbilityVariantType(Enum):
     ENHANCE_SKILL = 44
     """Enhance a skill (ID at ID-A field, # at target action field)."""
 
+    FILL_DRAGON_GAUGE = 49
+    """Fill the dragon gauge by a certain percentage."""
+
     DMG_UP_ON_COMBO = 54
     """Damage up by user combo count."""
 

@@ -110,7 +110,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 46. DragonTimeForParty
 47. AbnoramlExtension
 48. DragonTimeSpeedRate
-49. DpChargeMyParty
+<a href="#49---dpchargemyparty">49. DpChargeMyParty</a>
 50. DontAct
 51. RandomBuff
 52. CriticalUpDependsOnBuffTypeCount
@@ -505,6 +505,18 @@ Enhanced S2 (`106503036`, available if 6+ butterflies exist on the map) have thi
 
 -----
 
+### `49` - `DpChargeMyParty`
+
+Fill dragon gauge by certain percentage.
+
+#### Variant Up Value
+
+Percentage of the dragon gauge to fill
+
+A value of `2.5` means to fill the dragon gauge by 2.5% (50% for a dragon in general).
+
+-----
+
 ### `54` - `ActDamageUpDependsOnHitCount`
 
 Raise the damage depends on the user's hit count.
@@ -541,7 +553,7 @@ Extend the valid time of the combo counter.
 
 #### Variant Up Value
 
-Time to extned in seconds.
+Time to extend in seconds.
 
 A value of `2.5` means combo counter valid time +2.5 secs.
 

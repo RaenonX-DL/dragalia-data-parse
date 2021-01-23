@@ -270,6 +270,11 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
     ) -> set[AbilityVariantEffectUnit]:
         return self._direct_buff_unit(Status(self.variant.id_a).to_buff_param_punisher(), asset_manager, payload)
 
+    def _from_fill_dragon_gauge(
+            self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
+    ) -> set[AbilityVariantEffectUnit]:
+        return self._direct_buff_unit(BuffParameter.DRAGON_GAUGE_FILL, asset_manager, payload)
+
     def _from_change_state_dragons_claws(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
@@ -411,6 +416,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             AbilityVariantType.INFLICTION_PROB_UP: self._from_infliction_prob_up,
             AbilityVariantType.PLAYER_EXP_UP: self._from_player_exp_up,
             AbilityVariantType.AFFLICTION_PUNISHER: self._from_affliction_punisher,
+            AbilityVariantType.FILL_DRAGON_GAUGE: self._from_fill_dragon_gauge,
             AbilityVariantType.CHANGE_STATE: self._from_change_state,
             AbilityVariantType.SP_CHARGE: self._from_sp_charge,
             AbilityVariantType.ACTION_GRANT: self._from_action_grant,
