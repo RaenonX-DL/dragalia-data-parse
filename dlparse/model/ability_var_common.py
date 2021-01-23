@@ -64,15 +64,19 @@ class AbilityVariantEffectPayload(ActionCondEffectConvertPayload):
 
     target_action: AbilityTargetAction = AbilityTargetAction.NONE
 
+    is_chained_ex: bool = False
+
     source_ability_id: int = field(init=False)
+    condition_probability: float = field(init=False)
 
     def __post_init__(self):
         self.source_ability_id = self.source_ability.id
+        self.condition_probability = self.source_ability.condition.probability
 
     @property
     def is_source_ex_ability(self) -> bool:
-        """Check if the source ability of this payload is an ex ability."""
-        return isinstance(self.source_ability, ExAbilityEntry)
+        """Check if the source ability of this payload is either an EX or a chained EX ability."""
+        return self.is_chained_ex or isinstance(self.source_ability, ExAbilityEntry)
 
 
 @dataclass
@@ -93,16 +97,37 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         if not param_rate:
             return None  # Rate is 0, parameter not raised
 
+        return self._action_cond_unit(param_enum, param_rate, action_cond, payload)
+
+    def to_affliction_unit(
+            self, action_cond: "ActionConditionEntry", payload: AbilityVariantEffectPayload = None
+    ) -> Optional[AbilityVariantEffectUnit]:
+        return self.to_param_up(BuffParameter.AFFLICTION, 0, action_cond, payload)
+
+    def to_dispel_unit(
+            self, param_enum: BuffParameter, action_cond: "ActionConditionEntry",
+            payload: AbilityVariantEffectPayload = None
+    ) -> Optional[AbilityVariantEffectUnit]:
+        return self._action_cond_unit(param_enum, 0, action_cond, payload, target=HitTargetSimple.ENEMY)
+
+    def _action_cond_unit(
+            self, param_enum: BuffParameter, param_rate: float, action_cond: ActionConditionEntry,
+            payload: AbilityVariantEffectPayload = None, /,
+            target: Optional[HitTargetSimple] = None
+    ) -> AbilityVariantEffectUnit:
+        if not target:
+            target = HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF
+
         return AbilityVariantEffectUnit(
             condition_comp=payload.condition_comp,
             cooldown_sec=payload.condition_cooldown,
             max_occurrences=payload.max_occurrences,
             source_ability_id=payload.source_ability_id,
             target_action=payload.target_action,
-            status=Status.NONE,
-            target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
+            status=action_cond.afflict_status,
+            target=target,
             parameter=param_enum,
-            probability_pct=action_cond.probability_pct,
+            probability_pct=payload.condition_probability or action_cond.probability_pct,
             rate=param_rate,
             rate_max=0,
             max_stack_count=action_cond.max_stack_count,
@@ -110,51 +135,6 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             duration_count=action_cond.duration_count,
             slip_interval=action_cond.slip_interval,
             slip_damage_mod=action_cond.slip_damage_mod,
-        )
-
-    def to_affliction_unit(
-            self, action_cond: "ActionConditionEntry", payload: AbilityVariantEffectPayload = None
-    ) -> Optional[AbilityVariantEffectUnit]:
-        return AbilityVariantEffectUnit(
-            condition_comp=payload.condition_comp,
-            cooldown_sec=payload.condition_cooldown,
-            max_occurrences=payload.max_occurrences,
-            source_ability_id=payload.source_ability_id,
-            target_action=payload.target_action,
-            status=action_cond.afflict_status,
-            target=HitTargetSimple.SELF,  # Effects of the ability from action condition should all targeted to self
-            probability_pct=action_cond.probability_pct,
-            rate=0,
-            parameter=BuffParameter.AFFLICTION,
-            duration_sec=action_cond.duration_sec,
-            duration_count=action_cond.duration_count,
-            slip_interval=action_cond.slip_interval,
-            slip_damage_mod=action_cond.slip_damage_mod,
-            max_stack_count=action_cond.max_stack_count,
-            rate_max=0
-        )
-
-    def to_dispel_unit(
-            self, param_enum: BuffParameter, action_cond: "ActionConditionEntry",
-            payload: AbilityVariantEffectPayload = None
-    ) -> Optional[AbilityVariantEffectUnit]:
-        return AbilityVariantEffectUnit(
-            condition_comp=payload.condition_comp,
-            cooldown_sec=payload.condition_cooldown,
-            max_occurrences=payload.max_occurrences,
-            source_ability_id=payload.source_ability_id,
-            target_action=payload.target_action,
-            status=action_cond.afflict_status,
-            target=HitTargetSimple.ENEMY,  # Buff dispel always target the enemy
-            probability_pct=action_cond.probability_pct,
-            rate=0,
-            parameter=param_enum,
-            duration_sec=action_cond.duration_sec,
-            duration_count=action_cond.duration_count,
-            slip_interval=action_cond.slip_interval,
-            slip_damage_mod=action_cond.slip_damage_mod,
-            max_stack_count=action_cond.max_stack_count,
-            rate_max=0
         )
 
     def _direct_buff_unit(
@@ -177,7 +157,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 max_occurrences=payload.max_occurrences,
                 target_action=payload.target_action,
                 parameter=buff_param,
-                probability_pct=100,  # Absolutely applicable
+                probability_pct=payload.condition_probability or 100,  # Some conditions may have probabilty assigned
                 rate=up_value,
                 rate_max=max_value,
                 target=HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF,
@@ -318,7 +298,8 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 condition_comp=ConditionComposite(condition),
                 condition_cooldown=payload.condition_cooldown,
                 source_ability=payload.source_ability,
-                max_occurrences=payload.max_occurrences
+                max_occurrences=payload.max_occurrences,
+                is_chained_ex=payload.is_chained_ex,
             )
 
             ret.update(self.to_buff_units(

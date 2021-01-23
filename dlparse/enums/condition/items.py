@@ -265,6 +265,7 @@ class Condition(Enum):
     # region Miscellaneoous
     ON_SELF_BUFFED_DEF = 801
     ON_SELF_REVIVED = 802
+    ON_ENERGY_LV_UP = 803
     # endregion
 
     # region HP change
@@ -300,6 +301,7 @@ class Condition(Enum):
     # endregion
 
     # region Effect triggered by others
+    ON_HIT = 860
     ON_HIT_BY_POISON = 861
     ON_HIT_BY_BURN = 862
     ON_HIT_BY_FREEZE = 863

@@ -561,6 +561,7 @@ class ConditionCategories:
         {
             Condition.ON_SELF_BUFFED_DEF,
             Condition.ON_SELF_REVIVED,
+            Condition.ON_ENERGY_LV_UP,
             Condition.ON_SELF_HP_LT_30,
             Condition.ON_SELF_HP_LT_40,
             Condition.ON_SELF_HP_LT_60,
@@ -569,6 +570,7 @@ class ConditionCategories:
             Condition.ON_COMBO_RESET,
             Condition.ON_COMBO_GTE_10,
             Condition.ON_COMBO_DIV_BY_20,
+            Condition.ON_HIT,
             Condition.ON_HIT_BY_POISON,
             Condition.ON_HIT_BY_BURN,
             Condition.ON_HIT_BY_FREEZE,

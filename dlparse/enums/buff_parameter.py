@@ -355,15 +355,15 @@ class BuffParameter(Enum):
     # region Miscellaneous
     PLAYER_EXP = 990
     """Raises the player EXP gain upon clearing a quest. A value of 0.12 to raise the player EXP gain by 12%."""
-    ENERGIZE = 991
+    ENERGY_LEVEL = 991
     """
-    Energize the user. A value of 2 means to raise the energize level by 2.
+    Raise the user's energy level. A value of 2 means to raise the energy level by 2.
 
-    Note that the max of the energize level is 5. Upon reaching the max level, the user is energized.
+    Note that the max of the energy level is 5. Upon reaching the max level, the user is energized.
     The power of the next attacking or recovery skill will have either an 50% passive skill damage buff
     or 50% recovery potency buff.
     """
-    INSPIRE = 992
+    INSPIRE_LEVEL = 992
     """
     Inspire the user. A value of 2 means to raise the inspiration level by 2.
 

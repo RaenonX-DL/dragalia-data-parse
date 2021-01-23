@@ -684,31 +684,35 @@
     "text": "超活力"
   },
   {
-    "id": "ENUM_COND_ON_SELF_BUFFED_DEF",
+    "id": "ENUM_COND_ON_BUFFED_DEF",
     "text": "DEF Doublebuff"
   },
   {
-    "id": "ENUM_COND_ON_SELF_REVIVED",
+    "id": "ENUM_COND_ON_REVIVED",
     "text": "Upon revived"
   },
   {
-    "id": "ENUM_COND_ON_SELF_HP_LT_30",
+    "id": "ENUM_COND_ON_ENERGY_LV_UP",
+    "text": "活力上升時"
+  },
+  {
+    "id": "ENUM_COND_ON_HP_LT_30",
     "text": "Upon HP < 30%"
   },
   {
-    "id": "ENUM_COND_ON_SELF_HP_LT_40",
+    "id": "ENUM_COND_ON_HP_LT_40",
     "text": "Upon HP < 40%"
   },
   {
-    "id": "ENUM_COND_ON_SELF_HP_LT_60",
+    "id": "ENUM_COND_ON_HP_LT_60",
     "text": "Upon HP < 60%"
   },
   {
-    "id": "ENUM_COND_ON_SELF_HP_GTE_40",
+    "id": "ENUM_COND_ON_HP_GTE_40",
     "text": "HP >= 40% 時"
   },
   {
-    "id": "ENUM_COND_ON_SELF_HP_GTE_60",
+    "id": "ENUM_COND_ON_HP_GTE_60",
     "text": "HP >= 60% 時"
   },
   {
@@ -778,6 +782,10 @@
   {
     "id": "ENUM_COND_ON_COMBO_RESET",
     "text": "Upon Combo Reset"
+  },
+  {
+    "id": "ENUM_COND_ON_HIT",
+    "text": "被攻擊"
   },
   {
     "id": "ENUM_COND_ON_HIT_BY_POISON",

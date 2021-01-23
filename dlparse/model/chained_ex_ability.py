@@ -9,3 +9,5 @@ __all__ = ("ChainedExAbilityData",)
 @dataclass
 class ChainedExAbilityData(AbilityData):
     """A transformed chained ex ability data."""
+
+    is_chained_ex: bool = True

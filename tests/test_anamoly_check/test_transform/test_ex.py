@@ -3,6 +3,7 @@ from typing import Optional
 
 import pytest
 
+from dlparse.enums import HitTargetSimple
 from dlparse.errors import AbilityConditionUnconvertibleError, AbilityVariantUnconvertibleError
 from dlparse.mono.manager import AssetManager
 from dlparse.transformer import AbilityTransformer
@@ -61,6 +62,12 @@ def test_transform_all_character_ex(transformer_ability: AbilityTransformer, ass
                     condition_ids=ex_ability_data.unknown_condition_ids,
                     variant_ids=ex_ability_data.unknown_variant_ids
                 ))
+
+            # Ability should be effective to the whole team
+            if any(unit.target != HitTargetSimple.TEAM for unit in ex_ability_data.effect_units):
+                pytest.fail(
+                    f"Ability target not effective to the whole team where it should: #{ex_id})"
+                )
         except (AbilityConditionUnconvertibleError, AbilityVariantUnconvertibleError) as ex:
             # Condition/Variant unconvertible (most likely due to unknown/unhandled condition/variant)
             ex_ability_data = asset_manager.asset_ex_ability.get_data_by_id(ex_id)

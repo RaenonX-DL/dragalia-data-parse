@@ -19,10 +19,12 @@ class AbilityData(AbilityDataBase):
 
     ability_data: dict[int, "AbilityEntry"]
 
+    is_chained_ex: bool = False
+
     def _init_units(self, asset_manager: "AssetManager"):
         self._effect_units = set()
         for ability_entry in self.ability_data.values():
-            payload = make_payload_ability(ability_entry)
+            payload = make_payload_ability(ability_entry, is_chained_ex=self.is_chained_ex)
 
             self._effect_units.update(ability_to_effect_units(ability_entry, asset_manager, payload))
 

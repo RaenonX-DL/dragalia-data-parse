@@ -55,8 +55,10 @@ class AbilityConditionEntryBase(ABC):
             AbilityCondition.TRG_COMBO_COUNT_LT: Condition.ON_COMBO_RESET,
             AbilityCondition.TRG_RECEIVED_BUFF_DEF: Condition.ON_SELF_BUFFED_DEF,
             AbilityCondition.TRG_QUEST_START: Condition.QUEST_START,
+            AbilityCondition.TRG_ENERGY_LV_UP: Condition.ON_ENERGY_LV_UP,
             AbilityCondition.TRG_ENERGIZED: Condition.SELF_ENERGIZED,
             AbilityCondition.TRG_SHAPESHIFT_COMPLETED: Condition.SELF_SHAPESHIFT_COMPLETED,
+            AbilityCondition.TRG_GOT_HIT: Condition.ON_HIT,
         }
         self._cond_method_map = {
             AbilityCondition.EFF_IN_DRAGON: self._cond_self_in_dragon,

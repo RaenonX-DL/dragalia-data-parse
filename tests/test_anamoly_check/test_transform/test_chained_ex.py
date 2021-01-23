@@ -3,6 +3,7 @@ from typing import Optional
 
 import pytest
 
+from dlparse.enums import HitTargetSimple
 from dlparse.errors import AbilityConditionUnconvertibleError, AbilityVariantUnconvertibleError
 from dlparse.mono.manager import AssetManager
 from dlparse.transformer import AbilityTransformer
@@ -62,6 +63,12 @@ def test_transform_all_character_chained_ex(transformer_ability: AbilityTransfor
                     condition_ids=chained_ex_ability_data.unknown_condition_ids,
                     variant_ids=chained_ex_ability_data.unknown_variant_ids
                 ))
+
+            # Ability should be effective to the whole team
+            if any(unit.target != HitTargetSimple.TEAM for unit in chained_ex_ability_data.effect_units):
+                pytest.fail(
+                    f"Ability target not effective to the whole team where it should: #{cex_id})"
+                )
         except (AbilityConditionUnconvertibleError, AbilityVariantUnconvertibleError) as ex:
             # Condition/Variant unconvertible (most likely due to unknown/unhandled condition/variant)
             chained_ex_ability_data = asset_manager.asset_ability_data.get_data_by_id(cex_id)

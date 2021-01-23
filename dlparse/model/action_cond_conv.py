@@ -98,9 +98,9 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
     ) -> list[Optional[UT]]:
         return [
             # Energize
-            self.to_param_up(BuffParameter.ENERGIZE, action_cond.energize_lv, action_cond, payload),
+            self.to_param_up(BuffParameter.ENERGY_LEVEL, action_cond.energize_lv, action_cond, payload),
             # Inspire
-            self.to_param_up(BuffParameter.INSPIRE, action_cond.inspire_lv, action_cond, payload),
+            self.to_param_up(BuffParameter.INSPIRE_LEVEL, action_cond.inspire_lv, action_cond, payload),
         ]
 
     def to_buff_units(

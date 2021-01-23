@@ -7,8 +7,12 @@ from .ability_var_common import AbilityVariantEffectPayload
 __all__ = ("make_payload_ability",)
 
 
-def make_payload_ability(ability_entry: AbilityEntry) -> AbilityVariantEffectPayload:
-    """Make the payload for parsing the ability variant from ``ability_entry``."""
+def make_payload_ability(ability_entry: AbilityEntry, /, is_chained_ex: bool = False) -> AbilityVariantEffectPayload:
+    """
+    Make the payload for parsing the ability variant from ``ability_entry``.
+
+    If ``is_chained_ex``, the ability effect target will always set to ``HitTargetSimple.TEAM``.
+    """
     condition_comp: ConditionComposite = ConditionComposite()
 
     # Get the on-skill conditions
@@ -32,4 +36,5 @@ def make_payload_ability(ability_entry: AbilityEntry) -> AbilityVariantEffectPay
         condition_cooldown=cooldown_sec,
         source_ability=ability_entry,
         max_occurrences=max_occurrences,
+        is_chained_ex=is_chained_ex,
     )

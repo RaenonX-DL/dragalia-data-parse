@@ -67,7 +67,7 @@ Field: `_ConditionType`
 46. TAKE_DAMAGE_REACTION
 47. NO_DAMAGE_REACTION_TIME
 <a href="#48---buffed_specific_id">48. BUFFED_SPECIFIC_ID</a>
-49. DAMAGED
+<a href="#49---damaged">49. DAMAGED</a>
 <a href="#50---debuff">50. DEBUFF</a>
 <a href="#51---release_dragonshift">51. RELEASE_DRAGONSHIFT</a>
 52. UNIQUE_TRANS_MODE
@@ -301,6 +301,12 @@ including the one that triggers this.
 
 -----
 
+### `36` - `GET_BUFF_TENSION`
+
+Triggered once when the user's energy level is increased, regardless how many level it is.
+
+-----
+
 ### `37` - `HP_NOREACH`
 
 Effective if the user's HP is < a certain threshold.
@@ -323,6 +329,12 @@ to ``0`` meaning that the field is not in use.
 - **Val 1**: action condition ID of the required buff.
 
 - **Val 2**: secondary action condition ID of the required buff. `0` means ineffective.
+
+-----
+
+### `49` - `DAMAGED`
+
+Triggered once when the user got hit.
 
 -----
 

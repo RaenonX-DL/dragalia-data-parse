@@ -18,6 +18,21 @@ def test_inflicted_target(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
+def test_fs_dmg_up_on_got_hit(transformer_ability: AbilityTransformer):
+    # MH Berserk - 10150104
+    # https://dragalialost.gamepedia.com/Hunter_Berserker
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000706)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000706, ConditionComposite([Condition.TARGET_FLAME, Condition.ON_HIT]),
+            BuffParameter.FS_DAMAGE, 0.2, duration_count=1,
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
 def test_atk_up_on_hp_above(transformer_ability: AbilityTransformer):
     # Original Karina - 10440201
     # https://dragalialost.gamepedia.com/Karina
@@ -80,6 +95,21 @@ def test_elem_res_when_hp_above(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
+def test_elem_res_on_energy_level_up(transformer_ability: AbilityTransformer):
+    # Elias - 10640403
+    # https://dragalialost.gamepedia.com/Elias
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000751)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000751, ConditionComposite([Condition.TARGET_LIGHT, Condition.ON_ENERGY_LV_UP]),
+            BuffParameter.RESISTANCE_SHADOW, 0.07, duration_sec=15, cooldown_sec=15
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
 def test_elem_res_on_combo_count_above(transformer_ability: AbilityTransformer):
     # Summer Cleo - 10650401
     # https://dragalialost.gamepedia.com/Karina
@@ -96,7 +126,7 @@ def test_elem_res_on_combo_count_above(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-def test_energize_by_combo_count(transformer_ability: AbilityTransformer):
+def test_energy_level_up_by_combo_count(transformer_ability: AbilityTransformer):
     # Gala Sarisse - 10650101
     # https://dragalialost.gamepedia.com/Gala_Sarisse
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000709)
@@ -105,7 +135,37 @@ def test_energize_by_combo_count(transformer_ability: AbilityTransformer):
         # The effect of clearing the action condition when the combo counter resets is omitted
         AbilityEffectInfo(
             400000709, ConditionComposite([Condition.TARGET_FLAME, Condition.ON_COMBO_DIV_BY_20]),
-            BuffParameter.ENERGIZE, 1
+            BuffParameter.ENERGY_LEVEL, 1
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
+def test_inspire_level_up_on_energy_level_up(transformer_ability: AbilityTransformer):
+    # Lucretia - 10750401
+    # https://dragalialost.gamepedia.com/Lucretia
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000541)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000541, ConditionComposite([Condition.TARGET_LIGHT, Condition.ON_ENERGY_LV_UP]),
+            BuffParameter.INSPIRE_LEVEL, 1
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
+def test_inspire_level_up_on_energy_level_up_prob(transformer_ability: AbilityTransformer):
+    # Lucretia - 10750401 (CEX Lv4)
+    # https://dragalialost.gamepedia.com/Lucretia
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000539)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000539, ConditionComposite([Condition.TARGET_LIGHT, Condition.ON_ENERGY_LV_UP]),
+            BuffParameter.INSPIRE_LEVEL, 1, probability=80
         ),
     }
 

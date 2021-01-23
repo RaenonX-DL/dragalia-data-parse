@@ -22,6 +22,7 @@ class AbilityEffectInfo(AbilityInfoBase):
     target: Optional[HitTargetSimple] = None
     target_action: Optional[AbilityTargetAction] = None
     duration_sec: Optional[float] = None
+    duration_count: Optional[float] = None
 
     def __hash__(self):
         # x 1E5 for error tolerance
@@ -59,7 +60,8 @@ def check_ability_effect_unit_match(
     has_max_occurrences = any(info.max_occurrences is not None for info in expected_info)
     has_target = any(info.target is not None for info in expected_info)
     has_target_action = any(info.target_action is not None for info in expected_info)
-    has_duration = any(info.duration_sec is not None for info in expected_info)
+    has_duration_sec = any(info.duration_sec is not None for info in expected_info)
+    has_duration_count = any(info.duration_count is not None for info in expected_info)
 
     actual_info = [
         AbilityEffectInfo(
@@ -71,7 +73,8 @@ def check_ability_effect_unit_match(
             max_occurrences=unit.max_occurrences if has_max_occurrences else None,
             target=unit.target if has_target else None,
             target_action=unit.target_action if has_target_action else None,
-            duration_sec=unit.duration_sec if has_duration else None,
+            duration_sec=unit.duration_sec if has_duration_sec else None,
+            duration_count=unit.duration_count if has_duration_count else None,
         )
         for unit in actual_units
     ]
