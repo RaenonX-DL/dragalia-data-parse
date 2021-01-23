@@ -56,23 +56,23 @@
     "text": "Scorchrend"
   },
   {
-    "id": "ENUM_TARGET_ELEM_FLAME",
+    "id": "ENUM_TARGET_FLAME",
     "text": "Flame"
   },
   {
-    "id": "ENUM_TARGET_ELEM_WATER",
+    "id": "ENUM_TARGET_WATER",
     "text": "Water"
   },
   {
-    "id": "ENUM_TARGET_ELEM_WIND",
+    "id": "ENUM_TARGET_WIND",
     "text": "Wind"
   },
   {
-    "id": "ENUM_TARGET_ELEM_LIGHT",
+    "id": "ENUM_TARGET_LIGHT",
     "text": "Light"
   },
   {
-    "id": "ENUM_TARGET_ELEM_SHADOW",
+    "id": "ENUM_TARGET_SHADOW",
     "text": "Shadow"
   },
   {
@@ -700,6 +700,14 @@
     "text": "Upon HP < 40%"
   },
   {
+    "id": "ENUM_COND_ON_SELF_HP_LT_60",
+    "text": "Upon HP < 60%"
+  },
+  {
+    "id": "ENUM_COND_ON_SELF_HP_GTE_40",
+    "text": "Upon HP >= 40%"
+  },
+  {
     "id": "ENUM_COND_ON_SELF_HP_GTE_60",
     "text": "Upon HP >= 60%"
   },
@@ -762,6 +770,10 @@
   {
     "id": "ENUM_COND_ON_COMBO_GTE_10",
     "text": "Upon Combo >= 10"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_20",
+    "text": "Every 20 Combo"
   },
   {
     "id": "ENUM_COND_ON_COMBO_RESET",

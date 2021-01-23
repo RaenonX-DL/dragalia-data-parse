@@ -167,7 +167,7 @@ class AbilityConditionEntryBase(ABC):
 
     def _cond_combo_count_div(self) -> Condition:
         if self.val_1 == 20:
-            return Condition.ON_COMBO_COUNT_DIV_BY_20
+            return Condition.ON_COMBO_DIV_BY_20
 
         raise self._condition_unconvertible()
 

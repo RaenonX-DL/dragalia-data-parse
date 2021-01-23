@@ -568,7 +568,7 @@ class ConditionCategories:
             Condition.ON_SELF_HP_GTE_60,
             Condition.ON_COMBO_RESET,
             Condition.ON_COMBO_GTE_10,
-            Condition.ON_COMBO_COUNT_DIV_BY_20,
+            Condition.ON_COMBO_DIV_BY_20,
             Condition.ON_HIT_BY_POISON,
             Condition.ON_HIT_BY_BURN,
             Condition.ON_HIT_BY_FREEZE,

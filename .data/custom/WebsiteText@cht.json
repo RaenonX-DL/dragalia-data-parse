@@ -56,23 +56,23 @@
     "text": "劫火"
   },
   {
-    "id": "ENUM_TARGET_ELEM_FLAME",
+    "id": "ENUM_TARGET_FLAME",
     "text": "火"
   },
   {
-    "id": "ENUM_TARGET_ELEM_WATER",
+    "id": "ENUM_TARGET_WATER",
     "text": "水"
   },
   {
-    "id": "ENUM_TARGET_ELEM_WIND",
+    "id": "ENUM_TARGET_WIND",
     "text": "風"
   },
   {
-    "id": "ENUM_TARGET_ELEM_LIGHT",
+    "id": "ENUM_TARGET_LIGHT",
     "text": "光"
   },
   {
-    "id": "ENUM_TARGET_ELEM_SHADOW",
+    "id": "ENUM_TARGET_SHADOW",
     "text": "暗"
   },
   {
@@ -700,6 +700,14 @@
     "text": "HP < 40% 時"
   },
   {
+    "id": "ENUM_COND_ON_SELF_HP_LT_60",
+    "text": "HP < 60% 時"
+  },
+  {
+    "id": "ENUM_COND_ON_SELF_HP_GTE_40",
+    "text": "HP >= 40% 時"
+  },
+  {
     "id": "ENUM_COND_ON_SELF_HP_GTE_60",
     "text": "HP >= 60% 時"
   },
@@ -762,6 +770,10 @@
   {
     "id": "ENUM_COND_ON_COMBO_GTE_10",
     "text": "Combo >= 10 時"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_20",
+    "text": "每 20 Combo"
   },
   {
     "id": "ENUM_COND_ON_COMBO_RESET",

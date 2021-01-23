@@ -104,7 +104,7 @@ def test_energize_by_combo_count(transformer_ability: AbilityTransformer):
     expected_info = {
         # The effect of clearing the action condition when the combo counter resets is omitted
         AbilityEffectInfo(
-            400000709, ConditionComposite([Condition.TARGET_FLAME, Condition.ON_COMBO_COUNT_DIV_BY_20]),
+            400000709, ConditionComposite([Condition.TARGET_FLAME, Condition.ON_COMBO_DIV_BY_20]),
             BuffParameter.ENERGIZE, 1
         ),
     }
