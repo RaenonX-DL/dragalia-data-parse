@@ -412,3 +412,17 @@ Effective if the butterflies on the map is over a certain threshold.
 #### Appearance
 
 - Menee (`1302` from `1204` from ability 2 of CID `10650303`)
+
+-----
+
+### `88` - `ON_BUFF_FIELD`
+
+Effective if the user is inside a buff zone.
+
+- **Val 1**: *Used but meaning unknown. Could be the minimum count of the buff fields.*
+
+  For all usages as of 2021/01/23, this only has a value of `1`.
+
+- **Val 2**: *Used but meaning unknown. Could be the maximum count of the buff fields.*
+
+  For all usages as of 2021/01/23, this only has a value of either `1` or `2`.

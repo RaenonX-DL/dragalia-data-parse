@@ -142,13 +142,13 @@ class Condition(Enum):
     # endregion
 
     # region In buff zone
-    SELF_IN_BUFF_ZONE_BY_SELF_0 = 270
-    SELF_IN_BUFF_ZONE_BY_SELF_1 = 271
-    SELF_IN_BUFF_ZONE_BY_SELF_2 = 272
-    SELF_IN_BUFF_ZONE_BY_ALLY_0 = 273
-    SELF_IN_BUFF_ZONE_BY_ALLY_1 = 274
-    SELF_IN_BUFF_ZONE_BY_ALLY_2 = 275
-    SELF_IN_BUFF_ZONE_BY_ALLY_3 = 276
+    IN_BUFF_ZONE_BY_SELF_0 = 270
+    IN_BUFF_ZONE_BY_SELF_1 = 271
+    IN_BUFF_ZONE_BY_SELF_2 = 272
+    IN_BUFF_ZONE_BY_ALLY_0 = 273
+    IN_BUFF_ZONE_BY_ALLY_1 = 274
+    IN_BUFF_ZONE_BY_ALLY_2 = 275
+    IN_BUFF_ZONE_BY_ALLY_3 = 276
     # endregion
 
     # region Weapon type
@@ -263,9 +263,10 @@ class Condition(Enum):
     # region 8xx - Trigger
     # region Effect triggered by self
     # region Miscellaneoous
-    ON_SELF_BUFFED_DEF = 801
-    ON_SELF_REVIVED = 802
+    ON_BUFFED_DEF = 801
+    ON_REVIVED = 802
     ON_ENERGY_LV_UP = 803
+    ON_ENTERED_BUFF_ZONE = 804
     # endregion
 
     # region HP change

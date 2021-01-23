@@ -53,10 +53,15 @@ class AbilityConditionEntryBase(ABC):
             # Directly returns ``Condition.ON_COMBO_RESET`` and disregard the value because
             # combo count "resets" instead of gradually decreasing
             AbilityCondition.TRG_COMBO_COUNT_LT: Condition.ON_COMBO_RESET,
-            AbilityCondition.TRG_RECEIVED_BUFF_DEF: Condition.ON_SELF_BUFFED_DEF,
+            AbilityCondition.TRG_RECEIVED_BUFF_DEF: Condition.ON_BUFFED_DEF,
             AbilityCondition.TRG_QUEST_START: Condition.QUEST_START,
             AbilityCondition.TRG_ENERGY_LV_UP: Condition.ON_ENERGY_LV_UP,
             AbilityCondition.TRG_ENERGIZED: Condition.SELF_ENERGIZED,
+            # Despite the ability condition seems to be effective instead of triggering,
+            # mapping to a triggering condition (``ON_INTO_BUFF_ZONE``)
+            # makes more sense (the effect is granted once the user gets into the buff zone) and
+            # gives easier categorization (no need to mess with the sectioned conditions or to create a new category)
+            AbilityCondition.EFF_IN_BUFF_ZONE: Condition.ON_ENTERED_BUFF_ZONE,
             AbilityCondition.TRG_SHAPESHIFT_COMPLETED: Condition.SELF_SHAPESHIFT_COMPLETED,
             AbilityCondition.TRG_GOT_HIT: Condition.ON_HIT,
         }

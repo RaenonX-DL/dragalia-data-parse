@@ -381,7 +381,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
 
         return self._direct_buff_unit(
             BuffParameter.HEAL_MAX_HP, asset_manager, payload,
-            addl_cond_comp=ConditionComposite(Condition.ON_SELF_REVIVED)
+            addl_cond_comp=ConditionComposite(Condition.ON_REVIVED)
         )
 
     def to_effect_units(

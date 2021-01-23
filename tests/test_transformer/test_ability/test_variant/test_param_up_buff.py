@@ -47,7 +47,7 @@ def test_atk_up_on_def_buffed(transformer_ability: AbilityTransformer):
     ability_data = transformer_ability.transform_ability(210000607)
 
     expected_info = {
-        AbilityEffectInfo(210000607, ConditionComposite(Condition.ON_SELF_BUFFED_DEF), BuffParameter.ATK_BUFF, 0.15),
+        AbilityEffectInfo(210000607, ConditionComposite(Condition.ON_BUFFED_DEF), BuffParameter.ATK_BUFF, 0.15),
     }
 
     check_ability_effect_unit_match(ability_data.effect_units, expected_info)

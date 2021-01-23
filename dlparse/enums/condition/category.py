@@ -379,9 +379,9 @@ class ConditionCategories:
     )
     self_in_buff_zone_self = ConditionCategoryTargetNumber(
         {
-            Condition.SELF_IN_BUFF_ZONE_BY_SELF_0: 0,
-            Condition.SELF_IN_BUFF_ZONE_BY_SELF_1: 1,
-            Condition.SELF_IN_BUFF_ZONE_BY_SELF_2: 2,
+            Condition.IN_BUFF_ZONE_BY_SELF_0: 0,
+            Condition.IN_BUFF_ZONE_BY_SELF_1: 1,
+            Condition.IN_BUFF_ZONE_BY_SELF_2: 2,
         },
         ConditionMaxCount.SINGLE,
         "Self - count of self-built buff zones inside",
@@ -389,10 +389,10 @@ class ConditionCategories:
     )
     self_in_buff_zone_ally = ConditionCategoryTargetNumber(
         {
-            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_0: 0,
-            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_1: 1,
-            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_2: 2,
-            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_3: 3,
+            Condition.IN_BUFF_ZONE_BY_ALLY_0: 0,
+            Condition.IN_BUFF_ZONE_BY_ALLY_1: 1,
+            Condition.IN_BUFF_ZONE_BY_ALLY_2: 2,
+            Condition.IN_BUFF_ZONE_BY_ALLY_3: 3,
         },
         ConditionMaxCount.SINGLE,
         "Self - count of ally-built buff zones inside",
@@ -559,9 +559,10 @@ class ConditionCategories:
     # region 8xx - Trigger
     trigger = ConditionCategoryGroup(
         {
-            Condition.ON_SELF_BUFFED_DEF,
-            Condition.ON_SELF_REVIVED,
+            Condition.ON_BUFFED_DEF,
+            Condition.ON_REVIVED,
             Condition.ON_ENERGY_LV_UP,
+            Condition.ON_ENTERED_BUFF_ZONE,
             Condition.ON_SELF_HP_LT_30,
             Condition.ON_SELF_HP_LT_40,
             Condition.ON_SELF_HP_LT_60,

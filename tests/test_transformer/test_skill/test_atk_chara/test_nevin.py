@@ -60,30 +60,30 @@ def test_iter_entries_s2_released(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_0,
-                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_0]): 0,
-        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_0,
-                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_1]): 1,
-        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_0,
-                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 2,
-        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_0,
-                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 3,
-        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_1,
-                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_0]): 3,
-        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_1,
-                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_1]): 4,
-        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_1,
-                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 5,
-        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_1,
-                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 6,
-        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_2,
-                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_0]): 6,
-        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_2,
-                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_1]): 7,
-        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_2,
-                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_2]): 8,
-        ConditionComposite([Condition.SELF_IN_BUFF_ZONE_BY_SELF_2,
-                            Condition.SELF_IN_BUFF_ZONE_BY_ALLY_3]): 9,
+        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_0,
+                            Condition.IN_BUFF_ZONE_BY_ALLY_0]): 0,
+        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_0,
+                            Condition.IN_BUFF_ZONE_BY_ALLY_1]): 1,
+        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_0,
+                            Condition.IN_BUFF_ZONE_BY_ALLY_2]): 2,
+        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_0,
+                            Condition.IN_BUFF_ZONE_BY_ALLY_3]): 3,
+        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_1,
+                            Condition.IN_BUFF_ZONE_BY_ALLY_0]): 3,
+        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_1,
+                            Condition.IN_BUFF_ZONE_BY_ALLY_1]): 4,
+        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_1,
+                            Condition.IN_BUFF_ZONE_BY_ALLY_2]): 5,
+        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_1,
+                            Condition.IN_BUFF_ZONE_BY_ALLY_3]): 6,
+        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_2,
+                            Condition.IN_BUFF_ZONE_BY_ALLY_0]): 6,
+        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_2,
+                            Condition.IN_BUFF_ZONE_BY_ALLY_1]): 7,
+        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_2,
+                            Condition.IN_BUFF_ZONE_BY_ALLY_2]): 8,
+        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_2,
+                            Condition.IN_BUFF_ZONE_BY_ALLY_3]): 9,
     }
 
     expected = set(expected_addl_at_max.keys())
@@ -190,11 +190,11 @@ def test_s2_released(transformer_skill: SkillTransformer):
             [],
             []
         ],
-        ConditionComposite(Condition.SELF_IN_BUFF_ZONE_BY_SELF_1): [
+        ConditionComposite(Condition.IN_BUFF_ZONE_BY_SELF_1): [
             [2.7],
             [3]
         ],
-        ConditionComposite(Condition.SELF_IN_BUFF_ZONE_BY_SELF_2): [
+        ConditionComposite(Condition.IN_BUFF_ZONE_BY_SELF_2): [
             [2.7] * 2,
             [3] * 2
         ],
@@ -204,15 +204,15 @@ def test_s2_released(transformer_skill: SkillTransformer):
             [],
             []
         ],
-        ConditionComposite(Condition.SELF_IN_BUFF_ZONE_BY_ALLY_1): [
+        ConditionComposite(Condition.IN_BUFF_ZONE_BY_ALLY_1): [
             [0.9],
             [1]
         ],
-        ConditionComposite(Condition.SELF_IN_BUFF_ZONE_BY_ALLY_2): [
+        ConditionComposite(Condition.IN_BUFF_ZONE_BY_ALLY_2): [
             [0.9] * 2,
             [1] * 2
         ],
-        ConditionComposite(Condition.SELF_IN_BUFF_ZONE_BY_ALLY_3): [
+        ConditionComposite(Condition.IN_BUFF_ZONE_BY_ALLY_3): [
             [0.9] * 3,
             [1] * 3
         ],
