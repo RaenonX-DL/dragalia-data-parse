@@ -43,7 +43,10 @@ class EffectUnitEntryBase(JsonExportableEntryBase, ABC):
         return {
             "status": self.status_trans.to_json_entry(),
             "target": self.target_trans.to_json_entry(),
-            "parameter": self.buff_param_trans.to_json_entry(),
+            "parameter": {
+                "name": self.buff_param_trans.to_json_entry(),
+                "code": self.effect_unit.parameter.value,
+            },
             "probabilityPct": self.effect_unit.probability_pct,
             "rate": self.effect_unit.rate,
             "slipInterval": self.effect_unit.slip_interval,

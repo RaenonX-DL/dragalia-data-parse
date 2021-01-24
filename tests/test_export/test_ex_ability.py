@@ -26,6 +26,9 @@ def test_exported_json(asset_manager: AssetManager):
 
         # Check for effect unit keys (EX)
         for ex_unit in json_entry["ex"]:
+            # Check sub-keys in parameter
+            assert set(ex_unit["parameter"]) == {"name", "code"}
+
             expected_keys = effect_unit_keys
             actual_keys = set(ex_unit)
 
@@ -35,6 +38,9 @@ def test_exported_json(asset_manager: AssetManager):
 
         # Check for effect unit keys (CEX)
         for ex_unit in json_entry["chainedEx"]:
+            # Check sub-keys in parameter
+            assert set(ex_unit["parameter"]) == {"name", "code"}
+
             expected_keys = effect_unit_keys
             actual_keys = set(ex_unit)
 
