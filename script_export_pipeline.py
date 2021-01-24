@@ -57,6 +57,13 @@ class FileExporter:
     def _export_enums_condition(self, name: str):
         export_condition_as_json(self._asset_manager, os.path.join(self._dir_export, "enums", f"{name}.json"))
 
+    @time_exec(title="EX/CEX enums exporting time")
+    def _export_enums_ex(self):
+        enums_ex = collect_ex_ability_buff_param(self._transformer_ability, self._asset_manager)
+        enums_cex = collect_chained_ex_ability_buff_param(self._transformer_ability, self._asset_manager)
+
+        self._export_enums({"exBuffParam": enums_ex, "chainedExBuffParam": enums_cex}, "exParam", prefix="BUFF_")
+
     @time_exec(title="Element bonus exporting time")
     def _export_elem_bonus(self):
         export_elem_bonus_as_json(os.path.join(self._dir_export, "misc", "elementBonus.json"))
@@ -77,20 +84,13 @@ class FileExporter:
         """Export the parsed assets."""
         # Enums
         self._export_enums({"afflictions": cond_afflictions, "elements": cond_elements}, "conditions")
-        self._export_enums(
-            {
-                "exBuffParam": collect_ex_ability_buff_param(self._transformer_ability, self._asset_manager),
-                "chainedExBuffParam": collect_chained_ex_ability_buff_param(
-                    self._transformer_ability, self._asset_manager
-                )
-            },
-            "exParam",
-            prefix="BUFF_"
-        )
+        self._export_enums_ex()
         self._export_enums({"elemental": Element.get_all_valid_elements()}, "elements")
         self._export_enums_condition("allCondition")
+
         # Misc
         self._export_elem_bonus()
+
         # Skill
         self._export_atk_skill()
         self._export_skill_identifiers("identifiers")

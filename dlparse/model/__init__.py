@@ -1,5 +1,6 @@
 """Various custom data models."""
 from .ability import AbilityData
+from .ability_common import AbilityDataBase
 from .ability_var_common import AbilityVariantEffectUnit
 from .action_cond_conv import ActionCondEffectConvertPayload, ActionCondEffectConvertible
 from .action_cond_effect import HitActionConditionEffectUnit, HitAfflictionEffectUnitHit
