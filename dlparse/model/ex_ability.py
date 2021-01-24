@@ -1,4 +1,4 @@
-"""Models for ex ability data."""
+"""Models for EX ability data."""
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
@@ -15,7 +15,7 @@ __all__ = ("ExAbilityData",)
 
 @dataclass
 class ExAbilityData(AbilityDataBase):
-    """A transformed ex ability data."""
+    """A transformed EX ability data."""
 
     ex_ability_data: "ExAbilityEntry"
 

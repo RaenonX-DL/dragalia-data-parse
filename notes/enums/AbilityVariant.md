@@ -216,7 +216,7 @@ A value of `50` means to boost the infliction probability by 50%.
 
 ### `06` - `ActDamageUp`
 
-Buff the target action damage. If the variant is inside an ex ability entry, the effect is team-wide.
+Buff the target action damage. If the variant is inside an EX ability entry, the effect is team-wide.
 
 #### Variant Target Action
 
@@ -234,7 +234,7 @@ A value of `10` means SDMG +10%.
 
 ### `07` - `ActCriticalUp`
 
-Buff the character's CRT rate. If the variant is inside an ex ability entry, the effect is team-wide.
+Buff the character's CRT rate. If the variant is inside an EX ability entry, the effect is team-wide.
 
 #### Variant Up Value
 
@@ -246,7 +246,7 @@ A value of `10` means CRT +10%.
 
 ### `08` - `ActRecoveryUp`
 
-Buff the character's recovery potency of their skills. If the variant is inside an ex ability entry, the effect is
+Buff the character's recovery potency of their skills. If the variant is inside an EX ability entry, the effect is
 team-wide.
 
 #### Variant Up Value
@@ -259,7 +259,7 @@ A value of `10` means RP +10%.
 
 ### `09` - `ActBreakUp`
 
-Buff the damage dealt toward the OD gauge. If the variant is inside an ex ability entry, the effect is team-wide.
+Buff the damage dealt toward the OD gauge. If the variant is inside an EX ability entry, the effect is team-wide.
 
 #### Variant Up Value
 
@@ -328,7 +328,7 @@ A value of `100` means to charge all skills with 100% SP (immediately ready the 
 
 ##### `18` - `BuffExtension`
 
-Extend the buff effective time. If the variant is inside an ex ability entry, the effect is team-wide.
+Extend the buff effective time. If the variant is inside an EX ability entry, the effect is team-wide.
 
 This only applies to the buffs that are directly applied to the user. Zoned buff like Gala Euden S1 (`10150403`) will
 not be affected by this.
@@ -392,7 +392,7 @@ A value of `16` means to grant the effect listed in `ActionGrant` where ID is `1
 
 ### `26` - `CriticalDamageUp`
 
-Buff the character's critical damage. If the variant is inside an ex ability entry, the effect is team-wide.
+Buff the character's critical damage. If the variant is inside an EX ability entry, the effect is team-wide.
 
 #### Variant Up Value
 

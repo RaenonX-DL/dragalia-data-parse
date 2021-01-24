@@ -109,7 +109,7 @@ class AssetManager:
 
     @property
     def asset_ex_ability(self) -> ExAbilityAsset:
-        """Get the ex ability data asset."""
+        """Get the EX ability data asset."""
         return self._asset_ex_ability
 
     @property

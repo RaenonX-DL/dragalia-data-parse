@@ -32,20 +32,20 @@ class AbilityVariantType(Enum):
     """Buff the infliction probability."""
 
     DAMAGE_UP = 6
-    """Buff the target action damage. If the variant is inside an ex ability entry, the effect is team-wide."""
+    """Buff the target action damage. If the variant is inside an EX ability entry, the effect is team-wide."""
 
     CRT_RATE_UP = 7
-    """Buff the character's CRT rate. If the variant is inside an ex ability entry, the effect is team-wide."""
+    """Buff the character's CRT rate. If the variant is inside an EX ability entry, the effect is team-wide."""
 
     RP_UP = 8
     """
     Raise the character's Recovery Potency of their skills.
 
-    If the variant is inside an ex ability entry, the effect is team-wide.
+    If the variant is inside an EX ability entry, the effect is team-wide.
     """
 
     OD_GAUGE_DMG_UP = 9
-    """Buff the damage toward the OD gauge. If the variant is inside an ex ability entry, the effect is team-wide."""
+    """Buff the damage toward the OD gauge. If the variant is inside an EX ability entry, the effect is team-wide."""
 
     CHANGE_STATE = 14
     """Call the hit attribute (at str field) or the action condition (ID at ID-A field) if the condition holds."""
@@ -57,7 +57,7 @@ class AbilityVariantType(Enum):
     """
     Extend the buff time.
 
-    If the variant is inside an ex ability entry, the effect is team-wide.
+    If the variant is inside an EX ability entry, the effect is team-wide.
     This only applies to the buffs that are directly applied to the user.
     Zoned buff like Gala Euden S1 (`10150403`) will not be affected by this.
     """
@@ -72,7 +72,7 @@ class AbilityVariantType(Enum):
     """Grant a action condition to a specific action."""
 
     CRT_DMG_UP = 26
-    """Buff the character's CRT damage. If the variant is inside an ex ability entry, the effect is team-wide."""
+    """Buff the character's CRT damage. If the variant is inside an EX ability entry, the effect is team-wide."""
 
     ELEM_RESIST_UP = 28
     """Buff the character's elemental damage resistance."""

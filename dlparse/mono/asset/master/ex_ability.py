@@ -1,4 +1,4 @@
-"""Classes for handling the ex ability asset."""
+"""Classes for handling the EX ability asset."""
 from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
@@ -14,7 +14,7 @@ __all__ = ("ExAbilityEntry", "ExAbilityAsset", "ExAbilityVariantEntry")
 
 @dataclass
 class ExAbilityConditionEntry(AbilityConditionEntryBase):
-    """A single ex ability condition class. This class is for a group of fields in :class:`ExAbilityEntry`."""
+    """A single EX ability condition class. This class is for a group of fields in :class:`ExAbilityEntry`."""
 
     def _condition_unconvertible(self, ex: Optional[Exception] = None):
         raise AbilityConditionUnconvertibleError(self.condition_code, self.val_1)
@@ -22,12 +22,12 @@ class ExAbilityConditionEntry(AbilityConditionEntryBase):
 
 @dataclass
 class ExAbilityVariantEntry(AbilityVariantEntryBase):
-    """A single ex ability variant class. This class is for a group of fields in :class:`ExAbilityEntry`."""
+    """A single EX ability variant class. This class is for a group of fields in :class:`ExAbilityEntry`."""
 
 
 @dataclass
 class ExAbilityEntry(AbilityEntryBase[ExAbilityConditionEntry, ExAbilityVariantEntry], MasterEntryBase):
-    """Single entry of an ex ability data."""
+    """Single entry of an EX ability data."""
 
     name_label: str
     details_label: str
@@ -85,7 +85,7 @@ class ExAbilityAsset(MasterAssetBase[ExAbilityEntry]):
 
 
 class ExAbilityParser(MasterParserBase[ExAbilityEntry]):
-    """Class to parse the ex ability data file."""
+    """Class to parse the EX ability data file."""
 
     @classmethod
     def parse_file(cls, file_like: TextIO) -> dict[int, ExAbilityEntry]:

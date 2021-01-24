@@ -25,13 +25,13 @@ class AbilityTransformer:
         )
 
     def transform_ex_ability(self, ex_ability_id: int) -> ExAbilityData:
-        """Transform ``ex_ability_id`` to an ex ability data."""
+        """Transform ``ex_ability_id`` to an EX ability data."""
         ex_ability_data = self._asset_manager.asset_ex_ability.get_data_by_id(ex_ability_id)
 
         return ExAbilityData(self._asset_manager, ex_ability_data)
 
     def transform_chained_ex_ability(self, cex_ability_id: int) -> ChainedExAbilityData:
-        """Transform ``cex_ability_id`` to a chained ex ability data."""
+        """Transform ``cex_ability_id`` to a chained EX ability data."""
         ability_data = self._asset_manager.asset_ability_data.get_data_by_id(cex_ability_id)
 
         return ChainedExAbilityData(
