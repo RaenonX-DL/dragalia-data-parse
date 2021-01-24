@@ -315,14 +315,24 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
         ]
 
     @property
+    def ex_ids(self) -> list[int]:
+        """Get all EX ability IDs of the character ordered by the level."""
+        return [self.ex_1_id, self.ex_2_id, self.ex_3_id, self.ex_4_id, self.ex_5_id]
+
+    @property
     def ex_id_at_max_level(self) -> int:
         """Get the ID of the EX ability at the max level."""
-        return self.ex_5_id
+        return self.ex_ids[-1]
+
+    @property
+    def cex_ids(self) -> list[int]:
+        """Get all chained EX ability IDs of the character ordered by the level."""
+        return [self.cex_1_id, self.cex_2_id, self.cex_3_id, self.cex_4_id, self.cex_5_id]
 
     @property
     def cex_id_at_max_level(self) -> int:
         """Get the ID of the chained EX ability at the max level."""
-        return self.cex_5_id
+        return self.cex_ids[-1]
 
     @property
     def name_labels(self) -> list[str]:

@@ -19,7 +19,11 @@ def export_enums_entries(
         asset_manager: "AssetManager", enums_to_export: dict[str, Sequence[T]], /,
         prefix: str = "ENUM_", enum_entry_class: Type[ET] = EnumEntry
 ) -> dict[str, list[ET]]:
-    """Export ``enums_to_export`` as a list of :class:`EnumEntry` to be exported to a file."""
+    """
+    Export ``enums_to_export`` as a list of :class:`EnumEntry` to be exported to a file.
+
+    The key of ``enums_to_export`` is the name of the enums, which will be the key(s) in the exported json.
+    """
     ret: dict[str, list[enum_entry_class]] = {}
 
     for enum_name, enum_list in enums_to_export.items():
@@ -39,5 +43,9 @@ def export_enums_json(
         asset_manager: "AssetManager", enums_to_export: dict[str, Sequence[T]], file_path: str, /,
         prefix: str = "ENUM_"
 ):
-    """Export ``enums_to_export`` to ``file_path`` as a json file."""
+    """
+    Export ``enums_to_export`` to ``file_path`` as a json file.
+
+    The key of ``enums_to_export`` is the name of the enums, which will be the key(s) in the exported json.
+    """
     export_as_json(export_enums_entries(asset_manager, enums_to_export, prefix=prefix), file_path)

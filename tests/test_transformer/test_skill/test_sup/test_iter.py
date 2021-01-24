@@ -63,7 +63,7 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
         BuffEffectInfo("BOW_108_04_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.05, 10, 0),
         BuffEffectInfo("BOW_108_04_CRT_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.03, 10,
                        0),
-        BuffEffectInfo("BOW_108_04_SKILL_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE,
+        BuffEffectInfo("BOW_108_04_SKILL_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF,
                        0.1, 10, 99),
         BuffEffectInfo("BOW_108_04_SPB_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0)
     }
@@ -71,7 +71,7 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
         BuffEffectInfo("BOW_108_04_DEF_LV03", HitTargetSimple.SELF, BuffParameter.DEF_BUFF, 0.1, 10, 0)
     }
     on_1_plus_buffs = on_0_plus_buffs | {
-        BuffEffectInfo("BOW_108_04_CRTDMG_LV03", HitTargetSimple.SELF, BuffParameter.CRT_DAMAGE, 0.1, 10, 0)
+        BuffEffectInfo("BOW_108_04_CRTDMG_LV03", HitTargetSimple.SELF, BuffParameter.CRT_DAMAGE_BUFF, 0.1, 10, 0)
     }
     on_2_plus_buffs = on_1_plus_buffs | {
         BuffEffectInfo("BOW_108_04_SP_LV03", HitTargetSimple.SELF, BuffParameter.SP_CHARGE_PCT_S1, 1, 0, 0)

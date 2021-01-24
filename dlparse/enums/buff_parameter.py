@@ -21,13 +21,13 @@ class BuffParameter(Enum):
     """DEF up (calculated as buff). A value of 0.12 means DEF +12%."""
     CRT_RATE_BUFF = 103
     """Critical rate up (calculated as buff). A value of 0.12 means CRT +12%."""
-    CRT_DAMAGE = 104
+    CRT_DAMAGE_BUFF = 104
     """Critical damage up (calculated as buff). A value of 0.12 means CRT DMG +12%."""
-    SKILL_DAMAGE = 105
+    SKILL_DAMAGE_BUFF = 105
     """Skill damage up (calculated as buff). A value of 0.12 means SDMG +12%."""
     ASPD_BUFF = 106
     """Attack speed up (calculated as buff). A value of 0.12 means ASPD +12%."""
-    FS_DAMAGE = 107
+    FS_DAMAGE_BUFF = 107
     """Force strike damage up (calculated as buff). A value of 0.12 means FS DMG +12%."""
     FS_SPD = 108
     """Force strike charging speed up (calculated as buff). A value of 0.12 means FS SPD +12%."""
@@ -71,8 +71,14 @@ class BuffParameter(Enum):
     """DEF up (calculated as passive). A value of 0.12 means DEF +12%."""
     CRT_RATE_PASSIVE = 153
     """Critical rate up (calculated as passive). A value of 0.12 means CRT +12%."""
+    CRT_DAMAGE_PASSIVE = 154
+    """Critical damage up (calculated as passive). A value of 0.12 means CRT DMG +12%."""
+    SKILL_DAMAGE_PASSIVE = 155
+    """Skill damage up (calculated as passive). A value of 0.12 means SDMG +12%."""
     ASPD_PASSIVE = 156
     """Attack speed up (calculated as passive). A value of 0.12 means ASPD +12%."""
+    FS_DAMAGE_PASSIVE = 157
+    """Force strike damage up (calculated as passive). A value of 0.12 means FS DMG +12%."""
     # endregion
 
     # region Infliction probability

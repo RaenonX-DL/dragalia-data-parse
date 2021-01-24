@@ -6,10 +6,11 @@ from typing import Sequence, TypeVar
 
 from dlparse.enums import Element, cond_afflictions, cond_elements
 from dlparse.export import (
-    export_atk_skill_as_json, export_condition_as_json, export_elem_bonus_as_json, export_enums_json,
-    export_skill_identifiers_as_json,
+    collect_chained_ex_ability_buff_param, collect_ex_ability_buff_param, export_atk_skill_as_json,
+    export_condition_as_json, export_elem_bonus_as_json, export_enums_json, export_skill_identifiers_as_json,
 )
 from dlparse.mono.manager import AssetManager
+from dlparse.transformer import AbilityTransformer
 from dlparse.utils import time_exec
 
 T = TypeVar("T", bound=Enum)
@@ -42,6 +43,7 @@ class FileExporter:
             dir_action, dir_master, dir_chara_motion,
             custom_asset_dir=dir_custom
         )
+        self._transformer_ability: AbilityTransformer = AbilityTransformer(self._asset_manager)
         self._dir_export: str = dir_export
 
     @time_exec(title="Enums exporting time")
@@ -75,6 +77,16 @@ class FileExporter:
         """Export the parsed assets."""
         # Enums
         self._export_enums({"afflictions": cond_afflictions, "elements": cond_elements}, "conditions")
+        self._export_enums(
+            {
+                "exBuffParam": collect_ex_ability_buff_param(self._transformer_ability, self._asset_manager),
+                "chainedExBuffParam": collect_chained_ex_ability_buff_param(
+                    self._transformer_ability, self._asset_manager
+                )
+            },
+            "exParam",
+            prefix="BUFF_"
+        )
         self._export_enums({"elemental": Element.get_all_valid_elements()}, "elements")
         self._export_enums_condition("allCondition")
         # Misc

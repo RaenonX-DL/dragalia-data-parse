@@ -75,7 +75,7 @@ def test_fs_dmg_up(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(
             106000016, ConditionComposite(),
-            BuffParameter.FS_DAMAGE, 0.2, max_occurrences=1
+            BuffParameter.FS_DAMAGE_PASSIVE, 0.2, max_occurrences=1
         ),
     }
 
@@ -90,7 +90,7 @@ def test_crt_dmg_up(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(
             126000008, ConditionComposite(),
-            BuffParameter.CRT_DAMAGE, 0.3, max_occurrences=1
+            BuffParameter.CRT_DAMAGE_PASSIVE, 0.3, max_occurrences=1
         ),
     }
 

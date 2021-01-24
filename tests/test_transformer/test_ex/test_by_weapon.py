@@ -101,7 +101,7 @@ def test_wand(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(
             102000010, ConditionComposite(),
-            BuffParameter.SKILL_DAMAGE, 0.15, max_occurrences=1
+            BuffParameter.SKILL_DAMAGE_PASSIVE, 0.15, max_occurrences=1
         ),
     }
 

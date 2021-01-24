@@ -25,10 +25,10 @@ expected_contained_info: ExpectedInfoLookup = {
     (106504012, ConditionComposite(Condition.COVER_TEAMMATE_3)): {
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.05),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.03),
-        (HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE, 0.1),
+        (HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF, 0.1),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1),
         (HitTargetSimple.SELF, BuffParameter.DEF_BUFF, 0.1),
-        (HitTargetSimple.SELF, BuffParameter.CRT_DAMAGE, 0.1),
+        (HitTargetSimple.SELF, BuffParameter.CRT_DAMAGE_BUFF, 0.1),
         (HitTargetSimple.SELF, BuffParameter.SP_CHARGE_PCT_S1, 1),
     },
     # Emma S1

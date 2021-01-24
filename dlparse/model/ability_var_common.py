@@ -197,9 +197,9 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         if self.variant.target_action_enum == AbilityTargetAction.AUTO:
             buff_param = BuffParameter.AUTO_DAMAGE
         elif self.variant.target_action_enum == AbilityTargetAction.FORCE_STRIKE:
-            buff_param = BuffParameter.FS_DAMAGE
+            buff_param = BuffParameter.FS_DAMAGE_PASSIVE
         elif self.variant.target_action_enum == AbilityTargetAction.SKILL_ALL:
-            buff_param = BuffParameter.SKILL_DAMAGE
+            buff_param = BuffParameter.SKILL_DAMAGE_PASSIVE
         elif self.variant.target_action_enum == AbilityTargetAction.NONE:
             if Condition.TARGET_ATK_OR_DEF_DOWN in payload.condition_comp:
                 buff_param = BuffParameter.ATK_OR_DEF_DOWN_PUNISHER
@@ -222,7 +222,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
     def _from_crt_dmg_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
-        return self._direct_buff_unit(BuffParameter.CRT_DAMAGE, asset_manager, payload)
+        return self._direct_buff_unit(BuffParameter.CRT_DAMAGE_PASSIVE, asset_manager, payload)
 
     def _from_elem_dmg_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload

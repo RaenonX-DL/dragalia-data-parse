@@ -26,7 +26,7 @@ def test_fs_dmg_up_on_got_hit(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(
             400000706, ConditionComposite([Condition.TARGET_FLAME, Condition.ON_HIT]),
-            BuffParameter.FS_DAMAGE, 0.2, duration_count=1,
+            BuffParameter.FS_DAMAGE_BUFF, 0.2, duration_count=1,
         ),
     }
 

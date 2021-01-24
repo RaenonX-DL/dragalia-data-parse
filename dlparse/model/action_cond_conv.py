@@ -59,11 +59,11 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
             # CRT rate
             self.to_param_up(BuffParameter.CRT_RATE_BUFF, action_cond.buff_crt_rate, action_cond, payload),
             # CRT damage
-            self.to_param_up(BuffParameter.CRT_DAMAGE, action_cond.buff_crt_damage, action_cond, payload),
+            self.to_param_up(BuffParameter.CRT_DAMAGE_BUFF, action_cond.buff_crt_damage, action_cond, payload),
             # Skill damage
-            self.to_param_up(BuffParameter.SKILL_DAMAGE, action_cond.buff_skill_damage, action_cond, payload),
+            self.to_param_up(BuffParameter.SKILL_DAMAGE_BUFF, action_cond.buff_skill_damage, action_cond, payload),
             # FS damage
-            self.to_param_up(BuffParameter.FS_DAMAGE, action_cond.buff_fs_damage, action_cond, payload, ),
+            self.to_param_up(BuffParameter.FS_DAMAGE_BUFF, action_cond.buff_fs_damage, action_cond, payload, ),
             # ATK SPD
             self.to_param_up(BuffParameter.ASPD_BUFF, action_cond.buff_atk_spd, action_cond, payload),
             # FS SPD

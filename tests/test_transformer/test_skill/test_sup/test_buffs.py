@@ -11,13 +11,13 @@ def test_fs_dmg_up(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 3
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo("BOW_112_04_BA_LV01", HitTargetSimple.SELF, BuffParameter.FS_DAMAGE, 0.6, 0, 1, 1)
+        BuffEffectInfo("BOW_112_04_BA_LV01", HitTargetSimple.SELF, BuffParameter.FS_DAMAGE_BUFF, 0.6, 0, 1, 1)
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo("BOW_112_04_BA_LV02", HitTargetSimple.SELF, BuffParameter.FS_DAMAGE, 0.8, 0, 1, 1)
+        BuffEffectInfo("BOW_112_04_BA_LV02", HitTargetSimple.SELF, BuffParameter.FS_DAMAGE_BUFF, 0.8, 0, 1, 1)
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo("BOW_112_04_BA_LV03", HitTargetSimple.SELF, BuffParameter.FS_DAMAGE, 1, 0, 1, 1)
+        BuffEffectInfo("BOW_112_04_BA_LV03", HitTargetSimple.SELF, BuffParameter.FS_DAMAGE_BUFF, 1, 0, 1, 1)
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
 

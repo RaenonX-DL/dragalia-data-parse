@@ -184,7 +184,7 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
         BuffEffectInfo("BOW_108_04_ATK_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.03, 10, 0),
         BuffEffectInfo("BOW_108_04_CRT_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.02, 10,
                        0),
-        BuffEffectInfo("BOW_108_04_SKILL_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE,
+        BuffEffectInfo("BOW_108_04_SKILL_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF,
                        0.1, 10, 99),
         BuffEffectInfo("BOW_108_04_SPB_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0),
     }
@@ -192,7 +192,7 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
         BuffEffectInfo("BOW_108_04_ATK_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.05, 10, 0),
         BuffEffectInfo("BOW_108_04_CRT_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.03, 10,
                        0),
-        BuffEffectInfo("BOW_108_04_SKILL_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE,
+        BuffEffectInfo("BOW_108_04_SKILL_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF,
                        0.1, 10, 99),
         BuffEffectInfo("BOW_108_04_SPB_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0),
     }
@@ -200,7 +200,7 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
         BuffEffectInfo("BOW_108_04_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.05, 10, 0),
         BuffEffectInfo("BOW_108_04_CRT_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.03, 10,
                        0),
-        BuffEffectInfo("BOW_108_04_SKILL_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE,
+        BuffEffectInfo("BOW_108_04_SKILL_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF,
                        0.1, 10, 99),
         BuffEffectInfo("BOW_108_04_SPB_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0),
     }
@@ -209,7 +209,7 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
         BuffEffectInfo("BOW_108_04_DEF_LV03", HitTargetSimple.SELF, BuffParameter.DEF_BUFF, 0.1, 10, 0),
     }
     on_1_plus_buffs = on_0_plus_buffs | {
-        BuffEffectInfo("BOW_108_04_CRTDMG_LV03", HitTargetSimple.SELF, BuffParameter.CRT_DAMAGE, 0.1, 10, 0),
+        BuffEffectInfo("BOW_108_04_CRTDMG_LV03", HitTargetSimple.SELF, BuffParameter.CRT_DAMAGE_BUFF, 0.1, 10, 0),
     }
     on_2_plus_buffs = on_1_plus_buffs | {
         BuffEffectInfo("BOW_108_04_SP_LV03", HitTargetSimple.SELF, BuffParameter.SP_CHARGE_PCT_S1, 1, 0, 0),
@@ -400,13 +400,13 @@ def test_with_attack_one_time_use(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_supportive(104502033)
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo("AXE_117_04_PLUS_BUF_LV01", HitTargetSimple.SELF, BuffParameter.SKILL_DAMAGE, 0.2, 0, 1),
+        BuffEffectInfo("AXE_117_04_PLUS_BUF_LV01", HitTargetSimple.SELF, BuffParameter.SKILL_DAMAGE_BUFF, 0.2, 0, 1),
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo("AXE_117_04_PLUS_BUF_LV02", HitTargetSimple.SELF, BuffParameter.SKILL_DAMAGE, 0.2, 0, 1),
+        BuffEffectInfo("AXE_117_04_PLUS_BUF_LV02", HitTargetSimple.SELF, BuffParameter.SKILL_DAMAGE_BUFF, 0.2, 0, 1),
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo("AXE_117_04_PLUS_BUF_LV03", HitTargetSimple.SELF, BuffParameter.SKILL_DAMAGE, 0.2, 0, 1),
+        BuffEffectInfo("AXE_117_04_PLUS_BUF_LV03", HitTargetSimple.SELF, BuffParameter.SKILL_DAMAGE_BUFF, 0.2, 0, 1),
     }
 
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
