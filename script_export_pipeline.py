@@ -7,7 +7,8 @@ from typing import Sequence, TypeVar
 from dlparse.enums import Element, cond_afflictions, cond_elements
 from dlparse.export import (
     collect_chained_ex_ability_buff_param, collect_ex_ability_buff_param, export_atk_skill_as_json,
-    export_condition_as_json, export_elem_bonus_as_json, export_enums_json, export_skill_identifiers_as_json,
+    export_condition_as_json, export_elem_bonus_as_json, export_enums_json, export_ex_abilities_as_json,
+    export_skill_identifiers_as_json,
 )
 from dlparse.mono.manager import AssetManager
 from dlparse.transformer import AbilityTransformer
@@ -76,13 +77,20 @@ class FileExporter:
             skip_unparsable=True
         )
 
+    @time_exec(title="EX/CEX ability exporting time")
+    def _export_ex_abilities(self):
+        export_ex_abilities_as_json(
+            os.path.join(self._dir_export, "abilities", "ex.json"), self._asset_manager,
+            skip_unparsable=True
+        )
+
     @time_exec(title="Total exporting time")
     def export(self):
         """Export the parsed assets."""
         # Enums
         self._export_enums({"afflictions": cond_afflictions, "elements": cond_elements}, "conditions")
         self._export_enums_ex()
-        self._export_enums({"elemental": Element.get_all_valid_elements()}, "elements")
+        self._export_enums({"elemental": Element.get_all_translatable_members()}, "elements")
         self._export_enums_condition("allCondition")
 
         # Misc
@@ -91,6 +99,9 @@ class FileExporter:
         # Skill
         self._export_atk_skill()
         self._export_skill_identifiers("identifiers")
+
+        # Abilties
+        self._export_ex_abilities()
 
 
 # region Parser

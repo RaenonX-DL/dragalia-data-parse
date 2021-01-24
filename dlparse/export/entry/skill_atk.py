@@ -1,16 +1,12 @@
 """Attacking skill data entry classes for exporting."""
 from dataclasses import dataclass, field
-from typing import Any, TYPE_CHECKING
+from typing import Any
 
 from dlparse.enums import BuffParameter, ConditionCategories
 from dlparse.model import AttackingSkillDataEntry
-from dlparse.mono.asset import CharaDataEntry, SkillDataEntry, SkillIdEntry
+from dlparse.mono.asset import SkillDataEntry, SkillIdEntry
 from dlparse.utils import remove_duplicates_preserve_order
-from .base import JsonExportableEntryBase
-from .base_skill import SkillExportEntryBase
-
-if TYPE_CHECKING:
-    from dlparse.mono.manager import AssetManager
+from .base import JsonExportableEntryBase, SkillExportEntryBase
 
 __all__ = ("CharaAttackingSkillEntry",)
 
@@ -88,10 +84,10 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
     buff_zone_data_max: SkillBuffZoneBoostEntry = field(init=False)
 
     def __post_init__(
-            self, asset_manager: "AssetManager", chara_data: CharaDataEntry, skill_data: SkillDataEntry,
-            skill_id_entry: SkillIdEntry, skill_data_to_parse: AttackingSkillDataEntry
+            self, skill_data: SkillDataEntry, skill_id_entry: SkillIdEntry,
+            skill_data_to_parse: AttackingSkillDataEntry
     ):
-        super().__post_init__(asset_manager, chara_data, skill_data, skill_id_entry, skill_data_to_parse)
+        super().__post_init__(skill_data, skill_id_entry, skill_data_to_parse)
 
         # [SPECIAL] Leave for testing purpose, but not exported as json
         self.skill_total_mods_max = skill_data_to_parse.total_mod_at_max

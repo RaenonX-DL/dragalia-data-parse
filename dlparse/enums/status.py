@@ -130,6 +130,12 @@ class Status(TranslatableEnumMixin, Enum):
             Status.SCORCHREND,
         ]
 
+    def __bool__(self) -> bool:
+        if self == Status.NONE:
+            return False
+
+        return True
+
 
 _TRANS_DICT_RESIST: dict[Status, BuffParameter] = {
     Status.POISON: BuffParameter.RESISTANCE_POISON,

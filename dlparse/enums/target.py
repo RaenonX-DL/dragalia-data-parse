@@ -1,10 +1,12 @@
 """Hit target enum classes."""
 from enum import Enum
 
+from .mixin import TranslatableEnumMixin
+
 __all__ = ("HitTarget", "HitTargetSimple")
 
 
-class HitTargetSimple(Enum):
+class HitTargetSimple(TranslatableEnumMixin, Enum):
     """
     Target of an action in a simpler way.
 
@@ -24,6 +26,20 @@ class HitTargetSimple(Enum):
     ENEMY = 3
     AREA = 4
     TEAM = 6
+
+    @property
+    def translation_id(self) -> str:
+        return f"ENUM_TARGET_{self.name}"
+
+    @staticmethod
+    def get_all_translatable_members() -> list["HitTargetSimple"]:
+        return [
+            HitTargetSimple.SELF,
+            HitTargetSimple.SELF_SURROUNDING,
+            HitTargetSimple.ENEMY,
+            HitTargetSimple.AREA,
+            HitTargetSimple.TEAM
+        ]
 
 
 class HitTarget(Enum):

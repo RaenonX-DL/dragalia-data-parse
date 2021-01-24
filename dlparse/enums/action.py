@@ -2,12 +2,13 @@
 from enum import Enum
 
 from dlparse.errors import EnumConversionError
+from .mixin import TranslatableEnumMixin
 from .skill_num import SkillNumber
 
 __all__ = ("AbilityTargetAction",)
 
 
-class AbilityTargetAction(Enum):
+class AbilityTargetAction(TranslatableEnumMixin, Enum):
     """
     Enums of the ability target action.
 
@@ -44,6 +45,28 @@ class AbilityTargetAction(Enum):
             return skill_num
 
         raise EnumConversionError(self, self.__class__, repr(SkillNumber))
+
+    @property
+    def translation_id(self) -> str:
+        return f"ENUM_ACTION_{self.name}"
+
+    @staticmethod
+    def get_all_translatable_members() -> list["AbilityTargetAction"]:
+        return [
+            AbilityTargetAction.NONE,
+            AbilityTargetAction.AUTO,
+            AbilityTargetAction.FORCE_STRIKE,
+            AbilityTargetAction.SKILL_1,
+            AbilityTargetAction.SKILL_2,
+            AbilityTargetAction.SKILL_3,
+            AbilityTargetAction.SKILL_4,
+            AbilityTargetAction.SKILL_ALL,
+            AbilityTargetAction.SKILL_1_HUMAN,
+            AbilityTargetAction.SKILL_2_HUMAN,
+            AbilityTargetAction.SKILL_3_HUMAN,
+            AbilityTargetAction.SKILL_4_HUMAN,
+            AbilityTargetAction.SKILL_1_DRAGON
+        ]
 
     @classmethod
     def _missing_(cls, _):

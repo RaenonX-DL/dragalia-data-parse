@@ -2,8 +2,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from .base import JsonExportableEntryBase
-from .text import TextEntry
+from .base import JsonExportableEntryBase, TextEntry
 
 __all__ = ("SkillIdentifierEntry",)
 

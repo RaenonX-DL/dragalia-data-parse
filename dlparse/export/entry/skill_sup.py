@@ -1,14 +1,10 @@
 """Supportive skill data entry classes for exporting."""
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING
 
 from dlparse.enums import BuffParameter, HitTargetSimple
 from dlparse.model import HitActionConditionEffectUnit
-from dlparse.mono.asset import CharaDataEntry, SkillDataEntry, SkillIdEntry
-from .base_skill import SkillExportEntryBase
-
-if TYPE_CHECKING:
-    from dlparse.mono.manager import AssetManager
+from dlparse.mono.asset import SkillDataEntry, SkillIdEntry
+from .base import SkillExportEntryBase
 
 __all__ = ("CharaSupportiveSkillEntry",)
 
@@ -25,10 +21,10 @@ class CharaSupportiveSkillEntry(SkillExportEntryBase[HitActionConditionEffectUni
     max_stack_count: int = field(init=False)
 
     def __post_init__(
-            self, asset_manager: "AssetManager", chara_data: CharaDataEntry, skill_data: SkillDataEntry,
-            skill_id_entry: SkillIdEntry, skill_data_to_parse: HitActionConditionEffectUnit
+            self, skill_data: SkillDataEntry, skill_id_entry: SkillIdEntry,
+            skill_data_to_parse: HitActionConditionEffectUnit
     ):
-        super().__post_init__(asset_manager, chara_data, skill_data, skill_id_entry, skill_data_to_parse)
+        super().__post_init__(skill_data, skill_id_entry, skill_data_to_parse)
 
         self.target = skill_data_to_parse.target
         self.buff_parameter = skill_data_to_parse.parameter

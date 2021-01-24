@@ -1280,6 +1280,78 @@
     "text": "靈感等級"
   },
   {
+    "id": "ENUM_TARGET_SELF",
+    "text": "Self"
+  },
+  {
+    "id": "ENUM_TARGET_SELF_SURROUNDING",
+    "text": "Surrounding"
+  },
+  {
+    "id": "ENUM_TARGET_ENEMY",
+    "text": "Enemy"
+  },
+  {
+    "id": "ENUM_TARGET_AREA",
+    "text": "Field"
+  },
+  {
+    "id": "ENUM_TARGET_TEAM",
+    "text": "Team"
+  },
+  {
+    "id": "ENUM_ACTION_NONE",
+    "text": ""
+  },
+  {
+    "id": "ENUM_ACTION_AUTO",
+    "text": "Auto"
+  },
+  {
+    "id": "ENUM_ACTION_FORCE_STRIKE",
+    "text": "FS"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_1",
+    "text": "S1"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_2",
+    "text": "S2"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_3",
+    "text": "S3"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_4",
+    "text": "S4"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_ALL",
+    "text": "Skill"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_1_HUMAN",
+    "text": "Human S1"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_2_HUMAN",
+    "text": "Human S2"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_3_HUMAN",
+    "text": "Human S3"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_4_HUMAN",
+    "text": "Human S4"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_1_DRAGON",
+    "text": "Dragon S1"
+  },
+  {
     "id": "SKILL_IDENTIFIER_helper",
     "text": "Helper"
   },
@@ -1610,5 +1682,9 @@
   {
     "id": "SKILL_IDENTIFIER_shared",
     "text": "Skill Share"
+  },
+  {
+    "id": "ABNORMAL_STATUS_NAME_0",
+    "text": ""
   }
 ]

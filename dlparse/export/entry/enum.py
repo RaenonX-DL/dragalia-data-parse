@@ -3,8 +3,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from dlparse.enums import ColorTheme
-from .base import JsonExportableEntryBase
-from .text import TextEntry
+from .base import JsonExportableEntryBase, TextEntry
 
 __all__ = ("EnumEntry", "ConditionEnumEntry")
 

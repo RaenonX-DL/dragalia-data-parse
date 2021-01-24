@@ -1280,6 +1280,78 @@
     "text": "靈感等級"
   },
   {
+    "id": "ENUM_TARGET_SELF",
+    "text": "自身"
+  },
+  {
+    "id": "ENUM_TARGET_SELF_SURROUNDING",
+    "text": "周圍"
+  },
+  {
+    "id": "ENUM_TARGET_ENEMY",
+    "text": "敵人"
+  },
+  {
+    "id": "ENUM_TARGET_AREA",
+    "text": "區域"
+  },
+  {
+    "id": "ENUM_TARGET_TEAM",
+    "text": "隊伍"
+  },
+  {
+    "id": "ENUM_ACTION_NONE",
+    "text": ""
+  },
+  {
+    "id": "ENUM_ACTION_AUTO",
+    "text": "普攻"
+  },
+  {
+    "id": "ENUM_ACTION_FORCE_STRIKE",
+    "text": "蓄力"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_1",
+    "text": "S1"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_2",
+    "text": "S2"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_3",
+    "text": "S3"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_4",
+    "text": "S4"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_ALL",
+    "text": "技能"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_1_HUMAN",
+    "text": "人形 S1"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_2_HUMAN",
+    "text": "人形 S2"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_3_HUMAN",
+    "text": "人形 S3"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_4_HUMAN",
+    "text": "人形 S4"
+  },
+  {
+    "id": "ENUM_ACTION_SKILL_1_DRAGON",
+    "text": "龍形 S1"
+  },
+  {
     "id": "SKILL_IDENTIFIER_helper",
     "text": "戰友"
   },
@@ -1610,5 +1682,9 @@
   {
     "id": "SKILL_IDENTIFIER_shared",
     "text": "共享"
+  },
+  {
+    "id": "ABNORMAL_STATUS_NAME_0",
+    "text": ""
   }
 ]

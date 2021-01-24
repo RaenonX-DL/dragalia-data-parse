@@ -5,7 +5,7 @@ from typing import Any, Optional, TypeVar, Union
 from dlparse.enums import Language
 from dlparse.errors import MissingTextError
 from dlparse.mono.asset import MultilingualAssetBase, TextAssetMultilingual
-from .base import JsonExportableEntryBase
+from .entry import JsonExportableEntryBase
 
 __all__ = ("TextEntry",)
 
