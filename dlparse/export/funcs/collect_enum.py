@@ -13,11 +13,7 @@ def collect_ex_ability_buff_param(
     """Collect all possible buff parameters from all EX abilities."""
     ret: set[BuffParameter] = set()
 
-    for chara_data in asset_manager.asset_chara_data:
-        # Skip unplayable characters
-        if not chara_data.is_playable:
-            continue
-
+    for chara_data in asset_manager.asset_chara_data.playable_chara_data:
         ret.update(
             effect_unit.parameter for effect_unit
             in transformer_ability.transform_ex_ability(chara_data.ex_id_at_max_level).effect_units
@@ -34,11 +30,7 @@ def collect_chained_ex_ability_buff_param(
     """Collect all possible buff parameters from all EX abilities."""
     ret: set[BuffParameter] = set()
 
-    for chara_data in asset_manager.asset_chara_data:
-        # Skip unplayable characters
-        if not chara_data.is_playable:
-            continue
-
+    for chara_data in asset_manager.asset_chara_data.playable_chara_data:
         ret.update(
             effect_unit.parameter for effect_unit
             in transformer_ability.transform_chained_ex_ability(chara_data.cex_id_at_max_level).effect_units

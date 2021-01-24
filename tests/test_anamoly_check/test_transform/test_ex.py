@@ -44,11 +44,7 @@ def test_transform_all_character_ex(transformer_ability: AbilityTransformer, ass
     # Not checking all abilities in the ability asset directly
     # because there are some unused or deprecated ability inside.
     # We don't want to spend time handling unused things.
-    for chara_data in asset_manager.asset_chara_data:
-        # Skip unplayable characters
-        if not chara_data.is_playable:
-            continue
-
+    for chara_data in asset_manager.asset_chara_data.playable_chara_data:
         ex_id = chara_data.ex_id_at_max_level
         counter += 1
 

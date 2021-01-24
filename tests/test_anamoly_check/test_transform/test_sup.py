@@ -3,7 +3,6 @@ import pytest
 from dlparse.enums import Condition
 from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError
 from dlparse.model import SupportiveSkillEntry
-from dlparse.mono.asset import CharaDataEntry
 from dlparse.mono.manager import AssetManager
 from dlparse.transformer import SkillTransformer
 from tests.expected_skills_lookup import skill_ids_sup
@@ -15,15 +14,11 @@ def test_transform_all_supportive_skills(
         transformer_skill: SkillTransformer, asset_manager: AssetManager
 ):
     skill_ids: list[int] = []
-    for chara_data in asset_manager.asset_chara_data:
-        chara_data: CharaDataEntry
-
-        if not chara_data.is_playable:
-            continue  # Don't care about non-playable units
-
-        skill_ids.extend([skill_entry.skill_id
-                          for skill_entry
-                          in chara_data.get_skill_id_entries(asset_manager)])
+    for chara_data in asset_manager.asset_chara_data.playable_chara_data:
+        skill_ids.extend([
+            skill_entry.skill_id for skill_entry
+            in chara_data.get_skill_id_entries(asset_manager)
+        ])
 
     skill_ids_missing: dict[int, str] = skill_ids_sup.copy()
     skill_no_buff: set[tuple[int, tuple[Condition]]] = set()

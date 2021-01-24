@@ -77,11 +77,7 @@ def export_skill_entries(
 
     skipped_messages: list[str] = []
 
-    for chara_data in asset_manager.asset_chara_data:
-        chara_data: CharaDataEntry
-        if not chara_data.is_playable:
-            continue
-
+    for chara_data in asset_manager.asset_chara_data.playable_chara_data:
         entries, messages = skill_entry_parse_fn(chara_data, asset_manager, skip_unparsable, include_dragon)
 
         ret.extend(entries)

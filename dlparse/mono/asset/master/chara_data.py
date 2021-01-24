@@ -513,6 +513,11 @@ class CharaDataAsset(MasterAssetBase[CharaDataEntry]):
         # Chara data not found, returns ``None``
         return None
 
+    @property
+    def playable_chara_data(self) -> list[CharaDataEntry]:
+        """Get all character data of the playable characters."""
+        return [data for data in self if data.is_playable]
+
 
 class CharaDataParser(MasterParserBase[CharaDataEntry]):
     """Class to parse the character data file."""
