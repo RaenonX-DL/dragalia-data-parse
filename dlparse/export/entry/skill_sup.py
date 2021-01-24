@@ -36,26 +36,3 @@ class CharaSupportiveSkillEntry(SkillExportEntryBase[HitActionConditionEffectUni
     @property
     def unique_id(self) -> str:
         return f"{super().unique_id}{self.buff_parameter}{self.rate}"
-
-    def to_csv_entry(self) -> list[str]:
-        """Convert the current data to a csv entry."""
-        return super().to_csv_entry() + [
-            self.target.name,
-            self.buff_parameter.name,
-            self.rate,
-            self.duration_count,
-            self.duration_sec,
-            self.max_stack_count
-        ]
-
-    @classmethod
-    def csv_header(cls) -> list[str]:
-        """Get the header for CSV file."""
-        return super().csv_header() + [
-            "Target",
-            "Parameter",
-            "Rate",
-            "Duration #",
-            "Duration secs",
-            "Max stack #"
-        ]

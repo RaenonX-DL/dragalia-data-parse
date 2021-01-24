@@ -6,7 +6,7 @@ from typing import Any, Generic, TypeVar
 from dlparse.enums import ConditionComposite, SkillNumber
 from dlparse.mono.asset import SkillDataEntry, SkillIdEntry
 from .chara import CharaEntryBase
-from .entry import CsvExportableEntryBase, HashableEntryBase, JsonExportableEntryBase
+from .entry import HashableEntryBase, JsonExportableEntryBase
 from .text import TextEntry
 
 __all__ = ("SkillExportEntryBase",)
@@ -15,9 +15,7 @@ T = TypeVar("T")
 
 
 @dataclass
-class SkillExportEntryBase(
-    Generic[T], CharaEntryBase, HashableEntryBase, CsvExportableEntryBase, JsonExportableEntryBase, ABC
-):
+class SkillExportEntryBase(Generic[T], CharaEntryBase, HashableEntryBase, JsonExportableEntryBase, ABC):
     """Base class for an exported skill data entry."""
 
     skill_data: InitVar[SkillDataEntry]
@@ -64,37 +62,6 @@ class SkillExportEntryBase(
             f"{self.character_internal_id}{self.skill_internal_id}{self.skill_identifiers}"
             f"{hash(self.condition_comp)}"
         )
-
-    def to_csv_entry(self) -> list[str]:
-        """Convert the current data to a csv entry."""
-        return [
-            self.unique_hash,
-            self.character_custom_id,
-            self.character_name,
-            self.character_internal_id,
-            self.character_element,
-            self.skill_internal_id,
-            self.skill_identifiers,
-            self.condition_comp,
-            self.sp_at_max,
-            self.ss_sp
-        ]
-
-    @classmethod
-    def csv_header(cls) -> list[str]:
-        """Get the header for CSV file."""
-        return [
-            "Entry Hash",
-            "Character ID",
-            "Character Name",
-            "Character Internal ID",
-            "Character Element",
-            "Skill Internal ID",
-            "Skill Identifier",
-            "Conditions",
-            "SP (at max lv)",
-            "SS SP (at max lv)"
-        ]
 
     def to_json_entry(self) -> dict[str, Any]:
         # Used by the website, DO NOT CHANGE

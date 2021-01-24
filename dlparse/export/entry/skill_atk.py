@@ -130,25 +130,6 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
         buff_zone_data = skill_data_to_parse.buff_zone_boost_mtx[-1]
         self.buff_zone_data_max = SkillBuffZoneBoostEntry(buff_zone_data.rate_by_self, buff_zone_data.rate_by_ally)
 
-    def to_csv_entry(self) -> list[str]:
-        """Convert the current data to a csv entry."""
-        return super().to_csv_entry() + [
-            self.skill_total_mods_max,
-            str(self.skill_total_hits_max),
-            self.affliction_data_max,
-            self.debuff_data_max
-        ]
-
-    @classmethod
-    def csv_header(cls) -> list[str]:
-        """Get the header for CSV file."""
-        return super().csv_header() + [
-            "Skill Total Mods",
-            "Skill Total Hits",
-            "Afflictions",
-            "Debuffs"
-        ]
-
     def to_json_entry(self) -> dict[str, Any]:
         # Used by the website, DO NOT CHANGE
         json_dict = super().to_json_entry()

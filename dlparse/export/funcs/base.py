@@ -11,7 +11,10 @@ from dlparse.model import SkillDataBase
 from dlparse.mono.asset import CharaDataEntry, SkillIdEntry
 from dlparse.mono.manager import AssetManager
 
-__all__ = ("export_as_csv", "export_as_json", "export_skill_entries", "export_transform_skill_entries")
+__all__ = (
+    "export_as_csv", "export_as_json", "export_skill_entries", "export_transform_skill_entries",
+    "print_skipped_messages"
+)
 
 CT = TypeVar("CT", bound=CsvExportableEntryBase)
 ET = TypeVar("ET", bound=SkillExportEntryBase)
@@ -83,12 +86,7 @@ def export_skill_entries(
         ret.extend(entries)
         skipped_messages.extend(messages)
 
-    if skipped_messages:
-        print()
-        print(f"Some ({len(skipped_messages)}) items were skipped:")
-
-        for msg in skipped_messages:
-            print(msg)
+    print_skipped_messages(skipped_messages)
 
     return ret
 
@@ -122,3 +120,17 @@ def export_as_json(obj: Union[dict, list], file_path: str):
 
     with open(file_path, "w", encoding="utf-8", newline="") as f:
         json.dump(obj, f, cls=JsonEntryEncoder, ensure_ascii=False, sort_keys=True)
+
+
+def print_skipped_messages(skipped_messages: list[str]):
+    """
+    Placeholder method to keep track of where may have skipped messages to print.
+
+    This can potentially indicate that some methods could be merged.
+    """
+    if skipped_messages:
+        print()
+        print(f"Some ({len(skipped_messages)}) items were skipped:")
+
+        for msg in skipped_messages:
+            print(msg)

@@ -5,7 +5,7 @@ from dlparse.errors import (
 )
 from dlparse.export.entry import CharaExAbiltiesEntry
 from dlparse.mono.manager import AssetManager
-from .base import export_as_json
+from .base import export_as_json, print_skipped_messages
 
 __all__ = ("export_ex_abilities_as_entries", "export_ex_abilities_as_json")
 
@@ -39,12 +39,7 @@ def export_ex_abilities_as_entries(
 
             raise ex
 
-    if skipped_messages:
-        print()
-        print(f"Some ({len(skipped_messages)}) items were skipped:")
-
-        for msg in skipped_messages:
-            print(msg)
+    print_skipped_messages(skipped_messages)
 
     return entries
 

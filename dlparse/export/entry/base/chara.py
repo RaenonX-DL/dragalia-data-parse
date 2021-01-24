@@ -1,3 +1,4 @@
+"""Base class of an entry related to a character."""
 from abc import ABC
 from dataclasses import dataclass, field
 from typing import Any, TYPE_CHECKING
