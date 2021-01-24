@@ -58,6 +58,7 @@ class EffectUnitEntryBase(JsonExportableEntryBase, ABC):
             "paramUnit": {
                 "name": self.buff_unit_trans.to_json_entry(),
                 "code": self.effect_unit.parameter.parameter_unit.value,
+                "isPercentage": self.effect_unit.parameter.is_value_percentage,
             },
             "probabilityPct": self.effect_unit.probability_pct,
             "rate": self.effect_unit.rate,
