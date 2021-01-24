@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
-from dlparse.enums import Element, Weapon, UnitType
+from dlparse.enums import Element, UnitType, Weapon
 from dlparse.errors import AbilityConditionUnconvertibleError
 from dlparse.mono.asset.base import (
     AbilityConditionEntryBase, AbilityEntryBase, AbilityVariantEntryBase, MasterAssetBase, MasterEntryBase,
@@ -49,6 +49,7 @@ class ExAbilityEntry(AbilityEntryBase[ExAbilityConditionEntry, ExAbilityVariantE
             id=data["_Id"],
             name_label=data["_Name"],
             details_label=data["_Details"],
+            ability_icon_name=data["_AbilityIconName"],
             element=Element(data["_ElementalType"]),
             weapon=Weapon(data["_WeaponType"]),
             condition=ExAbilityConditionEntry(

@@ -337,6 +337,8 @@ class AbilityEntryBase(Generic[CT, VT], MasterEntryBase, ABC):
 
     condition: CT
 
+    ability_icon_name: str
+
     @property
     @abstractmethod
     def variants(self) -> list[VT]:
