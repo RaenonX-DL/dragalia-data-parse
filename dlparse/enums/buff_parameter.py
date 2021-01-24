@@ -3,7 +3,31 @@ from enum import Enum
 
 from .mixin import TranslatableEnumMixin
 
-__all__ = ("BuffParameter",)
+__all__ = ("BuffParameter", "BuffValueUnit")
+
+
+class BuffValueUnit(TranslatableEnumMixin, Enum):
+    """Enums for the unit of the buff parameter value."""
+
+    NONE = 0
+    PERCENTAGE = 1
+    SECONDS = 2
+    SKILL_POINT = 3
+    LEVEL = 4
+
+    @property
+    def translation_id(self) -> str:
+        return f"ENUM_UNIT_{self.name}"
+
+    @staticmethod
+    def get_all_translatable_members() -> list["BuffValueUnit"]:
+        return [
+            BuffValueUnit.NONE,
+            BuffValueUnit.PERCENTAGE,
+            BuffValueUnit.SECONDS,
+            BuffValueUnit.SKILL_POINT,
+            BuffValueUnit.LEVEL
+        ]
 
 
 class BuffParameter(TranslatableEnumMixin, Enum):
@@ -390,9 +414,126 @@ class BuffParameter(TranslatableEnumMixin, Enum):
     # endregion
 
     @property
+    def is_value_percentage(self) -> bool:
+        """Check if the value of the buff parameter is percentage."""
+        return self.parameter_unit == BuffValueUnit.PERCENTAGE
+
+    @property
+    def parameter_unit(self) -> BuffValueUnit:
+        """Get the unit of the parameter value."""
+        return _PARAM_UNIT[self]
+
+    @property
     def translation_id(self) -> str:
         return f"ENUM_BUFF_{self.name}"
 
     @staticmethod
     def get_all_translatable_members() -> list["BuffParameter"]:
         return list(BuffParameter)
+
+
+_PARAM_UNIT: dict[BuffParameter, BuffValueUnit] = {
+    BuffParameter.ATK_BUFF: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DEF_BUFF: BuffValueUnit.PERCENTAGE,
+    BuffParameter.CRT_RATE_BUFF: BuffValueUnit.PERCENTAGE,
+    BuffParameter.CRT_DAMAGE_BUFF: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SKILL_DAMAGE_BUFF: BuffValueUnit.PERCENTAGE,
+    BuffParameter.ASPD_BUFF: BuffValueUnit.PERCENTAGE,
+    BuffParameter.FS_DAMAGE_BUFF: BuffValueUnit.PERCENTAGE,
+    BuffParameter.FS_SPD: BuffValueUnit.PERCENTAGE,
+    BuffParameter.OD_GAUGE_DAMAGE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.AUTO_DAMAGE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.TARGETED_BUFF_TIME: BuffValueUnit.PERCENTAGE,
+    BuffParameter.COMBO_TIME: BuffValueUnit.SECONDS,
+    BuffParameter.FLAME_ELEM_DMG_UP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.WATER_ELEM_DMG_UP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.WIND_ELEM_DMG_UP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.LIGHT_ELEM_DMG_UP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SHADOW_ELEM_DMG_UP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.ATK_PASSIVE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DEF_PASSIVE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.CRT_RATE_PASSIVE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.CRT_DAMAGE_PASSIVE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SKILL_DAMAGE_PASSIVE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.ASPD_PASSIVE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.FS_DAMAGE_PASSIVE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_POISON: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_BURN: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_FREEZE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_PARALYZE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_BLIND: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_STUN: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_CURSE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_BOG: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_SLEEP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_FROSTBITE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_FLASHBURN: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_STORMLASH: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_SHADOWBLIGHT: BuffValueUnit.PERCENTAGE,
+    BuffParameter.INFLICT_PROB_SCORCHREND: BuffValueUnit.PERCENTAGE,
+    BuffParameter.ATK_EX: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SP_RATE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SP_GAIN: BuffValueUnit.SKILL_POINT,
+    BuffParameter.SP_CHARGE_PCT_S1: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SP_CHARGE_PCT_S2: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SP_CHARGE_PCT_S3: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SP_CHARGE_PCT_S4: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SP_CHARGE_PCT_USED: BuffValueUnit.PERCENTAGE,
+    BuffParameter.HEAL_RP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.HEAL_MAX_HP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SHIELD_SINGLE_DMG: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SHIELD_LIFE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_FLAME: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_WATER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_WIND: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_LIGHT: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_SHADOW: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_POISON: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_BURN: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_FREEZE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_PARALYZE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_BLIND: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_STUN: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_CURSE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_BOG: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_SLEEP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_FROSTBITE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_FLASHBURN: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_STORMLASH: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_SHADOWBLIGHT: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_SCORCHREND: BuffValueUnit.PERCENTAGE,
+    BuffParameter.HP_FIX_BY_MAX: BuffValueUnit.PERCENTAGE,
+    BuffParameter.HP_DECREASE_BY_MAX: BuffValueUnit.PERCENTAGE,
+    BuffParameter.HP_RAISE_BY_MAX: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DRAGON_TIME: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DRAGON_TIME_FINAL: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DP_CONSUMPTION: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DP_RATE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DRAGON_DAMAGE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DRAGON_GAUGE_FILL: BuffValueUnit.PERCENTAGE,
+    BuffParameter.POISONED_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.BURNED_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.FROZEN_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.PARALYZED_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.BLINDED_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.STUNNED_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.CURSED_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.BOGGED_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SLEPT_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.FROSTBITTEN_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.FLASHBURNED_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.STORMLASHED_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SHADOWBLIGHTED_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.SCORCHRENT_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.AFFLICTED_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DEF_DOWN_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.ATK_OR_DEF_DOWN_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.OD_STATE_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.BK_STATE_PUNISHER: BuffValueUnit.PERCENTAGE,
+    BuffParameter.AFFLICTION: BuffValueUnit.NONE,
+    BuffParameter.MARK: BuffValueUnit.NONE,
+    BuffParameter.DISPEL: BuffValueUnit.NONE,
+    BuffParameter.PLAYER_EXP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.ENERGY_LEVEL: BuffValueUnit.LEVEL,
+    BuffParameter.INSPIRE_LEVEL: BuffValueUnit.LEVEL,
+}

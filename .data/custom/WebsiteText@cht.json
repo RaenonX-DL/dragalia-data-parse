@@ -1,5 +1,341 @@
 [
   {
+    "id": "ABNORMAL_STATUS_NAME_0",
+    "text": ""
+  },
+  {
+    "id": "SKILL_IDENTIFIER_helper",
+    "text": "戰友"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_0s",
+    "text": "S1 0 層"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_1s",
+    "text": "S1 1 層"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_2s",
+    "text": "S1 2 層"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_3s",
+    "text": "S1 3 層"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_base",
+    "text": "S1"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_chain_none",
+    "text": "S1 無連鎖"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_chain_target_bk",
+    "text": "S1 連鎖 (目標 BK)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_chain_target_buffed",
+    "text": "S1 連鎖 (目標有 Buff)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_dragon",
+    "text": "龍化 S1"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1047",
+    "text": "S1 (雙閃)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1268",
+    "text": "S1 (6+ 蝶)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1293",
+    "text": "S1 (超活力)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1398",
+    "text": "S2 (30+ Combo)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1416",
+    "text": "S2 (滿血)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab281",
+    "text": "S1 (超活力)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab963",
+    "text": "強化 S1"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_s2",
+    "text": "S1 (S2 強化後)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_12",
+    "text": "S1 (爆能中)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_13",
+    "text": "S1 (爆能中)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_15",
+    "text": "S1 (低輸出)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_16",
+    "text": "S1 (高輸出)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_21",
+    "text": "S1 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_22",
+    "text": "S1 (攻啄)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_31",
+    "text": "S1 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_33",
+    "text": "S1 (伊甸園)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_34",
+    "text": "S1 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_35",
+    "text": "S1 (覆面)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_4",
+    "text": "S1 (前菜)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_5",
+    "text": "S1 (主菜)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_59",
+    "text": "S1 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_6",
+    "text": "S1 (點心)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_60",
+    "text": "S1 (煉金 1)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_61",
+    "text": "S1 (煉金 2)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_62",
+    "text": "S1 (煉金 3)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_65",
+    "text": "S1 (吃飽)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_7",
+    "text": "S1 (生魚片)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_8",
+    "text": "S1 (天婦羅)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_p2",
+    "text": "S1 P2"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_p3",
+    "text": "S1 P3"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_p4",
+    "text": "S1 P4"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_p5",
+    "text": "S1 P5"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_1s_1g",
+    "text": "S2 1 層 1 槽"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_1s_2g",
+    "text": "S2 1 層 2 槽"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_1s_3g",
+    "text": "S2 1 層 3 槽"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_2s_1g",
+    "text": "S2 2 層 1 槽"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_2s_2g",
+    "text": "S2 2 層 2 槽"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_2s_3g",
+    "text": "S2 2 層 3 槽"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_3s_1g",
+    "text": "S2 3 層 1 槽"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_3s_2g",
+    "text": "S2 3 層 2 槽"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_3s_3g",
+    "text": "S2 3 層 3 槽"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_base",
+    "text": "S2"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_chain_none",
+    "text": "S2 無連鎖"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_chain_target_bk",
+    "text": "S2 連鎖 (目標 BK)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_chain_target_buffed",
+    "text": "S2 連鎖 (目標有 Buff)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_dragon",
+    "text": "龍化 S2"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1302",
+    "text": "S2 (6+ 蝶)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab240",
+    "text": "S2 (龍化後)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_s1",
+    "text": "S2 (S1 強化後)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_12",
+    "text": "S2 (爆能中)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_16",
+    "text": "S2 (高輸出)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_21",
+    "text": "S2 (爆能)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_22",
+    "text": "S2 (攻啄)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_23",
+    "text": "S2 (守翼)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_26",
+    "text": "S2 0 層"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_27",
+    "text": "S2 1 層"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_28",
+    "text": "S2 2 層"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_29",
+    "text": "S2 3 層"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_33",
+    "text": "S2 (伊甸園)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_35",
+    "text": "S2 (覆面)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_37",
+    "text": "S2 (聖痕解放)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_60",
+    "text": "S2 (煉金 1)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_61",
+    "text": "S2 (煉金 2)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_62",
+    "text": "S2 (煉金 3)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p2",
+    "text": "S2 P2"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p3",
+    "text": "S2 P3"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p4",
+    "text": "S2 P4"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p5",
+    "text": "S2 P5"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p6",
+    "text": "S2 P6"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p7",
+    "text": "S2 P7"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p8",
+    "text": "S2 P8"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p9",
+    "text": "S2 P9"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_shared",
+    "text": "共享"
+  },
+  {
     "id": "ENUM_TARGET_POISONED",
     "text": "毒"
   },
@@ -1352,339 +1688,23 @@
     "text": "龍形 S1"
   },
   {
-    "id": "SKILL_IDENTIFIER_helper",
-    "text": "戰友"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_0s",
-    "text": "S1 0 層"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_1s",
-    "text": "S1 1 層"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_2s",
-    "text": "S1 2 層"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_3s",
-    "text": "S1 3 層"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_base",
-    "text": "S1"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_chain_none",
-    "text": "S1 無連鎖"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_chain_target_bk",
-    "text": "S1 連鎖 (目標 BK)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_chain_target_buffed",
-    "text": "S1 連鎖 (目標有 Buff)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_dragon",
-    "text": "龍化 S1"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1047",
-    "text": "S1 (雙閃)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1268",
-    "text": "S1 (6+ 蝶)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1293",
-    "text": "S1 (超活力)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1398",
-    "text": "S2 (30+ Combo)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1416",
-    "text": "S2 (滿血)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab281",
-    "text": "S1 (超活力)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab963",
-    "text": "強化 S1"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_enhanced_by_s2",
-    "text": "S1 (S2 強化後)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_12",
-    "text": "S1 (爆能中)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_13",
-    "text": "S1 (爆能中)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_15",
-    "text": "S1 (低輸出)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_16",
-    "text": "S1 (高輸出)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_21",
-    "text": "S1 (一般)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_22",
-    "text": "S1 (攻啄)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_31",
-    "text": "S1 (一般)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_33",
-    "text": "S1 (伊甸園)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_34",
-    "text": "S1 (一般)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_35",
-    "text": "S1 (覆面)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_4",
-    "text": "S1 (前菜)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_5",
-    "text": "S1 (主菜)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_59",
-    "text": "S1 (一般)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_6",
-    "text": "S1 (點心)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_60",
-    "text": "S1 (煉金 1)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_61",
-    "text": "S1 (煉金 2)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_62",
-    "text": "S1 (煉金 3)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_65",
-    "text": "S1 (吃飽)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_7",
-    "text": "S1 (生魚片)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_8",
-    "text": "S1 (天婦羅)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_p2",
-    "text": "S1 P2"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_p3",
-    "text": "S1 P3"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_p4",
-    "text": "S1 P4"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_p5",
-    "text": "S1 P5"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_1s_1g",
-    "text": "S2 1 層 1 槽"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_1s_2g",
-    "text": "S2 1 層 2 槽"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_1s_3g",
-    "text": "S2 1 層 3 槽"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_2s_1g",
-    "text": "S2 2 層 1 槽"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_2s_2g",
-    "text": "S2 2 層 2 槽"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_2s_3g",
-    "text": "S2 2 層 3 槽"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_3s_1g",
-    "text": "S2 3 層 1 槽"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_3s_2g",
-    "text": "S2 3 層 2 槽"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_3s_3g",
-    "text": "S2 3 層 3 槽"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_base",
-    "text": "S2"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_chain_none",
-    "text": "S2 無連鎖"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_chain_target_bk",
-    "text": "S2 連鎖 (目標 BK)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_chain_target_buffed",
-    "text": "S2 連鎖 (目標有 Buff)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_dragon",
-    "text": "龍化 S2"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1302",
-    "text": "S2 (6+ 蝶)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab240",
-    "text": "S2 (龍化後)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_enhanced_by_s1",
-    "text": "S2 (S1 強化後)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_12",
-    "text": "S2 (爆能中)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_16",
-    "text": "S2 (高輸出)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_21",
-    "text": "S2 (爆能)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_22",
-    "text": "S2 (攻啄)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_23",
-    "text": "S2 (守翼)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_26",
-    "text": "S2 0 層"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_27",
-    "text": "S2 1 層"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_28",
-    "text": "S2 2 層"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_29",
-    "text": "S2 3 層"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_33",
-    "text": "S2 (伊甸園)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_35",
-    "text": "S2 (覆面)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_37",
-    "text": "S2 (聖痕解放)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_60",
-    "text": "S2 (煉金 1)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_61",
-    "text": "S2 (煉金 2)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_62",
-    "text": "S2 (煉金 3)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p2",
-    "text": "S2 P2"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p3",
-    "text": "S2 P3"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p4",
-    "text": "S2 P4"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p5",
-    "text": "S2 P5"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p6",
-    "text": "S2 P6"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p7",
-    "text": "S2 P7"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p8",
-    "text": "S2 P8"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p9",
-    "text": "S2 P9"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_shared",
-    "text": "共享"
-  },
-  {
-    "id": "ABNORMAL_STATUS_NAME_0",
+    "id": "ENUM_UNIT_NONE",
     "text": ""
+  },
+  {
+    "id": "ENUM_UNIT_PERCENTAGE",
+    "text": "%"
+  },
+  {
+    "id": "ENUM_UNIT_SECONDS",
+    "text": "秒"
+  },
+  {
+    "id": "ENUM_UNIT_SKILL_POINT",
+    "text": "SP"
+  },
+  {
+    "id": "ENUM_UNIT_LEVEL",
+    "text": "等"
   }
 ]

@@ -1,7 +1,8 @@
 from typing import Sequence, TypeVar
 
 from dlparse.enums import (
-    AbilityTargetAction, Condition, Element, HitTargetSimple, Language, Status, TranslatableEnumMixin,
+    AbilityTargetAction, BuffParameter, BuffValueUnit, Condition, Element, HitTargetSimple, Language, Status,
+    TranslatableEnumMixin,
     cond_afflictions, cond_elements,
 )
 from dlparse.export import (
@@ -34,6 +35,14 @@ def export_enum(asset_manager: AssetManager, key: str, enums: Sequence[T]):
 
 def test_export_affliction_conditions(asset_manager: AssetManager):
     export_enum(asset_manager, "affliction", cond_afflictions)
+
+
+def test_export_buff_param_conditions(asset_manager: AssetManager):
+    export_enum(asset_manager, "buffParam", BuffParameter.get_all_translatable_members())
+
+
+def test_export_buff_param_unit_conditions(asset_manager: AssetManager):
+    export_enum(asset_manager, "buffParamUnit", BuffValueUnit.get_all_translatable_members())
 
 
 def test_export_element_conditions(asset_manager: AssetManager):

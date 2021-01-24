@@ -18,7 +18,7 @@ def test_exported_json(asset_manager: AssetManager):
 
         effect_unit_keys = {
             # Effect unit base
-            "status", "target", "parameter", "probabilityPct", "rate", "slipInterval", "slipDamageMod",
+            "status", "target", "parameter", "paramUnit", "probabilityPct", "rate", "slipInterval", "slipDamageMod",
             "durationSec", "durationCount", "maxStackCount", "stackable",
             # Ability variants
             "sourceAbilityId", "conditions", "cooldownSec", "maxOccurrences", "rateMax", "targetAction"

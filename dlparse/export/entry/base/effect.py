@@ -24,6 +24,7 @@ class EffectUnitEntryBase(JsonExportableEntryBase, ABC):
     status_trans: TextEntry = field(init=False)
     target_trans: TextEntry = field(init=False)
     buff_param_trans: TextEntry = field(init=False)
+    buff_unit_trans: TextEntry = field(init=False)
 
     def __post_init__(self, asset_manager: AssetManager):
         self.status_trans = TextEntry(
@@ -38,6 +39,11 @@ class EffectUnitEntryBase(JsonExportableEntryBase, ABC):
             asset_text_website=asset_manager.asset_text_website, labels=self.effect_unit.parameter.translation_id,
             asset_text_multi=asset_manager.asset_text_multi
         )
+        self.buff_unit_trans = TextEntry(
+            asset_text_website=asset_manager.asset_text_website,
+            asset_text_multi=asset_manager.asset_text_multi,
+            labels=self.effect_unit.parameter.parameter_unit.translation_id
+        )
 
     def to_json_entry(self) -> dict[str, Any]:
         return {
@@ -46,6 +52,10 @@ class EffectUnitEntryBase(JsonExportableEntryBase, ABC):
             "parameter": {
                 "name": self.buff_param_trans.to_json_entry(),
                 "code": self.effect_unit.parameter.value,
+            },
+            "paramUnit": {
+                "name": self.buff_unit_trans.to_json_entry(),
+                "code": self.effect_unit.parameter.parameter_unit.value,
             },
             "probabilityPct": self.effect_unit.probability_pct,
             "rate": self.effect_unit.rate,

@@ -1,5 +1,341 @@
 [
   {
+    "id": "ABNORMAL_STATUS_NAME_0",
+    "text": ""
+  },
+  {
+    "id": "SKILL_IDENTIFIER_helper",
+    "text": "Helper"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_0s",
+    "text": "S1 0 Stacks"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_1s",
+    "text": "S1 1 Stack"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_2s",
+    "text": "S1 2 Stacks"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_3s",
+    "text": "S1 3 Stacks"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_base",
+    "text": "S1"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_chain_none",
+    "text": "S1 No Chain"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_chain_target_bk",
+    "text": "S1 Chain (Target BK)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_chain_target_buffed",
+    "text": "S1 Chain (Target Buffed)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_dragon",
+    "text": "Dragon S1"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1047",
+    "text": "S1 (Both Buffs)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1268",
+    "text": "S1 (6+ Butterflies)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1293",
+    "text": "S1 (Energized)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1398",
+    "text": "S2 (30+ Combo)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1416",
+    "text": "S2 (Full HP)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab281",
+    "text": "S1 (Energized)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab963",
+    "text": "Enhanced S1"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_s2",
+    "text": "S1 (S2 Enhanced)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_12",
+    "text": "S1 (Dragon Drive)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_13",
+    "text": "S1 (Dragon Drive)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_15",
+    "text": "S1 (Low Power)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_16",
+    "text": "S1 (High Power)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_21",
+    "text": "S1 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_22",
+    "text": "S1 (Soaring Sparrow)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_31",
+    "text": "S1 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_33",
+    "text": "S1 (Eden Mode)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_34",
+    "text": "S1 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_35",
+    "text": "S1 (Masked)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_4",
+    "text": "S1 (Appetizer)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_5",
+    "text": "S1 (Entrée)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_59",
+    "text": "S1 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_6",
+    "text": "S1 (Dessert)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_60",
+    "text": "S1 (1 Cartridge)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_61",
+    "text": "S1 (2 Cartridges)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_62",
+    "text": "S1 (3 Cartridges)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_65",
+    "text": "S1 (Full Gourmand)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_7",
+    "text": "S1 (Sashimi)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_8",
+    "text": "S1 (Tempura)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_p2",
+    "text": "S1 P2"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_p3",
+    "text": "S1 P3"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_p4",
+    "text": "S1 P4"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_p5",
+    "text": "S1 P5"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_1s_1g",
+    "text": "S2 1 Stack 1 SP"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_1s_2g",
+    "text": "S2 1 Stack 2 SP"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_1s_3g",
+    "text": "S2 1 Stack 3 SP"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_2s_1g",
+    "text": "S2 2 Stacks 1 SP"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_2s_2g",
+    "text": "S2 2 Stacks 2 SP"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_2s_3g",
+    "text": "S2 2 Stacks 3 SP"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_3s_1g",
+    "text": "S2 3 Stacks 1 SP"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_3s_2g",
+    "text": "S2 3 Stacks 2 SP"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_3s_3g",
+    "text": "S2 3 Stacks 3 SP"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_base",
+    "text": "S2"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_chain_none",
+    "text": "S2 No Chain"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_chain_target_bk",
+    "text": "S2 Chain (Target BK)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_chain_target_buffed",
+    "text": "S2 Chain (Target Buffed)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_dragon",
+    "text": "Dragon S2"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1302",
+    "text": "S2 (6+ Butterflies)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab240",
+    "text": "S2 (After Shapeshift)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_s1",
+    "text": "S2 (S1 Enhanced)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_12",
+    "text": "S2 (Dragon Drive)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_16",
+    "text": "S2 (High Power)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_21",
+    "text": "S2 (Dragon Drive)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_22",
+    "text": "S2 (Soaring Sparrow)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_23",
+    "text": "S2 (Mighty Sparrow)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_26",
+    "text": "S2 0 Stacks"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_27",
+    "text": "S2 1 Stack"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_28",
+    "text": "S2 2 Stacks"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_29",
+    "text": "S2 3 Stacks"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_33",
+    "text": "S2 (Eden Mode)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_35",
+    "text": "S2 (Masked)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_37",
+    "text": "S2 (Sigil Released)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_60",
+    "text": "S2 (1 Cartridge)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_61",
+    "text": "S2 (2 Cartridges)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_62",
+    "text": "S2 (3 Cartridges)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p2",
+    "text": "S2 P2"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p3",
+    "text": "S2 P3"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p4",
+    "text": "S2 P4"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p5",
+    "text": "S2 P5"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p6",
+    "text": "S2 P6"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p7",
+    "text": "S2 P7"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p8",
+    "text": "S2 P8"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_p9",
+    "text": "S2 P9"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_shared",
+    "text": "Skill Share"
+  },
+  {
     "id": "ENUM_TARGET_POISONED",
     "text": "Poison"
   },
@@ -1352,339 +1688,23 @@
     "text": "Dragon S1"
   },
   {
-    "id": "SKILL_IDENTIFIER_helper",
-    "text": "Helper"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_0s",
-    "text": "S1 0 Stacks"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_1s",
-    "text": "S1 1 Stack"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_2s",
-    "text": "S1 2 Stacks"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_3s",
-    "text": "S1 3 Stacks"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_base",
-    "text": "S1"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_chain_none",
-    "text": "S1 No Chain"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_chain_target_bk",
-    "text": "S1 Chain (Target BK)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_chain_target_buffed",
-    "text": "S1 Chain (Target Buffed)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_dragon",
-    "text": "Dragon S1"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1047",
-    "text": "S1 (Both Buffs)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1268",
-    "text": "S1 (6+ Butterflies)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1293",
-    "text": "S1 (Energized)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1398",
-    "text": "S2 (30+ Combo)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1416",
-    "text": "S2 (Full HP)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab281",
-    "text": "S1 (Energized)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab963",
-    "text": "Enhanced S1"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_enhanced_by_s2",
-    "text": "S1 (S2 Enhanced)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_12",
-    "text": "S1 (Dragon Drive)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_13",
-    "text": "S1 (Dragon Drive)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_15",
-    "text": "S1 (Low Power)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_16",
-    "text": "S1 (High Power)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_21",
-    "text": "S1 (Normal)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_22",
-    "text": "S1 (Soaring Sparrow)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_31",
-    "text": "S1 (Normal)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_33",
-    "text": "S1 (Eden Mode)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_34",
-    "text": "S1 (Normal)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_35",
-    "text": "S1 (Masked)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_4",
-    "text": "S1 (Appetizer)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_5",
-    "text": "S1 (Entrée)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_59",
-    "text": "S1 (Normal)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_6",
-    "text": "S1 (Dessert)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_60",
-    "text": "S1 (1 Cartridge)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_61",
-    "text": "S1 (2 Cartridges)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_62",
-    "text": "S1 (3 Cartridges)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_65",
-    "text": "S1 (Full Gourmand)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_7",
-    "text": "S1 (Sashimi)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_mode_8",
-    "text": "S1 (Tempura)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_p2",
-    "text": "S1 P2"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_p3",
-    "text": "S1 P3"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_p4",
-    "text": "S1 P4"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s1_p5",
-    "text": "S1 P5"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_1s_1g",
-    "text": "S2 1 Stack 1 SP"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_1s_2g",
-    "text": "S2 1 Stack 2 SP"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_1s_3g",
-    "text": "S2 1 Stack 3 SP"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_2s_1g",
-    "text": "S2 2 Stacks 1 SP"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_2s_2g",
-    "text": "S2 2 Stacks 2 SP"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_2s_3g",
-    "text": "S2 2 Stacks 3 SP"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_3s_1g",
-    "text": "S2 3 Stacks 1 SP"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_3s_2g",
-    "text": "S2 3 Stacks 2 SP"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_3s_3g",
-    "text": "S2 3 Stacks 3 SP"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_base",
-    "text": "S2"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_chain_none",
-    "text": "S2 No Chain"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_chain_target_bk",
-    "text": "S2 Chain (Target BK)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_chain_target_buffed",
-    "text": "S2 Chain (Target Buffed)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_dragon",
-    "text": "Dragon S2"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1302",
-    "text": "S2 (6+ Butterflies)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab240",
-    "text": "S2 (After Shapeshift)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_enhanced_by_s1",
-    "text": "S2 (S1 Enhanced)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_12",
-    "text": "S2 (Dragon Drive)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_16",
-    "text": "S2 (High Power)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_21",
-    "text": "S2 (Dragon Drive)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_22",
-    "text": "S2 (Soaring Sparrow)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_23",
-    "text": "S2 (Mighty Sparrow)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_26",
-    "text": "S2 0 Stacks"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_27",
-    "text": "S2 1 Stack"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_28",
-    "text": "S2 2 Stacks"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_29",
-    "text": "S2 3 Stacks"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_33",
-    "text": "S2 (Eden Mode)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_35",
-    "text": "S2 (Masked)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_37",
-    "text": "S2 (Sigil Released)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_60",
-    "text": "S2 (1 Cartridge)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_61",
-    "text": "S2 (2 Cartridges)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_mode_62",
-    "text": "S2 (3 Cartridges)"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p2",
-    "text": "S2 P2"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p3",
-    "text": "S2 P3"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p4",
-    "text": "S2 P4"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p5",
-    "text": "S2 P5"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p6",
-    "text": "S2 P6"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p7",
-    "text": "S2 P7"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p8",
-    "text": "S2 P8"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_s2_p9",
-    "text": "S2 P9"
-  },
-  {
-    "id": "SKILL_IDENTIFIER_shared",
-    "text": "Skill Share"
-  },
-  {
-    "id": "ABNORMAL_STATUS_NAME_0",
+    "id": "ENUM_UNIT_NONE",
     "text": ""
+  },
+  {
+    "id": "ENUM_UNIT_PERCENTAGE",
+    "text": "%"
+  },
+  {
+    "id": "ENUM_UNIT_SECONDS",
+    "text": "secs"
+  },
+  {
+    "id": "ENUM_UNIT_SKILL_POINT",
+    "text": "SP"
+  },
+  {
+    "id": "ENUM_UNIT_LEVEL",
+    "text": "Lv"
   }
 ]
