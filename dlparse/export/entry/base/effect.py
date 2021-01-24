@@ -3,6 +3,7 @@ from abc import ABC
 from dataclasses import InitVar, dataclass, field
 from typing import Any, TypeVar
 
+from dlparse.enums import get_image_path
 from dlparse.model import EffectUnitBase
 from dlparse.mono.manager import AssetManager
 from .entry import JsonExportableEntryBase
@@ -52,6 +53,7 @@ class EffectUnitEntryBase(JsonExportableEntryBase, ABC):
             "parameter": {
                 "name": self.buff_param_trans.to_json_entry(),
                 "code": self.effect_unit.parameter.value,
+                "imagePath": get_image_path(self.effect_unit.parameter)
             },
             "paramUnit": {
                 "name": self.buff_unit_trans.to_json_entry(),
