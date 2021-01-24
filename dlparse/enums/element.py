@@ -3,6 +3,7 @@ from enum import Enum, Flag
 
 from dlparse.errors import EnumConversionError
 from .buff_parameter import BuffParameter
+from .mixin import TranslatableEnumMixin
 
 __all__ = ("Element", "ElementFlag")
 
@@ -31,7 +32,7 @@ class ElementFlag(Flag):
         return [elem for elem in Element.get_all_valid_elements() if elem.to_flag() in self]
 
 
-class Element(Enum):
+class Element(TranslatableEnumMixin, Enum):
     """
     Element enums used in the assets.
 
@@ -57,6 +58,10 @@ class Element(Enum):
         A valid element must be one of Flame, Water, Wind, Light, or Shadow.
         """
         return self in self.get_all_valid_elements()
+
+    @property
+    def translation_id(self) -> str:
+        return f"ENUM_ELEM_{self.name}"
 
     def to_flag(self) -> ElementFlag:
         """
@@ -104,6 +109,11 @@ class Element(Enum):
     def get_all_valid_elements() -> list["Element"]:
         """Get a list of all valid elements."""
         return [Element.FLAME, Element.WATER, Element.WIND, Element.LIGHT, Element.SHADOW]
+
+    @staticmethod
+    def get_all_translatable_members() -> list["Element"]:
+        """Get all translatable enum members."""
+        return Element.get_all_valid_elements()
 
 
 _TRANS_DICT_TO_FLAG: dict[Element, ElementFlag] = {

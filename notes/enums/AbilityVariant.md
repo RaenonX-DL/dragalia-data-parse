@@ -222,7 +222,7 @@ Buff the target action damage. If the variant is inside an EX ability entry, the
 
 Action to receive the damage boost.
 
-For the number correspondance, check [the ability target action implementation.](/dlparse/enums/action.py)
+For the number correspondence, check [the ability target action implementation.](/dlparse/enums/action.py)
 
 #### Variant Up Value
 
@@ -350,7 +350,7 @@ If `ID-A = 4`, `Up value = 8.0`, then if the damage will be boosted by 8% if the
 
 #### Variant ID - A
 
-Affliction status enum. For the ID correspondance, check [the implementation of the enum](/dlparse/enums/status.py).
+Affliction status enum. For the ID correspondence, check [the implementation of the enum](/dlparse/enums/status.py).
 
 #### Variant Up Value
 
@@ -459,7 +459,7 @@ Gauge(s) filled | DEF | Action Damage Boost
 
 Action to receive the damage boost.
 
-For the number correspondance, check [the ability target action implementation.](/dlparse/enums/action.py)
+For the number correspondence, check [the ability target action implementation.](/dlparse/enums/action.py)
 
 -----
 
@@ -567,7 +567,7 @@ Buff the elemental damage.
 
 #### Variant ID - A
 
-Element enum. For the ID correspondance, check [the implementation of the enum](/dlparse/enums/element.py).
+Element enum. For the ID correspondence, check [the implementation of the enum](/dlparse/enums/element.py).
 
 #### Variant Up Value
 

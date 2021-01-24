@@ -279,7 +279,7 @@ Triggered once when the user successfully inflicted a certain affliction status.
 value of burn).
 
 - **Val 1**: Enum value of the affliction status to trigger.
-  Check [the implementation of the enum](/dlparse/enums/status.py) for the correspondance.
+  Check [the implementation of the enum](/dlparse/enums/status.py) for the correspondence.
 
 -----
 
@@ -351,7 +351,7 @@ Effective if the enemy is in a certain type of the debuff.
 
 - `3` corresponds to ``ActionDefDebuff.Defense``.
 
-- **Val 1**: Type of the debuff. For the ID correspondance,
+- **Val 1**: Type of the debuff. For the ID correspondence,
   check [the implementation of the enum.](/dlparse/enums/action_debuff_type.py)
 
 -----

@@ -1,4 +1,4 @@
-from dlparse.enums import Condition, Element, Language, cond_afflictions, cond_elements
+from dlparse.enums import Condition, Element, Language, Status, cond_afflictions, cond_elements
 from dlparse.export import (
     collect_chained_ex_ability_buff_param, collect_ex_ability_buff_param, export_condition_entries,
     export_enums_entries,
@@ -49,11 +49,30 @@ def test_export_elements_conditions(asset_manager: AssetManager):
 def test_export_element_enums(asset_manager: AssetManager):
     key = "element"
 
-    entries = export_enums_entries(asset_manager, {key: Element.get_all_valid_elements()})
+    entries = export_enums_entries(asset_manager, {key: Element.get_all_translatable_members()})
 
     assert len(entries) > 0
 
-    conditions_missing: set[str] = {elem.name for elem in Element.get_all_valid_elements()}
+    conditions_missing: set[str] = {elem.name for elem in Element.get_all_translatable_members()}
+
+    for entry in entries[key]:
+        conditions_missing.remove(entry.enum_name)
+
+        assert Language.CHT.value in entry.trans.text_dict
+        assert Language.EN.value in entry.trans.text_dict
+        assert Language.JP.value in entry.trans.text_dict
+
+    assert len(conditions_missing) == 0, f"Missing conditions: {conditions_missing}"
+
+
+def test_export_status_enums(asset_manager: AssetManager):
+    key = "status"
+
+    entries = export_enums_entries(asset_manager, {key: Status.get_all_translatable_members()})
+
+    assert len(entries) > 0
+
+    conditions_missing: set[str] = {elem.name for elem in Status.get_all_translatable_members()}
 
     for entry in entries[key]:
         conditions_missing.remove(entry.enum_name)
@@ -69,8 +88,7 @@ def test_export_ex_ability_buff_params(transformer_ability: AbilityTransformer, 
     key = "exBuffParam"
 
     entries = export_enums_entries(
-        asset_manager, {key: collect_ex_ability_buff_param(transformer_ability, asset_manager)},
-        prefix="ENUM_BUFF_"
+        asset_manager, {key: collect_ex_ability_buff_param(transformer_ability, asset_manager)}
     )
 
     assert len(entries) > 0
@@ -93,8 +111,7 @@ def test_export_chained_ex_ability_buff_params(transformer_ability: AbilityTrans
     key = "cexBuffParam"
 
     entries = export_enums_entries(
-        asset_manager, {key: collect_chained_ex_ability_buff_param(transformer_ability, asset_manager)},
-        prefix="ENUM_BUFF_"
+        asset_manager, {key: collect_chained_ex_ability_buff_param(transformer_ability, asset_manager)}
     )
 
     assert len(entries) > 0

@@ -47,11 +47,8 @@ class FileExporter:
         self._dir_export: str = dir_export
 
     @time_exec(title="Enums exporting time")
-    def _export_enums(self, enums: dict[str, Sequence[T]], name: str, /, prefix: str = "ENUM_"):
-        export_enums_json(
-            self._asset_manager, enums, os.path.join(self._dir_export, "enums", f"{name}.json"),
-            prefix=prefix
-        )
+    def _export_enums(self, enums: dict[str, Sequence[T]], name: str):
+        export_enums_json(self._asset_manager, enums, os.path.join(self._dir_export, "enums", f"{name}.json"))
 
     @time_exec(title="Condition enums exporting time")
     def _export_enums_condition(self, name: str):
@@ -62,7 +59,7 @@ class FileExporter:
         enums_ex = collect_ex_ability_buff_param(self._transformer_ability, self._asset_manager)
         enums_cex = collect_chained_ex_ability_buff_param(self._transformer_ability, self._asset_manager)
 
-        self._export_enums({"exBuffParam": enums_ex, "chainedExBuffParam": enums_cex}, "exParam", prefix="BUFF_")
+        self._export_enums({"exBuffParam": enums_ex, "chainedExBuffParam": enums_cex}, "exParam")
 
     @time_exec(title="Element bonus exporting time")
     def _export_elem_bonus(self):

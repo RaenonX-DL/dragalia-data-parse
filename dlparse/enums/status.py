@@ -1,13 +1,14 @@
 """Status enums."""
-from enum import IntEnum
+from enum import Enum
 
 from dlparse.errors import EnumConversionError
 from .buff_parameter import BuffParameter
+from .mixin import TranslatableEnumMixin
 
 __all__ = ("Status",)
 
 
-class Status(IntEnum):
+class Status(TranslatableEnumMixin, Enum):
     """
     Enums used in the assets to represent the status. Different context may have different meaning toward this.
 
@@ -104,6 +105,30 @@ class Status(IntEnum):
             raise EnumConversionError(self, Status, BuffParameter)
 
         return _TRANS_DICT_PUNISHER[self]
+
+    @property
+    def translation_id(self) -> str:
+        return f"ABNORMAL_STATUS_NAME_{self.value}"
+
+    @staticmethod
+    def get_all_translatable_members() -> list["Status"]:
+        """Get all translatable enum members."""
+        return [
+            Status.POISON,
+            Status.BURN,
+            Status.FREEZE,
+            Status.PARALYZE,
+            Status.BLIND,
+            Status.STUN,
+            Status.CURSE,
+            Status.BOG,
+            Status.SLEEP,
+            Status.FROSTBITE,
+            Status.FLASHBURN,
+            Status.STORMLASH,
+            Status.SHADOWBLIGHT,
+            Status.SCORCHREND,
+        ]
 
 
 _TRANS_DICT_RESIST: dict[Status, BuffParameter] = {

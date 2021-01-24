@@ -121,7 +121,10 @@ def export_condition_entries(asset_manager: "AssetManager") -> dict[int, Conditi
         condition.value: ConditionEnumEntry(
             enum_name=condition.name, enum_code=condition.value, enum_image_path=get_image_path(condition),
             color_theme=condition_theme.get(condition, default_theme),
-            trans=TextEntry(asset_manager.asset_text_website, f"ENUM_COND_{condition.name}")
+            trans=TextEntry(
+                asset_text_website=asset_manager.asset_text_website, labels=condition.translation_id,
+                asset_text_multi=asset_manager.asset_text_multi
+            )
         )
         for condition in Condition
     }

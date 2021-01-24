@@ -155,12 +155,16 @@ class MultilingualAssetBase(Generic[XT], ABC):
 
             self._assets[lang_code_asset] = parser_cls.parse_file(file_like)
 
-    def get_text(self, lang_code: str, label: str) -> str:
+    def get_text(self, lang_code: str, label: str, on_not_found: Any = THROW_ERROR_ON_FAIL) -> str:
         """
         Get the text labeled as ``label`` in ``lang_code``.
 
+        If ``on_not_found`` is not given, an error will be thrown if the text is not found.
+        Otherwise, ``on_not_found`` will be returned.
+
         :raises LanguageAssetNotFoundError: if the language asset for `lang_code` is not found
-        :raises TextLabelNotFoundError: if the `label` in `lang_code` is not found
+        :raises TextLabelNotFoundError: if the `label` in `lang_code` is not found and `on_not_found` indicates to
+        throw an error
         """
         # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
         if not (lang_asset := self._assets.get(lang_code)):  # pylint: disable=superfluous-parens
@@ -168,6 +172,9 @@ class MultilingualAssetBase(Generic[XT], ABC):
 
         # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
         if not (lang_entry := lang_asset.get(label)):  # pylint: disable=superfluous-parens
-            raise TextLabelNotFoundError(label)
+            if on_not_found is THROW_ERROR_ON_FAIL:
+                raise TextLabelNotFoundError(label)
+
+            return on_not_found
 
         return lang_entry.text

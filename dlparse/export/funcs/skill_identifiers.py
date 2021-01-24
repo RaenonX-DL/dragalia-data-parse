@@ -24,7 +24,10 @@ def export_skill_identifiers_as_json(
     json_dict = {
         skill_identifier: SkillIdentifierEntry(
             skill_identifier,
-            TextEntry(asset_manager.asset_text_website, f"SKILL_IDENTIFIER_{skill_identifier}")
+            TextEntry(
+                asset_text_website=asset_manager.asset_text_website, labels=f"SKILL_IDENTIFIER_{skill_identifier}",
+                asset_text_multi=asset_manager.asset_text_multi
+            )
         ).to_json_entry()
         for skill_identifier in skill_identifiers
     }

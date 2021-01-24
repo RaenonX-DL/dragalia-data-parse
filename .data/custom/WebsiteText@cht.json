@@ -84,23 +84,23 @@
     "text": "有利"
   },
   {
-    "id": "ENUM_FLAME",
+    "id": "ENUM_ELEM_FLAME",
     "text": "火"
   },
   {
-    "id": "ENUM_WATER",
+    "id": "ENUM_ELEM_WATER",
     "text": "水"
   },
   {
-    "id": "ENUM_WIND",
+    "id": "ENUM_ELEM_WIND",
     "text": "風"
   },
   {
-    "id": "ENUM_LIGHT",
+    "id": "ENUM_ELEM_LIGHT",
     "text": "光"
   },
   {
-    "id": "ENUM_SHADOW",
+    "id": "ENUM_ELEM_SHADOW",
     "text": "暗"
   },
   {
@@ -867,7 +867,6 @@
     "id": "ENUM_COND_QUEST_START",
     "text": "任務開始"
   },
-
   {
     "id": "ENUM_BUFF_ATK_BUFF",
     "text": "攻擊 (Buff)"

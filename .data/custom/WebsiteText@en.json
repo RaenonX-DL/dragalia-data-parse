@@ -84,23 +84,23 @@
     "text": "Effective"
   },
   {
-    "id": "ENUM_FLAME",
+    "id": "ENUM_ELEM_FLAME",
     "text": "Flame"
   },
   {
-    "id": "ENUM_WATER",
+    "id": "ENUM_ELEM_WATER",
     "text": "Water"
   },
   {
-    "id": "ENUM_WIND",
+    "id": "ENUM_ELEM_WIND",
     "text": "Wind"
   },
   {
-    "id": "ENUM_LIGHT",
+    "id": "ENUM_ELEM_LIGHT",
     "text": "Light"
   },
   {
-    "id": "ENUM_SHADOW",
+    "id": "ENUM_ELEM_SHADOW",
     "text": "Shadow"
   },
   {

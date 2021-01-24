@@ -1,10 +1,12 @@
 """Buff parameter enum class."""
 from enum import Enum
 
+from .mixin import TranslatableEnumMixin
+
 __all__ = ("BuffParameter",)
 
 
-class BuffParameter(Enum):
+class BuffParameter(TranslatableEnumMixin, Enum):
     """
     Buff target parameter enum class.
 
@@ -383,5 +385,14 @@ class BuffParameter(Enum):
     Note that the max of the inspire level is 5. Upon reaching the max level, the user is inspired.
     The next attacking skill is guaranteed to be critical for every hit, if the user is inspired.
     """
+
     # endregion
     # endregion
+
+    @property
+    def translation_id(self) -> str:
+        return f"ENUM_BUFF_{self.name}"
+
+    @staticmethod
+    def get_all_translatable_members() -> list["BuffParameter"]:
+        return list(BuffParameter)

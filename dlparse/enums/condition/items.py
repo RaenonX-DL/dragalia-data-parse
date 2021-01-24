@@ -1,10 +1,12 @@
 """Conditions for the skills."""
 from enum import Enum
 
+from ..mixin import TranslatableEnumMixin
+
 __all__ = ("Condition",)
 
 
-class Condition(Enum):
+class Condition(TranslatableEnumMixin, Enum):
     """
     Conditions for the skill data entries.
 
@@ -328,6 +330,14 @@ class Condition(Enum):
     QUEST_START = 901
 
     # endregion
+
+    @property
+    def translation_id(self) -> str:
+        return f"ENUM_COND_{self.name}"
+
+    @staticmethod
+    def get_all_translatable_members() -> list["Condition"]:
+        return list(Condition)
 
     def __bool__(self):
         return self != Condition.NONE
