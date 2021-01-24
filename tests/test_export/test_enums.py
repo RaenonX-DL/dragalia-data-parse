@@ -70,7 +70,7 @@ def test_export_ex_ability_buff_params(transformer_ability: AbilityTransformer, 
 
     entries = export_enums_entries(
         asset_manager, {key: collect_ex_ability_buff_param(transformer_ability, asset_manager)},
-        prefix="BUFF_"
+        prefix="ENUM_BUFF_"
     )
 
     assert len(entries) > 0
@@ -94,7 +94,7 @@ def test_export_chained_ex_ability_buff_params(transformer_ability: AbilityTrans
 
     entries = export_enums_entries(
         asset_manager, {key: collect_chained_ex_ability_buff_param(transformer_ability, asset_manager)},
-        prefix="BUFF_"
+        prefix="ENUM_BUFF_"
     )
 
     assert len(entries) > 0

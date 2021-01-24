@@ -868,6 +868,418 @@
     "text": "任務開始"
   },
   {
+    "id": "ENUM_BUFF_ATK_BUFF",
+    "text": "攻擊 (Buff)"
+  },
+  {
+    "id": "ENUM_BUFF_DEF_BUFF",
+    "text": "防禦 (Buff)"
+  },
+  {
+    "id": "ENUM_BUFF_CRT_RATE_BUFF",
+    "text": "爆率 (Buff)"
+  },
+  {
+    "id": "ENUM_BUFF_CRT_DAMAGE_BUFF",
+    "text": "爆傷 (Buff)"
+  },
+  {
+    "id": "ENUM_BUFF_SKILL_DAMAGE_BUFF",
+    "text": "技傷 (Buff)"
+  },
+  {
+    "id": "ENUM_BUFF_ASPD_BUFF",
+    "text": "攻速 (Buff)"
+  },
+  {
+    "id": "ENUM_BUFF_FS_DAMAGE_BUFF",
+    "text": "FS 傷害 (Buff)"
+  },
+  {
+    "id": "ENUM_BUFF_FS_SPD",
+    "text": "FS 速度"
+  },
+  {
+    "id": "ENUM_BUFF_OD_GAUGE_DAMAGE",
+    "text": "OD 條傷害"
+  },
+  {
+    "id": "ENUM_BUFF_AUTO_DAMAGE",
+    "text": "普攻傷害"
+  },
+  {
+    "id": "ENUM_BUFF_TARGETED_BUFF_TIME",
+    "text": "對目標 Buff 時間"
+  },
+  {
+    "id": "ENUM_BUFF_COMBO_TIME",
+    "text": "Combo 時間"
+  },
+  {
+    "id": "ENUM_BUFF_FLAME_ELEM_DMG_UP",
+    "text": "火屬性傷害"
+  },
+  {
+    "id": "ENUM_BUFF_WATER_ELEM_DMG_UP",
+    "text": "水屬性傷害"
+  },
+  {
+    "id": "ENUM_BUFF_WIND_ELEM_DMG_UP",
+    "text": "風屬性傷害"
+  },
+  {
+    "id": "ENUM_BUFF_LIGHT_ELEM_DMG_UP",
+    "text": "光屬性傷害"
+  },
+  {
+    "id": "ENUM_BUFF_SHADOW_ELEM_DMG_UP",
+    "text": "暗屬性傷害"
+  },
+  {
+    "id": "ENUM_BUFF_ATK_PASSIVE",
+    "text": "攻擊 (被動)"
+  },
+  {
+    "id": "ENUM_BUFF_DEF_PASSIVE",
+    "text": "防禦 (被動)"
+  },
+  {
+    "id": "ENUM_BUFF_CRT_RATE_PASSIVE",
+    "text": "爆率 (被動)"
+  },
+  {
+    "id": "ENUM_BUFF_CRT_DAMAGE_PASSIVE",
+    "text": "爆傷 (被動)"
+  },
+  {
+    "id": "ENUM_BUFF_SKILL_DAMAGE_PASSIVE",
+    "text": "技傷 (被動)"
+  },
+  {
+    "id": "ENUM_BUFF_ASPD_PASSIVE",
+    "text": "攻速 (被動)"
+  },
+  {
+    "id": "ENUM_BUFF_FS_DAMAGE_PASSIVE",
+    "text": "FS 傷害 (被動)"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_POISON",
+    "text": "毒機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_BURN",
+    "text": "燒傷機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_FREEZE",
+    "text": "冰凍機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_PARALYZE",
+    "text": "麻痺機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_BLIND",
+    "text": "黑暗機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_STUN",
+    "text": "暈眩機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_CURSE",
+    "text": "詛咒機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_BOG",
+    "text": "濕身機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_SLEEP",
+    "text": "睡眠機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_FROSTBITE",
+    "text": "凍傷機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_FLASHBURN",
+    "text": "閃熱機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_STORMLASH",
+    "text": "裂風機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_SHADOWBLIGHT",
+    "text": "暗黑機率"
+  },
+  {
+    "id": "ENUM_BUFF_INFLICT_PROB_SCORCHREND",
+    "text": "劫火機率"
+  },
+  {
+    "id": "ENUM_BUFF_ATK_EX",
+    "text": "攻擊 (EX)"
+  },
+  {
+    "id": "ENUM_BUFF_SP_RATE",
+    "text": "SP 獲取 %"
+  },
+  {
+    "id": "ENUM_BUFF_SP_GAIN",
+    "text": "SP 獲得"
+  },
+  {
+    "id": "ENUM_BUFF_SP_CHARGE_PCT_S1",
+    "text": "S1 充能 %"
+  },
+  {
+    "id": "ENUM_BUFF_SP_CHARGE_PCT_S2",
+    "text": "S2 充能 %"
+  },
+  {
+    "id": "ENUM_BUFF_SP_CHARGE_PCT_S3",
+    "text": "S3 充能 %"
+  },
+  {
+    "id": "ENUM_BUFF_SP_CHARGE_PCT_S4",
+    "text": "S4 充能 %"
+  },
+  {
+    "id": "ENUM_BUFF_SP_CHARGE_PCT_USED",
+    "text": "使用後技能 充能 %"
+  },
+  {
+    "id": "ENUM_BUFF_HEAL_RP",
+    "text": "治癒 (RP)"
+  },
+  {
+    "id": "ENUM_BUFF_HEAL_MAX_HP",
+    "text": "治癒 (Max HP)"
+  },
+  {
+    "id": "ENUM_BUFF_SHIELD_SINGLE_DMG",
+    "text": "傷害盾"
+  },
+  {
+    "id": "ENUM_BUFF_SHIELD_LIFE",
+    "text": "生命盾"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_FLAME",
+    "text": "火屬性抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_WATER",
+    "text": "水屬性抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_WIND",
+    "text": "風屬性抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_LIGHT",
+    "text": "光屬性抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_SHADOW",
+    "text": "暗屬性抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_POISON",
+    "text": "毒抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_BURN",
+    "text": "燒傷抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_FREEZE",
+    "text": "冰凍抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_PARALYZE",
+    "text": "麻痺抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_BLIND",
+    "text": "黑暗抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_STUN",
+    "text": "暈眩抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_CURSE",
+    "text": "詛咒抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_BOG",
+    "text": "濕身抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_SLEEP",
+    "text": "睡眠抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_FROSTBITE",
+    "text": "凍傷抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_FLASHBURN",
+    "text": "閃熱抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_STORMLASH",
+    "text": "裂風抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_SHADOWBLIGHT",
+    "text": "暗黑抗性"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_SCORCHREND",
+    "text": "劫火抗性"
+  },
+  {
+    "id": "ENUM_BUFF_HP_FIX_BY_MAX",
+    "text": "扣血至 (Max HP %)"
+  },
+  {
+    "id": "ENUM_BUFF_HP_DECREASE_BY_MAX",
+    "text": "扣血 (Max HP %)"
+  },
+  {
+    "id": "ENUM_BUFF_HP_RAISE_BY_MAX",
+    "text": "提升最高血量 (Max HP %)"
+  },
+  {
+    "id": "ENUM_BUFF_DRAGON_TIME",
+    "text": "龍化時間延長 (%)"
+  },
+  {
+    "id": "ENUM_BUFF_DRAGON_TIME_FINAL",
+    "text": "龍化時間延長 2 (%)"
+  },
+  {
+    "id": "ENUM_BUFF_DP_CONSUMPTION",
+    "text": "龍條消耗量"
+  },
+  {
+    "id": "ENUM_BUFF_DP_RATE",
+    "text": "龍條獲取率 %"
+  },
+  {
+    "id": "ENUM_BUFF_DRAGON_DAMAGE",
+    "text": "龍化傷害"
+  },
+  {
+    "id": "ENUM_BUFF_DRAGON_GAUGE_FILL",
+    "text": "龍條獲取 (%)"
+  },
+  {
+    "id": "ENUM_BUFF_POISONED_PUNISHER",
+    "text": "毒特攻"
+  },
+  {
+    "id": "ENUM_BUFF_BURNED_PUNISHER",
+    "text": "燒傷特攻"
+  },
+  {
+    "id": "ENUM_BUFF_FROZEN_PUNISHER",
+    "text": "冰凍特攻"
+  },
+  {
+    "id": "ENUM_BUFF_PARALYZED_PUNISHER",
+    "text": "麻痺特攻"
+  },
+  {
+    "id": "ENUM_BUFF_BLINDED_PUNISHER",
+    "text": "黑暗特攻"
+  },
+  {
+    "id": "ENUM_BUFF_STUNNED_PUNISHER",
+    "text": "暈眩特攻"
+  },
+  {
+    "id": "ENUM_BUFF_CURSED_PUNISHER",
+    "text": "詛咒特攻"
+  },
+  {
+    "id": "ENUM_BUFF_BOGGED_PUNISHER",
+    "text": "濕身特攻"
+  },
+  {
+    "id": "ENUM_BUFF_SLEPT_PUNISHER",
+    "text": "睡眠特攻"
+  },
+  {
+    "id": "ENUM_BUFF_FROSTBITTEN_PUNISHER",
+    "text": "凍傷特攻"
+  },
+  {
+    "id": "ENUM_BUFF_FLASHBURNED_PUNISHER",
+    "text": "閃熱特攻"
+  },
+  {
+    "id": "ENUM_BUFF_STORMLASHED_PUNISHER",
+    "text": "裂風特攻"
+  },
+  {
+    "id": "ENUM_BUFF_SHADOWBLIGHTED_PUNISHER",
+    "text": "暗黑特攻"
+  },
+  {
+    "id": "ENUM_BUFF_SCORCHRENT_PUNISHER",
+    "text": "劫火特攻"
+  },
+  {
+    "id": "ENUM_BUFF_AFFLICTED_PUNISHER",
+    "text": "異常特攻"
+  },
+  {
+    "id": "ENUM_BUFF_DEF_DOWN_PUNISHER",
+    "text": "降防特攻"
+  },
+  {
+    "id": "ENUM_BUFF_ATK_OR_DEF_DOWN_PUNISHER",
+    "text": "降攻/降防特攻"
+  },
+  {
+    "id": "ENUM_BUFF_OD_STATE_PUNISHER",
+    "text": "OD 特攻"
+  },
+  {
+    "id": "ENUM_BUFF_BK_STATE_PUNISHER",
+    "text": "BK 特攻"
+  },
+  {
+    "id": "ENUM_BUFF_AFFLICTION",
+    "text": "異常"
+  },
+  {
+    "id": "ENUM_BUFF_MARK",
+    "text": "印記"
+  },
+  {
+    "id": "ENUM_BUFF_DISPEL",
+    "text": "驅散"
+  },
+  {
+    "id": "ENUM_BUFF_PLAYER_EXP",
+    "text": "玩家經驗 (%)"
+  },
+  {
+    "id": "ENUM_BUFF_ENERGY_LEVEL",
+    "text": "活力等級"
+  },
+  {
+    "id": "ENUM_BUFF_INSPIRE_LEVEL",
+    "text": "靈感等級"
+  },
+  {
     "id": "SKILL_IDENTIFIER_helper",
     "text": "戰友"
   },
@@ -1198,417 +1610,5 @@
   {
     "id": "SKILL_IDENTIFIER_shared",
     "text": "共享"
-  },
-  {
-    "id": "BUFF_ATK_BUFF",
-    "text": "攻擊 (Buff)"
-  },
-  {
-    "id": "BUFF_DEF_BUFF",
-    "text": "防禦 (Buff)"
-  },
-  {
-    "id": "BUFF_CRT_RATE_BUFF",
-    "text": "爆率 (Buff)"
-  },
-  {
-    "id": "BUFF_CRT_DAMAGE_BUFF",
-    "text": "爆傷 (Buff)"
-  },
-  {
-    "id": "BUFF_SKILL_DAMAGE_BUFF",
-    "text": "技傷 (Buff)"
-  },
-  {
-    "id": "BUFF_ASPD_BUFF",
-    "text": "攻速 (Buff)"
-  },
-  {
-    "id": "BUFF_FS_DAMAGE_BUFF",
-    "text": "FS 傷害 (Buff)"
-  },
-  {
-    "id": "BUFF_FS_SPD",
-    "text": "FS 速度"
-  },
-  {
-    "id": "BUFF_OD_GAUGE_DAMAGE",
-    "text": "OD 條傷害"
-  },
-  {
-    "id": "BUFF_AUTO_DAMAGE",
-    "text": "普攻傷害"
-  },
-  {
-    "id": "BUFF_TARGETED_BUFF_TIME",
-    "text": "對目標 Buff 時間"
-  },
-  {
-    "id": "BUFF_COMBO_TIME",
-    "text": "Combo 時間"
-  },
-  {
-    "id": "BUFF_FLAME_ELEM_DMG_UP",
-    "text": "火屬性傷害"
-  },
-  {
-    "id": "BUFF_WATER_ELEM_DMG_UP",
-    "text": "水屬性傷害"
-  },
-  {
-    "id": "BUFF_WIND_ELEM_DMG_UP",
-    "text": "風屬性傷害"
-  },
-  {
-    "id": "BUFF_LIGHT_ELEM_DMG_UP",
-    "text": "光屬性傷害"
-  },
-  {
-    "id": "BUFF_SHADOW_ELEM_DMG_UP",
-    "text": "暗屬性傷害"
-  },
-  {
-    "id": "BUFF_ATK_PASSIVE",
-    "text": "攻擊 (被動)"
-  },
-  {
-    "id": "BUFF_DEF_PASSIVE",
-    "text": "防禦 (被動)"
-  },
-  {
-    "id": "BUFF_CRT_RATE_PASSIVE",
-    "text": "爆率 (被動)"
-  },
-  {
-    "id": "BUFF_CRT_DAMAGE_PASSIVE",
-    "text": "爆傷 (被動)"
-  },
-  {
-    "id": "BUFF_SKILL_DAMAGE_PASSIVE",
-    "text": "技傷 (被動)"
-  },
-  {
-    "id": "BUFF_ASPD_PASSIVE",
-    "text": "攻速 (被動)"
-  },
-  {
-    "id": "BUFF_FS_DAMAGE_PASSIVE",
-    "text": "FS 傷害 (被動)"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_POISON",
-    "text": "毒機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_BURN",
-    "text": "燒傷機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_FREEZE",
-    "text": "冰凍機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_PARALYZE",
-    "text": "麻痺機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_BLIND",
-    "text": "黑暗機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_STUN",
-    "text": "暈眩機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_CURSE",
-    "text": "詛咒機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_BOG",
-    "text": "濕身機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_SLEEP",
-    "text": "睡眠機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_FROSTBITE",
-    "text": "凍傷機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_FLASHBURN",
-    "text": "閃熱機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_STORMLASH",
-    "text": "裂風機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_SHADOWBLIGHT",
-    "text": "暗黑機率"
-  },
-  {
-    "id": "BUFF_INFLICT_PROB_SCORCHREND",
-    "text": "劫火機率"
-  },
-  {
-    "id": "BUFF_ATK_EX",
-    "text": "攻擊 (EX)"
-  },
-  {
-    "id": "BUFF_SP_RATE",
-    "text": "SP 獲取 %"
-  },
-  {
-    "id": "BUFF_SP_GAIN",
-    "text": "SP 獲得"
-  },
-  {
-    "id": "BUFF_SP_CHARGE_PCT_S1",
-    "text": "S1 充能 %"
-  },
-  {
-    "id": "BUFF_SP_CHARGE_PCT_S2",
-    "text": "S2 充能 %"
-  },
-  {
-    "id": "BUFF_SP_CHARGE_PCT_S3",
-    "text": "S3 充能 %"
-  },
-  {
-    "id": "BUFF_SP_CHARGE_PCT_S4",
-    "text": "S4 充能 %"
-  },
-  {
-    "id": "BUFF_SP_CHARGE_PCT_USED",
-    "text": "使用後技能 充能 %"
-  },
-  {
-    "id": "BUFF_HEAL_RP",
-    "text": "治癒 (RP)"
-  },
-  {
-    "id": "BUFF_HEAL_MAX_HP",
-    "text": "治癒 (Max HP)"
-  },
-  {
-    "id": "BUFF_SHIELD_SINGLE_DMG",
-    "text": "傷害盾"
-  },
-  {
-    "id": "BUFF_SHIELD_LIFE",
-    "text": "生命盾"
-  },
-  {
-    "id": "BUFF_RESISTANCE_FLAME",
-    "text": "火屬性抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_WATER",
-    "text": "水屬性抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_WIND",
-    "text": "風屬性抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_LIGHT",
-    "text": "光屬性抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_SHADOW",
-    "text": "暗屬性抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_POISON",
-    "text": "毒抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_BURN",
-    "text": "燒傷抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_FREEZE",
-    "text": "冰凍抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_PARALYZE",
-    "text": "麻痺抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_BLIND",
-    "text": "黑暗抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_STUN",
-    "text": "暈眩抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_CURSE",
-    "text": "詛咒抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_BOG",
-    "text": "濕身抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_SLEEP",
-    "text": "睡眠抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_FROSTBITE",
-    "text": "凍傷抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_FLASHBURN",
-    "text": "閃熱抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_STORMLASH",
-    "text": "裂風抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_SHADOWBLIGHT",
-    "text": "暗黑抗性"
-  },
-  {
-    "id": "BUFF_RESISTANCE_SCORCHREND",
-    "text": "劫火抗性"
-  },
-  {
-    "id": "BUFF_HP_FIX_BY_MAX",
-    "text": "扣血至 (Max HP %)"
-  },
-  {
-    "id": "BUFF_HP_DECREASE_BY_MAX",
-    "text": "扣血 (Max HP %)"
-  },
-  {
-    "id": "BUFF_HP_RAISE_BY_MAX",
-    "text": "提升最高血量 (Max HP %)"
-  },
-  {
-    "id": "BUFF_DRAGON_TIME",
-    "text": "龍化時間延長 (%)"
-  },
-  {
-    "id": "BUFF_DRAGON_TIME_FINAL",
-    "text": "龍化時間延長 2 (%)"
-  },
-  {
-    "id": "BUFF_DP_CONSUMPTION",
-    "text": "龍條消耗量"
-  },
-  {
-    "id": "BUFF_DP_RATE",
-    "text": "龍條獲取率 %"
-  },
-  {
-    "id": "BUFF_DRAGON_DAMAGE",
-    "text": "龍化傷害"
-  },
-  {
-    "id": "BUFF_DRAGON_GAUGE_FILL",
-    "text": "龍條獲取 (%)"
-  },
-  {
-    "id": "BUFF_POISONED_PUNISHER",
-    "text": "毒特攻"
-  },
-  {
-    "id": "BUFF_BURNED_PUNISHER",
-    "text": "燒傷特攻"
-  },
-  {
-    "id": "BUFF_FROZEN_PUNISHER",
-    "text": "冰凍特攻"
-  },
-  {
-    "id": "BUFF_PARALYZED_PUNISHER",
-    "text": "麻痺特攻"
-  },
-  {
-    "id": "BUFF_BLINDED_PUNISHER",
-    "text": "黑暗特攻"
-  },
-  {
-    "id": "BUFF_STUNNED_PUNISHER",
-    "text": "暈眩特攻"
-  },
-  {
-    "id": "BUFF_CURSED_PUNISHER",
-    "text": "詛咒特攻"
-  },
-  {
-    "id": "BUFF_BOGGED_PUNISHER",
-    "text": "濕身特攻"
-  },
-  {
-    "id": "BUFF_SLEPT_PUNISHER",
-    "text": "睡眠特攻"
-  },
-  {
-    "id": "BUFF_FROSTBITTEN_PUNISHER",
-    "text": "凍傷特攻"
-  },
-  {
-    "id": "BUFF_FLASHBURNED_PUNISHER",
-    "text": "閃熱特攻"
-  },
-  {
-    "id": "BUFF_STORMLASHED_PUNISHER",
-    "text": "裂風特攻"
-  },
-  {
-    "id": "BUFF_SHADOWBLIGHTED_PUNISHER",
-    "text": "暗黑特攻"
-  },
-  {
-    "id": "BUFF_SCORCHRENT_PUNISHER",
-    "text": "劫火特攻"
-  },
-  {
-    "id": "BUFF_AFFLICTED_PUNISHER",
-    "text": "異常特攻"
-  },
-  {
-    "id": "BUFF_DEF_DOWN_PUNISHER",
-    "text": "降防特攻"
-  },
-  {
-    "id": "BUFF_ATK_OR_DEF_DOWN_PUNISHER",
-    "text": "降攻/降防特攻"
-  },
-  {
-    "id": "BUFF_OD_STATE_PUNISHER",
-    "text": "OD 特攻"
-  },
-  {
-    "id": "BUFF_BK_STATE_PUNISHER",
-    "text": "BK 特攻"
-  },
-  {
-    "id": "BUFF_AFFLICTION",
-    "text": "異常"
-  },
-  {
-    "id": "BUFF_MARK",
-    "text": "印記"
-  },
-  {
-    "id": "BUFF_DISPEL",
-    "text": "驅散"
-  },
-  {
-    "id": "BUFF_PLAYER_EXP",
-    "text": "玩家經驗 (%)"
-  },
-  {
-    "id": "BUFF_ENERGY_LEVEL",
-    "text": "活力等級"
-  },
-  {
-    "id": "BUFF_INSPIRE_LEVEL",
-    "text": "靈感等級"
   }
 ]
