@@ -18,13 +18,13 @@ expected_contained_info: ExpectedInfoLookup = {
     # Summer Julietta S2 P3
     (104502014, ConditionComposite()): {
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.15),
-        (HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.13),
+        (HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.13),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.SHIELD_SINGLE_DMG, 0.4)
     },
     # Summer Cleo S2
     (106504012, ConditionComposite(Condition.COVER_TEAMMATE_3)): {
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.05),
-        (HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.03),
+        (HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.03),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE, 0.1),
         (HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1),
         (HitTargetSimple.SELF, BuffParameter.DEF_BUFF, 0.1),

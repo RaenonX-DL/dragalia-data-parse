@@ -19,6 +19,7 @@ class AbilityEffectInfo(AbilityInfoBase):
     probability: Optional[float] = None
     cooldown_sec: Optional[float] = None
     max_occurrences: Optional[int] = None
+    max_stack_count: Optional[int] = None
     target: Optional[HitTargetSimple] = None
     target_action: Optional[AbilityTargetAction] = None
     duration_sec: Optional[float] = None
@@ -58,6 +59,7 @@ def check_ability_effect_unit_match(
     has_probability = any(info.probability is not None for info in expected_info)
     has_cooldown = any(info.cooldown_sec is not None for info in expected_info)
     has_max_occurrences = any(info.max_occurrences is not None for info in expected_info)
+    has_max_stack = any(info.max_stack_count is not None for info in expected_info)
     has_target = any(info.target is not None for info in expected_info)
     has_target_action = any(info.target_action is not None for info in expected_info)
     has_duration_sec = any(info.duration_sec is not None for info in expected_info)
@@ -71,6 +73,7 @@ def check_ability_effect_unit_match(
             probability=unit.probability_pct if has_probability else None,
             cooldown_sec=unit.cooldown_sec if has_cooldown else None,
             max_occurrences=unit.max_occurrences if has_max_occurrences else None,
+            max_stack_count=unit.max_stack_count if has_max_stack else None,
             target=unit.target if has_target else None,
             target_action=unit.target_action if has_target_action else None,
             duration_sec=unit.duration_sec if has_duration_sec else None,

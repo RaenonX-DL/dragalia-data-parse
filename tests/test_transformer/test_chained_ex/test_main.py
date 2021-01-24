@@ -41,7 +41,7 @@ def test_atk_up_on_hp_above(transformer_ability: AbilityTransformer):
     expected_info = {
         # The effect of clearing the action condition when the HP drops below the threshold is omitted
         AbilityEffectInfo(
-            400000155, ConditionComposite([Condition.TARGET_WATER, Condition.ON_SELF_HP_GTE_60]),
+            400000155, ConditionComposite([Condition.TARGET_WATER, Condition.ON_HP_GTE_60]),
             BuffParameter.ATK_BUFF, 0.05, duration_sec=0
         ),
     }
@@ -57,7 +57,7 @@ def test_atk_up_on_hp_below(transformer_ability: AbilityTransformer):
     expected_info = {
         # The effect of clearing the action condition when the HP drops below the threshold is omitted
         AbilityEffectInfo(
-            400000017, ConditionComposite([Condition.TARGET_FLAME, Condition.ON_SELF_HP_LT_40]),
+            400000017, ConditionComposite([Condition.TARGET_FLAME, Condition.ON_HP_LT_40]),
             BuffParameter.ATK_BUFF, 0.14, duration_sec=0
         ),
     }
@@ -72,7 +72,7 @@ def test_grant_shield_upon_hp_below(transformer_ability: AbilityTransformer):
 
     expected_info = {
         AbilityEffectInfo(
-            400000657, ConditionComposite([Condition.TARGET_SHADOW, Condition.ON_SELF_HP_LT_40]),
+            400000657, ConditionComposite([Condition.TARGET_SHADOW, Condition.ON_HP_LT_40]),
             BuffParameter.SHIELD_SINGLE_DMG, 0.5, duration_sec=0
         ),
     }
@@ -126,6 +126,21 @@ def test_elem_res_on_combo_count_above(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
+def test_atk_up_on_healed(transformer_ability: AbilityTransformer):
+    # Dragonyule Lily - 10850202
+    # https://dragalialost.gamepedia.com/Dragonyule_Lily
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000828)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000828, ConditionComposite([Condition.TARGET_WATER, Condition.ON_HEALED]),
+            BuffParameter.ATK_BUFF, 0.08, duration_sec=15, cooldown_sec=10
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
 def test_elem_res_in_buff_zone(transformer_ability: AbilityTransformer):
     # Opera Karina - 10650504
     # https://dragalialost.gamepedia.com/Opera_Karina
@@ -136,6 +151,21 @@ def test_elem_res_in_buff_zone(transformer_ability: AbilityTransformer):
         AbilityEffectInfo(
             400000799, ConditionComposite([Condition.TARGET_SHADOW, Condition.ON_ENTERED_BUFF_ZONE]),
             BuffParameter.RESISTANCE_LIGHT, 0.07, duration_sec=0
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
+def test_crt_up_by_combo_count(transformer_ability: AbilityTransformer):
+    # Kimono Elisanne - 10550103
+    # https://dragalialost.gamepedia.com/Kimono_Elisanne
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000838)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000838, ConditionComposite([Condition.TARGET_FLAME, Condition.ON_COMBO_DIV_BY_10]),
+            BuffParameter.CRT_RATE_PASSIVE, 0.01, max_stack_count=20
         ),
     }
 
@@ -198,6 +228,21 @@ def test_inspire_level_up_on_energy_level_up_prob(transformer_ability: AbilityTr
         AbilityEffectInfo(
             400000539, ConditionComposite([Condition.TARGET_LIGHT, Condition.ON_ENERGY_LV_UP]),
             BuffParameter.INSPIRE_LEVEL, 1, probability=80
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
+def test_atk_up_on_dodged(transformer_ability: AbilityTransformer):
+    # Yoshitsune - 10950202
+    # https://dragalialost.gamepedia.com/Yoshitsune
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000853)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000853, ConditionComposite([Condition.TARGET_WATER, Condition.ON_DODGE_SUCCESS]),
+            BuffParameter.ATK_BUFF, 0.1, duration_sec=15, cooldown_sec=15
         ),
     }
 

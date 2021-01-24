@@ -13,7 +13,7 @@ class AbilityTargetAction(Enum):
 
     This can be found in the field ``_TargetAction`` of ``ActionGrant``.
 
-    The official definition can be found in ``Gluon.AbilityTargetAction`` of the metadata.
+    The enum definition can be found in ``Gluon.AbilityTargetAction`` of the metadata.
     """
 
     UNKNOWN = -1

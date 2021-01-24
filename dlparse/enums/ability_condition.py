@@ -54,6 +54,9 @@ class AbilityCondition(Enum):
     EFF_SELF_HP_GTE_2 = 60
     EFF_SELF_HP_LT_2 = 61
     EFF_IN_BUFF_ZONE = 88
+    TRG_HEALED = 92
+    TRG_COMBO_COUNT_DIV_LIMITED = 95
+    TRG_DODGE_SUCCESS = 96
 
     @property
     def is_shapeshifted_to_dragon(self) -> bool:

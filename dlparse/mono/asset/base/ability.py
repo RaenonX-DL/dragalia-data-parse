@@ -64,11 +64,14 @@ class AbilityConditionEntryBase(ABC):
             AbilityCondition.EFF_IN_BUFF_ZONE: Condition.ON_ENTERED_BUFF_ZONE,
             AbilityCondition.TRG_SHAPESHIFT_COMPLETED: Condition.SELF_SHAPESHIFT_COMPLETED,
             AbilityCondition.TRG_GOT_HIT: Condition.ON_HIT,
+            AbilityCondition.TRG_HEALED: Condition.ON_HEALED,
+            AbilityCondition.TRG_DODGE_SUCCESS: Condition.ON_DODGE_SUCCESS,
         }
         self._cond_method_map = {
             AbilityCondition.EFF_IN_DRAGON: self._cond_self_in_dragon,
             AbilityCondition.TRG_COMBO_COUNT_GTE: self._cond_combo_count_gte,
             AbilityCondition.TRG_COMBO_COUNT_DIV: self._cond_combo_count_div,
+            AbilityCondition.TRG_COMBO_COUNT_DIV_LIMITED: self._cond_combo_count_div,
             AbilityCondition.EFF_TARGET_DEBUFFED: self._cond_target_debuffed,
             AbilityCondition.EFF_TARGET_AFFLICTED: self._cond_target_afflicted,
             AbilityCondition.EFF_SELF_BUFFED_ACTION_COND: self._cond_self_buffed,
@@ -134,9 +137,9 @@ class AbilityConditionEntryBase(ABC):
 
     def _cond_self_hp_gte_trigger(self) -> Condition:
         if self.val_1 == 40:
-            return Condition.ON_SELF_HP_GTE_40
+            return Condition.ON_HP_GTE_40
         if self.val_1 == 60:
-            return Condition.ON_SELF_HP_GTE_60
+            return Condition.ON_HP_GTE_60
 
         raise self._condition_unconvertible()
 
@@ -150,11 +153,11 @@ class AbilityConditionEntryBase(ABC):
 
     def _cond_self_hp_lt_trigger(self) -> Condition:
         if self.val_1 == 30:
-            return Condition.ON_SELF_HP_LT_30
+            return Condition.ON_HP_LT_30
         if self.val_1 == 40:
-            return Condition.ON_SELF_HP_LT_40
+            return Condition.ON_HP_LT_40
         if self.val_1 == 60:
-            return Condition.ON_SELF_HP_LT_60
+            return Condition.ON_HP_LT_60
 
         raise self._condition_unconvertible()
 
@@ -173,6 +176,8 @@ class AbilityConditionEntryBase(ABC):
         raise self._condition_unconvertible()
 
     def _cond_combo_count_div(self) -> Condition:
+        if self.val_1 == 10:
+            return Condition.ON_COMBO_DIV_BY_10
         if self.val_1 == 20:
             return Condition.ON_COMBO_DIV_BY_20
         if self.val_1 == 50:
@@ -254,6 +259,17 @@ class AbilityConditionEntryBase(ABC):
     def is_unknown_condition(self) -> bool:
         """Check if the condition type is unknown."""
         return self.condition_type == AbilityCondition.UNKNOWN
+
+    @property
+    def max_stack_count(self) -> int:
+        """
+        Maximum count of the stacks allowed for the ability.
+
+        This limited is placed at the ability level. Do not use this for the stack count limit of a single ability.
+
+        ``0`` means no ability level stack count limit.
+        """
+        return 0
 
 
 @dataclass

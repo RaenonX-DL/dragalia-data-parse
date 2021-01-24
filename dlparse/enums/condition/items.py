@@ -267,14 +267,16 @@ class Condition(Enum):
     ON_REVIVED = 802
     ON_ENERGY_LV_UP = 803
     ON_ENTERED_BUFF_ZONE = 804
+    ON_HEALED = 805
+    ON_DODGE_SUCCESS = 806
     # endregion
 
     # region HP change
-    ON_SELF_HP_LT_30 = 810
-    ON_SELF_HP_LT_40 = 811
-    ON_SELF_HP_LT_60 = 812
-    ON_SELF_HP_GTE_40 = 820
-    ON_SELF_HP_GTE_60 = 821
+    ON_HP_LT_30 = 810
+    ON_HP_LT_40 = 811
+    ON_HP_LT_60 = 812
+    ON_HP_GTE_40 = 820
+    ON_HP_GTE_60 = 821
     # endregion
 
     # region Infliction
@@ -297,8 +299,9 @@ class Condition(Enum):
     # region Combo count
     ON_COMBO_RESET = 850
     ON_COMBO_GTE_10 = 851
-    ON_COMBO_DIV_BY_20 = 855
-    ON_COMBO_DIV_BY_50 = 856
+    ON_COMBO_DIV_BY_10 = 855
+    ON_COMBO_DIV_BY_20 = 856
+    ON_COMBO_DIV_BY_50 = 857
     # endregion
     # endregion
 

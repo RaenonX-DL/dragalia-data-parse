@@ -11,7 +11,7 @@ class ActionDebuffType(Enum):
     This is used by the ability condition fields, where if the condition type is ``DEBUFF`` (``50``),
     the condition value will be this.
 
-    The enum definition can be found in ``Gluon.CharacterBuff.ActionDefDebuff`` in the metadata.
+    The enum definition can be found in ``Gluon.CharacterBuff.ActionDefDebuff`` of the metadata.
     """
 
     UNKNOWN = -1

@@ -41,7 +41,7 @@ def test_dagger(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(
             103000010, ConditionComposite(),
-            BuffParameter.CRT_RATE, 0.1, max_occurrences=1
+            BuffParameter.CRT_RATE_PASSIVE, 0.1, max_occurrences=1
         ),
     }
 

@@ -57,7 +57,7 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
                 BuffParameter.DEF_BUFF, action_cond.buff_def + action_cond.buff_def_b, action_cond, payload
             ),
             # CRT rate
-            self.to_param_up(BuffParameter.CRT_RATE, action_cond.buff_crt_rate, action_cond, payload),
+            self.to_param_up(BuffParameter.CRT_RATE_BUFF, action_cond.buff_crt_rate, action_cond, payload),
             # CRT damage
             self.to_param_up(BuffParameter.CRT_DAMAGE, action_cond.buff_crt_damage, action_cond, payload),
             # Skill damage

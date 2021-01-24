@@ -68,10 +68,12 @@ class AbilityVariantEffectPayload(ActionCondEffectConvertPayload):
 
     source_ability_id: int = field(init=False)
     condition_probability: float = field(init=False)
+    max_stack_count: int = field(init=False)
 
     def __post_init__(self):
         self.source_ability_id = self.source_ability.id
         self.condition_probability = self.source_ability.condition.probability
+        self.max_stack_count = self.source_ability.condition.max_stack_count
 
     @property
     def is_source_ex_ability(self) -> bool:
@@ -110,8 +112,9 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
     ) -> Optional[AbilityVariantEffectUnit]:
         return self._action_cond_unit(param_enum, 0, action_cond, payload, target=HitTargetSimple.ENEMY)
 
+    @staticmethod
     def _action_cond_unit(
-            self, param_enum: BuffParameter, param_rate: float, action_cond: ActionConditionEntry,
+            param_enum: BuffParameter, param_rate: float, action_cond: ActionConditionEntry,
             payload: AbilityVariantEffectPayload = None, /,
             target: Optional[HitTargetSimple] = None
     ) -> AbilityVariantEffectUnit:
@@ -164,7 +167,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 status=Status.NONE,
                 duration_sec=0,
                 duration_count=0,
-                max_stack_count=0,
+                max_stack_count=payload.source_ability.condition.max_stack_count,
                 slip_damage_mod=0,
                 slip_interval=0,
             )
@@ -214,7 +217,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
     def _from_crt_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
-        return self._direct_buff_unit(BuffParameter.CRT_RATE, asset_manager, payload)
+        return self._direct_buff_unit(BuffParameter.CRT_RATE_PASSIVE, asset_manager, payload)
 
     def _from_crt_dmg_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload

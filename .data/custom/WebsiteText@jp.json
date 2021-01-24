@@ -420,10 +420,6 @@
     "text": "友建 3 Buff 區內"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE",
-    "text": "Buff 區內"
-  },
-  {
     "id": "ENUM_COND_WEAPON_SWORD",
     "text": "武器: 劍"
   },
@@ -704,6 +700,14 @@
     "text": "進入 Buff 區時"
   },
   {
+    "id": "ENUM_COND_ON_HEALED",
+    "text": "Upon healed"
+  },
+  {
+    "id": "ENUM_COND_ON_DODGE_SUCCESS",
+    "text": "成功迴避攻擊"
+  },
+  {
     "id": "ENUM_COND_ON_HP_LT_30",
     "text": "Upon HP < 30%"
   },
@@ -782,6 +786,10 @@
   {
     "id": "ENUM_COND_ON_COMBO_GTE_10",
     "text": "Upon Combo >= 10"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_10",
+    "text": "每 10 Combo"
   },
   {
     "id": "ENUM_COND_ON_COMBO_DIV_BY_20",

@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 from typing import Optional, TYPE_CHECKING, TextIO, Union
 
-from dlparse.enums import AbilityCondition, AbilityVariantType, Condition, SkillNumber, Element, Weapon, UnitType
+from dlparse.enums import AbilityCondition, AbilityVariantType, Condition, Element, SkillNumber, UnitType, Weapon
 from dlparse.errors import AbilityConditionUnconvertibleError, AbilityOnSkillUnconvertibleError
 from dlparse.mono.asset.base import (
     AbilityConditionEntryBase, AbilityEntryBase, AbilityVariantEntryBase, MasterAssetBase, MasterEntryBase,
@@ -43,6 +43,13 @@ class AbilityConditionEntry(AbilityConditionEntryBase):
             return Condition.SELF_SMIKOTO_CEL_SUN_WAVE
 
         return None
+
+    @property
+    def max_stack_count(self) -> int:
+        if self.condition_type == AbilityCondition.TRG_COMBO_COUNT_DIV_LIMITED:
+            return int(self.val_2)
+
+        return super().max_stack_count
 
 
 @dataclass

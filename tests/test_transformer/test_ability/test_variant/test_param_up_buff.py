@@ -10,7 +10,7 @@ def test_def_up_on_lt_30_hp(transformer_ability: AbilityTransformer):
 
     expected_info = {
         AbilityEffectInfo(
-            210001704, ConditionComposite(Condition.ON_SELF_HP_LT_30), BuffParameter.DEF_BUFF, 0.5,
+            210001704, ConditionComposite(Condition.ON_HP_LT_30), BuffParameter.DEF_BUFF, 0.5,
             max_occurrences=1
         ),
     }

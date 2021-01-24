@@ -106,11 +106,16 @@ Field: `_ConditionType`
 85. BURST_ATTACK_FINISHED
 86. REBORN_COUNT_LESS_MOMENT
 87. DISPEL_SUCCEEDED
-88. ON_BUFF_FIELD
+<a href="#88---on_buff_field">88. ON_BUFF_FIELD</a>
 89. ENTER_EXIT_BUFF_FIELD
 90. GET_DP
 91. GET_BUFF_FOR_PD_LINK
-92. GET_HEAL
+<a href="#92---get_heal">92. GET_HEAL</a>
+93. CHARGE_TIME_MORE_MOMENT
+94. EVERY_TIME_HIT_OCCURS
+<a href="#95---hitcount_moment_timesrate">95. HITCOUNT_MOMENT_TIMESRATE</a>
+<a href="#96---just_avoid">96. JUST_AVOID</a>
+97. GET_BRITEM
 </pre>
 
 ## Value Reference
@@ -426,3 +431,45 @@ Effective if the user is inside a buff zone.
 - **Val 2**: *Used but meaning unknown. Could be the maximum count of the buff fields.*
 
   For all usages as of 2021/01/23, this only has a value of either `1` or `2`.
+
+-----
+
+### `92` - `GET_HEAL`
+
+Triggered once when the user got healed.
+
+### `92` - `GET_HEAL`
+
+Triggered once when the user got healed.
+
+-----
+
+### `95` - `HITCOUNT_MOMENT_TIMESRATE`
+
+Triggered once for every X combo with a limited count. X is a designated number of combo count.
+
+If `Val 1 = 10`, `Val 2 = 20`, then it means that the ability will be triggered once for every 10 combo, with a limit
+of 20 times. (actual example of Kimono Elisanne `10550103` chained EX `400000838`)
+
+- **Val 1**: Combo count base number to trigger the ability.
+
+- **Val 2**: Maximum count of effects allowed.
+
+-----
+
+### `95` - `HITCOUNT_MOMENT_TIMESRATE`
+
+Triggered once for every X combo with a limited count of stacks. X is a designated number of combo count.
+
+If `Val 1 = 10`, `Val 2 = 20`, then it means that the ability will be triggered once for every 10 combo, with a limit
+of 20 times. (actual example of Kimono Elisanne `10550103` chained EX `400000838`)
+
+- **Val 1**: Combo count base number to trigger the ability.
+
+- **Val 2**: Maximum stacks of effects allowed.
+
+-----
+
+### `96` - `JUST_AVOID`
+
+Triggered once the user successfully dodged a red attack.

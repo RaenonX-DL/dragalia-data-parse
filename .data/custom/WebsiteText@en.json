@@ -420,10 +420,6 @@
     "text": "In 3 Ally Buff Zone"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE",
-    "text": "In Buff Zone"
-  },
-  {
     "id": "ENUM_COND_WEAPON_SWORD",
     "text": "Weapon: Sword"
   },
@@ -704,6 +700,14 @@
     "text": "Upon entering buff zone"
   },
   {
+    "id": "ENUM_COND_ON_HEALED",
+    "text": "Upon healed"
+  },
+  {
+    "id": "ENUM_COND_ON_DODGE_SUCCESS",
+    "text": "Upon successfully dodged"
+  },
+  {
     "id": "ENUM_COND_ON_HP_LT_30",
     "text": "Upon HP < 30%"
   },
@@ -782,6 +786,10 @@
   {
     "id": "ENUM_COND_ON_COMBO_GTE_10",
     "text": "Upon Combo >= 10"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_10",
+    "text": "Every 10 Combo"
   },
   {
     "id": "ENUM_COND_ON_COMBO_DIV_BY_20",

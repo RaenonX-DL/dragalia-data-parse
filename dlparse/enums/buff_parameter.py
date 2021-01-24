@@ -19,7 +19,7 @@ class BuffParameter(Enum):
     """ATK up (calculated as buff). A value of 0.12 means ATK +12%."""
     DEF_BUFF = 102
     """DEF up (calculated as buff). A value of 0.12 means DEF +12%."""
-    CRT_RATE = 103
+    CRT_RATE_BUFF = 103
     """Critical rate up (calculated as buff). A value of 0.12 means CRT +12%."""
     CRT_DAMAGE = 104
     """Critical damage up (calculated as buff). A value of 0.12 means CRT DMG +12%."""
@@ -69,6 +69,8 @@ class BuffParameter(Enum):
     """ATK up (calculated as passive). A value of 0.12 means ATK +12%."""
     DEF_PASSIVE = 152
     """DEF up (calculated as passive). A value of 0.12 means DEF +12%."""
+    CRT_RATE_PASSIVE = 153
+    """Critical rate up (calculated as passive). A value of 0.12 means CRT +12%."""
     ASPD_PASSIVE = 156
     """Attack speed up (calculated as passive). A value of 0.12 means ASPD +12%."""
     # endregion
@@ -315,7 +317,7 @@ class BuffParameter(Enum):
     """Increased the damage dealt in the dragon form. A value of 0.12 means damage in dragon +12%."""
     DRAGON_GAUGE_FILL = 606
     """
-    Fill the dragon gauge by a certain percentage. A value of 0.12 means to fill 12% of the dragon gauge. 
+    Fill the dragon gauge by a certain percentage. A value of 0.12 means to fill 12% of the dragon gauge.
     (Shapeshifting once takes 50% of the dragon gauge)
     """
     # endregion

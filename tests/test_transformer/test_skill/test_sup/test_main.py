@@ -182,21 +182,24 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
 
     expected_base_buffs_lv_1 = {
         BuffEffectInfo("BOW_108_04_ATK_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.03, 10, 0),
-        BuffEffectInfo("BOW_108_04_CRT_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.02, 10, 0),
+        BuffEffectInfo("BOW_108_04_CRT_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.02, 10,
+                       0),
         BuffEffectInfo("BOW_108_04_SKILL_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE,
                        0.1, 10, 99),
         BuffEffectInfo("BOW_108_04_SPB_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0),
     }
     expected_base_buffs_lv_2 = {
         BuffEffectInfo("BOW_108_04_ATK_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.05, 10, 0),
-        BuffEffectInfo("BOW_108_04_CRT_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.03, 10, 0),
+        BuffEffectInfo("BOW_108_04_CRT_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.03, 10,
+                       0),
         BuffEffectInfo("BOW_108_04_SKILL_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE,
                        0.1, 10, 99),
         BuffEffectInfo("BOW_108_04_SPB_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0),
     }
     expected_base_buffs_lv_3 = {
         BuffEffectInfo("BOW_108_04_ATK_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.ATK_BUFF, 0.05, 10, 0),
-        BuffEffectInfo("BOW_108_04_CRT_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE, 0.03, 10, 0),
+        BuffEffectInfo("BOW_108_04_CRT_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.03, 10,
+                       0),
         BuffEffectInfo("BOW_108_04_SKILL_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE,
                        0.1, 10, 99),
         BuffEffectInfo("BOW_108_04_SPB_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0),
@@ -281,15 +284,15 @@ def test_has_phase_2(transformer_skill: SkillTransformer):
 
     addl_buffs = [
         {
-            BuffEffectInfo("AXE_107_04_CRT_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE,
+            BuffEffectInfo("AXE_107_04_CRT_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF,
                            0.08, 15, 0),
         },
         {
-            BuffEffectInfo("AXE_107_04_CRT_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE,
+            BuffEffectInfo("AXE_107_04_CRT_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF,
                            0.1, 15, 0),
         },
         {
-            BuffEffectInfo("AXE_107_04_CRT_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE,
+            BuffEffectInfo("AXE_107_04_CRT_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF,
                            0.13, 15, 0),
         }
     ]
@@ -326,19 +329,19 @@ def test_has_phase_3(transformer_skill: SkillTransformer):
 
     addl_buffs = [
         {
-            BuffEffectInfo("AXE_107_04_CRT_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE,
+            BuffEffectInfo("AXE_107_04_CRT_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF,
                            0.08, 15, 0),
             BuffEffectInfo("AXE_107_04_SLD_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SHIELD_SINGLE_DMG,
                            0.2, 0, 1),
         },
         {
-            BuffEffectInfo("AXE_107_04_CRT_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE,
+            BuffEffectInfo("AXE_107_04_CRT_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF,
                            0.1, 15, 0),
             BuffEffectInfo("AXE_107_04_SLD_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SHIELD_SINGLE_DMG,
                            0.3, 0, 1),
         },
         {
-            BuffEffectInfo("AXE_107_04_CRT_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE,
+            BuffEffectInfo("AXE_107_04_CRT_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF,
                            0.13, 15, 0),
             BuffEffectInfo("AXE_107_04_SLD_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SHIELD_SINGLE_DMG,
                            0.4, 0, 1),

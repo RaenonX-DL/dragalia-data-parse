@@ -11,6 +11,8 @@ class AbilityUpParameter(Enum):
     Ability status up parameters.
 
     This can be found in the ID-A field of the abiltity variants.
+
+    The enum definition can be found in ``Gluon.TargetParam`` of the metadata.
     """
 
     NONE = 0  # None

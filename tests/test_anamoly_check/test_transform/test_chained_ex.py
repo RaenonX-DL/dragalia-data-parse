@@ -37,7 +37,6 @@ class UnknownAbilityData:
         return ret
 
 
-@pytest.mark.skip
 def test_transform_all_character_chained_ex(transformer_ability: AbilityTransformer, asset_manager: AssetManager):
     unknown_abilities: list[UnknownAbilityData] = []
     counter: int = 0
