@@ -150,7 +150,7 @@ Add a damaging hit if according to the buff field count.
 
 ### `ActionSettingHit`
 
-An action which sets an area.
+An action which sets a buff field.
 
 #### Apperance notes
 
@@ -212,13 +212,13 @@ This acts as a connector to check if the action should be the next action
 
 ### `ActionPartsSettingHit`
 
-Sets an area with some special effects. (Wedding Elisanne S1 / S2)
+Sets a buff field with some special effects. (Wedding Elisanne S1 / S2)
 
 This does **not** deal damage.
 
 #### Attribute notes
 
-- `_lifetime` is the duration of the area.
+- `_lifetime` is the duration of the buff field.
 
 ## Unit Action Controlling Components
 

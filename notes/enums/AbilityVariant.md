@@ -330,7 +330,7 @@ A value of `100` means to charge all skills with 100% SP (immediately ready the 
 
 Extend the buff effective time. If the variant is inside an EX ability entry, the effect is team-wide.
 
-This only applies to the buffs that are directly applied to the user. Zoned buff like Gala Euden S1 (`10150403`) will
+This only applies to the buffs that are directly applied to the user. Buff field like Gala Euden S1 (`10150403`) will
 not be affected by this.
 
 #### Variant Up Value

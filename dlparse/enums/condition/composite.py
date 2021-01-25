@@ -63,10 +63,10 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     combo_count_converted: int = field(init=False)
     buff_count: Optional[Condition] = field(init=False)
     buff_count_converted: int = field(init=False)
-    buff_zone_self: Optional[Condition] = field(init=False)
-    buff_zone_self_converted: int = field(init=False)
-    buff_zone_ally: Optional[Condition] = field(init=False)
-    buff_zone_ally_converted: int = field(init=False)
+    buff_field_self: Optional[Condition] = field(init=False)
+    buff_field_self_converted: int = field(init=False)
+    buff_field_ally: Optional[Condition] = field(init=False)
+    buff_field_ally_converted: int = field(init=False)
     weapon_type: Optional[Condition] = field(init=False)
     weapon_type_converted: Weapon = field(init=False)
     action_cond: Optional[Condition] = field(init=False)
@@ -144,13 +144,13 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.bullet_hit_count and self.bullet_hit_count not in CondCat.skill_bullet_hit:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BULLET_HIT_COUNT)
 
-        # Check `self.buff_zone_self`
-        if self.buff_zone_self and self.buff_zone_self not in CondCat.self_in_buff_zone_self:
-            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BUFF_ZONE_SELF)
+        # Check `self.buff_field_self`
+        if self.buff_field_self and self.buff_field_self not in CondCat.self_in_buff_field_self:
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BUFF_FIELD_SELF)
 
-        # Check `self.buff_zone_ally`
-        if self.buff_zone_ally and self.buff_zone_ally not in CondCat.self_in_buff_zone_ally:
-            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BUFF_ZONE_ALLY)
+        # Check `self.buff_field_ally`
+        if self.buff_field_ally and self.buff_field_ally not in CondCat.self_in_buff_field_ally:
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BUFF_FIELD_ALLY)
 
     def _init_validate_self_special(self):
         # Check `self.action_cond`
@@ -223,8 +223,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.hp_condition = CondCat.self_hp_cond.extract(conditions)
         self.combo_count = CondCat.self_combo_count.extract(conditions)
         self.buff_count = CondCat.self_buff_count.extract(conditions)
-        self.buff_zone_self = CondCat.self_in_buff_zone_self.extract(conditions)
-        self.buff_zone_ally = CondCat.self_in_buff_zone_ally.extract(conditions)
+        self.buff_field_self = CondCat.self_in_buff_field_self.extract(conditions)
+        self.buff_field_ally = CondCat.self_in_buff_field_ally.extract(conditions)
         self.weapon_type = CondCat.self_weapon_type.extract(conditions)
         self.action_cond = CondCat.action_condition.extract(conditions)
         self.gauge_filled = CondCat.self_gauge_filled.extract(conditions)
@@ -265,8 +265,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.hp_status_converted = CondCat.self_hp_status.convert(self.hp_status, on_missing=1)
         self.combo_count_converted = CondCat.self_combo_count.convert(self.combo_count, on_missing=0)
         self.buff_count_converted = CondCat.self_buff_count.convert(self.buff_count, on_missing=0)
-        self.buff_zone_self_converted = CondCat.self_in_buff_zone_self.convert(self.buff_zone_self, on_missing=0)
-        self.buff_zone_ally_converted = CondCat.self_in_buff_zone_ally.convert(self.buff_zone_ally, on_missing=0)
+        self.buff_field_self_converted = CondCat.self_in_buff_field_self.convert(self.buff_field_self, on_missing=0)
+        self.buff_field_ally_converted = CondCat.self_in_buff_field_ally.convert(self.buff_field_ally, on_missing=0)
         self.weapon_type_converted = CondCat.self_weapon_type.convert(self.weapon_type, on_missing=None)
         self.action_cond_id = CondCat.action_condition.convert(self.action_cond, on_missing=None)
         self.gauge_filled_converted = CondCat.self_gauge_filled.convert(self.gauge_filled, on_missing=0)
@@ -327,11 +327,11 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.buff_count:
             ret += (self.buff_count,)
 
-        if self.buff_zone_self:
-            ret += (self.buff_zone_self,)
+        if self.buff_field_self:
+            ret += (self.buff_field_self,)
 
-        if self.buff_zone_ally:
-            ret += (self.buff_zone_ally,)
+        if self.buff_field_ally:
+            ret += (self.buff_field_ally,)
 
         return ret
 
@@ -403,7 +403,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         - [Self] HP status / condition
         - [Self] Combo count
         - [Self] Buff count
-        - [Self] Buff zone built by self / ally
+        - [Self] Buff field built by self / ally
         - [Self] Self action condition
         - [Self] Gauge status
         - [Self] Shapeshift

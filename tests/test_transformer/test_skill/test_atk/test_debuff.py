@@ -142,7 +142,7 @@ def test_def_down_elemental_restricted(transformer_skill: SkillTransformer):
         check_debuff_unit_match(actual_buffs, expected_buffs)
 
 
-def test_def_down_area(transformer_skill: SkillTransformer):
+def test_def_down_field(transformer_skill: SkillTransformer):
     # Wedding Elisanne S2
     # https://dragalialost.gamepedia.com/Wedding_Elisanne
     skill_data = transformer_skill.transform_attacking(101503022).with_conditions()
@@ -161,7 +161,7 @@ def test_def_down_area(transformer_skill: SkillTransformer):
         check_debuff_unit_match(actual_buffs, expected_buffs)
 
 
-def test_def_down_area_2(transformer_skill: SkillTransformer):
+def test_def_down_field_2(transformer_skill: SkillTransformer):
     # Sha Wujing S2
     # https://dragalialost.gamepedia.com/Sha_Wujing
     skill_data = transformer_skill.transform_attacking(105404022).with_conditions()

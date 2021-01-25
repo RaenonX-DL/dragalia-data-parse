@@ -67,7 +67,7 @@ class BuffParameter(TranslatableEnumMixin, Enum):
 
     Note that the "targeted" here means that the extension is only effective to the buff that targets the players,
     such as ATK up buffs.
-    The duration of the zoned buffs like the one built by Gala Euden S1 (101504031) will **not** be affected by this.
+    The duration of the buff field like the one built by Gala Euden S1 (101504031) will **not** be affected by this.
     """
     COMBO_TIME = 112
     """

@@ -143,14 +143,14 @@ class Condition(TranslatableEnumMixin, Enum):
     SELF_BUFF_50 = 268
     # endregion
 
-    # region In buff zone
-    IN_BUFF_ZONE_BY_SELF_0 = 270
-    IN_BUFF_ZONE_BY_SELF_1 = 271
-    IN_BUFF_ZONE_BY_SELF_2 = 272
-    IN_BUFF_ZONE_BY_ALLY_0 = 273
-    IN_BUFF_ZONE_BY_ALLY_1 = 274
-    IN_BUFF_ZONE_BY_ALLY_2 = 275
-    IN_BUFF_ZONE_BY_ALLY_3 = 276
+    # region In buff field
+    IN_BUFF_FIELD_BY_SELF_0 = 270
+    IN_BUFF_FIELD_BY_SELF_1 = 271
+    IN_BUFF_FIELD_BY_SELF_2 = 272
+    IN_BUFF_FIELD_BY_ALLY_0 = 273
+    IN_BUFF_FIELD_BY_ALLY_1 = 274
+    IN_BUFF_FIELD_BY_ALLY_2 = 275
+    IN_BUFF_FIELD_BY_ALLY_3 = 276
     # endregion
 
     # region Weapon type
@@ -268,7 +268,7 @@ class Condition(TranslatableEnumMixin, Enum):
     ON_BUFFED_DEF = 801
     ON_REVIVED = 802
     ON_ENERGY_LV_UP = 803
-    ON_ENTERED_BUFF_ZONE = 804
+    ON_ENTERED_BUFF_FIELD = 804
     ON_HEALED = 805
     ON_DODGE_SUCCESS = 806
     # endregion

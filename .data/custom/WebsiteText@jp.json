@@ -728,31 +728,31 @@
     "text": "自身 50 個 Buff"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_SELF_0",
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_SELF_0",
     "text": "自建 0 Buff 區內"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_SELF_1",
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_SELF_1",
     "text": "自建 1 Buff 區內"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_SELF_2",
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_SELF_2",
     "text": "自建 2 Buff 區內"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_ALLY_0",
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_ALLY_0",
     "text": "友建 0 Buff 區內"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_ALLY_1",
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_ALLY_1",
     "text": "友建 1 Buff 區內"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_ALLY_2",
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_ALLY_2",
     "text": "友建 2 Buff 區內"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_ALLY_3",
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_ALLY_3",
     "text": "友建 3 Buff 區內"
   },
   {
@@ -1032,7 +1032,7 @@
     "text": "活力上升時"
   },
   {
-    "id": "ENUM_COND_ON_ENTERED_BUFF_ZONE",
+    "id": "ENUM_COND_ON_ENTERED_BUFF_FIELD",
     "text": "進入 Buff 區時"
   },
   {
@@ -1648,7 +1648,7 @@
     "text": "敵人"
   },
   {
-    "id": "ENUM_TARGET_AREA",
+    "id": "ENUM_TARGET_FIELD",
     "text": "區域"
   },
   {

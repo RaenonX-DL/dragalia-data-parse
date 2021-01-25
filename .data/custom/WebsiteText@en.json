@@ -728,32 +728,32 @@
     "text": "Self 50 Buff"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_SELF_0",
-    "text": "In 0 Self Buff Zone"
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_SELF_0",
+    "text": "In 0 Self Buff Field"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_SELF_1",
-    "text": "In 1 Self Buff Zone"
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_SELF_1",
+    "text": "In 1 Self Buff Field"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_SELF_2",
-    "text": "In 2 Self Buff Zone"
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_SELF_2",
+    "text": "In 2 Self Buff Field"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_ALLY_0",
-    "text": "In 0 Ally Buff Zone"
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_ALLY_0",
+    "text": "In 0 Ally Buff Field"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_ALLY_1",
-    "text": "In 1 Ally Buff Zone"
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_ALLY_1",
+    "text": "In 1 Ally Buff Field"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_ALLY_2",
-    "text": "In 2 Ally Buff Zone"
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_ALLY_2",
+    "text": "In 2 Ally Buff Field"
   },
   {
-    "id": "ENUM_COND_IN_BUFF_ZONE_BY_ALLY_3",
-    "text": "In 3 Ally Buff Zone"
+    "id": "ENUM_COND_IN_BUFF_FIELD_BY_ALLY_3",
+    "text": "In 3 Ally Buff Field"
   },
   {
     "id": "ENUM_COND_WEAPON_SWORD",
@@ -1032,8 +1032,8 @@
     "text": "Upon Energy lv up"
   },
   {
-    "id": "ENUM_COND_ON_ENTERED_BUFF_ZONE",
-    "text": "Upon entering buff zone"
+    "id": "ENUM_COND_ON_ENTERED_BUFF_FIELD",
+    "text": "Upon entering buff field"
   },
   {
     "id": "ENUM_COND_ON_HEALED",
@@ -1648,7 +1648,7 @@
     "text": "Enemy"
   },
   {
-    "id": "ENUM_TARGET_AREA",
+    "id": "ENUM_TARGET_FIELD",
     "text": "Field"
   },
   {

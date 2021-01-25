@@ -6,7 +6,7 @@ from dlparse.enums import Condition, ConditionCategories, ConditionComposite, Hi
 from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset, PlayerActionInfoAsset
 from .action_cond_effect import HitActionConditionEffectUnit
 from .base import SkillDataBase, SkillEntryBase
-from .buff_boost import BuffCountBoostData, BuffZoneBoostData
+from .buff_boost import BuffCountBoostData, BuffFieldBoostData
 from .hit_dmg import DamageUnit, DamagingHitData
 from .unit_cancel import SkillCancelActionUnit
 from .unit_mod import DamageModifierUnit
@@ -39,7 +39,7 @@ class AttackingSkillDataEntry(SkillEntryBase):
 
     cancel_unit_mtx: list[list[SkillCancelActionUnit]]
 
-    buff_zone_boost_mtx: list[BuffZoneBoostData]
+    buff_field_boost_mtx: list[BuffFieldBoostData]
 
     mod_unit_mtx: list[list[DamageModifierUnit]] = field(init=False)
 
@@ -294,7 +294,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     cancel_unit_mtx: list[list[SkillCancelActionUnit]]
 
     _unit_mtx_base: list[list[DamageUnit]] = field(init=False)
-    _buff_zone_boost_mtx: list[BuffZoneBoostData] = field(init=False)
+    _buff_field_boost_mtx: list[BuffFieldBoostData] = field(init=False)
 
     _max_level: int = field(init=False)
     _has_non_zero_mods: bool = field(init=False)
@@ -404,13 +404,13 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         if gauge_boost_available:
             cond_elems.append({(combo_cond,) for combo_cond in ConditionCategories.self_gauge_filled.members})
 
-        # In buff zone boosts available
+        # In buff field boosts available
         if not is_exporting and any(
-                hit_data.is_effective_inside_buff_zone
+                hit_data.is_effective_inside_buff_field
                 for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         ):
-            cond_elems.append({(buff_cond,) for buff_cond in ConditionCategories.self_in_buff_zone_self.members})
-            cond_elems.append({(buff_cond,) for buff_cond in ConditionCategories.self_in_buff_zone_ally.members})
+            cond_elems.append({(buff_cond,) for buff_cond in ConditionCategories.self_in_buff_field_self.members})
+            cond_elems.append({(buff_cond,) for buff_cond in ConditionCategories.self_in_buff_field_ally.members})
 
         return cond_elems
 
@@ -482,9 +482,9 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             for item_combination in product(*cond_elems)
         }
 
-    def _init_buff_zone_boost_mtx(self):
-        self._buff_zone_boost_mtx = [
-            BuffZoneBoostData.from_hit_units(hit_data_lv)
+    def _init_buff_field_boost_mtx(self):
+        self._buff_field_boost_mtx = [
+            BuffFieldBoostData.from_hit_units(hit_data_lv)
             for hit_data_lv in self.hit_data_mtx
         ]
 
@@ -504,7 +504,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
                               key=lambda item: item[0])[1]
         self._has_non_zero_mods = any(sum(unit.mod for unit in units) > 0 for units in self._unit_mtx_base)
 
-        self._init_buff_zone_boost_mtx()
+        self._init_buff_field_boost_mtx()
 
     def calculate_units_matrix(
             self, condition_comp: ConditionComposite
@@ -582,7 +582,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         return AttackingSkillDataEntry(
             asset_action_cond=self.asset_action_cond,
             asset_buff_count=self.asset_buff_count,
-            buff_zone_boost_mtx=self._buff_zone_boost_mtx,
+            buff_field_boost_mtx=self._buff_field_boost_mtx,
             condition_comp=condition_comp,
             hit_unit_mtx=hit_unit_mtx,
             cancel_unit_mtx=self.cancel_unit_mtx,

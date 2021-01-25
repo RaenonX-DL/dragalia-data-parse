@@ -47,7 +47,7 @@ class HitData(Generic[T], ABC):
         ret: HitTargetSimple = self.hit_attr.target_group.to_simple()
 
         if isinstance(self.action_component, ActionSettingHit) and ret == HitTargetSimple.SELF_SURROUNDING:
-            return HitTargetSimple.AREA
+            return HitTargetSimple.FIELD
 
         return ret
 
@@ -83,8 +83,8 @@ class HitData(Generic[T], ABC):
         if cond_entry and cond_entry.duration_sec:
             return cond_entry.duration_sec
 
-        # If the action component sets an area, return its lifetime
+        # If the action component deploys a field, return its lifetime
         if isinstance(self.action_component, ActionSettingHit):
-            return self.action_component.area_lifetime
+            return self.action_component.field_lifetime
 
         return 0

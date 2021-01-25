@@ -59,9 +59,9 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
     max_hit_count: int = 0
     # endregion
 
-    # region Damage modifiers when inside the buff zones
-    mod_on_self_buff_zone: float = 0
-    mod_on_ally_buff_zone: float = 0
+    # region Damage modifiers when inside the buff fields
+    mod_on_self_buff_field: float = 0
+    mod_on_ally_buff_field: float = 0
     # endregion
 
     # region Flags of bullets having special patterns
@@ -102,12 +102,12 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
                     and self.action_component.is_special_pattern):
                 self.max_hit_count = self.action_component.max_hit_count
 
-        # Buff zone specific damage mod
+        # Buff field specific damage mod
         if isinstance(self.action_component, ActionBuffField):
             if self.action_component.count_for_self_built:
-                self.mod_on_self_buff_zone = self.hit_attr.damage_modifier
+                self.mod_on_self_buff_field = self.hit_attr.damage_modifier
             else:
-                self.mod_on_ally_buff_zone = self.hit_attr.damage_modifier
+                self.mod_on_ally_buff_field = self.hit_attr.damage_modifier
 
         # Other attributes
         if self.ability_data:
@@ -121,9 +121,9 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         self._init_validity_check()
 
     @property
-    def is_effective_inside_buff_zone(self) -> bool:
-        """Check if the hit is only effective if the user is inside buff zones."""
-        return bool(self.mod_on_self_buff_zone or self.mod_on_ally_buff_zone)
+    def is_effective_inside_buff_field(self) -> bool:
+        """Check if the hit is only effective if the user is inside buff fields."""
+        return bool(self.mod_on_self_buff_field or self.mod_on_ally_buff_field)
 
     def damage_modifier_at_hit(self, hit_count: int) -> float:
         """
@@ -144,13 +144,13 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         # - 1 for hit count here because the 1st hit deals the base damage (no deterioration)
         return self.hit_attr.damage_modifier * self.deterioration_rate ** (hit_count - 1)
 
-    def mods_in_self_buff_zone(self, count: int) -> list[float]:
-        """Get the damage modifiers if standing on ``count`` buff zones created by the user."""
-        return [self.mod_on_self_buff_zone] * count
+    def mods_in_self_buff_field(self, count: int) -> list[float]:
+        """Get the damage modifiers if standing on ``count`` buff fields created by the user."""
+        return [self.mod_on_self_buff_field] * count
 
-    def mods_in_ally_buff_zone(self, count: int) -> list[float]:
-        """Get the damage modifiers if standing on ``count`` buff zones created by the allies."""
-        return [self.mod_on_ally_buff_zone] * count
+    def mods_in_ally_buff_field(self, count: int) -> list[float]:
+        """Get the damage modifiers if standing on ``count`` buff fields created by the allies."""
+        return [self.mod_on_ally_buff_field] * count
 
     def _damage_units_get_base_attributes(
             self, condition_comp: ConditionComposite, unit_affliction: HitAfflictionEffectUnitHit,
@@ -173,10 +173,10 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
                 for hit_count in range(1, condition_comp.bullet_hit_count_converted + 1)
             ]
 
-        if self.is_effective_inside_buff_zone:
-            # Damage mods inside buff zones i.e. no damage mod if not in buff zone
-            mods = self.mods_in_self_buff_zone(condition_comp.buff_zone_self_converted or 0)
-            mods += self.mods_in_ally_buff_zone(condition_comp.buff_zone_ally_converted or 0)
+        if self.is_effective_inside_buff_field:
+            # Damage mods inside buff fields i.e. no damage mod if not in buff field
+            mods = self.mods_in_self_buff_field(condition_comp.buff_field_self_converted or 0)
+            mods += self.mods_in_ally_buff_field(condition_comp.buff_field_ally_converted or 0)
 
             return [DamageUnit(self.action_time, mod, unit_affliction, units_debuff, hit_attr) for mod in mods]
 

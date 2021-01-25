@@ -179,15 +179,15 @@ def test_elem_res_on_combo_count_above(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-def test_elem_res_in_buff_zone(transformer_ability: AbilityTransformer):
+def test_elem_res_in_buff_field(transformer_ability: AbilityTransformer):
     # Opera Karina - 10650504
     # https://dragalialost.gamepedia.com/Opera_Karina
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000799)
 
     expected_info = {
-        # The effect of clearing the action condition when leaving the buff zone is omitted
+        # The effect of clearing the action condition when leaving the buff field is omitted
         AbilityEffectInfo(
-            400000799, ConditionComposite([Condition.TARGET_SHADOW, Condition.ON_ENTERED_BUFF_ZONE]),
+            400000799, ConditionComposite([Condition.TARGET_SHADOW, Condition.ON_ENTERED_BUFF_FIELD]),
             BuffParameter.RESISTANCE_LIGHT_BUFF, 0.07, duration_sec=0
         ),
     }

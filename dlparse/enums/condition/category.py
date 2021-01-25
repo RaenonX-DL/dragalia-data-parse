@@ -27,8 +27,8 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_HP_STATUS = auto()
     MULTIPLE_COMBO_COUNT = auto()
     MULTIPLE_BUFF_COUNT = auto()
-    MULTIPLE_BUFF_ZONE_SELF = auto()
-    MULTIPLE_BUFF_ZONE_ALLY = auto()
+    MULTIPLE_BUFF_FIELD_SELF = auto()
+    MULTIPLE_BUFF_FIELD_ALLY = auto()
     MULTIPLE_WEAPON_TYPE = auto()
     MULTIPLE_BULLET_HIT = auto()
     MULTIPLE_TEAMMATE_COVERAGE = auto()
@@ -53,8 +53,8 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_HP_CONDITION = auto()
     INTERNAL_NOT_COMBO_COUNT = auto()
     INTERNAL_NOT_BUFF_COUNT = auto()
-    INTERNAL_NOT_BUFF_ZONE_SELF = auto()
-    INTERNAL_NOT_BUFF_ZONE_ALLY = auto()
+    INTERNAL_NOT_BUFF_FIELD_SELF = auto()
+    INTERNAL_NOT_BUFF_FIELD_ALLY = auto()
     INTERNAL_NOT_WEAPON_TYPE = auto()
     INTERNAL_NOT_BULLET_HIT_COUNT = auto()
     INTERNAL_NOT_TEAMMATE_COVERAGE = auto()
@@ -377,26 +377,26 @@ class ConditionCategories:
         "Self - buff count",
         ConditionCheckResult.MULTIPLE_BUFF_COUNT
     )
-    self_in_buff_zone_self = ConditionCategoryTargetNumber(
+    self_in_buff_field_self = ConditionCategoryTargetNumber(
         {
-            Condition.IN_BUFF_ZONE_BY_SELF_0: 0,
-            Condition.IN_BUFF_ZONE_BY_SELF_1: 1,
-            Condition.IN_BUFF_ZONE_BY_SELF_2: 2,
+            Condition.IN_BUFF_FIELD_BY_SELF_0: 0,
+            Condition.IN_BUFF_FIELD_BY_SELF_1: 1,
+            Condition.IN_BUFF_FIELD_BY_SELF_2: 2,
         },
         ConditionMaxCount.SINGLE,
-        "Self - count of self-built buff zones inside",
-        ConditionCheckResult.MULTIPLE_BUFF_ZONE_SELF
+        "Self - count of self-built buff fields inside",
+        ConditionCheckResult.MULTIPLE_BUFF_FIELD_SELF
     )
-    self_in_buff_zone_ally = ConditionCategoryTargetNumber(
+    self_in_buff_field_ally = ConditionCategoryTargetNumber(
         {
-            Condition.IN_BUFF_ZONE_BY_ALLY_0: 0,
-            Condition.IN_BUFF_ZONE_BY_ALLY_1: 1,
-            Condition.IN_BUFF_ZONE_BY_ALLY_2: 2,
-            Condition.IN_BUFF_ZONE_BY_ALLY_3: 3,
+            Condition.IN_BUFF_FIELD_BY_ALLY_0: 0,
+            Condition.IN_BUFF_FIELD_BY_ALLY_1: 1,
+            Condition.IN_BUFF_FIELD_BY_ALLY_2: 2,
+            Condition.IN_BUFF_FIELD_BY_ALLY_3: 3,
         },
         ConditionMaxCount.SINGLE,
-        "Self - count of ally-built buff zones inside",
-        ConditionCheckResult.MULTIPLE_BUFF_ZONE_ALLY
+        "Self - count of ally-built buff fields inside",
+        ConditionCheckResult.MULTIPLE_BUFF_FIELD_ALLY
     )
     self_weapon_type = ConditionCategory[Weapon](
         {
@@ -562,7 +562,7 @@ class ConditionCategories:
             Condition.ON_BUFFED_DEF,
             Condition.ON_REVIVED,
             Condition.ON_ENERGY_LV_UP,
-            Condition.ON_ENTERED_BUFF_ZONE,
+            Condition.ON_ENTERED_BUFF_FIELD,
             Condition.ON_HEALED,
             Condition.ON_DODGE_SUCCESS,
             Condition.ON_HP_LT_30,

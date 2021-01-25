@@ -422,7 +422,7 @@ Effective if the butterflies on the map is over a certain threshold.
 
 ### `88` - `ON_BUFF_FIELD`
 
-Effective if the user is inside a buff zone.
+Effective if the user is inside a buff field.
 
 - **Val 1**: *Used but meaning unknown. Could be the minimum count of the buff fields.*
 

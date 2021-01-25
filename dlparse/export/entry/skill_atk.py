@@ -29,8 +29,8 @@ class SkillBuffCountBoostEntry(JsonExportableEntryBase):
 
 
 @dataclass
-class SkillBuffZoneBoostEntry(JsonExportableEntryBase):
-    """A single entry representing the mods increment according to the user's buff zone."""
+class SkillBuffFieldBoostEntry(JsonExportableEntryBase):
+    """A single entry representing the mods increment according to the user's buff field."""
 
     rate_by_self: float
     rate_by_ally: float
@@ -81,7 +81,7 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
     dispel_timing_max: list[float] = field(init=False)
 
     buff_count_data_max: list[SkillBuffCountBoostEntry] = field(init=False)
-    buff_zone_data_max: SkillBuffZoneBoostEntry = field(init=False)
+    buff_field_data_max: SkillBuffFieldBoostEntry = field(init=False)
 
     def __post_init__(
             self, skill_data: SkillDataEntry, skill_id_entry: SkillIdEntry,
@@ -127,8 +127,8 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
             )
             for buff_count_data in skill_data_to_parse.buff_count_boost_mtx[-1]
         ]
-        buff_zone_data = skill_data_to_parse.buff_zone_boost_mtx[-1]
-        self.buff_zone_data_max = SkillBuffZoneBoostEntry(buff_zone_data.rate_by_self, buff_zone_data.rate_by_ally)
+        buff_field_data = skill_data_to_parse.buff_field_boost_mtx[-1]
+        self.buff_field_data_max = SkillBuffFieldBoostEntry(buff_field_data.rate_by_self, buff_field_data.rate_by_ally)
 
     def to_json_entry(self) -> dict[str, Any]:
         # Used by the website, DO NOT CHANGE
@@ -140,7 +140,7 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
             "hitsMax": self.skill_total_hits_max,
             "afflictions": [affliction_data.to_json_entry() for affliction_data in self.affliction_data_max],
             "buffCountBoost": [buff_count_data.to_json_entry() for buff_count_data in self.buff_count_data_max],
-            "buffZoneBoost": self.buff_zone_data_max.to_json_entry(),
+            "buffZoneBoost": self.buff_field_data_max.to_json_entry(),
             "dispelMax": self.dispel_max,
             "dispelTimingMax": self.dispel_timing_max
         })

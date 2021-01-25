@@ -84,7 +84,7 @@ def test_single_effect_to_team_limited(transformer_skill: SkillTransformer):
     assert skill_data.buffs == [set()] * skill_data_base.max_level
 
 
-def test_single_effect_area(transformer_skill: SkillTransformer):
+def test_single_effect_field(transformer_skill: SkillTransformer):
     # Gala Euden S1
     # https://dragalialost.gamepedia.com/Gala_Prince
     skill_data_base = transformer_skill.transform_supportive(101504031)
@@ -92,13 +92,13 @@ def test_single_effect_area(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 3
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo("SWD_115_04_ATK_FLD_LV01", HitTargetSimple.AREA, BuffParameter.ATK_BUFF, 0.10, 10, 0)
+        BuffEffectInfo("SWD_115_04_ATK_FLD_LV01", HitTargetSimple.FIELD, BuffParameter.ATK_BUFF, 0.10, 10, 0)
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo("SWD_115_04_ATK_FLD_LV02", HitTargetSimple.AREA, BuffParameter.ATK_BUFF, 0.15, 10, 0)
+        BuffEffectInfo("SWD_115_04_ATK_FLD_LV02", HitTargetSimple.FIELD, BuffParameter.ATK_BUFF, 0.15, 10, 0)
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo("SWD_115_04_ATK_FLD_LV03", HitTargetSimple.AREA, BuffParameter.ATK_BUFF, 0.20, 10, 0)
+        BuffEffectInfo("SWD_115_04_ATK_FLD_LV03", HitTargetSimple.FIELD, BuffParameter.ATK_BUFF, 0.20, 10, 0)
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
 

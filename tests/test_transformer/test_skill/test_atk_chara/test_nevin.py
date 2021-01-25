@@ -3,7 +3,7 @@ from itertools import product
 import pytest
 
 from dlparse.enums import Condition, ConditionComposite, SkillNumber
-from dlparse.model import BuffZoneBoostData
+from dlparse.model import BuffFieldBoostData
 from dlparse.mono.asset import SkillIdEntry, SkillIdentifierLabel
 from dlparse.mono.manager import AssetManager
 from dlparse.transformer import SkillTransformer
@@ -60,30 +60,30 @@ def test_iter_entries_s2_released(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_0,
-                            Condition.IN_BUFF_ZONE_BY_ALLY_0]): 0,
-        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_0,
-                            Condition.IN_BUFF_ZONE_BY_ALLY_1]): 1,
-        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_0,
-                            Condition.IN_BUFF_ZONE_BY_ALLY_2]): 2,
-        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_0,
-                            Condition.IN_BUFF_ZONE_BY_ALLY_3]): 3,
-        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_1,
-                            Condition.IN_BUFF_ZONE_BY_ALLY_0]): 3,
-        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_1,
-                            Condition.IN_BUFF_ZONE_BY_ALLY_1]): 4,
-        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_1,
-                            Condition.IN_BUFF_ZONE_BY_ALLY_2]): 5,
-        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_1,
-                            Condition.IN_BUFF_ZONE_BY_ALLY_3]): 6,
-        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_2,
-                            Condition.IN_BUFF_ZONE_BY_ALLY_0]): 6,
-        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_2,
-                            Condition.IN_BUFF_ZONE_BY_ALLY_1]): 7,
-        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_2,
-                            Condition.IN_BUFF_ZONE_BY_ALLY_2]): 8,
-        ConditionComposite([Condition.IN_BUFF_ZONE_BY_SELF_2,
-                            Condition.IN_BUFF_ZONE_BY_ALLY_3]): 9,
+        ConditionComposite([Condition.IN_BUFF_FIELD_BY_SELF_0,
+                            Condition.IN_BUFF_FIELD_BY_ALLY_0]): 0,
+        ConditionComposite([Condition.IN_BUFF_FIELD_BY_SELF_0,
+                            Condition.IN_BUFF_FIELD_BY_ALLY_1]): 1,
+        ConditionComposite([Condition.IN_BUFF_FIELD_BY_SELF_0,
+                            Condition.IN_BUFF_FIELD_BY_ALLY_2]): 2,
+        ConditionComposite([Condition.IN_BUFF_FIELD_BY_SELF_0,
+                            Condition.IN_BUFF_FIELD_BY_ALLY_3]): 3,
+        ConditionComposite([Condition.IN_BUFF_FIELD_BY_SELF_1,
+                            Condition.IN_BUFF_FIELD_BY_ALLY_0]): 3,
+        ConditionComposite([Condition.IN_BUFF_FIELD_BY_SELF_1,
+                            Condition.IN_BUFF_FIELD_BY_ALLY_1]): 4,
+        ConditionComposite([Condition.IN_BUFF_FIELD_BY_SELF_1,
+                            Condition.IN_BUFF_FIELD_BY_ALLY_2]): 5,
+        ConditionComposite([Condition.IN_BUFF_FIELD_BY_SELF_1,
+                            Condition.IN_BUFF_FIELD_BY_ALLY_3]): 6,
+        ConditionComposite([Condition.IN_BUFF_FIELD_BY_SELF_2,
+                            Condition.IN_BUFF_FIELD_BY_ALLY_0]): 6,
+        ConditionComposite([Condition.IN_BUFF_FIELD_BY_SELF_2,
+                            Condition.IN_BUFF_FIELD_BY_ALLY_1]): 7,
+        ConditionComposite([Condition.IN_BUFF_FIELD_BY_SELF_2,
+                            Condition.IN_BUFF_FIELD_BY_ALLY_2]): 8,
+        ConditionComposite([Condition.IN_BUFF_FIELD_BY_SELF_2,
+                            Condition.IN_BUFF_FIELD_BY_ALLY_3]): 9,
     }
 
     expected = set(expected_addl_at_max.keys())
@@ -122,20 +122,20 @@ def test_iter_entries_s2_released(transformer_skill: SkillTransformer):
     assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
 
 
-def test_buff_zone_boost_s2_locked(transformer_skill: SkillTransformer):
+def test_buff_field_boost_s2_locked(transformer_skill: SkillTransformer):
     # Nevin S2 @ Sigil Locked
     # https://dragalialost.gamepedia.com/Nevin
     skill_data = transformer_skill.transform_attacking(103505042, is_exporting=True).with_conditions()
 
-    assert skill_data.buff_zone_boost_mtx == [BuffZoneBoostData(0, 0)] * 2
+    assert skill_data.buff_field_boost_mtx == [BuffFieldBoostData(0, 0)] * 2
 
 
-def test_buff_zone_boost_s2_released(transformer_skill: SkillTransformer):
+def test_buff_field_boost_s2_released(transformer_skill: SkillTransformer):
     # Nevin S2 @ Sigil Released
     # https://dragalialost.gamepedia.com/Nevin
     skill_data = transformer_skill.transform_attacking(103505044, is_exporting=True).with_conditions()
 
-    assert skill_data.buff_zone_boost_mtx == [BuffZoneBoostData(2.7, 0.9), BuffZoneBoostData(3, 1)]
+    assert skill_data.buff_field_boost_mtx == [BuffFieldBoostData(2.7, 0.9), BuffFieldBoostData(3, 1)]
 
 
 def test_s2_locked(transformer_skill: SkillTransformer):
@@ -190,11 +190,11 @@ def test_s2_released(transformer_skill: SkillTransformer):
             [],
             []
         ],
-        ConditionComposite(Condition.IN_BUFF_ZONE_BY_SELF_1): [
+        ConditionComposite(Condition.IN_BUFF_FIELD_BY_SELF_1): [
             [2.7],
             [3]
         ],
-        ConditionComposite(Condition.IN_BUFF_ZONE_BY_SELF_2): [
+        ConditionComposite(Condition.IN_BUFF_FIELD_BY_SELF_2): [
             [2.7] * 2,
             [3] * 2
         ],
@@ -204,15 +204,15 @@ def test_s2_released(transformer_skill: SkillTransformer):
             [],
             []
         ],
-        ConditionComposite(Condition.IN_BUFF_ZONE_BY_ALLY_1): [
+        ConditionComposite(Condition.IN_BUFF_FIELD_BY_ALLY_1): [
             [0.9],
             [1]
         ],
-        ConditionComposite(Condition.IN_BUFF_ZONE_BY_ALLY_2): [
+        ConditionComposite(Condition.IN_BUFF_FIELD_BY_ALLY_2): [
             [0.9] * 2,
             [1] * 2
         ],
-        ConditionComposite(Condition.IN_BUFF_ZONE_BY_ALLY_3): [
+        ConditionComposite(Condition.IN_BUFF_FIELD_BY_ALLY_3): [
             [0.9] * 3,
             [1] * 3
         ],

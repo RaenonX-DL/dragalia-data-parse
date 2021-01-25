@@ -24,7 +24,7 @@ class HitTargetSimple(TranslatableEnumMixin, Enum):
     SELF = 1
     SELF_SURROUNDING = 2
     ENEMY = 3
-    AREA = 4
+    FIELD = 4
     TEAM = 6
 
     @property
@@ -37,7 +37,7 @@ class HitTargetSimple(TranslatableEnumMixin, Enum):
             HitTargetSimple.SELF,
             HitTargetSimple.SELF_SURROUNDING,
             HitTargetSimple.ENEMY,
-            HitTargetSimple.AREA,
+            HitTargetSimple.FIELD,
             HitTargetSimple.TEAM
         ]
 
@@ -56,12 +56,12 @@ class HitTarget(Enum):
 
     SELF = 1
     """The effect will be applied to the user themselves only."""
-    SELF_SKILL_AREA = 2
+    SELF_SKILL_FIELD = 2
     """
-    The effect will be applied to every ally who stays within the skill effect range.
+    The effect will be applied to every ally who stays within the skill field range.
 
     This includes some skills that centers at the user (for example, Summer Cleo S2 ``106504012``),
-    and the skills that creates an area (for example, Wedding Elisanne S1 ``101503021``).
+    and the skills that creates a field (for example, Wedding Elisanne S1 ``101503021``).
     """
     ENEMY = 3
     """The effect will be applied to the enemy."""
@@ -92,7 +92,7 @@ class HitTarget(Enum):
 TRANS_DICT_TO_SIMPLE: dict[HitTarget, HitTargetSimple] = {
     HitTarget.UNKNOWN: HitTargetSimple.UNKNOWN,
     HitTarget.SELF: HitTargetSimple.SELF,
-    HitTarget.SELF_SKILL_AREA: HitTargetSimple.SELF_SURROUNDING,
+    HitTarget.SELF_SKILL_FIELD: HitTargetSimple.SELF_SURROUNDING,
     HitTarget.ENEMY: HitTargetSimple.ENEMY,
     HitTarget.TEAM: HitTargetSimple.TEAM,
     HitTarget.HIT_DEPENDENT_SELF: HitTargetSimple.SELF

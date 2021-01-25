@@ -58,10 +58,10 @@ class AbilityConditionEntryBase(ABC):
             AbilityCondition.TRG_ENERGY_LV_UP: Condition.ON_ENERGY_LV_UP,
             AbilityCondition.TRG_ENERGIZED: Condition.SELF_ENERGIZED,
             # Despite the ability condition seems to be effective instead of triggering,
-            # mapping to a triggering condition (``ON_INTO_BUFF_ZONE``)
-            # makes more sense (the effect is granted once the user gets into the buff zone) and
+            # mapping to a triggering condition (``ON_INTO_BUFF_FIELD``)
+            # makes more sense (the effect is granted once the user gets into a buff field) and
             # gives easier categorization (no need to mess with the sectioned conditions or to create a new category)
-            AbilityCondition.EFF_IN_BUFF_ZONE: Condition.ON_ENTERED_BUFF_ZONE,
+            AbilityCondition.EFF_IN_BUFF_FIELD: Condition.ON_ENTERED_BUFF_FIELD,
             AbilityCondition.TRG_SHAPESHIFT_COMPLETED: Condition.SELF_SHAPESHIFT_COMPLETED,
             AbilityCondition.TRG_GOT_HIT: Condition.ON_HIT,
             AbilityCondition.TRG_HEALED: Condition.ON_HEALED,

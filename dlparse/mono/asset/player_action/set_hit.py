@@ -11,7 +11,7 @@ __all__ = ("ActionSettingHit",)
 class ActionSettingHit(ActionComponentHasHitLabels):
     """Class of ``ActionPartsSettingHit`` component in the player action asset."""
 
-    area_lifetime: float
+    field_lifetime: float
 
     @classmethod
     def parse_raw(cls, data: dict[str, Union[str, float]]) -> "ActionSettingHit":
@@ -19,6 +19,6 @@ class ActionSettingHit(ActionComponentHasHitLabels):
 
         return ActionSettingHit(
             hit_labels=[data["_hitAttrLabel"]],
-            area_lifetime=data["_lifetime"],
+            field_lifetime=data["_lifetime"],
             **kwargs
         )

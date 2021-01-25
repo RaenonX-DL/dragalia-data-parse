@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from .hit_dmg import DamagingHitData
     from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset, HitAttrEntry
 
-__all__ = ("BuffCountBoostData", "BuffZoneBoostData")
+__all__ = ("BuffCountBoostData", "BuffFieldBoostData")
 
 
 @dataclass
@@ -86,8 +86,8 @@ class BuffCountBoostData(BuffBoostData):
 
 
 @dataclass(eq=False)
-class BuffZoneBoostData(BuffBoostData):
-    """Data used for calculating the damage boost according to the buff zone."""
+class BuffFieldBoostData(BuffBoostData):
+    """Data used for calculating the damage boost according to the buff field count."""
 
     rate_by_self: float
     rate_by_ally: float
@@ -97,9 +97,9 @@ class BuffZoneBoostData(BuffBoostData):
         return hash((self.rate_by_self * 1E5, self.rate_by_ally * 1E5,))
 
     @staticmethod
-    def from_hit_units(hit_data_list: list["DamagingHitData"]) -> "BuffZoneBoostData":
-        """``hit_data_list`` to a buff zone boosting data."""
-        rate_by_self = sum(hit_data.mod_on_self_buff_zone for hit_data in hit_data_list)
-        rate_by_ally = sum(hit_data.mod_on_ally_buff_zone for hit_data in hit_data_list)
+    def from_hit_units(hit_data_list: list["DamagingHitData"]) -> "BuffFieldBoostData":
+        """``hit_data_list`` to a buff field boosting data."""
+        rate_by_self = sum(hit_data.mod_on_self_buff_field for hit_data in hit_data_list)
+        rate_by_ally = sum(hit_data.mod_on_ally_buff_field for hit_data in hit_data_list)
 
-        return BuffZoneBoostData(rate_by_self, rate_by_ally)
+        return BuffFieldBoostData(rate_by_self, rate_by_ally)
