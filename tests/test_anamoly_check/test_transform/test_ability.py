@@ -71,6 +71,7 @@ def test_transform_all_character_ability(transformer_ability: AbilityTransformer
                 ))
 
     if unknown_abilities:
+        # FIXME: Print the count of distinct unparsable ability condition type ID / var type ID
         unknown_str = "\n".join([str(entry) for entry in unknown_abilities])
         pytest.fail(
             f"{len(unknown_abilities)} abilities have unknown elements "

@@ -241,7 +241,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
     def _from_rp_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
-        return self._direct_buff_unit(BuffParameter.HEAL_RP, asset_manager, payload)
+        return self._direct_buff_unit(BuffParameter.RP_UP, asset_manager, payload)
 
     def _from_dragon_dmg_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
@@ -392,7 +392,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         # because ``_from_*`` methods are called with the same set of the parameters.
 
         return self._direct_buff_unit(
-            BuffParameter.HEAL_MAX_HP, asset_manager, payload,
+            BuffParameter.HEAL_INSTANT_HP, asset_manager, payload,
             addl_cond_comp=ConditionComposite(Condition.ON_REVIVED)
         )
 

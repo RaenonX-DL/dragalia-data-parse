@@ -1388,12 +1388,24 @@
     "text": "使用後技能 充能 %"
   },
   {
-    "id": "ENUM_BUFF_HEAL_RP",
-    "text": "治癒 (RP)"
+    "id": "ENUM_BUFF_RP_UP",
+    "text": "治癒力 (RP) 上升"
   },
   {
-    "id": "ENUM_BUFF_HEAL_MAX_HP",
-    "text": "治癒 (Max HP)"
+    "id": "ENUM_BUFF_HEAL_INSTANT_RP",
+    "text": "即補 (RP)"
+  },
+  {
+    "id": "ENUM_BUFF_HEAL_INSTANT_HP",
+    "text": "即補 (Max HP)"
+  },
+  {
+    "id": "ENUM_BUFF_HEAL_OVER_TIME_RP",
+    "text": "漸補 (RP)"
+  },
+  {
+    "id": "ENUM_BUFF_HEAL_OVER_TIME_HP",
+    "text": "漸補 (Max HP)"
   },
   {
     "id": "ENUM_BUFF_SHIELD_SINGLE_DMG",

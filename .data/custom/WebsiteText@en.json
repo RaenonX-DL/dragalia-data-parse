@@ -445,11 +445,11 @@
   },
   {
     "id": "ENUM_COND_TARGET_POISONED",
-    "text": "Affliction: Poison"
+    "text": "Affliction: Poisoned"
   },
   {
     "id": "ENUM_COND_TARGET_BURNED",
-    "text": "Affliction: Burn"
+    "text": "Affliction: Burned"
   },
   {
     "id": "ENUM_COND_TARGET_FROZEN",
@@ -457,47 +457,47 @@
   },
   {
     "id": "ENUM_COND_TARGET_PARALYZED",
-    "text": "Affliction: Paralyze"
+    "text": "Affliction: Paralyzed"
   },
   {
     "id": "ENUM_COND_TARGET_BLINDED",
-    "text": "Affliction: Blind"
+    "text": "Affliction: Blinded"
   },
   {
     "id": "ENUM_COND_TARGET_STUNNED",
-    "text": "Affliction: Stun"
+    "text": "Affliction: Stunned"
   },
   {
     "id": "ENUM_COND_TARGET_CURSED",
-    "text": "Affliction: Curse"
+    "text": "Affliction: Cursed"
   },
   {
     "id": "ENUM_COND_TARGET_BOGGED",
-    "text": "Affliction: Bog"
+    "text": "Affliction: Bogged"
   },
   {
     "id": "ENUM_COND_TARGET_SLEPT",
-    "text": "Affliction: Sleep"
+    "text": "Affliction: Slept"
   },
   {
     "id": "ENUM_COND_TARGET_FROSTBITTEN",
-    "text": "Affliction: Frostbite"
+    "text": "Affliction: Frostbitten"
   },
   {
     "id": "ENUM_COND_TARGET_FLASHBURNED",
-    "text": "Affliction: Flashburn"
+    "text": "Affliction: Flashburned"
   },
   {
     "id": "ENUM_COND_TARGET_STORMLASHED",
-    "text": "Affliction: Stormlash"
+    "text": "Affliction: Stormlashed"
   },
   {
     "id": "ENUM_COND_TARGET_SHADOWBLIGHTED",
-    "text": "Affliction: Shadowblight"
+    "text": "Affliction: Shadowblighted"
   },
   {
     "id": "ENUM_COND_TARGET_SCORCHRENT",
-    "text": "Affliction: Scorchrend"
+    "text": "Affliction: Scorchrent"
   },
   {
     "id": "ENUM_COND_TARGET_FLAME",
@@ -653,7 +653,7 @@
   },
   {
     "id": "ENUM_COND_SELF_BUFF_0",
-    "text": "Self 0 Buff"
+    "text": "Self 0 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_1",
@@ -661,75 +661,75 @@
   },
   {
     "id": "ENUM_COND_SELF_BUFF_2",
-    "text": "Self 2 Buff"
+    "text": "Self 2 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_3",
-    "text": "Self 3 Buff"
+    "text": "Self 3 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_4",
-    "text": "Self 4 Buff"
+    "text": "Self 4 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_5",
-    "text": "Self 5 Buff"
+    "text": "Self 5 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_6",
-    "text": "Self 6 Buff"
+    "text": "Self 6 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_7",
-    "text": "Self 7 Buff"
+    "text": "Self 7 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_8",
-    "text": "Self 8 Buff"
+    "text": "Self 8 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_9",
-    "text": "Self 9 Buff"
+    "text": "Self 9 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_10",
-    "text": "Self 10 Buff"
+    "text": "Self 10 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_15",
-    "text": "Self 15 Buff"
+    "text": "Self 15 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_20",
-    "text": "Self 20 Buff"
+    "text": "Self 20 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_25",
-    "text": "Self 25 Buff"
+    "text": "Self 25 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_30",
-    "text": "Self 30 Buff"
+    "text": "Self 30 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_35",
-    "text": "Self 35 Buff"
+    "text": "Self 35 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_40",
-    "text": "Self 40 Buff"
+    "text": "Self 40 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_45",
-    "text": "Self 45 Buff"
+    "text": "Self 45 Buffs"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_50",
-    "text": "Self 50 Buff"
+    "text": "Self 50 Buffs"
   },
   {
     "id": "ENUM_COND_IN_BUFF_FIELD_BY_SELF_0",
-    "text": "In 0 Self Buff Field"
+    "text": "In 0 Self Buff Fields"
   },
   {
     "id": "ENUM_COND_IN_BUFF_FIELD_BY_SELF_1",
@@ -737,11 +737,11 @@
   },
   {
     "id": "ENUM_COND_IN_BUFF_FIELD_BY_SELF_2",
-    "text": "In 2 Self Buff Field"
+    "text": "In 2 Self Buff Fields"
   },
   {
     "id": "ENUM_COND_IN_BUFF_FIELD_BY_ALLY_0",
-    "text": "In 0 Ally Buff Field"
+    "text": "In 0 Ally Buff Fields"
   },
   {
     "id": "ENUM_COND_IN_BUFF_FIELD_BY_ALLY_1",
@@ -749,11 +749,11 @@
   },
   {
     "id": "ENUM_COND_IN_BUFF_FIELD_BY_ALLY_2",
-    "text": "In 2 Ally Buff Field"
+    "text": "In 2 Ally Buff Fields"
   },
   {
     "id": "ENUM_COND_IN_BUFF_FIELD_BY_ALLY_3",
-    "text": "In 3 Ally Buff Field"
+    "text": "In 3 Ally Buff Fields"
   },
   {
     "id": "ENUM_COND_WEAPON_SWORD",
@@ -761,7 +761,7 @@
   },
   {
     "id": "ENUM_COND_WEAPON_KATANA",
-    "text": "Weapon: Katana"
+    "text": "Weapon: Blade"
   },
   {
     "id": "ENUM_COND_WEAPON_DAGGER",
@@ -785,11 +785,11 @@
   },
   {
     "id": "ENUM_COND_WEAPON_CANE",
-    "text": "Weapon: Cane"
+    "text": "Weapon: Staff"
   },
   {
     "id": "ENUM_COND_WEAPON_GUN",
-    "text": "Weapon: Gun"
+    "text": "Weapon: Manacaster"
   },
   {
     "id": "ENUM_COND_BULLET_HIT_1",
@@ -1205,435 +1205,447 @@
   },
   {
     "id": "ENUM_BUFF_ATK_BUFF",
-    "text": "攻擊 (Buff)"
+    "text": "STR (Buff)"
   },
   {
     "id": "ENUM_BUFF_DEF_BUFF",
-    "text": "防禦 (Buff)"
+    "text": "DEF (Buff)"
   },
   {
     "id": "ENUM_BUFF_CRT_RATE_BUFF",
-    "text": "爆率 (Buff)"
+    "text": "CRT (Buff)"
   },
   {
     "id": "ENUM_BUFF_CRT_DAMAGE_BUFF",
-    "text": "爆傷 (Buff)"
+    "text": "CDMG (Buff)"
   },
   {
     "id": "ENUM_BUFF_SKILL_DAMAGE_BUFF",
-    "text": "技傷 (Buff)"
+    "text": "SD (Buff)"
   },
   {
     "id": "ENUM_BUFF_ASPD_BUFF",
-    "text": "攻速 (Buff)"
+    "text": "ASPD (Buff)"
   },
   {
     "id": "ENUM_BUFF_FS_DAMAGE_BUFF",
-    "text": "FS 傷害 (Buff)"
+    "text": "FS DMG (Buff)"
   },
   {
     "id": "ENUM_BUFF_FS_SPD",
-    "text": "FS 速度"
+    "text": "FS SPD"
   },
   {
     "id": "ENUM_BUFF_OD_GAUGE_DAMAGE",
-    "text": "OD 條傷害"
+    "text": "OD DMG"
   },
   {
     "id": "ENUM_BUFF_AUTO_DAMAGE",
-    "text": "普攻傷害"
+    "text": "Auto Damage"
   },
   {
     "id": "ENUM_BUFF_TARGETED_BUFF_TIME",
-    "text": "對目標 Buff 時間"
+    "text": "Targeted Buff Time"
   },
   {
     "id": "ENUM_BUFF_COMBO_TIME",
-    "text": "Combo 時間"
+    "text": "Combo Time"
   },
   {
     "id": "ENUM_BUFF_FLAME_ELEM_DMG_UP",
-    "text": "火屬性傷害"
+    "text": "Flame Damage"
   },
   {
     "id": "ENUM_BUFF_WATER_ELEM_DMG_UP",
-    "text": "水屬性傷害"
+    "text": "Water Damage"
   },
   {
     "id": "ENUM_BUFF_WIND_ELEM_DMG_UP",
-    "text": "風屬性傷害"
+    "text": "Wind Damage"
   },
   {
     "id": "ENUM_BUFF_LIGHT_ELEM_DMG_UP",
-    "text": "光屬性傷害"
+    "text": "Light Damage"
   },
   {
     "id": "ENUM_BUFF_SHADOW_ELEM_DMG_UP",
-    "text": "暗屬性傷害"
+    "text": "Shadow Damage"
   },
   {
     "id": "ENUM_BUFF_ATK_PASSIVE",
-    "text": "攻擊 (被動)"
+    "text": "STR (Passive)"
   },
   {
     "id": "ENUM_BUFF_DEF_PASSIVE",
-    "text": "防禦 (被動)"
+    "text": "DEF (Passive)"
   },
   {
     "id": "ENUM_BUFF_CRT_RATE_PASSIVE",
-    "text": "爆率 (被動)"
+    "text": "CRT (Passive)"
   },
   {
     "id": "ENUM_BUFF_CRT_DAMAGE_PASSIVE",
-    "text": "爆傷 (被動)"
+    "text": "CDMG (Passive)"
   },
   {
     "id": "ENUM_BUFF_SKILL_DAMAGE_PASSIVE",
-    "text": "技傷 (被動)"
+    "text": "SD (Passive)"
   },
   {
     "id": "ENUM_BUFF_ASPD_PASSIVE",
-    "text": "攻速 (被動)"
+    "text": "ASPD (Passive)"
   },
   {
     "id": "ENUM_BUFF_FS_DAMAGE_PASSIVE",
-    "text": "FS 傷害 (被動)"
+    "text": "FS DMG (Passive)"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_POISON",
-    "text": "毒機率"
+    "text": "Poison Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_BURN",
-    "text": "燒傷機率"
+    "text": "Burn Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_FREEZE",
-    "text": "冰凍機率"
+    "text": "Freeze Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_PARALYZE",
-    "text": "麻痺機率"
+    "text": "Paralyze Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_BLIND",
-    "text": "黑暗機率"
+    "text": "Blind Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_STUN",
-    "text": "暈眩機率"
+    "text": "Stun Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_CURSE",
-    "text": "詛咒機率"
+    "text": "Curse Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_BOG",
-    "text": "濕身機率"
+    "text": "Bog Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_SLEEP",
-    "text": "睡眠機率"
+    "text": "Sleep Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_FROSTBITE",
-    "text": "凍傷機率"
+    "text": "Frostbite Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_FLASHBURN",
-    "text": "閃熱機率"
+    "text": "Flashburn Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_STORMLASH",
-    "text": "裂風機率"
+    "text": "Stormlash Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_SHADOWBLIGHT",
-    "text": "暗黑機率"
+    "text": "Shadowblight Chance"
   },
   {
     "id": "ENUM_BUFF_INFLICT_PROB_SCORCHREND",
-    "text": "劫火機率"
+    "text": "Scorchrend Chance"
   },
   {
     "id": "ENUM_BUFF_ATK_EX",
-    "text": "攻擊 (EX)"
+    "text": "STR (Co-ab)"
   },
   {
     "id": "ENUM_BUFF_SP_RATE",
-    "text": "SP 獲取 %"
+    "text": "Skill Haste %"
   },
   {
     "id": "ENUM_BUFF_SP_GAIN",
-    "text": "SP 獲得"
+    "text": "SP Gain"
   },
   {
     "id": "ENUM_BUFF_SP_CHARGE_PCT_S1",
-    "text": "S1 充能 %"
+    "text": "S1 Charge %"
   },
   {
     "id": "ENUM_BUFF_SP_CHARGE_PCT_S2",
-    "text": "S2 充能 %"
+    "text": "S2 Charge %"
   },
   {
     "id": "ENUM_BUFF_SP_CHARGE_PCT_S3",
-    "text": "S3 充能 %"
+    "text": "S3 Charge %"
   },
   {
     "id": "ENUM_BUFF_SP_CHARGE_PCT_S4",
-    "text": "S4 充能 %"
+    "text": "S4 Charge %"
   },
   {
     "id": "ENUM_BUFF_SP_CHARGE_PCT_USED",
-    "text": "使用後技能 充能 %"
+    "text": "After using skill, skill charge %"
   },
   {
-    "id": "ENUM_BUFF_HEAL_RP",
-    "text": "治癒 (RP)"
+    "id": "ENUM_BUFF_RP_UP",
+    "text": "Heal Potency (RP) Up"
   },
   {
-    "id": "ENUM_BUFF_HEAL_MAX_HP",
-    "text": "治癒 (Max HP)"
+    "id": "ENUM_BUFF_HEAL_INSTANT_RP",
+    "text": "Instant Heal (RP)"
+  },
+  {
+    "id": "ENUM_BUFF_HEAL_INSTANT_HP",
+    "text": "Instant Heal (Max HP)"
+  },
+  {
+    "id": "ENUM_BUFF_HEAL_OVER_TIME_RP",
+    "text": "HoT (RP)"
+  },
+  {
+    "id": "ENUM_BUFF_HEAL_OVER_TIME_HP",
+    "text": "HoT (Max HP)"
   },
   {
     "id": "ENUM_BUFF_SHIELD_SINGLE_DMG",
-    "text": "傷害盾"
+    "text": "Damage Shield"
   },
   {
     "id": "ENUM_BUFF_SHIELD_LIFE",
-    "text": "生命盾"
+    "text": "Life Shield"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_FLAME_BUFF",
-    "text": "火抗性 (Buff)"
+    "text": "Flame Res (Buff)"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_WATER_BUFF",
-    "text": "水抗性 (Buff)"
+    "text": "Water Res (Buff)"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_WIND_BUFF",
-    "text": "風抗性 (Buff)"
+    "text": "Wind Res (Buff)"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_LIGHT_BUFF",
-    "text": "光抗性 (Buff)"
+    "text": "Light Res (Buff)"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_SHADOW_BUFF",
-    "text": "暗抗性 (Buff)"
+    "text": "Shadow Res (Buff)"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_FLAME_PASSIVE",
-    "text": "火抗性 (被動)"
+    "text": "Flame Res (Passive)"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_WATER_PASSIVE",
-    "text": "水抗性 (被動)"
+    "text": "Water Res (Passive)"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_WIND_PASSIVE",
-    "text": "風抗性 (被動)"
+    "text": "Wind Res (Passive)"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_LIGHT_PASSIVE",
-    "text": "光抗性 (被動)"
+    "text": "Light Res (Passive)"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_SHADOW_PASSIVE",
-    "text": "暗抗性 (被動)"
+    "text": "Shadow Res (Passive)"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_POISON",
-    "text": "毒抗性"
+    "text": "Poison Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_BURN",
-    "text": "燒傷抗性"
+    "text": "Burn Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_FREEZE",
-    "text": "冰凍抗性"
+    "text": "Freeze Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_PARALYZE",
-    "text": "麻痺抗性"
+    "text": "Paralyze Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_BLIND",
-    "text": "黑暗抗性"
+    "text": "Blind Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_STUN",
-    "text": "暈眩抗性"
+    "text": "Stun Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_CURSE",
-    "text": "詛咒抗性"
+    "text": "Curse Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_BOG",
-    "text": "濕身抗性"
+    "text": "Bog Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_SLEEP",
-    "text": "睡眠抗性"
+    "text": "Sleep Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_FROSTBITE",
-    "text": "凍傷抗性"
+    "text": "Frostbite Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_FLASHBURN",
-    "text": "閃熱抗性"
+    "text": "Flashburn Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_STORMLASH",
-    "text": "裂風抗性"
+    "text": "Stormlash Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_SHADOWBLIGHT",
-    "text": "暗黑抗性"
+    "text": "Shadowblight Res"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_SCORCHREND",
-    "text": "劫火抗性"
+    "text": "Scorchrend Res"
   },
   {
     "id": "ENUM_BUFF_HP_FIX_BY_MAX",
-    "text": "扣血至 (Max HP %)"
+    "text": "Reduce HP to (Max HP %)"
   },
   {
     "id": "ENUM_BUFF_HP_DECREASE_BY_MAX",
-    "text": "扣血 (Max HP %)"
+    "text": "Reduce HP by (Max HP %)"
   },
   {
     "id": "ENUM_BUFF_HP_RAISE_BY_MAX",
-    "text": "提升最高血量 (Max HP %)"
+    "text": "Increase Max HP (Max HP %)"
   },
   {
     "id": "ENUM_BUFF_DRAGON_TIME",
-    "text": "龍化時間延長 (%)"
+    "text": "Dragon Time Increase (%)"
   },
   {
     "id": "ENUM_BUFF_DRAGON_TIME_FINAL",
-    "text": "龍化時間延長 2 (%)"
+    "text": "Dragon Time Increase 2 (%)"
   },
   {
     "id": "ENUM_BUFF_DP_CONSUMPTION",
-    "text": "龍條消耗量"
+    "text": "Dragon Gauge Cost"
   },
   {
     "id": "ENUM_BUFF_DP_RATE",
-    "text": "龍條獲取率 %"
+    "text": "Dragon Haste %"
   },
   {
     "id": "ENUM_BUFF_DRAGON_DAMAGE",
-    "text": "龍化傷害"
+    "text": "Dragon Damage"
   },
   {
     "id": "ENUM_BUFF_DRAGON_GAUGE_FILL",
-    "text": "龍條獲取 (%)"
+    "text": "Dragon Gauge Gain (%)"
   },
   {
     "id": "ENUM_BUFF_POISONED_PUNISHER",
-    "text": "毒特攻"
+    "text": "Poison Punisher"
   },
   {
     "id": "ENUM_BUFF_BURNED_PUNISHER",
-    "text": "燒傷特攻"
+    "text": "Burn Punisher"
   },
   {
     "id": "ENUM_BUFF_FROZEN_PUNISHER",
-    "text": "冰凍特攻"
+    "text": "Freeze Punisher"
   },
   {
     "id": "ENUM_BUFF_PARALYZED_PUNISHER",
-    "text": "麻痺特攻"
+    "text": "Paralyze Punisher"
   },
   {
     "id": "ENUM_BUFF_BLINDED_PUNISHER",
-    "text": "黑暗特攻"
+    "text": "Blind Punisher"
   },
   {
     "id": "ENUM_BUFF_STUNNED_PUNISHER",
-    "text": "暈眩特攻"
+    "text": "Stun Punisher"
   },
   {
     "id": "ENUM_BUFF_CURSED_PUNISHER",
-    "text": "詛咒特攻"
+    "text": "Curse Punisher"
   },
   {
     "id": "ENUM_BUFF_BOGGED_PUNISHER",
-    "text": "濕身特攻"
+    "text": "Bog Punisher"
   },
   {
     "id": "ENUM_BUFF_SLEPT_PUNISHER",
-    "text": "睡眠特攻"
+    "text": "Sleep Punisher"
   },
   {
     "id": "ENUM_BUFF_FROSTBITTEN_PUNISHER",
-    "text": "凍傷特攻"
+    "text": "Frostbite Punisher"
   },
   {
     "id": "ENUM_BUFF_FLASHBURNED_PUNISHER",
-    "text": "閃熱特攻"
+    "text": "Flashburn Punisher"
   },
   {
     "id": "ENUM_BUFF_STORMLASHED_PUNISHER",
-    "text": "裂風特攻"
+    "text": "Stormlash Punisher"
   },
   {
     "id": "ENUM_BUFF_SHADOWBLIGHTED_PUNISHER",
-    "text": "暗黑特攻"
+    "text": "Shadowblight Punisher"
   },
   {
     "id": "ENUM_BUFF_SCORCHRENT_PUNISHER",
-    "text": "劫火特攻"
+    "text": "Scorchrend Punisher"
   },
   {
     "id": "ENUM_BUFF_AFFLICTED_PUNISHER",
-    "text": "異常特攻"
+    "text": "Affliction Punisher"
   },
   {
     "id": "ENUM_BUFF_DEF_DOWN_PUNISHER",
-    "text": "降防特攻"
+    "text": "DEF Down Punisher"
   },
   {
     "id": "ENUM_BUFF_ATK_OR_DEF_DOWN_PUNISHER",
-    "text": "降攻/降防特攻"
+    "text": "ATK/DEF Down Punisher"
   },
   {
     "id": "ENUM_BUFF_OD_STATE_PUNISHER",
-    "text": "OD 特攻"
+    "text": "OD Punisher"
   },
   {
     "id": "ENUM_BUFF_BK_STATE_PUNISHER",
-    "text": "BK 特攻"
+    "text": "BK Punisher"
   },
   {
     "id": "ENUM_BUFF_AFFLICTION",
-    "text": "異常"
+    "text": "Affliction"
   },
   {
     "id": "ENUM_BUFF_MARK",
-    "text": "印記"
+    "text": "Mark"
   },
   {
     "id": "ENUM_BUFF_DISPEL",
-    "text": "驅散"
+    "text": "Dispel"
   },
   {
     "id": "ENUM_BUFF_PLAYER_EXP",
-    "text": "玩家經驗 (%)"
+    "text": "Player EXP (%)"
   },
   {
     "id": "ENUM_BUFF_ENERGY_LEVEL",
-    "text": "活力等級"
+    "text": "Energy Lv"
   },
   {
     "id": "ENUM_BUFF_INSPIRE_LEVEL",
-    "text": "靈感等級"
+    "text": "Inspire Lv"
   },
   {
     "id": "ENUM_TARGET_SELF",

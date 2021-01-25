@@ -139,7 +139,7 @@ def test_hp_on_revival(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(
             166000008, ConditionComposite(Condition.ON_REVIVED),
-            BuffParameter.HEAL_MAX_HP, 0.3, max_occurrences=1
+            BuffParameter.HEAL_INSTANT_HP, 0.3, max_occurrences=1
         ),
     }
 

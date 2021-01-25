@@ -224,10 +224,16 @@ class BuffParameter(TranslatableEnumMixin, Enum):
     # endregion
 
     # region Recovery
-    HEAL_RP = 301
-    """Heal the target by Recovery Potency. A value of 0.12 means to heal with 12% RP."""
-    HEAL_MAX_HP = 302
-    """Heal the target by max HP. A value of 0.12 means to heal with 12% max HP."""
+    RP_UP = 301
+    """Buff the healing power (in RP). A value of 0.12 means to raise the healing power by 12%."""
+    HEAL_INSTANT_RP = 302
+    """Heal the target instantly by RP. A value of 0.12 means to heal with 12% RP."""
+    HEAL_INSTANT_HP = 303
+    """Heal the target instantly by max HP. A value of 0.12 means to heal with 12% max HP."""
+    HEAL_OVER_TIME_RP = 304
+    """Heal the target over time by RP. A value of 0.12 means to heal over time with 12% RP."""
+    HEAL_OVER_TIME_HP = 305
+    """Heal the target over time by max HP. A value of 0.12 means to heal over time with 12% max HP."""
     # endregion
 
     # region Defensive
@@ -524,8 +530,11 @@ _PARAM_UNIT: dict[BuffParameter, BuffValueUnit] = {
     BuffParameter.SP_CHARGE_PCT_S3: BuffValueUnit.PERCENTAGE,
     BuffParameter.SP_CHARGE_PCT_S4: BuffValueUnit.PERCENTAGE,
     BuffParameter.SP_CHARGE_PCT_USED: BuffValueUnit.PERCENTAGE,
-    BuffParameter.HEAL_RP: BuffValueUnit.PERCENTAGE,
-    BuffParameter.HEAL_MAX_HP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RP_UP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.HEAL_INSTANT_RP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.HEAL_INSTANT_HP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.HEAL_OVER_TIME_RP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.HEAL_OVER_TIME_HP: BuffValueUnit.PERCENTAGE,
     BuffParameter.SHIELD_SINGLE_DMG: BuffValueUnit.PERCENTAGE,
     BuffParameter.SHIELD_LIFE: BuffValueUnit.PERCENTAGE,
     BuffParameter.RESISTANCE_FLAME_BUFF: BuffValueUnit.PERCENTAGE,

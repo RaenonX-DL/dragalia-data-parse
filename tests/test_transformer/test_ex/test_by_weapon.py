@@ -116,7 +116,7 @@ def test_staff(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(
             104000010, ConditionComposite(),
-            BuffParameter.HEAL_RP, 0.2, max_occurrences=1
+            BuffParameter.RP_UP, 0.2, max_occurrences=1
         ),
     }
 
