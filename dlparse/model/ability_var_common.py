@@ -236,7 +236,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
     def _from_elem_resist_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
-        return self._direct_buff_unit(Element(self.variant.id_a).to_elem_res_up(), asset_manager, payload)
+        return self._direct_buff_unit(Element(self.variant.id_a).to_elem_res_up_passive(), asset_manager, payload)
 
     def _from_rp_up(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload

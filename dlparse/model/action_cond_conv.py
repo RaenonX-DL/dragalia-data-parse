@@ -82,15 +82,15 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
             self.to_param_up(BuffParameter.SHIELD_LIFE, action_cond.shield_hp, action_cond, payload),
 
             # Flame resistance
-            self.to_param_up(BuffParameter.RESISTANCE_FLAME, action_cond.resistance_flame, action_cond, payload),
+            self.to_param_up(BuffParameter.RESISTANCE_FLAME_BUFF, action_cond.resistance_flame, action_cond, payload),
             # Water resistance
-            self.to_param_up(BuffParameter.RESISTANCE_WATER, action_cond.resistance_water, action_cond, payload),
+            self.to_param_up(BuffParameter.RESISTANCE_WATER_BUFF, action_cond.resistance_water, action_cond, payload),
             # Wind resistance
-            self.to_param_up(BuffParameter.RESISTANCE_WIND, action_cond.resistance_wind, action_cond, payload),
+            self.to_param_up(BuffParameter.RESISTANCE_WIND_BUFF, action_cond.resistance_wind, action_cond, payload),
             # Light resistance
-            self.to_param_up(BuffParameter.RESISTANCE_LIGHT, action_cond.resistance_light, action_cond, payload),
+            self.to_param_up(BuffParameter.RESISTANCE_LIGHT_BUFF, action_cond.resistance_light, action_cond, payload),
             # Shadow resistance
-            self.to_param_up(BuffParameter.RESISTANCE_SHADOW, action_cond.resistance_shadow, action_cond, payload)
+            self.to_param_up(BuffParameter.RESISTANCE_SHADOW_BUFF, action_cond.resistance_shadow, action_cond, payload)
         ]
 
     def _units_special_buffs(

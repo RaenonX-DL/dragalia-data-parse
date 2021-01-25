@@ -430,13 +430,13 @@ def test_elemental_resistances(transformer_skill: SkillTransformer):
     assert skill_data_base.max_level == 3
 
     expected_buffs_lv_1 = {
-        BuffEffectInfo("SWD_127_04_BUF_LV01", HitTargetSimple.SELF, BuffParameter.RESISTANCE_SHADOW, 0.05, 10, 0)
+        BuffEffectInfo("SWD_127_04_BUF_LV01", HitTargetSimple.SELF, BuffParameter.RESISTANCE_SHADOW_BUFF, 0.05, 10, 0)
     }
     expected_buffs_lv_2 = {
-        BuffEffectInfo("SWD_127_04_BUF_LV02", HitTargetSimple.SELF, BuffParameter.RESISTANCE_SHADOW, 0.08, 10, 0)
+        BuffEffectInfo("SWD_127_04_BUF_LV02", HitTargetSimple.SELF, BuffParameter.RESISTANCE_SHADOW_BUFF, 0.08, 10, 0)
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo("SWD_127_04_BUF_LV03", HitTargetSimple.SELF, BuffParameter.RESISTANCE_SHADOW, 0.1, 10, 0)
+        BuffEffectInfo("SWD_127_04_BUF_LV03", HitTargetSimple.SELF, BuffParameter.RESISTANCE_SHADOW_BUFF, 0.1, 10, 0)
     }
 
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]

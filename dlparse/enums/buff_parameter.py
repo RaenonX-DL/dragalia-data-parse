@@ -251,16 +251,56 @@ class BuffParameter(TranslatableEnumMixin, Enum):
     # endregion
 
     # region Element Resistance
-    RESISTANCE_FLAME = 411
-    """Flame resistance up. A value of 0.12 means that the user reduces flame damage taken by 12%."""
-    RESISTANCE_WATER = 412
-    """Water resistance up. A value of 0.12 means that the user reduces water damage taken by 12%."""
-    RESISTANCE_WIND = 413
-    """Wind resistance up. A value of 0.12 means that the user reduces wind damage taken by 12%."""
-    RESISTANCE_LIGHT = 414
-    """Light resistance up. A value of 0.12 means that the user reduces light damage taken by 12%."""
-    RESISTANCE_SHADOW = 415
-    """Shadow resistance up. A value of 0.12 means that the user reduces shadow damage taken by 12%."""
+    RESISTANCE_FLAME_BUFF = 411
+    """
+    Flame resistance up (counter as buff).
+    A value of 0.12 means that the user reduces flame damage taken by 12%.
+    """
+    RESISTANCE_WATER_BUFF = 412
+    """
+    Water resistance up (counter as buff).
+    A value of 0.12 means that the user reduces water damage taken by 12%.
+    """
+    RESISTANCE_WIND_BUFF = 413
+    """
+    Wind resistance up (counter as buff).
+    A value of 0.12 means that the user reduces wind damage taken by 12%.
+    """
+    RESISTANCE_LIGHT_BUFF = 414
+    """
+    Light resistance up (counter as buff).
+    A value of 0.12 means that the user reduces light damage taken by 12%.
+    """
+    RESISTANCE_SHADOW_BUFF = 415
+    """
+    Shadow resistance up (counter as buff).
+    A value of 0.12 means that the user reduces shadow damage taken by 12%.
+    """
+    RESISTANCE_FLAME_PASSIVE = 416
+    """
+    Flame resistance up (counter as passive).
+    A value of 0.12 means that the user reduces flame damage taken by 12%.
+    """
+    RESISTANCE_WATER_PASSIVE = 417
+    """
+    Water resistance up (counter as passive).
+    A value of 0.12 means that the user reduces water damage taken by 12%.
+    """
+    RESISTANCE_WIND_PASSIVE = 418
+    """
+    Wind resistance up (counter as passive).
+    A value of 0.12 means that the user reduces wind damage taken by 12%.
+    """
+    RESISTANCE_LIGHT_PASSIVE = 419
+    """
+    Light resistance up (counter as passive).
+    A value of 0.12 means that the user reduces light damage taken by 12%.
+    """
+    RESISTANCE_SHADOW_PASSIVE = 420
+    """
+    Shadow resistance up (counter as passive).
+    A value of 0.12 means that the user reduces shadow damage taken by 12%.
+    """
     # endregion
 
     # region Affliction Resistance
@@ -488,11 +528,16 @@ _PARAM_UNIT: dict[BuffParameter, BuffValueUnit] = {
     BuffParameter.HEAL_MAX_HP: BuffValueUnit.PERCENTAGE,
     BuffParameter.SHIELD_SINGLE_DMG: BuffValueUnit.PERCENTAGE,
     BuffParameter.SHIELD_LIFE: BuffValueUnit.PERCENTAGE,
-    BuffParameter.RESISTANCE_FLAME: BuffValueUnit.PERCENTAGE,
-    BuffParameter.RESISTANCE_WATER: BuffValueUnit.PERCENTAGE,
-    BuffParameter.RESISTANCE_WIND: BuffValueUnit.PERCENTAGE,
-    BuffParameter.RESISTANCE_LIGHT: BuffValueUnit.PERCENTAGE,
-    BuffParameter.RESISTANCE_SHADOW: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_FLAME_BUFF: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_WATER_BUFF: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_WIND_BUFF: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_LIGHT_BUFF: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_SHADOW_BUFF: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_FLAME_PASSIVE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_WATER_PASSIVE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_WIND_PASSIVE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_LIGHT_PASSIVE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.RESISTANCE_SHADOW_PASSIVE: BuffValueUnit.PERCENTAGE,
     BuffParameter.RESISTANCE_POISON: BuffValueUnit.PERCENTAGE,
     BuffParameter.RESISTANCE_BURN: BuffValueUnit.PERCENTAGE,
     BuffParameter.RESISTANCE_FREEZE: BuffValueUnit.PERCENTAGE,

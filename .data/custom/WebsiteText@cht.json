@@ -1404,24 +1404,44 @@
     "text": "生命盾"
   },
   {
-    "id": "ENUM_BUFF_RESISTANCE_FLAME",
-    "text": "火屬性抗性"
+    "id": "ENUM_BUFF_RESISTANCE_FLAME_BUFF",
+    "text": "火抗性 (Buff)"
   },
   {
-    "id": "ENUM_BUFF_RESISTANCE_WATER",
-    "text": "水屬性抗性"
+    "id": "ENUM_BUFF_RESISTANCE_WATER_BUFF",
+    "text": "水抗性 (Buff)"
   },
   {
-    "id": "ENUM_BUFF_RESISTANCE_WIND",
-    "text": "風屬性抗性"
+    "id": "ENUM_BUFF_RESISTANCE_WIND_BUFF",
+    "text": "風抗性 (Buff)"
   },
   {
-    "id": "ENUM_BUFF_RESISTANCE_LIGHT",
-    "text": "光屬性抗性"
+    "id": "ENUM_BUFF_RESISTANCE_LIGHT_BUFF",
+    "text": "光抗性 (Buff)"
   },
   {
-    "id": "ENUM_BUFF_RESISTANCE_SHADOW",
-    "text": "暗屬性抗性"
+    "id": "ENUM_BUFF_RESISTANCE_SHADOW_BUFF",
+    "text": "暗抗性 (Buff)"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_FLAME_PASSIVE",
+    "text": "火抗性 (被動)"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_WATER_PASSIVE",
+    "text": "水抗性 (被動)"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_WIND_PASSIVE",
+    "text": "風抗性 (被動)"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_LIGHT_PASSIVE",
+    "text": "光抗性 (被動)"
+  },
+  {
+    "id": "ENUM_BUFF_RESISTANCE_SHADOW_PASSIVE",
+    "text": "暗抗性 (被動)"
   },
   {
     "id": "ENUM_BUFF_RESISTANCE_POISON",

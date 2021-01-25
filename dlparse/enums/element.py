@@ -85,14 +85,14 @@ class Element(TranslatableEnumMixin, Enum):
 
         return _TRANS_DICT_TO_ELEM_DMG[self]
 
-    def to_elem_res_up(self) -> BuffParameter:
+    def to_elem_res_up_passive(self) -> BuffParameter:
         """
-        Convert this :class:`Element` to corrsponding damage resistance :class:`BuffParameter`.
+        Convert this :class:`Element` to corrsponding damage resistance :class:`BuffParameter` (count as passive).
 
         :raises EnumConversionError: if this element does not correspond to any elemental resistance buff
         """
         if self not in _TRANS_DICT_TO_ELEM_RES:
-            raise EnumConversionError(self, Element, "Element damage resistance parameter")
+            raise EnumConversionError(self, Element, "Element damage resistance parameter (as passive)")
 
         return _TRANS_DICT_TO_ELEM_RES[self]
 
@@ -135,10 +135,10 @@ _TRANS_DICT_TO_ELEM_DMG: dict[Element, BuffParameter] = {
 """A :class:`dict` to convert :class:`Element` to its corresponding elemental damage up buff parameter."""
 
 _TRANS_DICT_TO_ELEM_RES: dict[Element, BuffParameter] = {
-    Element.FLAME: BuffParameter.RESISTANCE_FLAME,
-    Element.WATER: BuffParameter.RESISTANCE_WATER,
-    Element.WIND: BuffParameter.RESISTANCE_WIND,
-    Element.LIGHT: BuffParameter.RESISTANCE_LIGHT,
-    Element.SHADOW: BuffParameter.RESISTANCE_SHADOW,
+    Element.FLAME: BuffParameter.RESISTANCE_FLAME_PASSIVE,
+    Element.WATER: BuffParameter.RESISTANCE_WATER_PASSIVE,
+    Element.WIND: BuffParameter.RESISTANCE_WIND_PASSIVE,
+    Element.LIGHT: BuffParameter.RESISTANCE_LIGHT_PASSIVE,
+    Element.SHADOW: BuffParameter.RESISTANCE_SHADOW_PASSIVE,
 }
 """A :class:`dict` to convert :class:`Element` to its corresponding elemental damage resistance buff parameter."""

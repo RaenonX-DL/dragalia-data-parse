@@ -118,7 +118,7 @@ def test_elem_res_when_hp_above(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(
             400000168, ConditionComposite([Condition.TARGET_WATER, Condition.SELF_HP_GTE_80]),
-            BuffParameter.RESISTANCE_FLAME, 0.06, duration_sec=0
+            BuffParameter.RESISTANCE_FLAME_PASSIVE, 0.06, duration_sec=0
         ),
     }
 
@@ -133,7 +133,7 @@ def test_elem_res_on_energy_level_up(transformer_ability: AbilityTransformer):
     expected_info = {
         AbilityEffectInfo(
             400000751, ConditionComposite([Condition.TARGET_LIGHT, Condition.ON_ENERGY_LV_UP]),
-            BuffParameter.RESISTANCE_SHADOW, 0.07, duration_sec=15, cooldown_sec=15
+            BuffParameter.RESISTANCE_SHADOW_BUFF, 0.07, duration_sec=15, cooldown_sec=15
         ),
     }
 
@@ -149,7 +149,7 @@ def test_elem_res_on_combo_count_above(transformer_ability: AbilityTransformer):
         # The effect of clearing the action condition when the combo counter resets is omitted
         AbilityEffectInfo(
             400000489, ConditionComposite([Condition.TARGET_LIGHT, Condition.ON_COMBO_GTE_10]),
-            BuffParameter.RESISTANCE_SHADOW, 0.1, duration_sec=0
+            BuffParameter.RESISTANCE_SHADOW_BUFF, 0.1, duration_sec=0
         ),
     }
 
@@ -165,7 +165,7 @@ def test_elem_res_in_buff_zone(transformer_ability: AbilityTransformer):
         # The effect of clearing the action condition when leaving the buff zone is omitted
         AbilityEffectInfo(
             400000799, ConditionComposite([Condition.TARGET_SHADOW, Condition.ON_ENTERED_BUFF_ZONE]),
-            BuffParameter.RESISTANCE_LIGHT, 0.07, duration_sec=0
+            BuffParameter.RESISTANCE_LIGHT_BUFF, 0.07, duration_sec=0
         ),
     }
 
