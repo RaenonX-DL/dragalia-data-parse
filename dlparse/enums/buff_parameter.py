@@ -419,6 +419,11 @@ class BuffParameter(TranslatableEnumMixin, Enum):
         return self.parameter_unit == BuffValueUnit.PERCENTAGE
 
     @property
+    def is_duration_count_meaningless(self) -> bool:
+        """Check if duration count (if available) for the buff parameter is meaningless."""
+        return self in (BuffParameter.INSPIRE_LEVEL, BuffParameter.ENERGY_LEVEL)
+
+    @property
     def parameter_unit(self) -> BuffValueUnit:
         """Get the unit of the parameter value."""
         return _PARAM_UNIT[self]

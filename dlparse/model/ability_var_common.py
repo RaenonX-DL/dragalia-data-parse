@@ -121,6 +121,10 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         if not target:
             target = HitTargetSimple.TEAM if payload.is_source_ex_ability else HitTargetSimple.SELF
 
+        max_stack_count = action_cond.max_stack_count
+        if param_enum.is_duration_count_meaningless:
+            max_stack_count = 0
+
         return AbilityVariantEffectUnit(
             condition_comp=payload.condition_comp,
             cooldown_sec=payload.condition_cooldown,
@@ -133,9 +137,9 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             probability_pct=payload.condition_probability or action_cond.probability_pct,
             rate=param_rate,
             rate_max=0,
-            max_stack_count=action_cond.max_stack_count,
+            max_stack_count=max_stack_count,
             duration_sec=action_cond.duration_sec,
-            duration_count=action_cond.duration_count,
+            duration_count=0 if param_enum.is_duration_count_meaningless else action_cond.duration_count,
             slip_interval=action_cond.slip_interval,
             slip_damage_mod=action_cond.slip_damage_mod,
         )
