@@ -81,7 +81,7 @@ path_dict: dict[TransformableEnums, str] = {
     BuffParameter.SP_CHARGE_PCT_S4: "/icon/ability/l/Icon_Ability_1010007.png",
     BuffParameter.SP_CHARGE_PCT_USED: "/icon/ability/l/Icon_Ability_1010007.png",
     BuffParameter.HEAL_RP: "/icon/ability/l/Icon_Ability_1020009.png",
-    BuffParameter.HEAL_MAX_HP: "/icon/ability/l/Icon_Ability_1020009.png",
+    BuffParameter.HEAL_MAX_HP: "/icon/ability/l/Icon_Ability_1010078.png",
     BuffParameter.SHIELD_SINGLE_DMG: "/icon/ability/l/Icon_Ability_1020022.png",
     BuffParameter.SHIELD_LIFE: "/icon/ability/l/Icon_Ability_1020037.png",
     BuffParameter.RESISTANCE_FLAME_BUFF: "/icon/ability/l/Icon_Ability_1080001.png",
