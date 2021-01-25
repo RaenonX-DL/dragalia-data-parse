@@ -19,12 +19,9 @@ def make_payload_ability(ability_entry: AbilityEntry, /, is_chained_ex: bool = F
     if on_skill_cond := ability_entry.on_skill_condition:
         condition_comp += on_skill_cond
 
-    # Delay the determination of the ability variant effect condition
-    # if the ability condition type relates to "shapeshifted to dragon"
-    if not ability_entry.condition.condition_type.is_shapeshifted_to_dragon:
-        # If the ability does not have condition, skip adding it
-        if ability_cond := ability_entry.condition.to_condition_comp():
-            condition_comp += ability_cond
+    # If the ability does not have condition, skip concatenating it
+    if ability_cond := ability_entry.condition.to_condition_comp():
+        condition_comp += ability_cond
 
     # Get the condition information
     cooldown_sec = ability_entry.condition.cooldown_sec

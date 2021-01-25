@@ -95,6 +95,29 @@ def test_atk_up_on_dodged(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
+def test_atk_up_by_dragons_claws(transformer_ability: AbilityTransformer):
+    # Gala Mym - 10550101
+    # https://dragalialost.gamepedia.com/Gala_Mym
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000012)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000012, ConditionComposite([Condition.TARGET_FLAME, Condition.SELF_SHAPESHIFTED_1_TIME]),
+            BuffParameter.ATK_BUFF, 0.1
+        ),
+        AbilityEffectInfo(
+            400000012, ConditionComposite([Condition.TARGET_FLAME, Condition.SELF_SHAPESHIFTED_2_TIMES]),
+            BuffParameter.ATK_BUFF, 0.1
+        ),
+        AbilityEffectInfo(
+            400000012, ConditionComposite([Condition.TARGET_FLAME, Condition.SELF_SHAPESHIFTED_3_TIMES]),
+            BuffParameter.ATK_BUFF, 0.15
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
 def test_grant_shield_upon_hp_below(transformer_ability: AbilityTransformer):
     # Grace - 10850503
     # https://dragalialost.gamepedia.com/Grace

@@ -307,7 +307,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
 
         for action_cond_id, condition in zip(variant_ids, conditions):
             payload_new = AbilityVariantEffectPayload(
-                condition_comp=ConditionComposite(condition),
+                condition_comp=payload.condition_comp + condition,
                 condition_cooldown=payload.condition_cooldown,
                 source_ability=payload.source_ability,
                 max_occurrences=payload.max_occurrences,

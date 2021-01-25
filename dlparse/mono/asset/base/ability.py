@@ -228,6 +228,8 @@ class AbilityConditionEntryBase(ABC):
         """
         base_conds: list[Condition] = []
 
+        deferred: bool = True  # Flag to indicate if the condition determination is deferred
+
         # Get condition from the condition type fields
         ability_condition = self._cond_map.get(self.condition_type)
         if ability_condition is not None:  # Explicit check because ``Condition.NONE`` is falsy
@@ -239,10 +241,15 @@ class AbilityConditionEntryBase(ABC):
         elif self_hp_cond := self._cond_self_hp():
             # Self HP condition
             base_conds.append(self_hp_cond)
+        elif self.condition_type.is_shapeshifted_to_dragon:
+            # Defer the ability variant effect condition determination
+            # if the ability condition type relates to "shapeshifted to dragon"
+            # because it usually take shapeshifting count into account
+            deferred = True
 
-        # Raise error if no conditions are yielded (condition unrecognizable)
+        # Raise error if no conditions are yielded (condition unrecognizable) and not deferred determination
         # Note that "none" condition is returned from ``self._cond_map`` (direct single condition)
-        if not base_conds:
+        if not base_conds and not deferred:
             raise self._condition_unconvertible()
 
         # Get additional conditions from the elemental and weapon restriction
