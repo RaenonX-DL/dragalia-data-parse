@@ -6,9 +6,33 @@ jobs:
   quality-check:
     name: Code Quality Check
 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+
+      - name: Install required packages
+        run: |
+          pip install -r requirements-dev.txt
+
+      - name: pydocstyle checks (`dlparse`)
+        run: |
+          pydocstyle dlparse --count
+
+      - name: pylint checks (`dlparse`)
+        run: |
+          pylint dlparse
+
+  quality-check-win-mac:
+    name: Code Quality Check (Win & Mac)
+
     strategy:
       matrix:
-        os: [ macos-latest, windows-latest, ubuntu-latest ]
+        os: [ macos-latest, windows-latest ]
 
     runs-on: ${{ matrix.os }}
 
@@ -34,9 +58,31 @@ jobs:
   tests:
     name: Tests
 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+
+      - name: Install required dev packages
+        run: |
+          pip install -r requirements-dev.txt
+
+      - name: Run tests
+        run: |
+          pytest --slow
+
+  tests-win-mac:
+    name: Tests (Win & Mac)
+
     strategy:
       matrix:
-        os: [ macos-latest, windows-latest, ubuntu-latest ]
+        os: [ macos-latest, windows-latest ]
 
     runs-on: ${{ matrix.os }}
 
