@@ -155,14 +155,14 @@ class Condition(TranslatableEnumMixin, Enum):
 
     # region Weapon type
     WEAPON_SWORD = 291
-    WEAPON_KATANA = 292
+    WEAPON_BLADE = 292
     WEAPON_DAGGER = 293
     WEAPON_AXE = 294
     WEAPON_LANCE = 295
     WEAPON_BOW = 296
     WEAPON_ROD = 297
-    WEAPON_CANE = 298
-    WEAPON_GUN = 299
+    WEAPON_STAFF = 298
+    WEAPON_MANACASTER = 299
     # endregion
     # endregion
 

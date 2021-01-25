@@ -401,14 +401,14 @@ class ConditionCategories:
     self_weapon_type = ConditionCategory[Weapon](
         {
             Condition.WEAPON_SWORD: Weapon.SWD,
-            Condition.WEAPON_KATANA: Weapon.KAT,
+            Condition.WEAPON_BLADE: Weapon.KAT,
             Condition.WEAPON_DAGGER: Weapon.DAG,
             Condition.WEAPON_AXE: Weapon.AXE,
             Condition.WEAPON_LANCE: Weapon.LAN,
             Condition.WEAPON_BOW: Weapon.BOW,
             Condition.WEAPON_ROD: Weapon.ROD,
-            Condition.WEAPON_CANE: Weapon.CAN,
-            Condition.WEAPON_GUN: Weapon.GUN,
+            Condition.WEAPON_STAFF: Weapon.CAN,
+            Condition.WEAPON_MANACASTER: Weapon.GUN,
         },
         ConditionMaxCount.SINGLE,
         "Self - weapon type",

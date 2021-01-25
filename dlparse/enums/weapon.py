@@ -12,21 +12,21 @@ class Weapon(Enum):
     NONE = 0
 
     SWD = 1  # Sword
-    KAT = 2  # Katana
+    KAT = 2  # Blade (Katana)
     DAG = 3  # Dagger
     AXE = 4  # Axe
     LAN = 5  # Lance
     BOW = 6  # Bow
     ROD = 7  # Rod (Damaging Mage)
-    CAN = 8  # Cane (Healing Mage)
-    GUN = 9  # Gun
+    CAN = 8  # Staff (Cane - Healing Mage)
+    GUN = 9  # Manacaster (Gun)
 
     @property
     def is_valid(self) -> bool:
         """
         Check if the current weapon is valid.
 
-        "Valid" means that this needs to be one of Sword, Karana, Dagger, Axe, Lance, Bow, Row or Gun.
+        "Valid" means that this needs to be one of Sword, Blade, Dagger, Axe, Lance, Bow, Rod, Staff or Manacaster.
         """
         return self in self.get_all_valid_weapons()
 

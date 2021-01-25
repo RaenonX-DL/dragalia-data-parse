@@ -89,14 +89,14 @@ The implementations of these steps can be found [here](/dlparse/mono/asset/motio
 ### Weapon code
 
 - `SWD`: Sword
-- `KAT`: Katana
+- `KAT`: Blade (Katana)
 - `DAG`: Dagger
 - `AXE`: Axe
 - `LAN`: Lance
 - `BOW`: Bow
 - `ROD`: Rod (Damaging Mage)
-- `CAN`: Cane (Healing Mage)
-- `GUN`: Gun
+- `CAN`: Staff (Cane - Healing Mage)
+- `GUN`: Manacaster (Gun)
 
 ### Credits
 

@@ -760,7 +760,7 @@
     "text": "Weapon: Sword"
   },
   {
-    "id": "ENUM_COND_WEAPON_KATANA",
+    "id": "ENUM_COND_WEAPON_BLADE",
     "text": "Weapon: Blade"
   },
   {
@@ -784,11 +784,11 @@
     "text": "Weapon: Wand"
   },
   {
-    "id": "ENUM_COND_WEAPON_CANE",
+    "id": "ENUM_COND_WEAPON_STAFF",
     "text": "Weapon: Staff"
   },
   {
-    "id": "ENUM_COND_WEAPON_GUN",
+    "id": "ENUM_COND_WEAPON_MANACASTER",
     "text": "Weapon: Manacaster"
   },
   {

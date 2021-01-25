@@ -760,7 +760,7 @@
     "text": "武器: 劍"
   },
   {
-    "id": "ENUM_COND_WEAPON_KATANA",
+    "id": "ENUM_COND_WEAPON_BLADE",
     "text": "武器: 刀"
   },
   {
@@ -784,11 +784,11 @@
     "text": "武器: 法"
   },
   {
-    "id": "ENUM_COND_WEAPON_CANE",
+    "id": "ENUM_COND_WEAPON_STAFF",
     "text": "武器: 補"
   },
   {
-    "id": "ENUM_COND_WEAPON_GUN",
+    "id": "ENUM_COND_WEAPON_MANACASTER",
     "text": "武器: 銃"
   },
   {

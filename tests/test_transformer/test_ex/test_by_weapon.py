@@ -18,7 +18,7 @@ def test_sword(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-def test_katana(transformer_ability: AbilityTransformer):
+def test_blade(transformer_ability: AbilityTransformer):
     # Nobunaga - 10250103
     # https://dragalialost.gamepedia.com/Nobunaga
     ex_ability_data = transformer_ability.transform_ex_ability(101020010)
@@ -123,7 +123,7 @@ def test_staff(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-def test_gun(transformer_ability: AbilityTransformer):
+def test_manacaster(transformer_ability: AbilityTransformer):
     # Ilia - 10950401
     # https://dragalialost.gamepedia.com/Ilia
     ex_ability_data = transformer_ability.transform_ex_ability(109000009)
