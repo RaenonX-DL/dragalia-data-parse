@@ -18,7 +18,7 @@ class EffectUnitBase(ABC):
     probability_pct: float  # 90 = 90%
     rate: float
 
-    slip_interval: float
+    slip_interval_sec: float
     slip_damage_mod: float
 
     duration_sec: float

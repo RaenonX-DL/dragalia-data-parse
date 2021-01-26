@@ -140,7 +140,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             max_stack_count=max_stack_count,
             duration_sec=action_cond.duration_sec,
             duration_count=0 if param_enum.is_duration_count_meaningless else action_cond.duration_count,
-            slip_interval=action_cond.slip_interval,
+            slip_interval_sec=action_cond.slip_interval_sec,
             slip_damage_mod=action_cond.slip_damage_mod,
         )
 
@@ -173,7 +173,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 duration_count=0,
                 max_stack_count=payload.source_ability.condition.max_stack_count,
                 slip_damage_mod=0,
-                slip_interval=0,
+                slip_interval_sec=0,
             )
         }
 
@@ -314,7 +314,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
                 is_chained_ex=payload.is_chained_ex,
             )
 
-            ret.update(self.to_buff_units(
+            ret.update(self.to_effect_units(
                 asset_manager.asset_action_cond.get_data_by_id(action_cond_id), payload_new
             ))
 
@@ -342,7 +342,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         # Get units from action condition IDs
         ret: set[AbilityVariantEffectUnit] = set()
         for action_cond_id in action_cond_ids:
-            ret.update(self.to_buff_units(
+            ret.update(self.to_effect_units(
                 asset_manager.asset_action_cond.get_data_by_id(action_cond_id), payload
             ))
         return ret
@@ -375,7 +375,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
 
         payload.target_action = action_grant_data.target_action
 
-        units: set[AbilityVariantEffectUnit] = set(self.to_buff_units(action_cond_data, payload))
+        units: set[AbilityVariantEffectUnit] = set(self.to_effect_units(action_cond_data, payload))
         units.update(self.to_dispel_units(action_cond_data, payload))
 
         return units
@@ -396,7 +396,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             addl_cond_comp=ConditionComposite(Condition.ON_REVIVED)
         )
 
-    def to_effect_units(
+    def get_effect_units(
             self, asset_manager: "AssetManager", payload: AbilityVariantEffectPayload
     ) -> set[AbilityVariantEffectUnit]:
         """
@@ -451,6 +451,6 @@ def ability_to_effect_units(
         if variant.type_enum == AbilityVariantType.OTHER_ABILITY:
             continue  # Refer to the other ability, no variant effect
 
-        effect_units.update(AbilityVariantData(variant).to_effect_units(asset_manager, payload))
+        effect_units.update(AbilityVariantData(variant).get_effect_units(asset_manager, payload))
 
     return effect_units

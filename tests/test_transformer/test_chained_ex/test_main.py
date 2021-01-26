@@ -297,3 +297,33 @@ def test_combo_time_extend(transformer_ability: AbilityTransformer):
     }
 
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
+def test_regen_on_hp_below(transformer_ability: AbilityTransformer):
+    # Lea - 10150103
+    # https://dragalialost.gamepedia.com/Nobunaga
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000710)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000710, ConditionComposite([Condition.TARGET_FLAME, Condition.ON_HP_LT_60]),
+            BuffParameter.HEAL_OVER_TIME_HP, 0.04, duration_sec=20, slip_interval_sec=3.9
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
+def test_regen_on_combo_above(transformer_ability: AbilityTransformer):
+    # Summer Norwin - 10350302
+    # https://dragalialost.gamepedia.com/Summer_Norwin
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000770)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000770, ConditionComposite([Condition.TARGET_WIND, Condition.ON_COMBO_GTE_10]),
+            BuffParameter.HEAL_OVER_TIME_RP, 0.07200000000000001, slip_interval_sec=2.9
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)

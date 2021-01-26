@@ -93,6 +93,20 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
             self.to_param_up(BuffParameter.RESISTANCE_SHADOW_BUFF, action_cond.resistance_shadow, action_cond, payload)
         ]
 
+    def _units_recovery_buffs(
+            self, action_cond: "ActionConditionEntry", payload: Optional[PT] = None
+    ) -> list[Optional[UT]]:
+        return [
+            # Over time HP heal
+            self.to_param_up(
+                BuffParameter.HEAL_OVER_TIME_HP, -action_cond.slip_damage_hp_rate, action_cond, payload
+            ),
+            # Over time RP heal
+            self.to_param_up(
+                BuffParameter.HEAL_OVER_TIME_RP, action_cond.regen_rp / 100, action_cond, payload
+            ),
+        ]
+
     def _units_special_buffs(
             self, action_cond: "ActionConditionEntry", payload: Optional[PT] = None
     ) -> list[Optional[UT]]:
@@ -103,7 +117,7 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
             self.to_param_up(BuffParameter.INSPIRE_LEVEL, action_cond.inspire_lv, action_cond, payload),
         ]
 
-    def to_buff_units(
+    def to_effect_units(
             self, action_cond: "ActionConditionEntry", payload: Optional[PT] = None
     ) -> list[UT]:
         """Convert ``action_cond`` to a list of effect units."""
@@ -111,6 +125,7 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
             unit for unit in
             self._units_common_buffs(action_cond, payload)
             + self._units_defensive_buffs(action_cond, payload)
+            + self._units_recovery_buffs(action_cond, payload)
             + self._units_special_buffs(action_cond, payload)
             if unit  # Skipping empty unit
         ]

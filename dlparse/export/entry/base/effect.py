@@ -62,7 +62,7 @@ class EffectUnitEntryBase(JsonExportableEntryBase, ABC):
             },
             "probabilityPct": self.effect_unit.probability_pct,
             "rate": self.effect_unit.rate,
-            "slipInterval": self.effect_unit.slip_interval,
+            "slipInterval": self.effect_unit.slip_interval_sec,
             "slipDamageMod": self.effect_unit.slip_damage_mod,
             "durationSec": self.effect_unit.duration_sec,
             "durationCount": self.effect_unit.duration_count,

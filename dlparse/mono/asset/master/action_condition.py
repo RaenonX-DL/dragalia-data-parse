@@ -36,8 +36,11 @@ class ActionConditionEntry(MasterEntryBase):
 
     efficacy_type: EfficacyType
 
-    slip_interval: float
+    slip_interval_sec: float
     slip_damage_mod: float
+    slip_damage_hp_rate: float
+
+    regen_rp: float
 
     buff_atk: float
     buff_def: float
@@ -87,8 +90,10 @@ class ActionConditionEntry(MasterEntryBase):
             duration_count_max=duration_count_max,
             probability_pct=data["_Rate"],
             efficacy_type=EfficacyType(data["_EfficacyType"]),
-            slip_interval=data["_SlipDamageIntervalSec"],
+            slip_interval_sec=data["_SlipDamageIntervalSec"],
             slip_damage_mod=data["_SlipDamagePower"],
+            slip_damage_hp_rate=data["_SlipDamageRatio"],
+            regen_rp=data["_RegenePower"],
             buff_atk=data["_RateAttack"],
             buff_def=data["_RateDefense"],
             buff_def_b=data["_RateDefenseB"],

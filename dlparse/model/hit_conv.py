@@ -40,7 +40,7 @@ class HitDataEffectConvertible(
             parameter=param_enum,
             probability_pct=action_cond.probability_pct,
             rate=param_rate,
-            slip_interval=action_cond.slip_interval,
+            slip_interval_sec=action_cond.slip_interval_sec,
             slip_damage_mod=action_cond.slip_damage_mod,
             duration_sec=self.get_duration(action_cond),
             duration_count=action_cond.duration_count,
@@ -71,7 +71,7 @@ class HitDataEffectConvertible(
             probability_pct=action_cond.probability_pct,
             parameter=BuffParameter.AFFLICTION,
             duration_sec=action_cond.duration_sec,
-            slip_interval=action_cond.slip_interval,
+            slip_interval_sec=action_cond.slip_interval_sec,
             slip_damage_mod=action_cond.slip_damage_mod,
             max_stack_count=action_cond.max_stack_count,
             hit_attr_label=self.hit_attr.id,
@@ -88,7 +88,7 @@ class HitDataEffectConvertible(
             probability_pct=action_cond.probability_pct,
             parameter=BuffParameter.DISPEL,
             duration_sec=action_cond.duration_sec,
-            slip_interval=action_cond.slip_interval,
+            slip_interval_sec=action_cond.slip_interval_sec,
             slip_damage_mod=action_cond.slip_damage_mod,
             max_stack_count=action_cond.max_stack_count,
             hit_attr_label=self.hit_attr.id,
@@ -115,7 +115,7 @@ class HitDataEffectConvertible(
                 target=HitTargetSimple.SELF,
                 parameter=BuffParameter.HP_FIX_BY_MAX,
                 rate=hit_attr.hp_fix_rate,
-                slip_interval=0,
+                slip_interval_sec=0,
                 slip_damage_mod=0,
                 duration_sec=0,
                 duration_count=0,
@@ -132,7 +132,7 @@ class HitDataEffectConvertible(
                 target=HitTargetSimple.SELF,
                 parameter=BuffParameter.HP_DECREASE_BY_MAX,
                 rate=hit_attr.hp_consumption_rate,
-                slip_interval=0,
+                slip_interval_sec=0,
                 slip_damage_mod=0,
                 duration_sec=0,
                 duration_count=0,
@@ -159,7 +159,7 @@ class HitDataEffectConvertible(
             target=HitTargetSimple.ENEMY,
             parameter=BuffParameter.MARK,
             rate=0,
-            slip_interval=action_cond.slip_interval,
+            slip_interval_sec=action_cond.slip_interval_sec,
             slip_damage_mod=action_cond.slip_damage_mod,
             duration_sec=action_cond.duration_sec,
             duration_count=action_cond.duration_count,
@@ -206,7 +206,7 @@ class HitDataEffectConvertible(
         # --- General buffs
 
         if action_cond:
-            units.extend(self.to_buff_units(action_cond))
+            units.extend(self.to_effect_units(action_cond))
 
         # --- Instant gauge refill
 

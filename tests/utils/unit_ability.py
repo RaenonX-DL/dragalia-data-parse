@@ -29,6 +29,7 @@ class AbilityEffectInfo(AbilityInfoBase):
     target_action: Optional[AbilityTargetAction] = None
     duration_sec: Optional[float] = None
     duration_count: Optional[float] = None
+    slip_interval_sec: Optional[float] = None
 
     def __hash__(self):
         # x 1E5 for error tolerance
@@ -69,6 +70,7 @@ def check_ability_effect_unit_match(
     has_target_action = any(info.target_action is not None for info in expected_info)
     has_duration_sec = any(info.duration_sec is not None for info in expected_info)
     has_duration_count = any(info.duration_count is not None for info in expected_info)
+    has_slip_interval = any(info.slip_interval_sec is not None for info in expected_info)
 
     actual_info = [
         AbilityEffectInfo(
@@ -83,6 +85,7 @@ def check_ability_effect_unit_match(
             target_action=unit.target_action if has_target_action else None,
             duration_sec=unit.duration_sec if has_duration_sec else None,
             duration_count=unit.duration_count if has_duration_count else None,
+            slip_interval_sec=unit.slip_interval_sec if has_slip_interval else None,
         )
         for unit in actual_units
     ]
