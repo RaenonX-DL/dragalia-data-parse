@@ -1,6 +1,6 @@
 import pytest
 
-from dlparse.export import export_atk_skills_as_entries
+from dlparse.export import export_atk_skills_as_entries, export_skill_identifiers_as_entry_dict
 from dlparse.mono.manager import AssetManager
 
 skill_max_lv: dict[int, tuple[int, str]] = {
@@ -34,8 +34,9 @@ def test_max_lv(asset_manager: AssetManager):
             max_lv, description = test_entry
 
             if max_lv != entry.skill_max_level:
-                pytest.fail(f"Max level of {description} mismatch. "
-                            f"Expected: {max_lv} / Actual: {entry.skill_max_level}")
+                pytest.fail(
+                    f"Max level of {description} mismatch. Expected: {max_lv} / Actual: {entry.skill_max_level}"
+                )
 
 
 def test_no_unplayable(asset_manager: AssetManager):
@@ -44,3 +45,8 @@ def test_no_unplayable(asset_manager: AssetManager):
     for entry in entries:
         if entry.character_internal_id in unplayable_chara_ids:
             pytest.fail(f"Unplayable character included: {entry.character_internal_id}")
+
+
+def test_skill_identifiers(asset_manager: AssetManager):
+    # Only check if an entry dict can be created
+    export_skill_identifiers_as_entry_dict(asset_manager)
