@@ -146,6 +146,7 @@ class UnknownAbilityDataCollection:
             self, chara_data: CharaDataEntry, ability_id: int, ability_data: T, /,
             check_effective_for_team: bool = False
     ):
+        """Record that ``ability_data`` has unknown data, if any."""
         # Check if any unknown elements exist but no error yielded
         if ability_data.has_unknown_elements:
             self.add_data(UnknownAbilityData(
@@ -165,7 +166,7 @@ class UnknownAbilityDataCollection:
         # Ability should be effective to the whole team
         if check_effective_for_team and any(unit.target != HitTargetSimple.TEAM for unit in ability_data.effect_units):
             self.add_data(UnknownAbilityData(
-                chara_id=chara_data.id, ability_id=ability_id, is_empty=True,
+                chara_id=chara_data.id, ability_id=ability_id, not_effective_to_the_team=True,
                 condition_ids=ability_data.unknown_condition_ids,
                 variant_ids=ability_data.unknown_variant_ids
             ))
