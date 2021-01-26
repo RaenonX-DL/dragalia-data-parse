@@ -120,11 +120,11 @@ class UnknownAbilityData:
         if self.error:
             ret += f"\n  - Error: {self.error}"
 
-        # if self.is_empty:
-        #     ret += "\n  - Empty ability"
+        if self.is_empty:
+            ret += "\n  - Empty effect"
 
-        # if self.not_effective_to_the_team:
-        #     ret += "\n  - Not effective to the whole team"
+        if self.not_effective_to_the_team:
+            ret += "\n  - Not effective to the whole team"
 
         return ret
 
@@ -155,12 +155,12 @@ class UnknownAbilityDataCollection:
             ))
 
         # Ability should be effective to the whole team
-        # if not ability_data.effect_units:
-        #     self.add_data(UnknownAbilityData(
-        #         chara_id=chara_data.id, ability_id=ability_id, is_empty=True,
-        #         condition_ids=ability_data.unknown_condition_ids,
-        #         variant_ids=ability_data.unknown_variant_ids
-        #     ))
+        if not ability_data.effect_units:
+            self.add_data(UnknownAbilityData(
+                chara_id=chara_data.id, ability_id=ability_id, is_empty=True,
+                condition_ids=ability_data.unknown_condition_ids,
+                variant_ids=ability_data.unknown_variant_ids
+            ))
 
         # Ability should be effective to the whole team
         if check_effective_for_team and any(unit.target != HitTargetSimple.TEAM for unit in ability_data.effect_units):
