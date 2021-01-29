@@ -3,13 +3,13 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional, TYPE_CHECKING, TextIO, Union
 
-from dlparse.enums import Element, SkillNumber, Weapon
+from dlparse.enums import Element, Language, SkillNumber, Weapon
 from dlparse.errors import InvalidSkillNumError, TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 from dlparse.mono.asset.extension import NamedEntry, SkillDiscoverableEntry
 from .dragon_data import DRAGON_SKILL_MAX_LEVEL
 from .skill_data import CHARA_SKILL_MAX_LEVEL
-from .text_label import TextAsset
+from .text_label import TextAssetMultilingual
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -364,12 +364,12 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
 
         raise InvalidSkillNumError(skill_num)
 
-    def get_chara_name(self, text_asset: TextAsset) -> str:
+    def get_chara_name(self, text_asset: TextAssetMultilingual, language: Language = Language.JP) -> str:
         """Get the name of the character."""
         try:
-            return text_asset.to_text(self.name_label_2, silent_fail=False)
+            return text_asset.get_text(language.value, self.name_label_2)
         except TextLabelNotFoundError:
-            return text_asset.to_text(self.name_label)
+            return text_asset.get_text(language.value, self.name_label)
 
     @classmethod
     def parse_raw(cls, data: dict[str, Union[str, int, float]]) -> "CharaDataEntry":

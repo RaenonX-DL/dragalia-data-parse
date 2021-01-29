@@ -124,7 +124,7 @@ def chara_skill_overview(chara_id):
         id_label for skill_id_entry in skill_id_entries for id_label in skill_id_entry.skill_identifier_labels
     ]
 
-    print(f"{chara_data.get_chara_name(_asset_manager.asset_text)} ({chara_id})")
+    print(f"{chara_data.get_chara_name(_asset_manager.asset_text_multi)} ({chara_id})")
     print()
     print(f"Skill Identifiers available: {' / '.join(skill_identifiers)}")
     if chara_data.has_unique_dragon:
@@ -141,7 +141,7 @@ def chara_skill_overview(chara_id):
 
 
 def main():
-    chara_skill_overview(10150201)
+    chara_skill_overview(10950501)
 
 
 if __name__ == '__main__':

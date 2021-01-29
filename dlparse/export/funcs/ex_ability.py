@@ -33,7 +33,7 @@ def export_ex_abilities_as_entries(
             if skip_unparsable:
                 skipped_messages.append(
                     f"[EX Ability] EX ID #{chara_data.ex_id_at_max_level} CEX ID #{chara_data.cex_id_at_max_level}) "
-                    f"of {chara_data.get_chara_name(asset_manager.asset_text)} ({chara_data.id}): {ex}"
+                    f"of {chara_data.get_chara_name(asset_manager.asset_text_multi)} ({chara_data.id}): {ex}"
                 )
                 continue
 

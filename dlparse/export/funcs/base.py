@@ -44,7 +44,7 @@ def export_transform_skill_entries(
     # Get all skills and iterate them
     skill_identifiers = chara_data.get_skill_id_entries(asset_manager, include_dragon=include_dragon)
     for id_entry in skill_identifiers:
-        chara_name = chara_data.get_chara_name(asset_manager.asset_text)
+        chara_name = chara_data.get_chara_name(asset_manager.asset_text_multi)
 
         # Transform every skill data
         try:
