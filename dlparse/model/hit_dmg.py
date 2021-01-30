@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from itertools import product
 from typing import Optional
 
-from dlparse.enums import ConditionComposite
+from dlparse.enums import ConditionComposite, FireStockPattern
 from dlparse.errors import AppValueError, BulletEndOfLifeError, DamagingHitValidationFailedError
 from dlparse.mono.asset import (
     ActionBuffField, ActionBullet, ActionBulletStockFire, ActionComponentHasHitLabels, ActionConditionAsset,
@@ -93,13 +93,20 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
                 self.is_depends_on_user_buff_count = self.action_component.is_depends_on_user_buff_count
                 self.is_depends_on_bullet_on_map = self.action_component.is_depends_on_bullet_on_map
 
-                # Only stores the max hit count if depends on count of bullets summoned
-                if self.action_component.is_depends_on_bullet_summoned:
+                # Only stores the max hit count if:
+                # - depends on count of bullets summoned
+                # - max count embedded in the action component
+                if (
+                        self.action_component.is_depends_on_bullet_summoned
+                        or self.action_component.pattern == FireStockPattern.USER_BUFF_COUNT_DEPENDENT_EMBEDDED
+                ):
                     self.max_hit_count = self.action_component.max_hit_count
 
             # Set the max hit count except for stock bullets in special stocking pattern
-            if not (isinstance(self.action_component, ActionBulletStockFire)
-                    and self.action_component.is_special_pattern):
+            if not (
+                    isinstance(self.action_component, ActionBulletStockFire)
+                    and self.action_component.is_special_pattern
+            ):
                 self.max_hit_count = self.action_component.max_hit_count
 
         # Buff field specific damage mod
@@ -190,7 +197,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         if self.is_depends_on_user_buff_count:
             # Damage dealt depends on the user's buff count
             effective_buff_count = min(
-                asset_action_info.get_data_by_id(self.action_id).max_bullet_count,
+                asset_action_info.get_data_by_id(self.action_id).max_bullet_count or self.max_hit_count,
                 condition_comp.buff_count_converted or 0
             )
             return [
