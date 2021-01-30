@@ -195,6 +195,36 @@ def test_elem_res_in_buff_field(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
+def test_atk_up_in_buff_field(transformer_ability: AbilityTransformer):
+    # Dragonyule Victor S2
+    # https://dragalialost.gamepedia.com/Dragonyule_Victor
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000833)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000833, ConditionComposite([Condition.TARGET_SHADOW, Condition.ON_ENTERED_BUFF_FIELD]),
+            BuffParameter.ATK_BUFF, 0.13
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
+def test_shadowblight_punisher_in_buff_field(transformer_ability: AbilityTransformer):
+    # Gala Chelle
+    # https://dragalialost.gamepedia.com/Gala_Chelle (404 as of 2020/01/29)
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000858)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000858, ConditionComposite([Condition.TARGET_SHADOW, Condition.ON_ENTERED_BUFF_FIELD]),
+            BuffParameter.SHADOWBLIGHTED_PUNISHER, 0.08
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
 def test_crt_up_by_combo_count(transformer_ability: AbilityTransformer):
     # Kimono Elisanne - 10550103
     # https://dragalialost.gamepedia.com/Kimono_Elisanne
