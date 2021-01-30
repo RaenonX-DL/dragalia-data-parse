@@ -9,7 +9,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_no_condition(transformer_skill: SkillTransformer):
     # Cibella S2
-    # https://dragalialost.gamepedia.com/Cibella
+    # https://dragalialost.wiki/w/Cibella
     skill_data = transformer_skill.transform_attacking(105302012)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -29,7 +29,7 @@ def test_no_condition(transformer_skill: SkillTransformer):
 
 def test_has_crisis_and_punisher_1(transformer_skill: SkillTransformer):
     # Veronica S1
-    # https://dragalialost.gamepedia.com/Veronica
+    # https://dragalialost.wiki/w/Veronica
 
     # Exporting
     skill_data = transformer_skill.transform_attacking(107505011, is_exporting=True)
@@ -86,7 +86,7 @@ def test_has_crisis_and_punisher_1(transformer_skill: SkillTransformer):
 
 def test_has_crisis_and_punisher_2(transformer_skill: SkillTransformer):
     # Louise S2
-    # https://dragalialost.gamepedia.com/Louise
+    # https://dragalialost.wiki/w/Louise
 
     # Exporting
     skill_data = transformer_skill.transform_attacking(106503012, is_exporting=True)
@@ -143,7 +143,7 @@ def test_has_crisis_and_punisher_2(transformer_skill: SkillTransformer):
 
 def test_punisher_only(transformer_skill: SkillTransformer):
     # Lathna S2
-    # https://dragalialost.gamepedia.com/Lathna
+    # https://dragalialost.wiki/w/Lathna
     skill_data = transformer_skill.transform_attacking(105505022)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -164,7 +164,7 @@ def test_punisher_only(transformer_skill: SkillTransformer):
 
 def test_crisis_only(transformer_skill: SkillTransformer):
     # Bellina S2
-    # https://dragalialost.gamepedia.com/Bellina
+    # https://dragalialost.wiki/w/Bellina
 
     # Exporting
     skill_data = transformer_skill.transform_attacking(103505034, is_exporting=True)
@@ -211,7 +211,7 @@ def test_buff_count_direct(transformer_skill: SkillTransformer):
     # For indirect buff boost tests, refer to each character instead (such as Lapis)
 
     # Karina S1
-    # https://dragalialost.gamepedia.com/Karina
+    # https://dragalialost.wiki/w/Karina
 
     # Not exporting
     skill_data = transformer_skill.transform_attacking(104402011, is_exporting=False)
@@ -268,7 +268,7 @@ def test_buff_count_direct(transformer_skill: SkillTransformer):
 
 def test_buff_count_data(transformer_skill: SkillTransformer):
     # Lapis S2
-    # https://dragalialost.gamepedia.com/Lapis
+    # https://dragalialost.wiki/w/Lapis
 
     # Not exporting
     skill_data = transformer_skill.transform_attacking(109502012, is_exporting=False)
@@ -357,7 +357,7 @@ def test_buff_count_data(transformer_skill: SkillTransformer):
 
 def test_buff_count_bonus_bullet(transformer_skill: SkillTransformer):
     # Summer Cleo S1
-    # https://dragalialost.gamepedia.com/Summer_Cleo
+    # https://dragalialost.wiki/w/Summer_Cleo
     skill_data = transformer_skill.transform_attacking(106504011)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -395,7 +395,7 @@ def test_buff_count_bonus_bullet(transformer_skill: SkillTransformer):
 
 def test_partial_attacking(transformer_skill: SkillTransformer):
     # Elisanne S1
-    # https://dragalialost.gamepedia.com/Elisanne
+    # https://dragalialost.wiki/w/Elisanne
     skill_data = transformer_skill.transform_attacking(105402011)
 
     possible_entries = skill_data.get_all_possible_entries()

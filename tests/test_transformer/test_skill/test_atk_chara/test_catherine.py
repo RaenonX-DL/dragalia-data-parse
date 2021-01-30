@@ -36,7 +36,7 @@ def test_iter_entries(transformer_skill: SkillTransformer):
 
 def test_s2_0_stack_and_as_shared(transformer_skill: SkillTransformer):
     # Catherine S2
-    # https://dragalialost.gamepedia.com/Catherine
+    # https://dragalialost.wiki/w/Catherine
     skill_data_base = transformer_skill.transform_attacking(105502042)
 
     # 0 Stack & SS
@@ -53,7 +53,7 @@ def test_s2_0_stack_and_as_shared(transformer_skill: SkillTransformer):
 
 def test_s2_1_stack(transformer_skill: SkillTransformer):
     # Catherine S2
-    # https://dragalialost.gamepedia.com/Catherine
+    # https://dragalialost.wiki/w/Catherine
     skill_data_base = transformer_skill.transform_attacking(105502043)
 
     # 1 Stack
@@ -70,7 +70,7 @@ def test_s2_1_stack(transformer_skill: SkillTransformer):
 
 def test_s2_2_stack(transformer_skill: SkillTransformer):
     # Catherine S2
-    # https://dragalialost.gamepedia.com/Catherine
+    # https://dragalialost.wiki/w/Catherine
     skill_data_base = transformer_skill.transform_attacking(105502044)
 
     # 2 Stacks
@@ -87,7 +87,7 @@ def test_s2_2_stack(transformer_skill: SkillTransformer):
 
 def test_s2_3_stack(transformer_skill: SkillTransformer):
     # Catherine S2
-    # https://dragalialost.gamepedia.com/Catherine
+    # https://dragalialost.wiki/w/Catherine
     skill_data_base = transformer_skill.transform_attacking(105502045)
 
     # 3 Stacks
@@ -104,7 +104,7 @@ def test_s2_3_stack(transformer_skill: SkillTransformer):
 
 def test_s2_as_helper(transformer_skill: SkillTransformer):
     # Catherine S2
-    # https://dragalialost.gamepedia.com/Catherine
+    # https://dragalialost.wiki/w/Catherine
     skill_data_base = transformer_skill.transform_attacking(105502046)
 
     # As helper (unique)

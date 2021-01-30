@@ -15,7 +15,7 @@ def test_skill_not_found(transformer_skill: SkillTransformer):
 
 def test_single_hit_1(transformer_skill: SkillTransformer):
     # Wedding Elisanne S1
-    # https://dragalialost.gamepedia.com/Wedding_Elisanne
+    # https://dragalialost.wiki/w/Wedding_Elisanne
     skill_data = transformer_skill.transform_attacking(101503021).with_conditions()
 
     assert skill_data.hit_count == [1, 1, 1]
@@ -29,7 +29,7 @@ def test_single_hit_1(transformer_skill: SkillTransformer):
 
 def test_single_hit_2(transformer_skill: SkillTransformer):
     # Wedding Elisanne S2
-    # https://dragalialost.gamepedia.com/Wedding_Elisanne
+    # https://dragalialost.wiki/w/Wedding_Elisanne
     skill_data = transformer_skill.transform_attacking(101503022).with_conditions()
 
     assert skill_data.hit_count == [1, 1]
@@ -43,7 +43,7 @@ def test_single_hit_2(transformer_skill: SkillTransformer):
 
 def test_single_projectile(transformer_skill: SkillTransformer):
     # Euden S2
-    # https://dragalialost.gamepedia.com/The_Prince
+    # https://dragalialost.wiki/w/The_Prince
     skill_data = transformer_skill.transform_attacking(101401012).with_conditions()
 
     assert skill_data.hit_count == [1, 1, 1]
@@ -57,7 +57,7 @@ def test_single_projectile(transformer_skill: SkillTransformer):
 
 def test_multi_hits_same_damage_1(transformer_skill: SkillTransformer):
     # Templar Hope S2
-    # https://dragalialost.gamepedia.com/Templar_Hope
+    # https://dragalialost.wiki/w/Templar_Hope
     # Mods for 70 MC has already inserted, but not yet released
     skill_data = transformer_skill.transform_attacking(101403022).with_conditions()
 
@@ -72,7 +72,7 @@ def test_multi_hits_same_damage_1(transformer_skill: SkillTransformer):
 
 def test_multi_hits_same_damage_2(transformer_skill: SkillTransformer):
     # Ranzal S1
-    # https://dragalialost.gamepedia.com/Ranzal
+    # https://dragalialost.wiki/w/Ranzal
     skill_data = transformer_skill.transform_attacking(104403011).with_conditions()
 
     assert skill_data.hit_count == [4, 4, 4, 4]
@@ -86,7 +86,7 @@ def test_multi_hits_same_damage_2(transformer_skill: SkillTransformer):
 
 def test_multi_hits_different_damage_1(transformer_skill: SkillTransformer):
     # Summer Julietta S1
-    # https://dragalialost.gamepedia.com/Summer_Julietta
+    # https://dragalialost.wiki/w/Summer_Julietta
     skill_data = transformer_skill.transform_attacking(104502011).with_conditions()
 
     assert skill_data.hit_count == [3, 3, 3, 3]
@@ -102,7 +102,7 @@ def test_multi_hits_different_damage_1(transformer_skill: SkillTransformer):
 
 def test_multi_hits_different_damage_2(transformer_skill: SkillTransformer):
     # Gala Euden S2
-    # https://dragalialost.gamepedia.com/Gala_Prince
+    # https://dragalialost.wiki/w/Gala_Prince
     skill_data = transformer_skill.transform_attacking(101504032).with_conditions()
 
     assert skill_data.hit_count == [13] * 2
@@ -119,7 +119,7 @@ def test_multi_hits_different_damage_2(transformer_skill: SkillTransformer):
 
 def test_has_functional_hits(transformer_skill: SkillTransformer):
     # Renee S1
-    # https://dragalialost.gamepedia.com/Renee
+    # https://dragalialost.wiki/w/Renee
     skill_data = transformer_skill.transform_attacking(103402031).with_conditions()
 
     assert skill_data.hit_count == [6, 6, 6, 6]
@@ -133,7 +133,7 @@ def test_has_functional_hits(transformer_skill: SkillTransformer):
 
 def test_has_punisher_1_1(transformer_skill: SkillTransformer):
     # Veronica S1
-    # https://dragalialost.gamepedia.com/Veronica
+    # https://dragalialost.wiki/w/Veronica
     skill_data_base = transformer_skill.transform_attacking(107505011)
 
     # Base data
@@ -160,7 +160,7 @@ def test_has_punisher_1_1(transformer_skill: SkillTransformer):
 
 def test_has_punisher_1_2(transformer_skill: SkillTransformer):
     # Veronica S1
-    # https://dragalialost.gamepedia.com/Veronica
+    # https://dragalialost.wiki/w/Veronica
     skill_data_base = transformer_skill.transform_attacking(107505011)
 
     # Poisoned Punisher
@@ -187,7 +187,7 @@ def test_has_punisher_1_2(transformer_skill: SkillTransformer):
 
 def test_has_punisher_2_1(transformer_skill: SkillTransformer):
     # Hawk S1
-    # https://dragalialost.gamepedia.com/Hawk
+    # https://dragalialost.wiki/w/Hawk
     skill_data_base = transformer_skill.transform_attacking(106503021)
 
     # Base data
@@ -214,7 +214,7 @@ def test_has_punisher_2_1(transformer_skill: SkillTransformer):
 
 def test_has_punisher_2_2(transformer_skill: SkillTransformer):
     # Hawk S1
-    # https://dragalialost.gamepedia.com/Hawk
+    # https://dragalialost.wiki/w/Hawk
     skill_data_base = transformer_skill.transform_attacking(106503021)
 
     # Poisoned Punisher
@@ -241,7 +241,7 @@ def test_has_punisher_2_2(transformer_skill: SkillTransformer):
 
 def test_has_punisher_2_3(transformer_skill: SkillTransformer):
     # Hawk S1
-    # https://dragalialost.gamepedia.com/Hawk
+    # https://dragalialost.wiki/w/Hawk
     skill_data_base = transformer_skill.transform_attacking(106503021)
 
     # Stunned Punisher
@@ -268,7 +268,7 @@ def test_has_punisher_2_3(transformer_skill: SkillTransformer):
 
 def test_has_punisher_2_4(transformer_skill: SkillTransformer):
     # Hawk S1
-    # https://dragalialost.gamepedia.com/Hawk
+    # https://dragalialost.wiki/w/Hawk
     skill_data_base = transformer_skill.transform_attacking(106503021)
 
     # Poisoned & Stunned Punisher
@@ -296,7 +296,7 @@ def test_has_punisher_2_4(transformer_skill: SkillTransformer):
 
 def test_has_punisher_3_1(transformer_skill: SkillTransformer):
     # Nefaria S1
-    # https://dragalialost.gamepedia.com/Nefaria
+    # https://dragalialost.wiki/w/Nefaria
     skill_data_base = transformer_skill.transform_attacking(106505011)
 
     # Base data
@@ -323,7 +323,7 @@ def test_has_punisher_3_1(transformer_skill: SkillTransformer):
 
 def test_has_punisher_3_2(transformer_skill: SkillTransformer):
     # Nefaria S1
-    # https://dragalialost.gamepedia.com/Nefaria
+    # https://dragalialost.wiki/w/Nefaria
     skill_data_base = transformer_skill.transform_attacking(106505011)
 
     # Blinded Punisher
@@ -350,7 +350,7 @@ def test_has_punisher_3_2(transformer_skill: SkillTransformer):
 
 def test_has_punisher_3_3(transformer_skill: SkillTransformer):
     # Nefaria S1
-    # https://dragalialost.gamepedia.com/Nefaria
+    # https://dragalialost.wiki/w/Nefaria
     skill_data_base = transformer_skill.transform_attacking(106505011)
 
     # Poisoned Punisher
@@ -377,7 +377,7 @@ def test_has_punisher_3_3(transformer_skill: SkillTransformer):
 
 def test_has_punisher_3_4(transformer_skill: SkillTransformer):
     # Nefaria S1
-    # https://dragalialost.gamepedia.com/Nefaria
+    # https://dragalialost.wiki/w/Nefaria
     skill_data_base = transformer_skill.transform_attacking(106505011)
 
     # Blinded or Poisoned Punisher
@@ -405,7 +405,7 @@ def test_has_punisher_3_4(transformer_skill: SkillTransformer):
 
 def test_hp_related_1_1(transformer_skill: SkillTransformer):
     # Veronica S1
-    # https://dragalialost.gamepedia.com/Veronica
+    # https://dragalialost.wiki/w/Veronica
     skill_data_base = transformer_skill.transform_attacking(107505011)
 
     # 1 HP
@@ -432,7 +432,7 @@ def test_hp_related_1_1(transformer_skill: SkillTransformer):
 
 def test_hp_related_1_2(transformer_skill: SkillTransformer):
     # Veronica S1
-    # https://dragalialost.gamepedia.com/Veronica
+    # https://dragalialost.wiki/w/Veronica
     skill_data_base = transformer_skill.transform_attacking(107505011)
 
     # 1 HP & Poisoned Punisher
@@ -460,7 +460,7 @@ def test_hp_related_1_2(transformer_skill: SkillTransformer):
 
 def test_hp_related_2_1(transformer_skill: SkillTransformer):
     # Louise S2
-    # https://dragalialost.gamepedia.com/Louise
+    # https://dragalialost.wiki/w/Louise
     skill_data_base = transformer_skill.transform_attacking(106503012)
 
     # Base data (Not given, default to full HP)
@@ -485,7 +485,7 @@ def test_hp_related_2_1(transformer_skill: SkillTransformer):
 
 def test_hp_related_2_2(transformer_skill: SkillTransformer):
     # Louise S2
-    # https://dragalialost.gamepedia.com/Louise
+    # https://dragalialost.wiki/w/Louise
     skill_data_base = transformer_skill.transform_attacking(106503012)
 
     # Base data (Full HP)
@@ -510,7 +510,7 @@ def test_hp_related_2_2(transformer_skill: SkillTransformer):
 
 def test_hp_related_2_3(transformer_skill: SkillTransformer):
     # Louise S2
-    # https://dragalialost.gamepedia.com/Louise
+    # https://dragalialost.wiki/w/Louise
     skill_data_base = transformer_skill.transform_attacking(106503012)
 
     # Poisoned Punisher (Full HP)
@@ -536,7 +536,7 @@ def test_hp_related_2_3(transformer_skill: SkillTransformer):
 
 def test_hp_related_2_4(transformer_skill: SkillTransformer):
     # Louise S2
-    # https://dragalialost.gamepedia.com/Louise
+    # https://dragalialost.wiki/w/Louise
     skill_data_base = transformer_skill.transform_attacking(106503012)
 
     # Base data (1 HP)
@@ -561,7 +561,7 @@ def test_hp_related_2_4(transformer_skill: SkillTransformer):
 
 def test_hp_related_2_5(transformer_skill: SkillTransformer):
     # Louise S2
-    # https://dragalialost.gamepedia.com/Louise
+    # https://dragalialost.wiki/w/Louise
     skill_data_base = transformer_skill.transform_attacking(106503012)
 
     # Poisoned Punisher (1 HP)
@@ -589,7 +589,7 @@ def test_buff_related_1(transformer_skill: SkillTransformer):
     # For indirect buff boost tests, refer to each character instead (such as Lapis)
 
     # Karina S1
-    # https://dragalialost.gamepedia.com/Karina
+    # https://dragalialost.wiki/w/Karina
     skill_data_base = transformer_skill.transform_attacking(104402011)
 
     # Base data

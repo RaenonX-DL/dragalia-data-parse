@@ -5,7 +5,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_capped(transformer_skill: SkillTransformer):
     # Lapis S2
-    # https://dragalialost.gamepedia.com/Lapis
+    # https://dragalialost.wiki/w/Lapis
     skill_data_base = transformer_skill.transform_attacking(109502012, is_exporting=True)
 
     expected_data = {
@@ -25,7 +25,7 @@ def test_capped(transformer_skill: SkillTransformer):
 
 def test_uncapped(transformer_skill: SkillTransformer):
     # Karina S1
-    # https://dragalialost.gamepedia.com/Karina
+    # https://dragalialost.wiki/w/Karina
     skill_data = transformer_skill.transform_attacking(104402011, is_exporting=True).with_conditions()
 
     skill_max_lv = skill_data.max_level

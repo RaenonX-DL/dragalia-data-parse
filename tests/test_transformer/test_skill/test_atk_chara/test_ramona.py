@@ -7,7 +7,7 @@ from tests.utils import approx_matrix
 
 def test_iter_entries_s1(transformer_skill: SkillTransformer):
     # Ramona S1
-    # https://dragalialost.gamepedia.com/Ramona
+    # https://dragalialost.wiki/w/Ramona
     skill_data = transformer_skill.transform_attacking(104501011)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -52,7 +52,7 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
 
 def test_s1(transformer_skill: SkillTransformer):
     # Ramona S1
-    # https://dragalialost.gamepedia.com/Ramona
+    # https://dragalialost.wiki/w/Ramona
     skill_data_base = transformer_skill.transform_attacking(104501011)
 
     pre_dmg = [

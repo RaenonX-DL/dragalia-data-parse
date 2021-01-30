@@ -6,7 +6,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_s2(transformer_skill: SkillTransformer):
     # Chelle S2
-    # https://dragalialost.gamepedia.com/Chelle
+    # https://dragalialost.wiki/w/Chelle
     skill_data_base = transformer_skill.transform_attacking(106501011)
 
     base_mods = [

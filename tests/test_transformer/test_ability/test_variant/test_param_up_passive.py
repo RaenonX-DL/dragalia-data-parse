@@ -5,7 +5,7 @@ from tests.utils import AbilityEffectInfo, check_ability_effect_unit_match
 
 def test_resist_1(transformer_ability: AbilityTransformer):
     # Marty (AB3 @ Max - Stun Res +50%)
-    # https://dragalialost.gamepedia.com/Marty
+    # https://dragalialost.wiki/w/Marty
     ability_data = transformer_ability.transform_ability(110020604)
 
     expected_info = {
@@ -17,7 +17,7 @@ def test_resist_1(transformer_ability: AbilityTransformer):
 
 def test_resist_2(transformer_ability: AbilityTransformer):
     # Wedding Elisanne (AB2 @ Max - Bog Res +100%)
-    # https://dragalialost.gamepedia.com/Wedding_Elisanne
+    # https://dragalialost.wiki/w/Wedding_Elisanne
     ability_data = transformer_ability.transform_ability(110020906)
 
     expected_info = {
@@ -29,7 +29,7 @@ def test_resist_2(transformer_ability: AbilityTransformer):
 
 def test_potent_resist_1(transformer_ability: AbilityTransformer):
     # Marty (AB2 @ Max - Stun Res +50% & ATK +15% 10s, CD 15s)
-    # https://dragalialost.gamepedia.com/Marty
+    # https://dragalialost.wiki/w/Marty
     ability_data = transformer_ability.transform_ability(676)
 
     expected_info = {
@@ -46,7 +46,7 @@ def test_potent_resist_1(transformer_ability: AbilityTransformer):
 
 def test_potent_resist_2(transformer_ability: AbilityTransformer):
     # Summer Julietta (AB2 @ Max - Stun Res +100% & ATK +15% 10s, CD 15s)
-    # https://dragalialost.gamepedia.com/Marty
+    # https://dragalialost.wiki/w/Marty
     ability_data = transformer_ability.transform_ability(678)
 
     expected_info = {
@@ -63,7 +63,7 @@ def test_potent_resist_2(transformer_ability: AbilityTransformer):
 
 def test_potent_resist_3(transformer_ability: AbilityTransformer):
     # Summer Cleo S2 (AB2 @ Max - Curse Res +100% & ATK +15% 10s, CD 15s)
-    # https://dragalialost.gamepedia.com/Summer_Cleo
+    # https://dragalialost.wiki/w/Summer_Cleo
     ability_data = transformer_ability.transform_ability(937)
 
     expected_info = {
@@ -80,7 +80,7 @@ def test_potent_resist_3(transformer_ability: AbilityTransformer):
 
 def test_sp_rate_up(transformer_ability: AbilityTransformer):
     # Marty (AB1 @ Max - SP Rate +10%)
-    # https://dragalialost.gamepedia.com/Marty
+    # https://dragalialost.wiki/w/Marty
     ability_data = transformer_ability.transform_ability(938)
 
     expected_info = {
@@ -92,7 +92,7 @@ def test_sp_rate_up(transformer_ability: AbilityTransformer):
 
 def test_atk_up_full_hp(transformer_ability: AbilityTransformer):
     # Yukata Cassandra (AB1 @ Max - ATK +20% when HP = 100%)
-    # https://dragalialost.gamepedia.com/Yukata_Cassandra
+    # https://dragalialost.wiki/w/Yukata_Cassandra
     ability_data = transformer_ability.transform_ability(210000307)
 
     expected_info = {
@@ -104,7 +104,7 @@ def test_atk_up_full_hp(transformer_ability: AbilityTransformer):
 
 def test_atk_up_gte_70_hp(transformer_ability: AbilityTransformer):
     # Karl (AB1 @ Max - RP +13% when HP = 100%)
-    # https://dragalialost.gamepedia.com/Karl
+    # https://dragalialost.wiki/w/Karl
     ability_data = transformer_ability.transform_ability(719)
 
     expected_info = {

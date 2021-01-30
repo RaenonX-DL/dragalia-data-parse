@@ -6,7 +6,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_cancel_s1_data(transformer_skill: SkillTransformer):
     # Opera Karina S1
-    # https://dragalialost.gamepedia.com/Opera_Karina
+    # https://dragalialost.wiki/w/Opera_Karina
     skill_data = transformer_skill.transform_attacking(106505041)
 
     expected_cancel_action_data = {
@@ -27,7 +27,7 @@ def test_cancel_s1_data(transformer_skill: SkillTransformer):
 
 def test_cancel_s1_entries(transformer_skill: SkillTransformer):
     # Opera Karina S1
-    # https://dragalialost.gamepedia.com/Opera_Karina
+    # https://dragalialost.wiki/w/Opera_Karina
     skill_data = transformer_skill.transform_attacking(106505041)
 
     expected_cancel_action_data = {

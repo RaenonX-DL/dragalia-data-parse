@@ -7,7 +7,7 @@ from tests.utils import approx_matrix
 
 def test_s1_base(transformer_skill: SkillTransformer):
     # Gala Alex S1
-    # https://dragalialost.gamepedia.com/Gala_Alex
+    # https://dragalialost.wiki/w/Gala_Alex
     skill_data_base = transformer_skill.transform_attacking(101505021)
 
     skill_data = skill_data_base.with_conditions()
@@ -31,7 +31,7 @@ def test_s1_base(transformer_skill: SkillTransformer):
 
 def test_s2_base(transformer_skill: SkillTransformer):
     # Gala Alex S2
-    # https://dragalialost.gamepedia.com/Gala_Alex
+    # https://dragalialost.wiki/w/Gala_Alex
     skill_data_base = transformer_skill.transform_attacking(101505022)
 
     skill_data = skill_data_base.with_conditions()
@@ -47,7 +47,7 @@ def test_s2_base(transformer_skill: SkillTransformer):
 
 def test_s1_chained(transformer_skill: SkillTransformer):
     # Gala Alex S1 @ Chained
-    # https://dragalialost.gamepedia.com/Gala_Alex
+    # https://dragalialost.wiki/w/Gala_Alex
     skill_data_base = transformer_skill.transform_attacking(101505023)
 
     # Base
@@ -93,7 +93,7 @@ def test_s1_chained(transformer_skill: SkillTransformer):
 
 def test_s2_chained(transformer_skill: SkillTransformer):
     # Gala Alex S2 @ Chained
-    # https://dragalialost.gamepedia.com/Gala_Alex
+    # https://dragalialost.wiki/w/Gala_Alex
     skill_data_base = transformer_skill.transform_attacking(101505026)
 
     # Base
@@ -135,7 +135,7 @@ def test_s2_chained(transformer_skill: SkillTransformer):
 
 def test_s1_has_buff(transformer_skill: SkillTransformer):
     # Gala Alex S1 @ Has buff
-    # https://dragalialost.gamepedia.com/Gala_Alex
+    # https://dragalialost.wiki/w/Gala_Alex
     skill_data_base = transformer_skill.transform_attacking(101505024)
 
     # Base
@@ -181,7 +181,7 @@ def test_s1_has_buff(transformer_skill: SkillTransformer):
 
 def test_s2_has_buff(transformer_skill: SkillTransformer):
     # Gala Alex S2 @ Has buff
-    # https://dragalialost.gamepedia.com/Gala_Alex
+    # https://dragalialost.wiki/w/Gala_Alex
     skill_data_base = transformer_skill.transform_attacking(101505027)
 
     # Base
@@ -223,7 +223,7 @@ def test_s2_has_buff(transformer_skill: SkillTransformer):
 
 def test_s1_break(transformer_skill: SkillTransformer):
     # Gala Alex S1 @ Target break
-    # https://dragalialost.gamepedia.com/Gala_Alex
+    # https://dragalialost.wiki/w/Gala_Alex
     skill_data_base = transformer_skill.transform_attacking(101505025)
 
     # Base
@@ -269,7 +269,7 @@ def test_s1_break(transformer_skill: SkillTransformer):
 
 def test_s2_break(transformer_skill: SkillTransformer):
     # Gala Alex S2 @ Target break
-    # https://dragalialost.gamepedia.com/Gala_Alex
+    # https://dragalialost.wiki/w/Gala_Alex
     skill_data_base = transformer_skill.transform_attacking(101505028)
 
     # Base

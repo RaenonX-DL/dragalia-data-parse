@@ -6,7 +6,7 @@ from tests.utils import approx_matrix
 
 def test_s1_normal(transformer_skill: SkillTransformer):
     # Ilia S1
-    # https://dragalialost.gamepedia.com/Ilia
+    # https://dragalialost.wiki/w/Ilia
     skill_data_base = transformer_skill.transform_attacking(109504011)
 
     # Base data
@@ -31,7 +31,7 @@ def test_s1_normal(transformer_skill: SkillTransformer):
 
 def test_s1_alchemy(transformer_skill: SkillTransformer):
     # Ilia S1 @ Alchemy
-    # https://dragalialost.gamepedia.com/Ilia
+    # https://dragalialost.wiki/w/Ilia
     skill_data_base = transformer_skill.transform_attacking(109504013)
 
     # Base data
@@ -56,7 +56,7 @@ def test_s1_alchemy(transformer_skill: SkillTransformer):
 
 def test_s2_alchemy(transformer_skill: SkillTransformer):
     # Ilia S2 @ Alchemy
-    # https://dragalialost.gamepedia.com/Ilia
+    # https://dragalialost.wiki/w/Ilia
     skill_data_base = transformer_skill.transform_attacking(109504014)
 
     # Base data

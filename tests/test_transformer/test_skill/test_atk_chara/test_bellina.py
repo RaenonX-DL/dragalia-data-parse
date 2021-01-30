@@ -5,7 +5,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_s1(transformer_skill: SkillTransformer):
     # Bellina S1
-    # https://dragalialost.gamepedia.com/Bellina
+    # https://dragalialost.wiki/w/Bellina
     skill_data_base = transformer_skill.transform_attacking(103505033)
 
     # Base data

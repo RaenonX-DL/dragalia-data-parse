@@ -5,7 +5,7 @@ from tests.utils import AbilityEffectInfo, check_ability_effect_unit_match
 
 def test_od_punisher(transformer_ability: AbilityTransformer):
     # Seimei - 10750104
-    # https://dragalialost.gamepedia.com/Seimei
+    # https://dragalialost.wiki/w/Seimei
     ex_ability_data = transformer_ability.transform_ex_ability(106000008)
 
     expected_info = {
@@ -24,7 +24,7 @@ def test_od_punisher(transformer_ability: AbilityTransformer):
 
 def test_debuffed_punisher(transformer_ability: AbilityTransformer):
     # Gala Leif - 10150303
-    # https://dragalialost.gamepedia.com/Gala_Leif
+    # https://dragalialost.wiki/w/Gala_Leif
     ex_ability_data = transformer_ability.transform_ex_ability(106080008)
 
     expected_info = {
@@ -39,7 +39,7 @@ def test_debuffed_punisher(transformer_ability: AbilityTransformer):
 
 def test_paralyzed_punisher(transformer_ability: AbilityTransformer):
     # Sharena - 10550404
-    # https://dragalialost.gamepedia.com/Sharena
+    # https://dragalialost.wiki/w/Sharena
     ex_ability_data = transformer_ability.transform_ex_ability(120040008)
 
     expected_info = {
@@ -54,7 +54,7 @@ def test_paralyzed_punisher(transformer_ability: AbilityTransformer):
 
 def test_auto_dmg_up(transformer_ability: AbilityTransformer):
     # Gala Laxi - 10350102
-    # https://dragalialost.gamepedia.com/Gala_Laxi
+    # https://dragalialost.wiki/w/Gala_Laxi
     ex_ability_data = transformer_ability.transform_ex_ability(106070008)
 
     expected_info = {
@@ -69,7 +69,7 @@ def test_auto_dmg_up(transformer_ability: AbilityTransformer):
 
 def test_fs_dmg_up(transformer_ability: AbilityTransformer):
     # Grace - 10850503
-    # https://dragalialost.gamepedia.com/Grace
+    # https://dragalialost.wiki/w/Grace
     ex_ability_data = transformer_ability.transform_ex_ability(106000016)
 
     expected_info = {
@@ -84,7 +84,7 @@ def test_fs_dmg_up(transformer_ability: AbilityTransformer):
 
 def test_crt_dmg_up(transformer_ability: AbilityTransformer):
     # Halloween Mym - 10450102
-    # https://dragalialost.gamepedia.com/Halloween_Mym
+    # https://dragalialost.wiki/w/Halloween_Mym
     ex_ability_data = transformer_ability.transform_ex_ability(126000008)
 
     expected_info = {
@@ -99,7 +99,7 @@ def test_crt_dmg_up(transformer_ability: AbilityTransformer):
 
 def test_light_dmg_up(transformer_ability: AbilityTransformer):
     # Peony - 10750402
-    # https://dragalialost.gamepedia.com/Peony
+    # https://dragalialost.wiki/w/Peony
     ex_ability_data = transformer_ability.transform_ex_ability(157570408)
 
     expected_info = {
@@ -114,7 +114,7 @@ def test_light_dmg_up(transformer_ability: AbilityTransformer):
 
 def test_hp_and_def(transformer_ability: AbilityTransformer):
     # Chrom - 10150105
-    # https://dragalialost.gamepedia.com/Chrom
+    # https://dragalialost.wiki/w/Chrom
     ex_ability_data = transformer_ability.transform_ex_ability(101060010)
 
     expected_info = {
@@ -133,7 +133,7 @@ def test_hp_and_def(transformer_ability: AbilityTransformer):
 
 def test_hp_on_revival(transformer_ability: AbilityTransformer):
     # Kimono Elisanne - 10550103
-    # https://dragalialost.gamepedia.com/Kimono_Elisanne
+    # https://dragalialost.wiki/w/Kimono_Elisanne
     ex_ability_data = transformer_ability.transform_ex_ability(166000008)
 
     expected_info = {
@@ -148,7 +148,7 @@ def test_hp_on_revival(transformer_ability: AbilityTransformer):
 
 def test_shapeshifting_boost(transformer_ability: AbilityTransformer):
     # Gala Euden - 10150403
-    # https://dragalialost.gamepedia.com/Gala_Euden
+    # https://dragalialost.wiki/w/Gala_Euden
     ex_ability_data = transformer_ability.transform_ex_ability(136000008)
 
     expected_info = {
@@ -167,7 +167,7 @@ def test_shapeshifting_boost(transformer_ability: AbilityTransformer):
 
 def test_buff_time(transformer_ability: AbilityTransformer):
     # Tobias
-    # https://dragalialost.gamepedia.com/Tobias
+    # https://dragalialost.wiki/w/Tobias
     ex_ability_data = transformer_ability.transform_ex_ability(118000008)
 
     expected_info = {

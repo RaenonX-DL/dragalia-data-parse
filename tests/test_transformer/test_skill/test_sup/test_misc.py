@@ -5,7 +5,7 @@ from tests.utils import BuffEffectInfo, check_buff_unit_match
 
 def test_partial_attacking(transformer_skill: SkillTransformer):
     # Elisanne S1
-    # https://dragalialost.gamepedia.com/Elisanne
+    # https://dragalialost.wiki/w/Elisanne
     skill_data_base = transformer_skill.transform_supportive(105402011)
 
     assert skill_data_base.max_level == 4

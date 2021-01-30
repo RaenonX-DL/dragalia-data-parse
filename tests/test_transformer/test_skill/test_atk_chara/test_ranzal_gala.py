@@ -7,7 +7,7 @@ from tests.utils import approx_matrix
 
 def test_iter_entries_s1_no_ability(transformer_skill: SkillTransformer):
     # Gala Ranzal S1
-    # https://dragalialost.gamepedia.com/Gala_Ranzal
+    # https://dragalialost.wiki/w/Gala_Ranzal
     skill_data = transformer_skill.transform_attacking(101503011)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -32,7 +32,7 @@ def test_iter_entries_s1_no_ability(transformer_skill: SkillTransformer):
 
 def test_iter_entries_s1_with_ability(transformer_skill: SkillTransformer):
     # Gala Ranzal S1
-    # https://dragalialost.gamepedia.com/Gala_Ranzal
+    # https://dragalialost.wiki/w/Gala_Ranzal
     skill_data = transformer_skill.transform_attacking(101503011, ability_ids=[124])
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -59,7 +59,7 @@ def test_iter_entries_s1_with_ability(transformer_skill: SkillTransformer):
 
 def test_s1_no_chara_ability(transformer_skill: SkillTransformer):
     # Gala Ranzal S1
-    # https://dragalialost.gamepedia.com/Gala_Ranzal
+    # https://dragalialost.wiki/w/Gala_Ranzal
     skill_data_base = transformer_skill.transform_attacking(101503011)
 
     skill_data = skill_data_base.with_conditions()
@@ -83,7 +83,7 @@ def test_s1_no_chara_ability(transformer_skill: SkillTransformer):
 
 def test_s1_has_chara_ability(transformer_skill: SkillTransformer):
     # Gala Ranzal S1
-    # https://dragalialost.gamepedia.com/Gala_Ranzal
+    # https://dragalialost.wiki/w/Gala_Ranzal
     skill_data_base = transformer_skill.transform_attacking(101503011, ability_ids=[124])
 
     dmg_up_rate = {

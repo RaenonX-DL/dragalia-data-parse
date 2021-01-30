@@ -6,7 +6,7 @@ from tests.utils import approx_matrix
 
 def test_s1(transformer_skill: SkillTransformer):
     # Gala Laxi S1
-    # https://dragalialost.gamepedia.com/Gala_Laxi
+    # https://dragalialost.wiki/w/Gala_Laxi
     skill_data_base = transformer_skill.transform_attacking(103501021)
 
     # Base data
@@ -31,7 +31,7 @@ def test_s1(transformer_skill: SkillTransformer):
 
 def test_s1_eden(transformer_skill: SkillTransformer):
     # Gala Laxi S1 @ Eden
-    # https://dragalialost.gamepedia.com/Gala_Laxi
+    # https://dragalialost.wiki/w/Gala_Laxi
     skill_data_base = transformer_skill.transform_attacking(103501023)
 
     # Base data
@@ -56,7 +56,7 @@ def test_s1_eden(transformer_skill: SkillTransformer):
 
 def test_s2_eden(transformer_skill: SkillTransformer):
     # Gala Laxi S2 @ Eden
-    # https://dragalialost.gamepedia.com/Gala_Laxi
+    # https://dragalialost.wiki/w/Gala_Laxi
     skill_data_base = transformer_skill.transform_attacking(103501024)
 
     # Base data
@@ -79,7 +79,7 @@ def test_s2_eden(transformer_skill: SkillTransformer):
 
 def test_s2_call_fig():
     # Gala Laxi Fig
-    # https://dragalialost.gamepedia.com/Gala_Laxi
+    # https://dragalialost.wiki/w/Gala_Laxi
     # skill_data_base = transformer_skill.transform_attacking(103501022)
 
     pass

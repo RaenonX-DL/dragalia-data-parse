@@ -15,7 +15,7 @@ def test_skill_not_found(transformer_skill: SkillTransformer):
 
 def test_single_effect_to_team(transformer_skill: SkillTransformer):
     # Kirsty S2
-    # https://dragalialost.gamepedia.com/Kirsty
+    # https://dragalialost.wiki/w/Kirsty
     skill_data_base = transformer_skill.transform_supportive(105503022)
 
     assert skill_data_base.max_level == 3
@@ -44,7 +44,7 @@ def test_single_effect_to_team(transformer_skill: SkillTransformer):
 
 def test_single_effect_to_team_limited(transformer_skill: SkillTransformer):
     # Emma S1
-    # https://dragalialost.gamepedia.com/Emma
+    # https://dragalialost.wiki/w/Emma
     skill_data_base = transformer_skill.transform_supportive(105401031)
 
     assert skill_data_base.max_level == 3
@@ -86,7 +86,7 @@ def test_single_effect_to_team_limited(transformer_skill: SkillTransformer):
 
 def test_single_effect_field(transformer_skill: SkillTransformer):
     # Gala Euden S1
-    # https://dragalialost.gamepedia.com/Gala_Prince
+    # https://dragalialost.wiki/w/Gala_Prince
     skill_data_base = transformer_skill.transform_supportive(101504031)
 
     assert skill_data_base.max_level == 3
@@ -115,7 +115,7 @@ def test_single_effect_field(transformer_skill: SkillTransformer):
 
 def test_multi_effect_to_team(transformer_skill: SkillTransformer):
     # Patia S1
-    # https://dragalialost.gamepedia.com/Patia
+    # https://dragalialost.wiki/w/Patia
     skill_data_base = transformer_skill.transform_supportive(105405021)
 
     assert skill_data_base.max_level == 4
@@ -148,7 +148,7 @@ def test_multi_effect_to_team(transformer_skill: SkillTransformer):
 
 def test_multi_effect_to_nearby_1(transformer_skill: SkillTransformer):
     # Halloween Odetta S2
-    # https://dragalialost.gamepedia.com/Halloween_Odetta
+    # https://dragalialost.wiki/w/Halloween_Odetta
     skill_data_base = transformer_skill.transform_supportive(101402012)
 
     assert skill_data_base.max_level == 3
@@ -177,7 +177,7 @@ def test_multi_effect_to_nearby_1(transformer_skill: SkillTransformer):
 
 def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
     # Summer Cleo S2
-    # https://dragalialost.gamepedia.com/Summer_Cleo
+    # https://dragalialost.wiki/w/Summer_Cleo
     skill_data_base = transformer_skill.transform_supportive(106504012)
 
     expected_base_buffs_lv_1 = {
@@ -241,7 +241,7 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
 
 def test_has_phase_1(transformer_skill: SkillTransformer):
     # Summer Julietta S2 - P1
-    # https://dragalialost.gamepedia.com/Summer_Julietta
+    # https://dragalialost.wiki/w/Summer_Julietta
     skill_data_base = transformer_skill.transform_supportive(104502012)
 
     expected_buffs_lv_1 = {
@@ -269,7 +269,7 @@ def test_has_phase_1(transformer_skill: SkillTransformer):
 
 def test_has_phase_2(transformer_skill: SkillTransformer):
     # Summer Julietta S2 - P2
-    # https://dragalialost.gamepedia.com/Summer_Julietta
+    # https://dragalialost.wiki/w/Summer_Julietta
     skill_data_base = transformer_skill.transform_supportive(104502013)
 
     expected_base_buffs_lv_1 = {
@@ -314,7 +314,7 @@ def test_has_phase_2(transformer_skill: SkillTransformer):
 
 def test_has_phase_3(transformer_skill: SkillTransformer):
     # Summer Julietta S2 - P3
-    # https://dragalialost.gamepedia.com/Summer_Julietta
+    # https://dragalialost.wiki/w/Summer_Julietta
     skill_data_base = transformer_skill.transform_supportive(104502014)
 
     expected_base_buffs_lv_1 = {
@@ -365,7 +365,7 @@ def test_has_phase_3(transformer_skill: SkillTransformer):
 
 def test_with_attack(transformer_skill: SkillTransformer):
     # Marth S2 - P3
-    # https://dragalialost.gamepedia.com/Marth
+    # https://dragalialost.wiki/w/Marth
     skill_data_base = transformer_skill.transform_supportive(101501024)
 
     expected_buffs_lv_1 = {
@@ -396,7 +396,7 @@ def test_with_attack(transformer_skill: SkillTransformer):
 
 def test_with_attack_one_time_use(transformer_skill: SkillTransformer):
     # Lazry S1 @ High Power
-    # https://dragalialost.gamepedia.com/Lazry
+    # https://dragalialost.wiki/w/Lazry
     skill_data_base = transformer_skill.transform_supportive(104502033)
 
     expected_buffs_lv_1 = {
@@ -424,7 +424,7 @@ def test_with_attack_one_time_use(transformer_skill: SkillTransformer):
 
 def test_elemental_resistances(transformer_skill: SkillTransformer):
     # Pecorine S1
-    # https://dragalialost.gamepedia.com/Pecorine
+    # https://dragalialost.wiki/w/Pecorine
     skill_data_base = transformer_skill.transform_supportive(101504041)
 
     assert skill_data_base.max_level == 3
@@ -454,7 +454,7 @@ def test_elemental_resistances(transformer_skill: SkillTransformer):
 
 def test_hp_drain():
     # Yue S2
-    # https://dragalialost.gamepedia.com/Yue
+    # https://dragalialost.wiki/w/Yue
     pass  # TEST: TBA - Yue S2
 
 

@@ -5,7 +5,7 @@ from tests.utils import AbilityEffectInfo, check_ability_effect_unit_match
 
 def test_sword(transformer_ability: AbilityTransformer):
     # Wedding Elisanne - 10150302
-    # https://dragalialost.gamepedia.com/Wedding_Elisanne
+    # https://dragalialost.wiki/w/Wedding_Elisanne
     ex_ability_data = transformer_ability.transform_ex_ability(101050010)
 
     expected_info = {
@@ -20,7 +20,7 @@ def test_sword(transformer_ability: AbilityTransformer):
 
 def test_blade(transformer_ability: AbilityTransformer):
     # Nobunaga - 10250103
-    # https://dragalialost.gamepedia.com/Nobunaga
+    # https://dragalialost.wiki/w/Nobunaga
     ex_ability_data = transformer_ability.transform_ex_ability(101020010)
 
     expected_info = {
@@ -35,7 +35,7 @@ def test_blade(transformer_ability: AbilityTransformer):
 
 def test_dagger(transformer_ability: AbilityTransformer):
     # Renee - 10340203
-    # https://dragalialost.gamepedia.com/Renee
+    # https://dragalialost.wiki/w/Renee
     ex_ability_data = transformer_ability.transform_ex_ability(103000010)
 
     expected_info = {
@@ -50,7 +50,7 @@ def test_dagger(transformer_ability: AbilityTransformer):
 
 def test_axe(transformer_ability: AbilityTransformer):
     # Ramona - 10450101
-    # https://dragalialost.gamepedia.com/Ramona
+    # https://dragalialost.wiki/w/Ramona
     ex_ability_data = transformer_ability.transform_ex_ability(101030010)
 
     expected_info = {
@@ -65,7 +65,7 @@ def test_axe(transformer_ability: AbilityTransformer):
 
 def test_lance(transformer_ability: AbilityTransformer):
     # Gala Mym - 10550101
-    # https://dragalialost.gamepedia.com/Gala_Mym
+    # https://dragalialost.wiki/w/Gala_Mym
     ex_ability_data = transformer_ability.transform_ex_ability(101010010)
 
     expected_info = {
@@ -80,7 +80,7 @@ def test_lance(transformer_ability: AbilityTransformer):
 
 def test_bow(transformer_ability: AbilityTransformer):
     # Meene - 10650303
-    # https://dragalialost.gamepedia.com/Meene
+    # https://dragalialost.wiki/w/Meene
     ex_ability_data = transformer_ability.transform_ex_ability(101040010)
 
     expected_info = {
@@ -95,7 +95,7 @@ def test_bow(transformer_ability: AbilityTransformer):
 
 def test_wand(transformer_ability: AbilityTransformer):
     # Veronica - 10750501
-    # https://dragalialost.gamepedia.com/Veronica
+    # https://dragalialost.wiki/w/Veronica
     ex_ability_data = transformer_ability.transform_ex_ability(102000010)
 
     expected_info = {
@@ -110,7 +110,7 @@ def test_wand(transformer_ability: AbilityTransformer):
 
 def test_staff(transformer_ability: AbilityTransformer):
     # Aurien - 10830101
-    # https://dragalialost.gamepedia.com/Aurien
+    # https://dragalialost.wiki/w/Aurien
     ex_ability_data = transformer_ability.transform_ex_ability(104000010)
 
     expected_info = {
@@ -125,7 +125,7 @@ def test_staff(transformer_ability: AbilityTransformer):
 
 def test_manacaster(transformer_ability: AbilityTransformer):
     # Ilia - 10950401
-    # https://dragalialost.gamepedia.com/Ilia
+    # https://dragalialost.wiki/w/Ilia
     ex_ability_data = transformer_ability.transform_ex_ability(109000009)
 
     expected_info = {

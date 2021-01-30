@@ -7,7 +7,7 @@ from tests.utils import DebuffInfo, approx_matrix, check_debuff_unit_match
 
 def test_iter_entries_s1(transformer_skill: SkillTransformer):
     # Nobunaga
-    # https://dragalialost.gamepedia.com/Nobunaga
+    # https://dragalialost.wiki/w/Nobunaga
     skill_data = transformer_skill.transform_attacking(102501031)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -33,7 +33,7 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
 
 def test_s1(transformer_skill: SkillTransformer):
     # Nobunaga
-    # https://dragalialost.gamepedia.com/Nobunaga
+    # https://dragalialost.wiki/w/Nobunaga
     skill_data_base = transformer_skill.transform_attacking(102501031)
 
     # Skill
@@ -61,7 +61,7 @@ def test_s1(transformer_skill: SkillTransformer):
 
 def test_s1_mark(transformer_skill: SkillTransformer):
     # Nobunaga
-    # https://dragalialost.gamepedia.com/Nobunaga
+    # https://dragalialost.wiki/w/Nobunaga
     skill_data_base = transformer_skill.transform_attacking(102501031)
 
     assert skill_data_base.max_level == 3

@@ -6,7 +6,7 @@ from tests.utils import approx_matrix
 
 def test_s1(transformer_skill: SkillTransformer):
     # Lin You S1
-    # https://dragalialost.gamepedia.com/Lin_You
+    # https://dragalialost.wiki/w/Lin_You
     skill_data_base = transformer_skill.transform_attacking(104503011)
 
     skill_data = skill_data_base.with_conditions()
@@ -32,7 +32,7 @@ def test_s1(transformer_skill: SkillTransformer):
 
 def test_s1_heaven(transformer_skill: SkillTransformer):
     # Lin You S1 @ Heaven's Breath
-    # https://dragalialost.gamepedia.com/Lin_You
+    # https://dragalialost.wiki/w/Lin_You
     skill_data_base = transformer_skill.transform_attacking(104503013)
 
     skill_data = skill_data_base.with_conditions()

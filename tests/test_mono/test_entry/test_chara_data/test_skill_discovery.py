@@ -29,7 +29,7 @@ def test_dummy_with_mode(asset_manager: AssetManager):
 
 def test_via_phase(asset_manager: AssetManager):
     # Summer Julietta S2
-    # https://dragalialost.gamepedia.com/Summer_Julietta
+    # https://dragalialost.wiki/w/Summer_Julietta
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10450201)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -51,7 +51,7 @@ def test_via_mode_1(asset_manager: AssetManager):
     Skill IDs can be found in the fields ``_Skill1Id`` and ``_Skill2Id`` of the chara mode data entries.
     """
     # Catherine
-    # https://dragalialost.gamepedia.com/Catherine
+    # https://dragalialost.wiki/w/Catherine
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10550204)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -87,7 +87,7 @@ def test_via_mode_2(asset_manager: AssetManager):
     Skill IDs can be found in the fields ``_Skill1Id`` and ``_Skill2Id`` of the chara mode data entries.
     """
     # Gala Leif
-    # https://dragalialost.gamepedia.com/Gala_Leif
+    # https://dragalialost.wiki/w/Gala_Leif
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10150303)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -109,7 +109,7 @@ def test_via_mode_3(asset_manager: AssetManager):
     Skill IDs can be found in the fields ``_Skill1Id`` and ``_Skill2Id`` of the chara mode data entries.
     """
     # Valerio
-    # https://dragalialost.gamepedia.com/Valerio
+    # https://dragalialost.wiki/w/Valerio
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10250201)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -133,7 +133,7 @@ def test_via_enhancements(asset_manager: AssetManager):
     Skill IDs can be found in the fields ``_EnhancedSkill1`` and ``_EnhancedSkill2`` of the action condition entries.
     """
     # Lin You
-    # https://dragalialost.gamepedia.com/Lin_You
+    # https://dragalialost.wiki/w/Lin_You
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10450301)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -158,7 +158,7 @@ def test_via_enhancements_multi(asset_manager: AssetManager):
     Skill IDs can be found in the fields ``_EnhancedSkill1`` and ``_EnhancedSkill2`` of the action condition entries.
     """
     # Xander
-    # https://dragalialost.gamepedia.com/Xander
+    # https://dragalialost.wiki/w/Xander
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10150201)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -189,7 +189,7 @@ def test_via_enhancements_multi_action(asset_manager: AssetManager):
     For example, Nadine S2 randomly picks one effect, both of these should be returned.
     """
     # Nadine
-    # https://dragalialost.gamepedia.com/Nadine
+    # https://dragalialost.wiki/w/Nadine
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10550102)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -217,7 +217,7 @@ def test_via_ability(asset_manager: AssetManager):
     These can be found from the ability variants of an ability data.
     """
     # Meene
-    # https://dragalialost.gamepedia.com/Meene
+    # https://dragalialost.wiki/w/Meene
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10650303)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -245,7 +245,7 @@ def test_via_ability_2(asset_manager: AssetManager):
     These can be found from the ability variants of an ability data.
     """
     # Radiant Xuan Zang
-    # https://dragalialost.gamepedia.com/Radiant_Xuan_Zang
+    # https://dragalialost.wiki/w/Radiant_Xuan_Zang
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10750403)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -271,7 +271,7 @@ def test_via_ability_3(asset_manager: AssetManager):
     These can be found from the ability variants of an ability data.
     """
     # Yaten
-    # https://dragalialost.gamepedia.com/Yaten
+    # https://dragalialost.wiki/w/Yaten
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10150501)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -295,7 +295,7 @@ def test_via_ability_4(asset_manager: AssetManager):
     These can be found from the ability variants of an ability data.
     """
     # Original Maribelle
-    # https://dragalialost.gamepedia.com/Maribelle
+    # https://dragalialost.wiki/w/Maribelle
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10750301)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -319,7 +319,7 @@ def test_via_chain(asset_manager: AssetManager):
     These can be found from the ability variants of an ability data.
     """
     # Gala Alex
-    # https://dragalialost.gamepedia.com/Gala_Alex
+    # https://dragalialost.wiki/w/Gala_Alex
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10150502)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -359,7 +359,7 @@ def test_via_unique_dragon(asset_manager: AssetManager):
     These can be found from the unique dragon linked to the character data.
     """
     # Tiki
-    # https://dragalialost.gamepedia.com/Tiki
+    # https://dragalialost.wiki/w/Tiki
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10350203)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)

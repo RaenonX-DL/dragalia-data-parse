@@ -7,7 +7,7 @@ from tests.utils import approx_matrix
 
 def test_iter_entries_s1(transformer_skill: SkillTransformer):
     # Yoshitsune S1 @ Not countered
-    # https://dragalialost.gamepedia.com/Yoshitsune
+    # https://dragalialost.wiki/w/Yoshitsune
     skill_data = transformer_skill.transform_attacking(109502021)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -33,7 +33,7 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
 
 def test_s1_normal(transformer_skill: SkillTransformer):
     # Yoshitsune S1 @ Not countered
-    # https://dragalialost.gamepedia.com/Yoshitsune
+    # https://dragalialost.wiki/w/Yoshitsune
     skill_data_base = transformer_skill.transform_attacking(109502021)
 
     skill_data = skill_data_base.with_conditions()
@@ -49,7 +49,7 @@ def test_s1_normal(transformer_skill: SkillTransformer):
 
 def test_s1_counter(transformer_skill: SkillTransformer):
     # Yoshitsune S1 @ Countered
-    # https://dragalialost.gamepedia.com/Yoshitsune
+    # https://dragalialost.wiki/w/Yoshitsune
     skill_data_base = transformer_skill.transform_attacking(109502021)
 
     skill_data = skill_data_base.with_conditions(ConditionComposite(Condition.COUNTER_RED_ATTACK))

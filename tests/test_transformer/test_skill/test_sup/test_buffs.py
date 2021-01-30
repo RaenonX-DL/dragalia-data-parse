@@ -5,7 +5,7 @@ from tests.utils import BuffEffectInfo, check_buff_unit_match
 
 def test_fs_dmg_up(transformer_skill: SkillTransformer):
     # MH Sarisse S2
-    # https://dragalialost.gamepedia.com/Hunter_Sarisse
+    # https://dragalialost.wiki/w/Hunter_Sarisse
     skill_data_base = transformer_skill.transform_supportive(106502021)
 
     assert skill_data_base.max_level == 3
@@ -34,7 +34,7 @@ def test_fs_dmg_up(transformer_skill: SkillTransformer):
 
 def test_fs_spd(transformer_skill: SkillTransformer):
     # Linnea S2
-    # https://dragalialost.gamepedia.com/Linnea
+    # https://dragalialost.wiki/w/Linnea
     skill_data_base = transformer_skill.transform_supportive(102505032)
 
     assert skill_data_base.max_level == 2
@@ -60,7 +60,7 @@ def test_fs_spd(transformer_skill: SkillTransformer):
 
 def test_shield_dmg(transformer_skill: SkillTransformer):
     # Yuya S2
-    # https://dragalialost.gamepedia.com/Yuya
+    # https://dragalialost.wiki/w/Yuya
     skill_data_base = transformer_skill.transform_supportive(103401022)
 
     assert skill_data_base.max_level == 3
@@ -95,7 +95,7 @@ def test_shield_dmg(transformer_skill: SkillTransformer):
 
 def test_shield_hp(transformer_skill: SkillTransformer):
     # Grace S1
-    # https://dragalialost.gamepedia.com/Linnea
+    # https://dragalialost.wiki/w/Linnea
     skill_data_base = transformer_skill.transform_supportive(108505031)
 
     # SkillData.Ability - Ability.Condition & IDStr to Label

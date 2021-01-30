@@ -6,7 +6,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_s1(transformer_skill: SkillTransformer):
     # Summer Cleo S1
-    # https://dragalialost.gamepedia.com/Summer_Cleo
+    # https://dragalialost.wiki/w/Summer_Cleo
     skill_data_base = transformer_skill.transform_attacking(106504011)
 
     base_mods = [

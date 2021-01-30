@@ -7,7 +7,7 @@ from tests.utils import approx_matrix
 
 def test_iter_entries_s2(transformer_skill: SkillTransformer):
     # Meene S2
-    # https://dragalialost.gamepedia.com/Meene
+    # https://dragalialost.wiki/w/Meene
     skill_data = transformer_skill.transform_attacking(106503032)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -41,7 +41,7 @@ def test_iter_entries_s2(transformer_skill: SkillTransformer):
 
 def test_s2(transformer_skill: SkillTransformer):
     # Meene S2
-    # https://dragalialost.gamepedia.com/Meene
+    # https://dragalialost.wiki/w/Meene
     skill_data_base = transformer_skill.transform_attacking(106503032)
 
     addl_hits = {
@@ -77,7 +77,7 @@ def test_s2(transformer_skill: SkillTransformer):
 
 def test_s2_6_plus_butterflies(transformer_skill: SkillTransformer):
     # Meene S2 @ 6+ butterflies
-    # https://dragalialost.gamepedia.com/Meene
+    # https://dragalialost.wiki/w/Meene
     skill_data_base = transformer_skill.transform_attacking(106503036)
 
     addl_hits = {

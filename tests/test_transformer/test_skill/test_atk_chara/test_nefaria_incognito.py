@@ -6,7 +6,7 @@ from tests.utils import approx_matrix
 
 def test_s1(transformer_skill: SkillTransformer):
     # Incognito Nefaria S1
-    # https://dragalialost.gamepedia.com/Incognito_Nefaria
+    # https://dragalialost.wiki/w/Incognito_Nefaria
     skill_data_base = transformer_skill.transform_attacking(107501031)
 
     skill_data = skill_data_base.with_conditions()

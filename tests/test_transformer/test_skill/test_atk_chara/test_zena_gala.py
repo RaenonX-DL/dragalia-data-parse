@@ -6,7 +6,7 @@ from tests.utils import approx_matrix
 
 def test_s2(transformer_skill: SkillTransformer):
     # Gala Zena S2
-    # https://dragalialost.gamepedia.com/Gala_Zena
+    # https://dragalialost.wiki/w/Gala_Zena
     skill_data_base = transformer_skill.transform_attacking(108504022)
 
     skill_data = skill_data_base.with_conditions()

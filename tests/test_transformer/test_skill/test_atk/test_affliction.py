@@ -5,7 +5,7 @@ from tests.utils import AfflictionInfo, check_affliction_unit_match
 
 def test_og_alex_s1_poison(transformer_skill: SkillTransformer):
     # Original Alex S1
-    # https://dragalialost.gamepedia.com/Alex
+    # https://dragalialost.wiki/w/Alex
     skill_data = transformer_skill.transform_attacking(103405021).with_conditions()
 
     afflictions_lv1 = []
@@ -24,7 +24,7 @@ def test_og_alex_s1_poison(transformer_skill: SkillTransformer):
 
 def test_peony_s1_paralyze(transformer_skill: SkillTransformer):
     # Peony S1
-    # https://dragalialost.gamepedia.com/Peony
+    # https://dragalialost.wiki/w/Peony
     skill_data = transformer_skill.transform_attacking(107504021).with_conditions()
 
     afflictions_lv1 = [AfflictionInfo("ROD_112_04_H01_LV01", Status.PARALYZE, 100, 13, 3.9, 0.513, True)]
@@ -41,7 +41,7 @@ def test_peony_s1_paralyze(transformer_skill: SkillTransformer):
 
 def test_meene_s2_6_butterflies_poison(transformer_skill: SkillTransformer):
     # Meene S2
-    # https://dragalialost.gamepedia.com/Meene
+    # https://dragalialost.wiki/w/Meene
     skill_data_base = transformer_skill.transform_attacking(106503036)
 
     expected_addl_at_max = {

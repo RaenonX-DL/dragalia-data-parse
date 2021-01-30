@@ -7,7 +7,7 @@ from tests.utils import approx_matrix
 
 def test_iter_entries_s2(transformer_skill: SkillTransformer):
     # Mitsuhide
-    # https://dragalialost.gamepedia.com/Mitsuhide
+    # https://dragalialost.wiki/w/Mitsuhide
     skill_data = transformer_skill.transform_attacking(103504022)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -38,7 +38,7 @@ def test_iter_entries_s2(transformer_skill: SkillTransformer):
 
 def test_s2(transformer_skill: SkillTransformer):
     # Mitsuhide
-    # https://dragalialost.gamepedia.com/Mitsuhide
+    # https://dragalialost.wiki/w/Mitsuhide
     skill_data_base = transformer_skill.transform_attacking(103504022)
 
     combo_dmg_bonus = {

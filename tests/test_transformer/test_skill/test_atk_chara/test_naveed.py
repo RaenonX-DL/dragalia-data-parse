@@ -6,7 +6,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_naveed_s1(transformer_skill: SkillTransformer):
     # Naveed
-    # https://dragalialost.gamepedia.com/Naveed
+    # https://dragalialost.wiki/w/Naveed
     skill_data = transformer_skill.transform_attacking(101501011)
 
     possible_entries = skill_data.get_all_possible_entries()

@@ -8,7 +8,7 @@ from tests.utils import approx_matrix
 
 def test_iter_entries_s1_unmasked(transformer_skill: SkillTransformer):
     # Yukata Curran S1 - Unmasked
-    # https://dragalialost.gamepedia.com/Yukata_Curran
+    # https://dragalialost.wiki/w/Yukata_Curran
     skill_data = transformer_skill.transform_attacking(103504041)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -60,7 +60,7 @@ def test_iter_entries_s1_unmasked(transformer_skill: SkillTransformer):
 
 def test_s1_over_bullet_count(transformer_skill: SkillTransformer):
     # Yukata Curran S1
-    # https://dragalialost.gamepedia.com/Yukata_Curran
+    # https://dragalialost.wiki/w/Yukata_Curran
     skill_data_base = transformer_skill.transform_attacking(103504041)
 
     # 7 Bullets (already ended)
@@ -73,7 +73,7 @@ def test_s1_over_bullet_count(transformer_skill: SkillTransformer):
 
 def test_s1_unmasked_no_affliction(transformer_skill: SkillTransformer):
     # Yukata Curran S1 - Unmasked
-    # https://dragalialost.gamepedia.com/Yukata_Curran
+    # https://dragalialost.wiki/w/Yukata_Curran
     skill_data_base = transformer_skill.transform_attacking(103504041)
 
     level_1_base_expected = 1.32
@@ -148,7 +148,7 @@ def test_s1_unmasked_no_affliction(transformer_skill: SkillTransformer):
 
 def test_s1_unmasked_paralyzed(transformer_skill: SkillTransformer):
     # Yukata Curran S1 - Unmasked
-    # https://dragalialost.gamepedia.com/Yukata_Curran
+    # https://dragalialost.wiki/w/Yukata_Curran
     skill_data_base = transformer_skill.transform_attacking(103504041)
 
     level_1_base_expected = 1.716
@@ -224,7 +224,7 @@ def test_s1_unmasked_paralyzed(transformer_skill: SkillTransformer):
 
 def test_s1_masked_no_affliction(transformer_skill: SkillTransformer):
     # Yukata Curran S1 - Masked
-    # https://dragalialost.gamepedia.com/Yukata_Curran
+    # https://dragalialost.wiki/w/Yukata_Curran
     skill_data_base = transformer_skill.transform_attacking(103504043)
 
     level_1_base_expected = 1.44
@@ -299,7 +299,7 @@ def test_s1_masked_no_affliction(transformer_skill: SkillTransformer):
 
 def test_s1_masked_paralyzed(transformer_skill: SkillTransformer):
     # Yukata Curran S1 - Masked
-    # https://dragalialost.gamepedia.com/Yukata_Curran
+    # https://dragalialost.wiki/w/Yukata_Curran
     skill_data_base = transformer_skill.transform_attacking(103504043)
 
     level_1_base_expected = 1.872
@@ -375,7 +375,7 @@ def test_s1_masked_paralyzed(transformer_skill: SkillTransformer):
 
 def test_s2_masked_no_affliction(transformer_skill: SkillTransformer):
     # Yukata Curran S2 - Masked
-    # https://dragalialost.gamepedia.com/Yukata_Curran
+    # https://dragalialost.wiki/w/Yukata_Curran
     skill_data_base = transformer_skill.transform_attacking(103504044)
 
     level_1_base_expected = 0.72
@@ -403,7 +403,7 @@ def test_s2_masked_no_affliction(transformer_skill: SkillTransformer):
 
 def test_s2_masked_paralyzed(transformer_skill: SkillTransformer):
     # Yukata Curran S2 - Masked
-    # https://dragalialost.gamepedia.com/Yukata_Curran
+    # https://dragalialost.wiki/w/Yukata_Curran
     skill_data_base = transformer_skill.transform_attacking(103504044)
 
     level_1_base_expected = 0.864

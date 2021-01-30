@@ -6,7 +6,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_iter_entries_s2(transformer_skill: SkillTransformer):
     # Delphi S2
-    # https://dragalialost.gamepedia.com/Delphi
+    # https://dragalialost.wiki/w/Delphi
     skill_data = transformer_skill.transform_attacking(103505022)
 
     possible_entries = skill_data.get_all_possible_entries()

@@ -9,7 +9,7 @@ from tests.utils import approx_matrix
 
 def test_iter_entries_s1(transformer_skill: SkillTransformer):
     # Dragonyule Malora S1
-    # https://dragalialost.gamepedia.com/Dragonyule_Malora
+    # https://dragalialost.wiki/w/Dragonyule_Malora
     skill_data = transformer_skill.transform_attacking(104504021)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -35,7 +35,7 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
 
 def test_cancel_s1_data(transformer_skill: SkillTransformer):
     # Dragonyule Malora S1
-    # https://dragalialost.gamepedia.com/Dragonyule_Malora
+    # https://dragalialost.wiki/w/Dragonyule_Malora
     skill_data = transformer_skill.transform_attacking(104504021)
 
     expected_cancel_action_data = {(SkillCancelAction.MOTION_ENDS, 2.266667)}
@@ -53,7 +53,7 @@ def test_cancel_s1_data(transformer_skill: SkillTransformer):
 
 def test_s2(transformer_skill: SkillTransformer):
     # Dragonyule Malora S2
-    # https://dragalialost.gamepedia.com/Dragonyule_Malora
+    # https://dragalialost.wiki/w/Dragonyule_Malora
     skill_data_base = transformer_skill.transform_attacking(104504022)
 
     # Base data

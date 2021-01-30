@@ -13,7 +13,7 @@ def test_label_has_whitespaces(transformer_skill: SkillTransformer):
     Actual:   ``SWD_004_04_H02_LV01 ``
     """
     # Xander S2
-    # https://dragalialost.gamepedia.com/Xander
+    # https://dragalialost.wiki/w/Xander
     skill_data_base = transformer_skill.transform_attacking(101502012)
 
     # Base data

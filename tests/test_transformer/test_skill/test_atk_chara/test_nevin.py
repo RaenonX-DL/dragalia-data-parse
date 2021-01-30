@@ -11,7 +11,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_skill_id_entries(asset_manager: AssetManager):
     # Nevin
-    # https://dragalialost.gamepedia.com/Nevin
+    # https://dragalialost.wiki/w/Nevin
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10350504)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
@@ -28,7 +28,7 @@ def test_skill_id_entries(asset_manager: AssetManager):
 
 def test_iter_entries_s2_locked(transformer_skill: SkillTransformer):
     # Nevin S2 @ Sigil locked
-    # https://dragalialost.gamepedia.com/Nevin
+    # https://dragalialost.wiki/w/Nevin
     skill_data = transformer_skill.transform_attacking(103505042)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -52,7 +52,7 @@ def test_iter_entries_s2_locked(transformer_skill: SkillTransformer):
 
 def test_iter_entries_s2_released(transformer_skill: SkillTransformer):
     # Nevin S2 @ Sigil released
-    # https://dragalialost.gamepedia.com/Nevin
+    # https://dragalialost.wiki/w/Nevin
 
     # Not exporting
     skill_data = transformer_skill.transform_attacking(103505044, is_exporting=False)
@@ -124,7 +124,7 @@ def test_iter_entries_s2_released(transformer_skill: SkillTransformer):
 
 def test_buff_field_boost_s2_locked(transformer_skill: SkillTransformer):
     # Nevin S2 @ Sigil Locked
-    # https://dragalialost.gamepedia.com/Nevin
+    # https://dragalialost.wiki/w/Nevin
     skill_data = transformer_skill.transform_attacking(103505042, is_exporting=True).with_conditions()
 
     assert skill_data.buff_field_boost_mtx == [BuffFieldBoostData(0, 0)] * 2
@@ -132,7 +132,7 @@ def test_buff_field_boost_s2_locked(transformer_skill: SkillTransformer):
 
 def test_buff_field_boost_s2_released(transformer_skill: SkillTransformer):
     # Nevin S2 @ Sigil Released
-    # https://dragalialost.gamepedia.com/Nevin
+    # https://dragalialost.wiki/w/Nevin
     skill_data = transformer_skill.transform_attacking(103505044, is_exporting=True).with_conditions()
 
     assert skill_data.buff_field_boost_mtx == [BuffFieldBoostData(2.7, 0.9), BuffFieldBoostData(3, 1)]
@@ -140,7 +140,7 @@ def test_buff_field_boost_s2_released(transformer_skill: SkillTransformer):
 
 def test_s2_locked(transformer_skill: SkillTransformer):
     # Nevin S2 @ Sigil locked
-    # https://dragalialost.gamepedia.com/Nevin
+    # https://dragalialost.wiki/w/Nevin
     skill_data_base = transformer_skill.transform_attacking(103505042)
 
     # For some reason, the in-game data has sigil-locked and sigil-released variant
@@ -182,7 +182,7 @@ def test_s2_locked(transformer_skill: SkillTransformer):
 
 def test_s2_released(transformer_skill: SkillTransformer):
     # Nevin S2 @ Sigil released
-    # https://dragalialost.gamepedia.com/Nevin
+    # https://dragalialost.wiki/w/Nevin
     skill_data_base = transformer_skill.transform_attacking(103505044)
 
     additional_mods_self = {

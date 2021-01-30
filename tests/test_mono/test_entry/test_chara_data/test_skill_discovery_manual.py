@@ -5,7 +5,7 @@ from dlparse.mono.manager import AssetManager
 
 def test_chrom(asset_manager: AssetManager):
     # Chrom
-    # https://dragalialost.gamepedia.com/Chrom
+    # https://dragalialost.wiki/w/Chrom
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10150105)
 
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)

@@ -3,7 +3,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_max_level_specified(transformer_skill: SkillTransformer):
     # Templar Hope S2
-    # https://dragalialost.gamepedia.com/Templar_Hope
+    # https://dragalialost.wiki/w/Templar_Hope
     skill_data = transformer_skill.transform_attacking(101403022, max_lv=2).with_conditions()
 
     assert skill_data.hit_count == [2, 2]

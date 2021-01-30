@@ -7,7 +7,7 @@ from tests.utils import approx_matrix
 
 def test_iter_entries_s1_normal(transformer_skill: SkillTransformer):
     # Nadine S1
-    # https://dragalialost.gamepedia.com/Nadine
+    # https://dragalialost.wiki/w/Nadine
     skill_data = transformer_skill.transform_attacking(105501021)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -35,7 +35,7 @@ def test_iter_entries_s1_normal(transformer_skill: SkillTransformer):
 
 def test_iter_entries_s1_trendsetting(transformer_skill: SkillTransformer):
     # Nadine S1 @ Trendsetting
-    # https://dragalialost.gamepedia.com/Nadine
+    # https://dragalialost.wiki/w/Nadine
     skill_data = transformer_skill.transform_attacking(105501023)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -63,7 +63,7 @@ def test_iter_entries_s1_trendsetting(transformer_skill: SkillTransformer):
 
 def test_s1_normal(transformer_skill: SkillTransformer):
     # Nadine S1 normal
-    # https://dragalialost.gamepedia.com/Nadine
+    # https://dragalialost.wiki/w/Nadine
     skill_data_base = transformer_skill.transform_attacking(105501021)
 
     expected_mods = {
@@ -109,7 +109,7 @@ def test_s1_normal(transformer_skill: SkillTransformer):
 
 def test_s1_trendsetting(transformer_skill: SkillTransformer):
     # Nadine S1 enhanced by S2
-    # https://dragalialost.gamepedia.com/Nadine
+    # https://dragalialost.wiki/w/Nadine
     skill_data_base = transformer_skill.transform_attacking(105501023)
 
     expected_mods = {

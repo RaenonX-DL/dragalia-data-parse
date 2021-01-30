@@ -4,7 +4,7 @@ from tests.utils import approx_matrix
 
 def test_wedding_elisanne_s1(transformer_skill: SkillTransformer):
     # Wedding Elisanne S1
-    # https://dragalialost.gamepedia.com/Wedding_Elisanne
+    # https://dragalialost.wiki/w/Wedding_Elisanne
     skill_data = transformer_skill.transform_attacking(101503021).with_conditions()
 
     assert not any(skill_data.dispel_buff)
@@ -14,7 +14,7 @@ def test_wedding_elisanne_s1(transformer_skill: SkillTransformer):
 
 def test_og_ranzal_s1(transformer_skill: SkillTransformer):
     # Original Ranzal S1
-    # https://dragalialost.gamepedia.com/Ranzal
+    # https://dragalialost.wiki/w/Ranzal
     skill_data = transformer_skill.transform_attacking(104403011).with_conditions()
 
     assert skill_data.dispel_buff == [False, False, False, True]
@@ -24,7 +24,7 @@ def test_og_ranzal_s1(transformer_skill: SkillTransformer):
 
 def test_nadine_s1(transformer_skill: SkillTransformer):
     # Nadine S1
-    # https://dragalialost.gamepedia.com/Nadine
+    # https://dragalialost.wiki/w/Nadine
     skill_data = transformer_skill.transform_attacking(105501021).with_conditions()
 
     assert all(skill_data.dispel_buff)
@@ -34,7 +34,7 @@ def test_nadine_s1(transformer_skill: SkillTransformer):
 
 def test_gala_alex_s1_chained_buffed(transformer_skill: SkillTransformer):
     # Gala Alex S1 (Target Buffed)
-    # https://dragalialost.gamepedia.com/Gala_Alex
+    # https://dragalialost.wiki/w/Gala_Alex
     skill_data = transformer_skill.transform_attacking(101505024).with_conditions()
 
     assert all(skill_data.dispel_buff)

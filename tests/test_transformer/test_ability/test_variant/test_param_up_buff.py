@@ -5,7 +5,7 @@ from tests.utils import AbilityEffectInfo, check_ability_effect_unit_match
 
 def test_def_up_on_lt_30_hp(transformer_ability: AbilityTransformer):
     # Raemond (AB1 @ Max - DEF +50% for 15s when HP < 30%)
-    # https://dragalialost.gamepedia.com/Karl
+    # https://dragalialost.wiki/w/Karl
     ability_data = transformer_ability.transform_ability(210001704)
 
     expected_info = {
@@ -20,7 +20,7 @@ def test_def_up_on_lt_30_hp(transformer_ability: AbilityTransformer):
 
 def test_atk_up_shapeshifted(transformer_ability: AbilityTransformer):
     # Euden (AB1 @ Max - ATK +10%/+15%/+15% for each transform)
-    # https://dragalialost.gamepedia.com/The_Prince
+    # https://dragalialost.wiki/w/The_Prince
     ability_data = transformer_ability.transform_ability(700)
 
     expected_info = {
@@ -43,7 +43,7 @@ def test_atk_up_shapeshifted(transformer_ability: AbilityTransformer):
 
 def test_atk_up_on_def_buffed(transformer_ability: AbilityTransformer):
     # Valentine's Orion (AB1 @ Max - DEF doublebuff - ATK +15% (Buff))
-    # https://dragalialost.gamepedia.com/Valentine%27s_Orion
+    # https://dragalialost.wiki/w/Valentine%27s_Orion
     ability_data = transformer_ability.transform_ability(210000607)
 
     expected_info = {

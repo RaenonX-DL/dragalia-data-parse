@@ -5,7 +5,7 @@ from tests.utils import DebuffInfo, check_debuff_unit_match
 
 def test_def_down_unstackable_1(transformer_skill: SkillTransformer):
     # Original Alex S1
-    # https://dragalialost.gamepedia.com/Alex
+    # https://dragalialost.wiki/w/Alex
     skill_data = transformer_skill.transform_attacking(103405021).with_conditions()
 
     expected_debuffs_lv_1 = []
@@ -31,7 +31,7 @@ def test_def_down_unstackable_1(transformer_skill: SkillTransformer):
 
 def test_def_down_unstackable_2(transformer_skill: SkillTransformer):
     # Raemond S1
-    # https://dragalialost.gamepedia.com/Raemond
+    # https://dragalialost.wiki/w/Raemond
     skill_data = transformer_skill.transform_attacking(101304011).with_conditions()
 
     expected_debuffs_lv_1 = [
@@ -54,7 +54,7 @@ def test_def_down_unstackable_2(transformer_skill: SkillTransformer):
 
 def test_def_down_stackable(transformer_skill: SkillTransformer):
     # Curran S1
-    # https://dragalialost.gamepedia.com/Curran
+    # https://dragalialost.wiki/w/Curran
     skill_data = transformer_skill.transform_attacking(104505011).with_conditions()
 
     expected_debuffs_lv_1 = []
@@ -78,7 +78,7 @@ def test_def_down_stackable(transformer_skill: SkillTransformer):
 
 def test_def_down_elemental_restricted(transformer_skill: SkillTransformer):
     # Dragonyule Malora S1
-    # https://dragalialost.gamepedia.com/Dragonyule_Malora
+    # https://dragalialost.wiki/w/Dragonyule_Malora
     skill_data_base = transformer_skill.transform_attacking(104504021)
 
     # Base data
@@ -144,7 +144,7 @@ def test_def_down_elemental_restricted(transformer_skill: SkillTransformer):
 
 def test_def_down_field(transformer_skill: SkillTransformer):
     # Wedding Elisanne S2
-    # https://dragalialost.gamepedia.com/Wedding_Elisanne
+    # https://dragalialost.wiki/w/Wedding_Elisanne
     skill_data = transformer_skill.transform_attacking(101503022).with_conditions()
 
     expected_debuffs_lv_1 = [DebuffInfo("SWD_111_04_DEF_DOWN_FLD_LV01", BuffParameter.DEF_BUFF, -0.1, 100, 10, True)]
@@ -163,7 +163,7 @@ def test_def_down_field(transformer_skill: SkillTransformer):
 
 def test_def_down_field_2(transformer_skill: SkillTransformer):
     # Sha Wujing S2
-    # https://dragalialost.gamepedia.com/Sha_Wujing
+    # https://dragalialost.wiki/w/Sha_Wujing
     skill_data = transformer_skill.transform_attacking(105404022).with_conditions()
 
     expected_debuffs_lv_1 = [DebuffInfo("LAM_126_03_DEF_DOWN_FLD_LV01", BuffParameter.DEF_BUFF, -0.1, 100, 10, True)]

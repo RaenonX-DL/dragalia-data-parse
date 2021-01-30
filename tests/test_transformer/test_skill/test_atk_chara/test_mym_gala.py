@@ -9,7 +9,7 @@ from tests.utils import approx_matrix
 
 def test_cancel_s2_data(transformer_skill: SkillTransformer):
     # Gala Mym S2
-    # https://dragalialost.gamepedia.com/Gala_Mym
+    # https://dragalialost.wiki/w/Gala_Mym
     skill_data = transformer_skill.transform_attacking(105501012)
 
     expected_cancel_action_data = {(SkillCancelAction.MOTION_ENDS, 1.63333344)}
@@ -27,7 +27,7 @@ def test_cancel_s2_data(transformer_skill: SkillTransformer):
 
 def test_s2(transformer_skill: SkillTransformer):
     # Gala Mym S2
-    # https://dragalialost.gamepedia.com/Gala_Mym
+    # https://dragalialost.wiki/w/Gala_Mym
     skill_data_base = transformer_skill.transform_attacking(105501012)
 
     skill_data = skill_data_base.with_conditions()
@@ -49,7 +49,7 @@ def test_s2(transformer_skill: SkillTransformer):
 
 def test_s2_shapeshifted(transformer_skill: SkillTransformer):
     # Gala Mym S2
-    # https://dragalialost.gamepedia.com/Gala_Mym
+    # https://dragalialost.wiki/w/Gala_Mym
     skill_data_base = transformer_skill.transform_attacking(105501013)
 
     skill_data = skill_data_base.with_conditions()

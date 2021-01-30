@@ -1,6 +1,6 @@
 def test_fs_atk():
     # Sazanka S2-FS
-    # https://dragalialost.gamepedia.com/Sazanka
+    # https://dragalialost.wiki/w/Sazanka
     # skill_data_base = transformer_skill.transform_attacking(104405012)
     pass
 

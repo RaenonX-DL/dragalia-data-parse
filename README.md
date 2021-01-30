@@ -156,7 +156,7 @@ Also thanks to everyone who had contributed to [Gamepedia].
 
 Some skill data in the tests is different from what is on [Gamepedia][Gamepedia].
 
-[Gamepedia]: https://dragalialost.gamepedia.com/
+[Gamepedia]: https://dragalialost.wiki/w/
 
 ### Development Goals
 

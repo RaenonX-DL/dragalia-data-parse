@@ -6,7 +6,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_iter_entries_s2(transformer_skill: SkillTransformer):
     # Original Alex S2
-    # https://dragalialost.gamepedia.com/Alex
+    # https://dragalialost.wiki/w/Alex
     skill_data = transformer_skill.transform_attacking(103405022)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -34,7 +34,7 @@ def test_iter_entries_s2(transformer_skill: SkillTransformer):
 
 def test_og_alex_s2(transformer_skill: SkillTransformer):
     # Original Alex S2
-    # https://dragalialost.gamepedia.com/Alex
+    # https://dragalialost.wiki/w/Alex
     skill_data_base = transformer_skill.transform_attacking(103405022)
 
     # EXNOTE: Not yet 70 MC (2020/12/07), but S2 already have data for 3 levels (lv.3 does not have BK punisher)

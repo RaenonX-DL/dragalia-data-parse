@@ -6,7 +6,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_cancel_s1_data(transformer_skill: SkillTransformer):
     # Wedding Elisanne S1
-    # https://dragalialost.gamepedia.com/Wedding_Elisanne
+    # https://dragalialost.wiki/w/Wedding_Elisanne
     skill_data = transformer_skill.transform_attacking(101503021)
 
     expected_cancel_action_data = {(SkillCancelAction.MOTION_ENDS, 1.80000007)}
@@ -24,7 +24,7 @@ def test_cancel_s1_data(transformer_skill: SkillTransformer):
 
 def test_cancel_s2_data(transformer_skill: SkillTransformer):
     # Wedding Elisanne S2
-    # https://dragalialost.gamepedia.com/Wedding_Elisanne
+    # https://dragalialost.wiki/w/Wedding_Elisanne
     skill_data = transformer_skill.transform_attacking(101503022)
 
     expected_cancel_action_data = {(SkillCancelAction.MOTION_ENDS, 0.966666639)}

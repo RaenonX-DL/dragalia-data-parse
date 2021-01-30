@@ -7,7 +7,7 @@ from tests.utils import approx_matrix
 
 def test_iter_entries_s1(transformer_skill: SkillTransformer):
     # Lathna S1
-    # https://dragalialost.gamepedia.com/Lathna
+    # https://dragalialost.wiki/w/Lathna
     skill_data = transformer_skill.transform_attacking(105505021)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -41,7 +41,7 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
 
 def test_s1(transformer_skill: SkillTransformer):
     # Lathna S1
-    # https://dragalialost.gamepedia.com/Lathna
+    # https://dragalialost.wiki/w/Lathna
     skill_data_base = transformer_skill.transform_attacking(105505021)
 
     pre_dmg = [

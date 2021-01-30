@@ -9,7 +9,7 @@ from tests.utils import approx_matrix
 
 def test_iter_entries_s1(transformer_skill: SkillTransformer):
     # Formal Joachim S1
-    # https://dragalialost.gamepedia.com/Formal_Joachim
+    # https://dragalialost.wiki/w/Formal_Joachim
     skill_data = transformer_skill.transform_attacking(109503011)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -35,7 +35,7 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
 
 def test_cancel_s1_data(transformer_skill: SkillTransformer):
     # Formal Joachim S1
-    # https://dragalialost.gamepedia.com/Formal_Joachim
+    # https://dragalialost.wiki/w/Formal_Joachim
     skill_data = transformer_skill.transform_attacking(109503011)
 
     expected_cancel_action_data = {(SkillCancelAction.ANY_ACTION, 1.3)}
@@ -53,7 +53,7 @@ def test_cancel_s1_data(transformer_skill: SkillTransformer):
 
 def test_cancel_s1_entries(transformer_skill: SkillTransformer):
     # Formal Joachim S1
-    # https://dragalialost.gamepedia.com/Formal_Joachim
+    # https://dragalialost.wiki/w/Formal_Joachim
     skill_data = transformer_skill.transform_attacking(109503011)
 
     expected_cancel_action_data = {(SkillCancelAction.ANY_ACTION, 1.3)}
@@ -72,7 +72,7 @@ def test_cancel_s1_entries(transformer_skill: SkillTransformer):
 
 def test_cancel_s2_data(transformer_skill: SkillTransformer):
     # Formal Joachim S2
-    # https://dragalialost.gamepedia.com/Formal_Joachim
+    # https://dragalialost.wiki/w/Formal_Joachim
     skill_data = transformer_skill.transform_attacking(109503012)
 
     expected_cancel_action_data = {
@@ -94,7 +94,7 @@ def test_cancel_s2_data(transformer_skill: SkillTransformer):
 
 def test_cancel_s2_entries(transformer_skill: SkillTransformer):
     # Formal Joachim S2
-    # https://dragalialost.gamepedia.com/Formal_Joachim
+    # https://dragalialost.wiki/w/Formal_Joachim
     skill_data = transformer_skill.transform_attacking(109503012)
 
     expected_cancel_action_data = {
@@ -116,7 +116,7 @@ def test_cancel_s2_entries(transformer_skill: SkillTransformer):
 
 def test_s1(transformer_skill: SkillTransformer):
     # Formal Joachim S1
-    # https://dragalialost.gamepedia.com/Formal_Joachim
+    # https://dragalialost.wiki/w/Formal_Joachim
     skill_data_base = transformer_skill.transform_attacking(109503011)
 
     skill_data = skill_data_base.with_conditions()
@@ -132,7 +132,7 @@ def test_s1(transformer_skill: SkillTransformer):
 
 def test_s1_explode(transformer_skill: SkillTransformer):
     # Formal Joachim S1 @ Aced (S2-S1)
-    # https://dragalialost.gamepedia.com/Formal_Joachim
+    # https://dragalialost.wiki/w/Formal_Joachim
     skill_data_base = transformer_skill.transform_attacking(109503011)
 
     # Cancels S2

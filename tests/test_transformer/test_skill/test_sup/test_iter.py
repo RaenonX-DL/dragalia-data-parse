@@ -5,7 +5,7 @@ from tests.utils import BuffEffectInfo, check_buff_unit_match
 
 def test_no_condition(transformer_skill: SkillTransformer):
     # Kirsty S2
-    # https://dragalialost.gamepedia.com/Kirsty
+    # https://dragalialost.wiki/w/Kirsty
     skill_data = transformer_skill.transform_supportive(105503022)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -30,7 +30,7 @@ def test_no_condition(transformer_skill: SkillTransformer):
 
 def test_element_restricted(transformer_skill: SkillTransformer):
     # Emma S1
-    # https://dragalialost.gamepedia.com/Emma
+    # https://dragalialost.wiki/w/Emma
     skill_data = transformer_skill.transform_supportive(105401031)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -54,7 +54,7 @@ def test_element_restricted(transformer_skill: SkillTransformer):
 
 def test_teammate_coverage(transformer_skill: SkillTransformer):
     # Summer Cleo S2
-    # https://dragalialost.gamepedia.com/Summer_Cleo
+    # https://dragalialost.wiki/w/Summer_Cleo
     skill_data = transformer_skill.transform_supportive(106504012)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -97,7 +97,7 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
 
 def test_has_pre_condition(transformer_skill: SkillTransformer):
     # Veronica S1
-    # https://dragalialost.gamepedia.com/Veronica
+    # https://dragalialost.wiki/w/Veronica
     skill_data = transformer_skill.transform_supportive(107505011)
 
     possible_entries = skill_data.get_all_possible_entries()

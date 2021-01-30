@@ -9,7 +9,7 @@ from tests.utils import approx_matrix
 
 def test_iter_entries_s2(transformer_skill: SkillTransformer):
     # Lapis S2
-    # https://dragalialost.gamepedia.com/Lapis
+    # https://dragalialost.wiki/w/Lapis
 
     skill_data = transformer_skill.transform_attacking(109502012, is_exporting=True)
 
@@ -97,7 +97,7 @@ def test_iter_entries_s2(transformer_skill: SkillTransformer):
 
 def test_s2(transformer_skill: SkillTransformer):
     # Lapis S2
-    # https://dragalialost.gamepedia.com/Lapis
+    # https://dragalialost.wiki/w/Lapis
     skill_data_base = transformer_skill.transform_attacking(109502012)
 
     expected_buff_count_conds = [

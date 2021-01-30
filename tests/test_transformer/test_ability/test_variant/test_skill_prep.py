@@ -5,7 +5,7 @@ from tests.utils import AbilityEffectInfo, check_ability_effect_unit_match
 
 def test(transformer_ability: AbilityTransformer):
     # Veronica (AB3 @ Max - Skill prep & skill fill 5%)
-    # https://dragalialost.gamepedia.com/Veronica
+    # https://dragalialost.wiki/w/Veronica
 
     ability_data = transformer_ability.transform_ability(721)
 

@@ -6,7 +6,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_s1(transformer_skill: SkillTransformer):
     # Original Amane S1
-    # https://dragalialost.gamepedia.com/Amane
+    # https://dragalialost.wiki/w/Amane
     skill_data_base = transformer_skill.transform_attacking(107404011)
 
     base_mods = [

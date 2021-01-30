@@ -6,7 +6,7 @@ from tests.utils import approx_matrix
 
 def test_s1_normal(transformer_skill: SkillTransformer):
     # Chelsea S1
-    # https://dragalialost.gamepedia.com/Chelsea
+    # https://dragalialost.wiki/w/Chelsea
     skill_data_base = transformer_skill.transform_attacking(106501021)
 
     skill_data = skill_data_base.with_conditions()
@@ -30,7 +30,7 @@ def test_s1_normal(transformer_skill: SkillTransformer):
 
 def test_s1_obsession(transformer_skill: SkillTransformer):
     # Chelsea S1 @ Obsession
-    # https://dragalialost.gamepedia.com/Chelsea
+    # https://dragalialost.wiki/w/Chelsea
     skill_data_base = transformer_skill.transform_attacking(106501023)
 
     # Base data

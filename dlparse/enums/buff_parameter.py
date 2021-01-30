@@ -252,7 +252,7 @@ class BuffParameter(TranslatableEnumMixin, Enum):
 
     A value of 0.3 means that the user will lost their HP until 30% of the max. The lost HP will become the shield.
 
-    Check https://dragalialost.gamepedia.com/Life_Shield for more details.
+    Check https://dragalialost.wiki/w/Life_Shield for more details.
     """
     # endregion
 

@@ -5,7 +5,7 @@ from tests.utils import AbilityEffectInfo, check_ability_effect_unit_match
 
 def test_inflicted_target(transformer_ability: AbilityTransformer):
     # Valentine's Orion - 10130103
-    # https://dragalialost.gamepedia.com/Valentine%27s_Orion
+    # https://dragalialost.wiki/w/Valentine%27s_Orion
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000037)
 
     expected_info = {
@@ -20,7 +20,7 @@ def test_inflicted_target(transformer_ability: AbilityTransformer):
 
 def test_fs_dmg_up_on_got_hit(transformer_ability: AbilityTransformer):
     # MH Berserk - 10150104
-    # https://dragalialost.gamepedia.com/Hunter_Berserker
+    # https://dragalialost.wiki/w/Hunter_Berserker
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000706)
 
     expected_info = {
@@ -35,7 +35,7 @@ def test_fs_dmg_up_on_got_hit(transformer_ability: AbilityTransformer):
 
 def test_atk_up_on_hp_above(transformer_ability: AbilityTransformer):
     # Original Karina - 10440201
-    # https://dragalialost.gamepedia.com/Karina
+    # https://dragalialost.wiki/w/Karina
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000155)
 
     expected_info = {
@@ -51,7 +51,7 @@ def test_atk_up_on_hp_above(transformer_ability: AbilityTransformer):
 
 def test_atk_up_on_hp_below(transformer_ability: AbilityTransformer):
     # Emma - 10540103
-    # https://dragalialost.gamepedia.com/Emma
+    # https://dragalialost.wiki/w/Emma
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000017)
 
     expected_info = {
@@ -67,7 +67,7 @@ def test_atk_up_on_hp_below(transformer_ability: AbilityTransformer):
 
 def test_atk_up_on_healed(transformer_ability: AbilityTransformer):
     # Dragonyule Lily - 10850202
-    # https://dragalialost.gamepedia.com/Dragonyule_Lily
+    # https://dragalialost.wiki/w/Dragonyule_Lily
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000828)
 
     expected_info = {
@@ -82,7 +82,7 @@ def test_atk_up_on_healed(transformer_ability: AbilityTransformer):
 
 def test_atk_up_on_dodged(transformer_ability: AbilityTransformer):
     # Yoshitsune - 10950202
-    # https://dragalialost.gamepedia.com/Yoshitsune
+    # https://dragalialost.wiki/w/Yoshitsune
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000853)
 
     expected_info = {
@@ -97,7 +97,7 @@ def test_atk_up_on_dodged(transformer_ability: AbilityTransformer):
 
 def test_atk_up_by_dragons_claws(transformer_ability: AbilityTransformer):
     # Gala Mym - 10550101
-    # https://dragalialost.gamepedia.com/Gala_Mym
+    # https://dragalialost.wiki/w/Gala_Mym
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000012)
 
     expected_info = {
@@ -120,7 +120,7 @@ def test_atk_up_by_dragons_claws(transformer_ability: AbilityTransformer):
 
 def test_grant_shield_upon_hp_below(transformer_ability: AbilityTransformer):
     # Grace - 10850503
-    # https://dragalialost.gamepedia.com/Grace
+    # https://dragalialost.wiki/w/Grace
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000657)
 
     expected_info = {
@@ -135,7 +135,7 @@ def test_grant_shield_upon_hp_below(transformer_ability: AbilityTransformer):
 
 def test_elem_res_when_hp_above(transformer_ability: AbilityTransformer):
     # Forager Cleo - 10750203
-    # https://dragalialost.gamepedia.com/Forager_Cleo
+    # https://dragalialost.wiki/w/Forager_Cleo
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000168)
 
     expected_info = {
@@ -150,7 +150,7 @@ def test_elem_res_when_hp_above(transformer_ability: AbilityTransformer):
 
 def test_elem_res_on_energy_level_up(transformer_ability: AbilityTransformer):
     # Elias - 10640403
-    # https://dragalialost.gamepedia.com/Elias
+    # https://dragalialost.wiki/w/Elias
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000751)
 
     expected_info = {
@@ -165,7 +165,7 @@ def test_elem_res_on_energy_level_up(transformer_ability: AbilityTransformer):
 
 def test_elem_res_on_combo_count_above(transformer_ability: AbilityTransformer):
     # Summer Cleo - 10650401
-    # https://dragalialost.gamepedia.com/Karina
+    # https://dragalialost.wiki/w/Karina
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000489)
 
     expected_info = {
@@ -181,7 +181,7 @@ def test_elem_res_on_combo_count_above(transformer_ability: AbilityTransformer):
 
 def test_elem_res_in_buff_field(transformer_ability: AbilityTransformer):
     # Opera Karina - 10650504
-    # https://dragalialost.gamepedia.com/Opera_Karina
+    # https://dragalialost.wiki/w/Opera_Karina
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000799)
 
     expected_info = {
@@ -197,7 +197,7 @@ def test_elem_res_in_buff_field(transformer_ability: AbilityTransformer):
 
 def test_atk_up_in_buff_field(transformer_ability: AbilityTransformer):
     # Dragonyule Victor S2
-    # https://dragalialost.gamepedia.com/Dragonyule_Victor
+    # https://dragalialost.wiki/w/Dragonyule_Victor
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000833)
 
     expected_info = {
@@ -212,7 +212,7 @@ def test_atk_up_in_buff_field(transformer_ability: AbilityTransformer):
 
 def test_shadowblight_punisher_in_buff_field(transformer_ability: AbilityTransformer):
     # Gala Chelle
-    # https://dragalialost.gamepedia.com/Gala_Chelle (404 as of 2020/01/29)
+    # https://dragalialost.wiki/w/Gala_Chelle
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000858)
 
     expected_info = {
@@ -227,7 +227,7 @@ def test_shadowblight_punisher_in_buff_field(transformer_ability: AbilityTransfo
 
 def test_crt_up_by_combo_count(transformer_ability: AbilityTransformer):
     # Kimono Elisanne - 10550103
-    # https://dragalialost.gamepedia.com/Kimono_Elisanne
+    # https://dragalialost.wiki/w/Kimono_Elisanne
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000838)
 
     expected_info = {
@@ -242,7 +242,7 @@ def test_crt_up_by_combo_count(transformer_ability: AbilityTransformer):
 
 def test_fill_dragon_gauge_by_combo_count(transformer_ability: AbilityTransformer):
     # Gala Leonidas - 10950101
-    # https://dragalialost.gamepedia.com/Gala_Leonidas
+    # https://dragalialost.wiki/w/Gala_Leonidas
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000823)
 
     expected_info = {
@@ -258,7 +258,7 @@ def test_fill_dragon_gauge_by_combo_count(transformer_ability: AbilityTransforme
 
 def test_energy_level_up_by_combo_count(transformer_ability: AbilityTransformer):
     # Gala Sarisse - 10650101
-    # https://dragalialost.gamepedia.com/Gala_Sarisse
+    # https://dragalialost.wiki/w/Gala_Sarisse
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000709)
 
     expected_info = {
@@ -274,7 +274,7 @@ def test_energy_level_up_by_combo_count(transformer_ability: AbilityTransformer)
 
 def test_inspire_level_up_on_energy_level_up(transformer_ability: AbilityTransformer):
     # Lucretia - 10750401
-    # https://dragalialost.gamepedia.com/Lucretia
+    # https://dragalialost.wiki/w/Lucretia
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000541)
 
     expected_info = {
@@ -289,7 +289,7 @@ def test_inspire_level_up_on_energy_level_up(transformer_ability: AbilityTransfo
 
 def test_inspire_level_up_on_energy_level_up_prob(transformer_ability: AbilityTransformer):
     # Lucretia - 10750401 (CEX Lv4)
-    # https://dragalialost.gamepedia.com/Lucretia
+    # https://dragalialost.wiki/w/Lucretia
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000539)
 
     expected_info = {
@@ -304,7 +304,7 @@ def test_inspire_level_up_on_energy_level_up_prob(transformer_ability: AbilityTr
 
 def test_infliction_rate_up(transformer_ability: AbilityTransformer):
     # Delphi - 10350502
-    # https://dragalialost.gamepedia.com/Delphi
+    # https://dragalialost.wiki/w/Delphi
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000627)
 
     expected_info = {
@@ -319,7 +319,7 @@ def test_infliction_rate_up(transformer_ability: AbilityTransformer):
 
 def test_combo_time_extend(transformer_ability: AbilityTransformer):
     # Nobunaga - 10250103
-    # https://dragalialost.gamepedia.com/Nobunaga
+    # https://dragalialost.wiki/w/Nobunaga
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000708)
 
     expected_info = {
@@ -331,7 +331,7 @@ def test_combo_time_extend(transformer_ability: AbilityTransformer):
 
 def test_regen_on_hp_below(transformer_ability: AbilityTransformer):
     # Lea - 10150103
-    # https://dragalialost.gamepedia.com/Nobunaga
+    # https://dragalialost.wiki/w/Nobunaga
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000710)
 
     expected_info = {
@@ -346,7 +346,7 @@ def test_regen_on_hp_below(transformer_ability: AbilityTransformer):
 
 def test_regen_on_combo_above(transformer_ability: AbilityTransformer):
     # Summer Norwin - 10350302
-    # https://dragalialost.gamepedia.com/Summer_Norwin
+    # https://dragalialost.wiki/w/Summer_Norwin
     ex_ability_data = transformer_ability.transform_chained_ex_ability(400000770)
 
     expected_info = {

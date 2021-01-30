@@ -6,7 +6,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_seimei_s2_iter_entries(transformer_skill: SkillTransformer):
     # Seimei
-    # https://dragalialost.gamepedia.com/Seimei
+    # https://dragalialost.wiki/w/Seimei
     skill_data = transformer_skill.transform_attacking(107501042, max_lv=2)
 
     possible_entries = skill_data.get_all_possible_entries()
@@ -35,7 +35,7 @@ def test_seimei_s2_iter_entries(transformer_skill: SkillTransformer):
 
 def test_seimei_s2(transformer_skill: SkillTransformer):
     # Seimei
-    # https://dragalialost.gamepedia.com/Seimei
+    # https://dragalialost.wiki/w/Seimei
     skill_data_base = transformer_skill.transform_attacking(107501042)
 
     # For some reason, they inserted dummy data yet again (Lv 3)
@@ -69,7 +69,7 @@ def test_seimei_s2(transformer_skill: SkillTransformer):
 
 def test_seimei_ss(transformer_skill: SkillTransformer):
     # Seimei
-    # https://dragalialost.gamepedia.com/Seimei
+    # https://dragalialost.wiki/w/Seimei
     skill_data_base = transformer_skill.transform_attacking(107501043)
 
     skill_data = skill_data_base.with_conditions()

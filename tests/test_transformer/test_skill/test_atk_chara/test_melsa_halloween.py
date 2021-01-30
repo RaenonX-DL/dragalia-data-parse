@@ -3,7 +3,7 @@ from dlparse.transformer import SkillTransformer
 
 def test_s2(transformer_skill: SkillTransformer):
     # Halloween Melsa S2
-    # https://dragalialost.gamepedia.com/Halloween_Melsa
+    # https://dragalialost.wiki/w/Halloween_Melsa
     skill_data = transformer_skill.transform_attacking(105503032).with_conditions()
 
     assert skill_data.hit_count == [3, 3]

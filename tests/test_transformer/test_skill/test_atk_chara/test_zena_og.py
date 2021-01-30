@@ -6,7 +6,7 @@ from tests.utils import approx_matrix
 
 def test_s2(transformer_skill: SkillTransformer):
     # Original Zena S2
-    # https://dragalialost.gamepedia.com/Zena
+    # https://dragalialost.wiki/w/Zena
     skill_data_base = transformer_skill.transform_attacking(107505042)
 
     level_1_hit = 3.2
