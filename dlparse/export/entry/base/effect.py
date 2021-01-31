@@ -53,7 +53,7 @@ class EffectUnitEntryBase(JsonExportableEntryBase, ABC):
             "parameter": {
                 "name": self.buff_param_trans.to_json_entry(),
                 "code": self.effect_unit.parameter.value,
-                "imagePath": get_image_path(self.effect_unit.parameter)
+                "imagePath": get_image_path(self.effect_unit.parameter, on_not_found=None)
             },
             "paramUnit": {
                 "name": self.buff_unit_trans.to_json_entry(),

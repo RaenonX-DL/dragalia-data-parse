@@ -537,6 +537,7 @@ _PARAM_UNIT: dict[BuffParameter, BuffValueUnit] = {
     BuffParameter.HEAL_INSTANT_HP: BuffValueUnit.PERCENTAGE,
     BuffParameter.HEAL_OVER_TIME_RP: BuffValueUnit.PERCENTAGE,
     BuffParameter.HEAL_OVER_TIME_HP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DAMAGE_OVER_TIME_HP: BuffValueUnit.PERCENTAGE,
     BuffParameter.SHIELD_SINGLE_DMG: BuffValueUnit.PERCENTAGE,
     BuffParameter.SHIELD_LIFE: BuffValueUnit.PERCENTAGE,
     BuffParameter.RESISTANCE_FLAME_BUFF: BuffValueUnit.PERCENTAGE,

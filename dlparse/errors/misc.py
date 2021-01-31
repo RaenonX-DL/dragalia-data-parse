@@ -4,7 +4,7 @@ from typing import Any, Type, Union
 
 from .base import AppValueError
 
-__all__ = ("EnumConversionError", "EnumNotFoundError", "OperationInvalidError")
+__all__ = ("EnumConversionError", "EnumNotFoundError", "ImageNotFoundError", "OperationInvalidError")
 
 
 class EnumConversionError(AppValueError):
@@ -19,6 +19,13 @@ class EnumNotFoundError(AppValueError):
 
     def __init__(self, enum_cls: Type[Enum], src: Any):
         super().__init__(f"Cannot convert `{src}` to `{enum_cls}`")
+
+
+class ImageNotFoundError(AppValueError):
+    """Error to be raised if the image for an enum is not found."""
+
+    def __init__(self, enum: Enum):
+        super().__init__(f"Image for `{enum}` not found")
 
 
 class OperationInvalidError(AppValueError):

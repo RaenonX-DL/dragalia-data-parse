@@ -1,11 +1,14 @@
 """Implementations of getting the related image of an enum."""
-from typing import Optional, Union
+from typing import Any, Union
 
+from dlparse.errors import ImageNotFoundError
 from .buff_parameter import BuffParameter
 from .condition import Condition
 from .element import Element
 
 __all__ = ("get_image_path",)
+
+THROW_ERROR = object()
 
 TransformableEnums = Union[Element, Condition, BuffParameter]
 
@@ -85,6 +88,7 @@ path_dict: dict[TransformableEnums, str] = {
     BuffParameter.HEAL_INSTANT_RP: "/icon/ability/l/custom/Icon_Ability_1010011.png",
     BuffParameter.HEAL_OVER_TIME_HP: "/icon/ability/l/custom/Icon_Ability_1010011.png",
     BuffParameter.HEAL_OVER_TIME_RP: "/icon/ability/l/Icon_Ability_1010011.png",
+    BuffParameter.DAMAGE_OVER_TIME_HP: None,  # No suitable icon, ``None`` to display the text
     BuffParameter.SHIELD_SINGLE_DMG: "/icon/ability/l/Icon_Ability_1020022.png",
     BuffParameter.SHIELD_LIFE: "/icon/ability/l/Icon_Ability_1020037.png",
     BuffParameter.RESISTANCE_FLAME_BUFF: "/icon/ability/l/Icon_Ability_1080001.png",
@@ -150,12 +154,22 @@ path_dict: dict[TransformableEnums, str] = {
 }
 
 
-def get_image_path(enum: TransformableEnums) -> Optional[str]:
+def get_image_path(enum: TransformableEnums, on_not_found: Any = THROW_ERROR) -> Any:
     """
-    Get the image path of ``enum``. Returns ``None`` if not found.
+    Get the image path of ``enum``.
+
+    If ``on_not_found`` is not specified and the image for ``enum`` is not found,
+    :class:`ImageNotFoundError` will be raised.
+    Otherwise, ``on_not_found`` will be returned.
 
     The root directory of the path is ``assets/_gluonresources/resources/image``.
 
     The returned path will start with a slash "/".
     """
-    return path_dict.get(enum)
+    try:
+        return path_dict[enum]
+    except KeyError as ex:
+        if on_not_found is not THROW_ERROR:
+            return on_not_found
+
+        raise ImageNotFoundError(enum) from ex
