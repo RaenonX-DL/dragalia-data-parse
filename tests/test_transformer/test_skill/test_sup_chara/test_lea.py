@@ -1,1 +1,1 @@
-# TEST: TBA - Lea S2 self damage if HP > 60%
+# FIXME: Lea S2 self damage if HP > 60%

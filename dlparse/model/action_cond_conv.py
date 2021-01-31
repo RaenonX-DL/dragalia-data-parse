@@ -96,16 +96,26 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
     def _units_recovery_buffs(
             self, action_cond: "ActionConditionEntry", payload: Optional[PT] = None
     ) -> list[Optional[UT]]:
-        return [
-            # Over time HP heal
-            self.to_param_up(
+        ret = []
+
+        # Heal/Damage over time
+        if action_cond.slip_damage_hp_rate < 0:
+            # HOT
+            ret.append(self.to_param_up(
                 BuffParameter.HEAL_OVER_TIME_HP, -action_cond.slip_damage_hp_rate, action_cond, payload
-            ),
-            # Over time RP heal
-            self.to_param_up(
+            ))
+        elif action_cond.slip_damage_hp_rate < 0:
+            # DOT
+            ret.append(self.to_param_up(
+                BuffParameter.DAMAGE_OVER_TIME_HP, action_cond.slip_damage_hp_rate, action_cond, payload
+            ))
+
+        if action_cond.regen_rp:
+            ret.append(self.to_param_up(
                 BuffParameter.HEAL_OVER_TIME_RP, action_cond.regen_rp / 100, action_cond, payload
-            ),
-        ]
+            ))
+
+        return ret
 
     def _units_special_buffs(
             self, action_cond: "ActionConditionEntry", payload: Optional[PT] = None

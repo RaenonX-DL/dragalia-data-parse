@@ -3,7 +3,7 @@ from .ability import AbilityData
 from .ability_common import AbilityDataBase
 from .ability_var_common import AbilityVariantEffectUnit
 from .action_cond_conv import ActionCondEffectConvertPayload, ActionCondEffectConvertible
-from .action_cond_effect import HitActionConditionEffectUnit, HitAfflictionEffectUnitHit
+from .action_cond_effect import EnemyAfflictionEffectUnit, HitActionConditionEffectUnit
 from .base import EffectUnitBase, HitData, SkillDataBase, SkillEntryBase
 from .buff_boost import BuffCountBoostData, BuffFieldBoostData
 from .chained_ex_ability import ChainedExAbilityData

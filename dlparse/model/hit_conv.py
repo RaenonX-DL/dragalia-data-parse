@@ -7,7 +7,7 @@ from dlparse.enums import BuffParameter, HitTargetSimple, SkillIndex, Status
 from dlparse.errors import UnhandledSelfDamageError
 from dlparse.mono.asset import ActionBuffBomb, ActionConditionAsset, ActionConditionEntry, HitAttrEntry
 from .action_cond_conv import ActionCondEffectConvertible
-from .action_cond_effect import HitActionConditionEffectUnit, HitAfflictionEffectUnitHit
+from .action_cond_effect import EnemyAfflictionEffectUnit, HitActionConditionEffectUnit
 from .base import HitData, T
 
 __all__ = ("HitDataEffectConvertible",)
@@ -51,7 +51,7 @@ class HitDataEffectConvertible(
 
     def to_affliction_unit(
             self, action_cond: ActionConditionEntry, payload: None = None
-    ) -> Optional[HitAfflictionEffectUnitHit]:
+    ) -> Optional[EnemyAfflictionEffectUnit]:
         if not self.hit_attr.action_condition_id:
             # No action condition affiliated
             return None
@@ -64,7 +64,7 @@ class HitDataEffectConvertible(
             # Not afflicting action condition
             return None
 
-        return HitAfflictionEffectUnitHit(
+        return EnemyAfflictionEffectUnit(
             time=self.action_component.time_start,
             status=action_cond.afflict_status,
             target=self.target_simple,
@@ -80,8 +80,8 @@ class HitDataEffectConvertible(
 
     def to_dispel_unit(
             self, param_enum: BuffParameter, action_cond: ActionConditionEntry, payload: None = None
-    ) -> Optional[HitAfflictionEffectUnitHit]:
-        return HitAfflictionEffectUnitHit(
+    ) -> Optional[EnemyAfflictionEffectUnit]:
+        return EnemyAfflictionEffectUnit(
             time=self.action_component.time_start,
             status=action_cond.afflict_status,
             target=self.target_simple,

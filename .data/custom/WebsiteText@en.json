@@ -1408,6 +1408,10 @@
     "text": "HoT (Max HP)"
   },
   {
+    "id": "ENUM_BUFF_DAMAGE_OVER_TIME_HP",
+    "text": "DoT (Max HP)"
+  },
+  {
     "id": "ENUM_BUFF_SHIELD_SINGLE_DMG",
     "text": "Damage Shield"
   },

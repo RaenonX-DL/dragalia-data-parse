@@ -234,6 +234,8 @@ class BuffParameter(TranslatableEnumMixin, Enum):
     """Heal the target over time by RP. A value of 0.12 means to heal over time with 12% RP."""
     HEAL_OVER_TIME_HP = 305
     """Heal the target over time by max HP. A value of 0.12 means to heal over time with 12% max HP."""
+    DAMAGE_OVER_TIME_HP = 306
+    """Damage the target over time by max HP. A value of 0.12 means to damage over time with 12% max HP."""
     # endregion
 
     # region Defensive

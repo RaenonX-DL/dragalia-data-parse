@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 
 from .base import EffectUnitBase
 
-__all__ = ("HitActionConditionEffectUnit", "HitAfflictionEffectUnitHit")
+__all__ = ("HitActionConditionEffectUnit", "EnemyAfflictionEffectUnit")
 
 
 @dataclass(eq=False)
@@ -29,7 +29,7 @@ class HitActionConditionEffectUnit(EffectUnitBase):
 
 
 @dataclass
-class HitAfflictionEffectUnitHit(HitActionConditionEffectUnit):
+class EnemyAfflictionEffectUnit(HitActionConditionEffectUnit):
     """An action condition effect that afflicts the enemy."""
 
     rate: float = field(init=False)

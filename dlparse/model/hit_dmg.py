@@ -10,7 +10,7 @@ from dlparse.mono.asset import (
     BuffCountAsset, HitAttrEntry, PlayerActionInfoAsset,
 )
 from dlparse.utils import calculate_crisis_mod
-from .action_cond_effect import HitActionConditionEffectUnit, HitAfflictionEffectUnitHit
+from .action_cond_effect import EnemyAfflictionEffectUnit, HitActionConditionEffectUnit
 from .hit_conv import HitDataEffectConvertible
 
 __all__ = ("DamagingHitData", "DamageUnit")
@@ -23,7 +23,7 @@ class DamageUnit:
     hit_time: float
 
     mod: float
-    unit_affliction: Optional[HitAfflictionEffectUnitHit]
+    unit_affliction: Optional[EnemyAfflictionEffectUnit]
     unit_debuffs: list[HitActionConditionEffectUnit]
     hit_attr: HitAttrEntry
 
@@ -32,7 +32,7 @@ class DamageUnit:
     counter_mod: float = field(init=False)
 
     def __post_init__(self):
-        if self.unit_affliction and not isinstance(self.unit_affliction, HitAfflictionEffectUnitHit):
+        if self.unit_affliction and not isinstance(self.unit_affliction, EnemyAfflictionEffectUnit):
             raise AppValueError(f"Unexpected affliction unit type {type(self.unit_affliction)}")
 
         self.counter_mod = self.hit_attr.damage_modifier_counter
@@ -160,7 +160,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         return [self.mod_on_ally_buff_field] * count
 
     def _damage_units_get_base_attributes(
-            self, condition_comp: ConditionComposite, unit_affliction: HitAfflictionEffectUnitHit,
+            self, condition_comp: ConditionComposite, unit_affliction: EnemyAfflictionEffectUnit,
             units_debuff: list[HitActionConditionEffectUnit], /,
             asset_action_info: PlayerActionInfoAsset
     ) -> Optional[list[DamageUnit]]:

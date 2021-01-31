@@ -196,6 +196,8 @@ inaccurate.
 
 - `2021/01/23 PM 06:17 CST`: Completed chained EX ability/Co-ability (CCA) parsing ([v1.3]).
 
+- `2021/01/24 PM 11:57 CST`: Completed chained EX ability/Co-ability (CCA) exporting ([v1.4]).
+
 [v0.1]: https://github.com/RaenonX-DL/dragalia-data-parse/releases/tag/v0.1
 
 [v1.0]: https://github.com/RaenonX-DL/dragalia-data-parse/releases/tag/v1.0
@@ -205,3 +207,5 @@ inaccurate.
 [v1.2]: https://github.com/RaenonX-DL/dragalia-data-parse/releases/tag/v1.2
 
 [v1.3]: https://github.com/RaenonX-DL/dragalia-data-parse/releases/tag/v1.3
+
+[v1.4]: https://github.com/RaenonX-DL/dragalia-data-parse/releases/tag/v1.4
