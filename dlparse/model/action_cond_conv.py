@@ -125,6 +125,8 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
             self.to_param_up(BuffParameter.ENERGY_LEVEL, action_cond.energize_lv, action_cond, payload),
             # Inspire
             self.to_param_up(BuffParameter.INSPIRE_LEVEL, action_cond.inspire_lv, action_cond, payload),
+            # HP Drain
+            self.to_param_up(BuffParameter.HP_DRAIN_DAMAGE, action_cond.hp_drain_rate, action_cond, payload),
         ]
 
     def to_effect_units(

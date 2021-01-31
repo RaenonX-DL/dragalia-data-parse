@@ -49,6 +49,7 @@ path_dict: dict[TransformableEnums, str] = {
     BuffParameter.AUTO_DAMAGE: "/icon/ability/l/Icon_Ability_1010045.png",
     BuffParameter.TARGETED_BUFF_TIME: "/icon/ability/l/Icon_Ability_1010006.png",
     BuffParameter.COMBO_TIME: "/icon/ability/l/Icon_Ability_1020036.png",
+    BuffParameter.HP_DRAIN_DAMAGE: None,  # No suitable icon, ``None`` to display the text
     BuffParameter.FLAME_ELEM_DMG_UP: "/icon/ability/l/Icon_Ability_1090001.png",
     BuffParameter.WATER_ELEM_DMG_UP: "/icon/ability/l/Icon_Ability_1090002.png",
     BuffParameter.WIND_ELEM_DMG_UP: "/icon/ability/l/Icon_Ability_1090003.png",

@@ -455,35 +455,58 @@ def test_elemental_resistances(transformer_skill: SkillTransformer):
 def test_hp_drain(transformer_skill: SkillTransformer):
     # Yue S2
     # https://dragalialost.wiki/w/Yue
-    # skill_data_base = transformer_skill.transform_supportive(104401022)
-    #
-    # assert skill_data_base.max_level == 3
-    #
-    # expected_buffs_lv_1 = {
-    #     BuffEffectInfo("SWD_127_04_BUF_LV01", HitTargetSimple.SELF, BuffParameter.RESISTANCE_SHADOW_BUFF, 0.05,
-    #     10, 0)
-    # }
-    # expected_buffs_lv_2 = {
-    #     BuffEffectInfo("SWD_127_04_BUF_LV02", HitTargetSimple.SELF, BuffParameter.RESISTANCE_SHADOW_BUFF, 0.08,
-    #     10, 0)
-    # }
-    # expected_buffs_lv_3 = {
-    #     BuffEffectInfo("SWD_127_04_BUF_LV03", HitTargetSimple.SELF, BuffParameter.RESISTANCE_SHADOW_BUFF, 0.1, 10, 0)
-    # }
-    #
-    # expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
-    #
-    # skill_data = skill_data_base.with_conditions()
-    #
-    # check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_3)
-    #
-    # for skill_lv in range(skill_data_base.max_level):
-    #     expected_buffs = expected_base_buffs[skill_lv]
-    #     actual_buffs = skill_data.buffs[skill_lv]
-    #
-    #     check_buff_unit_match(actual_buffs, expected_buffs)
-    pass
+    skill_data_base = transformer_skill.transform_supportive(104401022)
+
+    assert skill_data_base.max_level == 2
+
+    expected_buffs_lv_1 = {
+        BuffEffectInfo("BUF_136_LV01", HitTargetSimple.SELF, BuffParameter.CRT_RATE_BUFF, 0.25, 20, 0),
+        BuffEffectInfo("BUF_136_LV01", HitTargetSimple.SELF, BuffParameter.HP_DRAIN_DAMAGE, 0.02, 20, 0),
+        BuffEffectInfo("BUF_136_LV01", HitTargetSimple.SELF, BuffParameter.DEF_BUFF, -0.4, 20, 0),
+    }
+    expected_buffs_lv_2 = {
+        BuffEffectInfo("BUF_136_LV02", HitTargetSimple.SELF, BuffParameter.CRT_RATE_BUFF, 0.3, 20, 0),
+        BuffEffectInfo("BUF_136_LV02", HitTargetSimple.SELF, BuffParameter.HP_DRAIN_DAMAGE, 0.03, 20, 0),
+        BuffEffectInfo("BUF_136_LV02", HitTargetSimple.SELF, BuffParameter.DEF_BUFF, -0.4, 20, 0),
+    }
+
+    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2]
+
+    skill_data = skill_data_base.with_conditions()
+
+    check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_2)
+
+    for skill_lv in range(skill_data_base.max_level):
+        expected_buffs = expected_base_buffs[skill_lv]
+        actual_buffs = skill_data.buffs[skill_lv]
+
+        check_buff_unit_match(actual_buffs, expected_buffs)
 
 
-def test_self_debuff():
-    pass  # FIXME: TBA - Durant S2 / Yue S2
+def test_self_debuff(transformer_skill: SkillTransformer):
+    # Durant S2
+    # https://dragalialost.wiki/w/Yue
+    skill_data_base = transformer_skill.transform_supportive(102405022)
+
+    assert skill_data_base.max_level == 2
+
+    expected_buffs_lv_1 = {
+        BuffEffectInfo("BUF_169_CRT_LV01", HitTargetSimple.SELF, BuffParameter.CRT_RATE_BUFF, 0.25, 20, 0),
+        BuffEffectInfo("DEBUF_102_DEF_LV01", HitTargetSimple.SELF, BuffParameter.DEF_BUFF, -0.25, 20, 0),
+    }
+    expected_buffs_lv_2 = {
+        BuffEffectInfo("BUF_169_CRT_LV02", HitTargetSimple.SELF, BuffParameter.CRT_RATE_BUFF, 0.30, 20, 0),
+        BuffEffectInfo("DEBUF_102_DEF_LV02", HitTargetSimple.SELF, BuffParameter.DEF_BUFF, -0.25, 20, 0),
+    }
+
+    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2]
+
+    skill_data = skill_data_base.with_conditions()
+
+    check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_2)
+
+    for skill_lv in range(skill_data_base.max_level):
+        expected_buffs = expected_base_buffs[skill_lv]
+        actual_buffs = skill_data.buffs[skill_lv]
+
+        check_buff_unit_match(actual_buffs, expected_buffs)

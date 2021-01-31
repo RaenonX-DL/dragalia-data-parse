@@ -69,6 +69,8 @@ class ActionConditionEntry(MasterEntryBase):
     energize_lv: int
     inspire_lv: int
 
+    hp_drain_rate: float
+
     elemental_target: ElementFlag
 
     @staticmethod
@@ -116,6 +118,7 @@ class ActionConditionEntry(MasterEntryBase):
             enhance_skill_2_id=data["_EnhancedSkill2"],
             energize_lv=data["_Tension"],
             inspire_lv=data["_Inspiration"],
+            hp_drain_rate=data["_RateHpDrain"],
             elemental_target=ElementFlag(data["_TargetElemental"])
         )
 

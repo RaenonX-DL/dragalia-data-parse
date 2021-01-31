@@ -75,6 +75,8 @@ class BuffParameter(TranslatableEnumMixin, Enum):
 
     A value of 2.5 means combo counter will not reset for additional 2.5 seconds.
     """
+    HP_DRAIN_DAMAGE = 113
+    """Drain HP by the damage dealt. A value of 0.12 means to recover HP by 12% of the damage dealt."""
     # endregion
 
     # region Elemental
@@ -498,6 +500,7 @@ _PARAM_UNIT: dict[BuffParameter, BuffValueUnit] = {
     BuffParameter.AUTO_DAMAGE: BuffValueUnit.PERCENTAGE,
     BuffParameter.TARGETED_BUFF_TIME: BuffValueUnit.PERCENTAGE,
     BuffParameter.COMBO_TIME: BuffValueUnit.SECONDS,
+    BuffParameter.HP_DRAIN_DAMAGE: BuffValueUnit.PERCENTAGE,
     BuffParameter.FLAME_ELEM_DMG_UP: BuffValueUnit.PERCENTAGE,
     BuffParameter.WATER_ELEM_DMG_UP: BuffValueUnit.PERCENTAGE,
     BuffParameter.WIND_ELEM_DMG_UP: BuffValueUnit.PERCENTAGE,
