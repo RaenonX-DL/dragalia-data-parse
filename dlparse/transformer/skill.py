@@ -8,7 +8,8 @@ from dlparse.errors import (
 from dlparse.model import (
     AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SkillCancelActionUnit, SupportiveSkillData,
 )
-from dlparse.mono.asset import CharaDataEntry, SkillDataEntry
+from dlparse.mono.asset import ActionConditionEntry, CharaDataEntry, HitAttrEntry, SkillDataEntry
+from dlparse.mono.asset.base import ActionComponentHasHitLabels
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -16,6 +17,7 @@ if TYPE_CHECKING:
 __all__ = ("SkillTransformer",)
 
 T = TypeVar("T", bound=HitData)
+AT = TypeVar("AT", bound=ActionComponentHasHitLabels)
 
 HitDataList = list[T]
 
@@ -36,6 +38,47 @@ class SkillTransformer:
 
         self._loader_action = asset_manager.loader_action
         self._loader_chara_motion = asset_manager.loader_chara_motion
+
+    def _get_hit_data_from_hit_attr(
+            self, hit_data_cls: Type[T], action_id: int, ability_ids: list[int],
+            action_component: AT, hit_attr_data: HitAttrEntry, pre_condition: ConditionComposite
+    ) -> HitDataList:
+        ret: HitDataList = [hit_data_cls(
+            hit_attr=hit_attr_data, action_component=action_component,
+            action_id=action_id, pre_condition_comp=pre_condition,
+            ability_data=[self._asset_ability.get_data_by_id(ability_id) for ability_id in ability_ids]
+        )]
+
+        if not hit_attr_data.has_action_condition:
+            # Hit attribute does not have action condition, no post-processing needed
+            return ret
+
+        # Check for leveled action condition
+        cur_ac: ActionConditionEntry = self._asset_action_cond.get_data_by_id(hit_attr_data.action_condition_id)
+        lv_pre_cond_iter = iter(sorted(ConditionCategories.self_action_cond_lv.members))
+
+        if not cur_ac.is_leveled:
+            # Action condition not leveled, no further level discovery needed
+            return ret
+
+        # --- Leveled action condition discovery
+
+        # Inject the precondition for the first level
+        ret[0].pre_condition_comp += next(lv_pre_cond_iter)
+
+        # Discover the next level of the action condition and return it until the highest level
+        while cur_ac.level_up_id:
+            cur_ac = self._asset_action_cond.get_data_by_id(cur_ac.level_up_id)
+
+            ret.append(hit_data_cls(
+                hit_attr=hit_attr_data, action_component=action_component,
+                action_id=action_id, pre_condition_comp=pre_condition + next(lv_pre_cond_iter),
+                ability_data=[self._asset_ability.get_data_by_id(ability_id) for ability_id in ability_ids],
+                # Override action condition ID for later use
+                action_cond_override=cur_ac.id
+            ))
+
+        return ret
 
     def _get_hit_data_action_component(
             self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_ids: list[int], /,
@@ -59,10 +102,8 @@ class SkillTransformer:
                 # - Not letting it "explode" because officials love to insert unused dummy data
                 continue
 
-            ret.append(hit_data_cls(
-                hit_attr=hit_attr_data, action_component=action_component,
-                action_id=action_id, pre_condition_comp=pre_condition,
-                ability_data=[self._asset_ability.get_data_by_id(ability_id) for ability_id in ability_ids]
+            ret.extend(self._get_hit_data_from_hit_attr(
+                hit_data_cls, action_id, ability_ids, action_component, hit_attr_data, pre_condition
             ))
 
         # Convert hit actions of the next action if the current one is being terminated

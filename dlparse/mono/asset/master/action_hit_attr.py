@@ -4,6 +4,7 @@ from typing import Optional, TextIO, Union
 
 from dlparse.enums import HitExecType, HitTarget, Status
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
+from .action_condition import ActionConditionAsset
 
 __all__ = ("HitAttrEntry", "HitAttrAsset")
 
@@ -251,6 +252,10 @@ class HitAttrEntry(MasterEntryBase):
             return False
 
         return True
+
+    def has_leveled_action_cond(self, asset_action_cond: ActionConditionAsset) -> bool:
+        """Check if the hit attribute has action condition and that action condition is leveled."""
+        return self.has_action_condition and asset_action_cond.get_data_by_id(self.action_condition_id).is_leveled
 
 
 class HitAttrAsset(MasterAssetBase[HitAttrEntry]):

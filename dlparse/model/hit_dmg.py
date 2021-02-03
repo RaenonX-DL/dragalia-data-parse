@@ -216,8 +216,8 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         # Get affliction unit & buff dispel
         unit_affliction = None
         dispel = False
-        if self.hit_attr.action_condition_id:
-            action_cond = asset_action_condition.get_data_by_id(self.hit_attr.action_condition_id)
+        if action_cond_id := self.action_condition_id:
+            action_cond = asset_action_condition.get_data_by_id(action_cond_id)
 
             dispel = action_cond.is_dispel_buff
             unit_affliction = self.to_affliction_unit(action_cond)
@@ -319,8 +319,8 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         # Get affliction unit & dispel
         unit_affliction = None
         dispel = False
-        if self.hit_attr.action_condition_id:
-            action_cond = asset_action_condition.get_data_by_id(self.hit_attr.action_condition_id)
+        if action_cond_id := self.action_condition_id:
+            action_cond = asset_action_condition.get_data_by_id(action_cond_id)
 
             dispel = action_cond.is_dispel_buff
             unit_affliction = self.to_affliction_unit(action_cond)

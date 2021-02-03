@@ -45,14 +45,14 @@ class HitDataEffectConvertible(
             duration_sec=self.get_duration(action_cond),
             duration_count=action_cond.duration_count,
             hit_attr_label=self.hit_attr.id,
-            action_cond_id=self.hit_attr.action_condition_id,
+            action_cond_id=self.action_condition_id,
             max_stack_count=action_cond.max_stack_count
         )
 
     def to_affliction_unit(
             self, action_cond: ActionConditionEntry, payload: None = None
     ) -> Optional[EnemyAfflictionEffectUnit]:
-        if not self.hit_attr.action_condition_id:
+        if not self.action_condition_id:
             # No action condition affiliated
             return None
 
@@ -75,7 +75,7 @@ class HitDataEffectConvertible(
             slip_damage_mod=action_cond.slip_damage_mod,
             max_stack_count=action_cond.max_stack_count,
             hit_attr_label=self.hit_attr.id,
-            action_cond_id=self.hit_attr.action_condition_id
+            action_cond_id=self.action_condition_id
         )
 
     def to_dispel_unit(
@@ -92,7 +92,7 @@ class HitDataEffectConvertible(
             slip_damage_mod=action_cond.slip_damage_mod,
             max_stack_count=action_cond.max_stack_count,
             hit_attr_label=self.hit_attr.id,
-            action_cond_id=self.hit_attr.action_condition_id
+            action_cond_id=self.action_condition_id
         )
 
     @staticmethod
@@ -181,7 +181,7 @@ class HitDataEffectConvertible(
         # Action is buff bomb - mark of Nobunaga S1 (`102501031`)
         ret.extend(self.to_marker_unit(asset_action_condition))
 
-        if not ret and not self.hit_attr.action_condition_id:
+        if not ret and not self.action_condition_id:
             # No marker units and action condition affiliated to the hit data
             return []
 
@@ -197,7 +197,7 @@ class HitDataEffectConvertible(
         units: list[Optional[HitActionConditionEffectUnit]] = []
 
         # Get the action condition entry
-        action_cond: ActionConditionEntry = asset_action_condition.get_data_by_id(self.hit_attr.action_condition_id)
+        action_cond: ActionConditionEntry = asset_action_condition.get_data_by_id(self.action_condition_id)
 
         # --- Conditions in action condition
 

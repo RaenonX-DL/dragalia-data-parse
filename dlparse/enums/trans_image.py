@@ -116,6 +116,7 @@ path_dict: dict[TransformableEnums, str] = {
     BuffParameter.RESISTANCE_STORMLASH: None,  # No suitable icon, ``None`` to display the text
     BuffParameter.RESISTANCE_SHADOWBLIGHT: None,  # No suitable icon, ``None`` to display the text
     BuffParameter.RESISTANCE_SCORCHREND: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DAMAGE_REDUCTION: "/icon/ability/l/Icon_Ability_1100002.png",
     BuffParameter.HP_FIX_BY_MAX: None,  # No suitable icon, ``None`` to display the text
     BuffParameter.HP_DECREASE_BY_MAX: None,  # No suitable icon, ``None`` to display the text
     BuffParameter.HP_RAISE_BY_MAX: "/icon/ability/l/Icon_Ability_1020001.png",

@@ -39,6 +39,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_ACTION_CONDITION = auto()
     MULTIPLE_GAUGE_FILLED = auto()
     MULTIPLE_LAPIS_CARD = auto()
+    MULTIPLE_ACTION_COND_LV = auto()
     MULTIPLE_SHAPESHIFT_COUNT = auto()
     MULTIPLE_SHAPESHIFT_COUNT_IN_DRAGON = auto()
     MULTIPLE_TRIGGER = auto()
@@ -48,7 +49,6 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
     INTERNAL_NOT_TARGET_ELEMENT = auto()
     INTERNAL_NOT_TARGET_DEBUFF = auto()
-    INTERNAL_NOT_TARGET_INFLICTION = auto()
     INTERNAL_NOT_HP_STATUS = auto()
     INTERNAL_NOT_HP_CONDITION = auto()
     INTERNAL_NOT_COMBO_COUNT = auto()
@@ -63,11 +63,10 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_ACTION_CANCEL = auto()
     INTERNAL_NOT_ACTION_CONDITION = auto()
     INTERNAL_NOT_GAUGE_FILLED = auto()
-    INTERNAL_NOT_LAPIS_CARD = auto()
+    INTERNAL_NOT_ACTION_COND_LV = auto()
     INTERNAL_NOT_SHAPESHIFT_COUNT = auto()
     INTERNAL_NOT_SHAPESHIFT_COUNT_IN_DRAGON = auto()
     INTERNAL_NOT_TRIGGER = auto()
-    INTERNAL_NOT_TRIGGER_HIT_BY_AFFLICTION = auto()
 
     HAS_CONDITIONS_LEFT = auto()
 
@@ -533,6 +532,18 @@ class ConditionCategories:
         },
         ConditionMaxCount.SINGLE,
         "Self - gauge status",
+        ConditionCheckResult.MULTIPLE_LAPIS_CARD
+    )
+    self_action_cond_lv = ConditionCategoryTargetNumber(
+        {
+            Condition.ACTION_COND_LV_1: 1,
+            Condition.ACTION_COND_LV_2: 2,
+            Condition.ACTION_COND_LV_3: 3,
+            Condition.ACTION_COND_LV_4: 4,
+            Condition.ACTION_COND_LV_5: 5,
+        },
+        ConditionMaxCount.SINGLE,
+        "Self - action condition level",
         ConditionCheckResult.MULTIPLE_LAPIS_CARD
     )
     shapeshifted_count = ConditionCategoryTargetNumber(

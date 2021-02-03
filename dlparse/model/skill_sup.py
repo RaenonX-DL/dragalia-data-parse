@@ -81,7 +81,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
             action_cond.target_limited_by_element
             for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
             if (hit_data.hit_attr.has_action_condition
-                and (action_cond := action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id)))
+                and (action_cond := action_condition_asset.get_data_by_id(hit_data.action_condition_id)))
         )
 
         # Initialization
@@ -121,7 +121,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                     continue
 
                 if hit_data.hit_attr.has_action_condition:
-                    action_condition = action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id)
+                    action_condition = action_condition_asset.get_data_by_id(hit_data.action_condition_id)
                     if action_condition.target_limited_by_element:
                         # Skip conditions that require certain elements, let ``buffs_elemental`` handles this
                         continue
@@ -177,7 +177,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                 if not hit_data.hit_attr.has_action_condition:
                     continue  # No action condition assigned
 
-                action_condition = action_condition_asset.get_data_by_id(hit_data.hit_attr.action_condition_id)
+                action_condition = action_condition_asset.get_data_by_id(hit_data.action_condition_id)
 
                 if not action_condition.target_limited_by_element:
                     continue  # Action condition not limited by element

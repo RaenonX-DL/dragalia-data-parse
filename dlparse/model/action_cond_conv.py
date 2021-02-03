@@ -77,9 +77,12 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
     ) -> list[Optional[UT]]:
         return [
             # Damage shield
-            self.to_param_up(BuffParameter.SHIELD_SINGLE_DMG, action_cond.shield_dmg, action_cond, payload, ),
+            self.to_param_up(BuffParameter.SHIELD_SINGLE_DMG, action_cond.shield_dmg, action_cond, payload),
             # HP shield
             self.to_param_up(BuffParameter.SHIELD_LIFE, action_cond.shield_hp, action_cond, payload),
+
+            # Damage reduction
+            self.to_param_up(BuffParameter.DAMAGE_REDUCTION, action_cond.damage_reduction, action_cond, payload),
 
             # Flame resistance
             self.to_param_up(BuffParameter.RESISTANCE_FLAME_BUFF, action_cond.resistance_flame, action_cond, payload),
@@ -100,12 +103,12 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
 
         # Heal/Damage over time
         if action_cond.slip_damage_hp_rate < 0:
-            # HOT
+            # HoT
             ret.append(self.to_param_up(
                 BuffParameter.HEAL_OVER_TIME_HP, -action_cond.slip_damage_hp_rate, action_cond, payload
             ))
         elif action_cond.slip_damage_hp_rate < 0:
-            # DOT
+            # DoT
             ret.append(self.to_param_up(
                 BuffParameter.DAMAGE_OVER_TIME_HP, action_cond.slip_damage_hp_rate, action_cond, payload
             ))

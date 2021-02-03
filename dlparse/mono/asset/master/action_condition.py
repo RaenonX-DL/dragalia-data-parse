@@ -56,6 +56,8 @@ class ActionConditionEntry(MasterEntryBase):
     shield_dmg: float
     shield_hp: float
 
+    damage_reduction: float
+
     resistance_flame: float
     resistance_water: float
     resistance_wind: float
@@ -72,6 +74,9 @@ class ActionConditionEntry(MasterEntryBase):
     hp_drain_rate: float
 
     elemental_target: ElementFlag
+
+    level_up_id: int
+    level_down_id: int
 
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "ActionConditionEntry":
@@ -108,6 +113,7 @@ class ActionConditionEntry(MasterEntryBase):
             buff_fs_spd=data["_RateChargeSpeed"],
             shield_dmg=data["_RateDamageShield"],
             shield_hp=data["_RateSacrificeShield"],
+            damage_reduction=data["_RateDamageCut"],
             resistance_flame=data["_RateFire"],
             resistance_water=data["_RateWater"],
             resistance_wind=data["_RateWind"],
@@ -119,7 +125,9 @@ class ActionConditionEntry(MasterEntryBase):
             energize_lv=data["_Tension"],
             inspire_lv=data["_Inspiration"],
             hp_drain_rate=data["_RateHpDrain"],
-            elemental_target=ElementFlag(data["_TargetElemental"])
+            elemental_target=ElementFlag(data["_TargetElemental"]),
+            level_up_id=data["_LevelUpId"],
+            level_down_id=data["_LevelDownId"]
         )
 
     @property
@@ -156,6 +164,11 @@ class ActionConditionEntry(MasterEntryBase):
     def is_dispel_buff(self) -> bool:
         """Check if the action condition dispelling the buff."""
         return self.efficacy_type == EfficacyType.DISPEL
+
+    @property
+    def is_leveled(self) -> bool:
+        """Check if the action condition is leveled."""
+        return bool(self.level_up_id or self.level_down_id)
 
 
 class ActionConditionAsset(MasterAssetBase[ActionConditionEntry]):

@@ -346,6 +346,11 @@ class BuffParameter(TranslatableEnumMixin, Enum):
     RESISTANCE_SCORCHREND = 445
     """Scorchrend resistance up. A value of 0.12 means that the probability of being scorchrent is reduced by 12%."""
     # endregion
+
+    # region Damage Reduction
+    DAMAGE_REDUCTION = 450
+    """Reduces the damage taken. Value of 0.12 means that the damage taken is reduced by 12%."""
+    # endregion
     # endregion
 
     # region HP Control
@@ -567,6 +572,7 @@ _PARAM_UNIT: dict[BuffParameter, BuffValueUnit] = {
     BuffParameter.RESISTANCE_STORMLASH: BuffValueUnit.PERCENTAGE,
     BuffParameter.RESISTANCE_SHADOWBLIGHT: BuffValueUnit.PERCENTAGE,
     BuffParameter.RESISTANCE_SCORCHREND: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DAMAGE_REDUCTION: BuffValueUnit.PERCENTAGE,
     BuffParameter.HP_FIX_BY_MAX: BuffValueUnit.PERCENTAGE,
     BuffParameter.HP_DECREASE_BY_MAX: BuffValueUnit.PERCENTAGE,
     BuffParameter.HP_RAISE_BY_MAX: BuffValueUnit.PERCENTAGE,

@@ -72,11 +72,11 @@ class SkillDataBase(Generic[HT, ET], ABC):
         action_conds_elem_flag: set[ElementFlag] = set()
         for hit_data_lv in self.hit_data_mtx:
             for hit_data in hit_data_lv:
-                if not hit_data.hit_attr.has_action_condition:
+                if not hit_data.action_condition_id:
                     continue  # No action condition
 
                 action_conds_elem_flag.add(
-                    self.asset_action_cond.get_data_by_id(hit_data.hit_attr.action_condition_id).elemental_target
+                    self.asset_action_cond.get_data_by_id(hit_data.action_condition_id).elemental_target
                 )
         if action_conds_elem_flag:
             # Elemental action condition available

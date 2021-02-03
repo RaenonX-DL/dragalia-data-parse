@@ -1052,6 +1052,26 @@
     "text": "龍化結束"
   },
   {
+    "id": "ENUM_COND_ACTION_COND_LV_1",
+    "text": "等級 1"
+  },
+  {
+    "id": "ENUM_COND_ACTION_COND_LV_2",
+    "text": "等級 2"
+  },
+  {
+    "id": "ENUM_COND_ACTION_COND_LV_3",
+    "text": "等級 3"
+  },
+  {
+    "id": "ENUM_COND_ACTION_COND_LV_4",
+    "text": "等級 4"
+  },
+  {
+    "id": "ENUM_COND_ACTION_COND_LV_5",
+    "text": "等級 5"
+  },
+  {
     "id": "ENUM_COND_SKILL_USED_S1",
     "text": "S1 使用後"
   },
@@ -1566,6 +1586,10 @@
   {
     "id": "ENUM_BUFF_RESISTANCE_SCORCHREND",
     "text": "劫火抗性"
+  },
+  {
+    "id": "ENUM_BUFF_DAMAGE_REDUCTION",
+    "text": "減傷"
   },
   {
     "id": "ENUM_BUFF_HP_FIX_BY_MAX",

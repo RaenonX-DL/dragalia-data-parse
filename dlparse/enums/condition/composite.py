@@ -71,6 +71,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     weapon_type_converted: Weapon = field(init=False)
     action_cond: Optional[Condition] = field(init=False)
     action_cond_id: int = field(init=False)
+    action_cond_lv: Optional[Condition] = field(init=False)
+    action_cond_lv_converted: int = field(init=False)
     gauge_filled: Optional[Condition] = field(init=False)
     gauge_filled_converted: int = field(init=False)
     shapeshift_count: Optional[Condition] = field(init=False)
@@ -157,6 +159,9 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.action_cond and self.action_cond not in CondCat.action_condition:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_ACTION_CONDITION)
 
+        if self.action_cond_lv and self.action_cond_lv not in CondCat.self_action_cond_lv:
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_ACTION_COND_LV)
+
         # Check `self.gauge_filled`
         if self.gauge_filled and self.gauge_filled not in CondCat.self_gauge_filled:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_GAUGE_FILLED)
@@ -227,6 +232,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.buff_field_ally = CondCat.self_in_buff_field_ally.extract(conditions)
         self.weapon_type = CondCat.self_weapon_type.extract(conditions)
         self.action_cond = CondCat.action_condition.extract(conditions)
+        self.action_cond_lv = CondCat.self_action_cond_lv.extract(conditions)
         self.gauge_filled = CondCat.self_gauge_filled.extract(conditions)
         self.shapeshift_count = CondCat.shapeshifted_count.extract(conditions)
         self.in_dragon_count = CondCat.in_dragon_count.extract(conditions)
@@ -269,6 +275,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.buff_field_ally_converted = CondCat.self_in_buff_field_ally.convert(self.buff_field_ally, on_missing=0)
         self.weapon_type_converted = CondCat.self_weapon_type.convert(self.weapon_type, on_missing=None)
         self.action_cond_id = CondCat.action_condition.convert(self.action_cond, on_missing=None)
+        self.action_cond_lv_converted = CondCat.self_action_cond_lv.convert(self.action_cond_lv, on_missing=0)
         self.gauge_filled_converted = CondCat.self_gauge_filled.convert(self.gauge_filled, on_missing=0)
         self.shapeshift_count_converted = CondCat.shapeshifted_count.convert(self.shapeshift_count, on_missing=0)
         self.in_dragon_count_converted = CondCat.in_dragon_count.convert(self.in_dragon_count, on_missing=0)
@@ -341,6 +348,9 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.action_cond:
             ret += (self.action_cond,)
 
+        if self.action_cond_lv:
+            ret += (self.action_cond_lv,)
+
         if self.gauge_filled:
             ret += (self.gauge_filled,)
 
@@ -404,7 +414,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         - [Self] Combo count
         - [Self] Buff count
         - [Self] Buff field built by self / ally
-        - [Self] Self action condition
+        - [Self] Action condition / Action condition level
         - [Self] Gauge status
         - [Self] Shapeshift
         - [Skill] Bullet hit count

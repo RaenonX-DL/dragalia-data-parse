@@ -1052,6 +1052,26 @@
     "text": "After Shapeshift"
   },
   {
+    "id": "ENUM_COND_ACTION_COND_LV_1",
+    "text": "Level 1"
+  },
+  {
+    "id": "ENUM_COND_ACTION_COND_LV_2",
+    "text": "Level 2"
+  },
+  {
+    "id": "ENUM_COND_ACTION_COND_LV_3",
+    "text": "Level 3"
+  },
+  {
+    "id": "ENUM_COND_ACTION_COND_LV_4",
+    "text": "Level 4"
+  },
+  {
+    "id": "ENUM_COND_ACTION_COND_LV_5",
+    "text": "Level 5"
+  },
+  {
     "id": "ENUM_COND_SKILL_USED_S1",
     "text": "After S1 Used"
   },
@@ -1566,6 +1586,10 @@
   {
     "id": "ENUM_BUFF_RESISTANCE_SCORCHREND",
     "text": "Scorchrend Res"
+  },
+  {
+    "id": "ENUM_BUFF_DAMAGE_REDUCTION",
+    "text": "Damage Reduction"
   },
   {
     "id": "ENUM_BUFF_HP_FIX_BY_MAX",

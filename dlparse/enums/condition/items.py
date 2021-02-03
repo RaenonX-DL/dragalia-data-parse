@@ -236,6 +236,14 @@ class Condition(TranslatableEnumMixin, Enum):
     SELF_LAPIS_CARD_3 = 413  # ACID: 1319
     # endregion
 
+    # region Action condition level
+    ACTION_COND_LV_1 = 441
+    ACTION_COND_LV_2 = 442
+    ACTION_COND_LV_3 = 443
+    ACTION_COND_LV_4 = 444
+    ACTION_COND_LV_5 = 445
+    # endregion
+
     # region Gauge-related
     SELF_GAUGE_FILLED_0 = 450
     SELF_GAUGE_FILLED_1 = 451

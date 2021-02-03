@@ -30,6 +30,7 @@ class HitData(Generic[T], ABC):
     """
 
     ability_data: list[AbilityEntry]
+    action_cond_override: Optional[int] = None
 
     @property
     def action_time(self):
@@ -50,6 +51,16 @@ class HitData(Generic[T], ABC):
             return HitTargetSimple.FIELD
 
         return ret
+
+    @property
+    def action_condition_id(self) -> int:
+        """
+        Get the actual action condition ID used for this hit data.
+
+        If ``action_cond_override`` is specified, ``action_cond_override`` will be returned.
+        Otherwise, action condition on ``hit_attr`` will be returned.
+        """
+        return self.action_cond_override or self.hit_attr.action_condition_id
 
     def is_effective_to_enemy(self, desired_effectiveness: bool) -> bool:
         """
