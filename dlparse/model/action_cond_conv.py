@@ -132,6 +132,54 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
             self.to_param_up(BuffParameter.HP_DRAIN_DAMAGE, action_cond.hp_drain_rate, action_cond, payload),
         ]
 
+    def _units_resistance_buffs(
+            self, action_cond: "ActionConditionEntry", payload: Optional[PT] = None
+    ) -> list[Optional[UT]]:
+        return [
+            self.to_param_up(
+                BuffParameter.RESISTANCE_POISON, action_cond.resistance_poison, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_BURN, action_cond.resistance_burn, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_FREEZE, action_cond.resistance_freeze, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_PARALYZE, action_cond.resistance_paralyze, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_BLIND, action_cond.resistance_blind, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_STUN, action_cond.resistance_stun, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_CURSE, action_cond.resistance_curse, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_BOG, action_cond.resistance_bog, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_SLEEP, action_cond.resistance_sleep, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_FROSTBITE, action_cond.resistance_frostbite, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_FLASHBURN, action_cond.resistance_flashburn, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_STORMLASH, action_cond.resistance_stormlash, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_SHADOWBLIGHT, action_cond.resistance_shadowblight, action_cond, payload
+            ),
+            self.to_param_up(
+                BuffParameter.RESISTANCE_SCORCHREND, action_cond.resistance_scorchrend, action_cond, payload
+            ),
+        ]
+
     def to_effect_units(
             self, action_cond: "ActionConditionEntry", payload: Optional[PT] = None
     ) -> list[UT]:
@@ -142,6 +190,7 @@ class ActionCondEffectConvertible(Generic[UT, PT], ABC):
             + self._units_defensive_buffs(action_cond, payload)
             + self._units_recovery_buffs(action_cond, payload)
             + self._units_special_buffs(action_cond, payload)
+            + self._units_resistance_buffs(action_cond, payload)
             if unit  # Skipping empty unit
         ]
 

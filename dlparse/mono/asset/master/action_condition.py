@@ -64,6 +64,21 @@ class ActionConditionEntry(MasterEntryBase):
     resistance_light: float
     resistance_shadow: float
 
+    resistance_poison: float
+    resistance_burn: float
+    resistance_freeze: float
+    resistance_paralyze: float
+    resistance_blind: float
+    resistance_stun: float
+    resistance_curse: float
+    resistance_bog: float
+    resistance_sleep: float
+    resistance_frostbite: float
+    resistance_flashburn: float
+    resistance_stormlash: float
+    resistance_shadowblight: float
+    resistance_scorchrend: float
+
     enhance_fs_action_id: int
     enhance_skill_1_id: int
     enhance_skill_2_id: int
@@ -119,6 +134,20 @@ class ActionConditionEntry(MasterEntryBase):
             resistance_wind=data["_RateWind"],
             resistance_light=data["_RateLight"],
             resistance_shadow=data["_RateDark"],
+            resistance_poison=data["_RatePoison"],
+            resistance_burn=data["_RateBurn"],
+            resistance_freeze=data["_RateFreeze"],
+            resistance_paralyze=data["_RateParalysis"],
+            resistance_blind=data["_RateDarkness"],
+            resistance_stun=data["_RateSwoon"],
+            resistance_curse=data["_RateCurse"],
+            resistance_bog=data["_RateSlowMove"],
+            resistance_sleep=data["_RateSleep"],
+            resistance_frostbite=data["_RateFrostbite"],
+            resistance_flashburn=data["_RateFlashheat"],
+            resistance_stormlash=data["_RateCrashWind"],
+            resistance_shadowblight=data["_RateDarkAbs"],
+            resistance_scorchrend=data["_RateDestroyFire"],
             enhance_fs_action_id=data["_EnhancedBurstAttack"],
             enhance_skill_1_id=data["_EnhancedSkill1"],
             enhance_skill_2_id=data["_EnhancedSkill2"],

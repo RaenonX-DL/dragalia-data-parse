@@ -178,3 +178,30 @@ def test_def_down_field_2(transformer_skill: SkillTransformer):
         actual_buffs = skill_data.debuffs[skill_lv]
 
         check_debuff_unit_match(actual_buffs, expected_buffs)
+
+
+def test_res_down_poison(transformer_skill: SkillTransformer):
+    # Halloween Melsa S2
+    # https://dragalialost.wiki/w/Halloween_Melsa
+    skill_data = transformer_skill.transform_attacking(105503032).with_conditions()
+
+    expected_debuffs_lv_1 = [
+        DebuffInfo("LAN_131_04_H01_LV01", BuffParameter.RESISTANCE_POISON, -0.05, 100, 30, False),
+        DebuffInfo("LAN_131_04_H01_LV01", BuffParameter.RESISTANCE_POISON, -0.05, 100, 30, False),
+        DebuffInfo("LAN_131_04_H02_LV01", BuffParameter.RESISTANCE_POISON, -0.05, 100, 30, False),
+    ]
+    expected_debuffs_lv_2 = [
+        DebuffInfo("LAN_131_04_H01_LV02", BuffParameter.RESISTANCE_POISON, -0.1, 100, 30, False),
+        DebuffInfo("LAN_131_04_H01_LV02", BuffParameter.RESISTANCE_POISON, -0.1, 100, 30, False),
+        DebuffInfo("LAN_131_04_H02_LV02", BuffParameter.RESISTANCE_POISON, -0.1, 100, 30, False),
+    ]
+
+    expected_debuffs = [expected_debuffs_lv_1, expected_debuffs_lv_2]
+
+    assert skill_data.max_level == 2
+
+    for skill_lv in range(skill_data.max_level):
+        expected_buffs = expected_debuffs[skill_lv]
+        actual_buffs = skill_data.debuffs[skill_lv]
+
+        check_debuff_unit_match(actual_buffs, expected_buffs)
