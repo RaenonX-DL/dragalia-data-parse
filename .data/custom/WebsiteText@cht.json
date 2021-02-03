@@ -300,6 +300,54 @@
     "text": "S2 (煉金 3)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_68",
+    "text": "S1 (蘇洛未召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_68",
+    "text": "S2 (蘇洛未召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_69",
+    "text": "S1 (蘇洛已召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_69",
+    "text": "S2 (蘇洛已召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_70",
+    "text": "S1 (亞森未召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_70",
+    "text": "S2 (亞森未召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_71",
+    "text": "S1 (亞森已召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_71",
+    "text": "S2 (亞森已召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_74",
+    "text": "S1 (匹托斯未召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_74",
+    "text": "S2 (匹托斯未召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_75",
+    "text": "S1 (匹托斯已召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_75",
+    "text": "S2 (匹托斯已召喚)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_p2",
     "text": "S2 P2"
   },
@@ -1250,6 +1298,10 @@
   {
     "id": "ENUM_BUFF_COMBO_TIME",
     "text": "Combo 時間"
+  },
+  {
+    "id": "ENUM_BUFF_HP_DRAIN_DAMAGE",
+    "text": "吸血 (傷害 %)"
   },
   {
     "id": "ENUM_BUFF_FLAME_ELEM_DMG_UP",

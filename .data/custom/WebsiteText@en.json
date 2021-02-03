@@ -300,6 +300,54 @@
     "text": "S2 (3 Cartridges)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_68",
+    "text": "S1 (w/o Zorro)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_68",
+    "text": "S2 (w/o Zorro)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_69",
+    "text": "S1 (w/ Zorro)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_69",
+    "text": "S2 (w/ Zorro)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_70",
+    "text": "S1 (w/o Arsene)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_70",
+    "text": "S2 (w/o Arsene)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_71",
+    "text": "S1 (w/ Arsene)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_71",
+    "text": "S2 (w/ Arsene)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_74",
+    "text": "S1 (w/o Pithos)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_74",
+    "text": "S2 (w/o Pithos)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_75",
+    "text": "S1 (w/ Pithos)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_75",
+    "text": "S2 (w/ Pithos)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_p2",
     "text": "S2 P2"
   },
@@ -1250,6 +1298,10 @@
   {
     "id": "ENUM_BUFF_COMBO_TIME",
     "text": "Combo Time"
+  },
+  {
+    "id": "ENUM_BUFF_HP_DRAIN_DAMAGE",
+    "text": "HP Drain (Damage %)"
   },
   {
     "id": "ENUM_BUFF_FLAME_ELEM_DMG_UP",

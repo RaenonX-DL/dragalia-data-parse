@@ -48,7 +48,9 @@ class SkillExportEntryBase(Generic[T], CharaEntryBase, HashableEntryBase, JsonEx
         self.skill_internal_id = skill_id_entry.skill_id
         self.skill_identifiers = skill_id_entry.skill_identifier_labels
         self.skill_num = skill_id_entry.skill_num
-        self.skill_name = TextEntry(self.asset_manager.asset_text_multi, skill_data.name_label)
+        self.skill_name = TextEntry(
+            self.asset_manager.asset_text_multi, skill_data.name_label, on_not_found=skill_data.name_label
+        )
         self.skill_max_level = self.chara_data.max_skill_level(skill_id_entry.skill_num)
 
         self.sp_at_max = skill_data.get_sp_at_level(self.skill_max_level)

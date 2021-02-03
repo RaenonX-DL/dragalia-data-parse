@@ -11,6 +11,8 @@ __all__ = ("TextEntry",)
 
 T = TypeVar("T", bound=MultilingualAssetBase)
 
+THROW_ERROR = object()
+
 
 @dataclass
 class TextEntry(JsonExportableEntryBase):
@@ -27,6 +29,8 @@ class TextEntry(JsonExportableEntryBase):
     Official text asset in multi languages.
     The name of this is identical to the one in :class:`AssetManager` for convenience.
     """
+
+    on_not_found: Optional[Any] = THROW_ERROR
 
     text_dict: dict[str, str] = field(init=False)
 
@@ -54,9 +58,12 @@ class TextEntry(JsonExportableEntryBase):
 
             # Check if the text has been recorded
             if lang_code not in self.text_dict:
-                raise MissingTextError(
-                    labels, lang_code, f"Text asset{' ' if self.asset_text_multi else ' not '}provided"
-                )
+                if self.on_not_found is not THROW_ERROR:
+                    self.text_dict[lang_code] = self.on_not_found
+                else:
+                    raise MissingTextError(
+                        labels, lang_code, f"Text asset{' ' if self.asset_text_multi else ' not '}provided"
+                    )
 
     def to_json_entry(self) -> dict[str, Any]:
         return self.text_dict
