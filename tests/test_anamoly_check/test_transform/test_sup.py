@@ -37,7 +37,7 @@ def test_transform_all_supportive_skills(
                 if not any(entry.buffs):
                     skill_no_buff.add((skill_id, entry.condition_comp.conditions_sorted))
         except HitDataUnavailableError:
-            # No attacking data found / skill is not an attacking skill
+            # No supportive data found / skill is not a supportive skill
             pass
         except ActionDataNotFoundError:
             # Action ID found for higher level, but no related action data found yet

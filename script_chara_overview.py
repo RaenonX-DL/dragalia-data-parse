@@ -144,7 +144,7 @@ def main():
     # - 10150304 (モナ)
     # - 10350505 (ジョーカー)
     # - 10450404 (ソフィー)
-    chara_skill_overview(10350505)
+    chara_skill_overview(10950501)
 
 
 if __name__ == '__main__':

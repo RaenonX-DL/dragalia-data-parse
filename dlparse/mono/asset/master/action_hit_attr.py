@@ -205,6 +205,10 @@ class HitAttrEntry(MasterEntryBase):
 
         - Deals damage to the enemy
         """
+        # pylint: disable=too-many-return-statements
+        # These return statements check for various properties that determine
+        # if the hit attribute will or will not target the enemy.
+
         # Known priority rules:
         # - Dummy hit count > Hit exec type
         #   - For Nadine S1 (`105501021`), the label used for counting the dummy hit is considered as buffing hit.
@@ -222,8 +226,18 @@ class HitAttrEntry(MasterEntryBase):
             # Therefore, returning the desired effectiveness to keep the effectiveness being the desired one
             return desired_effectiveness
 
-        if self.hit_exec_type not in (HitExecType.DAMAGE, HitExecType.UNKNOWN):
-            # Not dealing damage
+        if (
+                self.hit_exec_type == HitExecType.NO_DAMAGE
+                and self.target_group in (HitTarget.ENEMY, HitTarget.HIT_OR_GUARDED_RECORD)
+        ):
+            # Buff dispelling
+            return True
+
+        if self.target_group not in (HitTarget.ENEMY, HitTarget.HIT_OR_GUARDED_RECORD):
+            # Hit target is not enemy
+            return False
+
+        if self.hit_exec_type.is_not_target_the_enemy:
             # > Some hit attributes (`BOW_CHR_09_H01_TENSION_LV03` and `BOW_CHR_09_H02_SIELD_LV03` of Nefaria S2
             # > (`106402022`) has damage modifier yet it's a buffing hit
             return False
@@ -231,10 +245,6 @@ class HitAttrEntry(MasterEntryBase):
         if self.damage_modifier:
             # Deals damage
             return True
-
-        if self.target_group != HitTarget.ENEMY:
-            # Has action condition but the target is not enemy
-            return False
 
         if not self.has_action_condition:
             # No action condition assigned & does not have action condition binded

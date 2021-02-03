@@ -69,6 +69,13 @@ class HitTarget(Enum):
     """The effect will be applied to the whole team."""
     TEAM_LOWEST_HP = 7
     """The effect will be applied to the member who has the lowest HP% among the team, including the user."""
+    HIT_OR_GUARDED_RECORD = 8
+    # FIXME: (weilieh) Check the exact usage of this hit target
+    """
+    The effect applying condition is unknown.
+
+    However, this appears for buff dispelling hits (along with hit exec type 6 - no damage).
+    """
     HIT_DEPENDENT_SELF = 15
     """
     The effect will be applied to the user themselves, but it depends on how many times the skill hit.
@@ -95,6 +102,7 @@ TRANS_DICT_TO_SIMPLE: dict[HitTarget, HitTargetSimple] = {
     HitTarget.SELF_SKILL_FIELD: HitTargetSimple.SELF_SURROUNDING,
     HitTarget.ENEMY: HitTargetSimple.ENEMY,
     HitTarget.TEAM: HitTargetSimple.TEAM,
+    HitTarget.HIT_OR_GUARDED_RECORD: HitTargetSimple.ENEMY,
     HitTarget.HIT_DEPENDENT_SELF: HitTargetSimple.SELF
 }
 """A :class:`dict` to convert :class:`HitTarget` to the simplified version."""
