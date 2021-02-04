@@ -312,7 +312,8 @@ class SkillTransformer:
                 hit_data_mtx.append([])
 
             for hit_data in hit_data_lv:
-                # Check if the hit is effective to target, if desired; check the docs for the definition of effective
+                # Check if the hit is effective to target, if desired
+                # Check the docs of `hit_data.is_effective_to_enemy()` for the definition of effective
                 if hit_data.is_effective_to_enemy(effective_to_enemy) == effective_to_enemy:
                     hit_data_mtx[skill_lv - 1].append(hit_data)
 

@@ -160,7 +160,12 @@ class HitAttrEntry(MasterEntryBase):
         return self.hit_condition_lower_bound and not self.hit_condition_upper_bound
 
     def is_effective_hit_count(self, hit_count: int) -> bool:
-        """Check if the hit attribute is effective when the user's hit count is ``hit_count``."""
+        """
+        Check if the hit attribute is effective when the user's hit count is ``hit_count``.
+
+        Currently this is used for teammate coverage condition, which appears in Nadine S1 (``105501021``),
+        Laranoa S2 (``106502012``) and Summer Cleo S2 (``106504012``).
+        """
         if not self.has_hit_condition:
             # Always effective if no hit condition
             return True
