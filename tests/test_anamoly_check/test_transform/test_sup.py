@@ -8,6 +8,7 @@ from dlparse.transformer import SkillTransformer
 from tests.expected_skills_lookup import skill_ids_sup
 
 
+@pytest.mark.holistic
 @pytest.mark.skip("Temporarily skipping exhaustive supportive skill transforming check. "
                   "Remove when start working on supportive skills.")
 def test_transform_all_supportive_skills(

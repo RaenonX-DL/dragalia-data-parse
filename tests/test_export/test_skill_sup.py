@@ -1,3 +1,5 @@
+import pytest
+
 from dlparse.enums import BuffParameter, Condition, ConditionComposite, HitTargetSimple
 from dlparse.export import export_sup_skills_as_entries
 from dlparse.mono.manager import AssetManager
@@ -38,6 +40,7 @@ expected_contained_info: ExpectedInfoLookup = {
 }
 
 
+@pytest.mark.holistic
 def test_exported_entries(asset_manager: AssetManager):
     entries = export_sup_skills_as_entries(asset_manager)
 

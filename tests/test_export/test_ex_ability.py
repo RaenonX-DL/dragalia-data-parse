@@ -1,7 +1,10 @@
+import pytest
+
 from dlparse.export import export_ex_abilities_as_entries
 from dlparse.mono.manager import AssetManager
 
 
+@pytest.mark.holistic
 def test_exported_json(asset_manager: AssetManager):
     entries = export_ex_abilities_as_entries(asset_manager)
 

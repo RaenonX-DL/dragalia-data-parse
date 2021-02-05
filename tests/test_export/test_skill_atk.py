@@ -21,6 +21,7 @@ expected_contained_info: dict[tuple[int, ConditionComposite], pytest.approx] = {
 }
 
 
+@pytest.mark.holistic
 def test_exported_entries(asset_manager: AssetManager):
     entries = export_atk_skills_as_entries(asset_manager, skip_unparsable=False, include_dragon=False)
 
@@ -43,6 +44,7 @@ def test_exported_entries(asset_manager: AssetManager):
     assert len(skill_comp_missing) == 0, f"Skill composition missing: {skill_comp_missing}"
 
 
+@pytest.mark.holistic
 def test_exported_json(asset_manager: AssetManager):
     entries = export_atk_skills_as_entries(asset_manager, include_dragon=False)
 

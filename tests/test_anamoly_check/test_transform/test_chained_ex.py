@@ -1,9 +1,12 @@
+import pytest
+
 from dlparse.errors import AbilityConditionUnconvertibleError, AbilityVariantUnconvertibleError
 from dlparse.mono.manager import AssetManager
 from dlparse.transformer import AbilityTransformer
 from tests.utils import UnknownAbilityData, UnknownAbilityDataCollection
 
 
+@pytest.mark.holistic
 def test_transform_all_character_chained_ex(transformer_ability: AbilityTransformer, asset_manager: AssetManager):
     unknown_abilities = UnknownAbilityDataCollection()
     counter: int = 0

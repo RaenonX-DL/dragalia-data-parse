@@ -75,7 +75,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest --slow
+          pytest --all
 
   tests-win-mac:
     name: Tests (Win & Mac)
@@ -101,7 +101,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest --slow
+          pytest --all
 
   coverage:
     name: Coverage
@@ -123,7 +123,7 @@ jobs:
 
       - name: Generate Coverage database
         run: |
-          coverage run -m pytest --slow
+          coverage run -m pytest --all
 
       - name: Generate Coverage report
         run: |

@@ -1,6 +1,6 @@
-# Code implementation notes
+# Code Implementation Notes
 
-### Dependency direction of `dlparse`
+## Dependency direction of `dlparse`
 
 `dlparse.mono.asset` &rarr; `dlparse.model` &rarr; `dlparse.transformer` &rarr; `dlparse.export`
 

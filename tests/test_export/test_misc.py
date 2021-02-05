@@ -26,6 +26,7 @@ unplayable_chara_ids: list[int] = [
 ]
 
 
+@pytest.mark.holistic
 def test_max_lv(asset_manager: AssetManager):
     entries = export_atk_skills_as_entries(asset_manager, skip_unparsable=True, include_dragon=False)
 
@@ -39,6 +40,7 @@ def test_max_lv(asset_manager: AssetManager):
                 )
 
 
+@pytest.mark.holistic
 def test_no_unplayable(asset_manager: AssetManager):
     entries = export_atk_skills_as_entries(asset_manager, skip_unparsable=True, include_dragon=False)
 
@@ -47,6 +49,7 @@ def test_no_unplayable(asset_manager: AssetManager):
             pytest.fail(f"Unplayable character included: {entry.character_internal_id}")
 
 
+@pytest.mark.holistic
 def test_skill_identifiers(asset_manager: AssetManager):
     # Only check if an entry dict can be created
     export_skill_identifiers_as_entry_dict(asset_manager)
