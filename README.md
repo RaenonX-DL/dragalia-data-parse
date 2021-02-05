@@ -1,19 +1,30 @@
 # dragalia-data-parse
 
-![CI](https://github.com/RaenonX-DL/dragalia-data-parse/workflows/CI/badge.svg)
-[![Codacy Badge - Coverage](https://app.codacy.com/project/badge/Grade/0053d85597a740c393a6bfd007e4033b)](https://www.codacy.com/gh/RaenonX-DL/dragalia-data-parse/dashboard)
-[![Codacy Badge - Quality](https://app.codacy.com/project/badge/Coverage/0053d85597a740c393a6bfd007e4033b)](https://www.codacy.com/gh/RaenonX-DL/dragalia-data-parse/dashboard)
-[![time tracker](https://wakatime.com/badge/github/RaenonX-DL/dragalia-data-parse.svg)](https://wakatime.com/badge/github/RaenonX-DL/dragalia-data-parse)
-
-------
+[![Parser-ci]][Parser-ci-link]
+[![Parser-cq-badge]][Parser-cq-link]
+[![Parser-coverage-badge]][Parser-coverage-link]
+[![Parser-lgtm-alert-badge]][Parser-lgtm-alert-link]
+[![Parser-lgtm-quality-badge]][Parser-lgtm-quality-link]
+[![Parser-time-badge]][Parser-time-link]
 
 This parses the original Dragalia Lost assets to be the file usable for [DL info website][DL-info].
 
 Developed under Python 3.9 (or higher).
 
-[DL-info]: http://dl.raenonx.cc
+[DL-info]: https://dl.raenonx.cc
 
-[RaenonX-DL]: https://github.com/RaenonX-DL
+[Parser-ci]: https://github.com/RaenonX-DL/dragalia-data-parse/workflows/CI/badge.svg
+[Parser-ci-link]: https://github.com/RaenonX-DL/dragalia-data-parse/actions?query=workflow%3ACI
+[Parser-coverage-badge]: https://app.codacy.com/project/badge/Coverage/0053d85597a740c393a6bfd007e4033b
+[Parser-coverage-link]: https://www.codacy.com/gh/RaenonX-DL/dragalia-data-parse/dashboard
+[Parser-cq-badge]: https://app.codacy.com/project/badge/Grade/0053d85597a740c393a6bfd007e4033b
+[Parser-cq-link]: https://www.codacy.com/gh/RaenonX-DL/dragalia-data-parse/dashboard
+[Parser-time-badge]: https://wakatime.com/badge/github/RaenonX-DL/dragalia-data-parse.svg
+[Parser-time-link]: https://wakatime.com/badge/github/RaenonX-DL/dragalia-data-parse
+[Parser-lgtm-alert-badge]: https://img.shields.io/lgtm/alerts/g/RaenonX-DL/dragalia-data-parse.svg?logo=lgtm&logoWidth=18
+[Parser-lgtm-alert-link]: https://lgtm.com/projects/g/RaenonX-DL/dragalia-data-parse/alerts/
+[Parser-lgtm-quality-badge]: https://img.shields.io/lgtm/grade/python/g/RaenonX-DL/dragalia-data-parse.svg?logo=lgtm&logoWidth=18
+[Parser-lgtm-quality-link]: https://lgtm.com/projects/g/RaenonX-DL/dragalia-data-parse/context:python
 
 ------
 
