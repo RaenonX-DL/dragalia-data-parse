@@ -1,5 +1,6 @@
 """Skill data transformer."""
-from typing import Optional, TYPE_CHECKING, Type, TypeVar
+from dataclasses import dataclass
+from typing import Iterable, Optional, TYPE_CHECKING, Type, TypeVar
 
 from dlparse.enums import Condition, ConditionCategories, ConditionComposite
 from dlparse.errors import (
@@ -14,12 +15,32 @@ from dlparse.mono.asset.base import ActionComponentHasHitLabels
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
 
-__all__ = ("SkillTransformer",)
+__all__ = ("SkillHitData", "SkillTransformer")
 
 T = TypeVar("T", bound=HitData)
 AT = TypeVar("AT", bound=ActionComponentHasHitLabels)
 
 HitDataList = list[T]
+
+
+@dataclass
+class SkillHitData:
+    """Hit data of a skill in various level."""
+
+    hit_data: list[list[T]]
+    # ``hit_count`` should exclude:
+    # - dummy hit count as they requires the actual condition used to get the skill data
+    # - hits with hit condition as they indirectly requires the actual condition same as above
+    hit_count: list[int]
+
+    chara_data: CharaDataEntry
+    skill_data: SkillDataEntry
+
+    max_level: int
+
+    def __post_init__(self):
+        self.hit_data = self.hit_data[:self.max_level]
+        self.hit_count = self.hit_count[:self.max_level]
 
 
 class SkillTransformer:
@@ -33,7 +54,7 @@ class SkillTransformer:
         self._asset_buff_count = asset_manager.asset_buff_count
         self._asset_chara_data = asset_manager.asset_chara_data
         self._asset_hit_attr = asset_manager.asset_hit_attr
-        self._asset_pa_info = asset_manager.asset_pa_info
+        self._asset_action_info_player = asset_manager.asset_action_info_player
         self._asset_skill = asset_manager.asset_skill_data
 
         self._loader_action = asset_manager.loader_action
@@ -109,7 +130,7 @@ class SkillTransformer:
         # Convert hit actions of the next action if the current one is being terminated
         # Formal Joachim S1 (`109503011`) has this
         if prefab.component_cancel_to_next:
-            next_action_id = self._asset_pa_info.get_data_by_id(action_id).next_action_id
+            next_action_id = self._asset_action_info_player.get_data_by_id(action_id).next_action_id
 
             ret.extend(self._get_hit_data_action_component(
                 hit_data_cls, skill_lv, next_action_id, ability_ids,
@@ -122,7 +143,7 @@ class SkillTransformer:
             self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_ids: list[int]
     ) -> HitDataList:
         # This currently handles additional inputs (Ramona S1, Lathna S1) only
-        action_info = self._asset_pa_info.get_data_by_id(action_id)
+        action_info = self._asset_action_info_player.get_data_by_id(action_id)
         if not action_info.next_action_id:
             # No next action
             return []
@@ -140,7 +161,7 @@ class SkillTransformer:
         while action_id_queue:
             # Pop the next action ID to get the prefab and the info
             curr_action_id = action_id_queue.pop(0)
-            curr_action_info = self._asset_pa_info.get_data_by_id(curr_action_id)
+            curr_action_info = self._asset_action_info_player.get_data_by_id(curr_action_id)
             if not curr_action_info:
                 raise ActionInfoNotFoundError(curr_action_id)
 
@@ -266,12 +287,22 @@ class SkillTransformer:
 
         return max_level + 1
 
-    def get_hit_data_matrix(
+    @staticmethod
+    def _get_zipped_ids(skill_data: SkillDataEntry, max_lv: int = 0) -> Iterable[tuple[int, int]]:
+        """Get the zipped action ID 1 and ability ID of ``skill_data``."""
+        if max_lv:
+            # Limit the count of IDs can be zipped if ``max_lv`` is given
+            return list(zip(skill_data.action_id_1_by_level, skill_data.ability_id_by_level))[:max_lv]
+
+        # No ``max_lv`` given, return all possiblities
+        return zip(skill_data.action_id_1_by_level, skill_data.ability_id_by_level)
+
+    def get_skill_hit_data(
             self, skill_id: int, hit_data_cls: Type[T], /,
             effective_to_enemy: bool = True, max_lv: int = 0, ability_ids: Optional[list[int]] = None
-    ) -> tuple[CharaDataEntry, SkillDataEntry, list[list[T]]]:
+    ) -> SkillHitData:
         """
-        Get a matrix of the hit data.
+        Get the hit data of a skill.
 
         ``max_lv`` limits max skill level to be returned.
         If set to ``0``, all possible levels (max 4) will be returned.
@@ -293,16 +324,10 @@ class SkillTransformer:
 
         # Get hit attribute data
         hit_data_mtx: list[list[T]] = []
+        hit_count: list[int] = []
 
         # Get all hit labels at different skill level
-        if max_lv:
-            # Limit the count of IDs can be zipped if ``max_lv`` is given
-            zipped_ids = list(zip(skill_data.action_id_1_by_level, skill_data.ability_id_by_level))[:max_lv]
-        else:
-            # No ``max_lv`` given, returning all possiblities
-            zipped_ids = zip(skill_data.action_id_1_by_level, skill_data.ability_id_by_level)
-
-        for skill_lv, (action_id, ability_id) in enumerate(zipped_ids, start=1):
+        for skill_lv, (action_id, ability_id) in enumerate(self._get_zipped_ids(skill_data, max_lv), start=1):
             hit_data_lv: HitDataList = self._get_hit_data_lv(
                 hit_data_cls, skill_lv, action_id, [abid for abid in [ability_id] + ability_ids if abid]
             )
@@ -310,22 +335,37 @@ class SkillTransformer:
             # Create an empty array for the current skill level
             if skill_lv > len(hit_data_mtx):
                 hit_data_mtx.append([])
+                hit_count.append(0)
 
             for hit_data in hit_data_lv:
+                # Count the base hit count
+                # ------------------------
+                # Dummy hit count should be counted with the actual condition,
+                # therefore checking if the hit attribute is dummy hit count.
+                # ------------------------
+                # Hits with hit condition should not be counted as the base hit count.
+                if not hit_data.hit_attr.dummy_hit_count and not hit_data.hit_attr.has_hit_condition:
+                    hit_count[skill_lv - 1] += hit_data.get_hit_count(
+                        hit_count[skill_lv - 1], ConditionComposite(), self._asset_manager
+                    )
+
                 # Check if the hit is effective to target, if desired
                 # Check the docs of `hit_data.is_effective_to_enemy()` for the definition of effective
                 if hit_data.is_effective_to_enemy(effective_to_enemy) == effective_to_enemy:
                     hit_data_mtx[skill_lv - 1].append(hit_data)
 
-        return chara_data, skill_data, hit_data_mtx[:self._get_highest_skill_level(hit_data_mtx)]
+        return SkillHitData(
+            hit_data=hit_data_mtx, hit_count=hit_count, max_level=self._get_highest_skill_level(hit_data_mtx),
+            chara_data=chara_data, skill_data=skill_data,
+        )
 
     def get_skill_cancel_unit_matrix(
-            self, chara_data: CharaDataEntry, skill_data: SkillDataEntry, max_lv: int = 0
+            self, skill_hit_data: SkillHitData, max_lv: int = 0
     ) -> list[list[SkillCancelActionUnit]]:
         """Get the matrix of skill cancel action units."""
         cancel_units: list[list[SkillCancelActionUnit]] = []
 
-        action_ids = skill_data.action_id_1_by_level
+        action_ids = skill_hit_data.skill_data.action_id_1_by_level
         if max_lv:
             action_ids = action_ids[:max_lv]
 
@@ -333,7 +373,7 @@ class SkillTransformer:
             prefab = self._loader_action.get_prefab(action_id)
 
             cancel_units.append(SkillCancelActionUnit.from_player_action_prefab(
-                self._loader_chara_motion, chara_data, prefab
+                self._loader_chara_motion, skill_hit_data.chara_data, prefab
             ))
 
         return cancel_units
@@ -354,15 +394,14 @@ class SkillTransformer:
         :raises ActionDataNotFoundError: if the action data file of the skill is not found
         :raises HitDataUnavailableError: if no hit data is available
         """
-        _, skill_data, hit_data_mtx = self.get_hit_data_matrix(
+        skill_hit_data = self.get_skill_hit_data(
             skill_id, BuffingHitData,
             effective_to_enemy=False, max_lv=max_lv, ability_ids=ability_ids
         )
 
         return SupportiveSkillData(
-            asset_action_cond=self._asset_action_cond,
-            skill_data_raw=skill_data,
-            hit_data_mtx=hit_data_mtx
+            asset_manager=self._asset_manager,
+            skill_hit_data=skill_hit_data
         )
 
     def transform_attacking(
@@ -388,18 +427,15 @@ class SkillTransformer:
         :raises ActionDataNotFoundError: if the action data file of the skill is not found
         :raises HitDataUnavailableError: if no hit data is available
         """
-        chara_data, skill_data, hit_data_mtx = self.get_hit_data_matrix(
+        skill_hit_data = self.get_skill_hit_data(
             skill_id, DamagingHitData, max_lv=max_lv, ability_ids=ability_ids
         )
 
         ret: AttackingSkillData = AttackingSkillData(
-            skill_data_raw=skill_data,
-            hit_data_mtx=hit_data_mtx,
-            asset_action_info=self._asset_pa_info,
-            asset_action_cond=self._asset_action_cond,
-            asset_buff_count=self._asset_buff_count,
+            asset_manager=self._asset_manager,
+            skill_hit_data=skill_hit_data,
             is_exporting=is_exporting,
-            cancel_unit_mtx=self.get_skill_cancel_unit_matrix(chara_data, skill_data, max_lv)
+            cancel_unit_mtx=self.get_skill_cancel_unit_matrix(skill_hit_data, max_lv)
         )
 
         if not any(entry.has_effects_on_enemy for entry in ret.get_all_possible_entries()):

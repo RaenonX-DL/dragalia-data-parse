@@ -25,9 +25,9 @@ def print_atk_data_entry(chara_data, skill_data, skill_entry):
     print(f"# Attacking effects (Lv.{skill_entry.max_level}) - "
           f"Conditions: {skill_entry.condition_comp.conditions_sorted}")
     print()
-    sp_str = f"SP: {skill_data.skill_data_raw.get_sp_at_level(skill_level)}"
-    if chara_data.ss_skill_id == skill_data.skill_data_raw.id:
-        sp_str += f" / SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(skill_level)}"
+    sp_str = f"SP: {skill_data.skill_data.get_sp_at_level(skill_level)}"
+    if chara_data.ss_skill_id == skill_data.skill_data.id:
+        sp_str += f" / SS SP: {skill_data.skill_data.get_ss_sp_at_level(skill_level)}"
     print(sp_str)
     print(f"Mods distribution: {skill_entry.mods[skill_level]}")
     print(f"Hit timings (s): {skill_entry.hit_timings[skill_level]}")
@@ -59,9 +59,9 @@ def print_sup_data_entry(chara_data, skill_data, skill_entry, max_level):
 
     buff_units = skill_entry.buffs[max_level - 1]
 
-    sp_str = f"SP: {skill_data.skill_data_raw.get_sp_at_level(max_level)}"
-    if chara_data.ss_skill_id == skill_data.skill_data_raw.id:
-        sp_str += f" / SS SP: {skill_data.skill_data_raw.get_ss_sp_at_level(max_level)}"
+    sp_str = f"SP: {skill_data.skill_data.get_sp_at_level(max_level)}"
+    if chara_data.ss_skill_id == skill_data.skill_data.id:
+        sp_str += f" / SS SP: {skill_data.skill_data.get_ss_sp_at_level(max_level)}"
 
     print(f"--- Lv.{max_level} {'(max)' if skill_entry.max_level == max_level else ''}| {sp_str}")
     print()

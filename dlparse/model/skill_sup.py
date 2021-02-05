@@ -48,13 +48,6 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
     Calling ``buffs_base[skill_lv]`` will return a set of buffs at ``skill_lv``.
     """
-    buffs_teammate_coverage: list[list[set[HitActionConditionEffectUnit]]] = field(init=False)
-    """
-    Buffs to be granted for different count of teammates covered.
-
-    Calling ``buffs_teammate_coverage[skill_lv][teammate_count]`` will return a set of buffs at ``skill_lv``
-    when ``teammate_count`` covered.
-    """
     buffs_elemental: list[dict[Element, set[HitActionConditionEffectUnit]]] = field(init=False)
     """
     Buffs to be granted only if the target element matches.
@@ -112,7 +105,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
     def _init_base_buffs(self, action_condition_asset: ActionConditionAsset):
         self.buffs_base = []
 
-        for hit_data_lv in self.hit_data_mtx:
+        for hit_data_lv in self.skill_hit_data.hit_data:
             buff_lv = set()
 
             for hit_data in hit_data_lv:
@@ -134,41 +127,10 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
             self.buffs_base.append(buff_lv)
 
-    def _init_teammate_coverage_buffs(self, action_condition_asset: ActionConditionAsset):
-        self.buffs_teammate_coverage: list[list[set[HitActionConditionEffectUnit]]] = []
-
-        teammate_coverage_counts = ConditionCategories.skill_teammates_covered.targets
-
-        for hit_data_lv in self.hit_data_mtx:
-            buff_lv: list[set[HitActionConditionEffectUnit]] = [set() for _ in teammate_coverage_counts]
-
-            for hit_data in hit_data_lv:
-                hit_attr = hit_data.hit_attr
-
-                for teammate_count in teammate_coverage_counts:
-                    if not hit_attr.has_hit_condition:
-                        continue  # No skill hit condition
-
-                    # Currently, only Nadine S1, S!Cleo S2 and Laranoa S2 uses teammate coverage condition.
-                    # This calculation allows us to get the offset of the conditions,
-                    # then subtract the offset with the boundaries to get the teammates coverage count.
-                    hit_cond_offset = min(hit_attr.hit_condition_lower_bound, hit_attr.hit_condition_upper_bound) + 1
-                    if teammate_count < hit_attr.hit_condition_lower_bound - hit_cond_offset:
-                        continue  # Teammate # lower than the boundary
-                    if (
-                            hit_attr.hit_condition_upper_bound  # This will be 0 if no upper limit
-                            and teammate_count > hit_attr.hit_condition_upper_bound - hit_cond_offset
-                    ):
-                        continue  # Teammate # higher than the boundary
-
-                    buff_lv[teammate_count].update(hit_data.to_buffing_units(action_condition_asset))
-
-            self.buffs_teammate_coverage.append(buff_lv)
-
     def _init_elemental_buffs(self, action_condition_asset: ActionConditionAsset):
         self.buffs_elemental: list[dict[Element, set[HitActionConditionEffectUnit]]] = []
 
-        for hit_data_lv in self.hit_data_mtx:
+        for hit_data_lv in self.skill_hit_data.hit_data:
             buff_lv: dict[Element, set[HitActionConditionEffectUnit]] = {
                 elem: set() for elem in Element.get_all_valid_elements()
             }
@@ -190,7 +152,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
     def _init_pre_conditioned_buffs(self, action_condition_asset: ActionConditionAsset):
         self.buffs_pre_conditioned = []
 
-        for hit_data_lv in self.hit_data_mtx:
+        for hit_data_lv in self.skill_hit_data.hit_data:
             buff_lv: dict[ConditionComposite, set[HitActionConditionEffectUnit]] = defaultdict(set)
 
             for hit_data in hit_data_lv:
@@ -203,12 +165,53 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
             self.buffs_pre_conditioned.append(dict(buff_lv))
 
     def __post_init__(self):
-        self._init_base_buffs(self.asset_action_cond)
-        self._init_teammate_coverage_buffs(self.asset_action_cond)
-        self._init_elemental_buffs(self.asset_action_cond)
-        self._init_pre_conditioned_buffs(self.asset_action_cond)
+        self._init_base_buffs(self.asset_manager.asset_action_cond)
+        self._init_elemental_buffs(self.asset_manager.asset_action_cond)
+        self._init_pre_conditioned_buffs(self.asset_manager.asset_action_cond)
 
-        super().__post_init__(self.asset_action_cond)
+        # Fields need to be initialized first to get all possible preconditions
+        super().__post_init__(self.asset_manager.asset_action_cond)
+
+    def _teammate_coverage_effects(
+            self, condition_comp: ConditionComposite
+    ) -> list[list[set[HitActionConditionEffectUnit]]]:
+        """
+        Get the effects to grant for different count of teammates covered.
+
+        Calling ``buffs_teammate_coverage[skill_lv][teammate_count]`` will return a set of buffs at ``skill_lv``
+        when ``teammate_count`` covered.
+        """
+        ret = []
+
+        teammate_coverage_counts = ConditionCategories.skill_teammates_covered.targets
+
+        for hit_count, hit_data_lv in zip(self.skill_hit_data.hit_count, self.hit_data_mtx):
+            buff_lv: list[set[HitActionConditionEffectUnit]] = [set() for _ in teammate_coverage_counts]
+
+            if not any(hit_data.hit_attr.has_hit_condition for hit_data in hit_data_lv):
+                ret.append(buff_lv)
+                continue  # No skill hit condition
+
+            for hit_data in hit_data_lv:
+                hit_attr = hit_data.hit_attr
+
+                # Non-dummy hit count already counted as ``hit_count``
+                # (counted when getting the skill hit data in skill transformer),
+                # therefore only counting dummy hit counts here.
+                if hit_attr.dummy_hit_count:
+                    hit_count += hit_data.get_hit_count(hit_count, condition_comp, self.asset_manager)
+
+                for teammate_count in teammate_coverage_counts:
+                    if not hit_attr.has_hit_condition:
+                        continue  # No skill hit condition
+                    if not hit_attr.is_effective_hit_count(hit_count):
+                        continue  # Hit attribute ineffective
+
+                    buff_lv[teammate_count].update(hit_data.to_buffing_units(self.asset_manager.asset_action_cond))
+
+            ret.append(buff_lv)
+
+        return ret
 
     def with_conditions(self, condition_comp: Optional[ConditionComposite] = None) -> SupportiveSkillEntry:
         if not condition_comp:
@@ -219,10 +222,10 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
         # Attach teammate coverage only buffs
         if condition_comp.teammate_coverage:
+            coverage_effects = self._teammate_coverage_effects(condition_comp)
+
             for skill_lv in range(self.max_level):
-                buffs[skill_lv].update(
-                    self.buffs_teammate_coverage[skill_lv][condition_comp.teammate_coverage_converted]
-                )
+                buffs[skill_lv].update(coverage_effects[skill_lv][condition_comp.teammate_coverage_converted])
 
         # Attach elemental buffs
         if condition_comp.target_element:

@@ -1,11 +1,15 @@
 """Base classes for a skill data."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Generic, TypeVar, final
+from typing import Generic, TYPE_CHECKING, TypeVar, final
 
 from dlparse.enums import Condition, ConditionCategories, ConditionComposite, Element, ElementFlag
-from dlparse.mono.asset import ActionConditionAsset, SkillDataEntry
+from dlparse.mono.asset import SkillDataEntry
 from .hit import HitData
+
+if TYPE_CHECKING:
+    from dlparse.mono.manager import AssetManager
+    from dlparse.transformer import SkillHitData
 
 __all__ = ("SkillEntryBase", "SkillDataBase")
 
@@ -27,11 +31,12 @@ ET = TypeVar("ET", bound=SkillEntryBase)
 class SkillDataBase(Generic[HT, ET], ABC):
     """Base class for a single skill data."""
 
-    asset_action_cond: ActionConditionAsset
+    asset_manager: "AssetManager"
 
-    skill_data_raw: SkillDataEntry
+    skill_hit_data: "SkillHitData"
 
-    hit_data_mtx: list[list[HT]]
+    skill_data: SkillDataEntry = field(init=False)
+    hit_data_mtx: list[list[HT]] = field(init=False)
 
     possible_conditions: set[ConditionComposite] = field(init=False, default_factory=ConditionComposite)
 
@@ -76,7 +81,7 @@ class SkillDataBase(Generic[HT, ET], ABC):
                     continue  # No action condition
 
                 action_conds_elem_flag.add(
-                    self.asset_action_cond.get_data_by_id(hit_data.action_condition_id).elemental_target
+                    self.asset_manager.asset_action_cond.get_data_by_id(hit_data.action_condition_id).elemental_target
                 )
         if action_conds_elem_flag:
             # Elemental action condition available
@@ -101,6 +106,9 @@ class SkillDataBase(Generic[HT, ET], ABC):
         raise NotImplementedError()
 
     def __post_init__(self, *args, **kwargs):
+        self.skill_data = self.skill_hit_data.skill_data
+        self.hit_data_mtx = self.skill_hit_data.hit_data
+
         self._init_all_possible_conditions(*args, **kwargs)
 
     def get_all_possible_entries(self) -> list[ET]:

@@ -1,17 +1,21 @@
 """Class for a single damaging hit."""
 from dataclasses import dataclass, field
+from functools import cache
 from itertools import product
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from dlparse.enums import ConditionComposite, FireStockPattern
 from dlparse.errors import AppValueError, BulletEndOfLifeError, DamagingHitValidationFailedError
 from dlparse.mono.asset import (
     ActionBuffField, ActionBullet, ActionBulletStockFire, ActionComponentHasHitLabels, ActionConditionAsset,
-    BuffCountAsset, HitAttrEntry, PlayerActionInfoAsset,
+    BuffCountAsset, HitAttrEntry,
 )
 from dlparse.utils import calculate_crisis_mod
 from .action_cond_effect import EnemyAfflictionEffectUnit, HitActionConditionEffectUnit
 from .hit_conv import HitDataEffectConvertible
+
+if TYPE_CHECKING:
+    from dlparse.mono.manager import AssetManager
 
 __all__ = ("DamagingHitData", "DamageUnit")
 
@@ -76,6 +80,10 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
 
     # endregion
 
+    def __hash__(self):
+        # Enable the use of `@cache`
+        return id(self)
+
     def _init_validity_check(self):
         if self.will_deteriorate and self.deterioration_rate == 0:
             # The hit ``will_deteriorate``, but the rate of deterioration is not set
@@ -132,6 +140,16 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         """Check if the hit is only effective if the user is inside buff fields."""
         return bool(self.mod_on_self_buff_field or self.mod_on_ally_buff_field)
 
+    def get_hit_count(
+            self, original_hit_count: int, condition_comp: ConditionComposite, asset_manager: "AssetManager"
+    ) -> int:
+        damage_units = self.to_damage_units(condition_comp, original_hit_count, asset_manager=asset_manager)
+
+        count = len([unit for unit in damage_units if unit.mod])
+        count += (self.hit_attr.dummy_hit_count * ((condition_comp.teammate_coverage_converted or 0) + 1))
+
+        return count
+
     def damage_modifier_at_hit(self, hit_count: int) -> float:
         """
         Get the damage modifier at hit ``hit_count``.
@@ -162,7 +180,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
     def _damage_units_get_base_attributes(
             self, condition_comp: ConditionComposite, unit_affliction: EnemyAfflictionEffectUnit,
             units_debuff: list[HitActionConditionEffectUnit], /,
-            asset_action_info: PlayerActionInfoAsset
+            asset_manager: "AssetManager"
     ) -> Optional[list[DamageUnit]]:
         """
         Get the base damage units according to the hit data attributes.
@@ -195,9 +213,11 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
             ]
 
         if self.is_depends_on_user_buff_count:
+            action_info = asset_manager.asset_action_info_player.get_data_by_id(self.action_id)
+
             # Damage dealt depends on the user's buff count
             effective_buff_count = min(
-                asset_action_info.get_data_by_id(self.action_id).max_bullet_count or self.max_hit_count,
+                action_info.max_bullet_count or self.max_hit_count,
                 condition_comp.buff_count_converted or 0
             )
             return [
@@ -208,8 +228,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         return None
 
     def _damage_units_get_base(
-            self, condition_comp: ConditionComposite, hit_count: int, /,
-            asset_action_condition: ActionConditionAsset, asset_action_info: PlayerActionInfoAsset
+            self, condition_comp: ConditionComposite, hit_count: int, /, asset_manager: "AssetManager"
     ) -> list[DamageUnit]:
         hit_attr = self.hit_attr
 
@@ -217,12 +236,12 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         unit_affliction = None
         dispel = False
         if action_cond_id := self.action_condition_id:
-            action_cond = asset_action_condition.get_data_by_id(action_cond_id)
+            action_cond = asset_manager.asset_action_cond.get_data_by_id(action_cond_id)
 
             dispel = action_cond.is_dispel_buff
             unit_affliction = self.to_affliction_unit(action_cond)
 
-        units_debuff = self.to_debuff_units(asset_action_condition)
+        units_debuff = self.to_debuff_units(asset_manager.asset_action_cond)
 
         # EXNOTE: Bullet timings like `msl` in dl-sim may be added here
 
@@ -234,7 +253,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
             return []
 
         base_units_by_attr = self._damage_units_get_base_attributes(
-            condition_comp, unit_affliction, units_debuff, asset_action_info=asset_action_info
+            condition_comp, unit_affliction, units_debuff, asset_manager=asset_manager
         )
         # Explicitly checking `None` because both `None` and empty list is falsy while
         # `None` means no early termination condition met; an empty list means no damage unit
@@ -390,10 +409,12 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
 
         return None
 
+    # Cache the function because it is used for getting the hit count
+    # and for getting the actual damage units.
+    # These two calls could appear in different places.
+    @cache
     def to_damage_units(
-            self, condition_comp: ConditionComposite, hit_count: int, /,
-            asset_action_condition: ActionConditionAsset, asset_action_info: PlayerActionInfoAsset,
-            asset_buff_count: BuffCountAsset
+            self, condition_comp: ConditionComposite, hit_count: int, /, asset_manager: "AssetManager"
     ) -> list[DamageUnit]:
         """
         Calculates the damage modifier under ``condition_comp`` when the skill has dealt ``hit_count`` hits.
@@ -404,7 +425,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         """
         # --- Early return check
 
-        damage_units = self._check_early_return(condition_comp, asset_action_condition)
+        damage_units = self._check_early_return(condition_comp, asset_manager.asset_action_cond)
         # Explicit check to distinguish "not to early return" and "return an empty array"
         if damage_units is not None:
             return damage_units
@@ -412,13 +433,12 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  #
         # --- Calculate mods
 
         # Get base units
-        damage_units = self._damage_units_get_base(
-            condition_comp, hit_count,
-            asset_action_condition=asset_action_condition, asset_action_info=asset_action_info
-        )
+        damage_units = self._damage_units_get_base(condition_comp, hit_count, asset_manager=asset_manager)
 
         # Apply boosts
-        self._damage_units_apply_mod_boosts(damage_units, condition_comp, asset_buff_count=asset_buff_count)
+        self._damage_units_apply_mod_boosts(
+            damage_units, condition_comp, asset_buff_count=asset_manager.asset_buff_count
+        )
 
         # Return non-empty units only
         return [damage_unit for damage_unit in damage_units if not damage_unit.is_empty]

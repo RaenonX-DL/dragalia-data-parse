@@ -26,6 +26,7 @@ class HitTargetSimple(TranslatableEnumMixin, Enum):
     ENEMY = 3
     FIELD = 4
     TEAM = 6
+    TEAM_LOWEST_HP = 7
 
     @property
     def translation_id(self) -> str:
@@ -102,6 +103,7 @@ TRANS_DICT_TO_SIMPLE: dict[HitTarget, HitTargetSimple] = {
     HitTarget.SELF_SKILL_FIELD: HitTargetSimple.SELF_SURROUNDING,
     HitTarget.ENEMY: HitTargetSimple.ENEMY,
     HitTarget.TEAM: HitTargetSimple.TEAM,
+    HitTarget.TEAM_LOWEST_HP: HitTargetSimple.TEAM_LOWEST_HP,
     HitTarget.HIT_OR_GUARDED_RECORD: HitTargetSimple.ENEMY,
     HitTarget.HIT_DEPENDENT_SELF: HitTargetSimple.SELF
 }

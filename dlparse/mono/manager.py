@@ -138,7 +138,7 @@ class AssetManager:
         return self._asset_text_multi
 
     @property
-    def asset_pa_info(self) -> PlayerActionInfoAsset:
+    def asset_action_info_player(self) -> PlayerActionInfoAsset:
         """Get the player action info asset."""
         return self._asset_pa_info
 

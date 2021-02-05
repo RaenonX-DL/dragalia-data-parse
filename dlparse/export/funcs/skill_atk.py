@@ -27,7 +27,7 @@ def export_atk_skills_of_chara(
                 chara_data=chara_data,
                 condition_comp=skill_entry.condition_comp,
                 skill_id_entry=id_entry,
-                skill_data=skill_data.skill_data_raw,
+                skill_data=skill_data.skill_data,
                 skill_data_to_parse=skill_entry,
             ))
 

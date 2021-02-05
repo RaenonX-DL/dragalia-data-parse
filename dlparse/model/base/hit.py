@@ -1,12 +1,15 @@
 """Base class for a single hit."""
-from abc import ABC
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Generic, Optional, TypeVar
+from typing import Generic, Optional, TYPE_CHECKING, TypeVar
 
 from dlparse.enums import ConditionComposite, HitTargetSimple
 from dlparse.mono.asset import (
     AbilityEntry, ActionBuffBomb, ActionComponentBase, ActionConditionEntry, ActionHit, ActionSettingHit, HitAttrEntry,
 )
+
+if TYPE_CHECKING:
+    from dlparse.mono.manager import AssetManager
 
 __all__ = ("HitData", "T")
 
@@ -61,6 +64,13 @@ class HitData(Generic[T], ABC):
         Otherwise, action condition on ``hit_attr`` will be returned.
         """
         return self.action_cond_override or self.hit_attr.action_condition_id
+
+    @abstractmethod
+    def get_hit_count(
+            self, original_hit_count: int, condition_comp: ConditionComposite, asset_manager: "AssetManager"
+    ) -> int:
+        """Get the total hit count of this hit."""
+        raise NotImplementedError()
 
     def is_effective_to_enemy(self, desired_effectiveness: bool) -> bool:
         """
