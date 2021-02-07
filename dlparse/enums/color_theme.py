@@ -24,6 +24,7 @@ class ColorTheme(str, Enum):
     DARK_RED = "dark-red"
     BLACK_32 = "black-32"
     BLACK_50 = "black-50"
+    ORANGE = "orange"
 
     @classmethod
     def get_all_available_themes(cls) -> list[str]:

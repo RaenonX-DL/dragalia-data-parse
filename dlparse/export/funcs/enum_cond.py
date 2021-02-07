@@ -28,6 +28,7 @@ theme_skill_bullet_hit = ColorTheme.SUCCESS
 theme_teammate_coverage = ColorTheme.SUCCESS
 theme_bullets_on_map = ColorTheme.SUCCESS
 theme_addl_input = ColorTheme.SUCCESS
+theme_probability = ColorTheme.ORANGE
 # endregion
 
 # region Themes (actual definition)
@@ -109,6 +110,11 @@ condition_theme = {
     Condition.ADDL_INPUT_4: theme_addl_input,
     Condition.ADDL_INPUT_5: theme_addl_input,
     Condition.ADDL_INPUT_6: theme_addl_input,
+    Condition.PROB_25: theme_probability,
+    Condition.PROB_33: theme_probability,
+    Condition.PROB_50: theme_probability,
+    Condition.PROB_67: theme_probability,
+    Condition.PROB_75: theme_probability,
 }
 
 
