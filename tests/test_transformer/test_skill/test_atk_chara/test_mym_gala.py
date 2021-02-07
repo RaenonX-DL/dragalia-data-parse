@@ -7,7 +7,7 @@ from dlparse.transformer import SkillTransformer
 from tests.utils import approx_matrix
 
 
-def test_cancel_s2_data(transformer_skill: SkillTransformer):
+def test_s2_cancel_data(transformer_skill: SkillTransformer):
     # Gala Mym S2
     # https://dragalialost.wiki/w/Gala_Mym
     skill_data = transformer_skill.transform_attacking(105501012)

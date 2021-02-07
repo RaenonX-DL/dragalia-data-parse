@@ -3,8 +3,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from dlparse.enums import Weapon
-from dlparse.mono.asset.base import MotionControllerBase, MotionSelectorBase
-from .clip import AnimationClipDataAnimatorController
+from dlparse.mono.asset.base import AnimationClipDataAnimatorController, MotionControllerBase, MotionSelectorBase
 
 __all__ = ("MotionControllerWeapon", "MotionSelectorWeapon")
 

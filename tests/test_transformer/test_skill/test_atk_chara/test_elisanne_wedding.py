@@ -4,7 +4,7 @@ from dlparse.enums import SkillCancelAction
 from dlparse.transformer import SkillTransformer
 
 
-def test_cancel_s1_data(transformer_skill: SkillTransformer):
+def test_s1_cancel_data(transformer_skill: SkillTransformer):
     # Wedding Elisanne S1
     # https://dragalialost.wiki/w/Wedding_Elisanne
     skill_data = transformer_skill.transform_attacking(101503021)
@@ -22,7 +22,7 @@ def test_cancel_s1_data(transformer_skill: SkillTransformer):
         assert len(diff) == 0, diff
 
 
-def test_cancel_s2_data(transformer_skill: SkillTransformer):
+def test_s2_cancel_data(transformer_skill: SkillTransformer):
     # Wedding Elisanne S2
     # https://dragalialost.wiki/w/Wedding_Elisanne
     skill_data = transformer_skill.transform_attacking(101503022)

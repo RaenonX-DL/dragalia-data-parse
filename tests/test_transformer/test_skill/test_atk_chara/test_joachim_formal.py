@@ -33,7 +33,7 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
     assert len(expected_addl_at_max) == 0, f"Conditions not tested: {set(expected_addl_at_max.keys())}"
 
 
-def test_cancel_s1_data(transformer_skill: SkillTransformer):
+def test_s1_cancel_data(transformer_skill: SkillTransformer):
     # Formal Joachim S1
     # https://dragalialost.wiki/w/Formal_Joachim
     skill_data = transformer_skill.transform_attacking(109503011)
@@ -51,7 +51,7 @@ def test_cancel_s1_data(transformer_skill: SkillTransformer):
         assert len(diff) == 0, diff
 
 
-def test_cancel_s1_entries(transformer_skill: SkillTransformer):
+def test_s1_cancel_entries(transformer_skill: SkillTransformer):
     # Formal Joachim S1
     # https://dragalialost.wiki/w/Formal_Joachim
     skill_data = transformer_skill.transform_attacking(109503011)
@@ -70,7 +70,7 @@ def test_cancel_s1_entries(transformer_skill: SkillTransformer):
             assert len(diff) == 0, diff
 
 
-def test_cancel_s2_data(transformer_skill: SkillTransformer):
+def test_s2_cancel_data(transformer_skill: SkillTransformer):
     # Formal Joachim S2
     # https://dragalialost.wiki/w/Formal_Joachim
     skill_data = transformer_skill.transform_attacking(109503012)
@@ -92,7 +92,7 @@ def test_cancel_s2_data(transformer_skill: SkillTransformer):
             assert len(diff) == 0, diff
 
 
-def test_cancel_s2_entries(transformer_skill: SkillTransformer):
+def test_s2_cancel_entries(transformer_skill: SkillTransformer):
     # Formal Joachim S2
     # https://dragalialost.wiki/w/Formal_Joachim
     skill_data = transformer_skill.transform_attacking(109503012)

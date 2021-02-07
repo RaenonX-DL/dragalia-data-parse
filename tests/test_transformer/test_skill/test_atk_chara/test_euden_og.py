@@ -4,7 +4,7 @@ from dlparse.enums import SkillCancelAction
 from dlparse.transformer import SkillTransformer
 
 
-def test_cancel_s1_data(transformer_skill: SkillTransformer):
+def test_s1_cancel_data(transformer_skill: SkillTransformer):
     # Formal Joachim S1
     # https://dragalialost.wiki/w/Formal_Joachim
     skill_data = transformer_skill.transform_attacking(101401012)
