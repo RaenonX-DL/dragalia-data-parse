@@ -75,7 +75,7 @@ path_dict: dict[TransformableEnums, str] = {
     BuffParameter.INFLICT_PROB_FLASHBURN: None,  # No suitable icon, ``None`` to display the text
     BuffParameter.INFLICT_PROB_STORMLASH: None,  # No suitable icon, ``None`` to display the text
     BuffParameter.INFLICT_PROB_SHADOWBLIGHT: None,  # No suitable icon, ``None`` to display the text
-    BuffParameter.INFLICT_PROB_SCORCHREND: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.INFLICT_PROB_SCORCHREND: "/icon/ability/l/custom/Icon_Ability_1010094.png",
     BuffParameter.DURATION_EXT_POISON: None,  # No suitable icon, ``None`` to display the text
     BuffParameter.DURATION_EXT_BURN: None,  # No suitable icon, ``None`` to display the text
     BuffParameter.DURATION_EXT_FREEZE: None,  # No suitable icon, ``None`` to display the text
@@ -100,7 +100,7 @@ path_dict: dict[TransformableEnums, str] = {
     BuffParameter.SP_CHARGE_PCT_USED: "/icon/ability/l/Icon_Ability_1010007.png",
     BuffParameter.RP_UP: "/icon/ability/l/Icon_Ability_1020009.png",
     BuffParameter.HEAL_INSTANT_HP: "/icon/ability/l/Icon_Ability_1010078.png",
-    BuffParameter.HEAL_INSTANT_RP: "/icon/ability/l/custom/Icon_Ability_1010011.png",
+    BuffParameter.HEAL_INSTANT_RP: "/icon/ability/l/custom/Icon_Ability_1010078.png",
     BuffParameter.HEAL_OVER_TIME_HP: "/icon/ability/l/custom/Icon_Ability_1010011.png",
     BuffParameter.HEAL_OVER_TIME_RP: "/icon/ability/l/Icon_Ability_1010011.png",
     BuffParameter.DAMAGE_OVER_TIME_HP: None,  # No suitable icon, ``None`` to display the text
