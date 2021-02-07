@@ -9,7 +9,7 @@ __all__ = ("BuffingHitData",)
 
 
 @dataclass
-class BuffingHitData(HitDataEffectConvertible[ActionComponentBase]):  # pylint: disable=too-many-ancestors
+class BuffingHitData(HitDataEffectConvertible[ActionComponentBase]):
     """Class for the data of a single buffing hit."""
 
     def get_hit_count(self, original_hit_count: int, condition_comp: ConditionComposite, ___) -> int:

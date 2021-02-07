@@ -1,14 +1,16 @@
 """Skill canceling action data unit."""
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar, Union
 
 from dlparse.enums import SkillCancelAction
+from dlparse.mono.loader import MotionLoaderBase
 
 if TYPE_CHECKING:
-    from dlparse.mono.asset import CharaDataEntry, PlayerActionPrefab
-    from dlparse.mono.loader import CharacterMotionLoader
+    from dlparse.mono.asset import CharaDataEntry, DragonDataEntry, PlayerActionPrefab
 
 __all__ = ("SkillCancelActionUnit",)
+
+T = TypeVar("T", bound=MotionLoaderBase)
 
 
 @dataclass
@@ -20,7 +22,7 @@ class SkillCancelActionUnit:
 
     @staticmethod
     def from_player_action_prefab(
-            chara_motion_loader: "CharacterMotionLoader", chara_data: "CharaDataEntry", prefab: "PlayerActionPrefab"
+            motion_loader: T, data_entry: Union["CharaDataEntry", "DragonDataEntry"], prefab: "PlayerActionPrefab"
     ) -> list["SkillCancelActionUnit"]:
         """Get the skill cancel action units from the player action prefab."""
         cancel_units: list[SkillCancelActionUnit] = []
@@ -39,7 +41,7 @@ class SkillCancelActionUnit:
                 end_time = max(
                     end_time,
                     motion.time_start + motion.time_duration,
-                    chara_motion_loader.get_motion_stop_time(chara_data, motion.motion_state)
+                    motion_loader.get_motion_stop_time(data_entry, motion.motion_state)
                 )
 
             cancel_units.append(SkillCancelActionUnit(action=SkillCancelAction.MOTION_ENDS, time=end_time))

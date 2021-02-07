@@ -529,7 +529,7 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
 
         ret: list[SkillIdEntry] = []
 
-        unique_dragon_data: "DragonDataEntry" = asset_manager.asset_dragon.get_data_by_id(self.unique_dragon_id)
+        unique_dragon_data: "DragonDataEntry" = asset_manager.asset_dragon_data.get_data_by_id(self.unique_dragon_id)
 
         skill_1_data: "SkillDataEntry" = asset_manager.asset_skill_data.get_data_by_id(unique_dragon_data.skill_1_id)
         ret.append(SkillIdEntry(

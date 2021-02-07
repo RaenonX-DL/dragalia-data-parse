@@ -1,4 +1,4 @@
-"""Interface for an ``AnimatorController.``"""
+"""Interface for an ``AnimatorController``."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Any, Optional, Union
@@ -69,9 +69,6 @@ class AnimatorController(AnimationControllerBase, EntryBase, ABC):
 
     def get_clip_id_by_motion_name(self, motion_name: str) -> int:
         """Get the animation clip ID given ``motion_name``."""
-        if motion_name not in self.tos:
-            raise MotionDataNotFoundError(motion_name)
-
         state_name_id = self.tos[motion_name]
         clip_idx = self.state_machine_ref[state_name_id]
         return self.animation_clip_path_ids[clip_idx]

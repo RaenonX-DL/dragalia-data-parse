@@ -49,7 +49,7 @@ class DamageUnit:
 
 
 @dataclass
-class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):  # pylint: disable=too-many-ancestors
+class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
     """
     Class for the data of a single raw damaging hit.
 

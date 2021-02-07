@@ -10,7 +10,7 @@ from .asset import (
     PlayerActionInfoAsset, SkillChainAsset, SkillDataAsset, TextAsset, TextAssetMultilingual,
 )
 from .custom import WebsiteTextAsset
-from .loader import ActionFileLoader, CharacterMotionLoader
+from .loader import ActionFileLoader, CharacterMotionLoader, DragonMotionLoader
 
 __all__ = ("AssetManager",)
 
@@ -22,7 +22,8 @@ class AssetManager:
     # Public methods are actually properties.
 
     def __init__(
-            self, action_asset_dir: str, master_asset_dir: str, chara_motion_asset_dir: str, /,
+            self, action_asset_dir: str, master_asset_dir: str, chara_motion_asset_dir: str,
+            dragon_motion_asset_dir: str, /,
             custom_asset_dir: Optional[str] = None
     ):
         # Master Assets
@@ -33,7 +34,7 @@ class AssetManager:
         self._asset_buff_count = BuffCountAsset(asset_dir=master_asset_dir)
         self._asset_chara_data = CharaDataAsset(asset_dir=master_asset_dir)
         self._asset_chara_mode = CharaModeAsset(asset_dir=master_asset_dir)
-        self._asset_dragon = DragonDataAsset(asset_dir=master_asset_dir)
+        self._asset_dragon_data = DragonDataAsset(asset_dir=master_asset_dir)
         self._asset_ex_ability = ExAbilityAsset(asset_dir=master_asset_dir)
         self._asset_hit_attr = HitAttrAsset(asset_dir=master_asset_dir)
         self._asset_skill_data = SkillDataAsset(asset_dir=master_asset_dir)
@@ -61,6 +62,7 @@ class AssetManager:
         # Loaders
         self._loader_action = ActionFileLoader(self._asset_action_list, action_asset_dir)
         self._loader_chara_motion = CharacterMotionLoader(chara_motion_asset_dir)
+        self._loader_dragon_motion = DragonMotionLoader(dragon_motion_asset_dir)
 
         # Transformers
         self._transformer_ability = AbilityTransformer(self)
@@ -103,9 +105,9 @@ class AssetManager:
         return self._asset_chara_mode
 
     @property
-    def asset_dragon(self) -> DragonDataAsset:
+    def asset_dragon_data(self) -> DragonDataAsset:
         """Get the dragon data asset."""
-        return self._asset_dragon
+        return self._asset_dragon_data
 
     @property
     def asset_ex_ability(self) -> ExAbilityAsset:
@@ -184,6 +186,11 @@ class AssetManager:
     def loader_chara_motion(self) -> CharacterMotionLoader:
         """Get the character motion loader."""
         return self._loader_chara_motion
+
+    @property
+    def loader_dragon_motion(self) -> DragonMotionLoader:
+        """Get the dragon motion loader."""
+        return self._loader_dragon_motion
 
     # endregion
 

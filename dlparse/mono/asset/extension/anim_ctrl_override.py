@@ -1,4 +1,4 @@
-"""Interface for an ``AnimatorOverrideController.``"""
+"""Interface for an ``AnimatorOverrideController``."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Any
@@ -35,6 +35,9 @@ class AnimatorOverrideController(AnimationControllerBase, EntryBase, ABC):
         The animation clip may be overridden by calling
         an ``AnimatorController`` and an ``AnimatorOverrideController`` at the same time.
     """
+
+    # Init vars
+    json_dict: dict[str, Any]
 
     # Parsed vars
     name: str = field(init=False)

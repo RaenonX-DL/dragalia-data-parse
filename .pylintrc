@@ -24,6 +24,8 @@ good-names=_,T,f,i,j,k,s,v,dt,ex,fn,tz
 
 [DESIGN]
 
+# Some classes expected to inherit from many base classes. For example, character data entry.
+max-parents=15
 max-args=10
 
 [FORMAT]

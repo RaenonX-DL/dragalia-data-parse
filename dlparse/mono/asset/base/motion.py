@@ -26,7 +26,9 @@ class AnimationControllerBase(ABC):
     - ``AnimatorController``
     - ``AnimatorOverrideController``
     """
-    """Base class of an animation controller."""
+
+    # This class currently serves as an interface only, therefore no public methods.
+    # pylint: disable=too-few-public-methods
 
     # Init vars
     json_dict: dict[str, Any]

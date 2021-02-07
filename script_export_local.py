@@ -5,14 +5,14 @@ from dlparse.export import export_atk_skill_as_json, export_enums_json, export_s
 from dlparse.mono.manager import AssetManager
 from tests.static import (
     PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET,
-    PATH_LOCAL_DIR_MASTER_ASSET,
+    PATH_LOCAL_DIR_DRAGON_MOTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
 )
 
 _start = time.time()
 
 _asset_manager: AssetManager = AssetManager(
     PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET,
-    PATH_LOCAL_DIR_CHARA_MOTION_ASSET
+    PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_DRAGON_MOTION_ASSET
 )
 
 

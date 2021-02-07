@@ -4,7 +4,8 @@ from typing import Optional
 from .base import AppValueError, EntryNotFoundError
 
 __all__ = (
-    "CharaDataNotFoundError", "SkillDataNotFoundError", "ActionDataNotFoundError", "MotionDataNotFoundError",
+    "CharaDataNotFoundError", "NoUniqueDragonError", "SkillDataNotFoundError",
+    "ActionDataNotFoundError", "MotionDataNotFoundError",
     "TextLabelNotFoundError",
     "AbilityLimitDataNotFoundError", "AbilityOnSkillUnconvertibleError", "LanguageAssetNotFoundError",
     "AbilityConditionUnconvertibleError", "BulletMaxCountUnavailableError", "AbilityVariantUnconvertibleError"
@@ -16,6 +17,13 @@ class CharaDataNotFoundError(EntryNotFoundError):
 
     def __init__(self, chara_id: int, message: str = ""):
         super().__init__(f"Character data of ID `{chara_id}` not found: {message}")
+
+
+class NoUniqueDragonError(AppValueError):
+    """Error to be raised if the character does not have an unique dragon while attempting to get its data."""
+
+    def __init__(self, chara_id: int):
+        super().__init__(f"No unique dragon binded to character #{chara_id}")
 
 
 class SkillDataNotFoundError(EntryNotFoundError):

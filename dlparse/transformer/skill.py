@@ -1,5 +1,5 @@
 """Skill data transformer."""
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Iterable, Optional, TYPE_CHECKING, Type, TypeVar
 
 from dlparse.enums import Condition, ConditionCategories, ConditionComposite
@@ -9,7 +9,9 @@ from dlparse.errors import (
 from dlparse.model import (
     AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SkillCancelActionUnit, SupportiveSkillData,
 )
-from dlparse.mono.asset import ActionConditionEntry, CharaDataEntry, HitAttrEntry, SkillDataEntry
+from dlparse.mono.asset import (
+    ActionConditionEntry, CharaDataEntry, HitAttrEntry, SkillDataEntry, SkillReverseSearchResult,
+)
 from dlparse.mono.asset.base import ActionComponentHasHitLabels
 
 if TYPE_CHECKING:
@@ -33,12 +35,16 @@ class SkillHitData:
     # - hits with hit condition as they indirectly requires the actual condition same as above
     hit_count: list[int]
 
-    chara_data: CharaDataEntry
+    rev_result: SkillReverseSearchResult
     skill_data: SkillDataEntry
 
     max_level: int
 
+    chara_data: CharaDataEntry = field(init=False)
+
     def __post_init__(self):
+        self.chara_data = self.rev_result.chara_data
+
         self.hit_data = self.hit_data[:self.max_level]
         self.hit_count = self.hit_count[:self.max_level]
 
@@ -53,12 +59,14 @@ class SkillTransformer:
         self._asset_action_cond = asset_manager.asset_action_cond
         self._asset_buff_count = asset_manager.asset_buff_count
         self._asset_chara_data = asset_manager.asset_chara_data
+        self._asset_dragon_data = asset_manager.asset_dragon_data
         self._asset_hit_attr = asset_manager.asset_hit_attr
         self._asset_action_info_player = asset_manager.asset_action_info_player
         self._asset_skill = asset_manager.asset_skill_data
 
         self._loader_action = asset_manager.loader_action
         self._loader_chara_motion = asset_manager.loader_chara_motion
+        self._loader_dragon_motion = asset_manager.loader_dragon_motion
 
     def _get_hit_data_from_hit_attr(
             self, hit_data_cls: Type[T], action_id: int, ability_ids: list[int],
@@ -243,17 +251,17 @@ class SkillTransformer:
 
         return ret
 
-    def _get_chara_skill_data(self, skill_id: int) -> tuple[CharaDataEntry, SkillDataEntry]:
+    def _get_chara_skill_data(self, skill_id: int) -> tuple[SkillReverseSearchResult, SkillDataEntry]:
         """
-        Get the character data and the skill data of ``skill_id``.
+        Get the skill reverse search result (containing chara data found) and the skill data of ``skill_id``.
 
         :raises SkillDataNotFoundError: if the skill data of `skill_id` is not found
         """
         # Get the character data
-        chara_data: Optional[CharaDataEntry] = self._asset_chara_data.get_chara_data_by_skill_id(
+        rev_result: Optional[SkillReverseSearchResult] = self._asset_chara_data.get_chara_data_by_skill_id(
             self._asset_manager, skill_id
         )
-        if not chara_data:
+        if not rev_result:
             skill_error = SkillDataNotFoundError(skill_id)
             chara_error = CharaDataNotFoundError(int(str(skill_id)[:-1]), "(Chara ID guessed from skill ID)")
 
@@ -264,7 +272,7 @@ class SkillTransformer:
         if not skill_data:
             raise SkillDataNotFoundError(skill_id)
 
-        return chara_data, skill_data
+        return rev_result, skill_data
 
     @staticmethod
     def _get_highest_skill_level(hit_data_mtx: list[list[HitData]]) -> int:
@@ -317,7 +325,7 @@ class SkillTransformer:
         :raises ActionDataNotFoundError: action file not found
         :raises HitDataUnavailableError: no hit data available
         """
-        chara_data, skill_data = self._get_chara_skill_data(skill_id)
+        rev_result, skill_data = self._get_chara_skill_data(skill_id)
 
         if not ability_ids:
             ability_ids = []
@@ -356,13 +364,20 @@ class SkillTransformer:
 
         return SkillHitData(
             hit_data=hit_data_mtx, hit_count=hit_count, max_level=self._get_highest_skill_level(hit_data_mtx),
-            chara_data=chara_data, skill_data=skill_data,
+            rev_result=rev_result, skill_data=skill_data,
         )
 
     def get_skill_cancel_unit_matrix(
             self, skill_hit_data: SkillHitData, max_lv: int = 0
     ) -> list[list[SkillCancelActionUnit]]:
-        """Get the matrix of skill cancel action units."""
+        """
+        Get the matrix of skill cancel action units.
+
+        If ``skill_hit_data`` is a dragon skill, unique dragon binded to the character data of ``skill_hit_data``
+        will be used to get the skill cancel actions.
+
+        If the character data of ``skill_hit_data`` does not have a unique dragon,
+        """
         cancel_units: list[list[SkillCancelActionUnit]] = []
 
         action_ids = skill_hit_data.skill_data.action_id_1_by_level
@@ -372,9 +387,15 @@ class SkillTransformer:
         for action_id in action_ids:
             prefab = self._loader_action.get_prefab(action_id)
 
-            cancel_units.append(SkillCancelActionUnit.from_player_action_prefab(
-                self._loader_chara_motion, skill_hit_data.chara_data, prefab
-            ))
+            if skill_hit_data.rev_result.skill_id_entry.skill_num.is_dragon_skill:
+                cancel_units.append(SkillCancelActionUnit.from_player_action_prefab(
+                    self._loader_dragon_motion, skill_hit_data.chara_data.get_dragon_data(self._asset_dragon_data),
+                    prefab
+                ))
+            else:
+                cancel_units.append(SkillCancelActionUnit.from_player_action_prefab(
+                    self._loader_chara_motion, skill_hit_data.chara_data, prefab
+                ))
 
         return cancel_units
 

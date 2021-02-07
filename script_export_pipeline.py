@@ -28,6 +28,7 @@ class FileExporter:
         dir_action = config.get("Asset", "Action")
         dir_master = config.get("Asset", "Master")
         dir_chara_motion = config.get("Asset", "CharaMotion")
+        dir_dragon_motion = config.get("Asset", "DragonMotion")
         dir_custom = config.get("Asset", "Custom")
 
         dir_export = config.get("Export", "Dir")
@@ -41,7 +42,7 @@ class FileExporter:
         print()
 
         self._asset_manager: AssetManager = AssetManager(
-            dir_action, dir_master, dir_chara_motion,
+            dir_action, dir_master, dir_chara_motion, dir_dragon_motion,
             custom_asset_dir=dir_custom
         )
         self._transformer_ability: AbilityTransformer = AbilityTransformer(self._asset_manager)

@@ -4,17 +4,17 @@ from datetime import datetime
 from typing import Optional, TYPE_CHECKING, TextIO, Union
 
 from dlparse.enums import Element, Language, SkillNumber, Weapon
-from dlparse.errors import InvalidSkillNumError, TextLabelNotFoundError
+from dlparse.errors import InvalidSkillNumError, NoUniqueDragonError, TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import NamedEntry, SkillDiscoverableEntry, VariedEntry
-from .dragon_data import DRAGON_SKILL_MAX_LEVEL
+from dlparse.mono.asset.extension import NamedEntry, SkillDiscoverableEntry, SkillIdEntry, VariedEntry
+from .dragon_data import DRAGON_SKILL_MAX_LEVEL, DragonDataAsset, DragonDataEntry
 from .skill_data import CHARA_SKILL_MAX_LEVEL
 from .text_label import TextAssetMultilingual
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
 
-__all__ = ("CharaDataEntry", "CharaDataAsset")
+__all__ = ("SkillReverseSearchResult", "CharaDataEntry", "CharaDataAsset")
 
 
 @dataclass
@@ -360,6 +360,17 @@ class CharaDataEntry(NamedEntry, VariedEntry, SkillDiscoverableEntry, MasterEntr
         except TextLabelNotFoundError:
             return text_asset.get_text(language.value, self.name_label)
 
+    def get_dragon_data(self, dragon_asset: DragonDataAsset) -> DragonDataEntry:
+        """
+        Get the unique dragon data of this character.
+
+        :raises NoUniqueDragonError: if this character does not have an unique dragon
+        """
+        if not self.unique_dragon_id:
+            raise NoUniqueDragonError(self.id)
+
+        return dragon_asset.get_data_by_id(self.unique_dragon_id)
+
     @classmethod
     def parse_raw(cls, data: dict[str, Union[str, int, float]]) -> "CharaDataEntry":
         return CharaDataEntry(
@@ -440,13 +451,21 @@ class CharaDataEntry(NamedEntry, VariedEntry, SkillDiscoverableEntry, MasterEntr
             unique_weapon_id=data["_UniqueWeaponId"],
             unique_dragon_id=data["_UniqueDragonId"],
             unique_dragon_inherit_skill_lv=bool(data["_IsConvertDragonSkillLevel"]),
-            is_dragon_drive=bool(data["_WinFaceMouthMotion"]),
+            is_dragon_drive=bool(data["_WinFaceMouthMotion"]),  # ?????
             is_playable=bool(data["_IsPlayable"]),
             max_friendship_point=data["_MaxFriendshipPoint"],
             grow_material_start=cls.parse_datetime(data["_GrowMaterialOnlyStartDate"]),
             grow_material_end=cls.parse_datetime(data["_GrowMaterialOnlyEndDate"]),
             grow_material_id=data["_GrowMaterialId"],
         )
+
+
+@dataclass
+class SkillReverseSearchResult:
+    """Result class of the skill -> character reverse search."""
+
+    chara_data: CharaDataEntry
+    skill_id_entry: SkillIdEntry
 
 
 class CharaDataAsset(MasterAssetBase[CharaDataEntry]):
@@ -461,13 +480,13 @@ class CharaDataAsset(MasterAssetBase[CharaDataEntry]):
         super().__init__(CharaDataParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
         # Cache for getting the chara data by skill ID
-        self._cache_skill_id: dict[int, CharaDataEntry] = {}  # K = skill ID
+        self._cache_skill_id: dict[int, SkillReverseSearchResult] = {}  # K = skill ID, V = reverse search result
         self._traversed_chara_id: set[int] = set()
 
     def get_chara_data_by_skill_id(
             self, asset_manager: "AssetManager", skill_id: int, /,
             playable_only: bool = True
-    ) -> Optional[CharaDataEntry]:
+    ) -> Optional[SkillReverseSearchResult]:
         """
         Get the character data whose any of the skill is ``skill_id``.
 
@@ -493,7 +512,9 @@ class CharaDataAsset(MasterAssetBase[CharaDataEntry]):
 
             # Store each result to the cache
             for entry in entries:
-                self._cache_skill_id[entry.skill_id] = chara_data
+                self._cache_skill_id[entry.skill_id] = SkillReverseSearchResult(
+                    chara_data=chara_data, skill_id_entry=entry
+                )
 
             # Return if the data is stored in the cache (found in the previous code)
             if skill_id in self._cache_skill_id:

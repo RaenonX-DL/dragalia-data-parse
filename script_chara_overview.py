@@ -1,9 +1,13 @@
 from dlparse.errors import HitDataUnavailableError
 from dlparse.mono.manager import AssetManager
-from tests.static import PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET
+from tests.static import (
+    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_DRAGON_MOTION_ASSET,
+    PATH_LOCAL_DIR_MASTER_ASSET,
+)
 
 _asset_manager: AssetManager = AssetManager(
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET
+    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
+    PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_DRAGON_MOTION_ASSET
 )
 
 
@@ -145,7 +149,7 @@ def main():
     # - 10350505 (Joker)
     # - 10450404 (Sophie)
     # - 10550104 (Panther)
-    chara_skill_overview(10950501)
+    chara_skill_overview(10150304)
 
 
 if __name__ == '__main__':
