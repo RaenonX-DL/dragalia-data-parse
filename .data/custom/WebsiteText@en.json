@@ -332,6 +332,22 @@
     "text": "S2 (w/ Arsene)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_72",
+    "text": "S1 (w/o Carmen)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_72",
+    "text": "S2 (w/o Carmen)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_73",
+    "text": "S1 (w/ Carmen)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_73",
+    "text": "S2 (w/ Carmen)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_mode_74",
     "text": "S1 (w/o Pithos)"
   },
@@ -1426,6 +1442,62 @@
   {
     "id": "ENUM_BUFF_INFLICT_PROB_SCORCHREND",
     "text": "Scorchrend Chance"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_POISON",
+    "text": "Poison Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_BURN",
+    "text": "Burn Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_FREEZE",
+    "text": "Freeze Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_PARALYZE",
+    "text": "Paralyze Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_BLIND",
+    "text": "Blind Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_STUN",
+    "text": "Stun Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_CURSE",
+    "text": "Curse Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_BOG",
+    "text": "Bog Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_SLEEP",
+    "text": "Sleep Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_FROSTBITE",
+    "text": "Frostbite Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_FLASHBURN",
+    "text": "Flashburn Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_STORMLASH",
+    "text": "Stormlash Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_SHADOWBLIGHT",
+    "text": "Shadowblight Duration"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_SCORCHREND",
+    "text": "Scorchrend Duration"
   },
   {
     "id": "ENUM_BUFF_ATK_EX",

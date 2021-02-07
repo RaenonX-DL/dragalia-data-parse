@@ -108,7 +108,7 @@ Field: `_AbilityTypeNUpValue`. For example, `_AbilityType1UpValue` for the 1st v
 <a href="#44---enhancedskill">44. EnhancedSkill</a>
 45. EnhancedBurstAttack
 46. DragonTimeForParty
-47. AbnoramlExtension
+<a href="#47---abnormalextension">47. AbnoramlExtension</a>
 48. DragonTimeSpeedRate
 <a href="#49---dpchargemyparty">49. DpChargeMyParty</a>
 50. DontAct
@@ -505,13 +505,31 @@ Enhanced S2 (`106503036`, available if 6+ butterflies exist on the map) have thi
 
 -----
 
+### `47` - `AbnoramlExtension`
+
+Extend the affliction duration.
+
+> An IRL example of this is P5S Panther (`10550104`) Co-ability (`103150005`).
+
+#### Variant ID - A
+
+Affliction enum. For the ID correspondence, check [the implementation of the enum](/dlparse/enums/status.py).
+
+#### Variant Up Value
+
+Duration extension rate in percentage.
+
+A value of `20` means to extend the affliction duration by 20%.
+
+-----
+
 ### `49` - `DpChargeMyParty`
 
 Fill dragon gauge by certain percentage.
 
 #### Variant Up Value
 
-Percentage of the dragon gauge to fill
+Percentage of the dragon gauge to fill.
 
 A value of `2.5` means to fill the dragon gauge by 2.5% (50% for a dragon in general).
 
@@ -523,7 +541,7 @@ Raise the damage depends on the user's hit count.
 
 Check the doc of the variant string for more details.
 
-> This actually appears on Mitsuhide S2 (`103504022`).
+> An IRL example of this is Mitsuhide S2 (`103504022`).
 
 #### Variant String
 

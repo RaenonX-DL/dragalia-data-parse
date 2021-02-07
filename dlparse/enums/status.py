@@ -106,6 +106,17 @@ class Status(TranslatableEnumMixin, Enum):
 
         return _TRANS_DICT_PUNISHER[self]
 
+    def to_buff_param_extension(self) -> BuffParameter:
+        """
+        Convert the current status to duration extension buff parameter.
+
+        :raises EnumConversionError: if the current status cannot be converted to duration extension buff parameter
+        """
+        if self not in _TRANS_DICT_EXTENSION:
+            raise EnumConversionError(self, Status, BuffParameter)
+
+        return _TRANS_DICT_EXTENSION[self]
+
     @property
     def translation_id(self) -> str:
         return f"ABNORMAL_STATUS_NAME_{self.value}"
@@ -186,4 +197,21 @@ _TRANS_DICT_PUNISHER: dict[Status, BuffParameter] = {
     Status.STORMLASH: BuffParameter.STORMLASHED_PUNISHER,
     Status.SHADOWBLIGHT: BuffParameter.SHADOWBLIGHTED_PUNISHER,
     Status.SCORCHREND: BuffParameter.SCORCHRENT_PUNISHER
+}
+
+_TRANS_DICT_EXTENSION: dict[Status, BuffParameter] = {
+    Status.POISON: BuffParameter.DURATION_EXT_POISON,
+    Status.BURN: BuffParameter.DURATION_EXT_BURN,
+    Status.FREEZE: BuffParameter.DURATION_EXT_FREEZE,
+    Status.PARALYZE: BuffParameter.DURATION_EXT_PARALYZE,
+    Status.BLIND: BuffParameter.DURATION_EXT_BLIND,
+    Status.STUN: BuffParameter.DURATION_EXT_STUN,
+    Status.CURSE: BuffParameter.DURATION_EXT_CURSE,
+    Status.BOG: BuffParameter.DURATION_EXT_BOG,
+    Status.SLEEP: BuffParameter.DURATION_EXT_SLEEP,
+    Status.FROSTBITE: BuffParameter.DURATION_EXT_FROSTBITE,
+    Status.FLASHBURN: BuffParameter.DURATION_EXT_FLASHBURN,
+    Status.STORMLASH: BuffParameter.DURATION_EXT_STORMLASH,
+    Status.SHADOWBLIGHT: BuffParameter.DURATION_EXT_SHADOWBLIGHT,
+    Status.SCORCHREND: BuffParameter.DURATION_EXT_SCORCHREND
 }

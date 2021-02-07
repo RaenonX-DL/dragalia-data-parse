@@ -141,9 +141,10 @@ def chara_skill_overview(chara_id):
 
 
 def main():
-    # - 10150304 (モナ)
-    # - 10350505 (ジョーカー)
-    # - 10450404 (ソフィー)
+    # - 10150304 (Mona)
+    # - 10350505 (Joker)
+    # - 10450404 (Sophie)
+    # - 10550104 (Panther)
     chara_skill_overview(10950501)
 
 

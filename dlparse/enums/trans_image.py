@@ -76,6 +76,20 @@ path_dict: dict[TransformableEnums, str] = {
     BuffParameter.INFLICT_PROB_STORMLASH: None,  # No suitable icon, ``None`` to display the text
     BuffParameter.INFLICT_PROB_SHADOWBLIGHT: None,  # No suitable icon, ``None`` to display the text
     BuffParameter.INFLICT_PROB_SCORCHREND: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_POISON: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_BURN: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_FREEZE: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_PARALYZE: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_BLIND: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_STUN: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_CURSE: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_BOG: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_SLEEP: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_FROSTBITE: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_FLASHBURN: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_STORMLASH: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_SHADOWBLIGHT: None,  # No suitable icon, ``None`` to display the text
+    BuffParameter.DURATION_EXT_SCORCHREND: "/icon/ability/l/Icon_Ability_1010094.png",
     BuffParameter.ATK_EX: "/icon/ability/l/Icon_Ability_1020002.png",
     BuffParameter.SP_RATE: "/icon/ability/l/Icon_Ability_1020004.png",
     BuffParameter.SP_GAIN: "/icon/ability/l/Icon_Ability_1010007.png",

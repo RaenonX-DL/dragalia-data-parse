@@ -92,6 +92,9 @@ class AbilityVariantType(Enum):
     ENHANCE_SKILL = 44
     """Enhance a skill (ID at ID-A field, # at target action field)."""
 
+    AFFLICTION_EXTEND = 47
+    """Extend the duration of an affliction status."""
+
     FILL_DRAGON_GAUGE = 49
     """Fill the dragon gauge by a certain percentage."""
 

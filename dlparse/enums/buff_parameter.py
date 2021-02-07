@@ -109,79 +109,6 @@ class BuffParameter(TranslatableEnumMixin, Enum):
     """Force strike damage up (calculated as passive). A value of 0.12 means FS DMG +12%."""
     # endregion
 
-    # region Infliction probability
-    INFLICT_PROB_POISON = 161
-    """
-    Poison infliction probability up.
-    A value of 0.12 means that the probability of inflicting posion is boosted by 12%.
-    """
-    INFLICT_PROB_BURN = 162
-    """
-    Burn infliction probability up.
-    A value of 0.12 means that the probability of inflicting burn is boosted by 12%.
-    """
-    INFLICT_PROB_FREEZE = 163
-    """
-    Freeze infliction probability up.
-    A value of 0.12 means that the probability of inflicting freeze is boosted by 12%.
-    """
-    INFLICT_PROB_PARALYZE = 164
-    """
-    Paralyze infliction probability up.
-    A value of 0.12 means that the probability of inflicting paralyze is boosted by 12%.
-    """
-    INFLICT_PROB_BLIND = 165
-    """
-    Blind infliction probability up.
-    A value of 0.12 means that the probability of inflicting blind is boosted by 12%.
-    """
-    INFLICT_PROB_STUN = 166
-    """
-    Stun infliction probability up.
-    A value of 0.12 means that the probability of inflicting posion is boosted by 12%.
-    """
-    INFLICT_PROB_CURSE = 167
-    """
-    Curse infliction probability up.
-    A value of 0.12 means that the probability of inflicting curse is boosted by 12%.
-    """
-    INFLICT_PROB_BOG = 169
-    """
-    Bog infliction probability up.
-    A value of 0.12 means that the probability of inflicting bog is boosted by 12%.
-    """
-    INFLICT_PROB_SLEEP = 170
-    """
-    Sleep infliction probability up.
-    A value of 0.12 means that the probability of inflicting sleep is boosted by 12%.
-    """
-    INFLICT_PROB_FROSTBITE = 171
-    """
-    Frostbite infliction probability up.
-    A value of 0.12 means that the probability of inflicting frostbite is boosted by 12%.
-    """
-    INFLICT_PROB_FLASHBURN = 172
-    """
-    Flashburn infliction probability up.
-    A value of 0.12 means that the probability of inflicting flashburn is boosted by 12%.
-    """
-    INFLICT_PROB_STORMLASH = 173
-    """
-    Stormlash infliction probability up.
-    A value of 0.12 means that the probability of inflicting stormlash is boosted by 12%.
-    """
-    INFLICT_PROB_SHADOWBLIGHT = 174
-    """
-    Shadowblight infliction probability up.
-    A value of 0.12 means that the probability of inflicting shadowblight is boosted by 12%.
-    """
-    INFLICT_PROB_SCORCHREND = 175
-    """
-    Scorchrend infliction probability up.
-    A value of 0.12 means that the probability of inflicting scorchrend is boosted by 12%.
-    """
-    # endregion
-
     # region EX
     ATK_EX = 191
     """ATK up (calculated as EX). A value of 0.12 means ATK +12%."""
@@ -409,8 +336,8 @@ class BuffParameter(TranslatableEnumMixin, Enum):
     """
     # endregion
 
-    # region Punishers
-    # region Afflicted
+    # region Infliction/Affliction Control
+    # region Punishers (afflicted)
     POISONED_PUNISHER = 701
     BURNED_PUNISHER = 702
     FROZEN_PUNISHER = 703
@@ -428,11 +355,45 @@ class BuffParameter(TranslatableEnumMixin, Enum):
     AFFLICTED_PUNISHER = 729
     # endregion
 
-    # region Status
+    # region Punisher (status)
     DEF_DOWN_PUNISHER = 740
     ATK_OR_DEF_DOWN_PUNISHER = 741
     OD_STATE_PUNISHER = 742
     BK_STATE_PUNISHER = 743
+    # endregion
+
+    # region Infliction probability
+    INFLICT_PROB_POISON = 761
+    INFLICT_PROB_BURN = 762
+    INFLICT_PROB_FREEZE = 763
+    INFLICT_PROB_PARALYZE = 764
+    INFLICT_PROB_BLIND = 765
+    INFLICT_PROB_STUN = 766
+    INFLICT_PROB_CURSE = 767
+    INFLICT_PROB_BOG = 769
+    INFLICT_PROB_SLEEP = 770
+    INFLICT_PROB_FROSTBITE = 771
+    INFLICT_PROB_FLASHBURN = 772
+    INFLICT_PROB_STORMLASH = 773
+    INFLICT_PROB_SHADOWBLIGHT = 774
+    INFLICT_PROB_SCORCHREND = 775
+    # endregion
+
+    # region Duration extension
+    DURATION_EXT_POISON = 781
+    DURATION_EXT_BURN = 782
+    DURATION_EXT_FREEZE = 783
+    DURATION_EXT_PARALYZE = 784
+    DURATION_EXT_BLIND = 785
+    DURATION_EXT_STUN = 786
+    DURATION_EXT_CURSE = 787
+    DURATION_EXT_BOG = 789
+    DURATION_EXT_SLEEP = 790
+    DURATION_EXT_FROSTBITE = 791
+    DURATION_EXT_FLASHBURN = 792
+    DURATION_EXT_STORMLASH = 793
+    DURATION_EXT_SHADOWBLIGHT = 794
+    DURATION_EXT_SCORCHREND = 795
     # endregion
     # endregion
 
@@ -532,6 +493,20 @@ _PARAM_UNIT: dict[BuffParameter, BuffValueUnit] = {
     BuffParameter.INFLICT_PROB_STORMLASH: BuffValueUnit.PERCENTAGE,
     BuffParameter.INFLICT_PROB_SHADOWBLIGHT: BuffValueUnit.PERCENTAGE,
     BuffParameter.INFLICT_PROB_SCORCHREND: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_POISON: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_BURN: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_FREEZE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_PARALYZE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_BLIND: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_STUN: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_CURSE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_BOG: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_SLEEP: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_FROSTBITE: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_FLASHBURN: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_STORMLASH: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_SHADOWBLIGHT: BuffValueUnit.PERCENTAGE,
+    BuffParameter.DURATION_EXT_SCORCHREND: BuffValueUnit.PERCENTAGE,
     BuffParameter.ATK_EX: BuffValueUnit.PERCENTAGE,
     BuffParameter.SP_RATE: BuffValueUnit.PERCENTAGE,
     BuffParameter.SP_GAIN: BuffValueUnit.SKILL_POINT,

@@ -332,6 +332,22 @@
     "text": "S2 (亞森已召喚)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_72",
+    "text": "S1 (卡門未召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_72",
+    "text": "S2 (卡門未召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_73",
+    "text": "S1 (卡門已召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_73",
+    "text": "S2 (卡門已召喚)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_mode_74",
     "text": "S1 (匹托斯未召喚)"
   },
@@ -1426,6 +1442,62 @@
   {
     "id": "ENUM_BUFF_INFLICT_PROB_SCORCHREND",
     "text": "劫火機率"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_POISON",
+    "text": "毒時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_BURN",
+    "text": "燒傷時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_FREEZE",
+    "text": "冰凍時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_PARALYZE",
+    "text": "麻痺時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_BLIND",
+    "text": "黑暗時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_STUN",
+    "text": "暈眩時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_CURSE",
+    "text": "詛咒時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_BOG",
+    "text": "濕身時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_SLEEP",
+    "text": "睡眠時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_FROSTBITE",
+    "text": "凍傷時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_FLASHBURN",
+    "text": "閃熱時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_STORMLASH",
+    "text": "裂風時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_SHADOWBLIGHT",
+    "text": "暗黑時間"
+  },
+  {
+    "id": "ENUM_BUFF_DURATION_EXT_SCORCHREND",
+    "text": "劫火時間"
   },
   {
     "id": "ENUM_BUFF_ATK_EX",
