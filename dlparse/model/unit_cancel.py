@@ -39,7 +39,7 @@ class SkillCancelActionUnit:
                 end_time = max(
                     end_time,
                     motion.time_start + motion.time_duration,
-                    chara_motion_loader.get_character_motion_stop_time(chara_data, motion.motion_state)
+                    chara_motion_loader.get_motion_stop_time(chara_data, motion.motion_state)
                 )
 
             cancel_units.append(SkillCancelActionUnit(action=SkillCancelAction.MOTION_ENDS, time=end_time))

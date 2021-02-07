@@ -2,14 +2,15 @@
 from dataclasses import dataclass
 from typing import Any
 
-from dlparse.mono.asset.base import MotionControllerBase, get_file_like, get_file_path, parse_motion_data
+from dlparse.mono.asset.base import get_file_like, get_file_path, parse_motion_data
+from dlparse.mono.asset.extension import AnimatorOverrideController
 
 __all__ = ("MotionControllerChara",)
 
 
 @dataclass
-class MotionControllerChara(MotionControllerBase):
-    """Motion controller for a character."""
+class MotionControllerChara(AnimatorOverrideController):
+    """``AnimatorOverrideController`` of a character."""
 
     # Init vars
     json_dict: dict[str, Any]
