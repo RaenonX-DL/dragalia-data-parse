@@ -6,7 +6,7 @@ from typing import Optional, TYPE_CHECKING, TextIO, Union
 from dlparse.enums import Element, Language, SkillNumber, Weapon
 from dlparse.errors import InvalidSkillNumError, TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import NamedEntry, SkillDiscoverableEntry
+from dlparse.mono.asset.extension import NamedEntry, SkillDiscoverableEntry, VariedEntry
 from .dragon_data import DRAGON_SKILL_MAX_LEVEL
 from .skill_data import CHARA_SKILL_MAX_LEVEL
 from .text_label import TextAssetMultilingual
@@ -18,7 +18,7 @@ __all__ = ("CharaDataEntry", "CharaDataAsset")
 
 
 @dataclass
-class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
+class CharaDataEntry(NamedEntry, VariedEntry, SkillDiscoverableEntry, MasterEntryBase):
     """Single entry of a character data."""
 
     # pylint: disable=too-many-public-methods
@@ -32,8 +32,6 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
     element_id: int
 
     chara_type_id: int
-    chara_base_id: int
-    chara_variation_id: int
 
     # region Parameters
     max_hp: int
@@ -246,18 +244,9 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
         return [mode_id for mode_id in (self.mode_1_id, self.mode_2_id, self.mode_3_id, self.mode_4_id) if mode_id]
 
     @property
-    def custom_id(self) -> str:
-        """
-        Custom ID of the character.
-
-        This ID will be in the format of ``{CHARA_BASE_ID}/{VARIATION_ID}``.
-        """
-        return f"{self.chara_base_id}/{self.chara_variation_id}"
-
-    @property
     def icon_name(self) -> str:
         """Get the name of the character icon, excluding the file extension."""
-        return f"{self.chara_base_id}_{self.chara_variation_id:02}_r{self.rarity:02}"
+        return f"{self.base_id}_{self.variation_id:02}_r{self.rarity:02}"
 
     @property
     def element(self) -> Element:
@@ -383,8 +372,8 @@ class CharaDataEntry(NamedEntry, SkillDiscoverableEntry, MasterEntryBase):
             max_limit_break_count=data["_MaxLimitBreakCount"],
             element_id=data["_ElementalType"],
             chara_type_id=data["_CharaType"],
-            chara_base_id=data["_BaseId"],
-            chara_variation_id=data["_VariationId"],
+            base_id=data["_BaseId"],
+            variation_id=data["_VariationId"],
             max_hp=data["_MaxHp"],
             max_hp_1=data["_AddMaxHp1"],
             plus_hp_0=data["_PlusHp0"],

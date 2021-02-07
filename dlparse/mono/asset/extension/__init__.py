@@ -2,3 +2,4 @@
 from .named import NamedEntry
 from .skill import SkillEntry
 from .skill_discovery import SkillDiscoverableEntry, SkillIdEntry, SkillIdentifierLabel
+from .varied import VariedEntry

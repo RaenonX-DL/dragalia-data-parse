@@ -1,9 +1,8 @@
 """Interface for the named entry."""
 from abc import ABC
+from dataclasses import dataclass
 
 __all__ = ("NamedEntry",)
-
-from dataclasses import dataclass
 
 
 @dataclass

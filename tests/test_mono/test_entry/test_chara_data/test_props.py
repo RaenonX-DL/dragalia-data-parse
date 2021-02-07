@@ -14,8 +14,8 @@ def create_dummy(**kwargs) -> CharaDataEntry:
         "max_limit_break_count": 0,
         "element_id": 0,
         "chara_type_id": 0,
-        "chara_base_id": 0,
-        "chara_variation_id": 0,
+        "base_id": 0,
+        "variation_id": 0,
         "max_hp": 0,
         "max_hp_1": 0,
         "plus_hp_0": 0,
@@ -168,17 +168,6 @@ def test_mode_ids():
 
     entry = create_dummy(mode_1_id=0, mode_2_id=0, mode_3_id=0, mode_4_id=0)
     assert entry.mode_ids == []
-
-
-def test_custom_id():
-    entry = create_dummy(chara_base_id=100002, chara_variation_id=6)
-    assert entry.custom_id == "100002/6"
-
-    entry = create_dummy(chara_base_id=100007, chara_variation_id=1)
-    assert entry.custom_id == "100007/1"
-
-    entry = create_dummy(chara_base_id=100011, chara_variation_id=11)
-    assert entry.custom_id == "100011/11"
 
 
 def test_get_chara_name_use_main(asset_manager: AssetManager):

@@ -45,4 +45,4 @@ class CharacterMotionLoader:
     @staticmethod
     def get_controller_name(chara_data: CharaDataEntry) -> str:
         """Get the controller name of a character."""
-        return f"{chara_data.weapon.weapon_str}_{chara_data.chara_base_id}{chara_data.chara_variation_id:02}"
+        return f"{chara_data.weapon.weapon_str}_{chara_data.base_id}{chara_data.variation_id:02}"

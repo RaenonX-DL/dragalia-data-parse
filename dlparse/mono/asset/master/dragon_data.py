@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import NamedEntry, SkillEntry
+from dlparse.mono.asset.extension import NamedEntry, SkillEntry, VariedEntry
 
 __all__ = ("DragonDataEntry", "DragonDataAsset", "DRAGON_SKILL_MAX_LEVEL")
 
@@ -11,7 +11,7 @@ DRAGON_SKILL_MAX_LEVEL = 2
 
 
 @dataclass
-class DragonDataEntry(NamedEntry, SkillEntry, MasterEntryBase):
+class DragonDataEntry(NamedEntry, VariedEntry, SkillEntry, MasterEntryBase):
     """Single entry of a dragon data."""
 
     ability_id_1_lv1: int
@@ -32,6 +32,8 @@ class DragonDataEntry(NamedEntry, SkillEntry, MasterEntryBase):
             emblem_id=data["_EmblemId"],
             name_label=data["_Name"],
             name_label_2=data["_SecondName"],
+            base_id=data["_BaseId"],
+            variation_id=data["_VariationId"],
             skill_1_id=data["_Skill1"],
             skill_2_id=data["_Skill2"],
             ability_id_1_lv1=data["_Abilities11"],
