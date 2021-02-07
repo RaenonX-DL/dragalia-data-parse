@@ -1,11 +1,13 @@
 """Conditions for the skills."""
 from enum import Enum
+from functools import total_ordering
 
 from ..mixin import TranslatableEnumMixin
 
 __all__ = ("Condition",)
 
 
+@total_ordering
 class Condition(TranslatableEnumMixin, Enum):
     """
     Conditions for the skill data entries.

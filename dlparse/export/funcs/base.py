@@ -1,8 +1,7 @@
 """Base exporting functions."""
 import csv
-import json
 import os
-from json import JSONEncoder
+from json import JSONEncoder, dump
 from typing import Any, Callable, TypeVar, Union
 
 from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError, MotionDataNotFoundError
@@ -119,7 +118,7 @@ def export_as_json(obj: Union[dict, list], file_path: str):
     os.makedirs(os.path.dirname(file_path), exist_ok=True)  # Create directory if needed
 
     with open(file_path, "w", encoding="utf-8", newline="") as f:
-        json.dump(obj, f, cls=JsonEntryEncoder, ensure_ascii=False, sort_keys=True)
+        dump(obj, f, cls=JsonEntryEncoder, ensure_ascii=False, sort_keys=True)
 
 
 def print_skipped_messages(skipped_messages: list[str]):

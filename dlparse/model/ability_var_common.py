@@ -412,8 +412,10 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         if self.type_enum == AbilityVariantType.HIT_ATTR_SHIFT:
             return set()
 
-        unit_method = Callable[["AssetManager", AbilityVariantEffectPayload], set[AbilityVariantEffectUnit]]
-        method_dict: dict[AbilityVariantType, unit_method] = {
+        method_dict: dict[
+            AbilityVariantType,
+            Callable[["AssetManager", AbilityVariantEffectPayload], set[AbilityVariantEffectUnit]]
+        ] = {
             AbilityVariantType.STATUS_UP: self._from_status_up,
             AbilityVariantType.DAMAGE_UP: self._from_dmg_up,
             AbilityVariantType.CRT_RATE_UP: self._from_crt_up,
