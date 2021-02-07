@@ -60,21 +60,150 @@ def create_dummy(**kwargs) -> SkillDataEntry:
     return SkillDataEntry(**params)
 
 
-def test_action_id_1_by_level_1():
-    entry = create_dummy(action_1_id=1, action_2_id=2, ability_lv3_id=3, ability_lv4_id=4,
-                         adv_skill_lv1=3, adv_skill_lv1_action_id=5)
+def test_action_id_by_level_action_1_only():
+    entry = create_dummy(action_1_id=1, ability_lv3_id=3, ability_lv4_id=4)
 
-    assert entry.action_id_1_by_level == [1, 1, 5, 5]
+    assert entry.get_action_id_by_level() == [
+        (1, 1, 1),
+        (1, 2, 1),
+        (1, 3, 1),
+        (1, 4, 1),
+    ]
 
 
-def test_action_id_1_by_level_2():
+def test_action_id_by_level_action_1_only_adv_at_3():
+    entry = create_dummy(
+        action_1_id=1, adv_skill_lv1=3, adv_skill_lv1_action_id=3, ability_lv3_id=3, ability_lv4_id=4
+    )
+
+    assert entry.get_action_id_by_level() == [
+        (1, 1, 1),
+        (1, 2, 1),
+        (3, 3, 1),
+        (3, 4, 1),
+    ]
+
+
+def test_action_id_by_level_action_1_only_adv_at_4():
+    entry = create_dummy(
+        action_1_id=1, adv_skill_lv1=4, adv_skill_lv1_action_id=3, ability_lv3_id=3, ability_lv4_id=4
+    )
+
+    assert entry.get_action_id_by_level() == [
+        (1, 1, 1),
+        (1, 2, 1),
+        (1, 3, 1),
+        (3, 4, 1),
+    ]
+
+
+def test_action_id_by_level_split_2():
     entry = create_dummy(action_1_id=1, action_2_id=2, ability_lv3_id=3, ability_lv4_id=4)
 
-    assert entry.action_id_1_by_level == [1, 1, 1, 1]
+    assert entry.get_action_id_by_level() == [
+        (1, 1, 1 / 2),
+        (2, 1, 1 / 2),
+        (1, 2, 1 / 2),
+        (2, 2, 1 / 2),
+        (1, 3, 1 / 2),
+        (2, 3, 1 / 2),
+        (1, 4, 1 / 2),
+        (2, 4, 1 / 2),
+    ]
 
 
-def test_action_id_1_by_level_3():
-    entry = create_dummy(action_1_id=1, action_2_id=2, ability_lv3_id=3, ability_lv4_id=4,
-                         adv_skill_lv1=4, adv_skill_lv1_action_id=5)
+def test_action_id_by_level_split_2_adv_at_3():
+    entry = create_dummy(
+        action_1_id=1, action_2_id=2, adv_skill_lv1=3, adv_skill_lv1_action_id=5, ability_lv3_id=3, ability_lv4_id=4
+    )
 
-    assert entry.action_id_1_by_level == [1, 1, 1, 5]
+    assert entry.get_action_id_by_level() == [
+        (1, 1, 1 / 2),
+        (2, 1, 1 / 2),
+        (1, 2, 1 / 2),
+        (2, 2, 1 / 2),
+        (5, 3, 1),
+        (5, 4, 1),
+    ]
+
+
+def test_action_id_by_level_split_2_adv_at_4():
+    entry = create_dummy(
+        action_1_id=1, action_2_id=2, ability_lv3_id=3, ability_lv4_id=4, adv_skill_lv1=4, adv_skill_lv1_action_id=5
+    )
+
+    assert entry.get_action_id_by_level() == [
+        (1, 1, 1 / 2),
+        (2, 1, 1 / 2),
+        (1, 2, 1 / 2),
+        (2, 2, 1 / 2),
+        (1, 3, 1 / 2),
+        (2, 3, 1 / 2),
+        (5, 4, 1),
+    ]
+
+
+def test_action_id_by_level_split_3():
+    entry = create_dummy(
+        action_1_id=1, action_2_id=2, action_3_id=8, ability_lv3_id=3, ability_lv4_id=4
+    )
+
+    assert entry.get_action_id_by_level() == [
+        (1, 1, 1 / 3),
+        (2, 1, 1 / 3),
+        (8, 1, 1 / 3),
+        (1, 2, 1 / 3),
+        (2, 2, 1 / 3),
+        (8, 2, 1 / 3),
+        (1, 3, 1 / 3),
+        (2, 3, 1 / 3),
+        (8, 3, 1 / 3),
+        (1, 4, 1 / 3),
+        (2, 4, 1 / 3),
+        (8, 4, 1 / 3),
+    ]
+
+
+def test_action_id_by_level_split_4():
+    entry = create_dummy(
+        action_1_id=1, action_2_id=2, action_3_id=8, action_4_id=9, ability_lv3_id=3, ability_lv4_id=4
+    )
+
+    assert entry.get_action_id_by_level() == [
+        (1, 1, 1 / 4),
+        (2, 1, 1 / 4),
+        (8, 1, 1 / 4),
+        (9, 1, 1 / 4),
+        (1, 2, 1 / 4),
+        (2, 2, 1 / 4),
+        (8, 2, 1 / 4),
+        (9, 2, 1 / 4),
+        (1, 3, 1 / 4),
+        (2, 3, 1 / 4),
+        (8, 3, 1 / 4),
+        (9, 3, 1 / 4),
+        (1, 4, 1 / 4),
+        (2, 4, 1 / 4),
+        (8, 4, 1 / 4),
+        (9, 4, 1 / 4),
+    ]
+
+
+def test_action_id_by_level_split_4_adv_at_3():
+    entry = create_dummy(
+        action_1_id=1, action_2_id=2, action_3_id=8, action_4_id=9,
+        adv_skill_lv1=3, adv_skill_lv1_action_id=5, ability_lv3_id=3, ability_lv4_id=4
+    )
+
+    assert entry.get_action_id_by_level() == [
+        (1, 1, 1 / 4),
+        (2, 1, 1 / 4),
+        (8, 1, 1 / 4),
+        (9, 1, 1 / 4),
+        (1, 2, 1 / 4),
+        (2, 2, 1 / 4),
+        (8, 2, 1 / 4),
+        (9, 2, 1 / 4),
+        (5, 3, 1),
+        (5, 4, 1),
+    ]

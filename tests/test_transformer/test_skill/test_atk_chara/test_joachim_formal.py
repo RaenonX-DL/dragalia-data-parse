@@ -36,7 +36,7 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
 def test_s1_cancel_data(transformer_skill: SkillTransformer):
     # Formal Joachim S1
     # https://dragalialost.wiki/w/Formal_Joachim
-    skill_data = transformer_skill.transform_attacking(109503011)
+    skill_data = transformer_skill.transform_attacking(109503011).with_conditions()
 
     expected_cancel_action_data = {(SkillCancelAction.ANY_ACTION, 1.3)}
 

@@ -1,4 +1,5 @@
 """Classes for handling the skill data asset."""
+from collections import Counter
 from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
@@ -89,26 +90,23 @@ class SkillDataEntry(MasterEntryBase):
     """If the skill will be affected by energizing at Lv.4."""
 
     @property
-    def action_id_1_by_level(self) -> list[int]:
-        """
-        Get the 1st (main) action IDs for each level.
-
-        Note that the action ID for skill lv. 1 will be located at index 0.
-        """
-        ret: list[int] = []
-
-        for level in range(CHARA_SKILL_MAX_LEVEL):
-            is_advanced = self.adv_skill_lv1_action_id and level + 1 >= self.adv_skill_lv1
-            ret.append(self.adv_skill_lv1_action_id if is_advanced else self.action_1_id)
-
-        return ret
-
-    @property
-    def all_action_ids(self) -> set[int]:
+    def action_ids_set(self) -> set[int]:
         """Get a set of all possible and effective action IDs."""
         # - {0} for removing ineffective AIDs
         return {self.action_1_id, self.action_2_id, self.action_3_id, self.action_4_id,
                 self.adv_skill_lv1_action_id} - {0}
+
+    @property
+    def action_ids_list(self) -> list[int]:
+        """
+        Get a list of effective action IDs, according to their order.
+
+        This does **not** return the advanced (``adv_skill_lv1_action_id``) one.
+        """
+        return [
+            action_id for action_id in [self.action_1_id, self.action_2_id, self.action_3_id, self.action_4_id]
+            if action_id
+        ]
 
     @property
     def ability_id_by_level(self) -> list[int]:
@@ -130,9 +128,46 @@ class SkillDataEntry(MasterEntryBase):
         return self.trans_skill_id != 0
 
     @property
-    def has_chain_variant(self):
+    def has_chain_variant(self) -> bool:
         """Check if the skill has a chain variant."""
         return self.chain_group_id != 0
+
+    @property
+    def action_id_count(self) -> int:
+        """Get the count of action IDs available."""
+        return len(self.action_ids_list)
+
+    def get_action_id_by_level(self, max_level: int = None) -> list[tuple[int, int, float]]:
+        """
+        Get the action IDs, skill level and the probability by the skill level.
+
+        The 1st element is action ID; the 2nd element is the corresponding skill level;
+        the 3rd element is the probability of the action.
+
+        Note that the skill level (2nd element) returned starts from 1, to reflect the actual skill level.
+        """
+        if not max_level:
+            # Set ``max_level`` to max possible level if falsy (None or 0)
+            max_level = CHARA_SKILL_MAX_LEVEL
+
+        ret: list[tuple[int, int, float]] = []
+
+        for level in range(1, max_level + 1):
+            is_advanced = self.adv_skill_lv1_action_id and level >= self.adv_skill_lv1
+
+            # Check if the skill is using the advanced action
+            if is_advanced:
+                ret.append((self.adv_skill_lv1_action_id, level, 1))
+                continue  # Advanced skill have 100% probability only, therefore only 1 entry should be appended
+
+            # Check the weight of the each action
+            counter = Counter(self.action_ids_list)
+            for action_id, appearances in counter.items():
+                prob = appearances / self.action_id_count
+
+                ret.append((action_id, level, prob))
+
+        return ret
 
     def get_sp_at_level(self, level: int) -> int:
         """

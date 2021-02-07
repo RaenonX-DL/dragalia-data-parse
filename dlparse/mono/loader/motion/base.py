@@ -1,6 +1,6 @@
 """Base class of a motion loader."""
 from abc import ABC, abstractmethod
-from typing import Callable, Generic, TypeVar
+from typing import Callable, Generic, Optional, TypeVar
 
 from dlparse.errors import MotionDataNotFoundError
 from dlparse.mono.asset.base import AnimationControllerBase
@@ -22,7 +22,7 @@ class MotionLoaderBase(Generic[CT, ET], ABC):
 
     def __init__(self, motion_root_dir: str):
         self._motion_root: str = motion_root_dir
-        self._motion_cache: dict[str, CT] = {}  # K = name, V = controller
+        self._motion_cache: dict[str, Optional[CT]] = {}  # K = name, V = controller
 
     def _get_motion_ctrl(self, entry: ET, fn_load_ctrl: Callable[[str, str], CT]) -> CT:
         """
@@ -42,7 +42,11 @@ class MotionLoaderBase(Generic[CT, ET], ABC):
             try:
                 self._motion_cache[name] = fn_load_ctrl(self._motion_root, f"{name}.json")
             except FileNotFoundError as ex:
+                self._motion_cache[name] = None
                 raise MotionDataNotFoundError(name) from ex
+        elif not self._motion_cache[name]:
+            # Previously not found (recorded to cache)
+            raise MotionDataNotFoundError(name)
 
         return self._motion_cache[name]
 

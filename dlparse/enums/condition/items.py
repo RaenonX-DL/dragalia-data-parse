@@ -339,6 +339,14 @@ class Condition(TranslatableEnumMixin, Enum):
     # region 9xx - Miscellaneous (e.g. quest start)
     QUEST_START = 901
 
+    # region Probabilistic
+    PROB_25 = 910
+    PROB_33 = 911
+    PROB_50 = 912
+    PROB_67 = 913
+    PROB_75 = 914
+
+    # endregion
     # endregion
 
     @property

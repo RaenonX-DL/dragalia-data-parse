@@ -1,8 +1,8 @@
 """Hit execution type enum."""
-from enum import IntEnum
+from enum import Enum
 
 
-class HitExecType(IntEnum):
+class HitExecType(Enum):
     """
     Enums of the hit execution type.
 
@@ -22,5 +22,5 @@ class HitExecType(IntEnum):
         return self in (HitExecType.BUFF, HitExecType.GAUGE_REFILL)
 
     @classmethod
-    def _missing_(cls, value):
+    def _missing_(cls, _):
         return cls.UNKNOWN

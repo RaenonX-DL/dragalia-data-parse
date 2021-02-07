@@ -45,6 +45,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_TRIGGER = auto()
     MULTIPLE_TRIGGER_HIT_BY_AFFLICTION = auto()
     MULTIPLE_MISC = auto()
+    MULTIPLE_PROBABILITY = auto()
 
     INTERNAL_NOT_AFFLICTION_ONLY = auto()
     INTERNAL_NOT_TARGET_ELEMENT = auto()
@@ -67,6 +68,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_SHAPESHIFT_COUNT = auto()
     INTERNAL_NOT_SHAPESHIFT_COUNT_IN_DRAGON = auto()
     INTERNAL_NOT_TRIGGER = auto()
+    INTERNAL_NOT_PROBABILITY = auto()
 
     HAS_CONDITIONS_LEFT = auto()
 
@@ -638,6 +640,18 @@ class ConditionCategories:
         ConditionMaxCount.SINGLE,
         "Miscellaneous",
         ConditionCheckResult.MULTIPLE_MISC
+    )
+    probability = ConditionCategoryTargetNumber(
+        {
+            Condition.PROB_25: 1 / 4,
+            Condition.PROB_33: 1 / 3,
+            Condition.PROB_50: 1 / 2,
+            Condition.PROB_67: 2 / 3,
+            Condition.PROB_75: 3 / 4
+        },
+        ConditionMaxCount.SINGLE,
+        "Probability",
+        ConditionCheckResult.MULTIPLE_PROBABILITY
     )
     # endregion
 

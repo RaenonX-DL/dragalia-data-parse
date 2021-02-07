@@ -1,4 +1,5 @@
 """Classes for loading the character motions."""
+from dlparse.errors import MotionDataNotFoundError
 from dlparse.mono.asset import CharaDataEntry, MotionControllerChara, MotionSelectorWeapon
 from .base import MotionLoaderBase
 
@@ -15,9 +16,13 @@ class CharacterMotionLoader(MotionLoaderBase[MotionControllerChara, CharaDataEnt
     def get_motion_stop_time(self, chara_data: CharaDataEntry, motion_name: str) -> float:
         """Get the stop time of ``motion_name`` of a character."""
         ctrl_weapon = self._motion_weapon.get_controller(chara_data.weapon)
-        ctrl_chara = self._get_motion_ctrl(chara_data, MotionControllerChara.load_from_file)
 
-        return ctrl_weapon.get_stop_time_by_motion_name(motion_name, ctrl_chara, error_msg=chara_data.id)
+        try:
+            ctrl_chara = self._get_motion_ctrl(chara_data, MotionControllerChara.load_from_file)
+        except MotionDataNotFoundError:
+            ctrl_chara = None
+
+        return ctrl_weapon.get_stop_time_by_motion_name(motion_name, override=ctrl_chara, error_msg=chara_data.id)
 
     @staticmethod
     def get_controller_name(chara_data: CharaDataEntry) -> str:

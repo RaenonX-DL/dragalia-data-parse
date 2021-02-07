@@ -7,7 +7,7 @@ from dlparse.transformer import SkillTransformer
 def test_s1_cancel_data(transformer_skill: SkillTransformer):
     # Formal Joachim S1
     # https://dragalialost.wiki/w/Formal_Joachim
-    skill_data = transformer_skill.transform_attacking(101401012)
+    skill_data = transformer_skill.transform_attacking(101401012).with_conditions()
 
     expected_cancel_action_data = {(SkillCancelAction.MOTION_ENDS, 2.56666684)}
 

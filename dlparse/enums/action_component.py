@@ -8,7 +8,7 @@ class ActionCommandType(Enum):
     """
     Enums for action command type.
 
-    The number corresponds to the ``commandType`` fields in the player action assets.
+    The number corresponds to the field ``commandType`` in the player action assets.
     """
 
     BULLET = 9

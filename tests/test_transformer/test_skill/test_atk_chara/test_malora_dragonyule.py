@@ -36,7 +36,7 @@ def test_iter_entries_s1(transformer_skill: SkillTransformer):
 def test_s1_cancel_data(transformer_skill: SkillTransformer):
     # Dragonyule Malora S1
     # https://dragalialost.wiki/w/Dragonyule_Malora
-    skill_data = transformer_skill.transform_attacking(104504021)
+    skill_data = transformer_skill.transform_attacking(104504021).with_conditions()
 
     expected_cancel_action_data = {(SkillCancelAction.MOTION_ENDS, 2.266667)}
 

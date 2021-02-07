@@ -10,7 +10,7 @@ from tests.utils import approx_matrix
 def test_s2_cancel_data(transformer_skill: SkillTransformer):
     # Gala Mym S2
     # https://dragalialost.wiki/w/Gala_Mym
-    skill_data = transformer_skill.transform_attacking(105501012)
+    skill_data = transformer_skill.transform_attacking(105501012).with_conditions()
 
     expected_cancel_action_data = {(SkillCancelAction.MOTION_ENDS, 1.63333344)}
 

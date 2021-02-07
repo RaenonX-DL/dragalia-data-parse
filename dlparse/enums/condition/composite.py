@@ -97,6 +97,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
 
     # region Other fields
     trigger: Condition = field(init=False)
+    probability: Condition = field(init=False)
+    probability_converted: float = field(init=False)
     # endregion
 
     # region Other fields (hidden)
@@ -200,6 +202,10 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.trigger and self.trigger not in CondCat.trigger:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_TRIGGER)
 
+        # Check `self.probability`
+        if self.probability and self.probability not in CondCat.probability:
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_PROBABILITY)
+
     def _init_validate_fields(self, conditions: tuple[Condition]):
         self._init_validate_target()
         self._init_validate_self_general()
@@ -210,10 +216,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if cond_not_categorized := (set(conditions) - set(self.conditions_sorted) - self.allowed_not_categorize_conds):
             raise ConditionValidationFailedError(ConditionCheckResult.HAS_CONDITIONS_LEFT, cond_not_categorized)
 
-    def __post_init__(self, conditions: Optional[Union[Iterable[Condition], Condition]]):
-        conditions = self._init_process_conditions(conditions)
-
-        # region Categorized condition fields
+    def _init_categorized_condition_fields(self, conditions: Optional[Union[Iterable[Condition], Condition]]):
         # region Target status
         self.target_afflictions = CondCat.target_status.extract(conditions)
         self.target_element = CondCat.target_element.extract(conditions)
@@ -250,12 +253,10 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
 
         # region Others
         self.trigger = CondCat.trigger.extract(conditions)
-        # endregion
+        self.probability = CondCat.probability.extract(conditions)
         # endregion
 
-        self._init_validate_fields(conditions)
-
-        # region Converted fields
+    def _init_converted_fields(self):
         # region Target status
         self.target_afflictions_converted = {
             CondCat.target_status.convert(condition) for condition in self.target_afflictions
@@ -290,9 +291,19 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         # 0 instead of 1 to trigger the error faster if attempting to compare when additional input is not available
         self.addl_inputs_converted = CondCat.skill_addl_inputs.convert(self.addl_inputs, on_missing=None)
         # endregion
+
+        # region Others
+        self.probability_converted = CondCat.probability.convert(self.probability, on_missing=1)
         # endregion
 
-        # region Other fields
+    def __post_init__(self, conditions: Optional[Union[Iterable[Condition], Condition]]):
+        conditions = self._init_process_conditions(conditions)
+
+        self._init_categorized_condition_fields(conditions)
+        self._init_validate_fields(conditions)
+        self._init_converted_fields()
+
+        # region Private fields
         self._has_buff_boost_condition = any(
             condition in CondCat.self_buff_count or condition in CondCat.self_lapis_card
             for condition in conditions
@@ -394,6 +405,9 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.trigger:
             ret += (self.trigger,)
 
+        if self.probability:
+            ret += (self.probability,)
+
         return ret
 
     @property
@@ -425,6 +439,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         - [Skill] Action countering
         - [Skill] Mark explosion
         - [Other] Trigger
+        - [Other] Probability
         """
         # ``Condition.TARGET_DEF_DOWN`` is categorized into both target status and debuff.
         # Sorted conditions may yield this condition twice. Therefore removing the duplicates.

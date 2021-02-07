@@ -1288,6 +1288,26 @@
     "text": "任務開始"
   },
   {
+    "id": "ENUM_COND_PROB_25",
+    "text": "25% 機率"
+  },
+  {
+    "id": "ENUM_COND_PROB_33",
+    "text": "33% 機率"
+  },
+  {
+    "id": "ENUM_COND_PROB_50",
+    "text": "50% 機率"
+  },
+  {
+    "id": "ENUM_COND_PROB_67",
+    "text": "67% 機率"
+  },
+  {
+    "id": "ENUM_COND_PROB_75",
+    "text": "75% 機率"
+  },
+  {
     "id": "ENUM_BUFF_ATK_BUFF",
     "text": "攻擊 (Buff)"
   },

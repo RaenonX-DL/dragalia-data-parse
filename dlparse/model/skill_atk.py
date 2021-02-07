@@ -287,7 +287,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     # Indicate if the sectioned conditions should be included in possible conditions
     is_exporting: InitVar[bool]
 
-    cancel_unit_mtx: list[list[SkillCancelActionUnit]]
+    cancel_unit_mtx_base: list[list[SkillCancelActionUnit]] = field(init=False)
 
     _unit_mtx_base: list[list[DamageUnit]] = field(init=False)
     _buff_field_boost_mtx: list[BuffFieldBoostData] = field(init=False)
@@ -503,6 +503,8 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         self._init_buff_field_boost_mtx()
 
+        self.cancel_unit_mtx_base = self.skill_hit_data.cancel_unit_mtx
+
     def calculate_units_matrix(
             self, condition_comp: ConditionComposite
     ) -> tuple[list[list[DamageUnit]], list[int]]:
@@ -560,6 +562,15 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return units, hit_counts
 
+    def get_cancel_unit_mtx(self, condition_comp: ConditionComposite) -> list[list[SkillCancelActionUnit]]:
+        """Get the filtered cancel unit matrix according to ``condition_comp``."""
+        ret = []
+
+        for units_lv in self.cancel_unit_mtx_base:
+            ret.append([cancel_unit for cancel_unit in units_lv if cancel_unit.pre_conditions in condition_comp])
+
+        return ret
+
     def with_conditions(self, condition_comp: ConditionComposite = None) -> AttackingSkillDataEntry:
         """
         Get the skill data when all conditions in ``condition_comp`` hold.
@@ -580,7 +591,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             buff_field_boost_mtx=self._buff_field_boost_mtx,
             condition_comp=condition_comp,
             hit_unit_mtx=hit_unit_mtx,
-            cancel_unit_mtx=self.cancel_unit_mtx,
+            cancel_unit_mtx=self.get_cancel_unit_mtx(condition_comp),
             hit_count=hit_count_vct,
             max_level=self.max_level
         )

@@ -249,7 +249,7 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
         hit_labels: dict[str, SkillNumber] = {}
 
         # Load all possible hit labels (from all possible action IDs) of the skill
-        for action_id in skill_data.all_action_ids:
+        for action_id in skill_data.action_ids_set:
             for skill_lv in range(1, self.max_skill_level(skill_num) + 1):
                 try:
                     prefab = asset_manager.loader_action.get_prefab(action_id)

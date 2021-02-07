@@ -78,7 +78,7 @@ class AnimatorController(AnimationControllerBase, EntryBase, ABC):
         return self.animation_clips[clip_path_id].stop_time
 
     def get_stop_time_by_motion_name(
-            self, motion_name: str, override: Optional[AnimatorOverrideController] = None, /, error_msg: str = ""
+            self, motion_name: str, /, override: Optional[AnimatorOverrideController] = None, error_msg: str = ""
     ) -> float:
         """
         Get the animation stop time of the :class:`AnimationClip` of motion named as ``motion_name``.
