@@ -6,6 +6,7 @@ from typing import Any, Optional, Union
 from dlparse.errors import MotionDataNotFoundError
 from dlparse.mono.asset.base import AnimationControllerBase, EntryBase
 from .anim_ctrl_override import AnimatorOverrideController
+from .pptr import PPtr
 
 __all__ = ("AnimatorController",)
 
@@ -35,7 +36,7 @@ class AnimatorController(AnimationControllerBase, EntryBase, ABC):
 
     # Parsed vars
     tos: dict[str, int] = field(init=False)  # K = motion name, V = state machine name ID
-    state_machine_ref: dict[int, int] = field(init=False)  # K = state machine name ID, V = clip index (0-based)
+    state_machine_ref: dict[int, PPtr] = field(init=False)  # K = state machine name ID, V = clip index (0-based)
     animation_clip_path_ids: list[int] = field(init=False)
 
     # --- K = animation clip ID, V = animation clip data
@@ -43,7 +44,11 @@ class AnimatorController(AnimationControllerBase, EntryBase, ABC):
 
     def __post_init__(self):
         controller = self.json_dict["$Controller"]
-        clips = self.json_dict["$Clips"]
+        controller_clip_pptr = [PPtr.from_dict(pptr) for pptr in controller["m_AnimationClips"]]
+        clips = {}
+        for clip in self.json_dict["$Clips"]:
+            ctrl = AnimationClipDataAnimatorController(clip)
+            clips[ctrl.path_id] = ctrl
 
         self.tos = {}
         for tos in controller["m_TOS"]:
@@ -57,21 +62,20 @@ class AnimatorController(AnimationControllerBase, EntryBase, ABC):
             name_id = state_machine_data["m_NameID"]
             clip_idx = state_machine_data["m_BlendTreeConstantArray"][0]["data"]["m_NodeArray"][0]["data"]["m_ClipID"]
 
-            self.state_machine_ref[name_id] = clip_idx
+            self.state_machine_ref[name_id] = controller_clip_pptr[clip_idx]
 
         self.animation_clip_path_ids = []
         self.animation_clips = {}
-        for animation_clip_pptr, clip in zip(controller["m_AnimationClips"], clips):
-            clip_path_id: int = animation_clip_pptr["m_PathID"]
+        for animation_clip_pptr in controller_clip_pptr:
+            clip_path_id: int = animation_clip_pptr.path_id
 
             self.animation_clip_path_ids.append(clip_path_id)
-            self.animation_clips[clip_path_id] = AnimationClipDataAnimatorController(clip)
+            self.animation_clips[clip_path_id] = clips[clip_path_id]
 
     def get_clip_id_by_motion_name(self, motion_name: str) -> int:
         """Get the animation clip ID given ``motion_name``."""
         state_name_id = self.tos[motion_name]
-        clip_idx = self.state_machine_ref[state_name_id]
-        return self.animation_clip_path_ids[clip_idx]
+        return self.state_machine_ref[state_name_id].path_id
 
     def get_stop_time_by_clip_id(self, clip_path_id: int) -> float:
         """Get the animation stop time of the :class:`AnimationClip` at ``clip_path_id``."""
