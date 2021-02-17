@@ -1284,6 +1284,10 @@
     "text": "被劫火攻擊"
   },
   {
+    "id": "ENUM_COND_ON_HIT_BY_ANY_AFFLICTION",
+    "text": "被任何異常攻擊"
+  },
+  {
     "id": "ENUM_COND_QUEST_START",
     "text": "任務開始"
   },

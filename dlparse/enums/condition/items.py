@@ -333,6 +333,7 @@ class Condition(TranslatableEnumMixin, Enum):
     ON_HIT_BY_STORMLASH = 873
     ON_HIT_BY_SHADOWBLIGHT = 874
     ON_HIT_BY_SCORCHREND = 875
+    ON_HIT_BY_ANY_AFFLICTION = 881
     # endregion
     # endregion
 

@@ -61,3 +61,18 @@ def test_panther(transformer_ability: AbilityTransformer):
     }
 
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
+def test_valentines_chelsea(transformer_ability: AbilityTransformer):
+    # Valentine's Chelsea - 10650304
+    # https://dragalialost.wiki/w/Valentine%27s_Chelsea
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000873)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000873, ConditionComposite([Condition.TARGET_WIND, Condition.ON_HIT_BY_ANY_AFFLICTION]),
+            BuffParameter.SHIELD_SINGLE_DMG, 0.25, duration_count=1, cooldown_sec=20,
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)

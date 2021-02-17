@@ -228,6 +228,25 @@ class ConditionCategoryGroup(ConditionCategory[None]):
         raise OperationInvalidError("Condition category group does not allow conversion")
 
 
+hit_by_affliction_correspondence: dict[Condition, Status] = {
+    Condition.ON_HIT_BY_POISON: Status.POISON,
+    Condition.ON_HIT_BY_BURN: Status.BURN,
+    Condition.ON_HIT_BY_FREEZE: Status.FREEZE,
+    Condition.ON_HIT_BY_PARALYZE: Status.PARALYZE,
+    Condition.ON_HIT_BY_BLIND: Status.BLIND,
+    Condition.ON_HIT_BY_STUN: Status.STUN,
+    Condition.ON_HIT_BY_CURSE: Status.CURSE,
+    Condition.ON_HIT_BY_BOG: Status.BOG,
+    Condition.ON_HIT_BY_SLEEP: Status.SLEEP,
+    Condition.ON_HIT_BY_FROSTBITE: Status.FROSTBITE,
+    Condition.ON_HIT_BY_FLASHBURN: Status.FLASHBURN,
+    Condition.ON_HIT_BY_STORMLASH: Status.STORMLASH,
+    Condition.ON_HIT_BY_SHADOWBLIGHT: Status.SHADOWBLIGHT,
+    Condition.ON_HIT_BY_SCORCHREND: Status.SCORCHREND,
+    Condition.ON_HIT_BY_ANY_AFFLICTION: Status.AFFLICTED,
+}
+
+
 class ConditionCategories:
     """Categories for various conditions (:class:`Condition`)."""
 
@@ -571,7 +590,7 @@ class ConditionCategories:
 
     # region 8xx - Trigger
     trigger = ConditionCategoryGroup(
-        {
+        hit_by_affliction_correspondence.keys() | {
             Condition.ON_BUFFED_DEF,
             Condition.ON_REVIVED,
             Condition.ON_ENERGY_LV_UP,
@@ -589,20 +608,6 @@ class ConditionCategories:
             Condition.ON_COMBO_DIV_BY_20,
             Condition.ON_COMBO_DIV_BY_50,
             Condition.ON_HIT,
-            Condition.ON_HIT_BY_POISON,
-            Condition.ON_HIT_BY_BURN,
-            Condition.ON_HIT_BY_FREEZE,
-            Condition.ON_HIT_BY_PARALYZE,
-            Condition.ON_HIT_BY_BLIND,
-            Condition.ON_HIT_BY_STUN,
-            Condition.ON_HIT_BY_CURSE,
-            Condition.ON_HIT_BY_BOG,
-            Condition.ON_HIT_BY_SLEEP,
-            Condition.ON_HIT_BY_FROSTBITE,
-            Condition.ON_HIT_BY_FLASHBURN,
-            Condition.ON_HIT_BY_STORMLASH,
-            Condition.ON_HIT_BY_SHADOWBLIGHT,
-            Condition.ON_HIT_BY_SCORCHREND,
         },
         ConditionMaxCount.SINGLE,
         "Triggers",
@@ -610,22 +615,7 @@ class ConditionCategories:
     )
 
     trigger_hit_by_affliction = ConditionCategory[Status](
-        {
-            Condition.ON_HIT_BY_POISON: Status.POISON,
-            Condition.ON_HIT_BY_BURN: Status.BURN,
-            Condition.ON_HIT_BY_FREEZE: Status.FREEZE,
-            Condition.ON_HIT_BY_PARALYZE: Status.PARALYZE,
-            Condition.ON_HIT_BY_BLIND: Status.BLIND,
-            Condition.ON_HIT_BY_STUN: Status.STUN,
-            Condition.ON_HIT_BY_CURSE: Status.CURSE,
-            Condition.ON_HIT_BY_BOG: Status.BOG,
-            Condition.ON_HIT_BY_SLEEP: Status.SLEEP,
-            Condition.ON_HIT_BY_FROSTBITE: Status.FROSTBITE,
-            Condition.ON_HIT_BY_FLASHBURN: Status.FLASHBURN,
-            Condition.ON_HIT_BY_STORMLASH: Status.STORMLASH,
-            Condition.ON_HIT_BY_SHADOWBLIGHT: Status.SHADOWBLIGHT,
-            Condition.ON_HIT_BY_SCORCHREND: Status.SCORCHREND,
-        },
+        hit_by_affliction_correspondence,
         ConditionMaxCount.SINGLE,
         "Triggers - hit by affliction",
         ConditionCheckResult.MULTIPLE_TRIGGER_HIT_BY_AFFLICTION

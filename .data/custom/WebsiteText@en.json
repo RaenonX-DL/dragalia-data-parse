@@ -1284,6 +1284,10 @@
     "text": "Hit by Scorchrend"
   },
   {
+    "id": "ENUM_COND_ON_HIT_BY_ANY_AFFLICTION",
+    "text": "Hit by any affliction"
+  },
+  {
     "id": "ENUM_COND_QUEST_START",
     "text": "Start of Quest"
   },
