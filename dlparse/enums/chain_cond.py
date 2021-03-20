@@ -19,6 +19,8 @@ class SkillChainCondition(Enum):
     TARGET_HAS_BUFF = 1
     TARGET_BK_STATE = 2
 
+    AUTO = 98  # Officially `NEVER`
+
     @property
     def repr(self) -> str:
         """Get the representation of the chain condition."""
@@ -31,6 +33,9 @@ class SkillChainCondition(Enum):
 
         if self == SkillChainCondition.TARGET_BK_STATE:
             return "target_bk"
+
+        if self == SkillChainCondition.AUTO:
+            return "auto"
 
         raise AppValueError(f"Representation for `{self}` not available")
 

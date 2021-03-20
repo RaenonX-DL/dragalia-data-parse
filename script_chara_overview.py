@@ -149,7 +149,7 @@ def main():
     # - 10350505 (Joker)
     # - 10450404 (Sophie)
     # - 10550104 (Panther)
-    chara_skill_overview(10150304)
+    chara_skill_overview(10450204)
 
 
 if __name__ == '__main__':

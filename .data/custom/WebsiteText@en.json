@@ -40,6 +40,10 @@
     "text": "S1 Chain (Target Buffed)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_chain_auto",
+    "text": "S1 (2 Gauges)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_dragon",
     "text": "Dragon S1"
   },
@@ -224,6 +228,10 @@
     "text": "S2 Chain (Target Buffed)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s2_chain_auto",
+    "text": "S2 (2 Gauges)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_dragon",
     "text": "Dragon S2"
   },
@@ -362,6 +370,14 @@
   {
     "id": "SKILL_IDENTIFIER_s2_mode_75",
     "text": "S2 (w/ Pithos)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_82",
+    "text": "S1 (Sigil Locked)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_83",
+    "text": "S1 (Sigil Released)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_p2",

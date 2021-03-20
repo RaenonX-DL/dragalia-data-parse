@@ -11,7 +11,7 @@ from tests.static import (
 if TYPE_CHECKING:
     from dlparse.mono.asset.base import MasterAssetBase
 
-version_tag = "2021.01.31-lqfRBhj2APlqf8RC"
+version_tag = "2021.02.18-WRWUKhEUZ1zssD3x"
 
 manager_local = AssetManager(
     PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,

@@ -40,6 +40,10 @@
     "text": "S1 連鎖 (目標有 Buff)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_chain_auto",
+    "text": "S1 (2 條)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_dragon",
     "text": "龍化 S1"
   },
@@ -224,6 +228,10 @@
     "text": "S2 連鎖 (目標有 Buff)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s2_chain_auto",
+    "text": "S2 (2 條)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_dragon",
     "text": "龍化 S2"
   },
@@ -362,6 +370,14 @@
   {
     "id": "SKILL_IDENTIFIER_s2_mode_75",
     "text": "S2 (匹托斯已召喚)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_82",
+    "text": "S1 (聖痕枷鎖)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_83",
+    "text": "S1 (聖痕解放)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_p2",
