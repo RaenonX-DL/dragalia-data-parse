@@ -16,7 +16,7 @@ __all__ = ("EnemyDataEntry", "EnemyDataAsset")
 class EnemyDataEntry(MasterEntryBase):
     """Single entry of an enemy data."""
 
-    element: Element
+    initial_element: Element
 
     od_atk_rate: float
     od_def_rate: float
@@ -28,7 +28,7 @@ class EnemyDataEntry(MasterEntryBase):
     def parse_raw(data: dict[str, Union[str, int]]) -> "EnemyDataEntry":
         return EnemyDataEntry(
             id=data["_Id"],
-            element=Element(data["_ElementalType"]),
+            initial_element=Element(data["_ElementalType"]),
             od_atk_rate=data["_ObAtkRate"],
             od_def_rate=data["_ObDefRate"],
             bk_duration_sec=data["_BreakDuration"],
@@ -39,7 +39,7 @@ class EnemyDataEntry(MasterEntryBase):
 class EnemyDataAsset(MasterAssetBase[EnemyDataEntry]):
     """Enemy data asset class."""
 
-    asset_file_name = "EnemyParam.json"
+    asset_file_name = "EnemyData.json"
 
     def __init__(
             self, file_location: Optional[str] = None, /,

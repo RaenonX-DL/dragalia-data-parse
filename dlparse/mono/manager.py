@@ -3,11 +3,12 @@ from typing import Optional
 
 from dlparse.enums import Language
 from dlparse.errors import ConfigError
-from dlparse.transformer import AbilityTransformer, SkillTransformer
+from dlparse.transformer import AbilityTransformer, EnemyTransformer, SkillTransformer
 from .asset import (
-    AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionGrantAsset, ActionPartsListAsset, BuffCountAsset,
-    CharaDataAsset, CharaModeAsset, DragonDataAsset, ExAbilityAsset, HitAttrAsset, MotionSelectorWeapon,
-    PlayerActionInfoAsset, SkillChainAsset, SkillDataAsset, TextAsset, TextAssetMultilingual,
+    AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionGrantAsset, ActionPartsListAsset,
+    BuffCountAsset, CharaDataAsset, CharaModeAsset, DragonDataAsset, DungeonPlannerAsset,
+    EnemyDataAsset, EnemyParamAsset, ExAbilityAsset, HitAttrAsset, MotionSelectorWeapon,
+    PlayerActionInfoAsset, QuestDataAsset, SkillChainAsset, SkillDataAsset, TextAsset, TextAssetMultilingual,
 )
 from .custom import WebsiteTextAsset
 from .loader import ActionFileLoader, CharacterMotionLoader, DragonMotionLoader
@@ -27,6 +28,7 @@ class AssetManager:
             custom_asset_dir: Optional[str] = None
     ):
         # Master Assets
+        # --- Battle-related (Player)
         self._asset_ability_data = AbilityAsset(asset_dir=master_asset_dir)
         self._asset_ability_limit = AbilityLimitGroupAsset(asset_dir=master_asset_dir)
         self._asset_action_cond = ActionConditionAsset(asset_dir=master_asset_dir)
@@ -39,9 +41,19 @@ class AssetManager:
         self._asset_hit_attr = HitAttrAsset(asset_dir=master_asset_dir)
         self._asset_skill_data = SkillDataAsset(asset_dir=master_asset_dir)
         self._asset_skill_chain = SkillChainAsset(asset_dir=master_asset_dir)
-        self._asset_text = TextAsset(asset_dir=master_asset_dir, custom_asset_dir=custom_asset_dir)
+
+        # --- Battle-related (Enemy)
+        self._asset_dungeon_planner = DungeonPlannerAsset(asset_dir=master_asset_dir)
+        self._asset_enemy_data = EnemyDataAsset(asset_dir=master_asset_dir)
+        self._asset_enemy_param = EnemyParamAsset(asset_dir=master_asset_dir)
+        self._asset_quest_data = QuestDataAsset(asset_dir=master_asset_dir)
+
+        # --- Actions
         self._asset_pa_info = PlayerActionInfoAsset(asset_dir=master_asset_dir)
         self._asset_action_list = ActionPartsListAsset(asset_dir=action_asset_dir)
+
+        # --- Misc
+        self._asset_text = TextAsset(asset_dir=master_asset_dir, custom_asset_dir=custom_asset_dir)
 
         lang_code_mapping = {
             "en": Language.EN.value,
@@ -67,8 +79,12 @@ class AssetManager:
         # Transformers
         self._transformer_ability = AbilityTransformer(self)
         self._transformer_skill = SkillTransformer(self)
+        self._transformer_enemy = EnemyTransformer(self)
 
     # region Master Assets
+
+    # --- Battle-related (Player)
+
     @property
     def asset_ability_data(self) -> AbilityAsset:
         """Get the ability data asset."""
@@ -130,14 +146,33 @@ class AssetManager:
         return self._asset_skill_chain
 
     @property
-    def asset_text(self) -> TextAsset:
-        """Get the text label asset."""
-        return self._asset_text
-
-    @property
     def asset_text_multi(self) -> TextAssetMultilingual:
         """Get the multilingual text label asset."""
         return self._asset_text_multi
+
+    # --- Battle-related (Enemy)
+
+    @property
+    def asset_dungeon_planner(self) -> DungeonPlannerAsset:
+        """Get the dungeon planner asset."""
+        return self._asset_dungeon_planner
+
+    @property
+    def asset_enemy_data(self) -> EnemyDataAsset:
+        """Get the enemy data."""
+        return self._asset_enemy_data
+
+    @property
+    def asset_enemy_param(self) -> EnemyParamAsset:
+        """Get the enemy param data."""
+        return self._asset_enemy_param
+
+    @property
+    def asset_quest_data(self) -> QuestDataAsset:
+        """Get the quest data asset."""
+        return self._asset_quest_data
+
+    # --- Actions
 
     @property
     def asset_action_info_player(self) -> PlayerActionInfoAsset:
@@ -148,6 +183,13 @@ class AssetManager:
     def asset_action_list(self) -> ActionPartsListAsset:
         """Get the action parts list asset."""
         return self._asset_action_list
+
+    # --- Misc
+
+    @property
+    def asset_text(self) -> TextAsset:
+        """Get the text label asset."""
+        return self._asset_text
 
     # endregion
 
@@ -204,6 +246,11 @@ class AssetManager:
     def transformer_ability(self) -> AbilityTransformer:
         """Get the ability transformer."""
         return self._transformer_ability
+
+    @property
+    def transformer_enemy(self) -> EnemyTransformer:
+        """Get the enemy data transformer."""
+        return self._transformer_enemy
 
     # endregion
 

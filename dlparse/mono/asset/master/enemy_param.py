@@ -50,6 +50,38 @@ class EnemyParamEntry(MasterEntryBase):
 
     appear_voice_id: str
 
+    @property
+    def part_param_ids(self) -> list[int]:
+        """
+        Get a list of enemy param IDs corresponds to the parts on the current enemy param.
+
+        This will **not** return unused parts IDs.
+        """
+        return [
+            child_param_id for child_param_id
+            in (self.part_1_param_id, self.part_2_param_id, self.part_3_param_id, self.part_4_param_id)
+            if child_param_id
+        ]
+
+    @property
+    def children_param_ids_and_count(self) -> list[tuple[int, int]]:
+        """
+        Get a list of enemy param IDs and count corresponds to the children on the current enemy param.
+
+        The 1st element of an element is its enemy param ID; the 2nd element of an element is its count.
+        For example, ``[(228051304, 2), (228051305, 6)]`` means that
+        there are 2 count of ``228051304``; 6 count of ``228051305``.
+
+        This will **not** return unused children IDs.
+        """
+        data = [
+            (self.child_1_param_id, self.child_1_count),
+            (self.child_2_param_id, self.child_2_count),
+            (self.child_3_param_id, self.child_3_count),
+        ]
+
+        return [(child_param_id, child_count) for child_param_id, child_count in data if child_param_id]
+
     @staticmethod
     def get_affliction_resistance_pct(data: dict[str, Union[str, int]]) -> dict[Status, int]:
         """

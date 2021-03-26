@@ -6,7 +6,7 @@ from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterPars
 
 __all__ = ("DungeonPlannerEntry", "DungeonPlannerAsset")
 
-DUNGEON_VARIATION_COUNT_MAX: int = 5
+DUNGEON_VARIATION_COUNT_MAX: int = 10
 
 
 @dataclass
@@ -42,6 +42,11 @@ class DungeonPlannerEntry(MasterEntryBase):
             ["_BossCameraEnemy0ParamVeryhard"],
             ["_BossCameraEnemy0ParamExtreme"],
             ["_BossCameraEnemy0ParamHell"],
+            ["_BossCameraEnemy0Param6"],
+            ["_BossCameraEnemy0Param7"],
+            ["_BossCameraEnemy0Param8"],
+            ["_BossCameraEnemy0Param9"],
+            ["_BossCameraEnemy0Param10"],
         ]
 
         for variation_fields in param_fields:

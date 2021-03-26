@@ -7,6 +7,8 @@ from .action_cond_effect import EnemyAfflictionEffectUnit, HitActionConditionEff
 from .base import EffectUnitBase, HitData, SkillDataBase, SkillEntryBase
 from .buff_boost import BuffCountBoostData, BuffFieldBoostData
 from .chained_ex_ability import ChainedExAbilityData
+from .enemy_data import EnemyData
+from .enemy_info import EnemyInfoSingle
 from .ex_ability import ExAbilityData
 from .hit_buff import BuffingHitData
 from .hit_dmg import DamagingHitData
