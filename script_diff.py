@@ -11,7 +11,7 @@ from tests.static import (
 if TYPE_CHECKING:
     from dlparse.mono.asset.base import MasterAssetBase
 
-version_tag = "2021.02.18-WRWUKhEUZ1zssD3x"
+version_tag = "2021.03.24-r5a6coMxoGOvBd6t"
 
 manager_local = AssetManager(
     PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
@@ -56,10 +56,10 @@ def check_diff(old_asset: "MasterAssetBase", new_asset: "MasterAssetBase"):
 
 
 def main():
-    check_diff(manager_remote.asset_hit_attr, manager_local.asset_hit_attr)
-    check_diff(manager_remote.asset_skill_data, manager_local.asset_skill_data)
-    check_diff(manager_remote.asset_chara_data, manager_local.asset_chara_data)
-    check_diff(manager_remote.asset_text, manager_local.asset_text)
+    check_diff(manager_remote.asset_quest_data, manager_local.asset_quest_data)
+    # check_diff(manager_remote.asset_skill_data, manager_local.asset_skill_data)
+    # check_diff(manager_remote.asset_chara_data, manager_local.asset_chara_data)
+    # check_diff(manager_remote.asset_text, manager_local.asset_text)
 
 
 if __name__ == '__main__':

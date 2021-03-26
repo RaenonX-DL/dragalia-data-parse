@@ -101,6 +101,10 @@ Export resources for the use of the [DL info website][DL-info].
 
 For exporting things locally for viewing or other non-pipelining purposes, use `script_export_local` instead.
 
+### `script_quest_overview`
+
+View the quest data.
+
 ### `script_view_hit_attr`
 
 View the data of all given hit attributes.
