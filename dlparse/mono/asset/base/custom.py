@@ -17,21 +17,24 @@ class CustomParserBase(ParserBase, ABC):
     Each entries should have a field ``_Id`` to uniquely identifies the corresponding entry.
     """
 
-    key_id: str = "_Id"
+    @staticmethod
+    def get_entries_dict(file_like: TextIO, key: str = "_Id") -> dict[int, dict]:
+        """
+        Get a dict of data entries to be further parsed.
 
-    @classmethod
-    def get_entries_dict(cls, file_like: TextIO) -> dict[int, dict]:
-        """Get a dict of data entries to be further parsed."""
+        The ``key`` of the return will be the value of the data with ``key``.
+        This can be overridden by providing the key name.
+        """
         data = json.load(file_like)
 
         ret: dict[int, dict] = {}
 
         # Convert entries to :class:`dict`
         for entry in data:
-            if cls.key_id not in entry:
-                raise AssetKeyMissingError(cls.key_id)
+            if key not in entry:
+                raise AssetKeyMissingError(key)
 
-            ret[entry[cls.key_id]] = entry
+            ret[entry[key]] = entry
 
         return ret
 

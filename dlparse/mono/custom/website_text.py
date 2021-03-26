@@ -38,10 +38,8 @@ class WebsiteTextAsset(MultilingualAssetBase[WebsiteTextEntry]):
 class WebsiteTextParser(CustomParserBase):
     """Class to parse the website text asset file."""
 
-    key_id: str = "id"
-
     @classmethod
     def parse_file(cls, file_like: TextIO) -> dict[str, WebsiteTextEntry]:
-        entries = cls.get_entries_dict(file_like)
+        entries = cls.get_entries_dict(file_like, key="id")
 
         return {key: WebsiteTextEntry.parse_raw(value) for key, value in entries.items()}

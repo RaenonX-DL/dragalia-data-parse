@@ -25,9 +25,14 @@ T = TypeVar("T", bound=MasterEntryBase)
 class MasterParserBase(Generic[T], ParserBase, ABC):
     """Base parser class for parsing the master asset files."""
 
-    @classmethod
-    def get_entries_dict(cls, file_like: TextIO) -> dict[Union[int, str], dict]:
-        """Get a dict of data entries to be further parsed."""
+    @staticmethod
+    def get_entries_dict(file_like: TextIO, key: str = "_Id") -> dict[Union[int, str], dict]:
+        """
+        Get a dict of data entries to be further parsed.
+
+        The ``key`` of the return will be the value of the data with ``key``.
+        This can be overridden by providing the key name.
+        """
         data = json.load(file_like)
 
         if "dict" not in data:
@@ -42,7 +47,7 @@ class MasterParserBase(Generic[T], ParserBase, ABC):
         # ``entriesKey`` should not be used as ID because ``_Id`` offset was found in action condition asset
         entry_values = data["entriesValue"][:data["count"]]
 
-        return {entry["_Id"]: entry for entry in entry_values}
+        return {entry[key]: entry for entry in entry_values}
 
     @classmethod
     def get_entries_list(cls, file_like: TextIO) -> list[dict]:

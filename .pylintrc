@@ -17,10 +17,12 @@
 #   often used in datetime handling (dt for datetime, tz for timezone)
 # - ex
 #   often used as the var name of exception caught by try..except
+# - hp
+#   simply means HP (hit point)
 # - fn
 #   often used to represent a function address
 
-good-names=_,T,f,i,j,k,s,v,dt,ex,fn,tz
+good-names=_,T,f,i,j,k,s,v,dt,ex,hp,fn,tz
 
 [DESIGN]
 

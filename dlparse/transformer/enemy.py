@@ -10,7 +10,9 @@ __all__ = ("EnemyTransformer",)
 
 
 class EnemyTransformer:
-    """Class to transform the enemy data."""
+    """Class to transform an enemy data."""
+
+    # pylint: disable=too-few-public-methods
 
     def __init__(self, asset_manager: "AssetManager"):
         self._asset_manager: "AssetManager" = asset_manager

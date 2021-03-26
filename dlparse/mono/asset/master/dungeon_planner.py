@@ -23,6 +23,8 @@ class DungeonPlannerEntry(MasterEntryBase):
         Get the enemy parameter IDs.
 
         The index of the return corresponds to ``variation_idx`` field of the quest data.
+
+        This filters unused fields.
         """
         param_ids = []
         param_fields = [
@@ -89,7 +91,7 @@ class DungeonPlannerParser(MasterParserBase[DungeonPlannerEntry]):
     """Class to parse the quest data file."""
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> dict[int, DungeonPlannerEntry]:
-        entries = cls.get_entries_dict(file_like)
+    def parse_file(cls, file_like: TextIO) -> dict[str, DungeonPlannerEntry]:
+        entries = cls.get_entries_dict(file_like, key="_Area")
 
         return {key: DungeonPlannerEntry.parse_raw(value) for key, value in entries.items()}

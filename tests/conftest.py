@@ -1,7 +1,7 @@
 import pytest
 
 from dlparse.mono.manager import AssetManager
-from dlparse.transformer import AbilityTransformer, EnemyTransformer, SkillTransformer
+from dlparse.transformer import AbilityTransformer, EnemyTransformer, QuestTransformer, SkillTransformer
 from tests.static import (
     PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET,
     PATH_LOCAL_DIR_DRAGON_MOTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
@@ -32,6 +32,12 @@ def transformer_ability() -> AbilityTransformer:
 def transformer_enemy() -> EnemyTransformer:
     """Get the enemy data transformer."""
     return _asset_manager.transformer_enemy
+
+
+@pytest.fixture
+def transformer_quest() -> QuestTransformer:
+    """Get the quest data transformer."""
+    return _asset_manager.transformer_quest
 
 
 # endregion

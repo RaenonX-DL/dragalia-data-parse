@@ -3,7 +3,7 @@ from typing import Optional
 
 from dlparse.enums import Language
 from dlparse.errors import ConfigError
-from dlparse.transformer import AbilityTransformer, EnemyTransformer, SkillTransformer
+from dlparse.transformer import AbilityTransformer, EnemyTransformer, QuestTransformer, SkillTransformer
 from .asset import (
     AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionGrantAsset, ActionPartsListAsset,
     BuffCountAsset, CharaDataAsset, CharaModeAsset, DragonDataAsset, DungeonPlannerAsset,
@@ -78,8 +78,9 @@ class AssetManager:
 
         # Transformers
         self._transformer_ability = AbilityTransformer(self)
-        self._transformer_skill = SkillTransformer(self)
         self._transformer_enemy = EnemyTransformer(self)
+        self._transformer_skill = SkillTransformer(self)
+        self._transformer_quest = QuestTransformer(self)
 
     # region Master Assets
 
@@ -251,6 +252,11 @@ class AssetManager:
     def transformer_enemy(self) -> EnemyTransformer:
         """Get the enemy data transformer."""
         return self._transformer_enemy
+
+    @property
+    def transformer_quest(self) -> QuestTransformer:
+        """Get the quest data transformer."""
+        return self._transformer_quest
 
     # endregion
 

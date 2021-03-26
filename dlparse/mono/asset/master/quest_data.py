@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
-from dlparse.enums import Element
+from dlparse.enums import Element, QuestMode
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 
 __all__ = ("QuestDataEntry", "QuestDataAsset")
@@ -14,6 +14,8 @@ class QuestDataEntry(MasterEntryBase):
 
     name_view_label: str
 
+    quest_mode: QuestMode
+
     element_1: Element
     element_1_limit: Element
     element_2: Element
@@ -22,13 +24,14 @@ class QuestDataEntry(MasterEntryBase):
     max_time_sec: int
     max_revive: int
 
-    variation_idx: int
+    variation_idx: int  # 1-based index
     area_1_name: str
 
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "QuestDataEntry":
         return QuestDataEntry(
             id=data["_Id"],
+            quest_mode=QuestMode(data["_QuestPlayModeType"]),
             name_view_label=data["_QuestViewName"],
             element_1=Element(data["_Elemental"]),
             element_1_limit=Element(data["_LimitedElementalType"]),

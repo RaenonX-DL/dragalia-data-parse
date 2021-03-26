@@ -12,6 +12,7 @@ from .enemy_info import EnemyInfoSingle
 from .ex_ability import ExAbilityData
 from .hit_buff import BuffingHitData
 from .hit_dmg import DamagingHitData
+from .quest_data import QuestData
 from .skill_atk import AttackingSkillData, AttackingSkillDataEntry
 from .skill_sup import SupportiveSkillData, SupportiveSkillEntry
 from .unit_cancel import SkillCancelActionUnit
