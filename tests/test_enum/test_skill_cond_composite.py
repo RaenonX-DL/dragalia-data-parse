@@ -82,3 +82,15 @@ def test_composite_def_down_sorted():
 
     cond_comp = ConditionComposite([Condition.TARGET_PARALYZED, Condition.TARGET_DEF_DOWN])
     assert cond_comp.conditions_sorted == (Condition.TARGET_PARALYZED, Condition.TARGET_DEF_DOWN)
+
+
+def test_composite_energize_amp_sorted():
+    cond_comp = ConditionComposite([Condition.SELF_ENERGIZED, Condition.SELF_TEAM_AMP_UP])
+    assert cond_comp.is_energized
+    assert cond_comp.is_team_amp_up
+    assert cond_comp.conditions_sorted == (Condition.SELF_ENERGIZED, Condition.SELF_TEAM_AMP_UP)
+
+    cond_comp = ConditionComposite(Condition.SELF_ENERGIZED)
+    assert cond_comp.is_energized
+    assert not cond_comp.is_team_amp_up
+    assert cond_comp.conditions_sorted == (Condition.SELF_ENERGIZED,)

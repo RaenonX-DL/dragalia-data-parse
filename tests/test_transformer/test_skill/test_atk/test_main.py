@@ -105,16 +105,21 @@ def test_multi_hits_different_damage_2(transformer_skill: SkillTransformer):
     # https://dragalialost.wiki/w/Gala_Prince
     skill_data = transformer_skill.transform_attacking(101504032).with_conditions()
 
-    assert skill_data.hit_count == [13] * 2
+    assert skill_data.hit_count == [13] * 3
     assert skill_data.hit_count_at_max == 13
-    assert skill_data.total_mod == pytest.approx([1.2 * 3 + 3.6 * 10, 1.34 * 3 + 4 * 10])
+    assert skill_data.total_mod == pytest.approx([
+        1.2 * 3 + 3.6 * 10,
+        1.34 * 3 + 4 * 10,
+        1.34 * 3 + 4 * 10,
+    ])
     assert skill_data.total_mod_at_max == pytest.approx(44.02)
     assert skill_data.mods == [
         [1.2] + [3.6] + [1.2] * 2 + [3.6] * 9,
         [1.34] + [4] + [1.34] * 2 + [4] * 9,
+        [1.34] + [4] + [1.34] * 2 + [4] * 9,
     ]
     assert skill_data.mods_at_max == [1.34] + [4] + [1.34] * 2 + [4] * 9
-    assert skill_data.max_level == 2
+    assert skill_data.max_level == 3
 
 
 def test_has_functional_hits(transformer_skill: SkillTransformer):

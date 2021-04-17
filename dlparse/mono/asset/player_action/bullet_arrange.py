@@ -1,7 +1,7 @@
 """Class for arranged bullets (command type = 37)."""
 from dataclasses import dataclass
-from typing import Union
 
+from dlparse.mono.asset.base import ActionComponentData
 from .bullet import ActionBullet
 
 __all__ = ("ActionBulletArranged",)
@@ -12,7 +12,7 @@ class ActionBulletArranged(ActionBullet):
     """Class of arranged bullet component (command type = 37) in the player action asset."""
 
     @classmethod
-    def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBulletArranged":
+    def parse_raw(cls, data: ActionComponentData) -> "ActionBulletArranged":
         kwargs = cls.get_base_kwargs(data)
 
         # Attach hit label of the bullet

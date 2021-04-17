@@ -89,7 +89,7 @@ def test_single_effect_field(transformer_skill: SkillTransformer):
     # https://dragalialost.wiki/w/Gala_Prince
     skill_data_base = transformer_skill.transform_supportive(101504031)
 
-    assert skill_data_base.max_level == 3
+    assert skill_data_base.max_level == 4
 
     expected_buffs_lv_1 = {
         BuffEffectInfo("SWD_115_04_ATK_FLD_LV01", HitTargetSimple.FIELD, BuffParameter.ATK_BUFF, 0.10, 10, 0)
@@ -100,11 +100,14 @@ def test_single_effect_field(transformer_skill: SkillTransformer):
     expected_buffs_lv_3 = {
         BuffEffectInfo("SWD_115_04_ATK_FLD_LV03", HitTargetSimple.FIELD, BuffParameter.ATK_BUFF, 0.20, 10, 0)
     }
-    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
+    expected_buffs_lv_4 = {
+        BuffEffectInfo("SWD_115_04_ATK_FLD_LV04", HitTargetSimple.FIELD, BuffParameter.ATK_BUFF, 0.20, 10, 0)
+    }
+    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3, expected_buffs_lv_4]
 
     skill_data = skill_data_base.with_conditions()
 
-    check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_3)
+    check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_4)
 
     for skill_lv in range(skill_data_base.max_level):
         expected_buffs = expected_base_buffs[skill_lv]
@@ -186,7 +189,7 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
             "BOW_108_04_CRT_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.02, 10, 0
         ),
         BuffEffectInfo(
-            "BOW_108_04_SKILL_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF, 0.1, 10, 99
+            "BOW_108_04_SKILL_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF, 0.1, 10, 0
         ),
         BuffEffectInfo("BOW_108_04_SPB_LV01", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0),
     }
@@ -196,7 +199,7 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
             "BOW_108_04_CRT_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.03, 10, 0
         ),
         BuffEffectInfo(
-            "BOW_108_04_SKILL_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF, 0.1, 10, 99
+            "BOW_108_04_SKILL_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF, 0.1, 10, 0
         ),
         BuffEffectInfo("BOW_108_04_SPB_LV02", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0),
     }
@@ -206,7 +209,7 @@ def test_multi_effect_to_nearby_2(transformer_skill: SkillTransformer):
             "BOW_108_04_CRT_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.03, 10, 0
         ),
         BuffEffectInfo(
-            "BOW_108_04_SKILL_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF, 0.1, 10, 99
+            "BOW_108_04_SKILL_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF, 0.1, 10, 0
         ),
         BuffEffectInfo("BOW_108_04_SPB_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0),
     }

@@ -1,6 +1,6 @@
 """Condition composite class."""
 from dataclasses import dataclass, field
-from typing import ClassVar, Iterable, Optional, TYPE_CHECKING, Union
+from typing import Iterable, Optional, TYPE_CHECKING, Union
 
 from dlparse.enums.condition_base import ConditionCompositeBase
 from dlparse.errors import ConditionValidationFailedError
@@ -19,28 +19,27 @@ if TYPE_CHECKING:
 
 __all__ = ("ConditionComposite",)
 
+COMP_UNCATEGORIZED_EXCEPTION: set[Condition] = {
+    # None condition
+    Condition.NONE,
+    # Special self status
+    Condition.SELF_SHAPESHIFT_COMPLETED,
+    # Upon skill usage
+    Condition.SKILL_USED_S1,
+    Condition.SKILL_USED_S2,
+    Condition.SKILL_USED_ALL,
+    # Misc
+    Condition.MARK_EXPLODES,
+    Condition.COUNTER_RED_ATTACK,
+    Condition.QUEST_START
+}
+
 
 # ``eq=False`` to keep the ``__hash__`` of the superclass
 # ``repr=False`` to keep the ``__repr__`` of the superclass
 @dataclass(eq=False, repr=False)
 class ConditionComposite(ConditionCompositeBase[Condition]):
     """Composite class of various attacking conditions."""
-
-    allowed_not_categorize_conds: ClassVar[set[Condition]] = {
-        # None condition
-        Condition.NONE,
-        # Special self status
-        Condition.SELF_ENERGIZED,
-        Condition.SELF_SHAPESHIFT_COMPLETED,
-        # Upon skill usage
-        Condition.SKILL_USED_S1,
-        Condition.SKILL_USED_S2,
-        Condition.SKILL_USED_ALL,
-        # Misc
-        Condition.MARK_EXPLODES,
-        Condition.COUNTER_RED_ATTACK,
-        Condition.QUEST_START
-    }
 
     # region Target
     target_afflictions: set[Condition] = field(init=False)
@@ -79,6 +78,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     shapeshift_count_converted: int = field(init=False)
     in_dragon_count: Optional[Condition] = field(init=False)
     in_dragon_count_converted: int = field(init=False)
+    is_energized: bool = field(init=False)
+    is_team_amp_up: bool = field(init=False)
     # endregion
 
     # region Skill effect / animation
@@ -213,7 +214,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self._init_validate_skill()
         self._init_validate_others()
 
-        if cond_not_categorized := (set(conditions) - set(self.conditions_sorted) - self.allowed_not_categorize_conds):
+        if cond_not_categorized := (set(conditions) - set(self.conditions_sorted) - COMP_UNCATEGORIZED_EXCEPTION):
             raise ConditionValidationFailedError(ConditionCheckResult.HAS_CONDITIONS_LEFT, cond_not_categorized)
 
     def _init_categorized_condition_fields(self, conditions: Optional[Union[Iterable[Condition], Condition]]):
@@ -239,6 +240,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.gauge_filled = CondCat.self_gauge_filled.extract(conditions)
         self.shapeshift_count = CondCat.shapeshifted_count.extract(conditions)
         self.in_dragon_count = CondCat.in_dragon_count.extract(conditions)
+        self.is_energized = Condition.SELF_ENERGIZED in conditions
+        self.is_team_amp_up = Condition.SELF_TEAM_AMP_UP in conditions
         # endregion
 
         # region Skill effect / animation
@@ -370,6 +373,12 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
 
         if self.in_dragon_count:
             ret += (self.in_dragon_count,)
+
+        if self.is_energized:
+            ret += (Condition.SELF_ENERGIZED,)
+
+        if self.is_team_amp_up:
+            ret += (Condition.SELF_TEAM_AMP_UP,)
 
         return ret
 

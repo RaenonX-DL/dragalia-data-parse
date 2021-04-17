@@ -186,14 +186,14 @@ def test_res_down_poison(transformer_skill: SkillTransformer):
     skill_data = transformer_skill.transform_attacking(105503032).with_conditions()
 
     expected_debuffs_lv_1 = [
-        DebuffInfo("LAN_131_04_H01_LV01", BuffParameter.RESISTANCE_POISON, -0.05, 100, 30, False),
-        DebuffInfo("LAN_131_04_H01_LV01", BuffParameter.RESISTANCE_POISON, -0.05, 100, 30, False),
-        DebuffInfo("LAN_131_04_H02_LV01", BuffParameter.RESISTANCE_POISON, -0.05, 100, 30, False),
+        DebuffInfo("LAN_131_04_H01_LV01", BuffParameter.RESISTANCE_POISON, -0.1, 100, 30, False),
+        DebuffInfo("LAN_131_04_H01_LV01", BuffParameter.RESISTANCE_POISON, -0.1, 100, 30, False),
+        DebuffInfo("LAN_131_04_H02_LV01", BuffParameter.RESISTANCE_POISON, -0.1, 100, 30, False),
     ]
     expected_debuffs_lv_2 = [
-        DebuffInfo("LAN_131_04_H01_LV02", BuffParameter.RESISTANCE_POISON, -0.1, 100, 30, False),
-        DebuffInfo("LAN_131_04_H01_LV02", BuffParameter.RESISTANCE_POISON, -0.1, 100, 30, False),
-        DebuffInfo("LAN_131_04_H02_LV02", BuffParameter.RESISTANCE_POISON, -0.1, 100, 30, False),
+        DebuffInfo("LAN_131_04_H01_LV02", BuffParameter.RESISTANCE_POISON, -0.2, 100, 30, False),
+        DebuffInfo("LAN_131_04_H01_LV02", BuffParameter.RESISTANCE_POISON, -0.2, 100, 30, False),
+        DebuffInfo("LAN_131_04_H02_LV02", BuffParameter.RESISTANCE_POISON, -0.2, 100, 30, False),
     ]
 
     expected_debuffs = [expected_debuffs_lv_1, expected_debuffs_lv_2]

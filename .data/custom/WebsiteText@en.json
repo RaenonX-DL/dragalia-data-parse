@@ -68,6 +68,14 @@
     "text": "S2 (Full HP)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1890",
+    "text": "S2 (Team Amp Up)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1891",
+    "text": "S1 (Team Amp Up)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab281",
     "text": "S1 (Energized)"
   },
@@ -1118,6 +1126,10 @@
   {
     "id": "ENUM_COND_SELF_ENERGIZED",
     "text": "Energized"
+  },
+  {
+    "id": "ENUM_COND_SELF_TEAM_AMP_UP",
+    "text": "Team Amp Up"
   },
   {
     "id": "ENUM_COND_ON_BUFFED_DEF",

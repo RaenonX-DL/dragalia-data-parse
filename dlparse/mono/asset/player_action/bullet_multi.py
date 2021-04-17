@@ -1,7 +1,7 @@
 """Class for ``ActionPartsMultiBullet`` action component."""
 from dataclasses import dataclass
-from typing import Union
 
+from dlparse.mono.asset.base import ActionComponentData
 from .bullet import ActionBullet
 from .bullet_arrange import ActionBulletArranged
 
@@ -23,14 +23,13 @@ class ActionBulletMulti(ActionBullet):
     """
 
     @classmethod
-    def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBulletMulti":
+    def parse_raw(cls, data: ActionComponentData) -> "ActionBulletMulti":
         kwargs = cls.get_base_kwargs(data)
 
         bullet_count: int = data["_generateNum"]
 
         # Attach hit labels of the bullets
-        # This assumes ``_hitAttrLabel2nd`` is not duplicated by ``_generateNum``
-        labels_possible: list[str] = [data["_hitAttrLabel"]] * bullet_count + [data["_hitAttrLabel2nd"]]
+        labels_possible: list[str] = [data["_hitAttrLabel"]] * bullet_count + data["_hitAttrLabelSubList"]
 
         # Labels in arrange bullet
         if "_arrangeBullet" in data:

@@ -1,7 +1,7 @@
 """Class for ``ActionPartsParabolaBullet`` action component."""
 from dataclasses import dataclass
-from typing import Union
 
+from dlparse.mono.asset.base import ActionComponentData
 from .bullet import ActionBullet
 from .bullet_arrange import ActionBulletArranged
 
@@ -14,12 +14,12 @@ class ActionBulletParabola(ActionBullet):
     Class of ``ActionPartsParabolaBullet`` component in the player action asset.
 
     .. note::
-        This component appears to not have the 2nd hit label field (``_hitAttrLabel2nd``)
+        This component appears to not have a sub hit label field (``_hitAttrLabelSubList``)
         and deterioration rate (``_attenuationRate``).
     """
 
     @classmethod
-    def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBullet":
+    def parse_raw(cls, data: ActionComponentData) -> "ActionBullet":
         kwargs = cls.get_base_kwargs(data)
 
         # Main hit labels

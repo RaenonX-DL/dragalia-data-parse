@@ -1,7 +1,7 @@
 """Class for ``ActionPartsPivotBullet`` action component."""
 from dataclasses import dataclass
-from typing import Union
 
+from dlparse.mono.asset.base import ActionComponentData
 from .bullet import ActionBullet
 from .bullet_arrange import ActionBulletArranged
 
@@ -13,7 +13,7 @@ class ActionBulletPivot(ActionBullet):
     """Class of ``ActionPartsPivotBullet`` component in the player action asset."""
 
     @classmethod
-    def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBulletPivot":
+    def parse_raw(cls, data: ActionComponentData) -> "ActionBulletPivot":
         kwargs = cls.get_base_kwargs(data)
 
         # Calculate count of hits

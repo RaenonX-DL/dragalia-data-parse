@@ -65,7 +65,7 @@ def test_teammate_coverage(transformer_skill: SkillTransformer):
             "BOW_108_04_CRT_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.CRT_RATE_BUFF, 0.03, 10, 0
         ),
         BuffEffectInfo(
-            "BOW_108_04_SKILL_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF, 0.1, 10, 99
+            "BOW_108_04_SKILL_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SKILL_DAMAGE_BUFF, 0.1, 10, 0
         ),
         BuffEffectInfo("BOW_108_04_SPB_LV03", HitTargetSimple.SELF_SURROUNDING, BuffParameter.SP_RATE, 0.1, 10, 0)
     }

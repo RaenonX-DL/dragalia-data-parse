@@ -78,7 +78,16 @@ class AbilityVariantEffectPayload(ActionCondEffectConvertPayload):
     @property
     def is_source_ex_ability(self) -> bool:
         """Check if the source ability of this payload is either an EX or a chained EX ability."""
-        return self.is_chained_ex or isinstance(self.source_ability, ExAbilityEntry)
+        return self.is_chained_ex or self.is_source_strict_ex_ability
+
+    @property
+    def is_source_strict_ex_ability(self) -> bool:
+        """
+        Check if the source ability of this payload is an EX ability.
+
+        Note that this will return ``False`` if the source ability is chained EX, not actually EX.
+        """
+        return isinstance(self.source_ability, ExAbilityEntry)
 
 
 @dataclass
@@ -189,7 +198,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
             return set()
 
         return self._direct_buff_unit(
-            ability_param.to_buff_parameter(payload.is_source_ex_ability), asset_manager, payload
+            ability_param.to_buff_parameter(payload.is_source_strict_ex_ability), asset_manager, payload
         )
 
     def _from_dmg_up(

@@ -12,8 +12,10 @@ from .parser import ParserBase
 
 __all__ = (
     "ActionComponentBase", "ActionComponentHasHitLabels", "ActionComponentCondition",
-    "ActionAssetBase", "ActionParserBase"
+    "ActionAssetBase", "ActionParserBase", "ActionComponentData"
 )
+
+ActionComponentData = dict[str, Union[int, str, dict[str, str], list[str]]]
 
 
 @dataclass

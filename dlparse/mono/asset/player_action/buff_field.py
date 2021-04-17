@@ -1,8 +1,7 @@
 """Class for ``ActionPartsBuffFieldAttachment`` action component."""
 from dataclasses import dataclass
-from typing import Union
 
-from dlparse.mono.asset.base import ActionComponentHasHitLabels
+from dlparse.mono.asset.base import ActionComponentData, ActionComponentHasHitLabels
 
 __all__ = ("ActionBuffField",)
 
@@ -14,7 +13,7 @@ class ActionBuffField(ActionComponentHasHitLabels):
     count_for_self_built: bool
 
     @classmethod
-    def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBuffField":
+    def parse_raw(cls, data: ActionComponentData) -> "ActionBuffField":
         kwargs = cls.get_base_kwargs(data)
 
         return ActionBuffField(

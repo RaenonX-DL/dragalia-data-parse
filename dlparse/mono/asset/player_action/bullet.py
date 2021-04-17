@@ -1,6 +1,6 @@
 """Class for ``ActionPartsBullet`` action component."""
 from dataclasses import dataclass
-from typing import Any, Union
+from typing import Any
 
 import dlparse.mono.asset as asset
 
@@ -62,11 +62,11 @@ class ActionBullet(asset.ActionComponentHasHitLabels):
         return base_kwargs
 
     @classmethod
-    def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBullet":
+    def parse_raw(cls, data: asset.ActionComponentData) -> "ActionBullet":
         kwargs = cls.get_base_kwargs(data)
 
         # Main hit labels
-        labels_possible: list[str] = [data["_hitAttrLabel"], data["_hitAttrLabel2nd"]]
+        labels_possible: list[str] = [data["_hitAttrLabel"]] + data["_hitAttrLabelSubList"]
 
         # Labels in arrange bullet
         if "_arrangeBullet" in data:

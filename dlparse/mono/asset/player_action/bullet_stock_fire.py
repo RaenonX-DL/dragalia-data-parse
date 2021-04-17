@@ -1,9 +1,9 @@
 """Class for ``ActionPartsFireStockBullet`` action component."""
 from dataclasses import dataclass
-from typing import Union
 
 from dlparse.enums import FireStockPattern
 from dlparse.errors import BulletMaxCountUnavailableError
+from dlparse.mono.asset.base import ActionComponentData
 from .bullet import ActionBullet
 from .bullet_arrange import ActionBulletArranged
 
@@ -23,7 +23,7 @@ class ActionBulletStockFire(ActionBullet):
     bullet_num: int = 0  # Used only if `pattern` is `FireStockPattern.BULLET_COUNT_SUMMONED`
 
     @classmethod
-    def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBulletStockFire":
+    def parse_raw(cls, data: ActionComponentData) -> "ActionBulletStockFire":
         kwargs = cls.get_base_kwargs(data)
 
         # Get the bullet stocking pattern
@@ -45,7 +45,7 @@ class ActionBulletStockFire(ActionBullet):
         else:
             # -- Normal case
             # This assumes ``_hitAttrLabel2nd`` is not duplicated by ``_bulletNum``
-            labels_possible = [data["_hitAttrLabel"]] * data["_bulletNum"] + [data["_hitAttrLabel2nd"]]
+            labels_possible = [data["_hitAttrLabel"]] * data["_bulletNum"] + data["_hitAttrLabelSubList"]
 
         # Attach labels in arrange bullet
         if "_arrangeBullet" in data:

@@ -29,8 +29,7 @@ class ActionBulletFormation(ActionBullet):
         kwargs = cls.get_base_kwargs(data)
 
         # Attach hit labels of the stock bullets
-        # This assumes ``_hitAttrLabel2nd`` is not duplicated by ``_bulletNum``
-        labels_possible: list[str] = [data["_hitAttrLabel"], data["_hitAttrLabel2nd"]]
+        labels_possible: list[str] = [data["_hitAttrLabel"]] + data["_hitAttrLabelSubList"]
 
         # Labels in arrange bullet
         if "_arrangeBullet" in data:

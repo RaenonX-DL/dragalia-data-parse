@@ -1,7 +1,7 @@
 """Class for ``ActionPartsStockBullet`` action component."""
 from dataclasses import dataclass
-from typing import Union
 
+from dlparse.mono.asset.base import ActionComponentData
 from .bullet import ActionBullet
 from .bullet_arrange import ActionBulletArranged
 
@@ -13,14 +13,13 @@ class ActionBulletStock(ActionBullet):
     """Class of ``ActionPartsStockBullet`` component in the player action asset."""
 
     @classmethod
-    def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBulletStock":
+    def parse_raw(cls, data: ActionComponentData) -> "ActionBulletStock":
         kwargs = cls.get_base_kwargs(data)
 
         # TEST: Check GaLaxi Fig Test
 
         # Attach hit labels of the stock bullets
-        # This assumes ``_hitAttrLabel2nd`` is not duplicated by ``_bulletNum``
-        labels_possible: list[str] = [data["_hitAttrLabel"]] * data["_bulletNum"] + [data["_hitAttrLabel2nd"]]
+        labels_possible: list[str] = [data["_hitAttrLabel"]] * data["_bulletNum"] + data["_hitAttrLabelSubList"]
 
         # Labels in arrange bullet
         if "_arrangeBullet" in data:

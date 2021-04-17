@@ -267,8 +267,9 @@ class Condition(TranslatableEnumMixin, Enum):
     SKILL_USED_ALL = 489
     # endregion
 
-    # region Special (Energized, inspired)
+    # region Special (Energized, inspired, amp)
     SELF_ENERGIZED = 490
+    SELF_TEAM_AMP_UP = 491
     # endregion
     # endregion
 

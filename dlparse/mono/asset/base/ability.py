@@ -66,6 +66,8 @@ class AbilityConditionEntryBase(ABC):
             AbilityCondition.TRG_GOT_HIT: Condition.ON_HIT,
             AbilityCondition.TRG_HEALED: Condition.ON_HEALED,
             AbilityCondition.TRG_DODGE_SUCCESS: Condition.ON_DODGE_SUCCESS,
+            AbilityCondition.EFF_TEAM_AMP_UP: Condition.SELF_TEAM_AMP_UP,
+            AbilityCondition.EFF_TEAM_AMP_UP_RES: Condition.SELF_TEAM_AMP_UP,
         }
         self._cond_method_map = {
             AbilityCondition.EFF_IN_DRAGON: self._cond_self_in_dragon,

@@ -95,6 +95,21 @@ def test_atk_up_on_dodged(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
+def test_atk_up_on_team_amp_up(transformer_ability: AbilityTransformer):
+    # Child Ranzal - 10450103
+    # https://dragalialost.wiki/w/Child_Ranzal
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000912)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000912, ConditionComposite([Condition.TARGET_FLAME, Condition.SELF_TEAM_AMP_UP]),
+            BuffParameter.ATK_PASSIVE, 0.08, duration_sec=0
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
 def test_atk_up_by_dragons_claws(transformer_ability: AbilityTransformer):
     # Gala Mym - 10550101
     # https://dragalialost.wiki/w/Gala_Mym
@@ -112,6 +127,21 @@ def test_atk_up_by_dragons_claws(transformer_ability: AbilityTransformer):
         AbilityEffectInfo(
             400000012, ConditionComposite([Condition.TARGET_FLAME, Condition.SELF_SHAPESHIFTED_3_TIMES]),
             BuffParameter.ATK_BUFF, 0.15
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
+def test_atk_up_in_buff_field(transformer_ability: AbilityTransformer):
+    # Dragonyule Victor S2
+    # https://dragalialost.wiki/w/Dragonyule_Victor
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000833)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000833, ConditionComposite([Condition.TARGET_SHADOW, Condition.ON_ENTERED_BUFF_FIELD]),
+            BuffParameter.ATK_BUFF, 0.13
         ),
     }
 
@@ -179,6 +209,21 @@ def test_elem_res_on_combo_count_above(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
+def test_elem_res_on_team_amp_up(transformer_ability: AbilityTransformer):
+    # Myriam - 10750303
+    # https://dragalialost.wiki/w/Myriam
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000906)
+
+    expected_info = {
+        AbilityEffectInfo(
+            400000906, ConditionComposite([Condition.TARGET_WIND, Condition.SELF_TEAM_AMP_UP]),
+            BuffParameter.RESISTANCE_WATER_PASSIVE, 0.06, duration_sec=0
+        ),
+    }
+
+    check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
+
+
 def test_elem_res_in_buff_field(transformer_ability: AbilityTransformer):
     # Opera Karina - 10650504
     # https://dragalialost.wiki/w/Opera_Karina
@@ -195,15 +240,15 @@ def test_elem_res_in_buff_field(transformer_ability: AbilityTransformer):
     check_ability_effect_unit_match(ex_ability_data.effect_units, expected_info)
 
 
-def test_atk_up_in_buff_field(transformer_ability: AbilityTransformer):
-    # Dragonyule Victor S2
-    # https://dragalialost.wiki/w/Dragonyule_Victor
-    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000833)
+def test_burn_res_on_team_amp_up(transformer_ability: AbilityTransformer):
+    # Humanoid Mercury - 10350204
+    # https://dragalialost.wiki/w/Humanoid_Mercury
+    ex_ability_data = transformer_ability.transform_chained_ex_ability(400000922)
 
     expected_info = {
         AbilityEffectInfo(
-            400000833, ConditionComposite([Condition.TARGET_SHADOW, Condition.ON_ENTERED_BUFF_FIELD]),
-            BuffParameter.ATK_BUFF, 0.13
+            400000922, ConditionComposite([Condition.TARGET_WATER, Condition.SELF_TEAM_AMP_UP]),
+            BuffParameter.RESISTANCE_BURN, 1, duration_sec=0
         ),
     }
 

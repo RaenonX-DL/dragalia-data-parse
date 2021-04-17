@@ -116,6 +116,16 @@ Field: `_ConditionType`
 <a href="#95---hitcount_moment_timesrate">95. HITCOUNT_MOMENT_TIMESRATE</a>
 <a href="#96---just_avoid">96. JUST_AVOID</a>
 97. GET_BRITEM
+98. DUP_BUFF_ALWAYS_TIMESRATE
+99. BUFFED_SPECIFIC_ID_COUNT_MORE_ALWAYS_CHECK
+100. GET_BUFF_FROM_SKILL
+101. HP_RECOVERED_BETWEEN
+102. RELEASE_DIVINEDRAGONSHIFT
+103. HAS_AURA_TYPE
+104. SELF_AURA_LEVEL_MORE
+105. PARTY_AURA_LEVEL_MORE
+106. DRAGONSHIFT
+107. DRAGON_MODE_STRICTLY
 </pre>
 
 ## Value Reference
@@ -473,3 +483,33 @@ of 20 times. (actual example of Kimono Elisanne `10550103` chained EX `400000838
 ### `96` - `JUST_AVOID`
 
 Triggered once the user successfully dodged a red attack.
+
+-----
+
+### `103` - `HAS_AURA_TYPE`
+
+Effective if the user has a certain type of amp.
+
+As of 2021/04/17, the only known appearances are Myriam (EXID `400000906`, CID `10750303`)
+and Child Ranzal (EXID `400000912`, CID `10450103`). Both of them have both of the values set to `2`
+
+- **Val 1**: (Unknown)
+
+- **Val 2**: (Unknown)
+
+-----
+
+### `105` - `PARTY_AURA_LEVEL_MORE`
+
+Effective if the user's team amp is up.
+
+The usage of the values is unknown.
+
+As of 2021/04/17, the only appearance is Humanoid Mercury (EXID `400000922`, CID `10350204`). Her chained co-ab
+description did not mention the level threshold, while its values are set as follows: Val 1 = `2`; Val 2 = `1`.
+
+> It might mean team amp (val 1 = `2`) level 1 (val 2 = `1`).
+
+- **Val 1**: (Unknown)
+
+- **Val 2**: (Unknown)

@@ -6,5 +6,6 @@ from .entry import EntryBase, TextEntryBase
 from .master import MasterAssetBase, MasterEntryBase, MasterParserBase
 from .motion import AnimationControllerBase, parse_motion_data
 from .player_action import (
-    ActionAssetBase, ActionComponentBase, ActionComponentCondition, ActionComponentHasHitLabels, ActionParserBase,
+    ActionAssetBase, ActionComponentBase, ActionComponentCondition, ActionComponentData, ActionComponentHasHitLabels,
+    ActionParserBase,
 )

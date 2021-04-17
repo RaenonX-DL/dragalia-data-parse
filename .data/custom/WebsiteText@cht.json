@@ -68,6 +68,14 @@
     "text": "S2 (滿血)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab1890",
+    "text": "S2 (有爆氣)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab1891",
+    "text": "S1 (有爆氣)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab281",
     "text": "S1 (超活力)"
   },
@@ -1118,6 +1126,10 @@
   {
     "id": "ENUM_COND_SELF_ENERGIZED",
     "text": "超活力"
+  },
+  {
+    "id": "ENUM_COND_SELF_TEAM_AMP_UP",
+    "text": "擁有爆發氣場"
   },
   {
     "id": "ENUM_COND_ON_BUFFED_DEF",

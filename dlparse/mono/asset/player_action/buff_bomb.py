@@ -1,10 +1,9 @@
 """Class for ``ActionPartsRemoveBuffTriggerBomb`` action component."""
 from dataclasses import dataclass
-from typing import Union
 
 from dlparse.enums import Condition
 from dlparse.errors import PreconditionCollidedError
-from dlparse.mono.asset.base import ActionComponentHasHitLabels
+from dlparse.mono.asset.base import ActionComponentData, ActionComponentHasHitLabels
 
 __all__ = ("ActionBuffBomb",)
 
@@ -23,7 +22,7 @@ class ActionBuffBomb(ActionComponentHasHitLabels):
         return Condition.MARK_EXPLODES
 
     @classmethod
-    def parse_raw(cls, data: dict[str, Union[int, str, dict[str, str]]]) -> "ActionBuffBomb":
+    def parse_raw(cls, data: ActionComponentData) -> "ActionBuffBomb":
         kwargs = cls.get_base_kwargs(data)
 
         return ActionBuffBomb(
