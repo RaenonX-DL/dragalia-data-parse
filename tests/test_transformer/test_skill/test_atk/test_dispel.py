@@ -42,5 +42,6 @@ def test_gala_alex_s1_chained_buffed(transformer_skill: SkillTransformer):
     assert skill_data.dispel_timings == approx_matrix([
         [0.166666672, 0.366666675, 0.6],
         [0.166666672, 0.366666675, 0.6],
+        [0.166666672, 0.366666675, 0.6],
         [0.166666672, 0.366666675, 0.6]
     ])
