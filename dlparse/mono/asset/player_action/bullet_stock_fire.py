@@ -41,7 +41,7 @@ class ActionBulletStockFire(ActionBullet):
             # -- Special pattern - Hit count is independent, do **NOT** expand the hit labels
             # Handle hit count during skill data processing instead,
             # because player action info and condition are required to get the actual mods
-            labels_possible = [data["_hitAttrLabel"]]
+            labels_possible = [data["_hitAttrLabel"]] + data["_hitAttrLabelSubList"]
         else:
             # -- Normal case
             # This assumes ``_hitAttrLabel2nd`` is not duplicated by ``_bulletNum``
