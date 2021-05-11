@@ -5,8 +5,12 @@ from tests.static import (
 )
 
 diff_str = """
-- 225030101
-- 225031101
+- 228010101
+- 228010102
+- 228010103
+- 228011101
+- 228011102
+- 228011103
 """
 
 manager = AssetManager(
@@ -30,7 +34,7 @@ def check_quest(quest_id: int):
     quest_data = manager.transformer_quest.transform_quest_data(quest_id)
 
     quest_text = manager.asset_text_multi.get_text("cht", quest_data.quest_data.name_view_label)
-    print(f"#{quest_id:10} - {quest_text}")
+    print(f"#{quest_id:10} - {quest_text} ({quest_data.quest_mode})")
     print()
 
     enemy_ids = quest_data.spawn_enemy_param_ids
