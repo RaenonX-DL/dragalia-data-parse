@@ -1,5 +1,6 @@
 """Class for ``ActionPartsMultiBullet`` action component."""
 from dataclasses import dataclass
+from math import floor
 
 from dlparse.mono.asset.base import ActionComponentData
 from .bullet import ActionBullet
@@ -28,8 +29,11 @@ class ActionBulletMulti(ActionBullet):
 
         bullet_count: int = data["_generateNum"]
 
+        # Bullet may stay in the field for some time
+        hit_count: int = max(floor(data["_bulletDuration"] / data["_collisionHitInterval"]) + 1, 1)
+
         # Attach hit labels of the bullets
-        labels_possible: list[str] = [data["_hitAttrLabel"]] * bullet_count + data["_hitAttrLabelSubList"]
+        labels_possible: list[str] = [data["_hitAttrLabel"]] * bullet_count * hit_count + data["_hitAttrLabelSubList"]
 
         # Labels in arrange bullet
         if "_arrangeBullet" in data:
