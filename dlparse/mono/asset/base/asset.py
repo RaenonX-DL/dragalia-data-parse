@@ -37,6 +37,8 @@ def get_file_like(file_location: str) -> TextIO:
 
             raise ex
 
+    # Every usages will use `with` statement in the subsequent operations
+    # pylint: disable=consider-using-with
     return open(file_location, encoding="utf-8")
 
 
