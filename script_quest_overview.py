@@ -5,12 +5,18 @@ from tests.static import (
 )
 
 diff_str = """
-- 228010101
-- 228010102
-- 228010103
-- 228011101
-- 228011102
-- 228011103
+- 227040101
+- 227040102
+- 227040103
+- 227040104
+- 227040105
+- 227040106
+- 320060101
+- 320060102
+- 320060103
+- 320061101
+- 320061102
+- 320061103
 """
 
 manager = AssetManager(
@@ -33,13 +39,15 @@ def print_enemy_info(enemy_form, padding=0):
 def check_quest(quest_id: int):
     quest_data = manager.transformer_quest.transform_quest_data(quest_id)
 
-    quest_text = manager.asset_text_multi.get_text("cht", quest_data.quest_data.name_view_label)
-    print(f"#{quest_id:10} - {quest_text} ({quest_data.quest_mode})")
+    quest_text_cht = manager.asset_text_multi.get_text("cht", quest_data.quest_data.name_view_label)
+    quest_text_jp = manager.asset_text_multi.get_text("jp", quest_data.quest_data.name_view_label)
+    print(f"#{quest_id:10} - {quest_text_cht} / {quest_text_jp} ({quest_data.quest_mode})")
     print()
 
     enemy_ids = quest_data.spawn_enemy_param_ids
 
     for enemy_id in enemy_ids:
+        print(f"Enemy #{enemy_id}")
         enemy_data = manager.transformer_enemy.transform_enemy_data(enemy_id)
 
         for form_idx, enemy_form in enumerate(enemy_data.forms, start=1):

@@ -21,10 +21,11 @@ def test_skill_discovery(asset_manager: AssetManager):
         SkillIdEntry(107505052, SkillNumber.S2, SkillIdentifierLabel.S2_BASE),
         # S1 @ Blood Pacts Lv.5
         SkillIdEntry(107505053, SkillNumber.S1, [
-            SkillIdentifierLabel.SHARED,
             SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S1, 1931),
             SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S1, 1933)
         ]),
+        # S1 @ Blood Pacts Lv.5 (Shared)
+        SkillIdEntry(107505054, SkillNumber.S1, SkillIdentifierLabel.SHARED),
     ]
 
     assert actual_identifiers == expected_identifiers
