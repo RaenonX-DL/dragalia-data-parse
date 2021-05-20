@@ -4,7 +4,7 @@ from typing import Any
 
 from dlparse.enums import BuffParameter, HitTargetSimple
 from dlparse.model import HitActionConditionEffectUnit
-from .unit_base import BuffInfoBase
+from .base import BuffInfoBase
 
 __all__ = ("BuffEffectInfo", "check_buff_unit_match")
 

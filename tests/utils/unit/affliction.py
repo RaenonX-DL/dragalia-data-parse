@@ -4,7 +4,7 @@ from typing import Any
 
 from dlparse.enums import Status
 from dlparse.model import HitActionConditionEffectUnit
-from .unit_base import BuffInfoBase, check_info_list_match
+from .base import BuffInfoBase, check_info_list_match
 
 __all__ = ("AfflictionInfo", "check_affliction_unit_match")
 

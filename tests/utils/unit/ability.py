@@ -7,7 +7,7 @@ import pytest
 from dlparse.enums import AbilityTargetAction, BuffParameter, ConditionComposite, HitTargetSimple
 from dlparse.model import AbilityDataBase, AbilityVariantEffectUnit
 from dlparse.mono.asset import CharaDataEntry
-from .unit_base import AbilityInfoBase, check_info_list_match
+from .base import AbilityInfoBase, check_info_list_match
 
 __all__ = (
     "AbilityEffectInfo", "UnknownAbilityData", "UnknownAbilityDataCollection", "check_ability_effect_unit_match"

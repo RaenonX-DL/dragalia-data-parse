@@ -6,7 +6,7 @@ import pytest
 
 from dlparse.enums import BuffParameter
 from dlparse.model import HitActionConditionEffectUnit
-from .unit_base import BuffInfoBase, check_info_list_match
+from .base import BuffInfoBase, check_info_list_match
 
 __all__ = ("DebuffInfo", "check_debuff_unit_match")
 
