@@ -2,8 +2,9 @@
 from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
+from dlparse.enums import Element
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import NamedEntry, SkillEntry, VariedEntry
+from dlparse.mono.asset.extension import SkillEntry, UnitEntry, VariedEntry
 
 __all__ = ("DragonDataEntry", "DragonDataAsset", "DRAGON_SKILL_MAX_LEVEL")
 
@@ -11,7 +12,7 @@ DRAGON_SKILL_MAX_LEVEL = 2
 
 
 @dataclass
-class DragonDataEntry(NamedEntry, VariedEntry, SkillEntry, MasterEntryBase):
+class DragonDataEntry(UnitEntry, VariedEntry, SkillEntry, MasterEntryBase):
     """Single entry of a dragon data."""
 
     ability_id_1_lv1: int
@@ -30,6 +31,8 @@ class DragonDataEntry(NamedEntry, VariedEntry, SkillEntry, MasterEntryBase):
         return DragonDataEntry(
             id=data["_Id"],
             emblem_id=data["_EmblemId"],
+            element=Element(data["_ElementalType"]),
+            rarity=data["_Rarity"],
             name_label=data["_Name"],
             name_label_2=data["_SecondName"],
             base_id=data["_BaseId"],
@@ -46,6 +49,8 @@ class DragonDataEntry(NamedEntry, VariedEntry, SkillEntry, MasterEntryBase):
             ability_id_2_lv3=data["_Abilities23"],
             ability_id_2_lv4=data["_Abilities24"],
             ability_id_2_lv5=data["_Abilities25"],
+            cv_en_label=data["_CvInfoEn"],
+            cv_jp_label=data["_CvInfo"]
         )
 
 

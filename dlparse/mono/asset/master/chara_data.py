@@ -6,7 +6,7 @@ from typing import Optional, TYPE_CHECKING, TextIO, Union
 from dlparse.enums import Element, Language, SkillNumber, Weapon
 from dlparse.errors import InvalidSkillNumError, NoUniqueDragonError, TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import NamedEntry, SkillDiscoverableEntry, SkillIdEntry, VariedEntry
+from dlparse.mono.asset.extension import SkillDiscoverableEntry, SkillIdEntry, UnitEntry, VariedEntry
 from .dragon_data import DRAGON_SKILL_MAX_LEVEL, DragonDataAsset, DragonDataEntry
 from .skill_data import CHARA_SKILL_MAX_LEVEL
 from .text_label import TextAssetMultilingual
@@ -18,18 +18,15 @@ __all__ = ("SkillReverseSearchResult", "CharaDataEntry", "CharaDataAsset")
 
 
 @dataclass
-class CharaDataEntry(NamedEntry, VariedEntry, SkillDiscoverableEntry, MasterEntryBase):
+class CharaDataEntry(UnitEntry, VariedEntry, SkillDiscoverableEntry, MasterEntryBase):
     """Single entry of a character data."""
 
     # pylint: disable=too-many-public-methods
 
     # region Attributes
     weapon: Weapon
-    rarity: int
 
     max_limit_break_count: int
-
-    element_id: int
 
     chara_type_id: int
 
@@ -249,11 +246,6 @@ class CharaDataEntry(NamedEntry, VariedEntry, SkillDiscoverableEntry, MasterEntr
         return f"{self.base_id}_{self.variation_id:02}_r{self.rarity:02}"
 
     @property
-    def element(self) -> Element:
-        """Get the element of the character."""
-        return Element(self.element_id)
-
-    @property
     def has_unique_weapon(self) -> bool:
         """Check if the character has an unique weapon."""
         return self.unique_weapon_id != 0
@@ -323,15 +315,6 @@ class CharaDataEntry(NamedEntry, VariedEntry, SkillDiscoverableEntry, MasterEntr
         """Get the ID of the chained EX ability at the max level."""
         return self.cex_ids[-1]
 
-    @property
-    def name_labels(self) -> list[str]:
-        """
-        Get a list of name labels to be used for getting the character name.
-
-        Note that the first one should be used first to get the character name. The order matters.
-        """
-        return [self.name_label_2, self.name_label]
-
     def max_skill_level(self, skill_num: SkillNumber):
         if skill_num == SkillNumber.ABILITY:
             return CHARA_SKILL_MAX_LEVEL  # No explicit skill index info found, using the max possible level
@@ -381,7 +364,7 @@ class CharaDataEntry(NamedEntry, VariedEntry, SkillDiscoverableEntry, MasterEntr
             weapon=Weapon(data["_WeaponType"]),
             rarity=data["_Rarity"],
             max_limit_break_count=data["_MaxLimitBreakCount"],
-            element_id=data["_ElementalType"],
+            element=Element(data["_ElementalType"]),
             chara_type_id=data["_CharaType"],
             base_id=data["_BaseId"],
             variation_id=data["_VariationId"],
@@ -457,6 +440,8 @@ class CharaDataEntry(NamedEntry, VariedEntry, SkillDiscoverableEntry, MasterEntr
             grow_material_start=cls.parse_datetime(data["_GrowMaterialOnlyStartDate"]),
             grow_material_end=cls.parse_datetime(data["_GrowMaterialOnlyEndDate"]),
             grow_material_id=data["_GrowMaterialId"],
+            cv_en_label=data["_CvInfoEn"],
+            cv_jp_label=data["_CvInfo"]
         )
 
 

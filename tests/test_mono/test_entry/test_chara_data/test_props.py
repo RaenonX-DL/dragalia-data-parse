@@ -1,4 +1,4 @@
-from dlparse.enums import Weapon
+from dlparse.enums import Element, Weapon
 from dlparse.mono.asset import CharaDataEntry
 from dlparse.mono.manager import AssetManager
 
@@ -12,7 +12,7 @@ def create_dummy(**kwargs) -> CharaDataEntry:
         "weapon": Weapon.SWD,
         "rarity": 0,
         "max_limit_break_count": 0,
-        "element_id": 0,
+        "element": Element.UNKNOWN,
         "chara_type_id": 0,
         "base_id": 0,
         "variation_id": 0,
@@ -87,7 +87,9 @@ def create_dummy(**kwargs) -> CharaDataEntry:
         "unique_dragon_inherit_skill_lv": 0,
         "unique_weapon_id": 0,
         "win_face_eye_id": 0,
-        "win_face_mouth_id": 0
+        "win_face_mouth_id": 0,
+        "cv_en_label": "DummyCvEn",
+        "cv_jp_label": "DummyCvJp",
     }
 
     params.update(kwargs)
