@@ -1,5 +1,7 @@
 """Data entry classes for the exported data."""
 from .base import *  # noqa
+from .chara_info import CharaInfoEntry
+from .dragon_info import DragonInfoEntry
 from .enum import ConditionEnumEntry, EnumEntry
 from .ex_ability import CharaExAbiltiesEntry
 from .skill_atk import CharaAttackingSkillEntry

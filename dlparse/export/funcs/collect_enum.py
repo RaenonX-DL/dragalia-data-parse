@@ -18,7 +18,7 @@ def collect_ability_data_buff_param(
     """Collect buff parameters from the transformed ability data for each character and compose an image path map."""
     units: set[BuffParameter] = set()
 
-    for chara_data in asset_manager.asset_chara_data.playable_chara_data:
+    for chara_data in asset_manager.asset_chara_data.playable_data:
         units.update(effect_unit.parameter for effect_unit in transform_fn(chara_data).effect_units)
 
     # Sort the buff paramters by its value to ensure the order will not change frequently,

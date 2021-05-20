@@ -4,7 +4,7 @@ from typing import Optional, TextIO, Union
 
 from dlparse.enums import Element
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import SkillEntry, UnitEntry, VariedEntry
+from dlparse.mono.asset.extension import SkillEntry, UnitAsset, UnitEntry, VariedEntry
 
 __all__ = ("DragonDataEntry", "DragonDataAsset", "DRAGON_SKILL_MAX_LEVEL")
 
@@ -51,11 +51,12 @@ class DragonDataEntry(UnitEntry, VariedEntry, SkillEntry, MasterEntryBase):
             ability_id_2_lv5=data["_Abilities25"],
             cv_en_label=data["_CvInfoEn"],
             cv_jp_label=data["_CvInfo"],
-            release_date=cls.parse_datetime(data["_ReleaseStartDate"])
+            release_date=cls.parse_datetime(data["_ReleaseStartDate"]),
+            is_playable=bool(data["_IsPlayable"])
         )
 
 
-class DragonDataAsset(MasterAssetBase[DragonDataEntry]):
+class DragonDataAsset(UnitAsset[DragonDataEntry], MasterAssetBase[DragonDataEntry]):
     """Dragon data asset class."""
 
     asset_file_name = "DragonData.json"

@@ -175,9 +175,9 @@ def test_mode_ids():
 
 def test_get_chara_name_use_main(asset_manager: AssetManager):
     entry = create_dummy(name_label="CHARA_NAME_10840301", name_label_2="CHARA_NAME_COMMENT_10840301")
-    assert entry.get_chara_name(asset_manager.asset_text_multi) == "ルーエン"
+    assert entry.get_name(asset_manager.asset_text_multi) == "ルーエン"
 
 
 def test_get_chara_name_use_second(asset_manager: AssetManager):
     entry = create_dummy(name_label="CHARA_NAME_10150302", name_label_2="CHARA_NAME_COMMENT_10150302")
-    assert entry.get_chara_name(asset_manager.asset_text_multi) == "エルフィリス（ウエディングVer.）"
+    assert entry.get_name(asset_manager.asset_text_multi) == "エルフィリス（ウエディングVer.）"

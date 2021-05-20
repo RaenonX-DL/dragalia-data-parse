@@ -3,13 +3,12 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional, TYPE_CHECKING, TextIO, Union
 
-from dlparse.enums import Element, Language, SkillNumber, Weapon
-from dlparse.errors import InvalidSkillNumError, NoUniqueDragonError, TextLabelNotFoundError
+from dlparse.enums import Element, SkillNumber, Weapon
+from dlparse.errors import InvalidSkillNumError, NoUniqueDragonError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import SkillDiscoverableEntry, SkillIdEntry, UnitEntry
+from dlparse.mono.asset.extension import SkillDiscoverableEntry, SkillIdEntry, UnitAsset, UnitEntry
 from .dragon_data import DRAGON_SKILL_MAX_LEVEL, DragonDataAsset, DragonDataEntry
 from .skill_data import CHARA_SKILL_MAX_LEVEL
-from .text_label import TextAssetMultilingual
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -117,7 +116,6 @@ class CharaDataEntry(UnitEntry, SkillDiscoverableEntry, MasterEntryBase):
 
     is_dragon_drive: bool
     """Bellina, etc."""
-    is_playable: bool
 
     unique_weapon_id: int
 
@@ -331,13 +329,6 @@ class CharaDataEntry(UnitEntry, SkillDiscoverableEntry, MasterEntryBase):
 
         raise InvalidSkillNumError(skill_num)
 
-    def get_chara_name(self, text_asset: TextAssetMultilingual, language: Language = Language.JP) -> str:
-        """Get the name of the character."""
-        try:
-            return text_asset.get_text(language.value, self.name_label_2)
-        except TextLabelNotFoundError:
-            return text_asset.get_text(language.value, self.name_label)
-
     def get_dragon_data(self, dragon_asset: DragonDataAsset) -> DragonDataEntry:
         """
         Get the unique dragon data of this character.
@@ -449,7 +440,7 @@ class SkillReverseSearchResult:
     skill_id_entry: SkillIdEntry
 
 
-class CharaDataAsset(MasterAssetBase[CharaDataEntry]):
+class CharaDataAsset(UnitAsset[CharaDataEntry], MasterAssetBase[CharaDataEntry]):
     """Character data asset class."""
 
     asset_file_name = "CharaData.json"
@@ -503,11 +494,6 @@ class CharaDataAsset(MasterAssetBase[CharaDataEntry]):
 
         # Chara data not found, returns ``None``
         return None
-
-    @property
-    def playable_chara_data(self) -> list[CharaDataEntry]:
-        """Get all character data of the playable characters."""
-        return [data for data in self if data.is_playable]
 
 
 class CharaDataParser(MasterParserBase[CharaDataEntry]):

@@ -43,7 +43,7 @@ def export_transform_skill_entries(
     # Get all skills and iterate them
     skill_identifiers = chara_data.get_skill_id_entries(asset_manager, include_dragon=include_dragon)
     for id_entry in skill_identifiers:
-        chara_name = chara_data.get_chara_name(asset_manager.asset_text_multi)
+        chara_name = chara_data.get_name(asset_manager.asset_text_multi)
 
         # Transform every skill data
         try:
@@ -79,7 +79,7 @@ def export_skill_entries(
 
     skipped_messages: list[str] = []
 
-    for chara_data in asset_manager.asset_chara_data.playable_chara_data:
+    for chara_data in asset_manager.asset_chara_data.playable_data:
         entries, messages = skill_entry_parse_fn(chara_data, asset_manager, skip_unparsable, include_dragon)
 
         ret.extend(entries)

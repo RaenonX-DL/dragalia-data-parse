@@ -15,7 +15,7 @@ def test_transform_all_supportive_skills(
         transformer_skill: SkillTransformer, asset_manager: AssetManager
 ):
     skill_ids: list[int] = []
-    for chara_data in asset_manager.asset_chara_data.playable_chara_data:
+    for chara_data in asset_manager.asset_chara_data.playable_data:
         skill_ids.extend([
             skill_entry.skill_id for skill_entry
             in chara_data.get_skill_id_entries(asset_manager)

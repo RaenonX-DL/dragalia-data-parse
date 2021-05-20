@@ -12,6 +12,8 @@ from .text import TextEntry
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
 
+__all__ = ("UnitInfoEntryBase",)
+
 T = TypeVar("T", bound=UnitEntry)
 
 

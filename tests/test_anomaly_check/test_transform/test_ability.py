@@ -14,7 +14,7 @@ def test_transform_all_character_ability(transformer_ability: AbilityTransformer
     # Not checking all abilities in the ability asset directly
     # because there are some unused or deprecated ability inside.
     # We don't want to spend time handling unused things.
-    for chara_data in asset_manager.asset_chara_data.playable_chara_data:
+    for chara_data in asset_manager.asset_chara_data.playable_data:
         for ability_id in chara_data.ability_ids_all_level:
             counter += 1
 

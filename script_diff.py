@@ -34,7 +34,7 @@ def check_diff_internal(left: "MasterAssetBase", right: "MasterAssetBase", title
             if isinstance(data, SkillDataEntry):
                 print(f"- {diff_id} ({manager.asset_text.to_text(data.name_label)})")
             elif isinstance(data, CharaDataEntry):
-                print(f"- {diff_id} ({data.get_chara_name(manager.asset_text_multi)})")
+                print(f"- {diff_id} ({data.get_name(manager.asset_text_multi)})")
             else:
                 print(f"- {diff_id}")
 

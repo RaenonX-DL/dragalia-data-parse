@@ -17,7 +17,7 @@ def export_ex_abilities_as_entries(
     entries: list[CharaExAbiltiesEntry] = []
     skipped_messages: list[str] = []
 
-    for chara_data in asset_manager.asset_chara_data.playable_chara_data:
+    for chara_data in asset_manager.asset_chara_data.playable_data:
         ex_data = asset_manager.transformer_ability.transform_ex_ability(chara_data.ex_id_at_max_level)
         chained_ex_data = asset_manager.transformer_ability.transform_chained_ex_ability(
             chara_data.cex_id_at_max_level
@@ -33,7 +33,7 @@ def export_ex_abilities_as_entries(
             if skip_unparsable:
                 skipped_messages.append(
                     f"[EX Ability] EX ID #{chara_data.ex_id_at_max_level} CEX ID #{chara_data.cex_id_at_max_level}) "
-                    f"of {chara_data.get_chara_name(asset_manager.asset_text_multi)} ({chara_data.id}): {ex}"
+                    f"of {chara_data.get_name(asset_manager.asset_text_multi)} ({chara_data.id}): {ex}"
                 )
                 continue
 
