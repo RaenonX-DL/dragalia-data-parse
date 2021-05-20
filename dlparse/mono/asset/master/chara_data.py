@@ -6,7 +6,7 @@ from typing import Optional, TYPE_CHECKING, TextIO, Union
 from dlparse.enums import Element, Language, SkillNumber, Weapon
 from dlparse.errors import InvalidSkillNumError, NoUniqueDragonError, TextLabelNotFoundError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import SkillDiscoverableEntry, SkillIdEntry, UnitEntry, VariedEntry
+from dlparse.mono.asset.extension import SkillDiscoverableEntry, SkillIdEntry, UnitEntry
 from .dragon_data import DRAGON_SKILL_MAX_LEVEL, DragonDataAsset, DragonDataEntry
 from .skill_data import CHARA_SKILL_MAX_LEVEL
 from .text_label import TextAssetMultilingual
@@ -18,7 +18,7 @@ __all__ = ("SkillReverseSearchResult", "CharaDataEntry", "CharaDataAsset")
 
 
 @dataclass
-class CharaDataEntry(UnitEntry, VariedEntry, SkillDiscoverableEntry, MasterEntryBase):
+class CharaDataEntry(UnitEntry, SkillDiscoverableEntry, MasterEntryBase):
     """Single entry of a character data."""
 
     # pylint: disable=too-many-public-methods
@@ -241,11 +241,6 @@ class CharaDataEntry(UnitEntry, VariedEntry, SkillDiscoverableEntry, MasterEntry
         return [mode_id for mode_id in (self.mode_1_id, self.mode_2_id, self.mode_3_id, self.mode_4_id) if mode_id]
 
     @property
-    def icon_name(self) -> str:
-        """Get the name of the character icon, excluding the file extension."""
-        return f"{self.base_id}_{self.variation_id:02}_r{self.rarity:02}"
-
-    @property
     def has_unique_weapon(self) -> bool:
         """Check if the character has an unique weapon."""
         return self.unique_weapon_id != 0
@@ -441,7 +436,8 @@ class CharaDataEntry(UnitEntry, VariedEntry, SkillDiscoverableEntry, MasterEntry
             grow_material_end=cls.parse_datetime(data["_GrowMaterialOnlyEndDate"]),
             grow_material_id=data["_GrowMaterialId"],
             cv_en_label=data["_CvInfoEn"],
-            cv_jp_label=data["_CvInfo"]
+            cv_jp_label=data["_CvInfo"],
+            release_date=cls.parse_datetime(data["_ReleaseStartDate"])
         )
 
 

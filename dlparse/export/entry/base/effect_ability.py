@@ -1,12 +1,13 @@
-"""Base classes of an effect unit."""
+"""Base classes of an ability effect unit."""
 from dataclasses import dataclass, field
 from typing import Any
 
 from dlparse.model import AbilityVariantEffectUnit
 from dlparse.mono.manager import AssetManager
-from .base import EffectUnitEntryBase, TextEntry
+from .effect import EffectUnitEntryBase
+from .text import TextEntry
 
-__all__ = ("EffectUnitEntryBase", "AbilityVariantEffectEntry")
+__all__ = ("AbilityVariantEffectEntry",)
 
 
 @dataclass

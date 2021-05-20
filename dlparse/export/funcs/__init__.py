@@ -1,4 +1,4 @@
-"""Prototype functions for exporting the data."""
+"""Functions for exporting the data."""
 from .collect_enum import collect_chained_ex_ability_buff_param, collect_ex_ability_buff_param
 from .elem_bonus import export_elem_bonus_as_json
 from .enum_cond import export_condition_as_json, export_condition_entries

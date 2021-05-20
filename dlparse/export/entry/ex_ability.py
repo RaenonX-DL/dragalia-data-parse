@@ -3,8 +3,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from dlparse.model import ChainedExAbilityData, ExAbilityData
-from .base import CharaEntryBase, JsonExportableEntryBase
-from .effect import AbilityVariantEffectEntry
+from .base import AbilityVariantEffectEntry, CharaEntryBase, JsonExportableEntryBase
 
 __all__ = ("CharaExAbiltiesEntry",)
 

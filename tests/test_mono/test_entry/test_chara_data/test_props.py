@@ -90,6 +90,7 @@ def create_dummy(**kwargs) -> CharaDataEntry:
         "win_face_mouth_id": 0,
         "cv_en_label": "DummyCvEn",
         "cv_jp_label": "DummyCvJp",
+        "release_date": "2021/01/01 00:00:00"
     }
 
     params.update(kwargs)

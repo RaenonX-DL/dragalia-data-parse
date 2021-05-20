@@ -26,8 +26,8 @@ class DragonDataEntry(UnitEntry, VariedEntry, SkillEntry, MasterEntryBase):
     ability_id_2_lv4: int
     ability_id_2_lv5: int
 
-    @staticmethod
-    def parse_raw(data: dict[str, Union[str, int]]) -> "DragonDataEntry":
+    @classmethod
+    def parse_raw(cls, data: dict[str, Union[str, int]]) -> "DragonDataEntry":
         return DragonDataEntry(
             id=data["_Id"],
             emblem_id=data["_EmblemId"],
@@ -50,7 +50,8 @@ class DragonDataEntry(UnitEntry, VariedEntry, SkillEntry, MasterEntryBase):
             ability_id_2_lv4=data["_Abilities24"],
             ability_id_2_lv5=data["_Abilities25"],
             cv_en_label=data["_CvInfoEn"],
-            cv_jp_label=data["_CvInfo"]
+            cv_jp_label=data["_CvInfo"],
+            release_date=cls.parse_datetime(data["_ReleaseStartDate"])
         )
 
 
