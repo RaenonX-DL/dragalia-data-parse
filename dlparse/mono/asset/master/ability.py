@@ -89,14 +89,10 @@ class AbilityVariantEntry(AbilityVariantEntryBase):
 
     def get_action_cond_id_hit_label(self, asset_manager: "AssetManager") -> Optional[int]:
         """Get the action condition ID of the hit label, if assigned. Return ``None`` if inapplicable."""
-        # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
-        # pylint: disable=superfluous-parens
         # Check if the hit label is assigned & available
         if not (hit_label := self.assigned_hit_label):
             return None
 
-        # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
-        # pylint: disable=superfluous-parens
         # Check if the hit attribute data is available
         if not (hit_attr := asset_manager.asset_hit_attr.get_data_by_id(hit_label)):
             return None

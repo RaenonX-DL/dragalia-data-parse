@@ -55,8 +55,6 @@ class DungeonPlannerEntry(MasterEntryBase):
             param_ids_variation = []
 
             for variation_field in variation_fields:
-                # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
-                # pylint: disable=superfluous-parens
                 if not (enemy_param_id := data[variation_field]):
                     continue
 

@@ -145,8 +145,6 @@ class SkillTransformer:
             if action_component.skill_pre_condition:
                 pre_condition += action_component.skill_pre_condition
 
-            # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
-            # pylint: disable=superfluous-parens
             if not (hit_attr_data := self._asset_hit_attr.get_data_by_id(hit_label)):
                 # Hit attribute missing, skip it
                 # - Not letting it "explode" because officials love to insert unused dummy data
@@ -250,8 +248,6 @@ class SkillTransformer:
             # Loop through each ability data
             for ability_data, hit_label in ability_hit_labels:
                 # If the hit attribute is missing, just skip it; sometimes it's simply missing
-                # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
-                # pylint: disable=superfluous-parens
                 if not (hit_attr_data := self._asset_hit_attr.get_data_by_id(hit_label)):
                     continue
 
