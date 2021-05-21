@@ -31,7 +31,7 @@ def export_enums_entries(
 
         for enum in enum_list:
             ret[enum_name].append(enum_entry_class(
-                enum_name=enum.name, enum_code=enum.value, enum_image_path=get_image_path(enum, on_not_found=None),
+                name=enum.name, code=enum.value, image_path=get_image_path(enum, on_not_found=None),
                 trans=TextEntry(
                     asset_text_website=asset_manager.asset_text_website, labels=enum.translation_id,
                     asset_text_multi=asset_manager.asset_text_multi

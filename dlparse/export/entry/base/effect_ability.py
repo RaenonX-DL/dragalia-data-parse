@@ -6,6 +6,7 @@ from dlparse.model import AbilityVariantEffectUnit
 from dlparse.mono.manager import AssetManager
 from .effect import EffectUnitEntryBase
 from .text import TextEntry
+from .type import JsonSchema
 
 __all__ = ("AbilityVariantEffectEntry",)
 
@@ -24,6 +25,18 @@ class AbilityVariantEffectEntry(EffectUnitEntryBase):
         self.target_action_trans = TextEntry(
             asset_manager.asset_text_website, self.effect_unit.target_action.translation_id
         )
+
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return super().json_schema | {
+            "sourceAbilityId": int,
+            "conditions": [int],
+            "cooldownSec": float,
+            "maxOccurrences": int,
+            "rateMax": float,
+            "targetAction": TextEntry.json_schema
+        }
 
     def to_json_entry(self) -> dict[str, Any]:
         ret = super().to_json_entry()

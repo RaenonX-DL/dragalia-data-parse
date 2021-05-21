@@ -6,10 +6,13 @@ from typing import Any, TYPE_CHECKING
 from dlparse.enums import Element
 from .entry import JsonExportableEntryBase
 from .text import TextEntry
+from .type import JsonSchema
 
 if TYPE_CHECKING:
     from dlparse.mono.asset import CharaDataEntry
     from dlparse.mono.manager import AssetManager
+
+__all__ = ("CharaEntryBase",)
 
 
 @dataclass
@@ -30,6 +33,15 @@ class CharaEntryBase(JsonExportableEntryBase, ABC):
         self.character_icon_name = self.chara_data.icon_name
         self.character_internal_id = self.chara_data.id
         self.character_element = self.chara_data.element
+
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return {
+            "iconName": str,
+            "name": TextEntry.json_schema,
+            "element": int,
+        }
 
     def to_json_entry(self) -> dict[str, Any]:
         return {

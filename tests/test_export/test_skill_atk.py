@@ -4,8 +4,10 @@ import pytest
 
 from dlparse.enums import Condition, ConditionComposite
 from dlparse.export import export_atk_skills_as_entries
+from dlparse.export.entry import CharaAttackingSkillEntry
 from dlparse.mono.manager import AssetManager
 from tests.expected_skills_lookup import skill_ids_atk
+from tests.utils import is_json_schema_match
 
 expected_contained_info: dict[tuple[int, ConditionComposite], pytest.approx] = {
     # Wedding Elisanne S2
@@ -49,41 +51,4 @@ def test_exported_json(asset_manager: AssetManager):
     entries = export_atk_skills_as_entries(asset_manager, include_dragon=False)
 
     for entry in entries:
-        json_entry = entry.to_json_entry()
-
-        # Check for first level keys
-        for first_level_key in ("uniqueHash", "condition", "chara", "skill"):
-            assert first_level_key in json_entry
-
-        # Check for character keys
-        for chara_key in ("iconName", "name", "element"):
-            assert chara_key in json_entry["chara"]
-
-        # Check for skill keys
-        for skill_key in (
-                "internalId", "identifiers", "name", "spMax", "sharable", "ssCost", "ssSp",
-                "modsMax", "crisisMax", "hitsMax", "afflictions", "buffCountBoost", "buffZoneBoost",
-                "dispelMax", "dispelTimingMax",
-        ):
-            assert skill_key in json_entry["skill"]
-
-        # Check for affliction keys
-        for affliction_key in (
-                "statusConditionCode", "statusIcon", "actionTime", "probabilityPct", "duration", "stackable"
-        ):
-            for affliction_data in json_entry["skill"]["afflictions"]:
-                assert affliction_key in affliction_data
-
-        # Check for buff count boost keys
-        for buff_count_key in ("each", "inEffect", "limit"):
-            for buff_count_data in json_entry["skill"]["buffCountBoost"]:
-                assert buff_count_key in buff_count_data
-
-        # Check for buff field boost keys
-        for buff_field_key in ("self", "ally"):
-            assert buff_field_key in json_entry["skill"]["buffZoneBoost"]
-
-        # Check for the keys in the names
-        for lang_key in ("cht", "en", "jp"):
-            assert lang_key in json_entry["skill"]["name"]
-            assert lang_key in json_entry["chara"]["name"]
+        is_json_schema_match(CharaAttackingSkillEntry.json_schema, entry.to_json_entry())

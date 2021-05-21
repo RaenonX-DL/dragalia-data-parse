@@ -2,7 +2,9 @@ import pytest
 
 from dlparse.enums import Element, Language, Weapon
 from dlparse.export import export_chara_info_as_entries, export_dragon_info_as_entries
+from dlparse.export.entry import CharaInfoEntry, DragonInfoEntry
 from dlparse.mono.manager import AssetManager
+from tests.utils import is_json_schema_match
 
 expected_partial_chara_info: dict[int, tuple[Element, str, Weapon, str]] = {
     10150302: (Element.WIND, "エルフィリス（ウエディングVer.）", Weapon.SWD, "早見沙織"),
@@ -40,24 +42,10 @@ def test_exported_chara_entries(asset_manager: AssetManager):
 
 @pytest.mark.holistic
 def test_exported_chara_json(asset_manager: AssetManager):
-    # FIXME: Utils for schema matching - this is too hard to read
     entries = export_chara_info_as_entries(asset_manager)
 
     for entry in entries:
-        json_entry = entry.to_json_entry()
-
-        # Check for unit keys
-        for chara_key in ("name", "iconName", "id", "element", "rarity", "releaseEpoch",):
-            assert chara_key in json_entry
-
-        # Check for chara keys
-        for chara_key in ("weapon", "hasUniqueDragon"):
-            assert chara_key in json_entry
-
-        # Check for the keys in the names
-        for lang_key in ("cht", "en", "jp"):
-            assert lang_key in json_entry["cvEn"]
-            assert lang_key in json_entry["cvJp"]
+        is_json_schema_match(CharaInfoEntry.json_schema, entry.to_json_entry())
 
 
 expected_partial_dragon_info: dict[int, tuple[Element, int, str, str]] = {
@@ -98,13 +86,4 @@ def test_exported_dragon_json(asset_manager: AssetManager):
     entries = export_dragon_info_as_entries(asset_manager)
 
     for entry in entries:
-        json_entry = entry.to_json_entry()
-
-        # Check for unit keys
-        for chara_key in ("name", "iconName", "id", "element", "rarity", "releaseEpoch",):
-            assert chara_key in json_entry
-
-        # Check for the keys in the names
-        for lang_key in ("cht", "en", "jp"):
-            assert lang_key in json_entry["cvEn"]
-            assert lang_key in json_entry["cvJp"]
+        is_json_schema_match(DragonInfoEntry.json_schema, entry.to_json_entry())

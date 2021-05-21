@@ -3,28 +3,30 @@ from dataclasses import dataclass
 from typing import Any
 
 from dlparse.enums import ColorTheme
-from .base import JsonExportableEntryBase, TextEntry
+from .base import JsonSchema, NamedEntry
 
 __all__ = ("EnumEntry", "ConditionEnumEntry")
 
 
 @dataclass
-class EnumEntry(JsonExportableEntryBase):
+class EnumEntry(NamedEntry):
     """Single entry of an enum to be used on the website."""
 
-    enum_name: str
-    enum_code: int
-    enum_image_path: str
+    code: int
+    image_path: str
 
-    trans: TextEntry
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return super().json_schema | {
+            "code": str,
+            "imagePath": str
+        }
 
     def to_json_entry(self) -> dict[str, Any]:
-        # Used by the website, DO NOT CHANGE
-        return {
-            "name": self.enum_name,
-            "code": self.enum_code,
-            "imagePath": self.enum_image_path,
-            "trans": self.trans.to_json_entry()
+        return super().to_json_entry() | {
+            "code": self.code,
+            "imagePath": self.image_path
         }
 
 
@@ -34,8 +36,14 @@ class ConditionEnumEntry(EnumEntry):
 
     color_theme: ColorTheme  # Bootstrap color theme to be used on the website
 
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return super().json_schema | {
+            "colorTheme": str,
+        }
+
     def to_json_entry(self) -> dict[str, Any]:
-        # Used by the website, DO NOT CHANGE
         return super().to_json_entry() | {
             "colorTheme": self.color_theme.value,
         }

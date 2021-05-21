@@ -3,6 +3,8 @@ import hashlib
 from abc import ABC, abstractmethod
 from typing import Any, final
 
+from .type import JsonSchema
+
 __all__ = ("CsvExportableEntryBase", "JsonExportableEntryBase", "HashableEntryBase")
 
 
@@ -24,7 +26,12 @@ class CsvExportableEntryBase(ABC):
 class JsonExportableEntryBase(ABC):
     """Base class for an json-exportable data entry."""
 
-    # pylint: disable=too-few-public-methods
+    @classmethod
+    @property
+    @abstractmethod
+    def json_schema(cls) -> JsonSchema:
+        """Entry JSON schema."""
+        raise NotImplementedError(f"Entry `{cls.__name__}` did not define a JSON schema")
 
     @abstractmethod
     def to_json_entry(self) -> dict[str, Any]:

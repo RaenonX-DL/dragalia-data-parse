@@ -8,6 +8,7 @@ from dlparse.mono.asset import SkillDataEntry, SkillIdEntry
 from .chara import CharaEntryBase
 from .entry import HashableEntryBase, JsonExportableEntryBase
 from .text import TextEntry
+from .type import JsonSchema
 
 __all__ = ("SkillExportEntryBase",)
 
@@ -65,8 +66,25 @@ class SkillExportEntryBase(Generic[T], CharaEntryBase, HashableEntryBase, JsonEx
             f"{hash(self.condition_comp)}"
         )
 
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return {
+            "uniqueHash": str,
+            "condition": [int],
+            "chara": super().json_schema,
+            "skill": {
+                "identifiers": str,
+                "internalId": int,
+                "name": TextEntry.json_schema,
+                "spMax": int,
+                "sharable": bool,
+                "ssCost": int,
+                "ssSp": int
+            }
+        }
+
     def to_json_entry(self) -> dict[str, Any]:
-        # Used by the website, DO NOT CHANGE
         return {
             "uniqueHash": self.unique_hash,
             "condition": [condition.value for condition in self.condition_comp.conditions_sorted],

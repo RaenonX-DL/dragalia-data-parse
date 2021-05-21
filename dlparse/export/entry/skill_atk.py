@@ -6,7 +6,7 @@ from dlparse.enums import BuffParameter, ConditionCategories
 from dlparse.model import AttackingSkillDataEntry
 from dlparse.mono.asset import SkillDataEntry, SkillIdEntry
 from dlparse.utils import remove_duplicates_preserve_order
-from .base import JsonExportableEntryBase, SkillExportEntryBase
+from .base import JsonExportableEntryBase, JsonSchema, SkillExportEntryBase
 
 __all__ = ("CharaAttackingSkillEntry",)
 
@@ -19,6 +19,15 @@ class SkillBuffCountBoostEntry(JsonExportableEntryBase):
 
     rate_in_effect: float
     rate_limit: float
+
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return {
+            "each": float,
+            "inEffect": float,
+            "limit": float
+        }
 
     def to_json_entry(self) -> dict[str, Any]:
         return {
@@ -34,6 +43,14 @@ class SkillBuffFieldBoostEntry(JsonExportableEntryBase):
 
     rate_by_self: float
     rate_by_ally: float
+
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return {
+            "self": float,
+            "ally": float
+        }
 
     def to_json_entry(self) -> dict[str, Any]:
         return {
@@ -53,8 +70,19 @@ class SkillAfflictionEntry(JsonExportableEntryBase):
     duration: float
     stackable: bool
 
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return {
+            "statusConditionCode": int,
+            "statusIcon": str,
+            "actionTime": float,
+            "probabilityPct": float,
+            "duration": float,
+            "stackable": bool,
+        }
+
     def to_json_entry(self) -> dict[str, Any]:
-        # Used by the website, DO NOT CHANGE
         return {
             "statusConditionCode": self.status_condition_code,
             "statusIcon": self.status_icon,
@@ -130,8 +158,25 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
         buff_field_data = skill_data_to_parse.buff_field_boost_mtx[-1]
         self.buff_field_data_max = SkillBuffFieldBoostEntry(buff_field_data.rate_by_self, buff_field_data.rate_by_ally)
 
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        schema = super().json_schema
+
+        schema["skill"].update({
+            "modsMax": [float],
+            "crisisMax": [float],
+            "hitsMax": int,
+            "afflictions": [SkillAfflictionEntry.json_schema],
+            "buffCountBoost": [SkillBuffCountBoostEntry.json_schema],
+            "buffZoneBoost": SkillBuffFieldBoostEntry.json_schema,
+            "dispelMax": bool,
+            "dispelTimingMax": [float]
+        })
+
+        return schema
+
     def to_json_entry(self) -> dict[str, Any]:
-        # Used by the website, DO NOT CHANGE
         json_dict = super().to_json_entry()
 
         json_dict["skill"].update({

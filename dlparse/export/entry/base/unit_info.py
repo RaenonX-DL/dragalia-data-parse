@@ -8,6 +8,7 @@ from dlparse.enums import Element
 from dlparse.mono.asset import UnitEntry
 from .entry import JsonExportableEntryBase
 from .text import TextEntry
+from .type import JsonSchema
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -43,6 +44,20 @@ class UnitInfoEntryBase(Generic[T], JsonExportableEntryBase, ABC):
         self.unit_cv_en = TextEntry(self.asset_manager.asset_text_multi, self.unit_data.cv_en_label)
         self.unit_cv_jp = TextEntry(self.asset_manager.asset_text_multi, self.unit_data.cv_jp_label)
         self.unit_release_date = self.unit_data.release_date
+
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return {
+            "name": TextEntry.json_schema,
+            "iconName": str,
+            "id": int,
+            "element": int,
+            "rarity": int,
+            "cvEn": TextEntry.json_schema,
+            "cvJp": TextEntry.json_schema,
+            "releaseEpoch": float,
+        }
 
     def to_json_entry(self) -> dict[str, Any]:
         return {

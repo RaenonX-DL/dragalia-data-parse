@@ -24,7 +24,7 @@ def export_enum(asset_manager: AssetManager, key: str, enums: Sequence[T]):
     conditions_missing: set[str] = {elem.name for elem in enums}
 
     for entry in entries[key]:
-        conditions_missing.remove(entry.enum_name)
+        conditions_missing.remove(entry.name)
 
         assert Language.CHT.value in entry.trans.text_dict
         assert Language.EN.value in entry.trans.text_dict

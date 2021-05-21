@@ -8,6 +8,7 @@ from dlparse.model import EffectUnitBase
 from dlparse.mono.manager import AssetManager
 from .entry import JsonExportableEntryBase
 from .text import TextEntry
+from .type import JsonSchema
 
 __all__ = ("EffectUnitEntryBase",)
 
@@ -45,6 +46,32 @@ class EffectUnitEntryBase(JsonExportableEntryBase, ABC):
             asset_text_multi=asset_manager.asset_text_multi,
             labels=self.effect_unit.parameter.parameter_unit.translation_id
         )
+
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return {
+            "status": TextEntry.json_schema,
+            "target": TextEntry.json_schema,
+            "parameter": {
+                "name": TextEntry.json_schema,
+                "code": int,
+                "imagePath": str
+            },
+            "paramUnit": {
+                "name": TextEntry.json_schema,
+                "code": int,
+                "isPercentage": bool
+            },
+            "probabilityPct": float,
+            "rate": float,
+            "slipInterval": float,
+            "slipDamageMod": float,
+            "durationSec": float,
+            "durationCount": int,
+            "maxStackCount": int,
+            "stackable": bool
+        }
 
     def to_json_entry(self) -> dict[str, Any]:
         return {

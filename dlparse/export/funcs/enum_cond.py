@@ -125,8 +125,8 @@ def export_condition_entries(asset_manager: "AssetManager") -> dict[int, Conditi
     """Export the condition enums as a dict with key as the code and the value as the entry."""
     return {
         condition.value: ConditionEnumEntry(
-            enum_name=condition.name, enum_code=condition.value,
-            enum_image_path=get_image_path(condition, on_not_found=None),
+            name=condition.name, code=condition.value,
+            image_path=get_image_path(condition, on_not_found=None),
             color_theme=condition_theme.get(condition, default_theme),
             trans=TextEntry(
                 asset_text_website=asset_manager.asset_text_website, labels=condition.translation_id,

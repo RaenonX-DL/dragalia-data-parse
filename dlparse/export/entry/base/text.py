@@ -6,6 +6,7 @@ from dlparse.enums import Language
 from dlparse.errors import MissingTextError
 from dlparse.mono.asset import MultilingualAssetBase, TextAssetMultilingual
 from .entry import JsonExportableEntryBase
+from .type import JsonSchema
 
 __all__ = ("TextEntry",)
 
@@ -64,6 +65,11 @@ class TextEntry(JsonExportableEntryBase):
                     raise MissingTextError(
                         labels, lang_code, f"Text asset{' ' if self.asset_text_multi else ' not '}provided"
                     )
+
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return {lang: str for lang in Language.get_all_available_codes()}
 
     def to_json_entry(self) -> dict[str, Any]:
         return self.text_dict

@@ -1,15 +1,17 @@
 """Implementations to check if the json schema matches the given body."""
-from typing import Type, Union
+from typing import Union
 
+from dlparse.export.entry import JsonBody, JsonSchema
 from .error import ArrayLengthInvalidError, KeyNotStringError, SchemaIsNotDictError, TypeNotAllowedError
 
 __all__ = ("is_json_schema_match",)
 
-Schema = dict[str, Type[Union[str, int, float, bool, list, 'Schema']]]
-Body = dict[str, Union[str, int, float, bool, list, 'Body']]
 
-
-def is_json_schema_match(schema: Schema, body: Body):
+# Monkey patch for the typing false negative
+# - JSON schema comes from a class property (`@classmethod` with `@property`).
+#   This causes the PyCharm type checker think it gets the property itself
+#   instead of the property getter
+def is_json_schema_match(schema: Union[JsonSchema, property], body: JsonBody):
     """
     Check if the json ``body`` matches ``schema``.
 
@@ -30,7 +32,27 @@ def is_json_schema_match(schema: Schema, body: Body):
     return _check_schema(schema, body)
 
 
-def _check_schema(schema: Schema, body: Body):
+def _check_schema_list(schema_type: list[type], key: str, body: JsonBody):
+    """Inner function to check if the body matches the schema type."""
+    array_len = len(schema_type)
+    # Check if the array length is exactly 1
+    if array_len != 1:
+        raise ArrayLengthInvalidError(key, array_len)
+
+    # Check if the corresponding content in the body is a list
+    if not isinstance(body[key], list):
+        return False
+
+    # Check if all elements matches the desired type
+    elem_type = schema_type[0]
+
+    # `elem_type` false positive - https://stackoverflow.com/a/56494823/11571888
+    # noinspection PyTypeHints
+    return all(isinstance(body_elem, elem_type) for body_elem in body[key])
+
+
+# Flake 8 false-positive of "too complex"
+def _check_schema(schema: JsonSchema, body: JsonBody):  # noqa: C901
     """
     Inner function to check if the json ``body`` matches ``schema``.
 
@@ -43,7 +65,7 @@ def _check_schema(schema: Schema, body: Body):
 
     :class:`SchemaIsNotDictError` will be raised if ``schema`` is not a :class:`dict`.
     """
-    if type(schema) != type(body):
+    if not isinstance(schema, type(body)):
         return False
 
     for key, schema_type in schema.items():
@@ -57,19 +79,10 @@ def _check_schema(schema: Schema, body: Body):
 
         # Check & handle if schema type is an array
         if isinstance(schema_type, list):
-            array_len = len(schema_type)
-            # Check if the array length is exactly 1
-            if array_len != 1:
-                raise ArrayLengthInvalidError(key, array_len)
-
-            # Check if the corresponding content in the body is a list
-            if not isinstance(body[key], list):
+            if not _check_schema_list(schema_type, key, body):
                 return False
 
-            # Check if all elements matches the desired type
-            elem_type = schema_type[0]
-
-            return all(isinstance(body_elem, elem_type) for body_elem in body[key])
+            continue
 
         # Check & handle if the schema type is a map
         if isinstance(schema_type, dict):
