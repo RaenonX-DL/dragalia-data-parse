@@ -1954,5 +1954,41 @@
   {
     "id": "ENUM_UNIT_LEVEL",
     "text": "Lv"
+  },
+  {
+    "id": "WEAPONTYPE_SWD",
+    "text": "Sword"
+  },
+  {
+    "id": "WEAPONTYPE_KAT",
+    "text": "Blade"
+  },
+  {
+    "id": "WEAPONTYPE_DAG",
+    "text": "Dagger"
+  },
+  {
+    "id": "WEAPONTYPE_AXE",
+    "text": "Axe"
+  },
+  {
+    "id": "WEAPONTYPE_LAN",
+    "text": "Lance"
+  },
+  {
+    "id": "WEAPONTYPE_BOW",
+    "text": "Bow"
+  },
+  {
+    "id": "WEAPONTYPE_ROD",
+    "text": "Wand"
+  },
+  {
+    "id": "WEAPONTYPE_CAN",
+    "text": "Staff"
+  },
+  {
+    "id": "WEAPONTYPE_GUN",
+    "text": "Manacaster"
   }
 ]

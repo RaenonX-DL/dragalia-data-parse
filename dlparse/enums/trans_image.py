@@ -5,12 +5,13 @@ from dlparse.errors import ImageNotFoundError
 from .buff_parameter import BuffParameter
 from .condition import Condition
 from .element import Element
+from .weapon import Weapon
 
 __all__ = ("get_image_path",)
 
 THROW_ERROR = object()
 
-TransformableEnums = Union[Element, Condition, BuffParameter]
+TransformableEnums = Union[Element, Condition, BuffParameter, Weapon]
 
 path_dict: dict[TransformableEnums, str] = {
     Element.FLAME: "/icon/element/m/Icon_02_Flame.png",
@@ -166,7 +167,16 @@ path_dict: dict[TransformableEnums, str] = {
     BuffParameter.DISPEL: "/icon/ability/l/Icon_Ability_1010031.png",
     BuffParameter.PLAYER_EXP: "/icon/ability/l/Icon_Ability_1010003.png",
     BuffParameter.ENERGY_LEVEL: "/icon/ability/l/Icon_Ability_1010012.png",
-    BuffParameter.INSPIRE_LEVEL: "/icon/ability/l/Icon_Ability_1010055.png"
+    BuffParameter.INSPIRE_LEVEL: "/icon/ability/l/Icon_Ability_1010055.png",
+    Weapon.SWD: "/icon/weapontype/m/Icon_Weapon02_02_Sword.png",
+    Weapon.KAT: "/icon/weapontype/m/Icon_Weapon02_02_Sword2.png",
+    Weapon.DAG: "/icon/weapontype/m/Icon_Weapon02_02_Dagger.png",
+    Weapon.AXE: "/icon/weapontype/m/Icon_Weapon02_02_axe.png",
+    Weapon.LAN: "/icon/weapontype/m/Icon_Weapon02_02_Spear.png",
+    Weapon.BOW: "/icon/weapontype/m/Icon_Weapon02_02_Bow.png",
+    Weapon.ROD: "/icon/weapontype/m/Icon_Weapon02_02_Rod.png",
+    Weapon.CAN: "/icon/weapontype/m/Icon_Weapon02_02_Cane.png",
+    Weapon.GUN: "/icon/weapontype/m/Icon_Weapon02_02_Gun.png",
 }
 
 

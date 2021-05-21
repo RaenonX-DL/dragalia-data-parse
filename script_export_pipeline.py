@@ -1,10 +1,9 @@
 import argparse
 import os
 from configparser import ConfigParser
-from enum import Enum
 from typing import Sequence, TypeVar
 
-from dlparse.enums import BuffValueUnit, Element, cond_afflictions, cond_elements
+from dlparse.enums import BuffValueUnit, Element, TranslatableEnumMixin, Weapon, cond_afflictions, cond_elements
 from dlparse.export import (
     collect_chained_ex_ability_buff_param, collect_ex_ability_buff_param, export_atk_skill_as_json,
     export_chara_info_as_json, export_condition_as_json, export_dragon_info_as_json, export_elem_bonus_as_json,
@@ -14,7 +13,7 @@ from dlparse.mono.manager import AssetManager
 from dlparse.transformer import AbilityTransformer
 from dlparse.utils import time_exec
 
-T = TypeVar("T", bound=Enum)
+T = TypeVar("T", bound=TranslatableEnumMixin)
 
 
 class FileExporter:
@@ -102,6 +101,7 @@ class FileExporter:
         # Enums
         self._export_enums({"afflictions": cond_afflictions, "elements": cond_elements}, "conditions")
         self._export_enums_ex()
+        self._export_enums({"weapon": Weapon.get_all_translatable_members()}, "weaponType")
         self._export_enums({"elemental": Element.get_all_translatable_members()}, "elements")
         self._export_enums({"unit": BuffValueUnit.get_all_translatable_members()}, "buffParam")
         self._export_enums_condition("allCondition")

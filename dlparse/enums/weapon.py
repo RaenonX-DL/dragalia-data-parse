@@ -2,11 +2,12 @@
 from enum import Enum
 
 from dlparse.errors import EnumConversionError, EnumNotFoundError
+from .mixin import TranslatableEnumMixin
 
 __all__ = ("Weapon",)
 
 
-class Weapon(Enum):
+class Weapon(TranslatableEnumMixin, Enum):
     """Enums for the weapons."""
 
     NONE = 0
@@ -67,6 +68,14 @@ class Weapon(Enum):
                 return weapon
 
         raise EnumNotFoundError(Weapon, weapon_str)
+
+    @property
+    def translation_id(self) -> str:
+        return f"WEAPONTYPE_{self.name}"
+
+    @staticmethod
+    def get_all_translatable_members() -> list["Weapon"]:
+        return Weapon.get_all_valid_weapons()
 
 
 _weapon_conv_dict: dict[Weapon, str] = {

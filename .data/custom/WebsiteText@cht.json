@@ -1954,5 +1954,41 @@
   {
     "id": "ENUM_UNIT_LEVEL",
     "text": "等"
+  },
+  {
+    "id": "WEAPONTYPE_SWD",
+    "text": "劍"
+  },
+  {
+    "id": "WEAPONTYPE_KAT",
+    "text": "刀"
+  },
+  {
+    "id": "WEAPONTYPE_DAG",
+    "text": "短"
+  },
+  {
+    "id": "WEAPONTYPE_AXE",
+    "text": "斧"
+  },
+  {
+    "id": "WEAPONTYPE_LAN",
+    "text": "槍"
+  },
+  {
+    "id": "WEAPONTYPE_BOW",
+    "text": "弓"
+  },
+  {
+    "id": "WEAPONTYPE_ROD",
+    "text": "法"
+  },
+  {
+    "id": "WEAPONTYPE_CAN",
+    "text": "補"
+  },
+  {
+    "id": "WEAPONTYPE_GUN",
+    "text": "銃"
   }
 ]
