@@ -7,8 +7,8 @@ from typing import Sequence, TypeVar
 from dlparse.enums import BuffValueUnit, Element, cond_afflictions, cond_elements
 from dlparse.export import (
     collect_chained_ex_ability_buff_param, collect_ex_ability_buff_param, export_atk_skill_as_json,
-    export_condition_as_json, export_elem_bonus_as_json, export_enums_json, export_ex_abilities_as_json,
-    export_skill_identifiers_as_json,
+    export_chara_info_as_json, export_condition_as_json, export_dragon_info_as_json, export_elem_bonus_as_json,
+    export_enums_json, export_ex_abilities_as_json, export_skill_identifiers_as_json,
 )
 from dlparse.mono.manager import AssetManager
 from dlparse.transformer import AbilityTransformer
@@ -85,6 +85,17 @@ class FileExporter:
             skip_unparsable=True
         )
 
+    @time_exec(title="Unit info exporting time")
+    def _export_unit_info(self):
+        export_chara_info_as_json(
+            os.path.join(self._dir_export, "info", "chara.json"), self._asset_manager,
+            skip_unparsable=True
+        )
+        export_dragon_info_as_json(
+            os.path.join(self._dir_export, "info", "dragon.json"), self._asset_manager,
+            skip_unparsable=True
+        )
+
     @time_exec(title="Total exporting time")
     def export(self):
         """Export the parsed assets."""
@@ -95,15 +106,18 @@ class FileExporter:
         self._export_enums({"unit": BuffValueUnit.get_all_translatable_members()}, "buffParam")
         self._export_enums_condition("allCondition")
 
-        # Misc
-        self._export_elem_bonus()
-
         # Skill
         self._export_atk_skill()
         self._export_skill_identifiers("identifiers")
 
         # Abilties
         self._export_ex_abilities()
+
+        # Unit info
+        self._export_unit_info()
+
+        # Misc
+        self._export_elem_bonus()
 
 
 # region Parser
