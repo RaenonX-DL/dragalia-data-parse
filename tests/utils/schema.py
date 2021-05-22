@@ -68,6 +68,9 @@ def _check_schema(schema: JsonSchema, body: JsonBody):  # noqa: C901
     if not isinstance(schema, type(body)):
         return False
 
+    if schema.keys() != body.keys():
+        return False
+
     for key, schema_type in schema.items():
         # Check if the key is a string
         if not isinstance(key, str):

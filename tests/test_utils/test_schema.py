@@ -190,7 +190,7 @@ def test_invalid_schema_key_not_string():
         7: int,
     }
     body = {
-        "num": 7,
+        7: 7,
     }
 
     with pytest.raises(KeyNotStringError):
@@ -245,7 +245,7 @@ def test_invalid_schema_is_not_dict():
         is_json_schema_match(schema, body)
 
 
-def test_match_additional_key_in_body():
+def test_invalid_additional_key_in_body():
     schema = {
         "num": int
     }
@@ -254,4 +254,16 @@ def test_match_additional_key_in_body():
         "text": "s",
     }
 
-    assert is_json_schema_match(schema, body)
+    assert not is_json_schema_match(schema, body)
+
+
+def test_invalid_additional_key_in_schema():
+    schema = {
+        "num": int,
+        "text": str,
+    }
+    body = {
+        "num": 7,
+    }
+
+    assert not is_json_schema_match(schema, body)
