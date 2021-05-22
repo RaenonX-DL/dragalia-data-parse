@@ -4,7 +4,7 @@ from typing import Any
 
 from dlparse.enums import Weapon
 from dlparse.mono.asset import CharaDataEntry
-from .base import UnitInfoEntryBase
+from .base import JsonSchema, UnitInfoEntryBase
 
 __all__ = ("CharaInfoEntry",)
 
@@ -22,6 +22,14 @@ class CharaInfoEntry(UnitInfoEntryBase[CharaDataEntry]):
 
         self.weapon = self.unit_data.weapon
         self.has_unique_dragon = self.unit_data.has_unique_dragon
+
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return super().json_schema | {
+            "weapon": int,
+            "hasUniqueDragon": bool,
+        }
 
     def to_json_entry(self) -> dict[str, Any]:
         return super().to_json_entry() | {
