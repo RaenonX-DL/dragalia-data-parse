@@ -1,5 +1,5 @@
 """Interface for various types of units. This includes character and dragon."""
-from abc import ABC
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Generic, TypeVar
@@ -27,9 +27,10 @@ class UnitEntry(NamedEntry, VariedEntry, MasterEntryBase, ABC):
     is_playable: bool
 
     @property
+    @abstractmethod
     def icon_name(self) -> str:
-        """Get the name of the character icon, excluding the file extension."""
-        return f"{self.base_id}_{self.variation_id:02}_r{self.rarity:02}"
+        """Get the name of the icon, excluding the file extension."""
+        raise NotImplementedError()
 
 
 T = TypeVar("T", bound=UnitEntry)

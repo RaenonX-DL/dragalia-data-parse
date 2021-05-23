@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from dlparse.model import ChainedExAbilityData, ExAbilityData
-from .base import AbilityVariantEffectEntry, CharaEntryBase, JsonExportableEntryBase
+from .base import AbilityVariantEffectEntry, CharaEntryBase, JsonExportableEntryBase, JsonSchema
 
 __all__ = ("CharaExAbiltiesEntry",)
 
@@ -14,6 +14,15 @@ class CharaExAbiltiesEntry(CharaEntryBase, JsonExportableEntryBase):
 
     ex_ability_data: ExAbilityData
     cex_ability_data: ChainedExAbilityData
+
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return super().json_schema | {
+            "chara": CharaEntryBase.json_schema,
+            "ex": [AbilityVariantEffectEntry.json_schema],
+            "chainedEx": [AbilityVariantEffectEntry.json_schema]
+        }
 
     def to_json_entry(self) -> dict[str, Any]:
         # Effect units are sorted by the condition to guarantee the atomicity

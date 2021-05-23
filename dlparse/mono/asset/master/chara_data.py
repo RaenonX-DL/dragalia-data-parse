@@ -289,6 +289,10 @@ class CharaDataEntry(UnitEntry, SkillDiscoverableEntry, MasterEntryBase):
         ]
 
     @property
+    def icon_name(self) -> str:
+        return f"{self.base_id}_{self.variation_id:02}_r{self.rarity:02}"
+
+    @property
     def ex_ids(self) -> list[int]:
         """Get all EX ability IDs of the character ordered by the level."""
         return [self.ex_1_id, self.ex_2_id, self.ex_3_id, self.ex_4_id, self.ex_5_id]

@@ -26,6 +26,10 @@ class DragonDataEntry(UnitEntry, VariedEntry, SkillEntry, MasterEntryBase):
     ability_id_2_lv4: int
     ability_id_2_lv5: int
 
+    @property
+    def icon_name(self) -> str:
+        return f"{self.base_id}_{self.variation_id:02}"
+
     @classmethod
     def parse_raw(cls, data: dict[str, Union[str, int]]) -> "DragonDataEntry":
         return DragonDataEntry(
