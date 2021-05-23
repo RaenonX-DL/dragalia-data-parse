@@ -25,15 +25,26 @@ class CharaExAbiltiesEntry(CharaEntryBase, JsonExportableEntryBase):
         }
 
     def to_json_entry(self) -> dict[str, Any]:
-        # Effect units are sorted by the condition to guarantee the atomicity
+        # Sort the effect units by its condition and parameter to guarantee deterministic results
+        ex_entries = [
+            AbilityVariantEffectEntry(self.asset_manager, effect_unit).to_json_entry()
+            for effect_unit
+            in sorted(
+                self.ex_ability_data.effect_units,
+                key=lambda unit: (unit.condition_comp, unit.parameter.value)
+            )
+        ]
+        chained_ex_entries = [
+            AbilityVariantEffectEntry(self.asset_manager, effect_unit).to_json_entry()
+            for effect_unit
+            in sorted(
+                self.cex_ability_data.effect_units,
+                key=lambda unit: (unit.condition_comp, unit.parameter.value)
+            )
+        ]
+
         return {
             "chara": super().to_json_entry(),
-            "ex": [
-                AbilityVariantEffectEntry(self.asset_manager, effect_unit).to_json_entry()
-                for effect_unit in sorted(self.ex_ability_data.effect_units, key=lambda unit: unit.condition_comp)
-            ],
-            "chainedEx": [
-                AbilityVariantEffectEntry(self.asset_manager, effect_unit).to_json_entry()
-                for effect_unit in sorted(self.cex_ability_data.effect_units, key=lambda unit: unit.condition_comp)
-            ],
+            "ex": ex_entries,
+            "chainedEx": chained_ex_entries,
         }
