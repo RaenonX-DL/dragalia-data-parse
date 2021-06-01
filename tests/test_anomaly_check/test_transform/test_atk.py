@@ -13,6 +13,7 @@ allowed_no_base_mods_sid = {
     105404022,  # Sha Wujing S2, only debuff the enemy
     107501042,  # Seimei S2, only has mods when Shikigami is summoned
     109505012,  # Gala Chelle S2, only debuff (ATK down) the enemy
+    109502032,  # Shooter Sarisse S2, only debuff (ATK/DEF down) the enemy
 }
 
 

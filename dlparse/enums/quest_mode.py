@@ -17,3 +17,4 @@ class QuestMode(Enum):
     NORMAL = 1
     SOLO = 2
     MULTI = 3
+    UNKNOWN = 4
