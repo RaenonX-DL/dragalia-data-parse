@@ -1,9 +1,10 @@
 """Base classes for a skill data."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Generic, TYPE_CHECKING, TypeVar, final
+from typing import Generic, Optional, TYPE_CHECKING, TypeVar, final
 
 from dlparse.enums import Condition, ConditionCategories, ConditionComposite, Element, ElementFlag
+from dlparse.errors import MultipleActionsError
 from dlparse.mono.asset import SkillDataEntry
 from .hit import HitData
 
@@ -116,16 +117,42 @@ class SkillDataBase(Generic[HT, ET], ABC):
         entries = []
 
         for conditions in sorted(self.possible_conditions):
-            entries.append(self.with_conditions(conditions))
+            try:
+                entries.append(self.with_conditions(conditions))
+            except MultipleActionsError as ex:
+                entries.extend([
+                    self.with_conditions(conditions, action_id=action_id)
+                    for action_id in ex.all_possible_action_ids
+                ])
 
         return entries
 
+    def check_unchained_action_ids_at_same_level(self, action_id_mtx: list[set[int]]):
+        """
+        Check if there are unchained action IDs occur at the same level.
+
+        :raises MultipleActionsError: if there are unchained action IDs at the same level
+        """
+        for action_ids_level in action_id_mtx:
+            if len(action_ids_level) <= 1:
+                continue  # Continue if there is only a single or no action ID at the current level
+
+            parent_action_id = next(iter(sorted(action_ids_level)))
+            action_id_chain = self.asset_manager.asset_action_info_player.get_action_id_chain(parent_action_id)
+
+            if action_ids_level.difference(action_id_chain):
+                raise MultipleActionsError(action_id_mtx)
+
     @abstractmethod
-    def with_conditions(self, condition_comp: ConditionComposite = None) -> ET:
+    def with_conditions(self, condition_comp: ConditionComposite = None, *, action_id: Optional[int] = None) -> ET:
         """
         Get the skill data when all conditions in ``condition_comp`` hold.
 
+        If there are multiple actions sharing the same condition, ``action_id`` must be specified.
+        Otherwise, :class:`MultipleActionsError` will be raised.
+
         :raises ConditionValidationFailedError: if the condition combination is invalid
+        :raises MultipleActionsError: if there are multiple actions sharing the same condition
         """
         raise NotImplementedError()
 

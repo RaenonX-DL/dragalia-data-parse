@@ -65,10 +65,7 @@ def _check_schema(schema: JsonSchema, body: JsonBody):  # noqa: C901
 
     :class:`SchemaIsNotDictError` will be raised if ``schema`` is not a :class:`dict`.
     """
-    if not isinstance(schema, type(body)):
-        return False
-
-    if schema.keys() != body.keys():
+    if not isinstance(schema, type(body)) or schema.keys() != body.keys():
         return False
 
     for key, schema_type in schema.items():

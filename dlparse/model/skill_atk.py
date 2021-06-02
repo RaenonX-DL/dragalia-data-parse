@@ -1,6 +1,7 @@
 """Models for character skills."""
 from dataclasses import InitVar, dataclass, field
 from itertools import combinations, product, zip_longest
+from typing import Optional
 
 from dlparse.enums import Condition, ConditionCategories, ConditionComposite, HitTargetSimple, Status
 from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset
@@ -499,17 +500,23 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         self._max_level = max(zip(reversed([sum(unit.mod for unit in units) for units in self._unit_mtx_base]),
                                   range(len(self._unit_mtx_base), 0, -1)),
                               key=lambda item: item[0])[1]
-        self._has_non_zero_mods = any(sum(unit.mod for unit in units) > 0 for units in self._unit_mtx_base)
 
         self._init_buff_field_boost_mtx()
 
         self.cancel_unit_mtx_base = self.skill_hit_data.cancel_unit_mtx
 
+        self._has_non_zero_mods = any(
+            sum(unit.mod for unit in units) > 0
+            for entry in self.get_all_possible_entries()
+            for units in entry.hit_unit_mtx
+        )
+
     def calculate_units_matrix(
-            self, condition_comp: ConditionComposite
+            self, condition_comp: ConditionComposite, action_id: Optional[int] = None,
     ) -> tuple[list[list[DamageUnit]], list[int]]:
         """Calculate the damage unit matrix and the hit count vector."""
         units: list[list[DamageUnit]] = []
+        action_id_mtx: list[set[int]] = []
         hit_counts: list[int] = []
 
         if not condition_comp:
@@ -517,6 +524,7 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         for hit_data_lv in self.hit_data_mtx:
             new_units_level = []  # Array of the units at the same level
+            new_action_ids_level = set()
             # Hit counter for the damage unit calculation (Nadine S1 teammate coverage handling)
             new_units_hit_counter = 0
             # Hit counter for the conditional hits by hit count
@@ -525,11 +533,16 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             new_units_hit_counter_exclusive = 0
 
             for hit_data in hit_data_lv:
+                if action_id and action_id != hit_data.action_id:
+                    continue  # Skip processing if the action ID of `hit_data` is not the desired one
+
                 damage_units = hit_data.to_damage_units(
                     condition_comp, new_units_hit_counter, asset_manager=self.asset_manager
                 )
 
                 new_units_level.append(damage_units)
+                if damage_units:  # Only add action IDs if damage unit is not an empty array
+                    new_action_ids_level.add(hit_data.action_id)
 
                 # Add hit count according to the count of damage units that actually deals damage
                 # -------------------------------------------------------------------------------
@@ -557,8 +570,11 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
                 subitem for item in zip_longest(*new_units_level, fillvalue=None)
                 for subitem in item if subitem  # `if subitem` for filtering `None`
             ])
+            action_id_mtx.append(new_action_ids_level)
             # Add the hit counters
             hit_counts.append(new_units_hit_counter + new_units_hit_counter_exclusive)
+
+        self.check_unchained_action_ids_at_same_level(action_id_mtx)
 
         return units, hit_counts
 
@@ -571,19 +587,25 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
 
         return ret
 
-    def with_conditions(self, condition_comp: ConditionComposite = None) -> AttackingSkillDataEntry:
+    def with_conditions(
+            self, condition_comp: ConditionComposite = None, *, action_id: Optional[int] = None
+    ) -> AttackingSkillDataEntry:
         """
         Get the skill data when all conditions in ``condition_comp`` hold.
 
         If ``condition_comp`` are not given, base data will be returned.
 
+        If there are multiple actions sharing the same condition, ``action_id`` must be specified.
+        Otherwise, :class:`MultipleActionsError` will be raised.
+
         :raises ConditionValidationFailedError: if the condition combination is invalid
         :raises BulletEndOfLifeError: if the bullet hit count condition is beyond the limit
+        :raises MultipleActionsError: if there are multiple actions sharing the same condition
         """
         if not condition_comp:
             condition_comp = ConditionComposite()
 
-        hit_unit_mtx, hit_count_vct = self.calculate_units_matrix(condition_comp)
+        hit_unit_mtx, hit_count_vct = self.calculate_units_matrix(condition_comp, action_id)
 
         return AttackingSkillDataEntry(
             asset_action_cond=self.asset_manager.asset_action_cond,

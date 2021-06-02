@@ -62,6 +62,18 @@ class PlayerActionInfoAsset(MasterAssetBase[PlayerActionInfoEntry]):
     ):
         super().__init__(PlayerActionInfoParser, file_location, asset_dir=asset_dir, file_like=file_like)
 
+    def get_action_id_chain(self, parent_action_id: int) -> list[int]:
+        """Get action ID chain starting from ``parent_action_id``."""
+        action_id_chain = []
+
+        while parent_action_id:
+            action_id_chain.append(parent_action_id)
+            action_data = self.get_data_by_id(parent_action_id)
+
+            parent_action_id = action_data.next_action_id
+
+        return action_id_chain
+
 
 class PlayerActionInfoParser(MasterParserBase[PlayerActionInfoEntry]):
     """Class to parse the player action info file."""

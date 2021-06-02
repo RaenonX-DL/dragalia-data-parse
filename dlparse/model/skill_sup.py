@@ -5,6 +5,7 @@ from itertools import product
 from typing import Optional
 
 from dlparse.enums import Condition, ConditionCategories, ConditionComposite, Element
+from dlparse.errors import MultipleActionsError
 from dlparse.mono.asset import ActionConditionAsset
 from .action_cond_effect import HitActionConditionEffectUnit
 from .base import SkillDataBase, SkillEntryBase
@@ -173,26 +174,36 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
         super().__post_init__(self.asset_manager.asset_action_cond)
 
     def _teammate_coverage_effects(
-            self, condition_comp: ConditionComposite
+            self, condition_comp: ConditionComposite, action_id: Optional[int]
     ) -> list[list[set[HitActionConditionEffectUnit]]]:
         """
         Get the effects to grant for different count of teammates covered.
 
+        If there are multiple actions sharing the same condition, ``action_id`` must be specified.
+        Otherwise, :class:`MultipleActionsError` will be raised.
+
         Calling ``buffs_teammate_coverage[skill_lv][teammate_count]`` will return a set of buffs at ``skill_lv``
         when ``teammate_count`` covered.
+
+        :raises MultipleActionsError: if there are multiple actions sharing the same condition
         """
         ret = []
+        action_id_mtx: list[set[int]] = []
 
         teammate_coverage_counts = ConditionCategories.skill_teammates_covered.targets
 
         for hit_count, hit_data_lv in zip(self.skill_hit_data.hit_count, self.hit_data_mtx):
             buff_lv: list[set[HitActionConditionEffectUnit]] = [set() for _ in teammate_coverage_counts]
+            new_action_ids_level: set[int] = set()
 
             if not any(hit_data.hit_attr.has_hit_condition for hit_data in hit_data_lv):
                 ret.append(buff_lv)
                 continue  # No skill hit condition
 
             for hit_data in hit_data_lv:
+                if action_id and action_id != hit_data.action_id:
+                    continue  # Skip processing if the action ID of `hit_data` is not the desired one
+
                 hit_attr = hit_data.hit_attr
 
                 # Non-dummy hit count already counted as ``hit_count``
@@ -209,11 +220,19 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
                     buff_lv[teammate_count].update(hit_data.to_buffing_units(self.asset_manager.asset_action_cond))
 
+                new_action_ids_level.add(hit_data.action_id)
+
+            action_id_mtx.append(new_action_ids_level)
             ret.append(buff_lv)
+
+        if any(len(action_ids_level) > 1 for action_ids_level in action_id_mtx):
+            raise MultipleActionsError(action_id_mtx)
 
         return ret
 
-    def with_conditions(self, condition_comp: Optional[ConditionComposite] = None) -> SupportiveSkillEntry:
+    def with_conditions(
+            self, condition_comp: Optional[ConditionComposite] = None, *, action_id: Optional[int] = None
+    ) -> SupportiveSkillEntry:
         if not condition_comp:
             condition_comp = ConditionComposite()  # Dummy empty condition composite
 
@@ -222,7 +241,7 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
         # Attach teammate coverage only buffs
         if condition_comp.teammate_coverage:
-            coverage_effects = self._teammate_coverage_effects(condition_comp)
+            coverage_effects = self._teammate_coverage_effects(condition_comp, action_id)
 
             for skill_lv in range(self.max_level):
                 buffs[skill_lv].update(coverage_effects[skill_lv][condition_comp.teammate_coverage_converted])

@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 __all__ = ("ConditionValidationFailedError", "BulletEndOfLifeError", "DamagingHitValidationFailedError",
            "HitDataUnavailableError", "ActionInfoNotFoundError", "InvalidSkillIdentifierLabelError",
            "UnhandledSelfDamageError", "InvalidSkillNumError", "InvalidSkillLevelError",
-           "PreconditionCollidedError")
+           "PreconditionCollidedError", "MultipleActionsError")
 
 
 class ConditionValidationFailedError(AppValueError):
@@ -85,3 +85,17 @@ class PreconditionCollidedError(AppValueError):
 
     def __init__(self, pre_condition_1: "Condition", pre_condition_2: "Condition"):
         super().__init__(f"Multiple pre-conditions detected: {pre_condition_1} & {pre_condition_2}")
+
+
+class MultipleActionsError(AppValueError):
+    """Error to be raised if there are multiple actions sharing the same condition."""
+
+    def __init__(self, action_id_mtx: list[set[int]]):
+        super().__init__(f"Multiple actions sharing the same condition: {action_id_mtx}")
+
+        self.action_id_mtx = action_id_mtx
+
+    @property
+    def all_possible_action_ids(self) -> set[int]:
+        """Get all possible action IDs across levels."""
+        return set(action_id for action_ids_lv in self.action_id_mtx for action_id in action_ids_lv)
