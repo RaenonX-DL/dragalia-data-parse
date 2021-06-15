@@ -12,21 +12,23 @@ def test_s1(transformer_skill: SkillTransformer):
     # Base data
     skill_data = skill_data_base.with_conditions()
 
-    assert skill_data.hit_count == [4, 4, 4]
+    assert skill_data.hit_count == [4, 4, 4, 4]
     assert skill_data.hit_count_at_max == 4
     assert skill_data.total_mod == pytest.approx([
         1.686 * 4,
         1.897 * 4,
-        2.108 * 4
+        2.108 * 4,
+        2.130 * 4
     ])
-    assert skill_data.total_mod_at_max == pytest.approx(2.108 * 4)
+    assert skill_data.total_mod_at_max == pytest.approx(2.130 * 4)
     assert skill_data.mods == approx_matrix([
         [1.686] * 4,
         [1.897] * 4,
-        [2.108] * 4
+        [2.108] * 4,
+        [2.130] * 4
     ])
-    assert skill_data.mods_at_max == pytest.approx([2.108] * 4)
-    assert skill_data.max_level == 3
+    assert skill_data.mods_at_max == pytest.approx([2.130] * 4)
+    assert skill_data.max_level == 4
 
 
 def test_s1_eden(transformer_skill: SkillTransformer):
@@ -37,21 +39,23 @@ def test_s1_eden(transformer_skill: SkillTransformer):
     # Base data
     skill_data = skill_data_base.with_conditions()
 
-    assert skill_data.hit_count == [12, 12, 12]
+    assert skill_data.hit_count == [12, 12, 12, 12]
     assert skill_data.hit_count_at_max == 12
     assert skill_data.total_mod == pytest.approx([
         0.595 * 2 + 0.793 * 4 + 0.992 * 6,
         0.669 * 2 + 0.892 * 4 + 1.116 * 6,
-        0.744 * 2 + 0.992 * 4 + 1.24 * 6,
+        0.744 * 2 + 0.992 * 4 + 1.240 * 6,
+        0.760 * 2 + 1.000 * 4 + 1.260 * 6,
     ])
-    assert skill_data.total_mod_at_max == pytest.approx(0.744 * 2 + 0.992 * 4 + 1.24 * 6)
+    assert skill_data.total_mod_at_max == pytest.approx(0.760 * 2 + 1.000 * 4 + 1.260 * 6)
     assert skill_data.mods == approx_matrix([
         [0.595, 0.992] * 2 + [0.793, 0.992] * 2 + [0.992, 0.793] * 2,
         [0.669, 1.116] * 2 + [0.892, 1.116] * 2 + [1.116, 0.892] * 2,
-        [0.744, 1.24] * 2 + [0.992, 1.24] * 2 + [1.24, 0.992] * 2,
+        [0.744, 1.240] * 2 + [0.992, 1.240] * 2 + [1.240, 0.992] * 2,
+        [0.760, 1.260] * 2 + [1.000, 1.260] * 2 + [1.260, 1.000] * 2,
     ])
-    assert skill_data.mods_at_max == pytest.approx([0.744, 1.24] * 2 + [0.992, 1.24] * 2 + [1.24, 0.992] * 2)
-    assert skill_data.max_level == 3
+    assert skill_data.mods_at_max == pytest.approx([0.760, 1.260] * 2 + [1.000, 1.260] * 2 + [1.260, 1.000] * 2)
+    assert skill_data.max_level == 4
 
 
 def test_s2_eden(transformer_skill: SkillTransformer):
@@ -62,19 +66,21 @@ def test_s2_eden(transformer_skill: SkillTransformer):
     # Base data
     skill_data = skill_data_base.with_conditions()
 
-    assert skill_data.hit_count == [4, 4]
+    assert skill_data.hit_count == [4, 4, 4]
     assert skill_data.hit_count_at_max == 4
     assert skill_data.total_mod == pytest.approx([
         4.48 * 3 + 4.928,
-        5.6 * 3 + 6.16
+        5.60 * 3 + 6.160,
+        5.70 * 3 + 6.260
     ])
-    assert skill_data.total_mod_at_max == pytest.approx(5.6 * 3 + 6.16)
+    assert skill_data.total_mod_at_max == pytest.approx(5.70 * 3 + 6.260)
     assert skill_data.mods == approx_matrix([
         [4.48] * 3 + [4.928],
-        [5.6] * 3 + [6.16]
+        [5.60] * 3 + [6.160],
+        [5.70] * 3 + [6.260]
     ])
-    assert skill_data.mods_at_max == pytest.approx([5.6] * 3 + [6.16])
-    assert skill_data.max_level == 2
+    assert skill_data.mods_at_max == pytest.approx([5.70] * 3 + [6.260])
+    assert skill_data.max_level == 3
 
 
 def test_s2_call_fig():

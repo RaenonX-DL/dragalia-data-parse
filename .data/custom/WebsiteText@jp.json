@@ -404,6 +404,14 @@
     "text": "S2 (Master Control)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_95",
+    "text": "S1 (Dragon Drive)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_95",
+    "text": "S2 (Dragon Drive)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_p2",
     "text": "S2 P2"
   },

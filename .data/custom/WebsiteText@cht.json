@@ -404,6 +404,14 @@
     "text": "S2 (全域存取)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_95",
+    "text": "S1 (爆能中)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_95",
+    "text": "S2 (爆能中)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_p2",
     "text": "S2 P2"
   },
