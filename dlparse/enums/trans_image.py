@@ -5,6 +5,7 @@ from dlparse.errors import ImageNotFoundError
 from .buff_parameter import BuffParameter
 from .condition import Condition
 from .element import Element
+from .status import Status
 from .weapon import Weapon
 
 __all__ = ("get_image_path",)
@@ -177,6 +178,20 @@ path_dict: dict[TransformableEnums, str] = {
     Weapon.ROD: "/icon/weapontype/m/Icon_Weapon02_02_Rod.png",
     Weapon.CAN: "/icon/weapontype/m/Icon_Weapon02_02_Cane.png",
     Weapon.GUN: "/icon/weapontype/m/Icon_Weapon02_02_Gun.png",
+    Status.POISON: "/icon/status/Icon_Status_01_01.png",
+    Status.BURN: "/icon/status/Icon_Status_01_02.png",
+    Status.FREEZE: "/icon/status/Icon_Status_01_03.png",
+    Status.PARALYZE: "/icon/status/Icon_Status_01_04.png",
+    Status.BLIND: "/icon/status/Icon_Status_01_05.png",
+    Status.STUN: "/icon/status/Icon_Status_01_06.png",
+    Status.CURSE: "/icon/status/Icon_Status_01_07.png",
+    Status.BOG: "/icon/status/Icon_Status_01_09.png",
+    Status.SLEEP: "/icon/status/Icon_Status_01_10.png",
+    Status.FROSTBITE: "/icon/status/Icon_Status_01_11.png",
+    Status.FLASHBURN: "/icon/status/Icon_Status_01_12.png",
+    Status.STORMLASH: "/icon/status/Icon_Status_01_13.png",
+    Status.SHADOWBLIGHT: "/icon/status/Icon_Status_01_14.png",
+    Status.SCORCHREND: "/icon/status/Icon_Status_01_15.png",
 }
 
 
