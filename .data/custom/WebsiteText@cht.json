@@ -444,59 +444,63 @@
     "text": "共享"
   },
   {
-    "id": "ENUM_TARGET_POISONED",
+    "id": "ABNORMAL_STATUS_NONE",
+    "text": ""
+  },
+  {
+    "id": "ABNORMAL_STATUS_POISON",
     "text": "毒"
   },
   {
-    "id": "ENUM_TARGET_BURNED",
+    "id": "ABNORMAL_STATUS_BURN",
     "text": "火燒"
   },
   {
-    "id": "ENUM_TARGET_FROZEN",
+    "id": "ABNORMAL_STATUS_FREEZE",
     "text": "凍結"
   },
   {
-    "id": "ENUM_TARGET_PARALYZED",
+    "id": "ABNORMAL_STATUS_PARALYZE",
     "text": "麻痺"
   },
   {
-    "id": "ENUM_TARGET_BLINDED",
+    "id": "ABNORMAL_STATUS_BLIND",
     "text": "黑暗"
   },
   {
-    "id": "ENUM_TARGET_STUNNED",
+    "id": "ABNORMAL_STATUS_STUN",
     "text": "昏厥"
   },
   {
-    "id": "ENUM_TARGET_CURSED",
+    "id": "ABNORMAL_STATUS_CURSE",
     "text": "詛咒"
   },
   {
-    "id": "ENUM_TARGET_BOGGED",
+    "id": "ABNORMAL_STATUS_BOG",
     "text": "濕身"
   },
   {
-    "id": "ENUM_TARGET_SLEPT",
+    "id": "ABNORMAL_STATUS_SLEEP",
     "text": "睡眠"
   },
   {
-    "id": "ENUM_TARGET_FROSTBITTEN",
+    "id": "ABNORMAL_STATUS_FROSTBITE",
     "text": "凍傷"
   },
   {
-    "id": "ENUM_TARGET_FLASHBURNED",
+    "id": "ABNORMAL_STATUS_FLASHBURN",
     "text": "閃熱"
   },
   {
-    "id": "ENUM_TARGET_STORMLASHED",
+    "id": "ABNORMAL_STATUS_STORMLASH",
     "text": "裂風"
   },
   {
-    "id": "ENUM_TARGET_SHADOWBLIGHTED",
+    "id": "ABNORMAL_STATUS_SHADOWBLIGHT",
     "text": "暗黑"
   },
   {
-    "id": "ENUM_TARGET_SCORCHRENT",
+    "id": "ABNORMAL_STATUS_SCORCHREND",
     "text": "劫火"
   },
   {

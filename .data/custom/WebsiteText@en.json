@@ -444,59 +444,63 @@
     "text": "Skill Share"
   },
   {
-    "id": "ENUM_TARGET_POISONED",
+    "id": "ABNORMAL_STATUS_NONE",
+    "text": ""
+  },
+  {
+    "id": "ABNORMAL_STATUS_POISON",
     "text": "Poison"
   },
   {
-    "id": "ENUM_TARGET_BURNED",
+    "id": "ABNORMAL_STATUS_BURN",
     "text": "Burn"
   },
   {
-    "id": "ENUM_TARGET_FROZEN",
+    "id": "ABNORMAL_STATUS_FREEZE",
     "text": "Freeze"
   },
   {
-    "id": "ENUM_TARGET_PARALYZED",
+    "id": "ABNORMAL_STATUS_PARALYZE",
     "text": "Paralysis"
   },
   {
-    "id": "ENUM_TARGET_BLINDED",
+    "id": "ABNORMAL_STATUS_BLIND",
     "text": "Blindness"
   },
   {
-    "id": "ENUM_TARGET_STUNNED",
+    "id": "ABNORMAL_STATUS_STUN",
     "text": "Stun"
   },
   {
-    "id": "ENUM_TARGET_CURSED",
+    "id": "ABNORMAL_STATUS_CURSE",
     "text": "Curse"
   },
   {
-    "id": "ENUM_TARGET_BOGGED",
+    "id": "ABNORMAL_STATUS_BOG",
     "text": "Bog"
   },
   {
-    "id": "ENUM_TARGET_SLEPT",
+    "id": "ABNORMAL_STATUS_SLEEP",
     "text": "Sleep"
   },
   {
-    "id": "ENUM_TARGET_FROSTBITTEN",
+    "id": "ABNORMAL_STATUS_FROSTBITE",
     "text": "Frostbite"
   },
   {
-    "id": "ENUM_TARGET_FLASHBURNED",
+    "id": "ABNORMAL_STATUS_FLASHBURN",
     "text": "Flashburn"
   },
   {
-    "id": "ENUM_TARGET_STORMLASHED",
+    "id": "ABNORMAL_STATUS_STORMLASH",
     "text": "Stormlash"
   },
   {
-    "id": "ENUM_TARGET_SHADOWBLIGHTED",
+    "id": "ABNORMAL_STATUS_SHADOWBLIGHT",
     "text": "Shadowblight"
   },
   {
-    "id": "ENUM_TARGET_SCORCHRENT",
+    "id": "ABNORMAL_STATUS_SCORCHREND",
     "text": "Scorchrend"
   },
   {

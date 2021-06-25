@@ -119,7 +119,7 @@ class Status(TranslatableEnumMixin, Enum):
 
     @property
     def translation_id(self) -> str:
-        return f"ABNORMAL_STATUS_NAME_{self.value}"
+        return f"ABNORMAL_STATUS_{self.name}"
 
     @staticmethod
     def get_all_translatable_members() -> list["Status"]:
