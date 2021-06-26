@@ -38,6 +38,7 @@ class CharaEntryBase(JsonExportableEntryBase, ABC):
     @property
     def json_schema(cls) -> JsonSchema:
         return {
+            "id": int,
             "iconName": str,
             "name": TextEntry.json_schema,
             "element": int,
@@ -45,6 +46,7 @@ class CharaEntryBase(JsonExportableEntryBase, ABC):
 
     def to_json_entry(self) -> dict[str, Any]:
         return {
+            "id": self.character_internal_id,
             "iconName": self.character_icon_name,
             "name": self.character_name.to_json_entry(),
             "element": self.character_element.value,
