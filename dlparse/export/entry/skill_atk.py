@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 from typing import Any
 
-from dlparse.enums import BuffParameter, ConditionCategories
+from dlparse.enums import BuffParameter, ConditionCategories, ConditionComposite, SkillCancelAction
 from dlparse.model import AttackingSkillDataEntry
 from dlparse.mono.asset import SkillDataEntry, SkillIdEntry
 from dlparse.utils import remove_duplicates_preserve_order
@@ -97,6 +97,32 @@ class SkillAfflictionEntry(JsonExportableEntryBase):
 
 
 @dataclass
+class SkillCancelInfoEntry(JsonExportableEntryBase):
+    """A single entry representing a single skill cancellation info."""
+
+    action: SkillCancelAction
+    time: float
+
+    pre_conditions: ConditionComposite
+
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return {
+            "action": int,
+            "time": float,
+            "conditions": [int],
+        }
+
+    def to_json_entry(self) -> dict[str, Any]:
+        return {
+            "action": self.action.value,
+            "time": self.time,
+            "conditions": [condition.value for condition in self.pre_conditions.conditions_sorted],
+        }
+
+
+@dataclass
 class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
     """A single entry of an attacking skill."""
 
@@ -113,6 +139,9 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
 
     buff_count_data_max: list[SkillBuffCountBoostEntry] = field(init=False)
     buff_field_data_max: SkillBuffFieldBoostEntry = field(init=False)
+
+    hit_timings_max: list[float] = field(init=False)
+    cancel_actions_max: list[SkillCancelInfoEntry] = field(init=False)
 
     def __post_init__(
             self, skill_data: SkillDataEntry, skill_id_entry: SkillIdEntry,
@@ -162,6 +191,17 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
         buff_field_data = skill_data_to_parse.buff_field_boost_mtx[-1]
         self.buff_field_data_max = SkillBuffFieldBoostEntry(buff_field_data.rate_by_self, buff_field_data.rate_by_ally)
 
+        # Get animation info
+        self.hit_timings_max = skill_data_to_parse.hit_timings[-1]
+        self.cancel_actions_max = [
+            SkillCancelInfoEntry(
+                action=cancel_unit.action,
+                time=cancel_unit.time,
+                pre_conditions=cancel_unit.pre_conditions
+            )
+            for cancel_unit in skill_data_to_parse.cancel_unit_mtx[-1]
+        ]
+
     @classmethod
     @property
     def json_schema(cls) -> JsonSchema:
@@ -175,7 +215,9 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
             "buffCountBoost": [SkillBuffCountBoostEntry.json_schema],
             "buffZoneBoost": SkillBuffFieldBoostEntry.json_schema,
             "dispelMax": bool,
-            "dispelTimingMax": [float]
+            "dispelTimingMax": [float],
+            "hitTimingSecMax": [float],
+            "cancelActionsMax": [SkillCancelInfoEntry.json_schema]
         })
 
         return schema
@@ -191,7 +233,9 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
             "buffCountBoost": [buff_count_data.to_json_entry() for buff_count_data in self.buff_count_data_max],
             "buffZoneBoost": self.buff_field_data_max.to_json_entry(),
             "dispelMax": self.dispel_max,
-            "dispelTimingMax": self.dispel_timing_max
+            "dispelTimingMax": self.dispel_timing_max,
+            "hitTimingSecMax": self.hit_timings_max,
+            "cancelActionsMax": [cancel_action.to_json_entry() for cancel_action in self.cancel_actions_max],
         })
 
         return json_dict

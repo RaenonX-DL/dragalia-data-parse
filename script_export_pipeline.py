@@ -4,8 +4,7 @@ from configparser import ConfigParser
 from typing import Sequence, TypeVar
 
 from dlparse.enums import (
-    BuffValueUnit, Element, Status, TranslatableEnumMixin, Weapon,
-    cond_afflictions, cond_elements,
+    BuffValueUnit, Element, SkillCancelAction, Status, TranslatableEnumMixin, Weapon, cond_afflictions, cond_elements,
 )
 from dlparse.export import (
     collect_chained_ex_ability_buff_param, collect_ex_ability_buff_param, export_atk_skill_as_json,
@@ -108,6 +107,7 @@ class FileExporter:
         self._export_enums({"elemental": Element.get_all_translatable_members()}, "elements")
         self._export_enums({"unit": BuffValueUnit.get_all_translatable_members()}, "buffParam")
         self._export_enums({"status": Status.get_all_translatable_members()}, "status")
+        self._export_enums({"cancel": SkillCancelAction.get_all_translatable_members()}, "skill")
         self._export_enums_condition("allCondition")
 
         # Skill

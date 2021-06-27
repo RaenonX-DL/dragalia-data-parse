@@ -2002,5 +2002,25 @@
   {
     "id": "WEAPONTYPE_GUN",
     "text": "銃"
+  },
+  {
+    "id": "SKILL_CANCEL_UNCLASSIFIED",
+    "text": "未分類"
+  },
+  {
+    "id": "SKILL_CANCEL_MOTION_ENDS",
+    "text": "動畫結束"
+  },
+  {
+    "id": "SKILL_CANCEL_ANY_ACTION",
+    "text": "任意動作"
+  },
+  {
+    "id": "SKILL_CANCEL_ROLL",
+    "text": "滾動"
+  },
+  {
+    "id": "SKILL_CANCEL_FORMAL_JOACHIM_S1",
+    "text": "禮服約爾希姆 S1"
   }
 ]
