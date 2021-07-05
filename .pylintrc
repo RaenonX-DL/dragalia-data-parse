@@ -42,4 +42,6 @@ disable=fixme, # Search for todo tags and manually manage them instead
         # Just let it emit during runtime
         cyclic-import,
         # Let it checked by IDE or flake8
-        arguments-differ
+        arguments-differ,
+        # REMOVE: False positive of deprecated module name collision `parser`
+        deprecated-module

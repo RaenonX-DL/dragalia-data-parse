@@ -30,6 +30,7 @@ def get_file_like(file_location: str) -> TextIO:
         try:
             # `is_url()` already validate ``file_location`` to start with ``http``,
             # no risk of passing ftp:// or file:// here
+            # pylint: disable=consider-using-with
             return io.TextIOWrapper(urlopen(file_location), encoding='utf-8')  # nosec
         except HTTPError as ex:
             if ex.code == 404:

@@ -13,18 +13,18 @@ class CharacterMotionLoader(MotionLoaderBase[MotionControllerChara, CharaDataEnt
         super().__init__(motion_root_dir)
         self._motion_weapon: MotionSelectorWeapon = MotionSelectorWeapon(motion_root_dir)
 
-    def get_motion_stop_time(self, chara_data: CharaDataEntry, motion_name: str) -> float:
+    def get_motion_stop_time(self, entry: CharaDataEntry, motion_name: str) -> float:
         """Get the stop time of ``motion_name`` of a character."""
-        ctrl_weapon = self._motion_weapon.get_controller(chara_data.weapon)
+        ctrl_weapon = self._motion_weapon.get_controller(entry.weapon)
 
         try:
-            ctrl_chara = self._get_motion_ctrl(chara_data, MotionControllerChara.load_from_file)
+            ctrl_chara = self._get_motion_ctrl(entry, MotionControllerChara.load_from_file)
         except MotionDataNotFoundError:
             ctrl_chara = None
 
-        return ctrl_weapon.get_stop_time_by_motion_name(motion_name, override=ctrl_chara, error_msg=chara_data.id)
+        return ctrl_weapon.get_stop_time_by_motion_name(motion_name, override=ctrl_chara, error_msg=entry.id)
 
     @staticmethod
-    def get_controller_name(chara_data: CharaDataEntry) -> str:
+    def get_controller_name(entry: CharaDataEntry) -> str:
         """Get the controller name of a character."""
-        return f"{chara_data.weapon.weapon_str}_{chara_data.base_id}{chara_data.variation_id:02}"
+        return f"{entry.weapon.weapon_str}_{entry.base_id}{entry.variation_id:02}"

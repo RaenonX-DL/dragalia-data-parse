@@ -2,6 +2,8 @@
 from dataclasses import dataclass
 from typing import Any
 
+# Intended to avoid circular import
+# pylint: disable=consider-using-from-import
 import dlparse.mono.asset as asset
 
 __all__ = ("ActionBullet",)
