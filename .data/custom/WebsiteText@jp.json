@@ -404,6 +404,14 @@
     "text": "S1 (Dragon Drive)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_99",
+    "text": "S1"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_100",
+    "text": "S1 (Dragon Drive)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_mode_95",
     "text": "S2 (Dragon Drive)"
   },
