@@ -24,11 +24,11 @@ class SkillCancelActionUnit:
     pre_conditions: ConditionComposite
 
     @staticmethod
-    def from_player_action_motion(
-            motion_loader: T, data_entry: Union["CharaDataEntry", "DragonDataEntry"], prefab: "PlayerActionPrefab",
+    def from_player_action_prefab(
+            prefab: "PlayerActionPrefab",
             pre_conditions: ConditionComposite = ConditionComposite()
     ) -> list["SkillCancelActionUnit"]:
-        """Get the skill cancel action units from the player action prefab and the unit motion data."""
+        """Get the skill cancel action units from ``prefab``."""
         cancel_units: list[SkillCancelActionUnit] = []
 
         for cancel_action in prefab.cancel_actions:
@@ -38,6 +38,18 @@ class SkillCancelActionUnit:
                 time=cancel_action.time_start,
                 pre_conditions=pre_conditions
             ))
+
+        return cancel_units
+
+    @staticmethod
+    def from_player_action_motion(
+            motion_loader: T, data_entry: Union["CharaDataEntry", "DragonDataEntry"], prefab: "PlayerActionPrefab",
+            pre_conditions: ConditionComposite = ConditionComposite()
+    ) -> list["SkillCancelActionUnit"]:
+        """Get the skill cancel action units from the player action prefab and the unit motion data."""
+        cancel_units: list[SkillCancelActionUnit] = SkillCancelActionUnit.from_player_action_prefab(
+            prefab, pre_conditions
+        )
 
         # Only adds motion ends cancel unit if no active cancel components are available
         if not cancel_units:
