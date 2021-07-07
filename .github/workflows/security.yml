@@ -1,4 +1,4 @@
-name: Security Scan (Github CodeQL & Codacy)
+name: Security Scan (Github CodeQL)
 
 on:
   push:
