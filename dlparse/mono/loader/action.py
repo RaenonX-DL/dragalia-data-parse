@@ -52,7 +52,7 @@ class ActionFileLoader:
         file_path = self.get_file_path(action_id)
 
         if action_id not in self._prefab_cache:
-            self._prefab_cache[action_id] = PlayerActionPrefab(file_path)
+            self._prefab_cache[action_id] = PlayerActionPrefab(action_id, file_path)
 
         return self._prefab_cache[action_id]
 

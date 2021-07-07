@@ -76,8 +76,11 @@ class PlayerActionPrefab(ActionAssetBase):
     aid_roll: int = 6
     """Action ID of the roll dodge."""
 
-    def __init__(self, file_location: str):
+    def __init__(self, action_id: int, file_location: str):
         super().__init__(PlayerActionParser, file_location)
+
+        # Properties
+        self.action_id = action_id
 
         # Pre-categorize components for faster access
         self._damaging_hits: list[ActionComponentHasHitLabels] = [
