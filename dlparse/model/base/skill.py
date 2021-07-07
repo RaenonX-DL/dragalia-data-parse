@@ -38,8 +38,11 @@ class SkillDataBase(Generic[HT, ET], ABC):
 
     skill_data: SkillDataEntry = field(init=False)
     hit_data_mtx: list[list[HT]] = field(init=False)
+    sp_gradual_fill_pct: list[float] = field(init=False)
 
     possible_conditions: set[ConditionComposite] = field(init=False, default_factory=ConditionComposite)
+
+    max_level: int = field(init=False)
 
     @final
     def _init_possible_conditions_base_elems(self):
@@ -101,6 +104,33 @@ class SkillDataBase(Generic[HT, ET], ABC):
 
         return cond_elems
 
+    @final
+    def _init_sp_gradual_fill_pct(self):
+        gradual_fill_pcts = []
+        ability_ids = self.skill_data.ability_id_by_level
+
+        for skill_level in range(self.max_level):
+            ability_id = ability_ids[skill_level]
+            if not ability_id:
+                # No related ability
+                gradual_fill_pcts.append(0)
+                continue
+
+            root_ability_data = self.asset_manager.asset_ability_data.get_data_by_id(ability_id)
+            action_conds = [
+                self.asset_manager.asset_action_cond.get_data_by_id(action_condition_id)
+                for ability_data in root_ability_data.get_all_ability(self.asset_manager.asset_ability_data).values()
+                for action_condition_id in ability_data.action_conditions
+            ]
+            gradual_fill_pcts.append(sum(action_cond.regen_sp_pct for action_cond in action_conds))
+
+        self.sp_gradual_fill_pct = gradual_fill_pcts
+
+    @abstractmethod
+    def _init_max_level(self, *args, **kwargs):
+        """Get the maximum skill level and set it to ``self.max_level``."""
+        raise NotImplementedError()
+
     @abstractmethod
     def _init_all_possible_conditions(self, *args, **kwargs):
         """Find all possible conditions and set it to ``self.possible_conditions``."""
@@ -110,7 +140,9 @@ class SkillDataBase(Generic[HT, ET], ABC):
         self.skill_data = self.skill_hit_data.skill_data
         self.hit_data_mtx = self.skill_hit_data.hit_data
 
+        self.max_level = self._init_max_level()  # Needs to be placed before `self._init_sp_gradual_fill_pct()`
         self._init_all_possible_conditions(*args, **kwargs)
+        self._init_sp_gradual_fill_pct()
 
     def get_all_possible_entries(self) -> list[ET]:
         """Get all possible skill mod entries."""
@@ -154,10 +186,4 @@ class SkillDataBase(Generic[HT, ET], ABC):
         :raises ConditionValidationFailedError: if the condition combination is invalid
         :raises MultipleActionsError: if there are multiple actions sharing the same condition
         """
-        raise NotImplementedError()
-
-    @property
-    @abstractmethod
-    def max_level(self) -> int:
-        """Get the max level of the skill."""
         raise NotImplementedError()

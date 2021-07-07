@@ -41,6 +41,7 @@ class ActionConditionEntry(MasterEntryBase):
     slip_damage_hp_rate: float
 
     regen_rp: float
+    regen_sp_pct: float
 
     buff_atk: float
     buff_def: float
@@ -100,6 +101,11 @@ class ActionConditionEntry(MasterEntryBase):
             if data["_DurationNum"]
             else 0
         )
+        regen_sp_pct = (
+            -data["_SlipDamageRatio"] * 100 / data["_SlipDamageIntervalSec"]
+            if data["_UniqueRegeneSp01"] or data["_AutoRegeneS1"]
+            else 0
+        )
 
         return ActionConditionEntry(
             id=data["_Id"],
@@ -116,6 +122,7 @@ class ActionConditionEntry(MasterEntryBase):
             slip_damage_mod=data["_SlipDamagePower"],
             slip_damage_hp_rate=data["_SlipDamageRatio"],
             regen_rp=data["_RegenePower"],
+            regen_sp_pct=regen_sp_pct,
             buff_atk=data["_RateAttack"],
             buff_def=data["_RateDefense"],
             buff_def_b=data["_RateDefenseB"],

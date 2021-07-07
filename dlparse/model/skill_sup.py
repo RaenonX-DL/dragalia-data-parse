@@ -165,6 +165,9 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
             self.buffs_pre_conditioned.append(dict(buff_lv))
 
+    def _init_max_level(self, *args, **kwargs) -> int:
+        return len(self.hit_data_mtx)
+
     def __post_init__(self):
         self._init_base_buffs(self.asset_manager.asset_action_cond)
         self._init_elemental_buffs(self.asset_manager.asset_action_cond)
@@ -260,12 +263,3 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
                 buffs[skill_lv].update(effect_units)
 
         return SupportiveSkillEntry(condition_comp=condition_comp, buffs=buffs)
-
-    @property
-    def max_level(self) -> int:
-        """
-        Get the max level of the skill.
-
-        This is **NOT** the actual in-game max level.
-        """
-        return len(self.hit_data_mtx)

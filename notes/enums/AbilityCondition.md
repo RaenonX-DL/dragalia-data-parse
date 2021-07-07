@@ -43,10 +43,10 @@ Field: `_ConditionType`
 22. GET_HEAL_SKILL
 23. SP1_OVER
 24. SP1_UNDER
-25. SP1_LESS
+<a href="#25---sp1_less">25. SP1_LESS</a>
 26. SP2_OVER
 27. SP2_UNDER
-28. SP2_LESS
+<a href="#28---sp2_less">28. SP2_LESS</a>
 <a href="#29---cause_abnormal_status">29. CAUSE_ABNORMAL_STATUS</a>
 <a href="#30---damaged_abnormal_status">30. DAMAGED_ABNORMAL_STATUS</a>
 31. DRAGONSHIFT_MOMENT
@@ -278,6 +278,26 @@ Triggered once for every X combo, where X is a designated number of combo count.
 `Val 1 = 20` means that the ability will be triggered once for every 20 combo.
 
 - **Val 1**: Combo count base number to trigger the ability.
+
+-----
+
+### `25` - `SP1_LESS`
+
+Effective if the SP of S1 is less than a certain %.
+
+`Val 1 = 20` means that the ability will be effective if S1 SP% is less than 20.
+
+- **Val 1**: SP % for the ability to be effective.
+
+-----
+
+### `28` - `SP2_LESS`
+
+Effective if the SP of S2 is less than a certain %.
+
+`Val 1 = 20` means that the ability will be effective if S2 SP% is less than 20.
+
+- **Val 1**: SP % for the ability to be effective.
 
 -----
 

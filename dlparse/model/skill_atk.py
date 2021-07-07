@@ -293,7 +293,6 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     _unit_mtx_base: list[list[DamageUnit]] = field(init=False)
     _buff_field_boost_mtx: list[BuffFieldBoostData] = field(init=False)
 
-    _max_level: int = field(init=False)
     _has_non_zero_mods: bool = field(init=False)
 
     def _init_all_possible_conditions_target(self):
@@ -486,20 +485,26 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             for hit_data_lv in self.hit_data_mtx
         ]
 
-    def __post_init__(self, is_exporting: bool):
-        super().__post_init__(is_exporting=is_exporting)
-
-        self._unit_mtx_base, _ = self.calculate_units_matrix(ConditionComposite())
-
+    def _init_max_level(self, *args, **kwargs) -> int:
         # Calculate the max level by getting the level which has the max total mods
         # -------------------------------------------------------------------------
         # Some dummy data were inserted for a higher (& usually unreleased) level,
         # causing the max level to be inaccurate if we simply get the length of the mods matrix.
         #
         # If there are 2 levels sharing the same total mods, the higher level will be used.
-        self._max_level = max(zip(reversed([sum(unit.mod for unit in units) for units in self._unit_mtx_base]),
-                                  range(len(self._unit_mtx_base), 0, -1)),
-                              key=lambda item: item[0])[1]
+        return max(zip(reversed([sum(unit.mod for unit in units) for units in self._unit_mtx_base]),
+                       range(len(self._unit_mtx_base), 0, -1)),
+                   key=lambda item: item[0])[1]
+
+    def __post_init__(self, is_exporting: bool):
+        # Initialize here despite `__post_init__` assigns it
+        # because this property is used in `calculate_units_matrix`
+        self.hit_data_mtx = self.skill_hit_data.hit_data
+        # This need to be placed before `__post_init__`
+        # because `self._unit_mtx_base` is used to determine the skill max level
+        self._unit_mtx_base, _ = self.calculate_units_matrix(ConditionComposite())
+
+        super().__post_init__(is_exporting=is_exporting)
 
         self._init_buff_field_boost_mtx()
 
@@ -622,7 +627,3 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     def has_non_zero_mods(self) -> bool:
         """Check if the skill data has at least one damage modifier > 0 hit at any level."""
         return self._has_non_zero_mods
-
-    @property
-    def max_level(self) -> int:
-        return self._max_level
