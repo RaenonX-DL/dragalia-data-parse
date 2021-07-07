@@ -106,28 +106,13 @@ class SkillDataBase(Generic[HT, ET], ABC):
 
     @final
     def _init_sp_gradual_fill_pct(self):
-        gradual_fill_pcts = []
-        ability_ids = self.skill_data.ability_id_by_level
-
-        for skill_level in range(self.max_level):
-            ability_id = ability_ids[skill_level]
-            if not ability_id:
-                # No related ability
-                gradual_fill_pcts.append(0)
-                continue
-
-            root_ability_data = self.asset_manager.asset_ability_data.get_data_by_id(ability_id)
-            action_conds = [
-                self.asset_manager.asset_action_cond.get_data_by_id(action_condition_id)
-                for ability_data in root_ability_data.get_all_ability(self.asset_manager.asset_ability_data).values()
-                for action_condition_id in ability_data.action_conditions
-            ]
-            gradual_fill_pcts.append(sum(action_cond.regen_sp_pct for action_cond in action_conds))
-
-        self.sp_gradual_fill_pct = gradual_fill_pcts
+        self.sp_gradual_fill_pct = [
+            self.skill_data.get_sp_gradual_fill_pct_at_level(skill_level, self.asset_manager)
+            for skill_level in range(1, self.max_level + 1)
+        ]
 
     @abstractmethod
-    def _init_max_level(self, *args, **kwargs):
+    def _init_max_level(self, *args, **kwargs) -> int:
         """Get the maximum skill level and set it to ``self.max_level``."""
         raise NotImplementedError()
 

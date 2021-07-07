@@ -34,6 +34,7 @@ class SkillExportEntryBase(Generic[T], CharaEntryBase, HashableEntryBase, JsonEx
     skill_max_level: int = field(init=False)
 
     sp_at_max: float = field(init=False)
+    sp_gradual_fill_pct_at_max: float = field(init=False)
     sharable: bool = field(init=False)
     ss_cost: int = field(init=False)
     ss_sp: float = field(init=False)
@@ -55,6 +56,9 @@ class SkillExportEntryBase(Generic[T], CharaEntryBase, HashableEntryBase, JsonEx
         self.skill_max_level = self.chara_data.max_skill_level(skill_id_entry.skill_num)
 
         self.sp_at_max = skill_data.get_sp_at_level(self.skill_max_level)
+        self.sp_gradual_fill_pct_at_max = skill_data.get_sp_gradual_fill_pct_at_level(
+            self.skill_max_level, self.asset_manager
+        )
         self.sharable = self.chara_data.ss_skill_id == skill_data.id
         self.ss_cost = self.chara_data.ss_skill_cost
         self.ss_sp = skill_data.get_ss_sp_at_level(self.skill_max_level) if self.sharable else 0
@@ -78,6 +82,7 @@ class SkillExportEntryBase(Generic[T], CharaEntryBase, HashableEntryBase, JsonEx
                 "internalId": int,
                 "name": TextEntry.json_schema,
                 "spMax": int,
+                "spGradualPctMax": float,
                 "sharable": bool,
                 "ssCost": int,
                 "ssSp": int
@@ -94,6 +99,7 @@ class SkillExportEntryBase(Generic[T], CharaEntryBase, HashableEntryBase, JsonEx
                 "internalId": self.skill_internal_id,
                 "name": self.skill_name.to_json_entry(),
                 "spMax": self.sp_at_max,
+                "spGradualPctMax": self.sp_gradual_fill_pct_at_max,
                 "sharable": self.sharable,
                 "ssCost": self.ss_cost,
                 "ssSp": self.ss_sp

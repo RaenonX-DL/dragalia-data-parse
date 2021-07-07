@@ -1,10 +1,13 @@
 """Classes for handling the skill data asset."""
 from collections import Counter
 from dataclasses import dataclass
-from typing import Optional, TextIO, Union
+from typing import Optional, TYPE_CHECKING, TextIO, Union
 
 from dlparse.errors import InvalidSkillLevelError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
+
+if TYPE_CHECKING:
+    from dlparse.mono.manager import AssetManager
 
 __all__ = ("SkillDataEntry", "SkillDataAsset", "CHARA_SKILL_MAX_LEVEL")
 
@@ -185,6 +188,29 @@ class SkillDataEntry(MasterEntryBase):
             return self.sp_lv4
 
         raise InvalidSkillLevelError(level)
+
+    def get_sp_gradual_fill_pct_at_level(self, level: int, asset_manager: "AssetManager") -> float:
+        """
+        Get SP filling % per second at ``level``.
+
+        :raises InvalidSkillLevelError: if the skill level is invalid
+        """
+        try:
+            ability_id = self.ability_id_by_level[level - 1]
+        except IndexError as ex:
+            raise InvalidSkillLevelError(level) from ex
+
+        if not ability_id:
+            # No related ability
+            return 0
+
+        root_ability_data = asset_manager.asset_ability_data.get_data_by_id(ability_id)
+        action_conds = [
+            asset_manager.asset_action_cond.get_data_by_id(action_condition_id)
+            for ability_data in root_ability_data.get_all_ability(asset_manager.asset_ability_data).values()
+            for action_condition_id in ability_data.action_conditions
+        ]
+        return sum(action_cond.regen_sp_pct for action_cond in action_conds)
 
     def get_ss_sp_at_level(self, level: int) -> int:
         """
