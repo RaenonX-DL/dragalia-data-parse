@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Optional, TYPE_CHECKING, TypeVar, Union
 
-from dlparse.enums import ConditionComposite, SkillCancelAction
+from dlparse.enums import ConditionComposite, SkillCancelAction, SkillCancelType
 from dlparse.mono.loader import MotionLoaderBase
 
 if TYPE_CHECKING:
@@ -19,6 +19,7 @@ class SkillCancelActionUnit:
 
     action: SkillCancelAction
     action_id: Optional[int]
+    cancel_type: SkillCancelType
     time: float
 
     pre_conditions: ConditionComposite
@@ -35,6 +36,7 @@ class SkillCancelActionUnit:
             cancel_units.append(SkillCancelActionUnit(
                 action=SkillCancelAction(cancel_action.action_id),
                 action_id=cancel_action.action_id or None,
+                cancel_type=cancel_action.cancel_type,
                 time=cancel_action.time_start,
                 pre_conditions=pre_conditions
             ))
@@ -65,6 +67,7 @@ class SkillCancelActionUnit:
             cancel_units.append(SkillCancelActionUnit(
                 action=SkillCancelAction.MOTION_ENDS,
                 action_id=None,
+                cancel_type=SkillCancelType.MOTION_ENDS,
                 time=end_time,
                 pre_conditions=pre_conditions
             ))

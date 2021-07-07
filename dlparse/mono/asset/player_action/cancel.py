@@ -1,6 +1,7 @@
 """Class for ``ActionPartsActiveCancel`` action component."""
 from dataclasses import dataclass
 
+from dlparse.enums import SkillCancelType
 from dlparse.mono.asset.base import ActionComponentBase
 
 
@@ -9,6 +10,7 @@ class ActionActiveCancel(ActionComponentBase):
     """Class of ``ActionPartsActiveCancel`` component in the player action asset."""
 
     action_id: int
+    cancel_type: SkillCancelType
 
     @property
     def has_specific_cancel_action(self) -> bool:
@@ -21,5 +23,6 @@ class ActionActiveCancel(ActionComponentBase):
 
         return ActionActiveCancel(
             action_id=data["_actionId"],
+            cancel_type=SkillCancelType(data["_actionType"]),
             **kwargs
         )

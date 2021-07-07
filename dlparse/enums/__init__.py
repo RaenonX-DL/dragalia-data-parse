@@ -8,6 +8,7 @@ from .action_debuff_type import ActionDebuffType
 from .buff_parameter import BuffParameter, BuffValueUnit
 from .bullet import FireStockPattern
 from .cancel_action import SkillCancelAction
+from .cancel_type import SkillCancelType
 from .chain_cond import SkillChainCondition
 from .color_theme import ColorTheme
 from .condition import *  # noqa

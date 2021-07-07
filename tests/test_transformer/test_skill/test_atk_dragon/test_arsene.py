@@ -1,4 +1,4 @@
-from dlparse.enums import ConditionComposite, SkillCancelAction
+from dlparse.enums import ConditionComposite, SkillCancelAction, SkillCancelType
 from dlparse.model import SkillCancelActionUnit
 from dlparse.mono.manager import AssetManager
 
@@ -21,5 +21,9 @@ def test_ult(asset_manager: AssetManager):
         asset_manager.loader_dragon_motion, asset_manager.asset_dragon_data.get_data_by_id(dragon_id), prefab
     )
     assert units == [SkillCancelActionUnit(
-        action=cancel_action, action_id=None, time=stop_time, pre_conditions=ConditionComposite()
+        action=cancel_action,
+        action_id=None,
+        cancel_type=SkillCancelType.NONE,
+        time=stop_time,
+        pre_conditions=ConditionComposite(),
     )]
