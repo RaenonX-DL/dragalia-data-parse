@@ -441,12 +441,12 @@ class SkillTransformer:
             if not chara_data.has_unique_dragon:
                 raise NoUniqueDragonError(chara_data.id)
 
-            return SkillCancelActionUnit.from_player_action_prefab(
+            return SkillCancelActionUnit.from_player_action_motion(
                 self._loader_dragon_motion, chara_data.get_dragon_data(self._asset_dragon_data),
                 prefab, pre_conditions
             )
 
-        return SkillCancelActionUnit.from_player_action_prefab(
+        return SkillCancelActionUnit.from_player_action_motion(
             self._loader_chara_motion, chara_data, prefab, pre_conditions
         )
 

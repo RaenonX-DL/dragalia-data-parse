@@ -17,10 +17,9 @@ def test_ult(asset_manager: AssetManager):
 
     prefab = asset_manager.loader_action.get_prefab(action_id)
 
-    # Arsene DID = 20050522
-    units = SkillCancelActionUnit.from_player_action_prefab(
+    units = SkillCancelActionUnit.from_player_action_motion(
         asset_manager.loader_dragon_motion, asset_manager.asset_dragon_data.get_data_by_id(dragon_id), prefab
     )
     assert units == [SkillCancelActionUnit(
-        action=cancel_action, time=stop_time, pre_conditions=ConditionComposite()
+        action=cancel_action, action_id=None, time=stop_time, pre_conditions=ConditionComposite()
     )]

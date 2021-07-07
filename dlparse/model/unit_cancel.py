@@ -1,6 +1,6 @@
 """Skill canceling action data unit."""
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, TypeVar, Union
+from typing import Optional, TYPE_CHECKING, TypeVar, Union
 
 from dlparse.enums import ConditionComposite, SkillCancelAction
 from dlparse.mono.loader import MotionLoaderBase
@@ -18,21 +18,23 @@ class SkillCancelActionUnit:
     """Unit of the skill canceling action."""
 
     action: SkillCancelAction
+    action_id: Optional[int]
     time: float
 
     pre_conditions: ConditionComposite
 
     @staticmethod
-    def from_player_action_prefab(
+    def from_player_action_motion(
             motion_loader: T, data_entry: Union["CharaDataEntry", "DragonDataEntry"], prefab: "PlayerActionPrefab",
             pre_conditions: ConditionComposite = ConditionComposite()
     ) -> list["SkillCancelActionUnit"]:
-        """Get the skill cancel action units from the player action prefab."""
+        """Get the skill cancel action units from the player action prefab and the unit motion data."""
         cancel_units: list[SkillCancelActionUnit] = []
 
         for cancel_action in prefab.cancel_actions:
             cancel_units.append(SkillCancelActionUnit(
                 action=SkillCancelAction(cancel_action.action_id),
+                action_id=cancel_action.action_id or None,
                 time=cancel_action.time_start,
                 pre_conditions=pre_conditions
             ))
@@ -49,7 +51,10 @@ class SkillCancelActionUnit:
                 )
 
             cancel_units.append(SkillCancelActionUnit(
-                action=SkillCancelAction.MOTION_ENDS, time=end_time, pre_conditions=pre_conditions
+                action=SkillCancelAction.MOTION_ENDS,
+                action_id=None,
+                time=end_time,
+                pre_conditions=pre_conditions
             ))
 
         return cancel_units
