@@ -19,3 +19,4 @@ from .quest_data import QuestDataAsset, QuestDataEntry
 from .skill_data import SkillDataAsset, SkillDataEntry
 from .skill_data_chain import SkillChainAsset, SkillChainEntry
 from .text_label import TextAsset, TextAssetMultilingual, TextEntry
+from .weapon_type import WeaponTypeAsset, WeaponTypeEntry

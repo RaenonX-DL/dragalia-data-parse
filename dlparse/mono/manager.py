@@ -12,6 +12,7 @@ from .asset import (
     BuffCountAsset, CharaDataAsset, CharaModeAsset, CharaUniqueComboAsset, DragonDataAsset, DungeonPlannerAsset,
     EnemyDataAsset, EnemyParamAsset, ExAbilityAsset, HitAttrAsset, MotionSelectorWeapon,
     PlayerActionInfoAsset, QuestDataAsset, SkillChainAsset, SkillDataAsset, TextAsset, TextAssetMultilingual,
+    WeaponTypeAsset,
 )
 from .custom import WebsiteTextAsset
 from .loader import ActionFileLoader, CharacterMotionLoader, DragonMotionLoader
@@ -65,6 +66,7 @@ class AssetManager:
             "": Language.JP.value
         }
         self._asset_text_multi = TextAssetMultilingual(lang_code_mapping, master_asset_dir)
+        self._asset_weapon_type = WeaponTypeAsset(asset_dir=master_asset_dir)
 
         # Motion Assets
         self._motion_weapon = MotionSelectorWeapon(chara_motion_asset_dir)
@@ -161,6 +163,11 @@ class AssetManager:
     def asset_text_multi(self) -> TextAssetMultilingual:
         """Get the multilingual text label asset."""
         return self._asset_text_multi
+
+    @property
+    def asset_weapon_type(self) -> WeaponTypeAsset:
+        """Get the weapon type asset."""
+        return self._asset_weapon_type
 
     # --- Battle-related (Enemy)
 
