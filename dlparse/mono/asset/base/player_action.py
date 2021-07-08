@@ -33,23 +33,33 @@ class ActionComponentCondition(EntryBase):
         )
 
     @property
+    def _pre_condition_action_cond_count(self) -> Condition:
+        # Appears in Nevin S2 (103505042 - 391330)
+        if self.type_values[0] == 1152:
+            if self.type_values[2] == 1:
+                return Condition.SELF_SIGIL_LOCKED
+            if self.type_values[2] == 0:
+                return Condition.SELF_SIGIL_RELEASED
+
+        return Condition.NONE
+
+    @property
+    def _pre_condition_shikigami_level(self) -> Condition:
+        # Appears in Seimei S2 (107501042 - 791270)
+        if self.type_values[1] == 1:
+            return Condition.SELF_SEIMEI_SHIKIGAMI_LV_1
+        if self.type_values[1] == 2:
+            return Condition.SELF_SEIMEI_SHIKIGAMI_LV_2
+
+        return Condition.NONE
+
+    @property
     def skill_pre_condition(self) -> Condition:
         """Get the action executing pre-condition."""
         if self.type_condition == ActionConditionType.ACTION_CONDITION_COUNT:
-            # Appears in Nevin S2 (103505042 - 391330)
-            if self.type_values[0] == 1152:
-                if self.type_values[2] == 1:
-                    return Condition.SELF_SIGIL_LOCKED
-                if self.type_values[2] == 0:
-                    return Condition.SELF_SIGIL_RELEASED
-
+            return self._pre_condition_action_cond_count
         elif self.type_condition == ActionConditionType.SEIMEI_SHIKIGAMI_LEVEL:
-            # Appears in Seimei S2 (107501042 - 791270)
-            if self.type_values[1] == 1:
-                return Condition.SELF_SEIMEI_SHIKIGAMI_LV_1
-            if self.type_values[1] == 2:
-                return Condition.SELF_SEIMEI_SHIKIGAMI_LV_2
-
+            return self._pre_condition_shikigami_level
         elif self.type_condition == ActionConditionType.ACTION_CANCEL:
             return ConditionCategories.skill_action_cancel.convert_reversed(self.type_values[0])
 

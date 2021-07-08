@@ -48,5 +48,5 @@ def export_normal_attack_info_as_entry_dict(
 def export_normal_attack_info_as_json(file_dir: str, asset_manager: "AssetManager", /, skip_unparsable: bool = True):
     """Export normal attack info of all characters and dragons as json to ``file_dir``."""
     entries = export_normal_attack_info_as_entry_dict(asset_manager, skip_unparsable=skip_unparsable)
-    for unit_id, info_entries in entries:
+    for unit_id, info_entries in entries.items():
         export_as_json(info_entries, os.path.join(file_dir, f"{unit_id}.json"))
