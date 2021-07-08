@@ -1,8 +1,9 @@
 """Unit of a skill cancellation info."""
-from dataclasses import dataclass
+from dataclasses import InitVar, dataclass, field
 from typing import Any
 
 from dlparse.enums import ConditionComposite, SkillCancelAction
+from dlparse.model import SkillCancelActionUnit
 from .entry import JsonExportableEntryBase
 from .type import JsonSchema
 
@@ -13,10 +14,17 @@ __all__ = ("SkillCancelInfoEntry",)
 class SkillCancelInfoEntry(JsonExportableEntryBase):
     """A single entry representing a single skill cancellation info."""
 
-    action: SkillCancelAction
-    time: float
+    cancel_unit: InitVar[SkillCancelActionUnit]
 
-    pre_conditions: ConditionComposite
+    action: SkillCancelAction = field(init=False)
+    time: float = field(init=False)
+
+    pre_conditions: ConditionComposite = field(init=False)
+
+    def __post_init__(self, cancel_unit: SkillCancelActionUnit):
+        self.action = cancel_unit.action
+        self.time = cancel_unit.time
+        self.pre_conditions = cancel_unit.pre_conditions
 
     @classmethod
     @property

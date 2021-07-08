@@ -168,11 +168,7 @@ class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
         # Get animation info
         self.hit_timings_max = skill_data_to_parse.hit_timings[-1]
         self.cancel_actions_max = [
-            SkillCancelInfoEntry(
-                action=cancel_unit.action,
-                time=cancel_unit.time,
-                pre_conditions=cancel_unit.pre_conditions
-            )
+            SkillCancelInfoEntry(cancel_unit)
             for cancel_unit in skill_data_to_parse.cancel_unit_mtx[-1]
         ]
 
