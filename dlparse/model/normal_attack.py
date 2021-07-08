@@ -3,6 +3,7 @@ from dataclasses import InitVar, dataclass, field
 from typing import Optional, TYPE_CHECKING
 
 from dlparse.enums import ConditionComposite, SkillCancelType
+from dlparse.errors import ConditionsUnavailableError
 from .unit_cancel import SkillCancelActionUnit
 
 if TYPE_CHECKING:
@@ -17,6 +18,8 @@ class NormalAttackComboBranch:
     """A branch of a normal attack combo info."""
 
     conditions: ConditionComposite
+
+    cancel_actions: list[SkillCancelActionUnit]
 
     hit_labels: list[str] = field(default_factory=list)
     mods: list[float] = field(default_factory=list)
@@ -70,6 +73,12 @@ class NormalAttackCombo:
 
         self.next_combo_action_id = None
 
+    def _init_get_combo_info(self, conditions: ConditionComposite) -> NormalAttackComboBranch:
+        if conditions not in self.combo_info:
+            self.combo_info[conditions] = NormalAttackComboBranch(conditions, self.cancel_actions)
+
+        return self.combo_info[conditions]
+
     def _init_combo_props(self, level: int):
         self.combo_info = {}
 
@@ -81,11 +90,11 @@ class NormalAttackCombo:
 
             # Create one if not available yet
             conditions = ConditionComposite(action_component.skill_pre_condition)
-            if conditions not in self.combo_info:
-                self.combo_info[conditions] = NormalAttackComboBranch(conditions)
 
             # Fill hit attr info
-            self.combo_info[conditions].fill_info_from_hit_attr(hit_attr)
+            self._init_get_combo_info(conditions).fill_info_from_hit_attr(hit_attr)
+            if conditions and not action_component.skill_pre_condition:
+                self._init_get_combo_info(ConditionComposite()).fill_info_from_hit_attr(hit_attr)
 
     def __post_init__(self, level: Optional[int] = None):
         self.cancel_actions = SkillCancelActionUnit.from_player_action_prefab(self.action_prefab)
@@ -98,3 +107,16 @@ class NormalAttackChain:
     """Class for a normal attack chain."""
 
     combos: list[NormalAttackCombo]
+
+    def with_condition(self, conditions: ConditionComposite = ConditionComposite()) -> list[NormalAttackComboBranch]:
+        """
+        Get all combo info of a branch under ``conditions``.
+
+        The order of the return is the same as ``combos``.
+
+        :raises ConditionsUnavailableError: if none of the branches has `conditions`
+        """
+        try:
+            return [combo.combo_info[conditions] for combo in self.combos]
+        except KeyError as ex:
+            raise ConditionsUnavailableError(conditions) from ex

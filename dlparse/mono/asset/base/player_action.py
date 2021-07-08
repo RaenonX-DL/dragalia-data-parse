@@ -22,40 +22,44 @@ ActionComponentData = dict[str, Union[int, str, dict[str, str], list[str]]]
 class ActionComponentCondition(EntryBase):
     """Condition data of an action component."""
 
-    type_condition: ActionConditionType
-    type_values: list[int]
+    condition_type: ActionConditionType
+    values: list[int]
 
     @staticmethod
     def parse_raw(data: dict[str, Union[int, list[int]]]) -> Optional["ActionComponentCondition"]:
         return ActionComponentCondition(
-            type_condition=ActionConditionType(data["_conditionType"]),
-            type_values=data["_conditionValue"]
+            condition_type=ActionConditionType(data["_conditionType"]),
+            values=data["_conditionValue"]
         )
 
     @property
     def _pre_condition_action_cond_count(self) -> Condition:
         # Appears in Nevin S2 (103505042 - 391330)
-        if self.type_values[0] == 1152:
-            if self.type_values[2] == 1:
+        if self.values[0] == 1152:
+            if self.values[2] == 1:
                 return Condition.SELF_SIGIL_LOCKED
-            if self.type_values[2] == 0:
+            if self.values[2] == 0:
                 return Condition.SELF_SIGIL_RELEASED
 
         # Appears in Summer Mym Normal Attack (10950502 - 901300)
-        if self.type_values[0] == 1768:
-            if self.type_values[2] == 1:
-                return Condition.SELF_COMBO_BOOSTED
-            if self.type_values[2] == 0:
-                return Condition.SELF_COMBO_NOT_BOOSTED
+        if self.values[0] == 1768:
+            if self.values[2] == 1:
+                return Condition.SELF_SMYM_COMBO_BOOSTED
+            if self.values[2] == 0:
+                return Condition.SELF_SMYM_COMBO_NOT_BOOSTED
+
+        # Appears in Gala Mascula Normal Attack (10250203 - 202700 / 202800)
+        if self.values[0] in (1750, 1751, 1752):  # 1752 for S1 Lv. 3
+            return Condition.SELF_GMASCULA_COMBO_BOOSTED
 
         return Condition.NONE
 
     @property
     def _pre_condition_shikigami_level(self) -> Condition:
         # Appears in Seimei S2 (107501042 - 791270)
-        if self.type_values[1] == 1:
+        if self.values[1] == 1:
             return Condition.SELF_SEIMEI_SHIKIGAMI_LV_1
-        if self.type_values[1] == 2:
+        if self.values[1] == 2:
             return Condition.SELF_SEIMEI_SHIKIGAMI_LV_2
 
         return Condition.NONE
@@ -63,12 +67,12 @@ class ActionComponentCondition(EntryBase):
     @property
     def skill_pre_condition(self) -> Condition:
         """Get the action executing pre-condition."""
-        if self.type_condition == ActionConditionType.ACTION_CONDITION_COUNT:
+        if self.condition_type == ActionConditionType.ACTION_CONDITION_COUNT:
             return self._pre_condition_action_cond_count
-        elif self.type_condition == ActionConditionType.SEIMEI_SHIKIGAMI_LEVEL:
+        elif self.condition_type == ActionConditionType.SEIMEI_SHIKIGAMI_LEVEL:
             return self._pre_condition_shikigami_level
-        elif self.type_condition == ActionConditionType.ACTION_CANCEL:
-            return ConditionCategories.skill_action_cancel.convert_reversed(self.type_values[0])
+        elif self.condition_type == ActionConditionType.ACTION_CANCEL:
+            return ConditionCategories.skill_action_cancel.convert_reversed(self.values[0])
 
         return Condition.NONE
 
