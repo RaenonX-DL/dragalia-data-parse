@@ -1,4 +1,5 @@
 """Base classes for the entries."""
+from .cancel import SkillCancelInfoEntry
 from .chara import CharaEntryBase
 from .effect import EffectUnitEntryBase
 from .effect_ability import AbilityVariantEffectEntry

@@ -2,11 +2,11 @@
 from dataclasses import dataclass, field
 from typing import Any
 
-from dlparse.enums import BuffParameter, ConditionCategories, ConditionComposite, SkillCancelAction
+from dlparse.enums import BuffParameter, ConditionCategories
 from dlparse.model import AttackingSkillDataEntry
 from dlparse.mono.asset import SkillDataEntry, SkillIdEntry
 from dlparse.utils import remove_duplicates_preserve_order
-from .base import JsonExportableEntryBase, JsonSchema, SkillExportEntryBase
+from .base import JsonExportableEntryBase, JsonSchema, SkillCancelInfoEntry, SkillExportEntryBase
 
 __all__ = ("CharaAttackingSkillEntry",)
 
@@ -93,32 +93,6 @@ class SkillAfflictionEntry(JsonExportableEntryBase):
             "probabilityPct": self.probability_pct,
             "duration": self.duration,
             "stackable": self.stackable,
-        }
-
-
-@dataclass
-class SkillCancelInfoEntry(JsonExportableEntryBase):
-    """A single entry representing a single skill cancellation info."""
-
-    action: SkillCancelAction
-    time: float
-
-    pre_conditions: ConditionComposite
-
-    @classmethod
-    @property
-    def json_schema(cls) -> JsonSchema:
-        return {
-            "action": int,
-            "time": float,
-            "conditions": [int],
-        }
-
-    def to_json_entry(self) -> dict[str, Any]:
-        return {
-            "action": self.action.value,
-            "time": self.time,
-            "conditions": [condition.value for condition in self.pre_conditions.conditions_sorted],
         }
 
 
