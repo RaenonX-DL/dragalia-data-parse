@@ -30,6 +30,8 @@ class AttackingActionTransformer:
     - Normal attack combo
     """
 
+    # pylint: disable=too-few-public-methods
+
     def __init__(self, asset_manager: "AssetManager"):
         self._asset_manager: "AssetManager" = asset_manager
 

@@ -54,7 +54,7 @@ class NormalAttackCombo:
         self.sp_gain = 0
         self.utp_gain = 0
 
-        for hit_attr_label, action_component in self.action_prefab.get_hit_actions():
+        for hit_attr_label, _ in self.action_prefab.get_hit_actions():
             hit_attr = self.asset_manager.asset_hit_attr.get_data_by_id(hit_attr_label)
 
             if not hit_attr.is_effective_to_enemy(True):
