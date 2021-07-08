@@ -7,6 +7,7 @@ from .action_hit_attr import HitAttrAsset, HitAttrEntry
 from .buff_count import BuffCountAsset, BuffCountEntry
 from .chara_data import CharaDataAsset, CharaDataEntry, SkillReverseSearchResult
 from .chara_mode_data import CharaModeAsset, CharaModeEntry
+from .chara_unique_combo import CharaUniqueComboAsset, CharaUniqueComboEntry
 from .cheat_detection import CheatDetectionAsset, CheatDetectionEntry
 from .dragon_data import DragonDataAsset, DragonDataEntry
 from .dungeon_planner import DungeonPlannerAsset, DungeonPlannerEntry

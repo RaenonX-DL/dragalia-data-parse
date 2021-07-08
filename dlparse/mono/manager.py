@@ -9,7 +9,7 @@ from dlparse.transformer import (
 )
 from .asset import (
     AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionGrantAsset, ActionPartsListAsset,
-    BuffCountAsset, CharaDataAsset, CharaModeAsset, DragonDataAsset, DungeonPlannerAsset,
+    BuffCountAsset, CharaDataAsset, CharaModeAsset, CharaUniqueComboAsset, DragonDataAsset, DungeonPlannerAsset,
     EnemyDataAsset, EnemyParamAsset, ExAbilityAsset, HitAttrAsset, MotionSelectorWeapon,
     PlayerActionInfoAsset, QuestDataAsset, SkillChainAsset, SkillDataAsset, TextAsset, TextAssetMultilingual,
 )
@@ -39,6 +39,7 @@ class AssetManager:
         self._asset_buff_count = BuffCountAsset(asset_dir=master_asset_dir)
         self._asset_chara_data = CharaDataAsset(asset_dir=master_asset_dir)
         self._asset_chara_mode = CharaModeAsset(asset_dir=master_asset_dir)
+        self._asset_chara_unique_combo = CharaUniqueComboAsset(asset_dir=master_asset_dir)
         self._asset_dragon_data = DragonDataAsset(asset_dir=master_asset_dir)
         self._asset_ex_ability = ExAbilityAsset(asset_dir=master_asset_dir)
         self._asset_hit_attr = HitAttrAsset(asset_dir=master_asset_dir)
@@ -125,6 +126,11 @@ class AssetManager:
     def asset_chara_mode(self) -> CharaModeAsset:
         """Get the character mode asset."""
         return self._asset_chara_mode
+
+    @property
+    def asset_chara_unique_combo(self) -> CharaUniqueComboAsset:
+        """Get the character unique combo asset."""
+        return self._asset_chara_unique_combo
 
     @property
     def asset_dragon_data(self) -> DragonDataAsset:
