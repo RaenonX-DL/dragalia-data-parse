@@ -262,7 +262,7 @@ class CharaDataEntry(UnitEntry, SkillDiscoverableEntry, MasterEntryBase):
 
             return mode_ids[:-last_idx + 1]  # All mode IDs including the last in-use mode
 
-        return 0,  # All mode IDs not in-use, return a tuple containing a single `0` for default mode
+        return tuple([0])  # All mode IDs not in-use, return a tuple containing a single `0` for default mode
 
     @property
     def has_unique_weapon(self) -> bool:
