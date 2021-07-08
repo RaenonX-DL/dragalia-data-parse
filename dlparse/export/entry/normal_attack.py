@@ -15,23 +15,12 @@ __all__ = ("NormalAttackChainEntry",)
 class NormalAttackComboEntry(JsonExportableEntryBase):
     """A single entry representing a normal attack combo."""
 
-    combo: InitVar[NormalAttackCombo]
+    combo: NormalAttackCombo
 
     cancel_actions: list[SkillCancelInfoEntry] = field(init=False)
 
-    mods: list[float] = field(init=False)
-    od_rate: list[float] = field(init=False)
-    crisis_mod: list[float] = field(init=False)
-    sp_gain: int = field(init=False)
-    utp_gain: int = field(init=False)
-
-    def __post_init__(self, combo: NormalAttackCombo):
-        self.cancel_actions = [SkillCancelInfoEntry(cancel_action) for cancel_action in combo.cancel_actions]
-        self.mods = combo.mods
-        self.od_rate = combo.od_rate
-        self.crisis_mod = combo.crisis_mod
-        self.sp_gain = combo.sp_gain
-        self.utp_gain = combo.utp_gain
+    def __post_init__(self):
+        self.cancel_actions = [SkillCancelInfoEntry(cancel_action) for cancel_action in self.combo.cancel_actions]
 
     @classmethod
     @property
@@ -48,11 +37,11 @@ class NormalAttackComboEntry(JsonExportableEntryBase):
     def to_json_entry(self) -> dict[str, Any]:
         return {
             "cancelActions": [cancel_action.to_json_entry() for cancel_action in self.cancel_actions],
-            "mods": self.mods,
-            "odRate": self.od_rate,
-            "crisisMod": self.crisis_mod,
-            "sp": self.sp_gain,
-            "utp": self.utp_gain,
+            "mods": self.combo.mods,
+            "odRate": self.combo.od_rate,
+            "crisisMod": self.combo.crisis_mod,
+            "sp": self.combo.sp_gain,
+            "utp": self.combo.utp_gain,
         }
 
 
