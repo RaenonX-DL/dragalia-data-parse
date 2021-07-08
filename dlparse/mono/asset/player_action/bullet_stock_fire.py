@@ -36,20 +36,20 @@ class ActionBulletStockFire(ActionBullet):
             bullet_num = data["_fireMaxCount"]
 
         # Attach hit labels of the stock bullets
+        label_unit: list[str] = [data["_hitAttrLabel"]]
+        # Attach labels in arrange bullet
+        if "_arrangeBullet" in data:
+            label_unit.extend(ActionBulletArranged.parse_raw(data["_arrangeBullet"]).hit_labels)
+
         labels_possible: list[str]
         if pattern.is_special_pattern:
             # -- Special pattern - Hit count is independent, do **NOT** expand the hit labels
             # Handle hit count during skill data processing instead,
             # because player action info and condition are required to get the actual mods
-            labels_possible = [data["_hitAttrLabel"]] + data["_hitAttrLabelSubList"]
+            labels_possible = label_unit + data["_hitAttrLabelSubList"]
         else:
             # -- Normal case
-            # This assumes ``_hitAttrLabel2nd`` is not duplicated by ``_bulletNum``
-            labels_possible = [data["_hitAttrLabel"]] * data["_bulletNum"] + data["_hitAttrLabelSubList"]
-
-        # Attach labels in arrange bullet
-        if "_arrangeBullet" in data:
-            labels_possible.extend(ActionBulletArranged.parse_raw(data["_arrangeBullet"]).hit_labels)
+            labels_possible = label_unit * data["_bulletNum"] + data["_hitAttrLabelSubList"]
 
         return ActionBulletStockFire(
             hit_labels=[label for label in labels_possible if label],

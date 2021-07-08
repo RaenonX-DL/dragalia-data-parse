@@ -97,9 +97,11 @@ class PlayerActionPrefab(ActionAssetBase):
             component for component in self if isinstance(component, ActionMotion)
         ]
 
-    def get_hit_actions(self, skill_lv: int) -> list[tuple[str, ActionComponentHasHitLabels]]:
+    def get_hit_actions(self, skill_lv: int = None) -> list[tuple[str, ActionComponentHasHitLabels]]:
         """
         Get a list of effective hitting actions in tuple ``(label name, action component)``.
+
+        Specify ``skill_lv`` as ``None``, to get un-leveled hit actions.
 
         .. note::
             Each component contains hit label(s) which each of them corresponds to a hit attribute.
@@ -113,7 +115,10 @@ class PlayerActionPrefab(ActionAssetBase):
                         action_hit.use_same_component
                         or not action_hit.use_same_component and self.get_hit_label_skill_lv(hit_label) == skill_lv
                 ):
-                    hit_actions.append((self.get_hit_label_at_skill_lv(hit_label, skill_lv), action_hit))
+                    hit_actions.append((
+                        self.get_hit_label_at_skill_lv(hit_label, skill_lv) if skill_lv else hit_label,
+                        action_hit
+                    ))
 
         return hit_actions
 
@@ -152,6 +157,13 @@ class PlayerActionPrefab(ActionAssetBase):
         return original_label[:-1] + str(skill_lv)
 
     @staticmethod
-    def get_hit_label_skill_lv(label: str) -> int:
-        """Get the skill level of ``label``."""
+    def get_hit_label_skill_lv(label: str) -> Optional[int]:
+        """
+        Get the skill level of ``label``.
+
+        Returns ``None`` if not applicable. (Known cases: normal attack hit attributes)
+        """
+        if label[-4:-2] != "LV":
+            return None  # Not a leveled hit attribute
+
         return int(label[-1])

@@ -85,6 +85,9 @@ class HitAttrEntry(MasterEntryBase):
     hit_condition_upper_bound: int
     """Upper bound of the hit condition."""
 
+    on_hit_sp_regen: int
+    on_hit_utp_regen: int
+
     @staticmethod
     def parse_raw(data: dict[str, Union[str, float, int]]) -> "HitAttrEntry":
         punisher_states = {data["_KillerState1"], data["_KillerState2"], data["_KillerState3"]} - {0}
@@ -118,7 +121,9 @@ class HitAttrEntry(MasterEntryBase):
             dummy_hit_count=bool(data["_IsAddCombo"]),
             has_hit_condition=data["_HitConditionType"] != 0,
             hit_condition_lower_bound=data["_HitConditionP1"],
-            hit_condition_upper_bound=data["_HitConditionP2"]
+            hit_condition_upper_bound=data["_HitConditionP2"],
+            on_hit_sp_regen=data["_AdditionRecoverySp"],
+            on_hit_utp_regen=data["_AdditionRecoveryUtp"],
         )
 
     @property
@@ -235,8 +240,12 @@ class HitAttrEntry(MasterEntryBase):
         if (
                 self.hit_exec_type == HitExecType.NO_DAMAGE
                 and self.target_group in (HitTarget.ENEMY, HitTarget.HIT_OR_GUARDED_RECORD)
+                and self.has_action_condition
         ):
             # Buff dispelling
+            # - Target at the enemy
+            # - Hit execution type is no-damage
+            # - Comes from action condition
             return True
 
         if self.target_group not in (HitTarget.ENEMY, HitTarget.HIT_OR_GUARDED_RECORD):
@@ -249,8 +258,10 @@ class HitAttrEntry(MasterEntryBase):
             return False
 
         if self.damage_modifier:
-            # Deals damage
-            return True
+            # Has damage modifier doesn't necessarily means it's effective against the enemy
+            # - `SWD_NIN_CMB_05_H02` has damage modifier, but its OD/BK damage rate is set 0,
+            #   so it's NOT effective to the enemy (does NOT deal damage)
+            return self.rate_boost_in_od != 0 or self.rate_boost_in_bk != 0
 
         if not self.has_action_condition:
             # No action condition assigned & does not have action condition binded

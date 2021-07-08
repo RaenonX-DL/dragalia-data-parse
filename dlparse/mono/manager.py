@@ -4,7 +4,8 @@ from typing import Optional
 from dlparse.enums import Language
 from dlparse.errors import ConfigError
 from dlparse.transformer import (
-    AbilityTransformer, EnemyTransformer, InfoTransformer, QuestTransformer, SkillTransformer,
+    AbilityTransformer, AttackingActionTransformer,
+    EnemyTransformer, InfoTransformer, QuestTransformer, SkillTransformer,
 )
 from .asset import (
     AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionGrantAsset, ActionPartsListAsset,
@@ -80,6 +81,7 @@ class AssetManager:
 
         # Transformers
         self._transformer_ability = AbilityTransformer(self)
+        self._transformer_atk = AttackingActionTransformer(self)
         self._transformer_enemy = EnemyTransformer(self)
         self._transformer_info = InfoTransformer(self)
         self._transformer_skill = SkillTransformer(self)
@@ -250,6 +252,11 @@ class AssetManager:
     def transformer_ability(self) -> AbilityTransformer:
         """Get the ability transformer."""
         return self._transformer_ability
+
+    @property
+    def transformer_atk(self) -> AttackingActionTransformer:
+        """Get the attacking action transformer."""
+        return self._transformer_atk
 
     @property
     def transformer_enemy(self) -> EnemyTransformer:
