@@ -1,7 +1,8 @@
 from dlparse.enums import SkillChainCondition, SkillNumber
 from dlparse.mono.asset import SkillIdEntry, SkillIdentifierLabel
 from dlparse.mono.manager import AssetManager
-from .test_props import create_dummy
+
+from .utils import create_dummy
 
 
 def test_dummy(asset_manager: AssetManager):

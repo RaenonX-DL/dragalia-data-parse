@@ -10,7 +10,7 @@ class ModeChangeType(Enum):
 
     The number corresponds to the field ``_ModeChangeType`` in chara data asset.
 
-    The definition can be found in ``Gluon.PlayerCharacter.ModeChangeType`` of the application metadata.
+    The definition can be found in ``Gluon.PlayerCharacter.ModeChangeType`` in the metadata.
     """
 
     UNKNOWN = -1

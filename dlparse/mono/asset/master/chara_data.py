@@ -1,7 +1,7 @@
 """Classes for handling the character data asset."""
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional, TYPE_CHECKING, TextIO, Union
+from typing import Generator, Optional, TYPE_CHECKING, TextIO, Union
 
 from dlparse.enums import Element, SkillNumber, Weapon
 from dlparse.errors import InvalidSkillNumError, NoUniqueDragonError
@@ -235,8 +235,34 @@ class CharaDataEntry(UnitEntry, SkillDiscoverableEntry, MasterEntryBase):
         - Enhance mode (Bellina)
 
         - Buff stacks (Catherine)
+
+        Note that this does not return the default mode ID, which is usually mode 1.
+        For getting the mode IDs including the default one, use ``mode_ids_include_default`` instead.
         """
         return [mode_id for mode_id in (self.mode_1_id, self.mode_2_id, self.mode_3_id, self.mode_4_id) if mode_id]
+
+    @property
+    def mode_ids_include_default(self) -> tuple[int, ...]:
+        """
+        Get a list of effective mode IDs, including the default one (mode 0).
+
+        Note that the default is not guaranteed to be included
+        because some characters do not use their default weapon combo at all. (For example, JOKER)
+
+        For getting the mode IDs without the default one, use ``mode_ids`` instead.
+        """
+        mode_ids = (self.mode_1_id, self.mode_2_id, self.mode_3_id, self.mode_4_id)
+
+        if mode_ids[-1]:  # All modes in-use
+            return mode_ids
+
+        for last_idx in range(2, len(mode_ids)):
+            if not mode_ids[-last_idx]:
+                continue  # Last mode ID is not in-use, continue searching
+
+            return mode_ids[:-last_idx + 1]  # All mode IDs including the last in-use mode
+
+        return 0,  # All mode IDs not in-use, return a tuple containing a single `0` for default mode
 
     @property
     def has_unique_weapon(self) -> bool:
@@ -343,6 +369,30 @@ class CharaDataEntry(UnitEntry, SkillDiscoverableEntry, MasterEntryBase):
             raise NoUniqueDragonError(self.id)
 
         return dragon_asset.get_data_by_id(self.unique_dragon_id)
+
+    def get_normal_attack_variants(self, asset_manager: "AssetManager") -> Generator[tuple[int, int], None, None]:
+        """
+        Get all normal attack variants.
+
+        1st element of each return is the variant source mode ID;
+        2nd element of each return is the normal attack root action ID.
+
+        Variant source mode ID is `0` if the corresponding variant is the default one.
+        """
+        for mode_id in self.mode_ids_include_default:
+            if not mode_id:
+                weapon_type_data = asset_manager.asset_weapon_type.get_data_by_weapon(self.weapon)
+                yield mode_id, weapon_type_data.root_normal_attack_action_id
+                continue
+
+            mode_data = asset_manager.asset_chara_mode.get_data_by_id(mode_id)
+            unique_combo_id = mode_data.unique_combo_id
+            if not unique_combo_id:
+                continue  # Unique combo unavailable
+
+            unique_combo_data = asset_manager.asset_chara_unique_combo.get_data_by_id(mode_data.unique_combo_id)
+
+            yield mode_id, unique_combo_data.action_id
 
     @classmethod
     def parse_raw(cls, data: dict[str, Union[str, int, float]]) -> "CharaDataEntry":
