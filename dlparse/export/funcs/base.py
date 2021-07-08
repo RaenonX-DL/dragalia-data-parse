@@ -11,17 +11,18 @@ from dlparse.mono.asset import CharaDataEntry, SkillIdEntry
 from dlparse.mono.manager import AssetManager
 
 __all__ = (
-    "export_as_csv", "export_as_json", "export_skill_entries", "export_transform_skill_entries",
-    "print_skipped_messages"
+    "export_as_csv", "export_as_json", "print_skipped_messages", "export_transform_skill_entries",
+    "export_each_chara_entries_merged", "export_each_chara_entries",
 )
 
 CT = TypeVar("CT", bound=CsvExportableEntryBase)
+JT = TypeVar("JT", bound=JsonExportableEntryBase)
 ET = TypeVar("ET", bound=SkillExportEntryBase)
 DT = TypeVar("DT", bound=SkillDataBase)
 
-SkillEntryParsingFunction = Callable[
+EntryParsingFunction = Callable[
     [CharaDataEntry, AssetManager, bool, bool],
-    tuple[list[ET], list[str]]
+    tuple[list[JT], list[str]]
 ]
 
 TransformFunction = Callable[
@@ -70,22 +71,50 @@ def export_transform_skill_entries(
     return ret, skipped_messages
 
 
-def export_skill_entries(
-        skill_entry_parse_fn: SkillEntryParsingFunction, asset_manager: AssetManager, /,
+def export_each_chara_entries(
+        entry_parse_fn: EntryParsingFunction, asset_manager: AssetManager, /,
         skip_unparsable: bool = True, include_dragon: bool = True
-) -> list[ET]:
-    """Export skill entries of all characters to a list of data entries ready to be exported."""
-    ret: list[ET] = []
+) -> dict[int, list[JT]]:
+    """
+    Parse each character to json-exportable entries.
+
+    The key of the return is the character ID.
+    To merge all entries into a single list, use ``export_each_chara_entries_merged()`` instead.
+    """
+    ret: dict[int, list[JT]] = {}
 
     skipped_messages: list[str] = []
 
     for chara_data in asset_manager.asset_chara_data.playable_data:
-        entries, messages = skill_entry_parse_fn(chara_data, asset_manager, skip_unparsable, include_dragon)
+        entries, messages = entry_parse_fn(chara_data, asset_manager, skip_unparsable, include_dragon)
 
-        ret.extend(entries)
+        ret[chara_data.id] = entries
         skipped_messages.extend(messages)
 
     print_skipped_messages(skipped_messages)
+
+    return ret
+
+
+def export_each_chara_entries_merged(
+        entry_parse_fn: EntryParsingFunction, asset_manager: AssetManager, /,
+        skip_unparsable: bool = True, include_dragon: bool = True
+) -> list[JT]:
+    """
+    Parse each character to json-exportable entries.
+
+    This merges all entries from different character into a single list.
+    To keep the separation, use ``export_each_chara_entries()`` instead.
+    """
+    ret: list[JT] = []
+
+    entry_dict = export_each_chara_entries(
+        entry_parse_fn, asset_manager,
+        skip_unparsable=skip_unparsable, include_dragon=include_dragon
+    )
+
+    for entries in entry_dict.values():
+        ret.extend(entries)
 
     return ret
 

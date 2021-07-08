@@ -2,7 +2,7 @@
 from dlparse.export.entry import CharaAttackingSkillEntry
 from dlparse.mono.asset import CharaDataEntry
 from dlparse.mono.manager import AssetManager
-from .base import export_as_json, export_skill_entries, export_transform_skill_entries
+from .base import export_as_json, export_each_chara_entries_merged, export_transform_skill_entries
 
 __all__ = ("export_atk_skill_as_json", "export_atk_skills_as_entries")
 
@@ -39,7 +39,7 @@ def export_atk_skills_as_entries(
         skip_unparsable: bool = True, include_dragon: bool = True
 ) -> list[CharaAttackingSkillEntry]:
     """Export attacking skills of all characters to be a list of data entries ready to be exported."""
-    return export_skill_entries(
+    return export_each_chara_entries_merged(
         export_atk_skills_of_chara, asset_manager, skip_unparsable=skip_unparsable, include_dragon=include_dragon
     )
 
