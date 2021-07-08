@@ -46,6 +46,10 @@ def _check_schema_list(schema_type: list[type], key: str, body: JsonBody):
     # Check if all elements matches the desired type
     elem_type = schema_type[0]
 
+    # `elem_type` is another schema
+    if isinstance(elem_type, dict):
+        return _check_schema(elem_type, body[key])
+
     # `elem_type` false positive - https://stackoverflow.com/a/56494823/11571888
     # noinspection PyTypeHints
     return all(isinstance(body_elem, elem_type) for body_elem in body[key])

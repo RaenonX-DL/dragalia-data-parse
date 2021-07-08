@@ -2030,5 +2030,189 @@
   {
     "id": "SKILL_CANCEL_FORMAL_JOACHIM_S1",
     "text": "禮服約爾希姆 S1"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_0",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_1",
+    "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_100",
+    "text": "爆能中"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_12",
+    "text": "爆能中"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_13",
+    "text": "爆能中"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_16",
+    "text": "高輸出"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_2",
+    "text": "S1 效果中"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_22",
+    "text": "攻啄"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_23",
+    "text": "守翼"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_26",
+    "text": "S2 0 層"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_27",
+    "text": "S2 1 層"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_28",
+    "text": "S2 2 層"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_29",
+    "text": "S2 3 層"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_3",
+    "text": "S2 效果中"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_31",
+    "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_33",
+    "text": "伊甸園"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_37",
+    "text": "聖痕解放"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_38",
+    "text": "聖痕解放"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_4",
+    "text": "前菜"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_5",
+    "text": "主菜"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_59",
+    "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_6",
+    "text": "點心"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_60",
+    "text": "煉金 1"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_61",
+    "text": "煉金 2"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_62",
+    "text": "煉金 3"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_63",
+    "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_65",
+    "text": "吃飽"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_68",
+    "text": "蘇洛未召喚"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_69",
+    "text": "蘇洛已召喚"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_7",
+    "text": "生魚片"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_70",
+    "text": "亞森未召喚"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_71",
+    "text": "亞森已召喚"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_72",
+    "text": "卡門未召喚"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_73",
+    "text": "卡門已召喚"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_74",
+    "text": "匹托斯未召喚"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_75",
+    "text": "匹托斯已召喚"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_8",
+    "text": "天婦羅"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_82",
+    "text": "聖痕枷鎖"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_83",
+    "text": "聖痕解放"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_87",
+    "text": "聖痕解放"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_88",
+    "text": "S1 5 層"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_93",
+    "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_94",
+    "text": "S2 效果中"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_95",
+    "text": "爆能中"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_96",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_99",
+    "text": "S2 效果中"
   }
 ]

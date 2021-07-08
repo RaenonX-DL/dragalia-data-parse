@@ -2030,5 +2030,189 @@
   {
     "id": "SKILL_CANCEL_FORMAL_JOACHIM_S1",
     "text": "F!Joachim S1"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_0",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_1",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_100",
+    "text": "Dragondrive"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_12",
+    "text": "Dragondrive"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_13",
+    "text": "Dragondrive"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_16",
+    "text": "High Power"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_2",
+    "text": "S1 Effective"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_22",
+    "text": "Soaring Sparrow"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_23",
+    "text": "Mighty Sparrow"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_26",
+    "text": "S2 0 Stacks"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_27",
+    "text": "S2 1 Stack"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_28",
+    "text": "S2 2 Stacks"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_29",
+    "text": "S2 3 Stacks"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_3",
+    "text": "S2 Effective"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_31",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_33",
+    "text": "Eden Mode"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_37",
+    "text": "Sigil Released"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_38",
+    "text": "Sigil Released"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_4",
+    "text": "Appetizer"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_5",
+    "text": "Entrée"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_59",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_6",
+    "text": "Dessert"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_60",
+    "text": "1 Cartridge"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_61",
+    "text": "2 Cartridges"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_62",
+    "text": "3 Cartridges"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_63",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_65",
+    "text": "Full Gourmand"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_68",
+    "text": "w/o Zorro"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_69",
+    "text": "w/ Zorro"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_7",
+    "text": "Sashimi"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_70",
+    "text": "w/o Arsene"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_71",
+    "text": "w/ Arsene"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_72",
+    "text": "w/o Carmen"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_73",
+    "text": "w/ Carmen"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_74",
+    "text": "w/o Pithos"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_75",
+    "text": "w/ Pithos"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_8",
+    "text": "Tenpura"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_82",
+    "text": "Sigil Locked"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_83",
+    "text": "Sigil Released"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_87",
+    "text": "Sigil Released"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_88",
+    "text": "S1 5 Stacks"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_93",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_94",
+    "text": "S2 Effective"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_95",
+    "text": "Dragondrive"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_96",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_99",
+    "text": "S2 Effective"
   }
 ]

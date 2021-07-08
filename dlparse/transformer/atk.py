@@ -48,6 +48,8 @@ class AttackingActionTransformer:
             parsed_action_ids.add(current_prefab.action_id)
 
             # Next prefab
+            if not combo.next_combo_action_id:
+                break
             current_prefab = self._asset_manager.loader_action.get_prefab(combo.next_combo_action_id)
 
         return NormalAttackChain(combos)

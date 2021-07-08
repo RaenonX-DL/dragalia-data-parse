@@ -160,5 +160,5 @@ def print_skipped_messages(skipped_messages: list[str]):
         print()
         print(f"Some ({len(skipped_messages)}) items were skipped:")
 
-        for msg in skipped_messages:
+        for msg in sorted(skipped_messages):
             print(msg)

@@ -4,6 +4,7 @@ from .chara_info import CharaInfoEntry
 from .dragon_info import DragonInfoEntry
 from .enum import ConditionEnumEntry, EnumEntry
 from .ex_ability import CharaExAbiltiesEntry
+from .normal_attack import NormalAttackChainEntry
 from .skill_atk import CharaAttackingSkillEntry
 from .skill_identifier import SkillIdentifierEntry
 from .skill_sup import CharaSupportiveSkillEntry
