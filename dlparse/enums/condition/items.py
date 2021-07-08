@@ -236,6 +236,8 @@ class Condition(TranslatableEnumMixin, Enum):
     SELF_LAPIS_CARD_1 = 411  # ACID: 1319
     SELF_LAPIS_CARD_2 = 412  # ACID: 1319
     SELF_LAPIS_CARD_3 = 413  # ACID: 1319
+    SELF_COMBO_BOOSTED = 414  # ACID: 1768
+    SELF_COMBO_NOT_BOOSTED = 415  # ACID: 1768
     # endregion
 
     # region Action condition level

@@ -529,6 +529,8 @@ class ConditionCategories:
             Condition.SELF_LAPIS_CARD_1: 1319,
             Condition.SELF_LAPIS_CARD_2: 1319,
             Condition.SELF_LAPIS_CARD_3: 1319,
+            Condition.SELF_COMBO_NOT_BOOSTED: 1768,
+            Condition.SELF_COMBO_BOOSTED: 1768,
         },
         ConditionMaxCount.SINGLE,
         "Self - action condition status",

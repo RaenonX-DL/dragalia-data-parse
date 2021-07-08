@@ -41,6 +41,13 @@ class ActionComponentCondition(EntryBase):
             if self.type_values[2] == 0:
                 return Condition.SELF_SIGIL_RELEASED
 
+        # Appears in Summer Mym Normal Attack (10950502 - 901300)
+        if self.type_values[0] == 1768:
+            if self.type_values[2] == 1:
+                return Condition.SELF_COMBO_BOOSTED
+            if self.type_values[2] == 0:
+                return Condition.SELF_COMBO_NOT_BOOSTED
+
         return Condition.NONE
 
     @property
