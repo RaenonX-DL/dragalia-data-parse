@@ -23,9 +23,15 @@ class SkillCancelAction(TranslatableEnumMixin, Enum):
 
     # Common action
     ROLL = 6
+    ROLL_2 = 7  # Unconfirmed, appear in Blade combo 2 (200002)
 
     # Specific action
     FORMAL_JOACHIM_S1 = 991060
+
+    @property
+    def is_common_action(self) -> bool:
+        """Check if the action is a common action."""
+        return self in (SkillCancelAction.ROLL, SkillCancelAction.ROLL_2)
 
     @property
     def translation_id(self) -> str:

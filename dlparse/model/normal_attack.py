@@ -1,8 +1,8 @@
 """Models for a normal attack info chain."""
-from dataclasses import dataclass, field
+from dataclasses import InitVar, dataclass, field
 from typing import Optional, TYPE_CHECKING
 
-from dlparse.enums import SkillCancelAction, SkillCancelType
+from dlparse.enums import SkillCancelType
 from .unit_cancel import SkillCancelActionUnit
 
 if TYPE_CHECKING:
@@ -19,6 +19,8 @@ class NormalAttackCombo:
     asset_manager: "AssetManager"
     action_prefab: "PlayerActionPrefab"
 
+    level: InitVar[Optional[int]] = None
+
     cancel_actions: list[SkillCancelActionUnit] = field(init=False)
 
     hit_labels: list[str] = field(init=False)
@@ -32,9 +34,9 @@ class NormalAttackCombo:
 
     def _init_next_combo_action_id(self):
         for cancel_action in self.cancel_actions:
-            if cancel_action.cancel_type != SkillCancelType.NONE or cancel_action.action == SkillCancelAction.ROLL:
+            if cancel_action.cancel_type != SkillCancelType.NONE or cancel_action.action.is_common_action:
                 # - Next combo action type should be `NONE`; things like `FS` should be excluded
-                # - Excludes roll dodge cancellation
+                # - Excludes common actions (such as roll dodge)
                 #   - legacy actions does not have cancel type assigned
                 continue
 
@@ -46,7 +48,7 @@ class NormalAttackCombo:
 
         self.next_combo_action_id = None
 
-    def _init_combo_props(self):
+    def _init_combo_props(self, level: int):
         self.hit_labels = []
         self.mods = []
         self.crisis_mod = []
@@ -54,7 +56,7 @@ class NormalAttackCombo:
         self.sp_gain = 0
         self.utp_gain = 0
 
-        for hit_attr_label, _ in self.action_prefab.get_hit_actions():
+        for hit_attr_label, _ in self.action_prefab.get_hit_actions(level):
             hit_attr = self.asset_manager.asset_hit_attr.get_data_by_id(hit_attr_label)
 
             if not hit_attr.is_effective_to_enemy(True):
@@ -71,10 +73,10 @@ class NormalAttackCombo:
             if not self.utp_gain:
                 self.utp_gain += hit_attr.on_hit_utp_regen
 
-    def __post_init__(self):
+    def __post_init__(self, level: Optional[int] = None):
         self.cancel_actions = SkillCancelActionUnit.from_player_action_prefab(self.action_prefab)
         self._init_next_combo_action_id()
-        self._init_combo_props()
+        self._init_combo_props(level)
 
 
 @dataclass

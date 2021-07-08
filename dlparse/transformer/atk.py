@@ -35,14 +35,14 @@ class AttackingActionTransformer:
     def __init__(self, asset_manager: "AssetManager"):
         self._asset_manager: "AssetManager" = asset_manager
 
-    def transform_normal_attack(self, root_action_id: int) -> Optional[NormalAttackChain]:
+    def transform_normal_attack(self, root_action_id: int, level: int = None) -> Optional[NormalAttackChain]:
         """Get the normal attack info rooted from ``root_action_id``."""
         current_prefab = self._asset_manager.loader_action.get_prefab(root_action_id)
         parsed_action_ids = set()
         combos = []
 
         while current_prefab.action_id not in parsed_action_ids:
-            combo = NormalAttackCombo(self._asset_manager, current_prefab)
+            combo = NormalAttackCombo(self._asset_manager, current_prefab, level=level)
             combos.append(combo)
 
             parsed_action_ids.add(current_prefab.action_id)

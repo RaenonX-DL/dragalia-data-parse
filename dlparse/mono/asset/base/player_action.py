@@ -66,7 +66,7 @@ class ActionComponentLoop(EntryBase):
 
     @staticmethod
     def parse_raw(data: dict[str, Union[int, float]]) -> Optional["ActionComponentLoop"]:
-        if data.get("flag", 0):
+        if not data.get("flag", 0):
             return None
 
         return ActionComponentLoop(

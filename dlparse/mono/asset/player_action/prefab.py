@@ -73,9 +73,6 @@ class PlayerActionPrefab(ActionAssetBase):
     }
     """List of label starting keywords to be omitted."""
 
-    aid_roll: int = 6
-    """Action ID of the roll dodge."""
-
     def __init__(self, action_id: int, file_location: str):
         super().__init__(PlayerActionParser, file_location)
 
@@ -154,6 +151,11 @@ class PlayerActionPrefab(ActionAssetBase):
         For example, if ``original_label`` is ``SWD_110_04_H01_LV02`` and ``level`` is ``3``,
         return ``SWD_110_04_H01_LV03``.
         """
+        if original_label[-4:-2] != "LV":
+            # Default normal attack hit attribute is labeled like `SWD_CMB_01_H01`.
+            # However, for lv. 2 (70 MC), it's `SWD_CMB_01_H01_LV02`.
+            return f"{original_label}_LV{skill_lv:02}"  # Not a leveled hit attribute
+
         return original_label[:-1] + str(skill_lv)
 
     @staticmethod

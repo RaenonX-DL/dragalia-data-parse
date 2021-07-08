@@ -77,6 +77,9 @@ class ActionBullet(asset.ActionComponentHasHitLabels):
             # If max hit count available (arrange bullet has duration), extend hit labels to match the hit count
             labels_possible.extend(arrange_bullet.hit_labels * (arrange_bullet.max_hit_count or 1))
 
+        if kwargs["loop_data"]:  # This will be `None` if inapplicable
+            labels_possible *= (1 + kwargs["loop_data"].loop_count)  # `1` for the original execution
+
         return ActionBullet(
             hit_labels=[label for label in labels_possible if label],
             **kwargs
