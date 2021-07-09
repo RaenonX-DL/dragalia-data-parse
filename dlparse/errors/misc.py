@@ -1,16 +1,10 @@
 """Miscellaneous error classes."""
 from enum import Enum
-from typing import Any, TYPE_CHECKING, Type, Union
+from typing import Any, Type, Union
 
 from .base import AppValueError
 
-if TYPE_CHECKING:
-    from dlparse.enums import ConditionComposite
-
-__all__ = (
-    "EnumConversionError", "EnumNotFoundError", "ImageNotFoundError", "OperationInvalidError",
-    "ConditionsUnavailableError",
-)
+__all__ = ("EnumConversionError", "EnumNotFoundError", "ImageNotFoundError", "OperationInvalidError")
 
 
 class EnumConversionError(AppValueError):
@@ -36,10 +30,3 @@ class ImageNotFoundError(AppValueError):
 
 class OperationInvalidError(AppValueError):
     """Error to be raised if the operation is invalid."""
-
-
-class ConditionsUnavailableError(AppValueError):
-    """Error to be raised if the given conditions is unavailable for further operations."""
-
-    def __init__(self, conditions: "ConditionComposite"):
-        super().__init__(f"Conditions `{conditions.conditions_sorted}` is unavailable")

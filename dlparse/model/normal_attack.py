@@ -1,16 +1,20 @@
 """Models for a normal attack info chain."""
 from dataclasses import InitVar, dataclass, field
-from typing import Optional, TYPE_CHECKING
+from typing import Iterable, Optional, TYPE_CHECKING
 
-from dlparse.enums import ConditionComposite, SkillCancelType
-from dlparse.errors import ConditionsUnavailableError
+from dlparse.enums import Condition, ConditionComposite, SkillCancelType
 from .unit_cancel import SkillCancelActionUnit
 
 if TYPE_CHECKING:
     from dlparse.mono.asset import PlayerActionPrefab, HitAttrEntry
     from dlparse.mono.manager import AssetManager
 
-__all__ = ("NormalAttackChain", "NormalAttackCombo")
+__all__ = ("NormalAttackChain", "NormalAttackCombo", "NormalAttackComboBranch")
+
+PRE_CONDITIONS_TO_OMIT: set[Condition] = {
+    Condition.SELF_GMASCULA_S1_LV1,
+    Condition.SELF_GMASCULA_S1_LV2
+}
 
 
 @dataclass
@@ -73,14 +77,23 @@ class NormalAttackCombo:
 
         self.next_combo_action_id = None
 
-    def _init_get_combo_info(self, conditions: ConditionComposite) -> NormalAttackComboBranch:
-        if conditions not in self.combo_info:
-            self.combo_info[conditions] = NormalAttackComboBranch(conditions, self.cancel_actions)
+    def _init_fill_combo_info(self, condition_list: Iterable[ConditionComposite], hit_attr: "HitAttrEntry"):
+        for conditions in condition_list:
+            if conditions not in self.combo_info:
+                self.combo_info[conditions] = NormalAttackComboBranch(conditions, self.cancel_actions)
 
-        return self.combo_info[conditions]
+            self.combo_info[conditions].fill_info_from_hit_attr(hit_attr)
 
     def _init_combo_props(self, level: int):
         self.combo_info = {}
+
+        # Get all possible pre-conditions
+        pre_conditions: set[ConditionComposite] = {
+            ConditionComposite(action_component.skill_pre_condition)
+            for _, action_component in
+            self.action_prefab.get_hit_actions(level)
+            if action_component.skill_pre_condition not in PRE_CONDITIONS_TO_OMIT
+        }
 
         for hit_attr_label, action_component in self.action_prefab.get_hit_actions(level):
             hit_attr = self.asset_manager.asset_hit_attr.get_data_by_id(hit_attr_label)
@@ -88,13 +101,18 @@ class NormalAttackCombo:
             if not hit_attr.is_effective_to_enemy(True):
                 continue  # Dummy hit attribute might be inserted for...animation? (Nino `SWD_NIN_BLT_01_H00`)
 
-            # Create one if not available yet
-            conditions = ConditionComposite(action_component.skill_pre_condition)
+            if action_component.skill_pre_condition in PRE_CONDITIONS_TO_OMIT:
+                continue  # Specific pre-conditions to omit
+
+            # Get pre-conditions to fill combo info
+            target_conditions: set[ConditionComposite] = (
+                {ConditionComposite(action_component.skill_pre_condition)}
+                if action_component.skill_pre_condition
+                else pre_conditions
+            )
 
             # Fill hit attr info
-            self._init_get_combo_info(conditions).fill_info_from_hit_attr(hit_attr)
-            if conditions and not action_component.skill_pre_condition:
-                self._init_get_combo_info(ConditionComposite()).fill_info_from_hit_attr(hit_attr)
+            self._init_fill_combo_info(target_conditions, hit_attr)
 
     def __post_init__(self, level: Optional[int] = None):
         self.cancel_actions = SkillCancelActionUnit.from_player_action_prefab(self.action_prefab)
@@ -108,15 +126,17 @@ class NormalAttackChain:
 
     combos: list[NormalAttackCombo]
 
+    possible_conditions: set[ConditionComposite] = field(init=False)
+
+    def __post_init__(self):
+        self.possible_conditions = set()
+        for combo in self.combos:
+            self.possible_conditions.update(combo.combo_info.keys())
+
     def with_condition(self, conditions: ConditionComposite = ConditionComposite()) -> list[NormalAttackComboBranch]:
         """
         Get all combo info of a branch under ``conditions``.
 
         The order of the return is the same as ``combos``.
-
-        :raises ConditionsUnavailableError: if none of the branches has `conditions`
         """
-        try:
-            return [combo.combo_info[conditions] for combo in self.combos]
-        except KeyError as ex:
-            raise ConditionsUnavailableError(conditions) from ex
+        return [combo.combo_info[conditions] for combo in self.combos if conditions in combo.combo_info]

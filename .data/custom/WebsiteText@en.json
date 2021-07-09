@@ -1088,6 +1088,26 @@
     "text": "[Lapis] 3 Cards"
   },
   {
+    "id": "ENUM_COND_SELF_SMYM_COMBO_BOOSTED",
+    "text": "[S!Mym] Enhanced"
+  },
+  {
+    "id": "ENUM_COND_SELF_SMYM_COMBO_NOT_BOOSTED",
+    "text": "[S!Mym] Normal"
+  },
+  {
+    "id": "ENUM_COND_SELF_GMASCULA_S1_LV1",
+    "text": "[G!Mascula] S1 (Lv 1)"
+  },
+  {
+    "id": "ENUM_COND_SELF_GMASCULA_S1_LV2",
+    "text": "[G!Mascula] S1 (Lv 2)"
+  },
+  {
+    "id": "ENUM_COND_SELF_GMASCULA_S1_LV3",
+    "text": "[G!Mascula] S1 (Lv 3)"
+  },
+  {
     "id": "ENUM_COND_SELF_GAUGE_FILLED_0",
     "text": "Gauge 0 bars"
   },

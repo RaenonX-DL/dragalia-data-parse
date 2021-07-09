@@ -2,7 +2,8 @@
 from dataclasses import InitVar, dataclass, field
 from typing import Any, TYPE_CHECKING
 
-from dlparse.model import NormalAttackChain, NormalAttackCombo
+from dlparse.enums import ConditionComposite
+from dlparse.model import NormalAttackChain, NormalAttackComboBranch
 from .base import JsonExportableEntryBase, JsonSchema, SkillCancelInfoEntry, TextEntry
 
 if TYPE_CHECKING:
@@ -15,7 +16,7 @@ __all__ = ("NormalAttackChainEntry",)
 class NormalAttackComboEntry(JsonExportableEntryBase):
     """A single entry representing a normal attack combo."""
 
-    combo: NormalAttackCombo
+    combo: NormalAttackComboBranch
 
     cancel_actions: list[SkillCancelInfoEntry] = field(init=False)
 
@@ -46,6 +47,33 @@ class NormalAttackComboEntry(JsonExportableEntryBase):
 
 
 @dataclass
+class NormalAttackBranchedChainEntry(JsonExportableEntryBase):
+    """A single entry representing a branched normal attack chain."""
+
+    branched_combos: InitVar[list[NormalAttackComboBranch]]
+    conditions: ConditionComposite
+
+    combos: list[NormalAttackComboEntry] = field(init=False)
+
+    def __post_init__(self, branched_combos: list[NormalAttackComboBranch]):
+        self.combos = [NormalAttackComboEntry(combo) for combo in branched_combos]
+
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return {
+            "conditions": [int],
+            "combos": [NormalAttackComboEntry.json_schema],
+        }
+
+    def to_json_entry(self) -> dict[str, Any]:
+        return {
+            "conditions": [condition.value for condition in self.conditions.conditions_sorted],
+            "combos": self.combos,
+        }
+
+
+@dataclass
 class NormalAttackChainEntry(JsonExportableEntryBase):
     """A single entry representing a normal attack chain."""
 
@@ -55,24 +83,28 @@ class NormalAttackChainEntry(JsonExportableEntryBase):
     chain: InitVar[NormalAttackChain]
 
     chain_name: TextEntry = field(init=False)
-
-    combos: list[NormalAttackComboEntry] = field(init=False)
+    chain_branches: list[NormalAttackBranchedChainEntry] = field(init=False)
 
     def __post_init__(self, source_mode_id: int, chain: NormalAttackChain):
         self.chain_name = TextEntry(
             self.asset_manager.asset_text_website,
             f"NORMAL_ATTACK_COMBO_CHAIN_{source_mode_id}"
         )
-        self.combos = [NormalAttackComboEntry(combo) for combo in chain.combos]
+        self.chain_branches = [
+            NormalAttackBranchedChainEntry(chain.with_condition(conditions), conditions)
+            for conditions in chain.possible_conditions
+        ]
 
     @classmethod
     @property
     def json_schema(cls) -> JsonSchema:
         return {
-            "combos": [NormalAttackComboEntry.json_schema],
+            "chainName": TextEntry.json_schema,
+            "chain": [NormalAttackBranchedChainEntry.json_schema],
         }
 
     def to_json_entry(self) -> dict[str, Any]:
         return {
-            "combos": [combo.to_json_entry() for combo in self.combos],
+            "chainName": self.chain_name.to_json_entry(),
+            "chain": self.chain_branches,
         }

@@ -40,7 +40,7 @@ def test_s1_normal_attack(transformer_atk: AttackingActionTransformer):
     # - Mode 93: Normal
     # - Unique Combo 65
     # - Action ID 202700
-    conditions = ConditionComposite(Condition.SELF_SMYM_COMBO_NOT_BOOSTED)
+    conditions = ConditionComposite(Condition.SELF_GMASCULA_S1_LV3)
     data = transformer_atk.transform_normal_attack(202700).with_condition(conditions)
 
     combo_1 = data[0]
@@ -73,11 +73,11 @@ def test_s2_enhanced_attack(transformer_atk: AttackingActionTransformer):
     # - Mode 94: S2 Effective
     # - Unique Combo 66
     # - Action ID 202800
-    conditions = ConditionComposite(Condition.SELF_SMYM_COMBO_BOOSTED)
+    conditions = ConditionComposite()
     data = transformer_atk.transform_normal_attack(202800).with_condition(conditions)
 
     combo_1 = data[0]
-    assert combo_1.mods == [0.16] * 2 + [0.19] * 3 + [0.45]
+    assert combo_1.mods == [0.16] + [0.19] * 3 + [0.16] + [0.45]
     assert combo_1.sp_gain == 130
     assert combo_1.utp_gain == 0
     assert combo_1.od_rate == [1.0] * 6
@@ -89,13 +89,13 @@ def test_s2_enhanced_attack(transformer_atk: AttackingActionTransformer):
     assert combo_2.od_rate == [1.0] * 5
 
     combo_3 = data[2]
-    assert combo_3.mods == [0.16] * 5 + [0.19] * 3 + [0.44]
+    assert combo_3.mods == [0.16] + [0.19] * 3 + [0.16] * 4 + [0.44]
     assert combo_3.sp_gain == 360
     assert combo_3.utp_gain == 0
     assert combo_3.od_rate == [1.0] * 9
 
     combo_4 = data[3]
-    assert combo_4.mods == [0.68] * 2 + [0.19] * 3 + [2.03]
+    assert combo_4.mods == [0.68] + [0.19] * 3 + [0.68] * 1 + [2.03]
     assert combo_4.sp_gain == 660
     assert combo_4.utp_gain == 0
     assert combo_4.od_rate == [1.0] * 6
@@ -106,29 +106,29 @@ def test_s2_enhanced_attack_with_s1(transformer_atk: AttackingActionTransformer)
     # - Mode 94: S2 Effective
     # - Unique Combo 66
     # - Action ID 202800
-    conditions = ConditionComposite(Condition.SELF_SMYM_COMBO_BOOSTED)
+    conditions = ConditionComposite(Condition.SELF_GMASCULA_S1_LV3)
     data = transformer_atk.transform_normal_attack(202800).with_condition(conditions)
 
     combo_1 = data[0]
-    assert combo_1.mods == [0.16] * 4 + [0.19] * 6 + [0.45]
+    assert combo_1.mods == [0.16] + [0.19] * 6 + [0.16] * 3 + [0.45]
     assert combo_1.sp_gain == 130
     assert combo_1.utp_gain == 0
     assert combo_1.od_rate == [1.0] * 11
 
     combo_2 = data[1]
-    assert combo_2.mods == [0.23] * 3 + [0.19] * 6 + [0.67]
+    assert combo_2.mods == [0.23] + [0.19] * 6 + [0.23] * 2 + [0.67]
     assert combo_2.sp_gain == 220
     assert combo_2.utp_gain == 0
     assert combo_2.od_rate == [1.0] * 10
 
     combo_3 = data[2]
-    assert combo_3.mods == [0.16] * 9 + [0.19] * 6 + [0.44]
+    assert combo_3.mods == ([0.16] + [0.19] * 3) * 2 + [0.16] * 7 + [0.44]
     assert combo_3.sp_gain == 360
     assert combo_3.utp_gain == 0
     assert combo_3.od_rate == [1.0] * 16
 
     combo_4 = data[3]
-    assert combo_4.mods == [0.68] * 4 + [0.19] * 6 + [2.03]
+    assert combo_4.mods == [0.68] + ([0.68] + [0.19] * 3) * 2 + [0.68] + [2.03]
     assert combo_4.sp_gain == 660
     assert combo_4.utp_gain == 0
     assert combo_4.od_rate == [1.0] * 11

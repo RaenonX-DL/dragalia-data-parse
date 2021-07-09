@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from typing import Callable, Optional, TextIO, Type, Union
 
 from dlparse.enums import ActionConditionType, Condition, ConditionCategories
-from dlparse.errors import AssetKeyMissingError
+from dlparse.errors import AssetKeyMissingError, EnumConversionError
 from .asset import AssetBase
 from .entry import EntryBase
 from .parser import ParserBase
@@ -49,8 +49,11 @@ class ActionComponentCondition(EntryBase):
                 return Condition.SELF_SMYM_COMBO_NOT_BOOSTED
 
         # Appears in Gala Mascula Normal Attack (10250203 - 202700 / 202800)
-        if self.values[0] in (1750, 1751, 1752):  # 1752 for S1 Lv. 3
-            return Condition.SELF_GMASCULA_COMBO_BOOSTED
+        try:
+            if condition := ConditionCategories.self_gala_mascula_s1_acid.convert_reversed(self.values[0]):
+                return condition
+        except EnumConversionError:  # Not G!Mascula-related action condition ID
+            pass
 
         return Condition.NONE
 
@@ -69,9 +72,9 @@ class ActionComponentCondition(EntryBase):
         """Get the action executing pre-condition."""
         if self.condition_type == ActionConditionType.ACTION_CONDITION_COUNT:
             return self._pre_condition_action_cond_count
-        elif self.condition_type == ActionConditionType.SEIMEI_SHIKIGAMI_LEVEL:
+        if self.condition_type == ActionConditionType.SEIMEI_SHIKIGAMI_LEVEL:
             return self._pre_condition_shikigami_level
-        elif self.condition_type == ActionConditionType.ACTION_CANCEL:
+        if self.condition_type == ActionConditionType.ACTION_CANCEL:
             return ConditionCategories.skill_action_cancel.convert_reversed(self.values[0])
 
         return Condition.NONE

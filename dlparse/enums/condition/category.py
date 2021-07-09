@@ -39,6 +39,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_ACTION_CONDITION = auto()
     MULTIPLE_GAUGE_FILLED = auto()
     MULTIPLE_LAPIS_CARD = auto()
+    MULTIPLE_GMASCULA_S1_LEVEL = auto()
     MULTIPLE_ACTION_COND_LV = auto()
     MULTIPLE_SHAPESHIFT_COUNT = auto()
     MULTIPLE_SHAPESHIFT_COUNT_IN_DRAGON = auto()
@@ -531,8 +532,7 @@ class ConditionCategories:
             Condition.SELF_LAPIS_CARD_3: 1319,
             Condition.SELF_SMYM_COMBO_NOT_BOOSTED: 1768,
             Condition.SELF_SMYM_COMBO_BOOSTED: 1768,
-            Condition.SELF_GMASCULA_COMBO_BOOSTED: 1711,
-            Condition.SELF_GMASCULA_COMBO_NOT_BOOSTED: 1711,
+            Condition.SELF_GMASCULA_S1_LV3: 1752,
         },
         ConditionMaxCount.SINGLE,
         "Self - action condition status",
@@ -556,8 +556,18 @@ class ConditionCategories:
             Condition.SELF_LAPIS_CARD_3: 3,
         },
         ConditionMaxCount.SINGLE,
-        "Self - gauge status",
+        "Self - Lapis card count",
         ConditionCheckResult.MULTIPLE_LAPIS_CARD
+    )
+    self_gala_mascula_s1_acid = ConditionCategoryTargetNumber(
+        {
+            Condition.SELF_GMASCULA_S1_LV1: 1750,
+            Condition.SELF_GMASCULA_S1_LV2: 1751,
+            Condition.SELF_GMASCULA_S1_LV3: 1752,
+        },
+        ConditionMaxCount.SINGLE,
+        "Self - G!Mascula S1",
+        ConditionCheckResult.MULTIPLE_GMASCULA_S1_LEVEL
     )
     self_action_cond_lv = ConditionCategoryTargetNumber(
         {

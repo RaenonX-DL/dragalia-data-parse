@@ -1088,6 +1088,26 @@
     "text": "[拉碧絲] 3 卡牌"
   },
   {
+    "id": "ENUM_COND_SELF_SMYM_COMBO_BOOSTED",
+    "text": "[泳裝慕慕] 強化普攻"
+  },
+  {
+    "id": "ENUM_COND_SELF_SMYM_COMBO_NOT_BOOSTED",
+    "text": "[泳裝慕慕] 一般普攻"
+  },
+  {
+    "id": "ENUM_COND_SELF_GMASCULA_S1_LV1",
+    "text": "[龍絆馬斯科拉] S1 (1 等)"
+  },
+  {
+    "id": "ENUM_COND_SELF_GMASCULA_S1_LV2",
+    "text": "[龍絆馬斯科拉] S1 (2 等)"
+  },
+  {
+    "id": "ENUM_COND_SELF_GMASCULA_S1_LV3",
+    "text": "[龍絆馬斯科拉] S1 (3 等)"
+  },
+  {
     "id": "ENUM_COND_SELF_GAUGE_FILLED_0",
     "text": "量條 0 條滿"
   },
