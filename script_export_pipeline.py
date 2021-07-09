@@ -125,8 +125,9 @@ class FileExporter:
         # Abilties
         self._export_ex_abilities()
 
-        # Unit info
+        # Info
         self._export_unit_info()
+        self._export_normal_attack()
 
         # Misc
         self._export_elem_bonus()
