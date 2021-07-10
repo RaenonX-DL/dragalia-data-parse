@@ -57,8 +57,13 @@ class NormalAttackBranchedChainEntry(JsonExportableEntryBase):
 
     combos: list[NormalAttackComboEntry] = field(init=False)
 
+    has_utp: bool = field(init=False)
+    has_crisis_mods: bool = field(init=False)
+
     def __post_init__(self, branched_combos: list[NormalAttackComboBranch]):
         self.combos = [NormalAttackComboEntry(combo) for combo in branched_combos]
+        self.has_utp = any(combo.utp_gain > 0 for combo in branched_combos)
+        self.has_crisis_mods = any(any(combo.crisis_mod) for combo in branched_combos)
 
     @classmethod
     @property
@@ -66,12 +71,16 @@ class NormalAttackBranchedChainEntry(JsonExportableEntryBase):
         return {
             "conditions": [int],
             "combos": [NormalAttackComboEntry.json_schema],
+            "hasUtp": bool,
+            "hasCrisis": bool,
         }
 
     def to_json_entry(self) -> dict[str, Any]:
         return {
             "conditions": [condition.value for condition in self.conditions.conditions_sorted],
             "combos": self.combos,
+            "hasUtp": self.has_utp,
+            "hasCrisis": self.has_crisis_mods,
         }
 
 
