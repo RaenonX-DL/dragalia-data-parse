@@ -25,12 +25,22 @@ class NormalAttackComboBranch:
 
     cancel_actions: list[SkillCancelActionUnit]
 
+    next_action_id: InitVar[int]
+
     hit_labels: list[str] = field(default_factory=list)
     mods: list[float] = field(default_factory=list)
     od_rate: list[float] = field(default_factory=list)
     crisis_mod: list[float] = field(default_factory=list)
     sp_gain: int = field(default=0)
     utp_gain: int = field(default=0)
+
+    cancel_to_next_action_sec: float = field(init=False)
+
+    def __post_init__(self, next_action_id: int):
+        self.cancel_to_next_action_sec = next(
+            cancel_action.time for cancel_action in self.cancel_actions
+            if cancel_action.action_id == next_action_id
+        )
 
     def fill_info_from_hit_attr(self, hit_attr: "HitAttrEntry"):
         """Fill the info of ``hit_attr`` into this combo branch."""
@@ -80,7 +90,9 @@ class NormalAttackCombo:
     def _init_fill_combo_info(self, condition_list: Iterable[ConditionComposite], hit_attr: "HitAttrEntry"):
         for conditions in condition_list:
             if conditions not in self.combo_info:
-                self.combo_info[conditions] = NormalAttackComboBranch(conditions, self.cancel_actions)
+                self.combo_info[conditions] = NormalAttackComboBranch(
+                    conditions, self.cancel_actions, self.next_combo_action_id
+                )
 
             self.combo_info[conditions].fill_info_from_hit_attr(hit_attr)
 
@@ -141,4 +153,8 @@ class NormalAttackChain:
 
         The order of the return is the same as ``combos``.
         """
-        return [combo.combo_info[conditions] for combo in self.combos if conditions in combo.combo_info]
+        return [
+            combo.combo_info[conditions]
+            for combo in self.combos
+            if conditions in combo.combo_info
+        ]
