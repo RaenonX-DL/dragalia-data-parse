@@ -126,12 +126,14 @@ class NormalAttackChain:
 
     combos: list[NormalAttackCombo]
 
-    possible_conditions: set[ConditionComposite] = field(init=False)
+    possible_conditions: list[ConditionComposite] = field(init=False)
 
     def __post_init__(self):
-        self.possible_conditions = set()
+        conditions = set()
         for combo in self.combos:
-            self.possible_conditions.update(combo.combo_info.keys())
+            conditions.update(combo.combo_info.keys())
+
+        self.possible_conditions = list(sorted(conditions))
 
     def with_condition(self, conditions: ConditionComposite = ConditionComposite()) -> list[NormalAttackComboBranch]:
         """
