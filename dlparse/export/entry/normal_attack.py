@@ -28,7 +28,7 @@ class NormalAttackComboEntry(JsonExportableEntryBase):
     def json_schema(cls) -> JsonSchema:
         return {
             "cancelActions": [SkillCancelInfoEntry.json_schema],
-            "cancelToNextSec": float,
+            "cancelToNextSec": [float, None],
             "mods": [float],
             "odRate": [float],
             "crisisMod": [float],

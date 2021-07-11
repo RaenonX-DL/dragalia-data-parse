@@ -16,6 +16,13 @@ PRE_CONDITIONS_TO_OMIT: set[Condition] = {
     Condition.SELF_GMASCULA_S1_LV2
 }
 
+# - Faris (10950102) root normal attack action (901000) have action cancel component goes to `901201`.
+#   However, such action does not exist. (Should be `901001` instead).
+# --------------------
+# No manual fix because it won't reflect the actual game playing data,
+# despite the action may exist, such as `901001` as mentioned above.
+MISSING_ACTION_IDS: set[int] = {901201}
+
 
 @dataclass
 class NormalAttackComboBranch:
@@ -34,12 +41,15 @@ class NormalAttackComboBranch:
     sp_gain: int = field(default=0)
     utp_gain: int = field(default=0)
 
-    cancel_to_next_action_sec: float = field(init=False)
+    cancel_to_next_action_sec: Optional[float] = field(init=False)
 
     def __post_init__(self, next_action_id: int):
         self.cancel_to_next_action_sec = next(
-            cancel_action.time for cancel_action in self.cancel_actions
-            if cancel_action.action_id == next_action_id
+            (
+                cancel_action.time for cancel_action in self.cancel_actions
+                if cancel_action.action_id == next_action_id
+            ),
+            None
         )
 
     def fill_info_from_hit_attr(self, hit_attr: "HitAttrEntry"):
@@ -84,6 +94,9 @@ class NormalAttackCombo:
 
             if cancel_action.time == 0:
                 continue  # Next combo should not be able to change immediately
+
+            if cancel_action.action_id in MISSING_ACTION_IDS:
+                continue  # Check the notes for `MISSING_ACTION_IDS`
 
             self.next_combo_action_id = cancel_action.action_id
             return

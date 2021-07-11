@@ -151,6 +151,28 @@ def test_match_complex_all_types():
     assert is_json_schema_match(schema, body)
 
 
+def test_match_one_of_listed_type_first():
+    schema = {
+        "num": [int, str],
+    }
+    body = {
+        "num": 7,
+    }
+
+    assert is_json_schema_match(schema, body)
+
+
+def test_match_one_of_listed_type_second():
+    schema = {
+        "num": [int, str],
+    }
+    body = {
+        "num": "7",
+    }
+
+    assert is_json_schema_match(schema, body)
+
+
 def test_one_of_not_match_complex_all_types():
     schema = {
         "num": int,
@@ -195,18 +217,6 @@ def test_invalid_schema_key_not_string():
 
     with pytest.raises(KeyNotStringError):
         # noinspection PyTypeChecker
-        is_json_schema_match(schema, body)
-
-
-def test_invalid_schema_array_have_multiple_values():
-    schema = {
-        "num": [int, str],
-    }
-    body = {
-        "num": [7],
-    }
-
-    with pytest.raises(ArrayLengthInvalidError):
         is_json_schema_match(schema, body)
 
 

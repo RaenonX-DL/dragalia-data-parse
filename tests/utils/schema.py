@@ -35,9 +35,15 @@ def is_json_schema_match(schema: Union[JsonSchema, property], body: JsonBody):
 def _check_schema_list(schema_type: list[type], key: str, body: JsonBody):
     """Inner function to check if the body matches the schema type."""
     array_len = len(schema_type)
-    # Check if the array length is exactly 1
-    if array_len != 1:
+    # Check if the array length is not empty
+    # - 1 for list of data
+    # - 2+ for either one of the data type
+    if not array_len:
         raise ArrayLengthInvalidError(key, array_len)
+
+    # Check if the data type matches either one listed as `schema_type`
+    if array_len > 1:
+        return any(isinstance(body[key], type_) for type_ in schema_type)
 
     # Check if the corresponding content in the body is a list
     if not isinstance(body[key], list):
