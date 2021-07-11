@@ -1,10 +1,9 @@
 """Functions for exporting normal attack info."""
-import os.path
 from typing import TYPE_CHECKING
 
 from dlparse.errors import MissingTextError
 from dlparse.export.entry import NormalAttackChainEntry
-from .base import export_as_json, export_each_chara_entries, export_each_dragon_entries
+from .base import export_each_chara_entries, export_each_dragon_entries, export_to_dir
 
 if TYPE_CHECKING:
     from dlparse.mono.asset import CharaDataEntry, DragonDataEntry
@@ -75,5 +74,4 @@ def export_normal_attack_info_as_entry_dict(
 def export_normal_attack_info_as_json(file_dir: str, asset_manager: "AssetManager", /, skip_unparsable: bool = True):
     """Export normal attack info of all characters and dragons as json to ``file_dir``."""
     entries = export_normal_attack_info_as_entry_dict(asset_manager, skip_unparsable=skip_unparsable)
-    for unit_id, info_entries in entries.items():
-        export_as_json(info_entries, os.path.join(file_dir, f"{unit_id}.json"))
+    export_to_dir(entries, file_dir)

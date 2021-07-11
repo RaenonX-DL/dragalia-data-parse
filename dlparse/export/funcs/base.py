@@ -11,7 +11,7 @@ from dlparse.mono.asset import CharaDataEntry, DragonDataEntry, SkillIdEntry, Un
 from dlparse.mono.manager import AssetManager
 
 __all__ = (
-    "export_as_csv", "export_as_json", "print_skipped_messages", "export_transform_skill_entries",
+    "export_as_csv", "export_as_json", "export_to_dir", "print_skipped_messages", "export_transform_skill_entries",
     "export_entries_merged", "export_each_chara_entries", "export_each_dragon_entries",
 )
 
@@ -200,6 +200,17 @@ def export_as_json(obj: Union[dict, list], file_path: str):
 
     with open(file_path, "w", encoding="utf-8", newline="") as f:
         dump(obj, f, cls=JsonEntryEncoder, ensure_ascii=False, sort_keys=True)
+
+
+def export_to_dir(entry_dict: dict[Union[int, str], Union[JT, list[JT]]], file_dir: str):
+    """
+    Export all entries in ``entry_dict`` to ``file_dir``.
+
+    Files will be named as same as the keys of ``entry_dict``.
+    Values of the corresponding key will be the file content.
+    """
+    for unit_id, info_entries in entry_dict.items():
+        export_as_json(info_entries, os.path.join(file_dir, f"{unit_id}.json"))
 
 
 def print_skipped_messages(skipped_messages: list[str]):
