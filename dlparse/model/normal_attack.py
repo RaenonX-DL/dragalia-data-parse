@@ -2,7 +2,7 @@
 from dataclasses import InitVar, dataclass, field
 from typing import Iterable, Optional, TYPE_CHECKING
 
-from dlparse.enums import Condition, ConditionComposite, SkillCancelType
+from dlparse.enums import Condition, ConditionCategories, ConditionComposite, SkillCancelType
 from .unit_cancel import SkillCancelActionUnit
 
 if TYPE_CHECKING:
@@ -52,10 +52,14 @@ class NormalAttackComboBranch:
             None
         )
 
-    def fill_info_from_hit_attr(self, hit_attr: "HitAttrEntry"):
-        """Fill the info of ``hit_attr`` into this combo branch."""
+    def fill_info_from_hit_attr(self, hit_attr: "HitAttrEntry", mod_rate: float):
+        """
+        Fill the info of ``hit_attr`` into this combo branch.
+
+        ``mod_rate`` is applied toward ``hit_attr.damage_modifier``.
+        """
         self.hit_labels.append(hit_attr.id)
-        self.mods.append(hit_attr.damage_modifier)
+        self.mods.append(hit_attr.damage_modifier * mod_rate)
         self.crisis_mod.append(hit_attr.rate_boost_on_crisis)
         self.od_rate.append(hit_attr.rate_boost_in_od)
 
@@ -110,7 +114,12 @@ class NormalAttackCombo:
                     conditions, self.cancel_actions, self.next_combo_action_id
                 )
 
-            self.combo_info[conditions].fill_info_from_hit_attr(hit_attr)
+            # Apply punisher rate if any of the condition if about affliction
+            boost_rate = 1.0
+            if any(condition in ConditionCategories.target_status for condition in conditions):
+                boost_rate = hit_attr.punisher_rate
+
+            self.combo_info[conditions].fill_info_from_hit_attr(hit_attr, boost_rate)
 
     def _init_combo_props(self, level: int):
         self.combo_info = {}
@@ -133,11 +142,26 @@ class NormalAttackCombo:
                 continue  # Specific pre-conditions to omit
 
             # Get pre-conditions to fill combo info
+            # ---------------
+            # This is different from `pre_conditions` because `pre_conditions` lists all possible pre-conditions,
+            # while this only contains the pre-condition coming from `action_component` if it exists.
             target_conditions: set[ConditionComposite] = (
                 {ConditionComposite(action_component.skill_pre_condition)}
                 if action_component.skill_pre_condition
                 else pre_conditions
             )
+
+            # Add punisher conditions if any
+            punisher_conditions = {
+                ConditionCategories.target_status.convert_reversed(affliction)
+                for affliction in hit_attr.punisher_states
+            }
+            if punisher_conditions:
+                target_conditions.update({
+                    ConditionComposite(composite.conditions_sorted + (punisher_condition,))
+                    for punisher_condition in punisher_conditions
+                    for composite in pre_conditions
+                })
 
             # Fill hit attr info
             self._init_fill_combo_info(target_conditions, hit_attr)
@@ -166,6 +190,8 @@ class NormalAttackChain:
     def with_condition(self, conditions: ConditionComposite = ConditionComposite()) -> list[NormalAttackComboBranch]:
         """
         Get all combo info of a branch under ``conditions``.
+
+        Returns an empty list if none of the combo matches ``conditions``.
 
         The order of the return is the same as ``combos``.
         """
