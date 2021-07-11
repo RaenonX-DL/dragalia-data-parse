@@ -4,10 +4,10 @@ from typing import TYPE_CHECKING
 
 from dlparse.errors import MissingTextError
 from dlparse.export.entry import NormalAttackChainEntry
-from .base import export_as_json, export_each_chara_entries
+from .base import export_as_json, export_each_chara_entries, export_each_dragon_entries
 
 if TYPE_CHECKING:
-    from dlparse.mono.asset import CharaDataEntry
+    from dlparse.mono.asset import CharaDataEntry, DragonDataEntry
     from dlparse.mono.manager import AssetManager
 
 __all__ = ("export_normal_attack_info_as_json", "export_normal_attack_info_as_entry_dict")
@@ -15,7 +15,7 @@ __all__ = ("export_normal_attack_info_as_json", "export_normal_attack_info_as_en
 
 def export_normal_attack_info_chara(
         chara_data: "CharaDataEntry", asset_manager: "AssetManager",
-        _: bool, __: bool
+        skip_unparsable: bool, __: bool
 ) -> tuple[list[NormalAttackChainEntry], list[str]]:
     """Get all special normal attack chain info of a character."""
     chain_entries = []
@@ -29,20 +29,47 @@ def export_normal_attack_info_chara(
         try:
             chain_entries.append(NormalAttackChainEntry(asset_manager, source_mode_id, normal_attack_chain))
         except MissingTextError as ex:
+            if not skip_unparsable:
+                raise ex
+
             missing_labels.update(ex.labels)
 
     return chain_entries, list(missing_labels)
+
+
+def export_normal_attack_info_dragon(
+        dragon: "DragonDataEntry", asset_manager: "AssetManager",
+        skip_unparsable: bool
+) -> tuple[list[NormalAttackChainEntry], list[str]]:
+    """Get all special normal attack chain info of a dragon."""
+    normal_attack_chain = asset_manager.transformer_atk.transform_normal_attack(dragon.normal_attack_action_id)
+
+    try:
+        return [NormalAttackChainEntry(asset_manager, 0, normal_attack_chain)], []
+    except MissingTextError as ex:
+        if not skip_unparsable:
+            raise ex
+
+        return [], ex.labels
 
 
 def export_normal_attack_info_as_entry_dict(
         asset_manager: "AssetManager", /,
         skip_unparsable: bool = True,
 ) -> dict[int, list[NormalAttackChainEntry]]:
-    """Export special normal attack chain of a character."""
-    return export_each_chara_entries(
+    """Export special normal attack chain of all characters and dragons."""
+    ret = {}
+    # Export character normal attack info
+    ret |= export_each_chara_entries(
         export_normal_attack_info_chara, asset_manager,
         skip_unparsable=skip_unparsable, include_dragon=False,
     )
+    # Export dragon normal attack info
+    ret |= export_each_dragon_entries(
+        export_normal_attack_info_dragon, asset_manager,
+        skip_unparsable=skip_unparsable
+    )
+    return ret
 
 
 def export_normal_attack_info_as_json(file_dir: str, asset_manager: "AssetManager", /, skip_unparsable: bool = True):

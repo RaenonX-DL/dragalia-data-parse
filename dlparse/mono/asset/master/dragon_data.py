@@ -26,6 +26,8 @@ class DragonDataEntry(UnitEntry, VariedEntry, SkillEntry, MasterEntryBase):
     ability_id_2_lv4: int
     ability_id_2_lv5: int
 
+    normal_attack_action_id: int
+
     @property
     def icon_name(self) -> str:
         return f"{self.base_id}_{self.variation_id:02}"
@@ -53,6 +55,7 @@ class DragonDataEntry(UnitEntry, VariedEntry, SkillEntry, MasterEntryBase):
             ability_id_2_lv3=data["_Abilities23"],
             ability_id_2_lv4=data["_Abilities24"],
             ability_id_2_lv5=data["_Abilities25"],
+            normal_attack_action_id=data["_DefaultSkill"],
             cv_en_label=data["_CvInfoEn"],
             cv_jp_label=data["_CvInfo"],
             release_date=cls.parse_datetime(data["_ReleaseStartDate"]),
