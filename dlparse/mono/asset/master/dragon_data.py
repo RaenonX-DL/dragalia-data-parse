@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
-from dlparse.enums import Element, SkillNumber
+from dlparse.enums import Element, SkillNumber, UnitType
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 from dlparse.mono.asset.extension import UnitAsset, UnitEntry
 
@@ -50,6 +50,10 @@ class DragonDataEntry(UnitEntry, MasterEntryBase):
     @property
     def mode_ids(self) -> list[int]:
         return []
+
+    @property
+    def unit_type(self) -> UnitType:
+        return UnitType.DRAGON
 
     def max_skill_level(self, skill_num: SkillNumber) -> int:
         # Unique dragon is categorized as "unplayable".

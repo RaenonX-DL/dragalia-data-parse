@@ -456,7 +456,7 @@ class SkillTransformer:
                 dragon_data = unit_data
 
             if not dragon_data:
-                raise UnhandledUnitError(unit_data.id, type(unit_data))
+                raise UnhandledUnitError(unit_data)
 
             return SkillCancelActionUnit.from_player_action_motion(
                 self._loader_dragon_motion, dragon_data, prefab, pre_conditions

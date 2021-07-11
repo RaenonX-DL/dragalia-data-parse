@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Generic, Optional, TYPE_CHECKING, TextIO, Type, TypeVar
 
-from dlparse.enums import Element
+from dlparse.enums import Element, UnitType
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 from .named import NamedEntry
 from .skill_discovery import SkillDiscoverableEntry, SkillIdEntry
@@ -34,6 +34,12 @@ class UnitEntry(NamedEntry, VariedEntry, SkillDiscoverableEntry, MasterEntryBase
     @abstractmethod
     def icon_name(self) -> str:
         """Get the name of the icon, excluding the file extension."""
+        raise NotImplementedError()
+
+    @property
+    @abstractmethod
+    def unit_type(self) -> UnitType:
+        """Unit type of this entry."""
         raise NotImplementedError()
 
 

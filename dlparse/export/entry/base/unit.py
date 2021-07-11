@@ -3,7 +3,7 @@ from abc import ABC
 from dataclasses import dataclass, field
 from typing import Any, TYPE_CHECKING
 
-from dlparse.enums import Element
+from dlparse.enums import Element, UnitType
 from .entry import JsonExportableEntryBase
 from .text import TextEntry
 from .type import JsonSchema
@@ -23,12 +23,14 @@ class UnitEntryBase(JsonExportableEntryBase, ABC):
 
     unit_data: "UnitEntry"
 
+    unit_type: UnitType = field(init=False)
     unit_name: TextEntry = field(init=False)
     unit_icon_name: str = field(init=False)
     unit_internal_id: int = field(init=False)
     unit_element: Element = field(init=False)
 
     def __post_init__(self):
+        self.unit_type = self.unit_data.unit_type
         self.unit_name = TextEntry(self.asset_manager.asset_text_multi, self.unit_data.name_labels)
         self.unit_icon_name = self.unit_data.icon_name
         self.unit_internal_id = self.unit_data.id
@@ -40,6 +42,7 @@ class UnitEntryBase(JsonExportableEntryBase, ABC):
         return {
             "id": int,
             "iconName": str,
+            "type": int,
             "name": TextEntry.json_schema,
             "element": int,
         }
@@ -48,6 +51,7 @@ class UnitEntryBase(JsonExportableEntryBase, ABC):
         return {
             "id": self.unit_internal_id,
             "iconName": self.unit_icon_name,
+            "type": int,
             "name": self.unit_name.to_json_entry(),
             "element": self.unit_element.value,
         }

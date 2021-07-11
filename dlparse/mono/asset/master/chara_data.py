@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Generator, Optional, TYPE_CHECKING, TextIO, Union
 
-from dlparse.enums import Element, SkillNumber, Weapon
+from dlparse.enums import Element, SkillNumber, UnitType, Weapon
 from dlparse.errors import InvalidSkillNumError, NoUniqueDragonError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 from dlparse.mono.asset.extension import UnitAsset, UnitEntry
@@ -334,6 +334,10 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
     def cex_id_at_max_level(self) -> int:
         """Get the ID of the chained EX ability at the max level."""
         return self.cex_ids[-1]
+
+    @property
+    def unit_type(self) -> UnitType:
+        return UnitType.CHARACTER
 
     def max_skill_level(self, skill_num: SkillNumber):
         if skill_num == SkillNumber.ABILITY:
