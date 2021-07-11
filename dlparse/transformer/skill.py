@@ -4,16 +4,18 @@ from typing import Optional, TYPE_CHECKING, Type, TypeVar
 
 from dlparse.enums import Condition, ConditionCategories, ConditionComposite
 from dlparse.errors import (
-    ActionInfoNotFoundError, CharaDataNotFoundError, HitDataUnavailableError, NoUniqueDragonError,
-    SkillDataNotFoundError,
+    ActionInfoNotFoundError, HitDataUnavailableError, NoUniqueDragonError, SkillDataNotFoundError, UnhandledUnitError,
+    UnitDataNotFoundError,
 )
 from dlparse.model import (
     AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SkillCancelActionUnit, SupportiveSkillData,
 )
 from dlparse.mono.asset import (
-    ActionConditionEntry, CharaDataEntry, HitAttrEntry, SkillDataEntry, SkillIdEntry, SkillReverseSearchResult,
+    ActionConditionEntry, CharaDataEntry, DragonDataEntry, HitAttrEntry, SkillDataEntry, SkillIdEntry,
+    UnitEntry,
 )
 from dlparse.mono.asset.base import ActionComponentHasHitLabels
+from dlparse.mono.asset.extension import SkillReverseSearchResult
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -42,10 +44,10 @@ class SkillHitData:
 
     max_level: int
 
-    chara_data: CharaDataEntry = field(init=False)
+    unit_data: UnitEntry = field(init=False)
 
     def __post_init__(self):
-        self.chara_data = self.rev_result.chara_data
+        self.unit_data = self.rev_result.unit_data
 
         self.hit_data = self.hit_data[:self.max_level]
         self.hit_count = self.hit_count[:self.max_level]
@@ -279,21 +281,27 @@ class SkillTransformer:
 
         return ret
 
-    def _get_chara_skill_data(self, skill_id: int) -> tuple[SkillReverseSearchResult, SkillDataEntry]:
+    def _get_unit_skill_data(self, skill_id: int) -> tuple[SkillReverseSearchResult, SkillDataEntry]:
         """
-        Get the skill reverse search result (containing chara data found) and the skill data of ``skill_id``.
+        Get the skill reverse search result containing the unit data found, and the skill data of ``skill_id``.
 
         :raises SkillDataNotFoundError: if the skill data of `skill_id` is not found
         """
-        # Get the character data
-        rev_result: Optional[SkillReverseSearchResult] = self._asset_chara_data.get_chara_data_by_skill_id(
+        # Get the unit data
+        rev_result: Optional[SkillReverseSearchResult] = self._asset_chara_data.get_unit_data_by_skill_id(
             self._asset_manager, skill_id
         )
         if not rev_result:
-            skill_error = SkillDataNotFoundError(skill_id)
-            chara_error = CharaDataNotFoundError(int(str(skill_id)[:-1]), "(Chara ID guessed from skill ID)")
+            rev_result = self._asset_dragon_data.get_unit_data_by_skill_id(
+                self._asset_manager, skill_id, is_dragon=True
+            )
 
-            raise skill_error from chara_error
+        # Error on not found
+        if not rev_result:
+            skill_error = SkillDataNotFoundError(skill_id)
+            unit_error = UnitDataNotFoundError(int(str(skill_id)[:-1]), "(Unit ID guessed from skill ID)")
+
+            raise skill_error from unit_error
 
         # Get the skill data
         skill_data: Optional[SkillDataEntry] = self._asset_skill.get_data_by_id(skill_id)
@@ -371,7 +379,7 @@ class SkillTransformer:
         :raises ActionDataNotFoundError: action file not found
         :raises HitDataUnavailableError: no hit data available
         """
-        rev_result, skill_data = self._get_chara_skill_data(skill_id)
+        rev_result, skill_data = self._get_unit_skill_data(skill_id)
 
         if not ability_ids:
             ability_ids = []
@@ -395,7 +403,7 @@ class SkillTransformer:
                 cancel_unit_mtx.append([])
 
             cancel_unit_mtx[info.skill_level_0_based].extend(self.get_skill_cancel_unit(
-                rev_result.chara_data, rev_result.skill_id_entry, info.action_id, info.pre_conditions
+                rev_result.unit_data, rev_result.skill_id_entry, info.action_id, info.pre_conditions
             ))
 
             for hit_data in hit_data_lv:
@@ -421,7 +429,7 @@ class SkillTransformer:
         )
 
     def get_skill_cancel_unit(
-            self, chara_data: CharaDataEntry, skill_id_entry: SkillIdEntry, action_id: int,
+            self, unit_data: UnitEntry, skill_id_entry: SkillIdEntry, action_id: int,
             pre_conditions: ConditionComposite
     ) -> list[SkillCancelActionUnit]:
         """
@@ -438,16 +446,24 @@ class SkillTransformer:
         prefab = self._loader_action.get_prefab(action_id)
 
         if skill_id_entry.skill_num.is_dragon_skill:
-            if not chara_data.has_unique_dragon:
-                raise NoUniqueDragonError(chara_data.id)
+            dragon_data = None
+            if isinstance(unit_data, CharaDataEntry):
+                if not unit_data.has_unique_dragon:
+                    raise NoUniqueDragonError(unit_data.id)
+
+                dragon_data = unit_data.get_dragon_data(self._asset_dragon_data)
+            elif isinstance(unit_data, DragonDataEntry):
+                dragon_data = unit_data
+
+            if not dragon_data:
+                raise UnhandledUnitError(unit_data.id, type(unit_data))
 
             return SkillCancelActionUnit.from_player_action_motion(
-                self._loader_dragon_motion, chara_data.get_dragon_data(self._asset_dragon_data),
-                prefab, pre_conditions
+                self._loader_dragon_motion, dragon_data, prefab, pre_conditions
             )
 
         return SkillCancelActionUnit.from_player_action_motion(
-            self._loader_chara_motion, chara_data, prefab, pre_conditions
+            self._loader_chara_motion, unit_data, prefab, pre_conditions
         )
 
     def transform_supportive(

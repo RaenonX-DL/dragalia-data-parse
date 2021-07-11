@@ -1,12 +1,12 @@
 """Skill canceling action data unit."""
 from dataclasses import dataclass
-from typing import Optional, TYPE_CHECKING, TypeVar, Union
+from typing import Optional, TYPE_CHECKING, TypeVar
 
 from dlparse.enums import ConditionComposite, SkillCancelAction, SkillCancelType
 from dlparse.mono.loader import MotionLoaderBase
 
 if TYPE_CHECKING:
-    from dlparse.mono.asset import CharaDataEntry, DragonDataEntry, PlayerActionPrefab
+    from dlparse.mono.asset import PlayerActionPrefab, UnitEntry
 
 __all__ = ("SkillCancelActionUnit",)
 
@@ -45,7 +45,7 @@ class SkillCancelActionUnit:
 
     @staticmethod
     def from_player_action_motion(
-            motion_loader: T, data_entry: Union["CharaDataEntry", "DragonDataEntry"], prefab: "PlayerActionPrefab",
+            motion_loader: T, data_entry: "UnitEntry", prefab: "PlayerActionPrefab",
             pre_conditions: ConditionComposite = ConditionComposite()
     ) -> list["SkillCancelActionUnit"]:
         """Get the skill cancel action units from the player action prefab and the unit motion data."""

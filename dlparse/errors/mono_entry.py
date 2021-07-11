@@ -4,7 +4,7 @@ from typing import Optional
 from .base import AppValueError, EntryNotFoundError
 
 __all__ = (
-    "CharaDataNotFoundError", "NoUniqueDragonError", "SkillDataNotFoundError",
+    "UnitDataNotFoundError", "NoUniqueDragonError", "SkillDataNotFoundError",
     "ActionDataNotFoundError", "MotionDataNotFoundError",
     "TextLabelNotFoundError",
     "AbilityLimitDataNotFoundError", "AbilityOnSkillUnconvertibleError", "LanguageAssetNotFoundError",
@@ -12,11 +12,11 @@ __all__ = (
 )
 
 
-class CharaDataNotFoundError(EntryNotFoundError):
-    """Error to be raised if the character data is not found."""
+class UnitDataNotFoundError(EntryNotFoundError):
+    """Error to be raised if the unit data is not found."""
 
-    def __init__(self, chara_id: int, message: str = ""):
-        super().__init__(f"Character data of ID `{chara_id}` not found: {message}")
+    def __init__(self, unit_id: int, message: str = ""):
+        super().__init__(f"Unit data of ID `{unit_id}` not found: {message}")
 
 
 class NoUniqueDragonError(AppValueError):

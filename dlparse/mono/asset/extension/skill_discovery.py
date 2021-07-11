@@ -195,6 +195,7 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
 
     ss_skill_id: int
     ss_skill_num: SkillNumber
+    ss_skill_cost: int
 
     unique_dragon_id: int
 
@@ -489,11 +490,15 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
 
         return ret
 
-    def _from_base(self, include_base_if_mode: bool = False) -> list[SkillIdEntry]:
+    def _from_base(self, include_base_if_mode: bool, is_dragon: bool) -> list[SkillIdEntry]:
         """Get the base skills."""
         ret: list[SkillIdEntry] = []
 
-        if not self.has_mode_change or include_base_if_mode:
+        if is_dragon:
+            ret.append(SkillIdEntry(self.skill_1_id, SkillNumber.S1_DRAGON, SkillIdentifierLabel.S1_BASE))
+            if self.skill_2_id:  # Dragon usually does not have S2
+                ret.append(SkillIdEntry(self.skill_2_id, SkillNumber.S2_DRAGON, SkillIdentifierLabel.S2_BASE))
+        elif not self.has_mode_change or include_base_if_mode:
             ret.extend([
                 SkillIdEntry(self.skill_1_id, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
                 SkillIdEntry(self.skill_2_id, SkillNumber.S2, SkillIdentifierLabel.S2_BASE)
@@ -558,7 +563,8 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
         skill_2_data: "SkillDataEntry" = asset_manager.asset_skill_data.get_data_by_id(self.skill_2_id)
 
         ret.extend(self._skill_additional_single(asset_manager, skill_1_data, SkillNumber.S1))
-        ret.extend(self._skill_additional_single(asset_manager, skill_2_data, SkillNumber.S2))
+        if skill_2_data:  # Dragon does not have S2
+            ret.extend(self._skill_additional_single(asset_manager, skill_2_data, SkillNumber.S2))
         ret.extend(self._from_helper(skill_1_data))
 
         return ret
@@ -602,7 +608,8 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
         return ret
 
     def get_skill_id_entries(
-            self, asset_manager: "AssetManager", /, include_dragon: bool = True, include_base_if_mode: bool = False
+            self, asset_manager: "AssetManager", /,
+            include_base_if_mode: bool = False, is_dragon: bool = False,
     ) -> list[SkillIdEntry]:
         """
         Get all possible skill ID entries of a skill.
@@ -613,11 +620,11 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
             # Early return for manual discovery
             return identifiers
 
-        ret: list[SkillIdEntry] = self._from_base(include_base_if_mode)
+        ret: list[SkillIdEntry] = self._from_base(include_base_if_mode, is_dragon)
 
         if self.has_mode_change:
             ret.extend(self._from_mode(asset_manager))
-        if include_dragon:
+        if not is_dragon:
             ret.extend(self._from_dragon(asset_manager))
         ret.extend(self._from_skill_ext(asset_manager))
         ret.extend(self._from_ability(asset_manager))

@@ -25,7 +25,7 @@ def export_ex_abilities_as_entries(
 
         try:
             entries.append(CharaExAbiltiesEntry(
-                asset_manager=asset_manager, chara_data=chara_data,
+                asset_manager=asset_manager, unit_data=chara_data,
                 ex_ability_data=ex_data, cex_ability_data=chained_ex_data
             ))
         except (AbilityOnSkillUnconvertibleError, AbilityConditionUnconvertibleError,

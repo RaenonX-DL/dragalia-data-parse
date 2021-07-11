@@ -2,9 +2,9 @@
 from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
-from dlparse.enums import Element
+from dlparse.enums import Element, SkillNumber
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import SkillEntry, UnitAsset, UnitEntry, VariedEntry
+from dlparse.mono.asset.extension import UnitAsset, UnitEntry
 
 __all__ = ("DragonDataEntry", "DragonDataAsset", "DRAGON_SKILL_MAX_LEVEL")
 
@@ -12,7 +12,7 @@ DRAGON_SKILL_MAX_LEVEL = 2
 
 
 @dataclass
-class DragonDataEntry(UnitEntry, VariedEntry, SkillEntry, MasterEntryBase):
+class DragonDataEntry(UnitEntry, MasterEntryBase):
     """Single entry of a dragon data."""
 
     ability_id_1_lv1: int
@@ -31,6 +31,31 @@ class DragonDataEntry(UnitEntry, VariedEntry, SkillEntry, MasterEntryBase):
     @property
     def icon_name(self) -> str:
         return f"{self.base_id}_{self.variation_id:02}"
+
+    @property
+    def ability_ids_all_level(self) -> list[int]:
+        return [
+            ability_id for ability_id in (
+                self.ability_id_1_lv1, self.ability_id_1_lv2, self.ability_id_1_lv3,
+                self.ability_id_1_lv4, self.ability_id_1_lv5,
+                self.ability_id_2_lv1, self.ability_id_2_lv2, self.ability_id_2_lv3,
+                self.ability_id_2_lv4, self.ability_id_2_lv5,
+            ) if ability_id
+        ]
+
+    @property
+    def has_mode_change(self) -> bool:
+        return False
+
+    @property
+    def mode_ids(self) -> list[int]:
+        return []
+
+    def max_skill_level(self, skill_num: SkillNumber) -> int:
+        # Unique dragon is categorized as "unplayable".
+        # In this case, the skill level follows unit's skill level.
+        # Also, it should be parsed from chara data entry, NOT dragon data entry.
+        return 2
 
     @classmethod
     def parse_raw(cls, data: dict[str, Union[str, int]]) -> "DragonDataEntry":
@@ -59,7 +84,11 @@ class DragonDataEntry(UnitEntry, VariedEntry, SkillEntry, MasterEntryBase):
             cv_en_label=data["_CvInfoEn"],
             cv_jp_label=data["_CvInfo"],
             release_date=cls.parse_datetime(data["_ReleaseStartDate"]),
-            is_playable=bool(data["_IsPlayable"])
+            is_playable=bool(data["_IsPlayable"]),
+            ss_skill_id=0,
+            ss_skill_num=SkillNumber.NA,
+            ss_skill_cost=0,
+            unique_dragon_id=0,
         )
 
 

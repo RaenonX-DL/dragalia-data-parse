@@ -62,7 +62,7 @@ def export_normal_attack_info_as_entry_dict(
     # Export character normal attack info
     ret |= export_each_chara_entries(
         export_normal_attack_info_chara, asset_manager,
-        skip_unparsable=skip_unparsable, include_dragon=False,
+        skip_unparsable=skip_unparsable,
     )
     # Export dragon normal attack info
     ret |= export_each_dragon_entries(

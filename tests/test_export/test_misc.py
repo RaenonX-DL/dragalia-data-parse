@@ -45,8 +45,8 @@ def test_no_unplayable(asset_manager: AssetManager):
     entries = export_atk_skills_as_entries(asset_manager, skip_unparsable=False, include_dragon=False)
 
     for entry in entries:
-        if entry.character_internal_id in unplayable_chara_ids:
-            pytest.fail(f"Unplayable character included: {entry.character_internal_id}")
+        if entry.unit_internal_id in unplayable_chara_ids:
+            pytest.fail(f"Unplayable character included: {entry.unit_internal_id}")
 
 
 @pytest.mark.holistic

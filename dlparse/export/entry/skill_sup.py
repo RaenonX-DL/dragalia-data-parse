@@ -6,11 +6,11 @@ from dlparse.model import HitActionConditionEffectUnit
 from dlparse.mono.asset import SkillDataEntry, SkillIdEntry
 from .base import SkillExportEntryBase
 
-__all__ = ("CharaSupportiveSkillEntry",)
+__all__ = ("SupportiveSkillEntry",)
 
 
 @dataclass
-class CharaSupportiveSkillEntry(SkillExportEntryBase[HitActionConditionEffectUnit]):
+class SupportiveSkillEntry(SkillExportEntryBase[HitActionConditionEffectUnit]):
     """A single entry of a supportive skill."""
 
     target: HitTargetSimple = field(init=False)

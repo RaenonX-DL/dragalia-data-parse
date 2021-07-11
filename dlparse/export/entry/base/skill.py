@@ -5,10 +5,10 @@ from typing import Any, Generic, TypeVar
 
 from dlparse.enums import ConditionComposite, SkillNumber
 from dlparse.mono.asset import SkillDataEntry, SkillIdEntry
-from .chara import CharaEntryBase
 from .entry import HashableEntryBase, JsonExportableEntryBase
 from .text import TextEntry
 from .type import JsonSchema
+from .unit import UnitEntryBase
 
 __all__ = ("SkillExportEntryBase",)
 
@@ -16,7 +16,7 @@ T = TypeVar("T")
 
 
 @dataclass
-class SkillExportEntryBase(Generic[T], CharaEntryBase, HashableEntryBase, JsonExportableEntryBase, ABC):
+class SkillExportEntryBase(Generic[T], UnitEntryBase, HashableEntryBase, JsonExportableEntryBase, ABC):
     """Base class for an exported skill data entry."""
 
     skill_data: InitVar[SkillDataEntry]
@@ -53,20 +53,20 @@ class SkillExportEntryBase(Generic[T], CharaEntryBase, HashableEntryBase, JsonEx
         self.skill_name = TextEntry(
             self.asset_manager.asset_text_multi, skill_data.name_label, on_not_found=skill_data.name_label
         )
-        self.skill_max_level = self.chara_data.max_skill_level(skill_id_entry.skill_num)
+        self.skill_max_level = self.unit_data.max_skill_level(skill_id_entry.skill_num)
 
         self.sp_at_max = skill_data.get_sp_at_level(self.skill_max_level)
         self.sp_gradual_fill_pct_at_max = skill_data.get_sp_gradual_fill_pct_at_level(
             self.skill_max_level, self.asset_manager
         )
-        self.sharable = self.chara_data.ss_skill_id == skill_data.id
-        self.ss_cost = self.chara_data.ss_skill_cost
+        self.sharable = self.unit_data.ss_skill_id == skill_data.id
+        self.ss_cost = self.unit_data.ss_skill_cost
         self.ss_sp = skill_data.get_ss_sp_at_level(self.skill_max_level) if self.sharable else 0
 
     @property
     def unique_id(self) -> str:
         return (
-            f"{self.character_internal_id}{self.skill_internal_id}{self.skill_identifiers}"
+            f"{self.unit_internal_id}{self.skill_internal_id}{self.skill_identifiers}"
             f"{hash(self.condition_comp)}"
         )
 

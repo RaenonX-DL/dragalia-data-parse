@@ -3,13 +3,13 @@ from dataclasses import dataclass
 from typing import Any
 
 from dlparse.model import ChainedExAbilityData, ExAbilityData
-from .base import AbilityVariantEffectEntry, CharaEntryBase, JsonExportableEntryBase, JsonSchema
+from .base import AbilityVariantEffectEntry, JsonExportableEntryBase, JsonSchema, UnitEntryBase
 
 __all__ = ("CharaExAbiltiesEntry",)
 
 
 @dataclass
-class CharaExAbiltiesEntry(CharaEntryBase, JsonExportableEntryBase):
+class CharaExAbiltiesEntry(UnitEntryBase, JsonExportableEntryBase):
     """A single entry containing EX (Co-ab) and chained EX (CCA) of a character."""
 
     ex_ability_data: ExAbilityData
@@ -19,7 +19,7 @@ class CharaExAbiltiesEntry(CharaEntryBase, JsonExportableEntryBase):
     @property
     def json_schema(cls) -> JsonSchema:
         return super().json_schema | {
-            "chara": CharaEntryBase.json_schema,
+            "chara": UnitEntryBase.json_schema,
             "ex": [AbilityVariantEffectEntry.json_schema],
             "chainedEx": [AbilityVariantEffectEntry.json_schema]
         }

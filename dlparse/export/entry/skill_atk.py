@@ -8,7 +8,7 @@ from dlparse.mono.asset import SkillDataEntry, SkillIdEntry
 from dlparse.utils import remove_duplicates_preserve_order
 from .base import JsonExportableEntryBase, JsonSchema, SkillCancelInfoEntry, SkillExportEntryBase
 
-__all__ = ("CharaAttackingSkillEntry",)
+__all__ = ("AttackingSkillEntry",)
 
 
 @dataclass
@@ -97,7 +97,7 @@ class SkillAfflictionEntry(JsonExportableEntryBase):
 
 
 @dataclass
-class CharaAttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
+class AttackingSkillEntry(SkillExportEntryBase[AttackingSkillDataEntry]):
     """A single entry of an attacking skill."""
 
     skill_mods_max: list[float] = field(init=False)

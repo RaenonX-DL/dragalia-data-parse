@@ -4,7 +4,7 @@ import pytest
 
 from dlparse.enums import Condition, ConditionComposite
 from dlparse.export import export_atk_skills_as_entries
-from dlparse.export.entry import CharaAttackingSkillEntry
+from dlparse.export.entry import AttackingSkillEntry
 from dlparse.mono.manager import AssetManager
 from tests.expected_skills_lookup import skill_ids_atk
 from tests.utils import is_json_schema_match
@@ -51,4 +51,4 @@ def test_exported_json(asset_manager: AssetManager):
     entries = export_atk_skills_as_entries(asset_manager, include_dragon=False)
 
     for entry in entries:
-        is_json_schema_match(CharaAttackingSkillEntry.json_schema, entry.to_json_entry())
+        is_json_schema_match(AttackingSkillEntry.json_schema, entry.to_json_entry())

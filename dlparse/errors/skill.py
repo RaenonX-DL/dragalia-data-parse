@@ -7,10 +7,12 @@ from .base import AppValueError
 if TYPE_CHECKING:
     from dlparse.enums import SkillNumber, Condition
 
-__all__ = ("ConditionValidationFailedError", "BulletEndOfLifeError", "DamagingHitValidationFailedError",
-           "HitDataUnavailableError", "ActionInfoNotFoundError", "InvalidSkillIdentifierLabelError",
-           "UnhandledSelfDamageError", "InvalidSkillNumError", "InvalidSkillLevelError",
-           "PreconditionCollidedError", "MultipleActionsError")
+__all__ = (
+    "ConditionValidationFailedError", "BulletEndOfLifeError", "DamagingHitValidationFailedError",
+    "HitDataUnavailableError", "ActionInfoNotFoundError", "InvalidSkillIdentifierLabelError",
+    "UnhandledSelfDamageError", "InvalidSkillNumError", "InvalidSkillLevelError",
+    "PreconditionCollidedError", "MultipleActionsError", "UnhandledUnitError"
+)
 
 
 class ConditionValidationFailedError(AppValueError):
@@ -99,3 +101,10 @@ class MultipleActionsError(AppValueError):
     def all_possible_action_ids(self) -> set[int]:
         """Get all possible action IDs across levels."""
         return set(action_id for action_ids_lv in self.action_id_mtx for action_id in action_ids_lv)
+
+
+class UnhandledUnitError(AppValueError):
+    """Error to be raised if the unit type is unhandled."""
+
+    def __init__(self, unit_id: int, unit_entry_type: type):
+        super().__init__(f"Unhandled unit: ID #{unit_id} / Type: {unit_entry_type}")

@@ -7,12 +7,12 @@ from typing import Any, Callable, TypeVar, Union
 from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError, MotionDataNotFoundError
 from dlparse.export.entry import CsvExportableEntryBase, JsonExportableEntryBase, SkillExportEntryBase
 from dlparse.model import SkillDataBase
-from dlparse.mono.asset import CharaDataEntry, DragonDataEntry, SkillIdEntry
+from dlparse.mono.asset import CharaDataEntry, DragonDataEntry, SkillIdEntry, UnitEntry
 from dlparse.mono.manager import AssetManager
 
 __all__ = (
     "export_as_csv", "export_as_json", "print_skipped_messages", "export_transform_skill_entries",
-    "export_each_chara_entries_merged", "export_each_chara_entries", "export_each_dragon_entries",
+    "export_entries_merged", "export_each_chara_entries", "export_each_dragon_entries",
 )
 
 CT = TypeVar("CT", bound=CsvExportableEntryBase)
@@ -21,12 +21,17 @@ ET = TypeVar("ET", bound=SkillExportEntryBase)
 DT = TypeVar("DT", bound=SkillDataBase)
 
 CharaEntryParsingFunction = Callable[
-    [CharaDataEntry, AssetManager, bool, bool],
+    [CharaDataEntry, AssetManager, bool],
     tuple[list[JT], list[str]]
 ]
 
 DragonEntryParsingFunction = Callable[
     [DragonDataEntry, AssetManager, bool],
+    tuple[list[JT], list[str]]
+]
+
+UnitEntryParsingFunction = Callable[
+    [UnitEntry, AssetManager, bool],
     tuple[list[JT], list[str]]
 ]
 
@@ -39,23 +44,25 @@ SkillEntriesReturn = list[tuple[SkillIdEntry, SkillDataBase, list[ET]]]
 
 
 def export_transform_skill_entries(
-        transform_fn: TransformFunction, chara_data: CharaDataEntry, asset_manager: AssetManager,
-        skip_unparsable: bool = True, include_dragon: bool = True
+        transform_fn: TransformFunction, unit_data: UnitEntry, asset_manager: AssetManager,
+        skip_unparsable: bool = True,
 ) -> tuple[SkillEntriesReturn, list[str]]:
     """Get a list of skill entries to be parsed to exported data entries."""
     ret: SkillEntriesReturn = []
     skipped_messages: list[str] = []
 
     # Get all skills and iterate them
-    skill_identifiers = chara_data.get_skill_id_entries(asset_manager, include_dragon=include_dragon)
+    skill_identifiers = unit_data.get_skill_id_entries(
+        asset_manager, is_dragon=isinstance(unit_data, DragonDataEntry)
+    )
     for id_entry in skill_identifiers:
-        chara_name = chara_data.get_name(asset_manager.asset_text_multi)
+        chara_name = unit_data.get_name(asset_manager.asset_text_multi)
 
         # Transform every skill data
         try:
             skill_data = transform_fn(
                 id_entry.skill_id,
-                chara_data.max_skill_level(id_entry.skill_num)
+                unit_data.max_skill_level(id_entry.skill_num)
             )
         except HitDataUnavailableError:
             # No attacking data available, skipping that / the skill is not an attacking skill
@@ -65,7 +72,7 @@ def export_transform_skill_entries(
 
             if skip_unparsable:
                 skipped_messages.append(f"[Skill] {id_entry.skill_identifier_labels} ({id_entry.skill_id}) "
-                                        f"of {chara_name} ({chara_data.id}): {ex}")
+                                        f"of {chara_name} ({unit_data.id}): {ex}")
                 continue
 
             raise ex
@@ -78,20 +85,20 @@ def export_transform_skill_entries(
 
 def export_each_chara_entries(
         entry_parse_fn: CharaEntryParsingFunction, asset_manager: AssetManager, /,
-        skip_unparsable: bool = True, include_dragon: bool = True
+        skip_unparsable: bool = True,
 ) -> dict[int, list[JT]]:
     """
     Parse each character to json-exportable entries.
 
     The key of the return is the character ID.
-    To merge all entries into a single list, use ``export_each_chara_entries_merged()`` instead.
+    To merge all entries into a single list, use ``export_entries_merged()`` instead.
     """
     ret: dict[int, list[JT]] = {}
 
     skipped_messages: list[str] = []
 
     for chara_data in asset_manager.asset_chara_data.playable_data:
-        entries, messages = entry_parse_fn(chara_data, asset_manager, skip_unparsable, include_dragon)
+        entries, messages = entry_parse_fn(chara_data, asset_manager, skip_unparsable)
 
         ret[chara_data.id] = entries
         skipped_messages.extend(messages)
@@ -125,25 +132,35 @@ def export_each_dragon_entries(
     return ret
 
 
-def export_each_chara_entries_merged(
-        entry_parse_fn: CharaEntryParsingFunction, asset_manager: AssetManager, /,
+def export_entries_merged(
+        unit_entry_parse_fn: UnitEntryParsingFunction,
+        asset_manager: AssetManager, /,
         skip_unparsable: bool = True, include_dragon: bool = True
 ) -> list[JT]:
     """
-    Parse each character to json-exportable entries.
+    Parse each character and dragon to json-exportable entries.
 
-    This merges all entries from different character into a single list.
-    To keep the separation, use ``export_each_chara_entries()`` instead.
+    ``include_dragon`` indicates if the dragon data should be included to parse.
+
+    This merges all entries from different character and dragon into a single list.
+    To keep the separation, use ``export_each_chara_entries()`` or ``export_each_dragon_entries()`` instead.
     """
     ret: list[JT] = []
 
-    entry_dict = export_each_chara_entries(
-        entry_parse_fn, asset_manager,
-        skip_unparsable=skip_unparsable, include_dragon=include_dragon
+    chara_entry_dict = export_each_chara_entries(
+        unit_entry_parse_fn, asset_manager,
+        skip_unparsable=skip_unparsable,
     )
-
-    for entries in entry_dict.values():
+    for entries in chara_entry_dict.values():
         ret.extend(entries)
+
+    if include_dragon:
+        dragon_entry_dict = export_each_dragon_entries(
+            unit_entry_parse_fn, asset_manager,
+            skip_unparsable=skip_unparsable
+        )
+        for entries in dragon_entry_dict.values():
+            ret.extend(entries)
 
     return ret
 

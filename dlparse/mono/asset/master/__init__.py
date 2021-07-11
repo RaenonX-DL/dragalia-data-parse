@@ -5,7 +5,7 @@ from .action_condition import ActionConditionAsset, ActionConditionEntry
 from .action_grant import ActionGrantAsset, ActionGrantEntry
 from .action_hit_attr import HitAttrAsset, HitAttrEntry
 from .buff_count import BuffCountAsset, BuffCountEntry
-from .chara_data import CharaDataAsset, CharaDataEntry, SkillReverseSearchResult
+from .chara_data import CharaDataAsset, CharaDataEntry
 from .chara_mode_data import CharaModeAsset, CharaModeEntry
 from .chara_unique_combo import CharaUniqueComboAsset, CharaUniqueComboEntry
 from .cheat_detection import CheatDetectionAsset, CheatDetectionEntry
