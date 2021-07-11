@@ -51,7 +51,7 @@ class UnitEntryBase(JsonExportableEntryBase, ABC):
         return {
             "id": self.unit_internal_id,
             "iconName": self.unit_icon_name,
-            "type": int,
+            "type": self.unit_type.value,
             "name": self.unit_name.to_json_entry(),
             "element": self.unit_element.value,
         }
