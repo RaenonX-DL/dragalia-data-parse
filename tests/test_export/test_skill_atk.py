@@ -25,7 +25,7 @@ expected_contained_info: dict[tuple[int, ConditionComposite], pytest.approx] = {
 
 @pytest.mark.holistic
 def test_exported_entries(asset_manager: AssetManager):
-    entries = export_atk_skills_as_entries(asset_manager, skip_unparsable=False, include_dragon=False)
+    entries = export_atk_skills_as_entries(asset_manager, skip_unparsable=False)
 
     assert len(entries) > 0
 
@@ -48,7 +48,7 @@ def test_exported_entries(asset_manager: AssetManager):
 
 @pytest.mark.holistic
 def test_exported_json(asset_manager: AssetManager):
-    entries = export_atk_skills_as_entries(asset_manager, include_dragon=False)
+    entries = export_atk_skills_as_entries(asset_manager)
 
     for entry in entries:
         is_json_schema_match(AttackingSkillEntry.json_schema, entry.to_json_entry())

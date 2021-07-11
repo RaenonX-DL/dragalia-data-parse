@@ -15,7 +15,7 @@ __all__ = ("export_normal_attack_info_as_json", "export_normal_attack_info_as_en
 
 def export_normal_attack_info_chara(
         chara_data: "CharaDataEntry", asset_manager: "AssetManager",
-        skip_unparsable: bool, __: bool
+        skip_unparsable: bool,
 ) -> tuple[list[NormalAttackChainEntry], list[str]]:
     """Get all special normal attack chain info of a character."""
     chain_entries = []

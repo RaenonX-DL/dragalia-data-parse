@@ -1036,6 +1036,18 @@
     "text": "6 Additional Hits"
   },
   {
+    "id": "ENUM_COND_ADDL_INPUT_7",
+    "text": "7 Additional Hits"
+  },
+  {
+    "id": "ENUM_COND_ADDL_INPUT_8",
+    "text": "8 Additional Hits"
+  },
+  {
+    "id": "ENUM_COND_ADDL_INPUT_9",
+    "text": "9 Additional Hits"
+  },
+  {
     "id": "ENUM_COND_CANCELS_FJOACHIM_S2",
     "text": "[FJoachim] Cancel S2"
   },

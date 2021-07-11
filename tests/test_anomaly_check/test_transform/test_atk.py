@@ -13,6 +13,7 @@ allowed_no_base_mods_sid = {
     105404022,  # Sha Wujing S2, only debuff the enemy
     107501042,  # Seimei S2, only has mods when Shikigami is summoned
     109505012,  # Gala Chelle S2, only debuff (ATK down) the enemy
+    299000112,  # Panther S2, placeholder dragon skill
 }
 
 
@@ -22,7 +23,7 @@ def test_transform_all_attack_skills(transformer_skill: SkillTransformer, asset_
     for chara_data in asset_manager.asset_chara_data.playable_data:
         skill_ids.extend([
             skill_entry.skill_id for skill_entry
-            in chara_data.get_skill_id_entries(asset_manager, include_dragon=False)
+            in chara_data.get_skill_id_entries(asset_manager)
         ])
 
     skill_ids_missing: dict[int, str] = skill_ids_atk.copy()

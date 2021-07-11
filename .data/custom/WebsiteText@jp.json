@@ -1036,6 +1036,18 @@
     "text": "追加輸入 6 次"
   },
   {
+    "id": "ENUM_COND_ADDL_INPUT_7",
+    "text": "追加輸入 7 次"
+  },
+  {
+    "id": "ENUM_COND_ADDL_INPUT_8",
+    "text": "追加輸入 8 次"
+  },
+  {
+    "id": "ENUM_COND_ADDL_INPUT_9",
+    "text": "追加輸入 9 次"
+  },
+  {
     "id": "ENUM_COND_CANCELS_FJOACHIM_S2",
     "text": "[禮服約爾希姆] 取消 S2"
   },

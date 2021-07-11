@@ -212,6 +212,9 @@ class Condition(TranslatableEnumMixin, Enum):
     ADDL_INPUT_4 = 354
     ADDL_INPUT_5 = 355
     ADDL_INPUT_6 = 356
+    ADDL_INPUT_7 = 357
+    ADDL_INPUT_8 = 358
+    ADDL_INPUT_9 = 359
     # endregion
 
     # region Action canceling

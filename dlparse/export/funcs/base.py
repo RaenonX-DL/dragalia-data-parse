@@ -47,14 +47,20 @@ def export_transform_skill_entries(
         transform_fn: TransformFunction, unit_data: UnitEntry, asset_manager: AssetManager,
         skip_unparsable: bool = True,
 ) -> tuple[SkillEntriesReturn, list[str]]:
-    """Get a list of skill entries to be parsed to exported data entries."""
+    """
+    Get a list of skill entries to be parsed to exported data entries.
+
+    ``skip_unparsable`` is always ``True`` if ``unit_data`` is dragon data entry.
+    """
     ret: SkillEntriesReturn = []
     skipped_messages: list[str] = []
 
+    is_dragon = isinstance(unit_data, DragonDataEntry)
+    if is_dragon:
+        skip_unparsable = True
+
     # Get all skills and iterate them
-    skill_identifiers = unit_data.get_skill_id_entries(
-        asset_manager, is_dragon=isinstance(unit_data, DragonDataEntry)
-    )
+    skill_identifiers = unit_data.get_skill_id_entries(asset_manager, is_dragon=is_dragon)
     for id_entry in skill_identifiers:
         chara_name = unit_data.get_name(asset_manager.asset_text_multi)
 
