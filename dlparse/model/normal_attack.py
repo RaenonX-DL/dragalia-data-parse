@@ -82,6 +82,9 @@ class NormalAttackCombo:
             if not cancel_action.action_id:
                 continue  # Action ID = 0 means any action, definitely not the next combo
 
+            if cancel_action.time == 0:
+                continue  # Next combo should not be able to change immediately
+
             self.next_combo_action_id = cancel_action.action_id
             return
 
