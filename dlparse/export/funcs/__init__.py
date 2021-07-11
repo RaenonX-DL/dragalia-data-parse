@@ -9,6 +9,6 @@ from .skill_atk import export_atk_skill_as_json, export_atk_skills_as_entries
 from .skill_identifiers import export_skill_identifiers_as_entry_dict, export_skill_identifiers_as_json
 from .skill_sup import export_sup_skill_as_json, export_sup_skills_as_entries
 from .unit_info import (
-    export_chara_info_as_entries, export_chara_info_as_json,
-    export_dragon_info_as_entries, export_dragon_info_as_json,
+    export_advanced_info_as_entry_dict, export_advanced_info_as_json, export_chara_info_as_entries,
+    export_chara_info_as_json, export_dragon_info_as_entries, export_dragon_info_as_json,
 )
