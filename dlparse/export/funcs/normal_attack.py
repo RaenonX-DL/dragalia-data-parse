@@ -59,15 +59,15 @@ def export_normal_attack_info_as_entry_dict(
     """Export special normal attack chain of all characters and dragons."""
     ret = {}
     # Export character normal attack info
-    ret |= export_each_chara_entries(
+    ret.update(export_each_chara_entries(
         export_normal_attack_info_chara, asset_manager,
         skip_unparsable=skip_unparsable,
-    )
+    ))
     # Export dragon normal attack info
-    ret |= export_each_dragon_entries(
+    ret.update(export_each_dragon_entries(
         export_normal_attack_info_dragon, asset_manager,
         skip_unparsable=skip_unparsable
-    )
+    ))
     return ret
 
 
