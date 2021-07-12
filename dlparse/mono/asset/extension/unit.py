@@ -6,7 +6,7 @@ from typing import Generic, Optional, TYPE_CHECKING, TextIO, Type, TypeVar
 
 from dlparse.enums import Element, UnitType
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from .named import NamedEntry
+from .named import UnitNameEntry
 from .skill_discovery import SkillDiscoverableEntry, SkillIdEntry
 from .varied import VariedEntry
 
@@ -17,7 +17,7 @@ __all__ = ("UnitEntry", "UnitAsset", "SkillReverseSearchResult")
 
 
 @dataclass
-class UnitEntry(NamedEntry, VariedEntry, SkillDiscoverableEntry, MasterEntryBase, ABC):
+class UnitEntry(UnitNameEntry, VariedEntry, SkillDiscoverableEntry, MasterEntryBase, ABC):
     """Interface for an unit."""
 
     element: Element

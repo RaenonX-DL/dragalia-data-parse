@@ -1,4 +1,4 @@
-"""Interface for the named entry."""
+"""Interface for the named entries."""
 from abc import ABC
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
@@ -9,11 +9,11 @@ from dlparse.errors import TextLabelNotFoundError
 if TYPE_CHECKING:
     from dlparse.mono.asset import TextAssetMultilingual
 
-__all__ = ("NamedEntry",)
+__all__ = ("UnitNameEntry",)
 
 
 @dataclass
-class NamedEntry(ABC):
+class UnitNameEntry(ABC):
     """Interface for a named data entry."""
 
     name_label: str
