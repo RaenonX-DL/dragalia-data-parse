@@ -385,7 +385,10 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
         1st element of each return is the variant source mode ID;
         2nd element of each return is the normal attack root action ID.
 
-        Variant source mode ID is `0` if the corresponding variant is the default one.
+        Variant source mode ID could have the special values below:
+
+        - ``0`` if the corresponding variant is the default one.
+        - ``-1`` if the corresponding variant comes from the unique dragon.
         """
         for mode_id in self.mode_ids_include_default:
             if not mode_id:
@@ -401,6 +404,12 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
             unique_combo_data = asset_manager.asset_chara_unique_combo.get_data_by_id(mode_data.unique_combo_id)
 
             yield mode_id, unique_combo_data.action_id
+
+        if self.has_unique_dragon:
+            dragon_data = self.get_dragon_data(asset_manager.asset_dragon_data)
+
+            # Constant -1 for unique dragon
+            yield -1, dragon_data.normal_attack_action_id
 
     @classmethod
     def parse_raw(cls, data: dict[str, Union[str, int, float]]) -> "CharaDataEntry":

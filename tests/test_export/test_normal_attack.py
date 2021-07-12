@@ -1,7 +1,9 @@
 import pytest
 
+from dlparse.enums import Language
 from dlparse.export import export_normal_attack_info_as_entry_dict
 from dlparse.export.entry import NormalAttackChainEntry
+from dlparse.export.funcs.normal_attack import export_normal_attack_info_chara
 from dlparse.mono.manager import AssetManager
 from tests.utils import is_json_schema_match
 
@@ -13,6 +15,19 @@ def test_exported_json(asset_manager: AssetManager):
     for entries in entry_dict.values():
         for entry in entries:
             is_json_schema_match(NormalAttackChainEntry.json_schema, entry.to_json_entry())
+
+
+def test_export_unique_dragon_combo_chain(asset_manager: AssetManager):
+    chara_data_tiki = asset_manager.asset_chara_data.get_data_by_id(10350203)
+    entries, _ = export_normal_attack_info_chara(chara_data_tiki, asset_manager, skip_unparsable=False)
+
+    chain_names_expected = {
+        asset_manager.asset_text_website.get_text(Language.EN, label)
+        for label in ("NORMAL_ATTACK_COMBO_CHAIN_0", "NORMAL_ATTACK_COMBO_CHAIN_-1")
+    }
+    chain_names_actual = {entry.chain_name.text_dict[Language.EN] for entry in entries}
+
+    assert chain_names_expected == chain_names_actual
 
 
 def test_branched_chain_has_utp_has_crisis(asset_manager: AssetManager):

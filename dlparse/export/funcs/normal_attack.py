@@ -9,7 +9,10 @@ if TYPE_CHECKING:
     from dlparse.mono.asset import CharaDataEntry, DragonDataEntry
     from dlparse.mono.manager import AssetManager
 
-__all__ = ("export_normal_attack_info_as_json", "export_normal_attack_info_as_entry_dict")
+__all__ = (
+    "export_normal_attack_info_chara",
+    "export_normal_attack_info_as_json", "export_normal_attack_info_as_entry_dict"
+)
 
 
 def export_normal_attack_info_chara(

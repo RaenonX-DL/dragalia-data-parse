@@ -90,7 +90,7 @@ class NormalAttackChainEntry(JsonExportableEntryBase):
 
     asset_manager: "AssetManager"
 
-    source_mode_id: InitVar[int]  # `0` for default
+    source_mode_id: InitVar[int]  # `0` for default; `-1` for unique dragon
     chain: InitVar[NormalAttackChain]
 
     chain_name: TextEntry = field(init=False)
