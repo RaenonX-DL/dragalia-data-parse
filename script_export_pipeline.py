@@ -7,9 +7,9 @@ from dlparse.enums import (
     BuffValueUnit, Element, SkillCancelAction, Status, TranslatableEnumMixin, Weapon, cond_afflictions, cond_elements,
 )
 from dlparse.export import (
-    collect_chained_ex_ability_buff_param, collect_ex_ability_buff_param, export_atk_skill_as_json,
-    export_chara_info_as_json, export_condition_as_json, export_dragon_info_as_json, export_elem_bonus_as_json,
-    export_enums_json, export_ex_abilities_as_json, export_normal_attack_info_as_json,
+    collect_chained_ex_ability_buff_param, collect_ex_ability_buff_param, export_advanced_info_as_json,
+    export_atk_skill_as_json, export_chara_info_as_json, export_condition_as_json, export_dragon_info_as_json,
+    export_elem_bonus_as_json, export_enums_json, export_ex_abilities_as_json, export_normal_attack_info_as_json,
     export_skill_identifiers_as_json,
 )
 from dlparse.mono.manager import AssetManager
@@ -71,13 +71,15 @@ class FileExporter:
 
     @time_exec(title="Skill identifiers exporting time")
     def _export_skill_identifiers(self, name: str):
-        export_skill_identifiers_as_json(self._asset_manager, os.path.join(self._dir_export, "skills", f"{name}.json"))
+        export_skill_identifiers_as_json(
+            self._asset_manager,
+            os.path.join(self._dir_export, "skills", f"{name}.json")
+        )
 
     @time_exec(title="ATK skill exporting time")
     def _export_atk_skill(self):
         export_atk_skill_as_json(
-            os.path.join(self._dir_export, "skills", "attacking.json"), self._asset_manager,
-            skip_unparsable=True
+            os.path.join(self._dir_export, "skills", "attacking.json"), self._asset_manager
         )
 
     @time_exec(title="EX/CEX ability exporting time")
@@ -89,14 +91,9 @@ class FileExporter:
 
     @time_exec(title="Unit info exporting time")
     def _export_unit_info(self):
-        export_chara_info_as_json(
-            os.path.join(self._dir_export, "info", "chara.json"), self._asset_manager,
-            skip_unparsable=True
-        )
-        export_dragon_info_as_json(
-            os.path.join(self._dir_export, "info", "dragon.json"), self._asset_manager,
-            skip_unparsable=True
-        )
+        export_chara_info_as_json(os.path.join(self._dir_export, "info", "chara.json"), self._asset_manager)
+        export_dragon_info_as_json(os.path.join(self._dir_export, "info", "dragon.json"), self._asset_manager)
+        export_advanced_info_as_json(os.path.join(self._dir_export, "info", "advanced"), self._asset_manager)
 
     @time_exec(title="Normal attack info exporting time")
     def _export_normal_attack(self):

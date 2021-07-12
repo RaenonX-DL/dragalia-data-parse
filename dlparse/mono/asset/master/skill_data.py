@@ -229,6 +229,19 @@ class SkillDataEntry(MasterEntryBase):
 
         raise InvalidSkillLevelError(level)
 
+    def get_icon_name_at_level(self, level: int) -> str:
+        """Get the skill icon name at ``level``."""
+        return [self.icon_lv1_label, self.icon_lv2_label, self.icon_lv3_label, self.icon_lv4_label][level - 1]
+
+    def get_description_label_at_level(self, level: int) -> str:
+        """Get the skill description label at ``level``."""
+        return [
+            self.description_lv1_label,
+            self.description_lv2_label,
+            self.description_lv3_label,
+            self.description_lv4_label
+        ][level - 1]
+
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "SkillDataEntry":
         return SkillDataEntry(

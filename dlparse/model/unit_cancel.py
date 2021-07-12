@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from typing import Optional, TYPE_CHECKING, TypeVar
 
+from dlparse.errors import MotionDataNotFoundError
 from dlparse.enums import ConditionComposite, SkillCancelAction, SkillCancelType
 from dlparse.mono.loader import MotionLoaderBase
 
@@ -11,6 +12,18 @@ if TYPE_CHECKING:
 __all__ = ("SkillCancelActionUnit",)
 
 T = TypeVar("T", bound=MotionLoaderBase)
+
+# Set of motion names that does not have corresponding motion data.
+# --------------------
+# Those data actually should exist or redirected to other data.
+# However, for some reason, those data is missing.
+# This allows the application to continue without crashing it.
+MOTION_NAMES_EXPECT_NOT_FOUND: set[str] = {
+    "d210089_01",  # Bronze Fafnir
+    "d210090_01",  # Silver Fafnir
+    "d210091_01",  # Gold Fafnir
+    "d210051_01"  # Takemikazuchi
+}
 
 
 @dataclass
@@ -58,11 +71,17 @@ class SkillCancelActionUnit:
             end_time = 0
 
             for motion in prefab.motions:
-                end_time = max(
-                    end_time,
-                    motion.time_start + motion.time_duration,
-                    motion_loader.get_motion_stop_time(data_entry, motion.motion_state)
-                )
+                try:
+                    end_time = max(
+                        end_time,
+                        motion.time_start + motion.time_duration,
+                        motion_loader.get_motion_stop_time(data_entry, motion.motion_state)
+                    )
+                except MotionDataNotFoundError as ex:
+                    if ex.motion_name in MOTION_NAMES_EXPECT_NOT_FOUND:
+                        return []
+
+                    raise ex
 
             cancel_units.append(SkillCancelActionUnit(
                 action=SkillCancelAction.MOTION_ENDS,

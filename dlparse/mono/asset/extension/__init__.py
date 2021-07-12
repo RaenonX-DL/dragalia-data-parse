@@ -1,4 +1,5 @@
 """Extensions for the mono asset classes."""
+from .ability import AbilityEntryExtension
 from .anim_ctrl import AnimatorController
 from .anim_ctrl_override import AnimatorOverrideController
 from .named import DescribedNameEntry, UnitNameEntry

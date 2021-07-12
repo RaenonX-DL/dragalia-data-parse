@@ -5,9 +5,10 @@ from typing import Optional, TYPE_CHECKING, TextIO, Union
 from dlparse.enums import AbilityCondition, AbilityVariantType, Condition, Element, SkillNumber, UnitType, Weapon
 from dlparse.errors import AbilityConditionUnconvertibleError, AbilityOnSkillUnconvertibleError
 from dlparse.mono.asset.base import (
-    AbilityConditionEntryBase, AbilityEntryBase, AbilityVariantEntryBase, MasterAssetBase, MasterEntryBase,
+    AbilityConditionEntryBase, AbilityVariantEntryBase, MasterAssetBase, MasterEntryBase,
     MasterParserBase,
 )
+from dlparse.mono.asset.extension import AbilityEntryExtension
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -129,7 +130,7 @@ class AbilityVariantEntry(AbilityVariantEntryBase):
 
 
 @dataclass
-class AbilityEntry(AbilityEntryBase[AbilityConditionEntry, AbilityVariantEntry], MasterEntryBase):
+class AbilityEntry(AbilityEntryExtension[AbilityConditionEntry, AbilityVariantEntry], MasterEntryBase):
     """Single entry of an ability data."""
 
     on_skill: int

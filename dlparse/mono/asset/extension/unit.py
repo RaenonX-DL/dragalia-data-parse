@@ -42,6 +42,24 @@ class UnitEntry(UnitNameEntry, VariedEntry, SkillDiscoverableEntry, MasterEntryB
         """Unit type of this entry."""
         raise NotImplementedError()
 
+    @property
+    @abstractmethod
+    def self_skill_id_entries(self) -> list[SkillIdEntry]:
+        """
+        Get all skills that is the original skill.
+
+        For example, S1 and S2 for a character; Ultimate for a dragon is the original skill.
+        Note that the shared skill of a character, any phase-changed skills,
+        or unique dragon skills are NOT considered as original skills.
+        """
+        raise NotImplementedError()
+
+    @property
+    @abstractmethod
+    def ability_ids_at_max_level(self) -> list[int]:
+        """Get the ability IDs at its max level."""
+        raise NotImplementedError()
+
 
 @dataclass
 class SkillReverseSearchResult:

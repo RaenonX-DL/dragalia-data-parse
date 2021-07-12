@@ -1,17 +1,15 @@
 """Common classes for the ability data."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Callable, Generic, Optional, TypeVar
+from typing import Callable, Optional, TypeVar
 
 from dlparse.enums import (
     AbilityCondition, AbilityTargetAction, AbilityVariantType, ActionDebuffType, Condition, ConditionCategories,
     ConditionComposite, Element, SkillNumber, Status, UnitType, Weapon,
 )
 from dlparse.errors import EnumConversionError
-from dlparse.mono.asset.extension import DescribedNameEntry
-from .master import MasterEntryBase
 
-__all__ = ("AbilityConditionEntryBase", "AbilityVariantEntryBase", "AbilityEntryBase")
+__all__ = ("AbilityConditionEntryBase", "AbilityVariantEntryBase")
 
 _hp_gte_map: dict[float, Condition] = {
     30: Condition.SELF_HP_GTE_30,
@@ -339,28 +337,3 @@ class AbilityVariantEntryBase(ABC):
 
 CT = TypeVar("CT", bound=AbilityConditionEntryBase)
 VT = TypeVar("VT", bound=AbilityVariantEntryBase)
-
-
-@dataclass
-class AbilityEntryBase(Generic[CT, VT], MasterEntryBase, ABC):
-    """Base class of an ability entry."""
-
-    condition: CT
-
-    ability_icon_name: str
-
-    @property
-    @abstractmethod
-    def variants(self) -> list[VT]:
-        """
-        Get all in-use ability variants as a list.
-
-        Note that this does **not** give the other variants that come from different ability linked by the variants.
-        To get all possible variants, call ``get_variants()`` instead.
-        """
-        raise NotImplementedError()
-
-    @property
-    def unknown_variant_type_ids(self) -> list[int]:
-        """Get a list of unknown variant type IDs."""
-        return [variant.type_id for variant in self.variants if variant.is_unknown_type]

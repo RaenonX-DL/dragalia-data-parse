@@ -5,9 +5,10 @@ from typing import Optional, TextIO, Union
 from dlparse.enums import Element, UnitType, Weapon
 from dlparse.errors import AbilityConditionUnconvertibleError
 from dlparse.mono.asset.base import (
-    AbilityConditionEntryBase, AbilityEntryBase, AbilityVariantEntryBase, MasterAssetBase, MasterEntryBase,
+    AbilityConditionEntryBase, AbilityVariantEntryBase, MasterAssetBase, MasterEntryBase,
     MasterParserBase,
 )
+from dlparse.mono.asset.extension import AbilityEntryExtension
 
 __all__ = ("ExAbilityEntry", "ExAbilityAsset", "ExAbilityVariantEntry")
 
@@ -26,7 +27,7 @@ class ExAbilityVariantEntry(AbilityVariantEntryBase):
 
 
 @dataclass
-class ExAbilityEntry(AbilityEntryBase[ExAbilityConditionEntry, ExAbilityVariantEntry], MasterEntryBase):
+class ExAbilityEntry(AbilityEntryExtension[ExAbilityConditionEntry, ExAbilityVariantEntry], MasterEntryBase):
     """Single entry of an EX ability data."""
 
     element: Element

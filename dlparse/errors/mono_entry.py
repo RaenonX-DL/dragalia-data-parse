@@ -44,6 +44,7 @@ class MotionDataNotFoundError(EntryNotFoundError):
     """Error to be raised if the motion data file is not found."""
 
     def __init__(self, motion_name: str, message: str = ""):
+        self.motion_name = motion_name
         super().__init__(f"Motion data `{motion_name}` not found: {message}")
 
 

@@ -6,7 +6,7 @@ from typing import Generator, Optional, TYPE_CHECKING, TextIO, Union
 from dlparse.enums import Element, SkillNumber, UnitType, Weapon
 from dlparse.errors import InvalidSkillNumError, NoUniqueDragonError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import UnitAsset, UnitEntry
+from dlparse.mono.asset.extension import SkillIdEntry, SkillIdentifierLabel, UnitAsset, UnitEntry
 from .dragon_data import DRAGON_SKILL_MAX_LEVEL, DragonDataAsset, DragonDataEntry
 from .skill_data import CHARA_SKILL_MAX_LEVEL
 
@@ -338,6 +338,13 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
     @property
     def unit_type(self) -> UnitType:
         return UnitType.CHARACTER
+
+    @property
+    def self_skill_id_entries(self) -> list[SkillIdEntry]:
+        return [
+            SkillIdEntry(self.skill_1_id, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
+            SkillIdEntry(self.skill_2_id, SkillNumber.S2, SkillIdentifierLabel.S2_BASE)
+        ]
 
     def max_skill_level(self, skill_num: SkillNumber):
         if skill_num == SkillNumber.ABILITY:

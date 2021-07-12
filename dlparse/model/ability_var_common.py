@@ -15,7 +15,8 @@ from dlparse.enums import (
 )
 from dlparse.errors import AbilityVariantUnconvertibleError
 from dlparse.mono.asset import AbilityVariantEntry, ActionConditionEntry, ExAbilityEntry
-from dlparse.mono.asset.base import AbilityEntryBase, AbilityVariantEntryBase
+from dlparse.mono.asset.base import AbilityVariantEntryBase
+from dlparse.mono.asset.extension import AbilityEntryExtension
 from .action_cond_conv import ActionCondEffectConvertPayload, ActionCondEffectConvertible
 from .base import EffectUnitBase
 
@@ -50,7 +51,7 @@ class AbilityVariantEffectUnit(EffectUnitBase):
                 < (other.source_ability_id, other.condition_comp, int(other.parameter.value), other.rate))
 
 
-AT = TypeVar("AT", bound=AbilityEntryBase)
+AT = TypeVar("AT", bound=AbilityEntryExtension)
 
 
 @dataclass
@@ -455,7 +456,7 @@ class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, A
         raise AbilityVariantUnconvertibleError(payload.source_ability_id, self.variant.type_id)
 
 
-T = TypeVar("T", bound=AbilityEntryBase)
+T = TypeVar("T", bound=AbilityEntryExtension)
 
 
 def ability_to_effect_units(

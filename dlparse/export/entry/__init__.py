@@ -1,5 +1,5 @@
 """Data entry classes for the exported data."""
-from .advanced_info import CharaAdvancedData, DragonAdvancedData
+from .advanced_info import AdvancedInfoEntryBase, CharaAdvancedData, DragonAdvancedData
 from .base import *  # noqa
 from .chara_info import CharaInfoEntry
 from .dragon_info import DragonInfoEntry

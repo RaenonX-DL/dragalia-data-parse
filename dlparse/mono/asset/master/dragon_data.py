@@ -4,7 +4,7 @@ from typing import Optional, TextIO, Union
 
 from dlparse.enums import Element, SkillNumber, UnitType
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import UnitAsset, UnitEntry
+from dlparse.mono.asset.extension import SkillIdEntry, SkillIdentifierLabel, UnitAsset, UnitEntry
 
 __all__ = ("DragonDataEntry", "DragonDataAsset", "DRAGON_SKILL_MAX_LEVEL")
 
@@ -54,6 +54,19 @@ class DragonDataEntry(UnitEntry, MasterEntryBase):
     @property
     def unit_type(self) -> UnitType:
         return UnitType.DRAGON
+
+    @property
+    def self_skill_id_entries(self) -> list[SkillIdEntry]:
+        return [SkillIdEntry(self.skill_1_id, SkillNumber.S1_DRAGON, SkillIdentifierLabel.S1_DRAGON)]
+
+    @property
+    def ability_ids_at_max_level(self) -> list[int]:
+        ret = [self.ability_id_1_lv5]
+
+        if self.ability_id_2_lv5:
+            ret.append(self.ability_id_2_lv5)
+
+        return ret
 
     def max_skill_level(self, skill_num: SkillNumber) -> int:
         # Unique dragon is categorized as "unplayable".
