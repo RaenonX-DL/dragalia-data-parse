@@ -76,7 +76,7 @@ class SkillExportEntryBase(Generic[T], UnitEntryBase, HashableEntryBase, JsonExp
         return {
             "uniqueHash": str,
             "condition": [int],
-            "chara": super().json_schema,
+            "unit": super().json_schema,
             "skill": {
                 "identifiers": str,
                 "internalId": int,
@@ -93,7 +93,7 @@ class SkillExportEntryBase(Generic[T], UnitEntryBase, HashableEntryBase, JsonExp
         return {
             "uniqueHash": self.unique_hash,
             "condition": [condition.value for condition in self.condition_comp.conditions_sorted],
-            "chara": super().to_json_entry(),
+            "unit": super().to_json_entry(),
             "skill": {
                 "identifiers": self.skill_identifiers,
                 "internalId": self.skill_internal_id,

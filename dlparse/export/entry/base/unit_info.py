@@ -57,6 +57,7 @@ class UnitInfoEntryBase(Generic[T], JsonExportableEntryBase, ABC):
             "cvEn": TextEntry.json_schema,
             "cvJp": TextEntry.json_schema,
             "releaseEpoch": float,
+            "type": int,
         }
 
     def to_json_entry(self) -> dict[str, Any]:
@@ -69,4 +70,5 @@ class UnitInfoEntryBase(Generic[T], JsonExportableEntryBase, ABC):
             "cvEn": self.unit_cv_en.to_json_entry(),
             "cvJp": self.unit_cv_jp.to_json_entry(),
             "releaseEpoch": self.unit_release_date.timestamp(),
+            "type": self.unit_data.unit_type.value,
         }
