@@ -35,12 +35,7 @@ class TextEntry(JsonExportableEntryBase):
 
     text_dict: dict[str, str] = field(init=False)
 
-    def __post_init__(self, asset_text_website: T, labels: Union[str, list[str]]):
-        if isinstance(labels, str):
-            labels = [labels]
-
-        self.text_dict = {}
-
+    def _init_text_dict_fill_content(self, asset_text_website: T, labels: Union[str, list[str]]):
         for lang_code in Language.get_all_available_codes():
             # Check through each label and add the first label which has the text affiliated
             for label in labels:
@@ -65,6 +60,17 @@ class TextEntry(JsonExportableEntryBase):
                     raise MissingTextError(
                         labels, lang_code, f"Text asset{' ' if self.asset_text_multi else ' not '}provided"
                     )
+
+    def _init_text_dict_replace_newlines(self):
+        self.text_dict = {lang: text.replace("\\n", "\n") for lang, text in self.text_dict.items()}
+
+    def __post_init__(self, asset_text_website: T, labels: Union[str, list[str]]):
+        if isinstance(labels, str):
+            labels = [labels]
+
+        self.text_dict = {}
+        self._init_text_dict_fill_content(asset_text_website, labels)
+        self._init_text_dict_replace_newlines()
 
     @classmethod
     @property
