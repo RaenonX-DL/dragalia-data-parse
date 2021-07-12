@@ -132,9 +132,6 @@ class AbilityVariantEntry(AbilityVariantEntryBase):
 class AbilityEntry(AbilityEntryBase[AbilityConditionEntry, AbilityVariantEntry], MasterEntryBase):
     """Single entry of an ability data."""
 
-    name_label: str
-    details_label: str
-
     on_skill: int
 
     variant_1: AbilityVariantEntry
@@ -253,7 +250,7 @@ class AbilityEntry(AbilityEntryBase[AbilityConditionEntry, AbilityVariantEntry],
         return AbilityEntry(
             id=data["_Id"],
             name_label=data["_Name"],
-            details_label=data["_Details"],
+            description_label=data["_Details"],
             ability_icon_name=data["_AbilityIconName"],
             condition=AbilityConditionEntry(
                 unit_type=UnitType(data["_UnitType"]), elemental_restriction=Element(data["_ElementalType"]),

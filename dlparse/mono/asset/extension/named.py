@@ -9,12 +9,20 @@ from dlparse.errors import TextLabelNotFoundError
 if TYPE_CHECKING:
     from dlparse.mono.asset import TextAssetMultilingual
 
-__all__ = ("UnitNameEntry",)
+__all__ = ("UnitNameEntry", "DescribedNameEntry")
+
+
+@dataclass
+class DescribedNameEntry(ABC):
+    """Interface for an entry that has a name and a description."""
+
+    name_label: str
+    description_label: str
 
 
 @dataclass
 class UnitNameEntry(ABC):
-    """Interface for a named data entry."""
+    """Interface for a named unit data entry."""
 
     name_label: str
     name_label_2: str

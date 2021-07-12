@@ -8,6 +8,7 @@ from dlparse.enums import (
     ConditionComposite, Element, SkillNumber, Status, UnitType, Weapon,
 )
 from dlparse.errors import EnumConversionError
+from dlparse.mono.asset.extension import DescribedNameEntry
 from .master import MasterEntryBase
 
 __all__ = ("AbilityConditionEntryBase", "AbilityVariantEntryBase", "AbilityEntryBase")

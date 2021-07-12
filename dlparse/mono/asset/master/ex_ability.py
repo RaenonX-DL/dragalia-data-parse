@@ -29,9 +29,6 @@ class ExAbilityVariantEntry(AbilityVariantEntryBase):
 class ExAbilityEntry(AbilityEntryBase[ExAbilityConditionEntry, ExAbilityVariantEntry], MasterEntryBase):
     """Single entry of an EX ability data."""
 
-    name_label: str
-    details_label: str
-
     element: Element
     weapon: Weapon
 
@@ -48,7 +45,7 @@ class ExAbilityEntry(AbilityEntryBase[ExAbilityConditionEntry, ExAbilityVariantE
         return ExAbilityEntry(
             id=data["_Id"],
             name_label=data["_Name"],
-            details_label=data["_Details"],
+            description_label=data["_Details"],
             ability_icon_name=data["_AbilityIconName"],
             element=Element(data["_ElementalType"]),
             weapon=Weapon(data["_WeaponType"]),
