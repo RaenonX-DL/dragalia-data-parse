@@ -49,7 +49,6 @@ class UnitInfoEntryBase(Generic[T], JsonExportableEntryBase, ABC):
     @property
     def json_schema(cls) -> JsonSchema:
         return {
-            "name": TextEntry.json_schema,
             "iconName": str,
             "id": int,
             "element": int,
@@ -58,6 +57,7 @@ class UnitInfoEntryBase(Generic[T], JsonExportableEntryBase, ABC):
             "cvJp": TextEntry.json_schema,
             "releaseEpoch": float,
             "type": int,
+            "name": TextEntry.json_schema,
         }
 
     def to_json_entry(self) -> dict[str, Any]:
