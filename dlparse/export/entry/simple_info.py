@@ -41,9 +41,13 @@ class SimpleUnitInfoEntry(JsonExportableEntryBase):
     def json_schema(cls) -> JsonSchema:
         return {
             "name": TextEntry.json_schema,
+            "type": int,
+            "icon": str,
         }
 
     def to_json_entry(self) -> dict[str, Any]:
         return {
             "name": self.unit_name.to_json_entry(),
+            "type": self.unit_data.unit_type.value,
+            "icon": self.unit_data.icon_name,
         }
