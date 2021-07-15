@@ -88,6 +88,10 @@
     "text": "S1 (超活力)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab2075",
+    "text": "S1 (S2 1+ 層)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab963",
     "text": "強化 S1"
   },
@@ -670,6 +674,10 @@
   {
     "id": "ENUM_COND_TARGET_ATK_OR_DEF_DOWN",
     "text": "目標減益: 降攻/降防"
+  },
+  {
+    "id": "ENUM_COND_TARGET_BLEEDING",
+    "text": "目標減益: 刀傷"
   },
   {
     "id": "ENUM_COND_TARGET_BUFFED",

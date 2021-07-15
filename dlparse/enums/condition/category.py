@@ -276,6 +276,7 @@ class ConditionCategories:
             Condition.TARGET_DEF_DOWN: Status.DEF_DOWNED,
             Condition.TARGET_BUFFED: Status.BUFFED,
             Condition.TARGET_DEBUFFED: Status.DEBUFFED,
+            Condition.TARGET_BLEEDING: Status.BLEEDING,
             # Enemy state
             Condition.TARGET_BK_STATE: Status.BK_STATE
         },

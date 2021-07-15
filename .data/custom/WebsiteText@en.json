@@ -88,6 +88,10 @@
     "text": "S1 (Energized)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab2075",
+    "text": "S1 (S2 1+ Stacks)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab963",
     "text": "Enhanced S1"
   },
@@ -670,6 +674,10 @@
   {
     "id": "ENUM_COND_TARGET_ATK_OR_DEF_DOWN",
     "text": "Target State: ATK/DEF Down"
+  },
+  {
+    "id": "ENUM_COND_TARGET_BLEEDING",
+    "text": "Target State: Bleeding"
   },
   {
     "id": "ENUM_COND_TARGET_BUFFED",

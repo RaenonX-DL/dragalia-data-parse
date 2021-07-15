@@ -54,6 +54,7 @@ def test_get_members():
         Condition.TARGET_DEF_DOWN,
         Condition.TARGET_BUFFED,
         Condition.TARGET_DEBUFFED,
+        Condition.TARGET_BLEEDING,
         Condition.TARGET_BK_STATE
     }
 
