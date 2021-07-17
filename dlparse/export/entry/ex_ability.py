@@ -1,9 +1,9 @@
 """Classes for the EX (Co-ab) and chained EX (CCA) data entries."""
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
-from dlparse.model import ChainedExAbilityData, ExAbilityData
-from .base import AbilityVariantEffectEntry, JsonExportableEntryBase, JsonSchema, UnitEntryBase
+from dlparse.mono.asset import CharaDataEntry
+from .base import ExAbiltiesEntry, JsonExportableEntryBase, JsonSchema, UnitEntryBase
 
 __all__ = ("CharaExAbiltiesEntry",)
 
@@ -12,39 +12,29 @@ __all__ = ("CharaExAbiltiesEntry",)
 class CharaExAbiltiesEntry(UnitEntryBase, JsonExportableEntryBase):
     """A single entry containing EX (Co-ab) and chained EX (CCA) of a character."""
 
-    ex_ability_data: ExAbilityData
-    cex_ability_data: ChainedExAbilityData
+    unit_data: CharaDataEntry
+
+    ex_entry: ExAbiltiesEntry = field(init=False)
+
+    def __post_init__(self):
+        super().__post_init__()
+
+        self.ex_entry = ExAbiltiesEntry(asset_manager=self.asset_manager, unit_data=self.unit_data)
 
     @classmethod
     @property
     def json_schema(cls) -> JsonSchema:
-        return super().json_schema | {
-            "chara": UnitEntryBase.json_schema,
-            "ex": [AbilityVariantEffectEntry.json_schema],
-            "chainedEx": [AbilityVariantEffectEntry.json_schema]
+        schema = {
+            "chara": UnitEntryBase.json_schema
         }
+        schema |= ExAbiltiesEntry.json_schema
+
+        return schema
 
     def to_json_entry(self) -> dict[str, Any]:
-        # Sort the effect units by its condition and parameter to guarantee deterministic results
-        ex_entries = [
-            AbilityVariantEffectEntry(self.asset_manager, effect_unit).to_json_entry()
-            for effect_unit
-            in sorted(
-                self.ex_ability_data.effect_units,
-                key=lambda unit: (unit.condition_comp, unit.parameter.value)
-            )
-        ]
-        chained_ex_entries = [
-            AbilityVariantEffectEntry(self.asset_manager, effect_unit).to_json_entry()
-            for effect_unit
-            in sorted(
-                self.cex_ability_data.effect_units,
-                key=lambda unit: (unit.condition_comp, unit.parameter.value)
-            )
-        ]
-
-        return {
+        entry = {
             "chara": super().to_json_entry(),
-            "ex": ex_entries,
-            "chainedEx": chained_ex_entries,
         }
+        entry |= self.ex_entry.to_json_entry()
+
+        return entry

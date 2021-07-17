@@ -3,6 +3,7 @@ from .cancel import SkillCancelInfoEntry
 from .effect import EffectUnitEntryBase
 from .effect_ability import AbilityVariantEffectEntry
 from .entry import CsvExportableEntryBase, HashableEntryBase, JsonExportableEntryBase
+from .ex_ability import ExAbiltiesEntry
 from .named import NamedEntry
 from .skill import SkillExportEntryBase
 from .text import TextEntry

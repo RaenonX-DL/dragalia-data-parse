@@ -18,16 +18,8 @@ def export_ex_abilities_as_entries(
     skipped_messages: list[str] = []
 
     for chara_data in asset_manager.asset_chara_data.playable_data:
-        ex_data = asset_manager.transformer_ability.transform_ex_ability(chara_data.ex_id_at_max_level)
-        chained_ex_data = asset_manager.transformer_ability.transform_chained_ex_ability(
-            chara_data.cex_id_at_max_level
-        )
-
         try:
-            entries.append(CharaExAbiltiesEntry(
-                asset_manager=asset_manager, unit_data=chara_data,
-                ex_ability_data=ex_data, cex_ability_data=chained_ex_data
-            ))
+            entries.append(CharaExAbiltiesEntry(asset_manager=asset_manager, unit_data=chara_data))
         except (AbilityOnSkillUnconvertibleError, AbilityConditionUnconvertibleError,
                 AbilityVariantUnconvertibleError, AbilityLimitDataNotFoundError) as ex:
             if skip_unparsable:
