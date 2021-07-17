@@ -5,7 +5,7 @@ from typing import Any, Optional, TypeVar
 from dlparse.mono.asset import CharaDataEntry, UnitEntry
 from dlparse.mono.asset.extension import AbilityEntryExtension
 from dlparse.mono.manager import AssetManager
-from ...base import JsonExportableEntryBase, JsonSchema, TextEntry
+from ...base import ExAbiltiesEntry, JsonExportableEntryBase, JsonSchema, TextEntry
 
 __all__ = ("AbilityInfoEntry",)
 
@@ -54,25 +54,29 @@ class CharaCoAbilityDataEntry(JsonExportableEntryBase):
 
     global_: OfficialAbilityInfo = field(init=False)
     chained: OfficialAbilityInfo = field(init=False)
+    parsed: ExAbiltiesEntry = field(init=False)
 
     def __post_init__(self, asset_manager: AssetManager, chara_data: CharaDataEntry):
         ex_data = asset_manager.asset_ex_ability.get_data_by_id(chara_data.ex_id_at_max_level)
         self.global_ = OfficialAbilityInfo(asset_manager, ex_data)
         cex_data = asset_manager.asset_ability_data.get_data_by_id(chara_data.cex_id_at_max_level)
         self.chained = OfficialAbilityInfo(asset_manager, cex_data)
+        self.parsed = ExAbiltiesEntry(asset_manager=asset_manager, unit_data=chara_data)
 
     @classmethod
     @property
     def json_schema(cls) -> JsonSchema:
         return {
             "global": [OfficialAbilityInfo.json_schema],
-            "chained": [OfficialAbilityInfo.json_schema]
+            "chained": [OfficialAbilityInfo.json_schema],
+            "parsed": ExAbiltiesEntry.json_schema,
         }
 
     def to_json_entry(self) -> dict[str, Any]:
         return {
             "global": self.global_,
             "chained": self.chained,
+            "parsed": self.parsed,
         }
 
 

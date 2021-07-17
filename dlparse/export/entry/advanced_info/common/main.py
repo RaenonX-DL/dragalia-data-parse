@@ -1,6 +1,6 @@
 """Classes for entries that are used in both character and dragon advanced info."""
 from dataclasses import InitVar, dataclass, field
-from typing import Any, Generic, TypeVar, TYPE_CHECKING
+from typing import Any, Generic, TYPE_CHECKING, TypeVar
 
 from dlparse.errors import UnhandledUnitError
 from dlparse.mono.asset import CharaDataEntry, DragonDataEntry, UnitEntry
@@ -21,7 +21,7 @@ BT = TypeVar("BT", bound=UnitInfoEntryBase)
 
 
 @dataclass
-class AdvancedInfoEntryBase(Generic[ET], JsonExportableEntryBase):
+class AdvancedInfoEntryBase(Generic[BT, ET], JsonExportableEntryBase):
     """An entry for the advanced info of a dragon."""
 
     asset_manager: InitVar["AssetManager"]
