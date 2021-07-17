@@ -3,7 +3,7 @@ from dlparse.model import SkillCancelActionUnit
 from dlparse.mono.manager import AssetManager
 
 
-def test_ult(asset_manager: AssetManager):
+def test_ult_cancel_action(asset_manager: AssetManager):
     # TEMP: Should have a transformer to transform the dragon ult
     #   preferrably ``skill_transformer.transform_attacking_dragon()``
 
