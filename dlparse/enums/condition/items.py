@@ -109,19 +109,21 @@ class Condition(TranslatableEnumMixin, Enum):
 
     # region Combo count
     COMBO_GTE_0 = 240
-    """User's combo count = 0."""
+    """User's combo count >= 0."""
     COMBO_GTE_5 = 241
-    """User's combo count = 5."""
+    """User's combo count >= 5."""
     COMBO_GTE_10 = 242
-    """User's combo count = 10."""
+    """User's combo count >= 10."""
     COMBO_GTE_15 = 243
-    """User's combo count = 15."""
+    """User's combo count >= 15."""
     COMBO_GTE_20 = 244
-    """User's combo count = 20."""
+    """User's combo count >= 20."""
     COMBO_GTE_25 = 245
-    """User's combo count = 25."""
+    """User's combo count >= 25."""
     COMBO_GTE_30 = 246
-    """User's combo count = 30."""
+    """User's combo count >= 30."""
+    COMBO_GTE_50 = 247
+    """User's combo count >= 50."""
     # endregion
 
     # region Buff count

@@ -780,6 +780,10 @@
     "text": "Self Combo >= 30"
   },
   {
+    "id": "ENUM_COND_COMBO_GTE_50",
+    "text": "Self Combo >= 50"
+  },
+  {
     "id": "ENUM_COND_SELF_BUFF_0",
     "text": "Self 0 Buffs"
   },

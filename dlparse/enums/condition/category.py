@@ -368,6 +368,7 @@ class ConditionCategories:
             Condition.COMBO_GTE_20: 20,
             Condition.COMBO_GTE_25: 25,
             Condition.COMBO_GTE_30: 30,
+            Condition.COMBO_GTE_50: 50,
         },
         ConditionMaxCount.SINGLE,
         "Self - combo count",

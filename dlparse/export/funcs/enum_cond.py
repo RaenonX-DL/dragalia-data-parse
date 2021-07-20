@@ -79,6 +79,7 @@ condition_theme = {
     Condition.COMBO_GTE_20: theme_self_combo,
     Condition.COMBO_GTE_25: theme_self_combo,
     Condition.COMBO_GTE_30: theme_self_combo,
+    Condition.COMBO_GTE_50: theme_self_combo,
     Condition.BULLET_HIT_1: theme_skill_bullet_hit,
     Condition.BULLET_HIT_2: theme_skill_bullet_hit,
     Condition.BULLET_HIT_3: theme_skill_bullet_hit,
