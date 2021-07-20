@@ -1,13 +1,16 @@
 """Common classes for the ability data."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Callable, Optional, TypeVar
+from typing import Callable, Optional, TYPE_CHECKING, TypeVar
 
 from dlparse.enums import (
     AbilityCondition, AbilityTargetAction, AbilityVariantType, ActionDebuffType, Condition, ConditionCategories,
     ConditionComposite, Element, SkillNumber, Status, UnitType, Weapon,
 )
 from dlparse.errors import EnumConversionError
+
+if TYPE_CHECKING:
+    from dlparse.mono.manager import AssetManager
 
 __all__ = ("AbilityConditionEntryBase", "AbilityVariantEntryBase")
 
@@ -328,6 +331,25 @@ class AbilityVariantEntryBase(ABC):
             (self.id_a, self.target_action_enum.to_skill_num)
             if self.type_enum == AbilityVariantType.ENHANCE_SKILL else None
         )
+
+    def get_value_for_placeholder(self, asset_manager: "AssetManager") -> float:
+        """Get the value to use for the description placeholder."""
+        if self.up_value or not self.assigned_action_condition:
+            return self.up_value
+
+        action_cond = asset_manager.asset_action_cond.get_data_by_id(self.assigned_action_condition)
+
+        return (action_cond.buff_atk
+                or action_cond.buff_def
+                or action_cond.buff_crt_rate
+                or action_cond.buff_crt_damage
+                or action_cond.buff_fs_damage
+                or action_cond.buff_fs_spd
+                or action_cond.buff_sp_rate
+                or action_cond.buff_skill_damage
+                or action_cond.damage_reduction
+                or action_cond.shield_dmg
+                or action_cond.shield_hp) * 100
 
 
 CT = TypeVar("CT", bound=AbilityConditionEntryBase)

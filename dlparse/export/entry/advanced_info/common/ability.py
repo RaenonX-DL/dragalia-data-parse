@@ -10,6 +10,7 @@ from ...base import ExAbiltiesEntry, JsonExportableEntryBase, JsonSchema, TextEn
 __all__ = ("AbilityInfoEntry",)
 
 AT = TypeVar("AT", bound=AbilityEntryExtension)
+UT = TypeVar("UT", bound=UnitEntry)
 
 
 @dataclass
@@ -18,16 +19,44 @@ class OfficialAbilityInfo(JsonExportableEntryBase):
 
     asset_manager: InitVar["AssetManager"]
     ability_data: InitVar[AT]
+    unit_data: InitVar[UT]
 
     icon_path: str = field(init=False)
     description: TextEntry = field(init=False)
 
-    def __post_init__(self, asset_manager: AssetManager, ability_data: AT):
+    @staticmethod
+    def _init_description_replacement_id(unit_data: UT) -> dict[str, str]:
+        # Known placeholders:
+        # - {element_owner} (Ability)
+        return {
+            "{element_owner}": unit_data.element.translation_id
+        }
+
+    @staticmethod
+    def _init_description_replacements(asset_manager: AssetManager, ability_data: AT) -> dict[str, str]:
+        # Known placeholders:
+        # - {ability_cond0} (Ability)
+        # - {ability_val0} (Ability)
+        ability_val_0 = ""
+        val_1 = ""
+        if ability_data.variants:
+            ability_val_0 = str(int(ability_data.variants[0].get_value_for_placeholder(asset_manager)))
+            val_1 = str(int(ability_data.variants[0].up_value))
+
+        return {
+            "{ability_cond0}": str(int(ability_data.condition.val_1)),
+            "{ability_val0}": ability_val_0,
+            "{value1}": val_1,
+        }
+
+    def __post_init__(self, asset_manager: AssetManager, ability_data: AT, unit_data: UT):
         self.icon_path = ability_data.ability_icon_name
         self.description = TextEntry(
             asset_text_website=asset_manager.asset_text_website,
             asset_text_multi=asset_manager.asset_text_multi,
-            labels=ability_data.description_label
+            labels=ability_data.description_label,
+            replacements=self._init_description_replacements(asset_manager, ability_data),
+            replacement_ids=self._init_description_replacement_id(unit_data),
         )
 
     @classmethod
@@ -58,9 +87,9 @@ class CharaCoAbilityDataEntry(JsonExportableEntryBase):
 
     def __post_init__(self, asset_manager: AssetManager, chara_data: CharaDataEntry):
         ex_data = asset_manager.asset_ex_ability.get_data_by_id(chara_data.ex_id_at_max_level)
-        self.global_ = OfficialAbilityInfo(asset_manager, ex_data)
+        self.global_ = OfficialAbilityInfo(asset_manager, ex_data, chara_data)
         cex_data = asset_manager.asset_ability_data.get_data_by_id(chara_data.cex_id_at_max_level)
-        self.chained = OfficialAbilityInfo(asset_manager, cex_data)
+        self.chained = OfficialAbilityInfo(asset_manager, cex_data, chara_data)
         self.parsed = ExAbiltiesEntry(asset_manager=asset_manager, unit_data=chara_data)
 
     @classmethod
@@ -92,7 +121,7 @@ class AbilityInfoEntry(JsonExportableEntryBase):
 
     def __post_init__(self, asset_manager: AssetManager, unit_data: UnitEntry):
         self.passive = [
-            OfficialAbilityInfo(asset_manager, asset_manager.asset_ability_data.get_data_by_id(ability_id))
+            OfficialAbilityInfo(asset_manager, asset_manager.asset_ability_data.get_data_by_id(ability_id), unit_data)
             for ability_id in unit_data.ability_ids_at_max_level
         ]
         if isinstance(unit_data, CharaDataEntry):
