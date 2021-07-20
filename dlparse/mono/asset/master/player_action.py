@@ -30,6 +30,24 @@ class PlayerActionInfoEntry(MasterEntryBase):
     is_action_counter: bool
     is_ally_target: bool
 
+    @property
+    def has_next_action_staged(self) -> bool:
+        """
+        If this action chooses the action to be used according to additional input count.
+
+        Gala Thor uses this strategy to pick the action to be triggered.
+        """
+        return self.is_next_action_shift_by_input and self.next_action_id
+
+    @property
+    def has_next_action_looped(self) -> bool:
+        """
+        If this action loops the next action specific amount of times according to the additional input count.
+
+        Lathna uses this strategy.
+        """
+        return bool(self.max_addl_input_count)
+
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "PlayerActionInfoEntry":
         return PlayerActionInfoEntry(

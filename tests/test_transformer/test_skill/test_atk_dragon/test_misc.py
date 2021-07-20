@@ -4,9 +4,6 @@ from dlparse.mono.manager import AssetManager
 
 
 def test_ult_cancel_action(asset_manager: AssetManager):
-    # TEMP: Should have a transformer to transform the dragon ult
-    #   preferrably ``skill_transformer.transform_attacking_dragon()``
-
     data = {
         "Arsene": (20050522, 10138150, 3.30000019, SkillCancelAction.MOTION_ENDS),
         "Mars": (20050113, 90009150, 2.0666666, SkillCancelAction.ANY_ACTION),  # Expect 2.2

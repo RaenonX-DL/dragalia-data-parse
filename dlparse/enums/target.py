@@ -71,7 +71,6 @@ class HitTarget(Enum):
     TEAM_LOWEST_HP = 7
     """The effect will be applied to the member who has the lowest HP% among the team, including the user."""
     HIT_OR_GUARDED_RECORD = 8
-    # FIXME: (weilieh) Check the exact usage of this hit target
     """
     The effect applying condition is unknown.
 

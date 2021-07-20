@@ -11,8 +11,8 @@ from dlparse.model import (
     AttackingSkillData, BuffingHitData, DamagingHitData, HitData, SkillCancelActionUnit, SupportiveSkillData,
 )
 from dlparse.mono.asset import (
-    ActionConditionEntry, CharaDataEntry, DragonDataEntry, HitAttrEntry, SkillDataEntry, SkillIdEntry,
-    UnitEntry,
+    ActionConditionEntry, CharaDataEntry, DragonDataEntry, HitAttrEntry, PlayerActionInfoEntry, SkillDataEntry,
+    SkillIdEntry, UnitEntry,
 )
 from dlparse.mono.asset.base import ActionComponentHasHitLabels
 from dlparse.mono.asset.extension import SkillReverseSearchResult
@@ -170,6 +170,35 @@ class SkillTransformer:
 
         return ret
 
+    @staticmethod
+    def _next_action_pre_conditions(
+            prev_action_info: PlayerActionInfoEntry, curr_action_info: PlayerActionInfoEntry,
+            max_addl_input: int
+    ) -> list[Condition]:
+        # Parse the actions and attach it to the hit data list to be returned
+        if prev_action_info.has_next_action_staged:
+            addl_input_cap = max_addl_input + 1
+            if curr_action_info.min_addl_input_count_for_next:
+                addl_input_cap = min(addl_input_cap, curr_action_info.min_addl_input_count_for_next)
+
+            return [
+                ConditionCategories.skill_addl_inputs.convert_reversed(addl_input_count)
+                for addl_input_count
+                in range(prev_action_info.min_addl_input_count_for_next, addl_input_cap)
+            ]
+
+        if prev_action_info.has_next_action_looped:
+            return [
+                ConditionCategories.skill_addl_inputs.convert_reversed(addl_input_count)
+                for addl_input_count in range(1, prev_action_info.max_addl_input_count + 1)
+                for _ in range(addl_input_count)
+            ]
+
+        if prev_action_info.is_action_counter:
+            return [Condition.COUNTER_RED_ATTACK]
+
+        return []
+
     def _get_hit_data_next_action(
             self, hit_data_cls: Type[T], skill_lv: int, action_id: int, ability_ids: list[int],
             pre_conditions: ConditionComposite
@@ -186,6 +215,7 @@ class SkillTransformer:
             return []
 
         ret: HitDataList = []
+        max_addl_input = action_info.max_addl_input_count
 
         action_id_queue = [action_info.next_action_id]
         action_info_prev = [action_info]
@@ -197,23 +227,15 @@ class SkillTransformer:
             if not curr_action_info:
                 raise ActionInfoNotFoundError(curr_action_id)
 
-            prev_action_info = action_info_prev.pop(0)
-
-            # Parse the actions and attach it to the hit data list to be returned
-            if prev_action_info.max_addl_input_count:
-                # Additional inputs available, list them all
-                possible_pre_conditions = [
-                    ConditionCategories.skill_addl_inputs.convert_reversed(addl_input_count)
-                    for addl_input_count in range(1, prev_action_info.max_addl_input_count + 1)
-                ]
-            elif prev_action_info.is_action_counter:
-                possible_pre_conditions = [Condition.COUNTER_RED_ATTACK]
-            else:
-                # Additional inputs unavailable, have one dummy pre-condition to trigger the parse
-                possible_pre_conditions = [Condition.NONE]
+            possible_pre_conditions = self._next_action_pre_conditions(
+                prev_action_info=action_info_prev.pop(0),
+                curr_action_info=curr_action_info,
+                max_addl_input=max_addl_input
+            )
 
             # Iterate through all possible pre-conditions
-            for possible_pre_condition in possible_pre_conditions:
+            # - Have one dummy condition if pre-conditions is an empty list to trigger the parse
+            for possible_pre_condition in (possible_pre_conditions or [Condition.NONE]):
                 ret.extend(self._get_hit_data_action_component(
                     hit_data_cls, skill_lv, curr_action_id, ability_ids,
                     pre_conditions=pre_conditions + possible_pre_condition

@@ -360,9 +360,8 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
         # Pre-condition available, perform checks
         if pre_cond_addl_hit := self.pre_condition_comp.addl_inputs_converted:
             # Pre-condition is additional inputs, perform special check
-            if pre_cond_addl_hit > (condition_comp.addl_inputs_converted or 0):
-                # Required pre-conditional additional inputs > additional inputs count in the condition,
-                # hit invalid
+            if pre_cond_addl_hit != (condition_comp.addl_inputs_converted or 0):
+                # Requires pre-conditional additional inputs = additional inputs count in the condition
                 return []
         elif self.pre_condition_comp.mark_explode and not condition_comp.mark_explode:
             return self._damage_units_from_action_cond(asset_action_condition)
