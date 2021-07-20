@@ -5,7 +5,7 @@ from tests.static import (
     get_remote_dir_chara_motion_asset, get_remote_dir_dragon_motion_asset, get_remote_dir_master_asset,
 )
 
-version_tag = "2021.04.15-tKNhlutrX4LPXPUk"
+version_tag = "2021.07.19-JbCnfyd9iBDik8yD"
 
 manager_local = AssetManager(
     PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,

@@ -295,11 +295,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
                 and condition_comp.target_afflictions_converted & hit_attr.punisher_states
         ):
             for damage_unit in damage_units:
-                damage_unit.mod *= (
-                        hit_attr.punisher_rate
-                        or hit_attr.punisher_rate_combo.get_value_by_combo(
-                    condition_comp.combo_count_converted) / 100 + 1
-                )
+                damage_unit.mod *= hit_attr.get_combo_punisher_rate(condition_comp.combo_count_converted)
 
     def _damage_units_apply_mod_boosts_self(
             self, damage_units: list[DamageUnit], condition_comp: ConditionComposite, /,

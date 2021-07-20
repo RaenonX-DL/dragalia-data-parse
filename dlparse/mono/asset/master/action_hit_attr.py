@@ -276,6 +276,15 @@ class HitAttrEntry(MasterEntryBase):
         """Check if the hit attribute has action condition and that action condition is leveled."""
         return self.has_action_condition and asset_action_cond.get_data_by_id(self.action_condition_id).is_leveled
 
+    def get_combo_punisher_rate(self, combo_count: int) -> float:
+        """Get the punisher rate when the user has ``combo_count``."""
+        # Unconditional punisher rate
+        if self.punisher_rate:
+            return self.punisher_rate
+
+        # By combo
+        return self.punisher_rate_combo.get_value_by_combo(combo_count) / 100 + 1
+
 
 class HitAttrAsset(MasterAssetBase[HitAttrEntry]):
     """Player action hit attribute asset class."""
