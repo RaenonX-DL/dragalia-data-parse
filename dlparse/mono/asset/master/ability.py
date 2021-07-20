@@ -64,13 +64,14 @@ class AbilityVariantEntry(AbilityVariantEntryBase):
 
     # K = min combo count; V = damage boost rate
     # - Highest combo first
-    _combo_boost_data: ComboBoostValueExtension = field(default_factory=list)
+    _combo_boost_data: ComboBoostValueExtension = field(init=False)
     _def_boost_data: list[int] = field(default_factory=list)
     _skill_boost_data: list[int] = field(default_factory=list)
 
     def __post_init__(self):
         super().__post_init__()
 
+        self._combo_boost_data = ComboBoostValueExtension()
         if self.type_enum == AbilityVariantType.DMG_UP_ON_COMBO:
             # Variant type is boost by combo
             self._combo_boost_data = ComboBoostValueExtension(self.id_str)

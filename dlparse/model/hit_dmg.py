@@ -77,7 +77,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
     # region Other attributes
     is_boost_by_gauge_filled: bool = False
 
-    boost_by_combo_conditions: set[Condition] = field(default_factory=set)
+    boost_by_combo_conditions_ability: set[Condition] = field(default_factory=set)
 
     # endregion
 
@@ -125,10 +125,10 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
             else:
                 self.mod_on_ally_buff_field = self.hit_attr.damage_modifier
 
-        # Other attributes
+        # Other attributes from ability data
         if self.ability_data:
             for ability_data in self.ability_data:
-                self.boost_by_combo_conditions.update(ability_data.boost_by_combo_conditions)
+                self.boost_by_combo_conditions_ability.update(ability_data.boost_by_combo_conditions)
 
             self.is_boost_by_gauge_filled = any(
                 ability_data.is_boost_by_gauge_status for ability_data in self.ability_data
@@ -295,7 +295,11 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
                 and condition_comp.target_afflictions_converted & hit_attr.punisher_states
         ):
             for damage_unit in damage_units:
-                damage_unit.mod *= hit_attr.punisher_rate
+                damage_unit.mod *= (
+                        hit_attr.punisher_rate
+                        or hit_attr.punisher_rate_combo.get_value_by_combo(
+                    condition_comp.combo_count_converted) / 100 + 1
+                )
 
     def _damage_units_apply_mod_boosts_self(
             self, damage_units: list[DamageUnit], condition_comp: ConditionComposite, /,
@@ -318,7 +322,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
                 damage_unit.mod *= (1 + damage_boost_rate)
 
         # Combo damage boosts
-        if condition_comp.combo_count_converted and self.boost_by_combo_conditions:
+        if condition_comp.combo_count_converted and self.boost_by_combo_conditions_ability:
             for ability_data, damage_unit in product(self.ability_data, damage_units):
                 damage_unit.mod *= (1 + ability_data.get_boost_by_combo(condition_comp.combo_count_converted))
 

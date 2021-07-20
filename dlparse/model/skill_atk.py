@@ -310,26 +310,57 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         if bk_boost_available:
             cond_elems.append({(Condition.TARGET_BK_STATE,)})
 
-        # Punishers available
+        # Punishers
+        if punisher_conditions := self._init_all_possible_conditions_target_punisher():
+            cond_elems.append(punisher_conditions)
+
+        return cond_elems
+
+    def _init_all_possible_conditions_target_punisher(self) -> set[tuple[Condition, ...]]:
+        # Check if punishers available
         punishers_available: set[Status] = {
             punisher_state
             for hit_data_lv in self.hit_data_mtx
             for hit_data in hit_data_lv
             for punisher_state in hit_data.hit_attr.punisher_states
         }
-        if punishers_available:
-            conditions: set[Condition] = {
-                ConditionCategories.target_status.convert_reversed(affliction)
-                for affliction in punishers_available
-            }
-            # noinspection PyTypeChecker
-            affliction_combinations: set[tuple[Condition, ...]] = set()
-            for count in range(len(conditions) + 1):
-                affliction_combinations.update(combinations(conditions, count))
+        if not punishers_available:
+            return set()
 
-            cond_elems.append(affliction_combinations)
+        conditions: set[Condition] = {
+            ConditionCategories.target_status.convert_reversed(affliction)
+            for affliction in punishers_available
+        }
+        # noinspection PyTypeChecker
+        affliction_combinations: set[tuple[Condition, ...]] = set()
+        for count in range(1, len(conditions) + 1):
+            affliction_combinations.update(combinations(conditions, count))
 
-        return cond_elems
+        # Check if combo punisher is effective
+        combo_punisher_effective: bool = any(
+            hit_data.hit_attr.punisher_rate_combo.is_effective
+            for hit_data_lv in self.hit_data_mtx
+            for hit_data in hit_data_lv
+        )
+        if not combo_punisher_effective:
+            affliction_combinations.add(tuple())
+            return affliction_combinations
+
+        affliction_combo_combinations: set[tuple[Condition, ...]] = set()
+        for hit_data_lv in self.hit_data_mtx:
+            for hit_data in hit_data_lv:
+                combo_cond_product = product(
+                    affliction_combinations,
+                    hit_data.hit_attr.punisher_rate_combo.conditions + [Condition.COMBO_GTE_0]
+                )
+                affliction_combo_combinations.update({
+                    affliction_comb + (combo_cond,)
+                    for affliction_comb, combo_cond in combo_cond_product
+                })
+
+        affliction_combo_combinations.add(tuple())
+
+        return affliction_combo_combinations
 
     def _init_all_possible_conditions_self_crisis_buff(self, is_exporting: bool):
         cond_elems: list[set[tuple[Condition, ...]]] = []
@@ -388,23 +419,23 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         cond_elems: list[set[tuple[Condition, ...]]] = []
 
         # Combo boosts available
-        combo_boost_conditions: set[Condition, ...] = {
-            combo_condition
+        combo_boost_conditions_from_ability: set[Condition] = {
+            combo_cond
             for hit_data_lv in self.hit_data_mtx
             for hit_data in hit_data_lv
-            for combo_condition in hit_data.boost_by_combo_conditions
+            for combo_cond in hit_data.boost_by_combo_conditions_ability
         }
-        if combo_boost_conditions:
+        if combo_boost_conditions_from_ability:
             # Combo conditions in hit data may not have combo 0 as condition
-            combo_boost_conditions.add(Condition.COMBO_GTE_0)
-            cond_elems.append({(combo_cond,) for combo_cond in combo_boost_conditions})
+            combo_boost_conditions_from_ability.add(Condition.COMBO_GTE_0, )
+            cond_elems.append({(combo_cond,) for combo_cond in combo_boost_conditions_from_ability})
 
         # Gauge boosts available
         gauge_boost_available: bool = any(
             hit_data.is_boost_by_gauge_filled for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         )
         if gauge_boost_available:
-            cond_elems.append({(combo_cond,) for combo_cond in ConditionCategories.self_gauge_filled.members})
+            cond_elems.append({(gauge_cond,) for gauge_cond in ConditionCategories.self_gauge_filled.members})
 
         # In buff field boosts available
         if not is_exporting and any(

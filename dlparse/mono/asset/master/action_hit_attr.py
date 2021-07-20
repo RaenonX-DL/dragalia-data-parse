@@ -4,6 +4,7 @@ from typing import Optional, TextIO, Union
 
 from dlparse.enums import HitExecType, HitTarget, Status
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
+from dlparse.mono.asset.extension import ComboBoostValueExtension
 from .action_condition import ActionConditionAsset
 
 __all__ = ("HitAttrEntry", "HitAttrAsset")
@@ -41,6 +42,7 @@ class HitAttrEntry(MasterEntryBase):
     # The rate will only apply once, even if the target have multiple states that are listed as punisher
     punisher_states: set[Status]
     punisher_rate: float
+    punisher_rate_combo: ComboBoostValueExtension
 
     rate_boost_in_od: float  # 1 = No change
     """Damage modifier boosting rate if the target is in Overdrive (OD) state."""
@@ -111,6 +113,7 @@ class HitAttrEntry(MasterEntryBase):
             hp_consumption_rate=data["_ConsumeHpRate"],
             punisher_states=punisher_states,
             punisher_rate=data["_KillerStateDamageRate"],
+            punisher_rate_combo=ComboBoostValueExtension(data["_KillerStateDamageRateCurveDependsOnHitCount"]),
             rate_boost_on_crisis=data["_CrisisLimitRate"],
             rate_boost_by_buff=data["_DamageUpRateByBuffCount"],
             buff_boost_data_id=data["_DamageUpDataByBuffCount"],
