@@ -388,11 +388,16 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
         cond_elems: list[set[tuple[Condition, ...]]] = []
 
         # Combo boosts available
-        combo_boost_available: bool = any(
-            hit_data.is_boost_by_combo for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
-        )
-        if combo_boost_available:
-            cond_elems.append({(combo_cond,) for combo_cond in ConditionCategories.self_combo_count.members})
+        combo_boost_conditions: set[Condition, ...] = {
+            combo_condition
+            for hit_data_lv in self.hit_data_mtx
+            for hit_data in hit_data_lv
+            for combo_condition in hit_data.boost_by_combo_conditions
+        }
+        if combo_boost_conditions:
+            # Combo conditions in hit data may not have combo 0 as condition
+            combo_boost_conditions.add(Condition.COMBO_GTE_0)
+            cond_elems.append({(combo_cond,) for combo_cond in combo_boost_conditions})
 
         # Gauge boosts available
         gauge_boost_available: bool = any(

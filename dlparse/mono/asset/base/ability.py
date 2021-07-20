@@ -307,11 +307,6 @@ class AbilityVariantEntryBase(ABC):
         return self.type_enum == AbilityVariantType.UNKNOWN
 
     @property
-    def is_boosted_by_combo(self) -> bool:
-        """Check if the variant type is to boost the damage according to the combo count."""
-        return self.type_enum == AbilityVariantType.DMG_UP_ON_COMBO
-
-    @property
     def is_boosted_by_gauge_status(self) -> bool:
         """Check if the damage will be boosted according to the gauge status."""
         return self.type_enum == AbilityVariantType.GAUGE_STATUS

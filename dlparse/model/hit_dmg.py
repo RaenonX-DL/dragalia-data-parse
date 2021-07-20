@@ -4,7 +4,7 @@ from functools import cache
 from itertools import product
 from typing import Optional, TYPE_CHECKING
 
-from dlparse.enums import ConditionComposite, FireStockPattern
+from dlparse.enums import Condition, ConditionComposite, FireStockPattern
 from dlparse.errors import AppValueError, BulletEndOfLifeError, DamagingHitValidationFailedError
 from dlparse.mono.asset import (
     ActionBuffField, ActionBullet, ActionBulletStockFire, ActionComponentHasHitLabels, ActionConditionAsset,
@@ -75,8 +75,9 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
     # endregion
 
     # region Other attributes
-    is_boost_by_combo: bool = False
     is_boost_by_gauge_filled: bool = False
+
+    boost_by_combo_conditions: set[Condition] = field(default_factory=set)
 
     # endregion
 
@@ -126,9 +127,9 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
 
         # Other attributes
         if self.ability_data:
-            self.is_boost_by_combo = any(
-                ability_data.is_boost_by_combo for ability_data in self.ability_data
-            )
+            for ability_data in self.ability_data:
+                self.boost_by_combo_conditions.update(ability_data.boost_by_combo_conditions)
+
             self.is_boost_by_gauge_filled = any(
                 ability_data.is_boost_by_gauge_status for ability_data in self.ability_data
             )
@@ -317,7 +318,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
                 damage_unit.mod *= (1 + damage_boost_rate)
 
         # Combo damage boosts
-        if condition_comp.combo_count_converted and self.is_boost_by_combo:
+        if condition_comp.combo_count_converted and self.boost_by_combo_conditions:
             for ability_data, damage_unit in product(self.ability_data, damage_units):
                 damage_unit.mod *= (1 + ability_data.get_boost_by_combo(condition_comp.combo_count_converted))
 

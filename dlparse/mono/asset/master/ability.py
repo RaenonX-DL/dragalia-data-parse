@@ -8,7 +8,7 @@ from dlparse.mono.asset.base import (
     AbilityConditionEntryBase, AbilityVariantEntryBase, MasterAssetBase, MasterEntryBase,
     MasterParserBase,
 )
-from dlparse.mono.asset.extension import AbilityEntryExtension
+from dlparse.mono.asset.extension import AbilityEntryExtension, ComboBoostValueExtension
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -64,7 +64,7 @@ class AbilityVariantEntry(AbilityVariantEntryBase):
 
     # K = min combo count; V = damage boost rate
     # - Highest combo first
-    _combo_boost_data: list[tuple[int, float]] = field(default_factory=list)
+    _combo_boost_data: ComboBoostValueExtension = field(default_factory=list)
     _def_boost_data: list[int] = field(default_factory=list)
     _skill_boost_data: list[int] = field(default_factory=list)
 
@@ -73,9 +73,7 @@ class AbilityVariantEntry(AbilityVariantEntryBase):
 
         if self.type_enum == AbilityVariantType.DMG_UP_ON_COMBO:
             # Variant type is boost by combo
-            for entry in self.id_str.split("/"):
-                combo_count, boost_pct = entry.split("_")
-                self._combo_boost_data.append((int(combo_count), float(boost_pct)))
+            self._combo_boost_data = ComboBoostValueExtension(self.id_str)
         elif self.type_enum == AbilityVariantType.GAUGE_STATUS:
             # Variant type is boost by gauge status
             def_data, skill_boost_data = self.id_str.split("/", 1)
@@ -87,6 +85,17 @@ class AbilityVariantEntry(AbilityVariantEntryBase):
     def assigned_hit_label(self) -> Optional[str]:
         """Get the assigned hit label. Return ``None`` if unavailable."""
         return self.id_str if self.type_enum == AbilityVariantType.CHANGE_STATE else None
+
+    @property
+    def boost_by_combo_conditions(self) -> list[Condition]:
+        """
+        Get the conditions for combo boost.
+
+        Returns an empty list if the ability variant does not depend on combo count.
+
+        The returned list will be sorted by combo count DESC.
+        """
+        return self._combo_boost_data.conditions
 
     def get_action_cond_id_hit_label(self, asset_manager: "AssetManager") -> Optional[int]:
         """Get the action condition ID of the hit label, if assigned. Return ``None`` if inapplicable."""
@@ -110,12 +119,7 @@ class AbilityVariantEntry(AbilityVariantEntryBase):
 
         The return of 0.05 means 5% boost.
         """
-        # Highest combo threshold first, reversing the data list
-        for min_combo_count, dmg_up_pct in reversed(self._combo_boost_data):
-            if combo_count >= min_combo_count:
-                return dmg_up_pct / 100
-
-        return 0
+        return self._combo_boost_data.get_value_by_combo(combo_count) / 100
 
     def get_boost_by_gauge_filled_dmg(self, gauge_filled: int) -> float:
         """
@@ -194,9 +198,20 @@ class AbilityEntry(AbilityEntryExtension[AbilityConditionEntry, AbilityVariantEn
         raise AbilityOnSkillUnconvertibleError(self.id, self.on_skill)
 
     @property
-    def is_boost_by_combo(self) -> bool:
-        """Check if the damage will be boosted according to the current combo count."""
-        return any(variant.is_boosted_by_combo for variant in self.variants)
+    def boost_by_combo_conditions(self) -> set[Condition]:
+        """
+        Get the conditions for combo boost in all vartiants.
+
+        Returns an empty list if the ability does not depend on combo count.
+
+        The returned list will be sorted by combo count DESC.
+        """
+        ret = set()
+
+        for variant in self.variants:
+            ret.update(variant.boost_by_combo_conditions)
+
+        return ret
 
     @property
     def is_boost_by_gauge_status(self) -> bool:
