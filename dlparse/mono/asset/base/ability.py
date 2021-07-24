@@ -1,7 +1,7 @@
 """Common classes for the ability data."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Callable, Optional, TYPE_CHECKING, TypeVar
+from typing import Callable, Optional, TYPE_CHECKING
 
 from dlparse.enums import (
     AbilityCondition, AbilityTargetAction, AbilityVariantType, ActionDebuffType, Condition, ConditionCategories,
@@ -350,7 +350,3 @@ class AbilityVariantEntryBase(ABC):
                 or action_cond.damage_reduction
                 or action_cond.shield_dmg
                 or action_cond.shield_hp) * 100
-
-
-CT = TypeVar("CT", bound=AbilityConditionEntryBase)
-VT = TypeVar("VT", bound=AbilityVariantEntryBase)
