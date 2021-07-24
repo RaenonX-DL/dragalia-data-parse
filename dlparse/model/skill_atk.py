@@ -298,17 +298,12 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
     def _init_all_possible_conditions_target(self):
         cond_elems: list[set[tuple[Condition, ...]]] = []
 
-        # OD / BK boosts available
+        # Normal / OD boosts available
         od_boost_available: bool = any(
             hit_data.hit_attr.boost_in_od for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
         )
         if od_boost_available:
             cond_elems.append({(Condition.TARGET_OD_STATE,)})
-        bk_boost_available: bool = any(
-            hit_data.hit_attr.boost_in_bk for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
-        )
-        if bk_boost_available:
-            cond_elems.append({(Condition.TARGET_BK_STATE,)})
 
         # Punishers
         if punisher_conditions := self._init_all_possible_conditions_target_punisher():

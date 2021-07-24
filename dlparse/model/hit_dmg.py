@@ -282,12 +282,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
         # OD boosts
         if condition_comp.target_in_od:
             for damage_unit in damage_units:
-                damage_unit.mod *= hit_attr.rate_boost_in_od
-
-        # BK boosts
-        if condition_comp.target_in_bk:
-            for damage_unit in damage_units:
-                damage_unit.mod *= hit_attr.rate_boost_in_bk
+                damage_unit.mod *= hit_attr.rate_boost_od
 
         # Punisher boosts
         if (

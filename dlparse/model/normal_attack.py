@@ -61,7 +61,7 @@ class NormalAttackComboBranch:
         self.hit_labels.append(hit_attr.id)
         self.mods.append(hit_attr.damage_modifier * mod_rate)
         self.crisis_mod.append(hit_attr.rate_boost_on_crisis)
-        self.od_rate.append(hit_attr.rate_boost_in_od)
+        self.od_rate.append(hit_attr.rate_boost_od)
 
         # Both SP and UTP recovers on the initial hit only
         if not self.sp_gain:

@@ -44,10 +44,10 @@ class HitAttrEntry(MasterEntryBase):
     punisher_rate: float
     punisher_rate_combo: ComboBoostValueExtension
 
-    rate_boost_in_od: float  # 1 = No change
-    """Damage modifier boosting rate if the target is in Overdrive (OD) state."""
-    rate_boost_in_bk: float  # 1 = No change
-    """Damage modifier boosting rate if the target is in Break (BK) state."""
+    rate_boost_normal: float  # 1 = No change
+    """Damage modifier boosting rate if the target is in normal / non-OD state."""
+    rate_boost_od: float  # 1 = No change
+    """Damage modifier boosting rate if the target is in OD state."""
     rate_boost_on_crisis: float  # 0 = not applicable
     """
     Damage modifier boosting rate on 1 HP.
@@ -106,8 +106,8 @@ class HitAttrEntry(MasterEntryBase):
             target_group=HitTarget(data["_TargetGroup"]),
             damage_modifier=data["_DamageAdjustment"],
             damage_modifier_counter=data["_DamageCounterCoef"],
-            rate_boost_in_od=data["_ToOdDmgRate"],
-            rate_boost_in_bk=data["_ToBreakDmgRate"],
+            rate_boost_normal=data["_ToOdDmgRate"],
+            rate_boost_od=data["_ToBreakDmgRate"],
             is_damage_self=bool(data["_IsDamageMyself"]),
             hp_fix_rate=data["_SetCurrentHpRate"],
             hp_consumption_rate=data["_ConsumeHpRate"],
@@ -197,12 +197,7 @@ class HitAttrEntry(MasterEntryBase):
     @property
     def boost_in_od(self) -> bool:
         """Check if the damage modifier will be boosted during overdrive (OD)."""
-        return self.damage_modifier and self.rate_boost_in_od != 1
-
-    @property
-    def boost_in_bk(self) -> bool:
-        """Check if the damage modifier will be boosted during break (BK)."""
-        return self.damage_modifier and self.rate_boost_in_bk != 1
+        return self.damage_modifier and self.rate_boost_od != 1
 
     @property
     def boost_by_hp(self) -> bool:
@@ -264,7 +259,7 @@ class HitAttrEntry(MasterEntryBase):
             # Has damage modifier doesn't necessarily means it's effective against the enemy
             # - `SWD_NIN_CMB_05_H02` has damage modifier, but its OD/BK damage rate is set 0,
             #   so it's NOT effective to the enemy (does NOT deal damage)
-            return self.rate_boost_in_od != 0 or self.rate_boost_in_bk != 0
+            return self.rate_boost_od != 0
 
         if not self.has_action_condition:
             # No action condition assigned & does not have action condition binded
