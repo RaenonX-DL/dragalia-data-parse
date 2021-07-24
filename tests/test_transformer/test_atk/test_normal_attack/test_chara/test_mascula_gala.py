@@ -10,7 +10,7 @@ def test_normal_attack(transformer_atk: AttackingActionTransformer):
     # - Unique Combo 65
     # - Action ID 202700
     conditions = ConditionComposite()
-    data = transformer_atk.transform_normal_attack(202700).with_condition(conditions)
+    data = transformer_atk.transform_normal_attack_or_fs(202700).with_condition(conditions)
 
     combo_1 = data[0]
     assert combo_1.mods == [0.13] * 2 + [0.38]
@@ -47,7 +47,7 @@ def test_s1_normal_attack(transformer_atk: AttackingActionTransformer):
     # - Unique Combo 65
     # - Action ID 202700
     conditions = ConditionComposite(Condition.SELF_GMASCULA_S1_LV3)
-    data = transformer_atk.transform_normal_attack(202700).with_condition(conditions)
+    data = transformer_atk.transform_normal_attack_or_fs(202700).with_condition(conditions)
 
     combo_1 = data[0]
     assert combo_1.mods == [0.13] * 4 + [0.38]
@@ -84,7 +84,7 @@ def test_s2_enhanced_attack(transformer_atk: AttackingActionTransformer):
     # - Unique Combo 66
     # - Action ID 202800
     conditions = ConditionComposite()
-    data = transformer_atk.transform_normal_attack(202800).with_condition(conditions)
+    data = transformer_atk.transform_normal_attack_or_fs(202800).with_condition(conditions)
 
     combo_1 = data[0]
     assert combo_1.mods == [0.16] + [0.19] * 3 + [0.16] + [0.45]
@@ -121,7 +121,7 @@ def test_s2_enhanced_attack_with_s1(transformer_atk: AttackingActionTransformer)
     # - Unique Combo 66
     # - Action ID 202800
     conditions = ConditionComposite(Condition.SELF_GMASCULA_S1_LV3)
-    data = transformer_atk.transform_normal_attack(202800).with_condition(conditions)
+    data = transformer_atk.transform_normal_attack_or_fs(202800).with_condition(conditions)
 
     combo_1 = data[0]
     assert combo_1.mods == [0.16] + [0.19] * 6 + [0.16] * 3 + [0.45]

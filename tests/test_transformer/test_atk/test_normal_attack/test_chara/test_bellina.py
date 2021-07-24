@@ -6,7 +6,7 @@ def test_dragondrive(transformer_atk: AttackingActionTransformer):
     # - Mode 12: Unique Transform
     # - Unique Combo 12
     # - Action ID 300300
-    data = transformer_atk.transform_normal_attack(300300).with_condition()
+    data = transformer_atk.transform_normal_attack_or_fs(300300).with_condition()
 
     combo_1 = data[0]
     assert combo_1.mods == [2.27]

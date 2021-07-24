@@ -3,7 +3,7 @@ from dlparse.transformer import AttackingActionTransformer
 
 def test_default_normal_attack(transformer_atk: AttackingActionTransformer):
     # Staff Lv. 1 (800000)
-    normal_attack_data = transformer_atk.transform_normal_attack(800000).with_condition()
+    normal_attack_data = transformer_atk.transform_normal_attack_or_fs(800000).with_condition()
 
     combo_1 = normal_attack_data[0]
     assert combo_1.mods == [1.14]
@@ -38,7 +38,7 @@ def test_default_normal_attack(transformer_atk: AttackingActionTransformer):
 
 def test_default_normal_attack_lv2(transformer_atk: AttackingActionTransformer):
     # Staff Lv. 2 (800000)
-    data = transformer_atk.transform_normal_attack(800000, 2).with_condition()
+    data = transformer_atk.transform_normal_attack_or_fs(800000, 2).with_condition()
 
     combo_1 = data[0]
     assert combo_1.mods == [1.24]

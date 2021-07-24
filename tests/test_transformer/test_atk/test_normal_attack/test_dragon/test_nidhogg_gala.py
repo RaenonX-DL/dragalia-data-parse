@@ -6,7 +6,7 @@ def test_normal_attack(transformer_atk: AttackingActionTransformer):
     # Gala Reborn Nidhogg (20050524)
     # - Normal Attack AID: 10155140
     conditions = ConditionComposite()
-    data = transformer_atk.transform_normal_attack(10155140).with_condition(conditions)
+    data = transformer_atk.transform_normal_attack_or_fs(10155140).with_condition(conditions)
 
     combo_1 = data[0]
     assert combo_1.mods == [4.96]

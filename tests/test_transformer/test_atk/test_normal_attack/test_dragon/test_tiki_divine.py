@@ -6,7 +6,7 @@ def test_normal_attack(transformer_atk: AttackingActionTransformer):
     # Tiki in Divine Dragon (10350203 - 29900006)
     # - Normal Attack AID: 10093140
     conditions = ConditionComposite()
-    data = transformer_atk.transform_normal_attack(10093140).with_condition(conditions)
+    data = transformer_atk.transform_normal_attack_or_fs(10093140).with_condition(conditions)
 
     combo_1 = data[0]
     assert combo_1.mods == [3.17]

@@ -24,7 +24,7 @@ def export_normal_attack_info_chara(
     missing_labels = set()
 
     for source_mode_id, root_combo_action_id in chara_data.get_normal_attack_variants(asset_manager):
-        normal_attack_chain = asset_manager.transformer_atk.transform_normal_attack(
+        normal_attack_chain = asset_manager.transformer_atk.transform_normal_attack_or_fs(
             root_combo_action_id, 2 if chara_data.is_70_mc else None
         )
 
@@ -44,7 +44,7 @@ def export_normal_attack_info_dragon(
         skip_unparsable: bool
 ) -> tuple[list[NormalAttackChainEntry], list[str]]:
     """Get all special normal attack chain info of a dragon."""
-    normal_attack_chain = asset_manager.transformer_atk.transform_normal_attack(dragon.normal_attack_action_id)
+    normal_attack_chain = asset_manager.transformer_atk.transform_normal_attack_or_fs(dragon.normal_attack_action_id)
 
     try:
         return [NormalAttackChainEntry(asset_manager, 0, normal_attack_chain)], []

@@ -3,7 +3,7 @@ from dlparse.transformer import AttackingActionTransformer
 
 def test_default_normal_attack_long(transformer_atk: AttackingActionTransformer):
     # Manacaster (900000 - Long)
-    data = transformer_atk.transform_normal_attack(900000).with_condition()
+    data = transformer_atk.transform_normal_attack_or_fs(900000).with_condition()
 
     combo_1 = data[0]
     assert combo_1.mods == [0.67] * 5
@@ -20,7 +20,7 @@ def test_default_normal_attack_long(transformer_atk: AttackingActionTransformer)
 
 def test_default_normal_attack_close(transformer_atk: AttackingActionTransformer):
     # Manacaster (900100 - Close)
-    normal_attack_data = transformer_atk.transform_normal_attack(900100).with_condition()
+    normal_attack_data = transformer_atk.transform_normal_attack_or_fs(900100).with_condition()
 
     combo_1 = normal_attack_data[0]
     assert combo_1.mods == [0.48] * 8
@@ -37,7 +37,7 @@ def test_default_normal_attack_close(transformer_atk: AttackingActionTransformer
 
 def test_default_normal_attack_rapid(transformer_atk: AttackingActionTransformer):
     # Manacaster (900200 - Rapid)
-    normal_attack_data = transformer_atk.transform_normal_attack(900200).with_condition()
+    normal_attack_data = transformer_atk.transform_normal_attack_or_fs(900200).with_condition()
 
     combo_1 = normal_attack_data[0]
     assert combo_1.mods == [0.45] * 3

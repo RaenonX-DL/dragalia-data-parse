@@ -8,7 +8,7 @@ def test_dragondrive(transformer_atk: AttackingActionTransformer):
     # - Unique Combo 69
     # - Action ID 901300
     conditions = ConditionComposite(Condition.SELF_SMYM_COMBO_NOT_BOOSTED)
-    data = transformer_atk.transform_normal_attack(901300).with_condition(conditions)
+    data = transformer_atk.transform_normal_attack_or_fs(901300).with_condition(conditions)
 
     combo_1 = data[0]
     assert combo_1.mods == [0.66, 1.49]
@@ -29,7 +29,7 @@ def test_dragondrive_enhanced(transformer_atk: AttackingActionTransformer):
     # - Unique Combo 69
     # - Action ID 901300
     conditions = ConditionComposite(Condition.SELF_SMYM_COMBO_BOOSTED)
-    data = transformer_atk.transform_normal_attack(901300).with_condition(conditions)
+    data = transformer_atk.transform_normal_attack_or_fs(901300).with_condition(conditions)
 
     combo_1 = data[0]
     assert combo_1.mods == [0.99, 2.45]

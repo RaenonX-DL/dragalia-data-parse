@@ -6,7 +6,7 @@ def test_human_form(transformer_atk: AttackingActionTransformer):
     # - Mode 19: Divine Dragon
     # - Unique Combo 15
     # - Action ID 300400
-    data = transformer_atk.transform_normal_attack(300400).with_condition()
+    data = transformer_atk.transform_normal_attack_or_fs(300400).with_condition()
 
     combo_1 = data[0]
     assert combo_1.mods == [0.08]
