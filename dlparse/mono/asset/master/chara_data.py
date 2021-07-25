@@ -3,8 +3,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Generator, Optional, TYPE_CHECKING, TextIO, Union
 
-from dlparse.enums import Element, SkillNumber, UnitType, Weapon
-from dlparse.errors import InvalidSkillNumError, NoUniqueDragonError
+from dlparse.enums import AttackActionType, Element, SkillNumber, UnitType, Weapon
+from dlparse.errors import AttackActionTypeUnhandledError, InvalidSkillNumError, NoUniqueDragonError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 from dlparse.mono.asset.extension import SkillIdEntry, SkillIdentifierLabel, UnitAsset, UnitEntry
 from .dragon_data import DRAGON_SKILL_MAX_LEVEL, DragonDataAsset, DragonDataEntry
@@ -378,12 +378,14 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
 
         return dragon_asset.get_data_by_id(self.unique_dragon_id)
 
-    def get_normal_attack_variants(self, asset_manager: "AssetManager") -> Generator[tuple[int, int], None, None]:
+    def get_action_variants(
+            self, asset_manager: "AssetManager", /, action_type: AttackActionType
+    ) -> Generator[tuple[int, int], None, None]:
         """
-        Get all normal attack variants.
+        Get the action variants of a certain type.
 
         1st element of each return is the variant source mode ID;
-        2nd element of each return is the normal attack root action ID.
+        2nd element of each return is the attack action root action ID.
 
         Variant source mode ID could have the special values below:
 
@@ -391,19 +393,33 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
         - ``-1`` if the corresponding variant comes from the unique dragon.
         """
         for mode_id in self.mode_ids_include_default:
+            weapon_type_data = asset_manager.asset_weapon_type.get_data_by_weapon(self.weapon)
             if not mode_id:
-                weapon_type_data = asset_manager.asset_weapon_type.get_data_by_weapon(self.weapon)
-                yield mode_id, weapon_type_data.root_normal_attack_action_id
+                if action_type == AttackActionType.NORMAL_ATTACK:
+                    yield mode_id, weapon_type_data.root_normal_attack_action_id
+                elif action_type == AttackActionType.FS:
+                    yield mode_id, weapon_type_data.root_fs_action_id
+                else:
+                    raise AttackActionTypeUnhandledError(action_type)
+
                 continue
 
             mode_data = asset_manager.asset_chara_mode.get_data_by_id(mode_id)
-            unique_combo_id = mode_data.unique_combo_id
-            if not unique_combo_id:
-                continue  # Unique combo unavailable
 
-            unique_combo_data = asset_manager.asset_chara_unique_combo.get_data_by_id(mode_data.unique_combo_id)
+            if action_type == AttackActionType.NORMAL_ATTACK:
+                unique_combo_id = mode_data.unique_combo_id
+                if not unique_combo_id:
+                    continue  # Unique combo unavailable
 
-            yield mode_id, unique_combo_data.action_id
+                unique_combo_data = asset_manager.asset_chara_unique_combo.get_data_by_id(mode_data.unique_combo_id)
+
+                yield mode_id, unique_combo_data.action_id
+            elif action_type == AttackActionType.FS:
+                # Have mode doesn't necessarily mean has unique FS
+                # If no unique FS, `unique_fs_id` is `0`, use `root_fs_action_id` instead
+                yield mode_id, mode_data.unique_fs_id or weapon_type_data.root_fs_action_id
+            else:
+                raise AttackActionTypeUnhandledError(action_type)
 
         if self.has_unique_dragon:
             dragon_data = self.get_dragon_data(asset_manager.asset_dragon_data)

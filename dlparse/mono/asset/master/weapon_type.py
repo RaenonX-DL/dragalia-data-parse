@@ -13,12 +13,14 @@ class WeaponTypeEntry(MasterEntryBase):
     """Single entry of a weapon type data."""
 
     root_normal_attack_action_id: int
+    root_fs_action_id: int
 
     @staticmethod
     def parse_raw(data: dict[str, Union[str, int]]) -> "WeaponTypeEntry":
         return WeaponTypeEntry(
             id=data["_Id"],
             root_normal_attack_action_id=data["_DefaultSkill01"],
+            root_fs_action_id=data["_BurstPhase1"],
         )
 
 

@@ -13,6 +13,7 @@ class CharaModeEntry(MasterEntryBase):
 
     transmode_action_id: int
     unique_combo_id: int
+    unique_fs_id: int
 
     skill_id_1: int
     skill_id_2: int
@@ -30,6 +31,7 @@ class CharaModeEntry(MasterEntryBase):
             id=data["_Id"],
             transmode_action_id=data["_ActionId"],
             unique_combo_id=data["_UniqueComboId"],
+            unique_fs_id=data["_BurstAttackId"],
             skill_id_1=data["_Skill1Id"],
             skill_id_2=data["_Skill2Id"],
             text_label=data["_Text"]

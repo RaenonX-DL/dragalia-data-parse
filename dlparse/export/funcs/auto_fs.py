@@ -1,6 +1,7 @@
 """Functions for exporting normal attack info."""
 from typing import Iterable, TYPE_CHECKING
 
+from dlparse.enums import AttackActionType
 from dlparse.errors import AppValueError, MissingTextError
 from dlparse.export.entry import AutoFsChain, AutoFsChainEntry
 from .base import export_each_chara_entries, export_each_dragon_entries, export_to_dir
@@ -54,11 +55,11 @@ def export_auto_fs_info_chara(
     missing_labels = set()
 
     normal_entries, normal_missing = export_auto_fs_from_mode_combo_id_pair(
-        asset_manager, chara_data.get_normal_attack_variants(asset_manager),
+        asset_manager, chara_data.get_action_variants(asset_manager, action_type=AttackActionType.NORMAL_ATTACK),
         skip_unparsable=skip_unparsable, has_lv_2=chara_data.is_70_mc
     )
     fs_entries, fs_missing = export_auto_fs_from_mode_combo_id_pair(
-        asset_manager, chara_data.get_normal_attack_variants(asset_manager),
+        asset_manager, chara_data.get_action_variants(asset_manager, action_type=AttackActionType.FS),
         skip_unparsable=skip_unparsable, has_lv_2=chara_data.is_70_mc
     )
 

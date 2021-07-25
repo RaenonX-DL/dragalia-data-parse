@@ -8,7 +8,8 @@ __all__ = (
     "ActionDataNotFoundError", "MotionDataNotFoundError",
     "TextLabelNotFoundError",
     "AbilityLimitDataNotFoundError", "AbilityOnSkillUnconvertibleError", "LanguageAssetNotFoundError",
-    "AbilityConditionUnconvertibleError", "BulletMaxCountUnavailableError", "AbilityVariantUnconvertibleError"
+    "AbilityConditionUnconvertibleError", "BulletMaxCountUnavailableError", "AbilityVariantUnconvertibleError",
+    "AttackActionTypeUnhandledError",
 )
 
 
@@ -104,3 +105,7 @@ class AbilityOnSkillUnconvertibleError(AppValueError):
 
 class BulletMaxCountUnavailableError(AppValueError):
     """Error to be raised if the bullet max count cannot be obtained solely from its action component."""
+
+
+class AttackActionTypeUnhandledError(AppValueError):
+    """Error to be raised if the attack action type is unhandled."""

@@ -5,6 +5,7 @@ from .ability_variant import AbilityVariantType
 from .action import AbilityTargetAction
 from .action_component import ActionCommandType, ActionConditionType
 from .action_debuff_type import ActionDebuffType
+from .atk_action_type import AttackActionType
 from .buff_parameter import BuffParameter, BuffValueUnit
 from .bullet import FireStockPattern
 from .cancel_action import SkillCancelAction
