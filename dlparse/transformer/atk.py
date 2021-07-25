@@ -13,7 +13,7 @@ This includes things like:
 """
 from typing import Optional, TYPE_CHECKING
 
-from dlparse.model import NormalAttackChain, NormalAttackCombo
+from dlparse.model import AutoFsChain, NormalAttackCombo
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -35,7 +35,7 @@ class AttackingActionTransformer:
     def __init__(self, asset_manager: "AssetManager"):
         self._asset_manager: "AssetManager" = asset_manager
 
-    def transform_normal_attack_or_fs(self, root_action_id: int, level: int = None) -> Optional[NormalAttackChain]:
+    def transform_normal_attack_or_fs(self, root_action_id: int, level: int = None) -> Optional[AutoFsChain]:
         """Get the normal attack or FS info rooted from ``root_action_id``."""
         current_prefab = self._asset_manager.loader_action.get_prefab(root_action_id)
         parsed_action_ids = set()
@@ -52,4 +52,4 @@ class AttackingActionTransformer:
                 break
             current_prefab = self._asset_manager.loader_action.get_prefab(combo.next_combo_action_id)
 
-        return NormalAttackChain(combos)
+        return AutoFsChain(combos)

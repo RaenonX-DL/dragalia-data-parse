@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from dlparse.mono.asset import PlayerActionPrefab, HitAttrEntry
     from dlparse.mono.manager import AssetManager
 
-__all__ = ("NormalAttackChain", "NormalAttackCombo", "NormalAttackComboBranch")
+__all__ = ("AutoFsChain", "NormalAttackCombo", "NormalAttackComboBranch")
 
 PRE_CONDITIONS_TO_OMIT: set[Condition] = {
     Condition.SELF_GMASCULA_S1_LV1,
@@ -173,7 +173,7 @@ class NormalAttackCombo:
 
 
 @dataclass
-class NormalAttackChain:
+class AutoFsChain:
     """Class for a normal attack chain."""
 
     combos: list[NormalAttackCombo]

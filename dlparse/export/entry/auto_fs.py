@@ -3,18 +3,18 @@ from dataclasses import InitVar, dataclass, field
 from typing import Any, TYPE_CHECKING
 
 from dlparse.enums import ConditionComposite
-from dlparse.model import NormalAttackChain, NormalAttackComboBranch
+from dlparse.model import AutoFsChain as AutoFsChainModel, NormalAttackComboBranch
 from .base import JsonExportableEntryBase, JsonSchema, SkillCancelInfoEntry, TextEntry
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
 
-__all__ = ("NormalAttackChainEntry",)
+__all__ = ("AutoFsChain", "AutoFsChainEntry")
 
 
 @dataclass
-class NormalAttackComboEntry(JsonExportableEntryBase):
-    """A single entry representing a normal attack combo."""
+class AttackFsComboEntry(JsonExportableEntryBase):
+    """A single entry representing a normal attack/FS combo."""
 
     combo: NormalAttackComboBranch
 
@@ -49,19 +49,19 @@ class NormalAttackComboEntry(JsonExportableEntryBase):
 
 
 @dataclass
-class NormalAttackBranchedChainEntry(JsonExportableEntryBase):
-    """A single entry representing a branched normal attack chain."""
+class AutoFsBranchedChainEntry(JsonExportableEntryBase):
+    """A single entry representing a branched normal attack/FS chain."""
 
     branched_combos: InitVar[list[NormalAttackComboBranch]]
     conditions: ConditionComposite
 
-    combos: list[NormalAttackComboEntry] = field(init=False)
+    combos: list[AttackFsComboEntry] = field(init=False)
 
     has_utp: bool = field(init=False)
     has_crisis_mods: bool = field(init=False)
 
     def __post_init__(self, branched_combos: list[NormalAttackComboBranch]):
-        self.combos = [NormalAttackComboEntry(combo) for combo in branched_combos]
+        self.combos = [AttackFsComboEntry(combo) for combo in branched_combos]
         self.has_utp = any(combo.utp_gain > 0 for combo in branched_combos)
         self.has_crisis_mods = any(any(combo.crisis_mod) for combo in branched_combos)
 
@@ -70,7 +70,7 @@ class NormalAttackBranchedChainEntry(JsonExportableEntryBase):
     def json_schema(cls) -> JsonSchema:
         return {
             "conditions": [int],
-            "combos": [NormalAttackComboEntry.json_schema],
+            "combos": [AttackFsComboEntry.json_schema],
             "hasUtp": bool,
             "hasCrisis": bool,
         }
@@ -85,24 +85,24 @@ class NormalAttackBranchedChainEntry(JsonExportableEntryBase):
 
 
 @dataclass
-class NormalAttackChainEntry(JsonExportableEntryBase):
-    """A single entry representing a normal attack chain."""
+class AutoFsChainEntry(JsonExportableEntryBase):
+    """A single entry representing a normal attack/FS chain."""
 
     asset_manager: "AssetManager"
 
     source_mode_id: InitVar[int]  # `0` for default; `-1` for unique dragon
-    chain: InitVar[NormalAttackChain]
+    chain: InitVar[AutoFsChainModel]
 
     chain_name: TextEntry = field(init=False)
-    chain_branches: list[NormalAttackBranchedChainEntry] = field(init=False)
+    chain_branches: list[AutoFsBranchedChainEntry] = field(init=False)
 
-    def __post_init__(self, source_mode_id: int, chain: NormalAttackChain):
+    def __post_init__(self, source_mode_id: int, chain: AutoFsChainModel):
         self.chain_name = TextEntry(
             self.asset_manager.asset_text_website,
             f"NORMAL_ATTACK_COMBO_CHAIN_{source_mode_id}"
         )
         self.chain_branches = [
-            NormalAttackBranchedChainEntry(chain.with_condition(conditions), conditions)
+            AutoFsBranchedChainEntry(chain.with_condition(conditions), conditions)
             for conditions in chain.possible_conditions
         ]
 
@@ -111,11 +111,35 @@ class NormalAttackChainEntry(JsonExportableEntryBase):
     def json_schema(cls) -> JsonSchema:
         return {
             "chainName": TextEntry.json_schema,
-            "chain": [NormalAttackBranchedChainEntry.json_schema],
+            "chain": [AutoFsBranchedChainEntry.json_schema],
         }
 
     def to_json_entry(self) -> dict[str, Any]:
         return {
             "chainName": self.chain_name.to_json_entry(),
             "chain": self.chain_branches,
+        }
+
+
+@dataclass
+class AutoFsChain(JsonExportableEntryBase):
+    """A class representing the normal attack and the FS chain."""
+
+    asset_manager: "AssetManager"
+
+    fs_chains: list[AutoFsChainEntry]
+    normal_chains: list[AutoFsChainEntry]
+
+    @classmethod
+    @property
+    def json_schema(cls) -> JsonSchema:
+        return {
+            "fs": [AutoFsChainEntry.json_schema],
+            "auto": [AutoFsChainEntry.json_schema],
+        }
+
+    def to_json_entry(self) -> dict[str, Any]:
+        return {
+            "fs": [chain.to_json_entry() for chain in self.fs_chains],
+            "auto": [chain.to_json_entry() for chain in self.normal_chains],
         }
