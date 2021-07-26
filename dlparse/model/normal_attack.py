@@ -3,6 +3,8 @@ from dataclasses import InitVar, dataclass, field
 from typing import Iterable, Optional, TYPE_CHECKING
 
 from dlparse.enums import Condition, ConditionCategories, ConditionComposite, SkillCancelType
+from dlparse.mono.asset.base import ActionComponentHasHitLabels
+from dlparse.utils import get_ability_data_to_shift_hit_attr, make_hit_label
 from .unit_cancel import SkillCancelActionUnit
 
 if TYPE_CHECKING:
@@ -78,6 +80,7 @@ class NormalAttackCombo:
     action_prefab: "PlayerActionPrefab"
 
     level: InitVar[Optional[int]] = None
+    ability_ids: InitVar[Optional[list[int]]] = None
 
     cancel_actions: list[SkillCancelActionUnit] = field(init=False)
 
@@ -121,9 +124,48 @@ class NormalAttackCombo:
 
             self.combo_info[conditions].fill_info_from_hit_attr(hit_attr, boost_rate)
 
-    def _init_combo_props(self, level: int):
-        self.combo_info = {}
+    def _init_combo_props_single(
+            self, hit_attr_label: str, action_component: ActionComponentHasHitLabels,
+            pre_conditions: set[ConditionComposite], /,
+            do_nothing_on_not_found: bool = False,
+    ):
+        hit_attr = self.asset_manager.asset_hit_attr.get_data_by_id(hit_attr_label)
 
+        if not hit_attr and do_nothing_on_not_found:
+            return
+
+        if not hit_attr.is_effective_to_enemy(True):
+            return  # Dummy hit attribute might be inserted for...animation? (Nino `SWD_NIN_BLT_01_H00`)
+
+        if action_component.skill_pre_condition in PRE_CONDITIONS_TO_OMIT:
+            return  # Specific pre-conditions to omit
+
+        # Get pre-conditions to fill combo info
+        # ---------------
+        # This is different from `pre_conditions` because `pre_conditions` lists all possible pre-conditions,
+        # while this only contains the pre-condition coming from `action_component` if it exists.
+        target_conditions: set[ConditionComposite] = (
+            {ConditionComposite(action_component.skill_pre_condition)}
+            if action_component.skill_pre_condition
+            else pre_conditions
+        )
+
+        # Add punisher conditions if any
+        punisher_conditions = {
+            ConditionCategories.target_status.convert_reversed(affliction)
+            for affliction in hit_attr.punisher_states
+        }
+        if punisher_conditions:
+            target_conditions.update({
+                ConditionComposite(composite.conditions_sorted + (punisher_condition,))
+                for punisher_condition in punisher_conditions
+                for composite in pre_conditions
+            })
+
+        # Fill hit attr info
+        self._init_fill_combo_info(target_conditions, hit_attr)
+
+    def _init_combo_props(self, level: int, ability_ids: list[int]):
         # Get all possible pre-conditions
         pre_conditions: set[ConditionComposite] = {
             ConditionComposite(action_component.skill_pre_condition)
@@ -133,43 +175,25 @@ class NormalAttackCombo:
         }
 
         for hit_attr_label, action_component in self.action_prefab.get_hit_actions(level):
-            hit_attr = self.asset_manager.asset_hit_attr.get_data_by_id(hit_attr_label)
+            self._init_combo_props_single(hit_attr_label, action_component, pre_conditions)
 
-            if not hit_attr.is_effective_to_enemy(True):
-                continue  # Dummy hit attribute might be inserted for...animation? (Nino `SWD_NIN_BLT_01_H00`)
-
-            if action_component.skill_pre_condition in PRE_CONDITIONS_TO_OMIT:
-                continue  # Specific pre-conditions to omit
-
-            # Get pre-conditions to fill combo info
-            # ---------------
-            # This is different from `pre_conditions` because `pre_conditions` lists all possible pre-conditions,
-            # while this only contains the pre-condition coming from `action_component` if it exists.
-            target_conditions: set[ConditionComposite] = (
-                {ConditionComposite(action_component.skill_pre_condition)}
-                if action_component.skill_pre_condition
-                else pre_conditions
+            has_hit_attr_shift = get_ability_data_to_shift_hit_attr(
+                ability_ids, self.asset_manager.asset_ability_data
             )
+            if has_hit_attr_shift:
+                self._init_combo_props_single(
+                    make_hit_label(hit_attr_label, shifted=True), action_component,
+                    {pre_cond_comp + Condition.SELF_PASSIVE_ENHANCED for pre_cond_comp in pre_conditions},
+                    # Not found = passive enhancement inapplicable (not logically wrong)
+                    do_nothing_on_not_found=True,
+                )
 
-            # Add punisher conditions if any
-            punisher_conditions = {
-                ConditionCategories.target_status.convert_reversed(affliction)
-                for affliction in hit_attr.punisher_states
-            }
-            if punisher_conditions:
-                target_conditions.update({
-                    ConditionComposite(composite.conditions_sorted + (punisher_condition,))
-                    for punisher_condition in punisher_conditions
-                    for composite in pre_conditions
-                })
-
-            # Fill hit attr info
-            self._init_fill_combo_info(target_conditions, hit_attr)
-
-    def __post_init__(self, level: Optional[int] = None):
+    def __post_init__(self, level: Optional[int] = None, ability_ids: Optional[list[int]] = None):
         self.cancel_actions = SkillCancelActionUnit.from_player_action_prefab(self.action_prefab)
+        self.combo_info = {}
+
         self._init_next_combo_action_id()
-        self._init_combo_props(level)
+        self._init_combo_props(level, ability_ids or [])
 
 
 @dataclass

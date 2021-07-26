@@ -25,7 +25,8 @@ def export_normal_attack_info_chara(
 
     for source_mode_id, root_combo_action_id in chara_data.get_normal_attack_variants(asset_manager):
         normal_attack_chain = asset_manager.transformer_atk.transform_normal_attack_or_fs(
-            root_combo_action_id, 2 if chara_data.is_70_mc else None
+            root_combo_action_id, 2 if chara_data.is_70_mc and source_mode_id != -1 else None,
+            ability_ids=chara_data.ability_ids_all_level
         )
 
         try:

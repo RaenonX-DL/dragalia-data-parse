@@ -359,6 +359,11 @@ class AbilityVariantEntryBase(ABC):
         return self.type_enum == AbilityVariantType.GAUGE_STATUS
 
     @property
+    def is_hit_attr_shift(self) -> bool:
+        """Check if the hit attributes will be shifted."""
+        return self.type_enum == AbilityVariantType.HIT_ATTR_SHIFT
+
+    @property
     def assigned_action_condition(self) -> Optional[int]:
         """Get the assigned action condition ID. Return ``None`` if unavailable."""
         return self.id_a if self.type_enum == AbilityVariantType.CHANGE_STATE else None
