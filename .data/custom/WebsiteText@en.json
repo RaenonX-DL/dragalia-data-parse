@@ -2108,6 +2108,10 @@
     "text": "S1 Effective"
   },
   {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_20",
+    "text": "Default"
+  },
+  {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_22",
     "text": "Soaring Sparrow"
   },
@@ -2262,5 +2266,85 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_99",
     "text": "S2 Effective"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_10",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_17",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_19",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_25",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_36",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_39",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_40",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_41",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_42",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_55",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_56",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_64",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_66",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_76",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_80",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_84",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_85",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_9",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_90",
+    "text": "Default"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_91",
+    "text": "Default"
   }
 ]

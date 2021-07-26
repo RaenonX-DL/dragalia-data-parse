@@ -2108,6 +2108,10 @@
     "text": "S1 效果中"
   },
   {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_20",
+    "text": "預設"
+  },
+  {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_22",
     "text": "攻啄"
   },
@@ -2262,5 +2266,85 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_99",
     "text": "S2 效果中"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_10",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_17",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_19",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_25",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_36",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_39",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_40",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_41",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_42",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_55",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_56",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_64",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_66",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_76",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_80",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_84",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_85",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_9",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_90",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_91",
+    "text": "預設"
   }
 ]

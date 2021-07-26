@@ -1,7 +1,7 @@
 """Classes for handling the character data asset."""
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Generator, Optional, TYPE_CHECKING, TextIO, Union
+from typing import Optional, TYPE_CHECKING, TextIO, Union
 
 from dlparse.enums import Element, SkillNumber, UnitType, Weapon
 from dlparse.errors import InvalidSkillNumError, NoUniqueDragonError
@@ -234,17 +234,21 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
         - Buff stacks (Catherine)
 
         Note that this does not return the default mode ID, which is usually mode 1.
-        For getting the mode IDs including the default one, use ``mode_ids_include_default`` instead.
+        For getting the mode IDs including the default one, use ``mode_ids_effective_only`` instead.
         """
         return [mode_id for mode_id in (self.mode_1_id, self.mode_2_id, self.mode_3_id, self.mode_4_id) if mode_id]
 
     @property
     def mode_ids_include_default(self) -> tuple[int, ...]:
         """
-        Get a list of effective mode IDs, including the default one (mode 0).
+        Get a list of effective mode IDs, including the default one (mode 0) if available.
 
         Note that the default is not guaranteed to be included
-        because some characters do not use their default weapon combo at all. (For example, JOKER)
+        because some characters do not use their default weapon combo at all. For example, JOKER.
+
+        The difference between this and ``mode_ids`` is that for some units with default combo like Bellina,
+        her mode IDs are 0, 12, 0, 0.
+        In this case, ``mode_ids`` on Bellina is ``[12]`` while calling this on Bellina returns ``[0, 12]``.
 
         For getting the mode IDs without the default one, use ``mode_ids`` instead.
         """
@@ -378,7 +382,7 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
 
         return dragon_asset.get_data_by_id(self.unique_dragon_id)
 
-    def get_normal_attack_variants(self, asset_manager: "AssetManager") -> Generator[tuple[int, int], None, None]:
+    def get_normal_attack_variants(self, asset_manager: "AssetManager") -> list[tuple[int, int], ...]:
         """
         Get all normal attack variants.
 
@@ -390,26 +394,46 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
         - ``0`` if the corresponding variant is the default one.
         - ``-1`` if the corresponding variant comes from the unique dragon.
         """
+        weapon_type_data = asset_manager.asset_weapon_type.get_data_by_weapon(self.weapon)
+        default_variant_by_weapon = (0, weapon_type_data.root_normal_attack_action_id)
+
+        ret = []
+
         for mode_id in self.mode_ids_include_default:
             if not mode_id:
-                weapon_type_data = asset_manager.asset_weapon_type.get_data_by_weapon(self.weapon)
-                yield mode_id, weapon_type_data.root_normal_attack_action_id
+                ret.append(default_variant_by_weapon)
                 continue
 
             mode_data = asset_manager.asset_chara_mode.get_data_by_id(mode_id)
+
+            # Having mode ID does not mean the mode data exists
+            # - Althemia (10840401) has mode 1 as #57 but no corresponding data exists
+            if not mode_data:
+                continue
+
             unique_combo_id = mode_data.unique_combo_id
             if not unique_combo_id:
                 continue  # Unique combo unavailable
 
             unique_combo_data = asset_manager.asset_chara_unique_combo.get_data_by_id(mode_data.unique_combo_id)
 
-            yield mode_id, unique_combo_data.action_id
+            # Having unique combo ID does not mean the unique combo exists
+            # - Grace (10850503) has unique combo as #45 but no corresponding data exists
+            if not unique_combo_data:
+                continue  # Unique combo unavailable
+
+            ret.append((mode_id, unique_combo_data.action_id))
+
+        if not ret:
+            ret.append(default_variant_by_weapon)
 
         if self.has_unique_dragon:
             dragon_data = self.get_dragon_data(asset_manager.asset_dragon_data)
 
             # Constant -1 for unique dragon
-            yield -1, dragon_data.normal_attack_action_id
+            ret.append((-1, dragon_data.normal_attack_action_id))
+
+        return ret
 
     @classmethod
     def parse_raw(cls, data: dict[str, Union[str, int, float]]) -> "CharaDataEntry":

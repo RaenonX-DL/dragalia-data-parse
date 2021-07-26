@@ -2105,7 +2105,11 @@
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_2",
-    "text": "S1 效果中"
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_20",
+    "text": "ENTER_TEXT"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_22",
@@ -2262,5 +2266,85 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_99",
     "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_10",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_17",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_19",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_25",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_36",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_39",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_40",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_41",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_42",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_55",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_56",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_64",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_66",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_76",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_80",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_84",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_85",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_9",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_90",
+    "text": "デフォルト"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_91",
+    "text": "デフォルト"
   }
 ]
