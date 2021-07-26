@@ -267,7 +267,6 @@ class Condition(TranslatableEnumMixin, Enum):
     SELF_SHAPESHIFTED_1_TIME = 471
     SELF_SHAPESHIFTED_2_TIMES = 472
     SELF_SHAPESHIFTED_3_TIMES = 473
-    SELF_DRAGON_ENHANCED = 474
     SELF_SHAPESHIFTED_1_TIME_IN_DRAGON = 475
     SELF_SHAPESHIFTED_2_TIMES_IN_DRAGON = 476
     SELF_SHAPESHIFT_COMPLETED = 478
@@ -282,6 +281,7 @@ class Condition(TranslatableEnumMixin, Enum):
     # region Special (Energized, inspired, amp)
     SELF_ENERGIZED = 490
     SELF_TEAM_AMP_UP = 491
+    SELF_PASSIVE_ENHANCED = 492
     # endregion
     # endregion
 

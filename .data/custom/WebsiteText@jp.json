@@ -1208,8 +1208,8 @@
     "text": "擁有爆發氣場"
   },
   {
-    "id": "ENUM_COND_SELF_DRAGON_ENHANCED",
-    "text": "Dragon Enhanced"
+    "id": "ENUM_COND_SELF_PASSIVE_ENHANCED",
+    "text": "ENTER_TEXT"
   },
   {
     "id": "ENUM_COND_ON_BUFFED_DEF",

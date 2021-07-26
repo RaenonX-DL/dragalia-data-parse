@@ -95,8 +95,8 @@ def test_composite_energize_amp_enhanced_dragon_sorted():
     assert not cond_comp.is_team_amp_up
     assert cond_comp.conditions_sorted == (Condition.SELF_ENERGIZED,)
 
-    cond_comp = ConditionComposite(Condition.SELF_DRAGON_ENHANCED)
+    cond_comp = ConditionComposite(Condition.SELF_PASSIVE_ENHANCED)
     assert not cond_comp.is_energized
     assert not cond_comp.is_team_amp_up
     assert cond_comp.is_dragon_enhanced
-    assert cond_comp.conditions_sorted == (Condition.SELF_DRAGON_ENHANCED,)
+    assert cond_comp.conditions_sorted == (Condition.SELF_PASSIVE_ENHANCED,)
