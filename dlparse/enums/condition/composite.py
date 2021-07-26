@@ -81,7 +81,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     in_dragon_count_converted: int = field(init=False)
     is_energized: bool = field(init=False)
     is_team_amp_up: bool = field(init=False)
-    is_dragon_enhanced: bool = field(init=False)
+    is_passive_enhanced: bool = field(init=False)
     # endregion
 
     # region Skill effect / animation
@@ -244,7 +244,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.in_dragon_count = CondCat.in_dragon_count.extract(conditions)
         self.is_energized = Condition.SELF_ENERGIZED in conditions
         self.is_team_amp_up = Condition.SELF_TEAM_AMP_UP in conditions
-        self.is_dragon_enhanced = Condition.SELF_PASSIVE_ENHANCED in conditions
+        self.is_passive_enhanced = Condition.SELF_PASSIVE_ENHANCED in conditions
         # endregion
 
         # region Skill effect / animation
@@ -383,7 +383,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.is_team_amp_up:
             ret += (Condition.SELF_TEAM_AMP_UP,)
 
-        if self.is_dragon_enhanced:
+        if self.is_passive_enhanced:
             ret += (Condition.SELF_PASSIVE_ENHANCED,)
 
         return ret

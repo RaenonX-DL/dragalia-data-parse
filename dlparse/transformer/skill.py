@@ -16,6 +16,7 @@ from dlparse.mono.asset import (
 )
 from dlparse.mono.asset.base import ActionComponentHasHitLabels
 from dlparse.mono.asset.extension import SkillReverseSearchResult
+from dlparse.utils import get_ability_data_to_shift_hit_attr, make_hit_label
 
 if TYPE_CHECKING:
     from dlparse.mono.manager import AssetManager
@@ -251,12 +252,7 @@ class SkillTransformer:
     def _get_hit_data_lv_ability_to_others(
             self, hit_data_cls: Type[T], action_id: int, ability_ids: list[int], pre_conditions: ConditionComposite
     ) -> HitDataList:
-        """
-        Get the other hit attributes linked to the ability.
-
-        Note that this does **NOT** include the effects coming from the ability,
-        for example, Mitsuhide S2 combo count damage boost.
-        """
+        """Get the other hit attributes linked to the ability in ``ability_ids``."""
         ret: HitDataList = []
 
         for ability_id in ability_ids:
@@ -265,7 +261,8 @@ class SkillTransformer:
 
             # Get all hit labels and its ability data
             ability_hit_labels = [
-                (ability_data, hit_label) for ability_data in ability_data_dict.values()
+                (ability_data, hit_label)
+                for ability_data in ability_data_dict.values()
                 for hit_label in ability_data.assigned_hit_labels
             ]
 
@@ -281,6 +278,35 @@ class SkillTransformer:
                     pre_condition_comp=pre_conditions + ability_data.condition.to_condition_comp(),
                     ability_data=[ability_data]
                 ))
+
+        return ret
+
+    def _get_hit_data_hit_attr_shift(
+            self, hit_data_cls: Type[T], hit_data_list: HitDataList, ability_ids: list[int],
+    ) -> HitDataList:
+        """Returns shifted hit data if any of the ability triggers hit attribute shift."""
+        ability_data_hit_attr_shift = get_ability_data_to_shift_hit_attr(ability_ids, self._asset_ability)
+        if not ability_data_hit_attr_shift:
+            return []
+
+        ret: HitDataList = []
+
+        for hit_data in hit_data_list:
+            hit_label_shifted = make_hit_label(hit_data.hit_attr.id, shifted=True)
+
+            ability_data = hit_data.ability_data or []
+
+            hit_attr = self._asset_hit_attr.get_data_by_id(hit_label_shifted)
+            if not hit_attr:
+                # Because the ability variant for hit attr shift does not have target action assigned,
+                # skipping non-existed hit attribute is likely to mean "no enhanced hit attribute available"
+                continue
+
+            ret.append(hit_data_cls(
+                hit_attr=hit_attr, action_component=hit_data.action_component, action_id=hit_data.action_id,
+                pre_condition_comp=hit_data.pre_condition_comp + Condition.SELF_PASSIVE_ENHANCED,
+                ability_data=ability_data + [ability_data_hit_attr_shift]
+            ))
 
         return ret
 
@@ -300,6 +326,8 @@ class SkillTransformer:
         ret.extend(self._get_hit_data_lv_ability_to_others(
             hit_data_cls, action_id, ability_ids, pre_conditions=pre_conditions
         ))
+        # This must be placed at the end of all traversals
+        ret.extend(self._get_hit_data_hit_attr_shift(hit_data_cls, ret, ability_ids))
 
         return ret
 
@@ -515,7 +543,7 @@ class SkillTransformer:
         )
 
     def transform_attacking(
-            self, skill_id: int, /,
+            self, skill_id: int,
             max_lv: int = 0, ability_ids: Optional[list[int]] = None, is_exporting: bool = True
     ) -> AttackingSkillData:
         """
@@ -525,7 +553,8 @@ class SkillTransformer:
         If set to ``0``, all possible levels (max 4) will be returned.
 
         ``ability_ids`` are the ability IDs to be additionally considered when parsing the skills.
-        When the user enhance their skills via the character ability, this will be required to get the accurate result.
+        When the user enhance their skills via the character ability,
+        this will be required to get the accurate result.
 
         If ``is_exporting`` is ``True``, sectioned conditions will not be considered as a possible condition.
         This should be ``True`` when exporting the data to save the data size.

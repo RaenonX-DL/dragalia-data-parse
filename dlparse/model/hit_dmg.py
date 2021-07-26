@@ -402,6 +402,11 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
             # Mark explosion damage is requested, but the damaging hit is not the explosion damage
             return []
 
+        # Passive enhancement
+        if condition_comp.is_passive_enhanced and not self.pre_condition_comp.is_passive_enhanced:
+            # Passive enhancement is requested, but the damaging hit is not the enhanced one
+            return []
+
         return None
 
     # Cache the function because it is used for getting the hit count

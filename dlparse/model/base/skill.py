@@ -78,6 +78,10 @@ class SkillDataBase(Generic[HT, ET], ABC):
                 # Appears in Nobunaga S1 (`102501031`), Yoshitsune S1 (`109502021`)
                 pre_conditions.add(())
 
+            if any(Condition.SELF_PASSIVE_ENHANCED in pre_condition_tuple for pre_condition_tuple in pre_conditions):
+                # Pre-condition has passive enhancement, this is not always happening
+                pre_conditions.add(())
+
             return pre_conditions
 
         return None

@@ -2,7 +2,7 @@
 import csv
 import os
 from json import JSONEncoder, dump
-from typing import Any, Callable, TypeVar, Union
+from typing import Any, Callable, Optional, TypeVar, Union
 
 from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError, MotionDataNotFoundError
 from dlparse.export.entry import CsvExportableEntryBase, JsonExportableEntryBase, SkillExportEntryBase
@@ -36,7 +36,7 @@ UnitEntryParsingFunction = Callable[
 ]
 
 TransformFunction = Callable[
-    [int, int],
+    [int, int, Optional[list[int]]],
     DT
 ]
 
@@ -62,7 +62,8 @@ def export_transform_skill_entries(
         try:
             skill_data = transform_fn(
                 id_entry.skill_id,
-                unit_data.max_skill_level(id_entry.skill_num)
+                unit_data.max_skill_level(id_entry.skill_num),
+                unit_data.ability_ids_all_level,
             )
         except HitDataUnavailableError:
             # No attacking data available, skipping that / the skill is not an attacking skill
