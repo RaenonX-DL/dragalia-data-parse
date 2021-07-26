@@ -653,7 +653,7 @@ class ConditionCategories:
 
     trigger_combo_div = ConditionCategoryTargetNumber(
         {
-            Condition.ON_COMBO_DIV_BY_10: 100,
+            Condition.ON_COMBO_DIV_BY_10: 10,
             Condition.ON_COMBO_DIV_BY_15: 15,
             Condition.ON_COMBO_DIV_BY_20: 20,
             Condition.ON_COMBO_DIV_BY_30: 30,
