@@ -14,15 +14,17 @@ class ActionBulletFormation(ActionBullet):
     Class of ``ActionPartsFormationBullet`` component in the player action asset.
 
     .. note::
-        As of 2020/11/23, only the following skills are using this component:
+        As of 2021/07/26, only the following skills are using this component:
 
         - Yukata Curran S2 Masked (``103504044``)
 
         - OG!Zena S2 (``107505042``)
+
+        - Megaman S2 effective normal attack (Mode 2, combo ID ``799200``, unit ID ``10750102``)
     """
 
     def __post_init__(self):
-        self.hit_labels = self.hit_labels * self.max_hit_count  # Single bullet can hit multiple times
+        self.hit_labels = self.hit_labels * (self.max_hit_count or 1)  # Single bullet can hit multiple times
 
     @classmethod
     def parse_raw(cls, data: dict[str, Any]) -> "ActionBulletFormation":
