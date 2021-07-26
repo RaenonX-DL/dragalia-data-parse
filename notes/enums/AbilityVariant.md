@@ -469,11 +469,16 @@ Shift the hit attribute.
 
 This does not have any parameters.
 
-This is only used by Lathna passive 1 (`752` at level 3 of `10550502`)
-and Gala Mym passive 1 (`237` at level 1 of `10550101` / `238` at level 2 of `10550101`), as of 2020/01/20.
+This is only used by the following, as of 2021/07/26.
 
-This causes some "shifts" to the hit attributes (including autos and the skill) of the unique Mym (of Gala Mym) and the
-unique Nyarlathotep (of Lathna), so these unique dragons are stronger.
+- Lathna (`10550502`) passive 1 (`752` at level 3)
+- Gala Mym (`10550101`) passive 1 (`237` at level 1 / `238` at level 2)
+- Humanoid Mercury (`10350204`) passive 1 (`1875` at level 1 / `1876` at level 2)
+
+This causes some "shifts" to the hit attributes (including autos and the skills) of the unique dragons
+(Brunhilda of Gala Mym, Nyarlathotep of Lathna), so these unique dragons are stronger.
+
+The hit attribute IDs will have `_HAS` postfix to indicate the enhancement.
 
 -----
 

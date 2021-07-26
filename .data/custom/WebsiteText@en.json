@@ -1208,6 +1208,10 @@
     "text": "Team Amp Up"
   },
   {
+    "id": "ENUM_COND_SELF_DRAGON_ENHANCED",
+    "text": "Dragon Enhanced"
+  },
+  {
     "id": "ENUM_COND_ON_BUFFED_DEF",
     "text": "DEF Doublebuff"
   },

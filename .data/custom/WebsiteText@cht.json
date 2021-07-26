@@ -1208,6 +1208,10 @@
     "text": "擁有爆發氣場"
   },
   {
+    "id": "ENUM_COND_SELF_DRAGON_ENHANCED",
+    "text": "強化龍族"
+  },
+  {
     "id": "ENUM_COND_ON_BUFFED_DEF",
     "text": "守護鍊"
   },

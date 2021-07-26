@@ -84,7 +84,7 @@ def test_composite_def_down_sorted():
     assert cond_comp.conditions_sorted == (Condition.TARGET_PARALYZED, Condition.TARGET_DEF_DOWN)
 
 
-def test_composite_energize_amp_sorted():
+def test_composite_energize_amp_enhanced_dragon_sorted():
     cond_comp = ConditionComposite([Condition.SELF_ENERGIZED, Condition.SELF_TEAM_AMP_UP])
     assert cond_comp.is_energized
     assert cond_comp.is_team_amp_up
@@ -94,3 +94,9 @@ def test_composite_energize_amp_sorted():
     assert cond_comp.is_energized
     assert not cond_comp.is_team_amp_up
     assert cond_comp.conditions_sorted == (Condition.SELF_ENERGIZED,)
+
+    cond_comp = ConditionComposite(Condition.SELF_DRAGON_ENHANCED)
+    assert not cond_comp.is_energized
+    assert not cond_comp.is_team_amp_up
+    assert cond_comp.is_dragon_enhanced
+    assert cond_comp.conditions_sorted == (Condition.SELF_DRAGON_ENHANCED,)

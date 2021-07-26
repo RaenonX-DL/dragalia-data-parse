@@ -24,6 +24,7 @@ COMP_UNCATEGORIZED_EXCEPTION: set[Condition] = {
     Condition.NONE,
     # Special self status
     Condition.SELF_SHAPESHIFT_COMPLETED,
+    Condition.SELF_DRAGON_ENHANCED,
     # Upon skill usage
     Condition.SKILL_USED_S1,
     Condition.SKILL_USED_S2,
@@ -80,6 +81,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     in_dragon_count_converted: int = field(init=False)
     is_energized: bool = field(init=False)
     is_team_amp_up: bool = field(init=False)
+    is_dragon_enhanced: bool = field(init=False)
     # endregion
 
     # region Skill effect / animation
@@ -242,6 +244,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.in_dragon_count = CondCat.in_dragon_count.extract(conditions)
         self.is_energized = Condition.SELF_ENERGIZED in conditions
         self.is_team_amp_up = Condition.SELF_TEAM_AMP_UP in conditions
+        self.is_dragon_enhanced = Condition.SELF_DRAGON_ENHANCED in conditions
         # endregion
 
         # region Skill effect / animation
@@ -379,6 +382,9 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
 
         if self.is_team_amp_up:
             ret += (Condition.SELF_TEAM_AMP_UP,)
+
+        if self.is_dragon_enhanced:
+            ret += (Condition.SELF_DRAGON_ENHANCED,)
 
         return ret
 
