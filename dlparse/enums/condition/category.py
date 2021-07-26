@@ -45,6 +45,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_SHAPESHIFT_COUNT_IN_DRAGON = auto()
     MULTIPLE_TRIGGER = auto()
     MULTIPLE_TRIGGER_HIT_BY_AFFLICTION = auto()
+    MULTIPLE_COMBO_COUNT_DIV = auto()
     MULTIPLE_MISC = auto()
     MULTIPLE_PROBABILITY = auto()
 
@@ -648,6 +649,21 @@ class ConditionCategories:
         ConditionMaxCount.SINGLE,
         "Triggers - hit by affliction",
         ConditionCheckResult.MULTIPLE_TRIGGER_HIT_BY_AFFLICTION
+    )
+
+    trigger_combo_div = ConditionCategoryTargetNumber(
+        {
+            Condition.ON_COMBO_DIV_BY_10: 100,
+            Condition.ON_COMBO_DIV_BY_15: 15,
+            Condition.ON_COMBO_DIV_BY_20: 20,
+            Condition.ON_COMBO_DIV_BY_30: 30,
+            Condition.ON_COMBO_DIV_BY_35: 35,
+            Condition.ON_COMBO_DIV_BY_50: 50,
+            Condition.ON_COMBO_DIV_BY_100: 100,
+        },
+        ConditionMaxCount.SINGLE,
+        "Self - combo count",
+        ConditionCheckResult.MULTIPLE_COMBO_COUNT_DIV
     )
     # endregion
 

@@ -182,22 +182,10 @@ class AbilityConditionEntryBase(ABC):
         raise self._condition_unconvertible()
 
     def _cond_combo_count_div_all(self) -> Optional[Condition]:
-        if self.val_1 == 10:
-            return Condition.ON_COMBO_DIV_BY_10
-        if self.val_1 == 15:
-            return Condition.ON_COMBO_DIV_BY_15
-        if self.val_1 == 20:
-            return Condition.ON_COMBO_DIV_BY_20
-        if self.val_1 == 30:
-            return Condition.ON_COMBO_DIV_BY_30
-        if self.val_1 == 35:
-            return Condition.ON_COMBO_DIV_BY_35
-        if self.val_1 == 50:
-            return Condition.ON_COMBO_DIV_BY_50
-        if self.val_1 == 100:
-            return Condition.ON_COMBO_DIV_BY_100
-
-        raise self._condition_unconvertible()
+        try:
+            return ConditionCategories.trigger_combo_div.convert_reversed(self.val_1)
+        except EnumConversionError as ex:
+            raise self._condition_unconvertible() from ex
 
     def _cond_combo_count_div_fs(self) -> Optional[Condition]:
         if self.val_1 == 1:

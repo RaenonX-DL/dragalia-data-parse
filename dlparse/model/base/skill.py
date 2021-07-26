@@ -45,10 +45,7 @@ class SkillDataBase(Generic[HT, ET], ABC):
     max_level: int = field(init=False)
 
     @final
-    def _init_possible_conditions_base_elems(self):
-        cond_elems: list[set[tuple[Condition, ...]]] = []
-
-        # Get all possible pre-conditions
+    def _init_possible_conditions_pre_conditions(self) -> Optional[set[tuple[Condition, ...]]]:
         pre_conditions: set[tuple[Condition, ...]] = {
             tuple(hit_data.pre_condition_comp)
             for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv
@@ -81,6 +78,16 @@ class SkillDataBase(Generic[HT, ET], ABC):
                 # Appears in Nobunaga S1 (`102501031`), Yoshitsune S1 (`109502021`)
                 pre_conditions.add(())
 
+            return pre_conditions
+
+        return None
+
+    @final
+    def _init_possible_conditions_base_elems(self):
+        cond_elems: list[set[tuple[Condition, ...]]] = []
+
+        # Get all possible pre-conditions as a condition element
+        if pre_conditions := self._init_possible_conditions_pre_conditions():
             cond_elems.append(pre_conditions)
 
         # Get the elemental restriction from the action conditions if any
