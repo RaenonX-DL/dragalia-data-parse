@@ -37,13 +37,16 @@ def get_hit_label_data(label: str) -> HitLabelData:
     return HitLabelData(raw=label, original="_".join(original_parts), level=level, shifted=shifted)
 
 
-def make_hit_label(original: str, /, level: Optional[int] = None, shifted: Optional[bool] = None) -> str:
+def make_hit_label(label: str, /, level: Optional[int] = None, shifted: Optional[bool] = None) -> str:
     """
-    Make a hit label from the ``original`` label with specified properties.
+    Make a hit label from ``label`` with specified properties.
+
+    If ``label`` is not original, it will change to original label before processing,
+    so the returned label is always valid.
 
     Nothing related will change if the corresponding property is not specified.
     """
-    label = original
+    label = get_hit_label_data(label).original
 
     if shifted:
         label += "_HAS"

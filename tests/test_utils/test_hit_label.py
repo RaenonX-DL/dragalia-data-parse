@@ -55,3 +55,9 @@ def test_set_hit_label_leveled_shifted():
     hit_label = make_hit_label("S071_000_00", level=1, shifted=True)
 
     assert hit_label == "S071_000_00_HAS_LV01"
+
+
+def test_set_hit_label_using_leveled_shifted():
+    hit_label = make_hit_label("S071_000_00_HAS_LV01", level=2, shifted=False)
+
+    assert hit_label == "S071_000_00_LV02"
