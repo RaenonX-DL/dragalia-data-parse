@@ -5,6 +5,7 @@ from typing import Optional, TextIO, Type
 from dlparse.mono.asset.base import (
     ActionAssetBase, ActionComponentBase, ActionComponentHasHitLabels, ActionParserBase,
 )
+from dlparse.utils import get_hit_label_data, make_hit_label
 from .buff_bomb import ActionBuffBomb
 from .buff_field import ActionBuffField
 from .bullet import ActionBullet
@@ -108,12 +109,14 @@ class PlayerActionPrefab(ActionAssetBase):
         # Sort hitting components by its starting time
         for action_hit in sorted(self._damaging_hits, key=lambda component: component.time_start):
             for hit_label in filter(self.is_effective_label, action_hit.hit_labels):  # Effective labels only
+                hit_label_data = get_hit_label_data(hit_label)
+
                 if (
                         action_hit.use_same_component
-                        or not action_hit.use_same_component and self.get_hit_label_skill_lv(hit_label) == skill_lv
+                        or not action_hit.use_same_component and hit_label_data.level == skill_lv
                 ):
                     hit_actions.append((
-                        self.get_hit_label_at_skill_lv(hit_label, skill_lv) if skill_lv else hit_label,
+                        make_hit_label(hit_label_data.original, level=skill_lv) if skill_lv else hit_label,
                         action_hit
                     ))
 
@@ -142,30 +145,3 @@ class PlayerActionPrefab(ActionAssetBase):
     def is_effective_label(cls, label: str) -> bool:
         """Check if the label is an effective hitting label."""
         return bool(re.match(f"(?!{'|'.join(cls.omitted_label_starts)})", label))
-
-    @staticmethod
-    def get_hit_label_at_skill_lv(original_label: str, skill_lv: int) -> str:
-        """
-        Get the hit label at ``level``.
-
-        For example, if ``original_label`` is ``SWD_110_04_H01_LV02`` and ``level`` is ``3``,
-        return ``SWD_110_04_H01_LV03``.
-        """
-        if original_label[-4:-2] != "LV":
-            # Default normal attack hit attribute is labeled like `SWD_CMB_01_H01`.
-            # However, for lv. 2 (70 MC), it's `SWD_CMB_01_H01_LV02`.
-            return f"{original_label}_LV{skill_lv:02}"  # Not a leveled hit attribute
-
-        return original_label[:-1] + str(skill_lv)
-
-    @staticmethod
-    def get_hit_label_skill_lv(label: str) -> Optional[int]:
-        """
-        Get the skill level of ``label``.
-
-        Returns ``None`` if not applicable. (Known cases: normal attack hit attributes)
-        """
-        if label[-4:-2] != "LV":
-            return None  # Not a leveled hit attribute
-
-        return int(label[-1])
