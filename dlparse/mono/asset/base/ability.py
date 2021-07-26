@@ -40,6 +40,7 @@ class AbilityConditionEntryBase(ABC):
     val_1: float
 
     probability: float
+    target_action: AbilityTargetAction
 
     condition_type: AbilityCondition = field(init=False)
 
@@ -58,6 +59,7 @@ class AbilityConditionEntryBase(ABC):
             AbilityCondition.TRG_RECEIVED_BUFF_DEF: Condition.ON_BUFFED_DEF,
             AbilityCondition.TRG_QUEST_START: Condition.QUEST_START,
             AbilityCondition.TRG_ENERGY_LV_UP: Condition.ON_ENERGY_LV_UP,
+            AbilityCondition.TRG_CAUSE_ENEMY_DEF_DOWN: Condition.ON_CAUSE_ENEMY_DEF_DOWN,
             AbilityCondition.TRG_ENERGIZED: Condition.SELF_ENERGIZED,
             # Despite the ability condition seems to be effective instead of triggering,
             # mapping to a triggering condition (``ON_INTO_BUFF_FIELD``)
@@ -179,13 +181,54 @@ class AbilityConditionEntryBase(ABC):
 
         raise self._condition_unconvertible()
 
-    def _cond_combo_count_div(self) -> Condition:
+    def _cond_combo_count_div_all(self) -> Optional[Condition]:
         if self.val_1 == 10:
             return Condition.ON_COMBO_DIV_BY_10
+        if self.val_1 == 15:
+            return Condition.ON_COMBO_DIV_BY_15
         if self.val_1 == 20:
             return Condition.ON_COMBO_DIV_BY_20
+        if self.val_1 == 30:
+            return Condition.ON_COMBO_DIV_BY_30
+        if self.val_1 == 35:
+            return Condition.ON_COMBO_DIV_BY_35
         if self.val_1 == 50:
             return Condition.ON_COMBO_DIV_BY_50
+        if self.val_1 == 100:
+            return Condition.ON_COMBO_DIV_BY_100
+
+        raise self._condition_unconvertible()
+
+    def _cond_combo_count_div_fs(self) -> Optional[Condition]:
+        if self.val_1 == 1:
+            return Condition.ON_COMBO_DIV_BY_1_FS
+        if self.val_1 == 3:
+            return Condition.ON_COMBO_DIV_BY_3_FS
+
+        return None
+
+    def _cond_combo_count_div_human_s1(self) -> Optional[Condition]:
+        if self.val_1 == 2:
+            return Condition.ON_COMBO_DIV_BY_2_HUMAN_S1
+        if self.val_1 == 3:
+            return Condition.ON_COMBO_DIV_BY_3_HUMAN_S1
+        if self.val_1 == 10:
+            return Condition.ON_COMBO_DIV_BY_10_HUMAN_S1
+
+        return None
+
+    def _cond_combo_count_div(self) -> Condition:
+        if self.target_action == AbilityTargetAction.FORCE_STRIKE:
+            if condition := self._cond_combo_count_div_fs():
+                return condition
+
+        if self.target_action == AbilityTargetAction.SKILL_1_HUMAN:
+            if condition := self._cond_combo_count_div_human_s1():
+                return condition
+
+        if not self.target_action:
+            if condition := self._cond_combo_count_div_all():
+                return condition
 
         raise self._condition_unconvertible()
 
@@ -232,6 +275,7 @@ class AbilityConditionEntryBase(ABC):
         """
         base_conds: list[Condition] = []
 
+        # TODO: Change this to `False` once all ability conditions can be parsed
         deferred: bool = True  # Flag to indicate if the condition determination is deferred
 
         # Get condition from the condition type fields

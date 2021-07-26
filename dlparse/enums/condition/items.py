@@ -300,8 +300,12 @@ class Condition(TranslatableEnumMixin, Enum):
     ON_HP_LT_30 = 810
     ON_HP_LT_40 = 811
     ON_HP_LT_60 = 812
-    ON_HP_GTE_40 = 820
-    ON_HP_GTE_60 = 821
+    ON_HP_GTE_40 = 813
+    ON_HP_GTE_60 = 814
+    # endregion
+
+    # region Target on Enemy
+    ON_CAUSE_ENEMY_DEF_DOWN = 820
     # endregion
 
     # region Infliction
@@ -324,9 +328,18 @@ class Condition(TranslatableEnumMixin, Enum):
     # region Combo count
     ON_COMBO_RESET = 850
     ON_COMBO_GTE_10 = 851
+    ON_COMBO_DIV_BY_1_FS = 891
+    ON_COMBO_DIV_BY_3_FS = 852
+    ON_COMBO_DIV_BY_2_HUMAN_S1 = 853
+    ON_COMBO_DIV_BY_3_HUMAN_S1 = 859
+    ON_COMBO_DIV_BY_10_HUMAN_S1 = 890
     ON_COMBO_DIV_BY_10 = 855
+    ON_COMBO_DIV_BY_15 = 858
     ON_COMBO_DIV_BY_20 = 856
+    ON_COMBO_DIV_BY_30 = 854
+    ON_COMBO_DIV_BY_35 = 893
     ON_COMBO_DIV_BY_50 = 857
+    ON_COMBO_DIV_BY_100 = 892
     # endregion
     # endregion
 

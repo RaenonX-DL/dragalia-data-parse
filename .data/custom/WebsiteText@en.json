@@ -1328,6 +1328,46 @@
     "text": "Every 50 Combo"
   },
   {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_30",
+    "text": "Every 30 Combo"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_15",
+    "text": "Every 15 Combo"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_3_FS",
+    "text": "FS Every 3 Hit"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_100",
+    "text": "Every 100 Combo"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_3_HUMAN_S1",
+    "text": "Human S1 Every 3 Hit"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_1_FS",
+    "text": "FS Every Hit"
+  },
+  {
+    "id": "ENUM_COND_ON_CAUSE_ENEMY_DEF_DOWN",
+    "text": "Caused Enemy DEF Down"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_2_HUMAN_S1",
+    "text": "Human S1 Every 2 Hit"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_10_HUMAN_S1",
+    "text": "Human S1 Every 10 Hit"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_35",
+    "text": "Every 35 Combo"
+  },
+  {
     "id": "ENUM_COND_ON_COMBO_RESET",
     "text": "Upon Combo Reset"
   },

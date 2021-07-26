@@ -34,6 +34,9 @@ class AbilityTargetAction(TranslatableEnumMixin, Enum):
     SKILL_4_HUMAN = 12
     SKILL_1_DRAGON = 9
 
+    def __bool__(self):
+        return self != AbilityTargetAction.NONE
+
     @property
     def to_skill_num(self) -> SkillNumber:
         """

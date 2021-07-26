@@ -2,7 +2,9 @@
 from dataclasses import dataclass, field
 from typing import Optional, TYPE_CHECKING, TextIO, Union
 
-from dlparse.enums import AbilityCondition, AbilityVariantType, Condition, Element, SkillNumber, UnitType, Weapon
+from dlparse.enums import (
+    AbilityCondition, AbilityTargetAction, AbilityVariantType, Condition, Element, SkillNumber, UnitType, Weapon,
+)
 from dlparse.errors import AbilityConditionUnconvertibleError, AbilityOnSkillUnconvertibleError
 from dlparse.mono.asset.base import (
     AbilityConditionEntryBase, AbilityVariantEntryBase, MasterAssetBase, MasterEntryBase,
@@ -273,7 +275,9 @@ class AbilityEntry(AbilityEntryExtension[AbilityConditionEntry, AbilityVariantEn
                 unit_type=UnitType(data["_UnitType"]), elemental_restriction=Element(data["_ElementalType"]),
                 weapon_restriction=Weapon(data["_WeaponType"]),
                 condition_code=data["_ConditionType"], val_1=data["_ConditionValue"], val_2=data["_ConditionValue2"],
-                probability=data["_Probability"], cooldown_sec=data["_CoolTime"], max_occurrences=data["_OccurenceNum"]
+                probability=data["_Probability"], cooldown_sec=data["_CoolTime"],
+                max_occurrences=data["_OccurenceNum"],
+                target_action=AbilityTargetAction(data["_TargetAction"]),
             ),
             on_skill=data["_OnSkill"],
             variant_1=AbilityVariantEntry(

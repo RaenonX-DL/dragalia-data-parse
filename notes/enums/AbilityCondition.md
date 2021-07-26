@@ -10,8 +10,8 @@ Asset: `AbilityData.json`
 
 Field: `_ConditionType`
 
-> There are 2 additional subfields `_ConditionValue` and `_ConditionValue2` for this.
-> These fields will have non-zero values if the condition needs it.
+> There are 3 additional subfields: `_ConditionValue`, `_ConditionValue2`, and `_TargetAction` for this.
+> These fields will have non-zero values if the condition requires it.
 >
 > For the documentation of this, check the [value reference](#value-reference) section below.
 
@@ -61,7 +61,7 @@ Field: `_ConditionType`
 40. SKILLCONNECT_SKILL2_MOMENT
 41. DRAGON_MODE2
 42. CAUSE_DEBUFF_ATK
-43. CAUSE_DEBUFF_DEF
+<a href="#43---cause_debuff_def">43. CAUSE_DEBUFF_DEF</a>
 44. CHANGE_BUFF_TYPE_COUNT
 45. CAUSE_CRITICAL
 46. TAKE_DAMAGE_REACTION
@@ -278,6 +278,7 @@ Triggered once for every X combo, where X is a designated number of combo count.
 `Val 1 = 20` means that the ability will be triggered once for every 20 combo.
 
 - **Val 1**: Combo count base number to trigger the ability.
+- **Target Action**: The combo count only count from this action.
 
 -----
 
@@ -349,6 +350,12 @@ Effective if the user's HP is < a certain threshold.
 `Val 1 = 40` means that the condition holds if the user's HP is < 40%.
 
 - **Val 1**: HP threshold.
+
+-----
+
+### `43` - `CAUSE_DEBUFF_DEF`
+
+Triggered once when the user successfully debuffed the enemy with DEF down.
 
 -----
 

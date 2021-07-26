@@ -1328,6 +1328,46 @@
     "text": "每 50 Combo"
   },
   {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_30",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_15",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_3_FS",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_100",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_3_HUMAN_S1",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_1_FS",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "ENUM_COND_ON_CAUSE_ENEMY_DEF_DOWN",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_2_HUMAN_S1",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_10_HUMAN_S1",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_35",
+    "text": "ENTER_TEXT"
+  },
+  {
     "id": "ENUM_COND_ON_COMBO_RESET",
     "text": "Upon Combo Reset"
   },

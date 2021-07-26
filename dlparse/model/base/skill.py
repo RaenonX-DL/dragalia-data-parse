@@ -69,6 +69,12 @@ class SkillDataBase(Generic[HT, ET], ABC):
                 # Appears in handle Formal Joachim S1 (`109503011`)
                 pre_conditions.add(())
 
+            if any(any(pre_condition in ConditionCategories.trigger for pre_condition in pre_condition_tuple)
+                   for pre_condition_tuple in pre_conditions):
+                # Pre-condition has trigger,
+                # Triggering conditions are not always happening
+                pre_conditions.add(())
+
             if any(any(pre_condition in ConditionCategories.skill_action_misc_var
                        for pre_condition in pre_condition_tuple) for pre_condition_tuple in pre_conditions):
                 # Skill has some variants. However, the skill can be used without triggering the variants.

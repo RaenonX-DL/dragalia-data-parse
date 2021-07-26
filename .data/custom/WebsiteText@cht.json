@@ -1328,6 +1328,46 @@
     "text": "每 50 Combo"
   },
   {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_30",
+    "text": "每 30 Combo"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_15",
+    "text": "每 15 Combo"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_3_FS",
+    "text": "FS 每 3 Combo"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_100",
+    "text": "每 100 Combo"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_3_HUMAN_S1",
+    "text": "人形 S1 每 3 Combo"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_1_FS",
+    "text": "FS 每下"
+  },
+  {
+    "id": "ENUM_COND_ON_CAUSE_ENEMY_DEF_DOWN",
+    "text": "造成敵方降防"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_2_HUMAN_S1",
+    "text": "人形 S1 每 2 Combo"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_10_HUMAN_S1",
+    "text": "人形 S1 每 10 Combo"
+  },
+  {
+    "id": "ENUM_COND_ON_COMBO_DIV_BY_35",
+    "text": "每 35 Combo"
+  },
+  {
     "id": "ENUM_COND_ON_COMBO_RESET",
     "text": "Combo 重設時"
   },
