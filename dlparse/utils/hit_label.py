@@ -46,12 +46,13 @@ def make_hit_label(label: str, /, level: Optional[int] = None, shifted: Optional
 
     Nothing related will change if the corresponding property is not specified.
     """
-    label = get_hit_label_data(label).original
+    label_data = get_hit_label_data(label)
+    label = label_data.original
 
-    if shifted:
+    if shifted or (shifted is None and label_data.shifted):
         label += "_HAS"
 
-    if level:
-        label += f"_LV{level:02}"
+    if label_lv := level or label_data.level:
+        label += f"_LV{label_lv:02}"
 
     return label

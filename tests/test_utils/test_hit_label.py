@@ -33,31 +33,49 @@ def test_get_hit_label_has_level_shifted():
     assert hit_label_data.shifted
 
 
-def test_set_hit_label_no_level_no_shift():
+def test_make_hit_label_no_level_no_shift():
     hit_label = make_hit_label("S071_000_00")
 
     assert hit_label == "S071_000_00"
 
 
-def test_set_hit_label_no_level_shifted():
+def test_make_hit_label_no_level_shifted():
     hit_label = make_hit_label("S071_000_00", shifted=True)
 
     assert hit_label == "S071_000_00_HAS"
 
 
-def test_set_hit_label_leveled_no_shift():
+def test_make_hit_label_leveled_no_shift():
     hit_label = make_hit_label("S071_000_00", level=2)
 
     assert hit_label == "S071_000_00_LV02"
 
 
-def test_set_hit_label_leveled_shifted():
+def test_make_hit_label_leveled_shifted():
     hit_label = make_hit_label("S071_000_00", level=1, shifted=True)
 
     assert hit_label == "S071_000_00_HAS_LV01"
 
 
-def test_set_hit_label_using_leveled_shifted():
+def test_make_hit_label_using_leveled_shifted():
     hit_label = make_hit_label("S071_000_00_HAS_LV01", level=2, shifted=False)
+
+    assert hit_label == "S071_000_00_LV02"
+
+
+def test_make_hit_label_change_shift():
+    hit_label = make_hit_label("S071_000_00_LV01", shifted=True)
+
+    assert hit_label == "S071_000_00_HAS_LV01"
+
+
+def test_make_hit_label_change_level_shifted():
+    hit_label = make_hit_label("S071_000_00_HAS_LV01", level=2)
+
+    assert hit_label == "S071_000_00_HAS_LV02"
+
+
+def test_make_hit_label_change_level_no_shift():
+    hit_label = make_hit_label("S071_000_00_LV01", level=2)
 
     assert hit_label == "S071_000_00_LV02"
