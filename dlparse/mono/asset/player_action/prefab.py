@@ -9,6 +9,7 @@ from dlparse.utils import get_hit_label_data, make_hit_label
 from .buff_bomb import ActionBuffBomb
 from .buff_field import ActionBuffField
 from .bullet import ActionBullet
+from .bullet_butterfly import ActionBulletButterfly
 from .bullet_format import ActionBulletFormation
 from .bullet_multi import ActionBulletMulti
 from .bullet_parabola import ActionBulletParabola
@@ -38,6 +39,7 @@ class PlayerActionParser(ActionParserBase):
         "ActionPartsFireStockBullet": ActionBulletStockFire,
         "ActionPartsFormationBullet": ActionBulletFormation,
         "ActionPartsParabolaBullet": ActionBulletParabola,
+        "ActionPartsButterflyBullet": ActionBulletButterfly,
         # Active actions
         "ActionPartsActiveCancel": ActionActiveCancel,
         "ActionPartsTerminateOtherParts": ActionTerminateOthers,
