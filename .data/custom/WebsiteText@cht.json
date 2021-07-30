@@ -416,6 +416,14 @@
     "text": "S1 (爆能中)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_104",
+    "text": "S1"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_105",
+    "text": "S1 (爆能中)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_mode_95",
     "text": "S2 (爆能中)"
   },
@@ -2389,6 +2397,10 @@
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_91",
+    "text": "預設"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_103",
     "text": "預設"
   }
 ]
