@@ -30,7 +30,7 @@ class ActionBulletMulti(ActionBullet):
         bullet_count: int = data["_generateNum"]
 
         # Bullet may stay in the field for some time
-        hit_count: int = max(floor(data["_bulletDuration"] / data["_collisionHitInterval"]) + 1, 1)
+        hit_count: int = max(floor(kwargs["bullet_duration"] / kwargs["collision_interval"]) + 1, 1)
 
         # Attach hit labels of the bullets
         labels_possible: list[str] = [data["_hitAttrLabel"]] * bullet_count * hit_count + data["_hitAttrLabelSubList"]

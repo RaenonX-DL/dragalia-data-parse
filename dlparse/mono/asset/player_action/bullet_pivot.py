@@ -18,7 +18,7 @@ class ActionBulletPivot(ActionBullet):
 
         # Calculate count of hits
         # A hit will be made at the initial time, then deal hits by a certain interval within the given duration
-        hits = int(kwargs["time_duration"] // data["_collisionHitInterval"]) + 1
+        hits = int(kwargs["time_duration"] // kwargs["collision_interval"]) + 1
 
         # Attach hit labels
         labels_possible: list[str] = [data["_hitAttrLabel"]] * hits
