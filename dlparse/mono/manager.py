@@ -230,8 +230,8 @@ class AssetManager:
         """
         if not self._asset_text_website:
             # Case when the custom asset directory was not given
-            raise ConfigError("Custom asset directory was not given. "
-                              "Specify the custom asset directory then call this again.")
+            raise ConfigError("Custom asset directory not specified. "
+                              "Specify the custom asset directory then try again.")
 
         return self._asset_text_website
 

@@ -257,7 +257,7 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
         if mode_ids[-1]:  # All modes in-use
             return mode_ids
 
-        for last_idx in range(2, len(mode_ids)):
+        for last_idx in range(2, len(mode_ids) + 1):
             if not mode_ids[-last_idx]:
                 continue  # Last mode ID is not in-use, continue searching
 

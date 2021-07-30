@@ -20,6 +20,14 @@ def test_no_mode_axe(asset_manager: AssetManager):
     assert variants[0] == (0, 400000)
 
 
+def test_1st_mode_only(asset_manager: AssetManager):
+    entry = create_dummy(mode_1_id=10)
+
+    variants = entry.get_normal_attack_variants(asset_manager)
+    assert len(variants) == 1
+    assert variants[0] == (10, 100100)
+
+
 def test_unique_transform_has_default(asset_manager: AssetManager):
     entry = create_dummy(mode_1_id=0, mode_2_id=20, weapon=Weapon.AXE)
 
