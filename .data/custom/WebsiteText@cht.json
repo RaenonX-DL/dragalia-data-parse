@@ -25,7 +25,7 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s1_chain_none",
-    "text": "S1 無連鎖"
+    "text": "S1 一般連鎖"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_chain_target_bk",
@@ -237,7 +237,7 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s2_chain_none",
-    "text": "S2 無連鎖"
+    "text": "S2 一般連鎖"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_chain_target_bk",

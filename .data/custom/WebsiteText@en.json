@@ -25,7 +25,7 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s1_chain_none",
-    "text": "S1 No Chain"
+    "text": "S1 Normal Chain"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_chain_target_bk",
@@ -237,7 +237,7 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s2_chain_none",
-    "text": "S2 No Chain"
+    "text": "S2 Normal Chain"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_chain_target_bk",
