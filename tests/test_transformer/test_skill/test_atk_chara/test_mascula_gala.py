@@ -19,7 +19,7 @@ def test_skill_discovery(asset_manager: AssetManager):
     # https://dragalialost.wiki/w/Gala_Mascula
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10250203)
 
-    actual_identifiers = chara_data.get_skill_id_entries(asset_manager, include_base_if_mode=True)
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
     expected_identifiers = [
         # S1 Base

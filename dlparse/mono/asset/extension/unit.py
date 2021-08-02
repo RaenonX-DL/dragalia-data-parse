@@ -110,7 +110,7 @@ class UnitAsset(Generic[T], MasterAssetBase[T], ABC):
                 continue
 
             # Get the skill ID entries
-            entries = unit_data.get_skill_id_entries(asset_manager, include_base_if_mode=True, is_dragon=is_dragon)
+            entries = unit_data.get_skill_id_entries(asset_manager, is_dragon=is_dragon)
 
             # Store each result to the cache
             for entry in entries:

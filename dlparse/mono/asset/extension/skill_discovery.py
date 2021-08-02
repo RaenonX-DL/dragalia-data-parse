@@ -609,7 +609,7 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
 
     def get_skill_id_entries(
             self, asset_manager: "AssetManager", /,
-            include_base_if_mode: bool = False, is_dragon: bool = False,
+            include_base_if_mode: bool = True, is_dragon: bool = False,
     ) -> list[SkillIdEntry]:
         """
         Get all possible skill ID entries of a skill.

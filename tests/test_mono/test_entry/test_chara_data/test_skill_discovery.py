@@ -25,7 +25,7 @@ def test_dummy_with_mode(asset_manager: AssetManager):
         SkillIdEntry(103505034, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, 12))
     ]
 
-    assert chara_data.get_skill_id_entries(asset_manager) == expected_identifiers
+    assert chara_data.get_skill_id_entries(asset_manager, include_base_if_mode=False) == expected_identifiers
 
 
 def test_via_phase(asset_manager: AssetManager):
@@ -55,7 +55,7 @@ def test_via_mode_1(asset_manager: AssetManager):
     # https://dragalialost.wiki/w/Catherine
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10550204)
 
-    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager, include_base_if_mode=False)
 
     s1_labels_base = [
         SkillIdentifierLabel.of_mode(SkillNumber.S1, 26),
@@ -91,7 +91,7 @@ def test_via_mode_2(asset_manager: AssetManager):
     # https://dragalialost.wiki/w/Gala_Leif
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10150303)
 
-    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager, include_base_if_mode=False)
 
     expected_identifiers = [
         SkillIdEntry(101503031, SkillNumber.S1, SkillIdentifierLabel.of_mode(SkillNumber.S1, 22)),
@@ -113,7 +113,7 @@ def test_via_mode_3(asset_manager: AssetManager):
     # https://dragalialost.wiki/w/Valerio
     chara_data = asset_manager.asset_chara_data.get_data_by_id(10250201)
 
-    actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
+    actual_identifiers = chara_data.get_skill_id_entries(asset_manager, include_base_if_mode=False)
 
     expected_identifiers = [
         SkillIdEntry(102502011, SkillNumber.S1, SkillIdentifierLabel.of_mode(SkillNumber.S1, 4)),
