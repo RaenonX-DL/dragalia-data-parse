@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional, TYPE_CHECKING, TextIO, Union
 
-from dlparse.enums import Element, SkillNumber, UnitType, Weapon
+from dlparse.enums import Element, ModeChangeType, SkillNumber, UnitType, Weapon
 from dlparse.errors import InvalidSkillNumError, NoUniqueDragonError
 from dlparse.mono.asset.base import MasterAssetBase, MasterEntryBase, MasterParserBase
 from dlparse.mono.asset.extension import SkillIdEntry, SkillIdentifierLabel, UnitAsset, UnitEntry
@@ -53,7 +53,7 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
     def_coef: float
     # endregion
 
-    mode_change_type: int
+    mode_change_type: ModeChangeType
     mode_1_id: int
     mode_2_id: int
     mode_3_id: int
@@ -220,7 +220,11 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
 
     @property
     def has_mode_change(self) -> bool:
-        return self.mode_change_type != 0
+        return self.mode_change_type.is_effective
+
+    @property
+    def change_on_start(self) -> bool:
+        return self.mode_change_type.change_on_start
 
     @property
     def mode_ids(self) -> list[int]:
@@ -468,7 +472,7 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
             plus_atk_5=data["_PlusAtk5"],
             mc_full_bonus_atk=data["_McFullBonusAtk5"],
             def_coef=data["_DefCoef"],
-            mode_change_type=data["_ModeChangeType"],
+            mode_change_type=ModeChangeType(data["_ModeChangeType"]),
             mode_1_id=data["_ModeId1"],
             mode_2_id=data["_ModeId2"],
             mode_3_id=data["_ModeId3"],

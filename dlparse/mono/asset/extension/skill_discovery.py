@@ -208,7 +208,13 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
     @property
     @abstractmethod
     def has_mode_change(self) -> bool:
-        """Check if the character has mode change enabled."""
+        """Check if the unit has mode change enabled."""
+        raise NotImplementedError()
+
+    @property
+    @abstractmethod
+    def change_on_start(self) -> bool:
+        """Check if the unit changes to any mode on start."""
         raise NotImplementedError()
 
     @property
@@ -490,7 +496,7 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
 
         return ret
 
-    def _from_base(self, include_base_if_mode: bool, is_dragon: bool) -> list[SkillIdEntry]:
+    def _from_base(self, is_dragon: bool) -> list[SkillIdEntry]:
         """Get the base skills."""
         ret: list[SkillIdEntry] = []
 
@@ -498,7 +504,7 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
             ret.append(SkillIdEntry(self.skill_1_id, SkillNumber.S1_DRAGON, SkillIdentifierLabel.S1_BASE))
             if self.skill_2_id:  # Dragon usually does not have S2
                 ret.append(SkillIdEntry(self.skill_2_id, SkillNumber.S2_DRAGON, SkillIdentifierLabel.S2_BASE))
-        elif not self.has_mode_change or include_base_if_mode:
+        elif not self.has_mode_change or not self.change_on_start:
             ret.extend([
                 SkillIdEntry(self.skill_1_id, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
                 SkillIdEntry(self.skill_2_id, SkillNumber.S2, SkillIdentifierLabel.S2_BASE)
@@ -609,18 +615,14 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
 
     def get_skill_id_entries(
             self, asset_manager: "AssetManager", /,
-            include_base_if_mode: bool = True, is_dragon: bool = False,
+            is_dragon: bool = False,
     ) -> list[SkillIdEntry]:
-        """
-        Get all possible skill ID entries of a skill.
-
-        ``include_base_if_mode`` determines if the base skills should be included if the character has mode(s).
-        """
+        """Get all possible skill ID entries of a skill."""
         if identifiers := _manual_identifiers.get(self.id):
             # Early return for manual discovery
             return identifiers
 
-        ret: list[SkillIdEntry] = self._from_base(include_base_if_mode, is_dragon)
+        ret: list[SkillIdEntry] = self._from_base(is_dragon)
 
         if self.has_mode_change:
             ret.extend(self._from_mode(asset_manager))

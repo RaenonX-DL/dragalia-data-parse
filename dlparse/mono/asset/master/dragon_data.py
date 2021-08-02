@@ -48,6 +48,10 @@ class DragonDataEntry(UnitEntry, MasterEntryBase):
         return False
 
     @property
+    def change_on_start(self) -> bool:
+        return False
+
+    @property
     def mode_ids(self) -> list[int]:
         return []
 
