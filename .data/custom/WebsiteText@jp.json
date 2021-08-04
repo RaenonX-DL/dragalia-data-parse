@@ -424,6 +424,18 @@
     "text": "S1 (Dragon Drive)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_109",
+    "text": "S1 (1 條)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_110",
+    "text": "S1 (2 條)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_111",
+    "text": "S1 (3 條)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_mode_95",
     "text": "S2 (Dragon Drive)"
   },
