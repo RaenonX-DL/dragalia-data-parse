@@ -112,8 +112,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     @staticmethod
     def _init_validate_conditions(conditions: tuple[Condition]):
         # Validate the condition combinations
-        # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/3249
-        if not (result := validate_conditions(conditions)):  # pylint: disable=superfluous-parens
+        if result := not validate_conditions(conditions):
             raise ConditionValidationFailedError(result)
 
     def _init_validate_target(self):
