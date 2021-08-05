@@ -3,6 +3,7 @@ from dataclasses import InitVar, dataclass, field
 from itertools import combinations, product, zip_longest
 from typing import Optional
 
+from dlparse.custom import mod_correction_rate
 from dlparse.enums import Condition, ConditionCategories, ConditionComposite, HitTargetSimple, Status
 from dlparse.mono.asset import ActionConditionAsset, BuffCountAsset
 from .action_cond_effect import HitActionConditionEffectUnit
@@ -528,9 +529,11 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
                    key=lambda item: item[0])[1]
 
     def __post_init__(self, is_exporting: bool):
-        # Initialize here despite `__post_init__` assigns it
+        # Initializing some properties here despite `__post_init__` assigns it
         # because this property is used in `calculate_units_matrix`
         self.hit_data_mtx = self.skill_hit_data.hit_data
+        self.skill_id = self.skill_hit_data.rev_result.skill_id_entry.skill_id
+
         # This need to be placed before `__post_init__`
         # because `self._unit_mtx_base` is used to determine the skill max level
         self._unit_mtx_base, _ = self.calculate_units_matrix(ConditionComposite())
@@ -573,7 +576,9 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
                     continue  # Skip processing if the action ID of `hit_data` is not the desired one
 
                 damage_units = hit_data.to_damage_units(
-                    condition_comp, new_units_hit_counter, asset_manager=self.asset_manager
+                    condition_comp, new_units_hit_counter,
+                    asset_manager=self.asset_manager,
+                    mod_correction_rate=mod_correction_rate.get(self.skill_id, 1),
                 )
 
                 new_units_level.append(damage_units)

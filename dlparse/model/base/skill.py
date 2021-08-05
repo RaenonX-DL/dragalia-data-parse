@@ -37,6 +37,7 @@ class SkillDataBase(Generic[HT, ET], ABC):
     skill_hit_data: "SkillHitData"
 
     skill_data: SkillDataEntry = field(init=False)
+    skill_id: int = field(init=False)
     hit_data_mtx: list[list[HT]] = field(init=False)
     sp_gradual_fill_pct: list[float] = field(init=False)
 
@@ -140,6 +141,7 @@ class SkillDataBase(Generic[HT, ET], ABC):
 
     def __post_init__(self, *args, **kwargs):
         self.skill_data = self.skill_hit_data.skill_data
+        self.skill_id = self.skill_hit_data.rev_result.skill_id_entry.skill_id
         self.hit_data_mtx = self.skill_hit_data.hit_data
 
         self.max_level = self._init_max_level()  # Needs to be placed before `self._init_sp_gradual_fill_pct()`

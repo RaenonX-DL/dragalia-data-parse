@@ -330,6 +330,11 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
         self._damage_units_apply_mod_boosts_target(damage_units, condition_comp)
         self._damage_units_apply_mod_boosts_self(damage_units, condition_comp, asset_buff_count=asset_buff_count)
 
+    @staticmethod
+    def _damage_units_apply_mod_correction(damage_units: list[DamageUnit], mod_correction_rate: float):
+        for damage_unit in damage_units:
+            damage_unit.mod *= mod_correction_rate
+
     def _damage_units_from_action_cond(self, asset_action_condition: ActionConditionAsset):
         # Get affliction unit & dispel
         unit_affliction = None
@@ -414,7 +419,8 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
     # These two calls could appear in different places.
     @cache
     def to_damage_units(
-            self, condition_comp: ConditionComposite, hit_count: int, /, asset_manager: "AssetManager"
+            self, condition_comp: ConditionComposite, hit_count: int, /,
+            asset_manager: "AssetManager", mod_correction_rate: float = 1.0,
     ) -> list[DamageUnit]:
         """
         Calculates the damage modifier under ``condition_comp`` when the skill has dealt ``hit_count`` hits.
@@ -422,6 +428,8 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
         Usually, a single hit will have a single modifier.
         However, under some special circumstances (for example, deteriorating bullets),
         having multiple damage modifiers is possible.
+
+        ``mod_correction_rate`` includes the base, which means that the value of ``1.0`` keeps the original mod.
         """
         # --- Early return check
 
@@ -439,6 +447,9 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
         self._damage_units_apply_mod_boosts(
             damage_units, condition_comp, asset_buff_count=asset_manager.asset_buff_count
         )
+
+        # Apply damage correction rate
+        self._damage_units_apply_mod_correction(damage_units, mod_correction_rate)
 
         # Return non-empty units only
         return [damage_unit for damage_unit in damage_units if not damage_unit.is_empty]
