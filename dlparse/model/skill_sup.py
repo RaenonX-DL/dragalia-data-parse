@@ -262,4 +262,6 @@ class SupportiveSkillData(SkillDataBase[BuffingHitData, SupportiveSkillEntry]):
 
                 buffs[skill_lv].update(effect_units)
 
+        # REMOVE: no-value-for-parameter false-positive (unknown cause, occur after 2.9.6 to 2.10.2)
+        # pylint: disable=no-value-for-parameter
         return SupportiveSkillEntry(condition_comp=condition_comp, buffs=buffs)

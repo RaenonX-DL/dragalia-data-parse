@@ -169,12 +169,10 @@ class MultilingualAssetBase(Generic[XT], ABC):
         :raises TextLabelNotFoundError: if the `label` in `lang_code` is not found and `on_not_found` indicates to
         throw an error
         """
-        # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/4792
-        if not (lang_asset := self._assets.get(lang_code)):  # pylint: disable=superfluous-parens
+        if not (lang_asset := self._assets.get(lang_code)):
             raise LanguageAssetNotFoundError(lang_code)
 
-        # REMOVE: not with walrus https://github.com/PyCQA/pylint/issues/4792
-        if not (lang_entry := lang_asset.get(label)):  # pylint: disable=superfluous-parens
+        if not (lang_entry := lang_asset.get(label)):
             if on_not_found is THROW_ERROR_ON_FAIL:
                 raise TextLabelNotFoundError(label)
 

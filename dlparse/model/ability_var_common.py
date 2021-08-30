@@ -15,7 +15,6 @@ from dlparse.enums import (
 )
 from dlparse.errors import AbilityVariantUnconvertibleError
 from dlparse.mono.asset import AbilityVariantEntry, ActionConditionEntry, ExAbilityEntry
-from dlparse.mono.asset.base import AbilityVariantEntryBase
 from dlparse.mono.asset.extension import AbilityEntryExtension
 from .action_cond_conv import ActionCondEffectConvertPayload, ActionCondEffectConvertible
 from .base import EffectUnitBase
@@ -95,7 +94,7 @@ class AbilityVariantEffectPayload(ActionCondEffectConvertPayload):
 class AbilityVariantData(ActionCondEffectConvertible[AbilityVariantEffectUnit, AbilityVariantEffectPayload]):
     """An ability variant data class."""
 
-    variant: AbilityVariantEntryBase
+    variant: AbilityVariantEntry
 
     type_enum: AbilityVariantType = field(init=False)
 

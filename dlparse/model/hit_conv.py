@@ -64,6 +64,8 @@ class HitDataEffectConvertible(
             # Not afflicting action condition
             return None
 
+        # REMOVE: no-value-for-parameter false-positive (unknown cause, occur after 2.9.6 to 2.10.2)
+        # pylint: disable=no-value-for-parameter
         return EnemyAfflictionEffectUnit(
             time=self.action_component.time_start,
             status=action_cond.afflict_status,
@@ -81,6 +83,8 @@ class HitDataEffectConvertible(
     def to_dispel_unit(
             self, param_enum: BuffParameter, action_cond: ActionConditionEntry, payload: None = None
     ) -> Optional[EnemyAfflictionEffectUnit]:
+        # REMOVE: no-value-for-parameter false-positive (unknown cause, occur after 2.9.6 to 2.10.2)
+        # pylint: disable=no-value-for-parameter
         return EnemyAfflictionEffectUnit(
             time=self.action_component.time_start,
             status=action_cond.afflict_status,
