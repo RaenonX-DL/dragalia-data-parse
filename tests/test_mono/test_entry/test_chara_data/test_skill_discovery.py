@@ -284,7 +284,7 @@ def test_via_ability_3(asset_manager: AssetManager):
         # S2 Base
         SkillIdEntry(101505012, SkillNumber.S2, [SkillIdentifierLabel.S2_BASE, SkillIdentifierLabel.SHARED]),
         # S1 @ Energized
-        SkillIdEntry(101505013, SkillNumber.S1, SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S1, 281)),
+        SkillIdEntry(101505013, SkillNumber.S1, SkillIdentifierLabel.skill_enhanced_by_ability(SkillNumber.S1, 2262)),
     ]
 
     assert actual_identifiers == expected_identifiers
