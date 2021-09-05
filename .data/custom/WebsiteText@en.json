@@ -280,6 +280,10 @@
     "text": "S2 (High Power)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s2_mode_108",
+    "text": "S2 (Manachewed)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_mode_21",
     "text": "S2 (Dragon Drive)"
   },
@@ -426,6 +430,10 @@
   {
     "id": "SKILL_IDENTIFIER_s1_mode_105",
     "text": "S1 (Dragon Drive)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_108",
+    "text": "S1 (Manachewed)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_109",
@@ -2158,6 +2166,14 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_100",
     "text": "Dragondrive"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_107",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_108",
+    "text": "Manachewed"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_12",
