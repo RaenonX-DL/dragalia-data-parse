@@ -40,12 +40,7 @@ max-line-length = 119
 # too-many-instance-attributes:  Data class usually will have a lot of attributes which should not be grouped
 # cyclic-import:                 Just let it crash during runtime
 # arguments-differ:              Let it checked by IDE or flake8
-disable = """
-    fixme,
-    too-many-instance-attributes,
-    cyclic-import,
-    arguments-differ
-"""
+disable = "fixme, too-many-instance-attributes, cyclic-import, arguments-differ"
 
 # -------------------------- pydocstyle --------------------------
 
@@ -64,22 +59,7 @@ disable = """
 # D409: Section underline should match the length of its name
 # D412: No blank lines allowed between a section header and its content
 # D413: Missing blank line after last section
-ignore = """
-    D102,
-    D105,
-    D107,
-    D203,
-    D212,
-    D215,
-    D401,
-    D404,
-    D406,
-    D407,
-    D408,
-    D409,
-    D412,
-    D413
-"""
+ignore = "D102, D105, D107, D203, D212, D215, D401, D404, D406, D407, D408, D409, D412, D413"
 
 # -------------------------- coverage --------------------------
 # Doc: https://coverage.readthedocs.io/en/stable/config.html
@@ -117,3 +97,8 @@ markers = [
     "slow",
     "holistic"
 ]
+
+# -------------------------- mypy --------------------------
+[tool.mypy]
+show_error_codes = "True"
+disable_error_code = "misc"

@@ -4,8 +4,9 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Generic, Optional, TextIO, Type, TypeVar
 
+from .asset import AssetBase
 from .entry import EntryBase
-from .master import MasterAssetBase, MasterParserBase
+from .parser import ParserBase
 
 __all__ = ("StoryEntryBase", "GroupedStoryEntryBase", "GroupedStoryAssetBase")
 
@@ -27,7 +28,7 @@ class GroupedStoryEntryBase(StoryEntryBase, ABC):
 T = TypeVar("T", bound=GroupedStoryEntryBase)
 
 
-class GroupedStoryAssetBase(Generic[T], MasterAssetBase[T], ABC):
+class GroupedStoryAssetBase(Generic[T], AssetBase[T], ABC):
     """Base class for an asset containing grouped story entries."""
 
     def _init_lookup_by_group_id(self):
@@ -35,7 +36,7 @@ class GroupedStoryAssetBase(Generic[T], MasterAssetBase[T], ABC):
             self._lookup_by_group_id[entry.group_id].append(entry)
 
     def __init__(
-            self, parser_cls: Type[MasterParserBase[T]], file_location: Optional[str] = None, /,
+            self, parser_cls: Type[ParserBase[T]], file_location: Optional[str] = None, /,
             asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
     ):
         super().__init__(parser_cls, file_location, asset_dir=asset_dir, file_like=file_like)

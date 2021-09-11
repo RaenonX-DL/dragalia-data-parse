@@ -2,9 +2,11 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional, Union
+from typing import Mapping, Optional, Union
 
-__all__ = ("EntryBase", "TextEntryBase")
+__all__ = ("EntryBase", "TextEntryBase", "EntryDataType")
+
+EntryDataType = Mapping[str, Union[str, int, float, list[int]]]
 
 
 @dataclass
@@ -13,7 +15,7 @@ class EntryBase(ABC):
 
     @staticmethod
     @abstractmethod
-    def parse_raw(data: dict[str, Union[str, int, float]]) -> "EntryBase":
+    def parse_raw(data: EntryDataType) -> Optional["EntryBase"]:
         """Parse a raw data entry to be the asset entry class."""
         raise NotImplementedError()
 

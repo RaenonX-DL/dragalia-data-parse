@@ -2,7 +2,7 @@
 import json
 from abc import ABC
 from dataclasses import dataclass
-from typing import Callable, Generic, Iterable, Optional, TextIO, Type, TypeVar, Union
+from typing import Callable, Generic, Iterator, Optional, TextIO, Type, TypeVar, Union
 
 from dlparse.errors import AssetKeyMissingError
 from .asset import AssetBase
@@ -20,9 +20,10 @@ class MasterEntryBase(EntryBase, ABC):
 
 
 T = TypeVar("T", bound=MasterEntryBase)
+ParsedEntryDict = dict[Union[int, str], T]
 
 
-class MasterParserBase(Generic[T], ParserBase, ABC):
+class MasterParserBase(Generic[T], ParserBase[ParsedEntryDict], ABC):
     """Base parser class for parsing the master asset files."""
 
     @staticmethod
@@ -59,12 +60,12 @@ class MasterParserBase(Generic[T], ParserBase, ABC):
         return data["list"]
 
     @staticmethod
-    def parse_file(file_like: str) -> dict[int, T]:
+    def parse_file(file_like: TextIO) -> ParsedEntryDict:
         """Parse a file as a :class:`dict` which key is the ID of the value."""
         raise NotImplementedError()
 
 
-class MasterAssetBase(Generic[T], AssetBase, ABC):
+class MasterAssetBase(Generic[T], AssetBase[ParsedEntryDict], ABC):
     """Base class for a master mono behavior asset."""
 
     def __init__(
@@ -73,7 +74,7 @@ class MasterAssetBase(Generic[T], AssetBase, ABC):
     ):
         super().__init__(parser_cls, file_location, asset_dir=asset_dir, file_like=file_like)
 
-    def __iter__(self) -> Iterable[T]:
+    def __iter__(self) -> Iterator[T]:
         return iter(self._data.values())
 
     def __contains__(self, item):

@@ -1,11 +1,13 @@
 """Base parser class."""
 from abc import ABC, abstractmethod
-from typing import Any, TextIO
+from typing import Generic, TextIO, TypeVar
 
 __all__ = ("ParserBase",)
 
+T = TypeVar("T")
 
-class ParserBase(ABC):
+
+class ParserBase(Generic[T], ABC):
     """Base parser class for parsing the asset file."""
 
     # pylint: disable=too-few-public-methods
@@ -18,6 +20,6 @@ class ParserBase(ABC):
 
     @staticmethod
     @abstractmethod
-    def parse_file(file_like: TextIO) -> Any:
+    def parse_file(file_like: TextIO) -> T:
         """Parse the file."""
         raise NotImplementedError()

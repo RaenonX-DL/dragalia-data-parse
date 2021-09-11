@@ -2,7 +2,7 @@
 import io
 import os
 from abc import ABC, abstractmethod
-from typing import Any, Generic, Optional, TextIO, Type, TypeVar, Union
+from typing import Any, Generic, Optional, TextIO, Type, TypeVar, Union, cast
 from urllib.error import HTTPError
 from urllib.request import urlopen
 
@@ -14,6 +14,8 @@ from .parser import ParserBase
 __all__ = ("AssetBase", "MultilingualAssetBase", "get_file_path", "get_file_like")
 
 THROW_ERROR_ON_FAIL = object()
+
+T = TypeVar("T")
 
 
 def get_file_like(file_location: str) -> TextIO:
@@ -44,7 +46,7 @@ def get_file_like(file_location: str) -> TextIO:
 
 
 def get_file_path(
-        default_file_name: str, /, file_location: Optional[str] = None, asset_dir: Optional[str] = None,
+        default_file_name: Optional[str], /, file_location: Optional[str] = None, asset_dir: Optional[str] = None,
         on_fail: Any = THROW_ERROR_ON_FAIL
 ) -> str:
     """
@@ -79,13 +81,13 @@ def get_file_path(
     )
 
 
-class AssetBase(ABC):
+class AssetBase(Generic[T], ABC):
     """Base class for the mono behavior assets."""
 
     asset_file_name: Optional[str] = None
 
     def __init__(
-            self, parser_cls: Type[ParserBase], file_location: Optional[str] = None, /,
+            self, parser_cls: Type[ParserBase[T]], file_location: Optional[str] = None, /,
             asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
     ):
         if not file_location and not asset_dir and not file_like:
@@ -117,13 +119,13 @@ class AssetBase(ABC):
         raise NotImplementedError()
 
     @property
-    def data(self) -> Union[dict, list, set]:
+    def data(self) -> T:
         """Get all data of the asset."""
         return self._data
 
 
 XT = TypeVar("XT", bound=TextEntryBase)
-PT = TypeVar("PT", bound=ParserBase)
+ParsedTextEntryDict = dict[str, XT]
 
 
 class MultilingualAssetBase(Generic[XT], ABC):
@@ -132,7 +134,7 @@ class MultilingualAssetBase(Generic[XT], ABC):
     # pylint: disable=too-few-public-methods
 
     def __init__(
-            self, parser_cls: Type[PT], lang_codes: Union[list[str], dict[str, str]],
+            self, parser_cls: Type[ParserBase[ParsedTextEntryDict]], lang_codes: Union[list[str], dict[str, str]],
             asset_dir: str, file_name: str
     ):
         """
@@ -145,7 +147,7 @@ class MultilingualAssetBase(Generic[XT], ABC):
 
         An empty ``lang_code`` means to use the default file.
         """
-        self._assets: dict[str, dict[str, XT]] = {}
+        self._assets: dict[str, ParsedTextEntryDict] = {}
 
         if isinstance(lang_codes, list):
             # Force lang codes to be a `dict`. If it's a list, cast it to a dict
@@ -156,7 +158,7 @@ class MultilingualAssetBase(Generic[XT], ABC):
             file_path = get_file_path(file_name_join, asset_dir=asset_dir)
             file_like = get_file_like(file_path)
 
-            self._assets[lang_code_asset] = parser_cls.parse_file(file_like)
+            self._assets[lang_code_asset] = cast(ParserBase[ParsedTextEntryDict], parser_cls).parse_file(file_like)
 
     def get_text(self, lang_code: str, label: str, on_not_found: Any = THROW_ERROR_ON_FAIL) -> str:
         """

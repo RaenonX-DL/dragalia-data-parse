@@ -1,6 +1,6 @@
 """Prefab file class for getting the components."""
 import re
-from typing import Optional, TextIO, Type
+from typing import Optional, TextIO, Type, TypeVar
 
 from dlparse.mono.asset.base import (
     ActionAssetBase, ActionComponentBase, ActionComponentHasHitLabels, ActionParserBase,
@@ -23,13 +23,15 @@ from .terminate import ActionTerminateOthers
 
 __all__ = ("PlayerActionPrefab",)
 
+T = TypeVar("T", bound=ActionComponentBase)
+
 
 class PlayerActionParser(ActionParserBase):
     """Player action prefab file parser."""
 
     SCRIPT_KEY: str = "$Script"
 
-    SCRIPT_CLASS: dict[str, Type[ActionComponentBase]] = {
+    SCRIPT_CLASS: dict[str, Type[T]] = {
         # Hits coming from the user themselves
         "ActionPartsHit": ActionHit,
         # Projectile hits
@@ -52,9 +54,9 @@ class PlayerActionParser(ActionParserBase):
     }
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> list[ActionComponentBase]:
+    def parse_file(cls, file_like: TextIO) -> list[T]:
         components_raw: list[dict] = cls.get_components(file_like)
-        components: list[ActionComponentBase] = []
+        components: list[T] = []
 
         for component in components_raw:
             component_class = cls.SCRIPT_CLASS.get(component.get(cls.SCRIPT_KEY))

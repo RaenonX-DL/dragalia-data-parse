@@ -1,15 +1,17 @@
 """Classes for custom assets."""
 import json
 from abc import ABC
-from typing import Any, TextIO
+from typing import Generic, TextIO, TypeVar
 
 from dlparse.errors import AssetKeyMissingError
 from .parser import ParserBase
 
 __all__ = ("CustomParserBase",)
 
+T = TypeVar("T")
 
-class CustomParserBase(ParserBase, ABC):
+
+class CustomParserBase(Generic[T], ParserBase[dict[int, T]], ABC):
     """
     Base parser class for parsing the custom asset files.
 
@@ -39,6 +41,6 @@ class CustomParserBase(ParserBase, ABC):
         return ret
 
     @staticmethod
-    def parse_file(file_like: TextIO) -> dict[int, Any]:
+    def parse_file(file_like: TextIO) -> dict[int, T]:
         """Parse a file as a :class:`dict` which key is the ID of the value."""
         raise NotImplementedError()

@@ -2,12 +2,12 @@
 import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Callable, Optional, TextIO, Type, Union
+from typing import Callable, Mapping, Optional, TextIO, Type, TypeVar, Union, cast
 
 from dlparse.enums import ActionConditionType, Condition, ConditionCategories
 from dlparse.errors import AssetKeyMissingError, EnumConversionError
 from .asset import AssetBase
-from .entry import EntryBase
+from .entry import EntryBase, EntryDataType
 from .parser import ParserBase
 
 __all__ = (
@@ -26,10 +26,10 @@ class ActionComponentCondition(EntryBase):
     values: list[int]
 
     @staticmethod
-    def parse_raw(data: dict[str, Union[int, list[int]]]) -> Optional["ActionComponentCondition"]:
+    def parse_raw(data: EntryDataType) -> "ActionComponentCondition":
         return ActionComponentCondition(
-            condition_type=ActionConditionType(data["_conditionType"]),
-            values=data["_conditionValue"]
+            condition_type=ActionConditionType(cast(int, data["_conditionType"])),
+            values=cast(list[int], data["_conditionValue"])
         )
 
     @property
@@ -89,14 +89,14 @@ class ActionComponentLoop(EntryBase):
     restart_sec: float
 
     @staticmethod
-    def parse_raw(data: dict[str, Union[int, float]]) -> Optional["ActionComponentLoop"]:
+    def parse_raw(data: EntryDataType) -> Optional["ActionComponentLoop"]:
         if not data.get("flag", 0):
             return None
 
         return ActionComponentLoop(
-            loop_count=data["loopNum"],
-            restart_frame=data["restartFrame"],
-            restart_sec=data["restartSec"]
+            loop_count=cast(int, data["loopNum"]),
+            restart_frame=cast(int, data["restartFrame"]),
+            restart_sec=cast(float, data["restartSec"])
         )
 
 
@@ -124,7 +124,7 @@ class ActionComponentBase(EntryBase, ABC):
 
     @staticmethod
     @abstractmethod
-    def parse_raw(data: dict[str, Union[str, int, float]]) -> "ActionComponentBase":
+    def parse_raw(data: EntryDataType) -> "ActionComponentBase":
         """Parse a raw data to be the component class."""
         raise NotImplementedError()
 
@@ -132,14 +132,21 @@ class ActionComponentBase(EntryBase, ABC):
     def get_base_kwargs(
             cls, raw_data: dict[str, Union[str, int, float, dict[str, Union[int, float]]]]
     ) -> dict[str, Union[int, float, ActionComponentCondition, ActionComponentLoop, list[str], None]]:
-        """Get the base kwargs for constructing the component."""
+        """
+        Get the base kwargs for constructing the component.
+
+        This includes the following parameters: ``command_type_id``, ``speed``, ``time_start``, ``time_duration``,
+        ``condition_data``, ``loop_data``.
+        """
         return {
-            "command_type_id": raw_data["commandType"],
-            "speed": raw_data["_speed"],
-            "time_start": raw_data["_seconds"],
-            "time_duration": raw_data["_duration"],
-            "condition_data": ActionComponentCondition.parse_raw(raw_data["_conditionData"]),
-            "loop_data": ActionComponentLoop.parse_raw(raw_data["_loopData"])
+            "command_type_id": cast(int, raw_data["commandType"]),
+            "speed": cast(float, raw_data["_speed"]),
+            "time_start": cast(float, raw_data["_seconds"]),
+            "time_duration": cast(float, raw_data["_duration"]),
+            "condition_data": ActionComponentCondition.parse_raw(
+                cast(Mapping[str, Union[int, list[int]]], raw_data["_conditionData"])
+            ),
+            "loop_data": ActionComponentLoop.parse_raw(cast(Mapping[str, Union[int, float]], raw_data["_loopData"]))
         }
 
 
@@ -186,7 +193,10 @@ class ActionComponentHasHitLabels(ActionComponentBase, ABC):
         return base_kwargs
 
 
-class ActionParserBase(ParserBase, ABC):
+T = TypeVar("T", bound=ActionComponentBase)
+
+
+class ActionParserBase(ParserBase[list[T]], ABC):
     """Base parser class for parsing the player action asset files."""
 
     @staticmethod
@@ -204,12 +214,12 @@ class ActionParserBase(ParserBase, ABC):
         return data["Components"]
 
     @staticmethod
-    def parse_file(file_like: str) -> list[ActionComponentBase]:
+    def parse_file(file_like: TextIO) -> list[T]:
         """Parse a file as a list of components."""
         raise NotImplementedError()
 
 
-class ActionAssetBase(AssetBase, ABC):
+class ActionAssetBase(AssetBase[list[T]], ABC):
     """Base class for a player action mono behavior asset."""
 
     def __init__(
@@ -221,6 +231,6 @@ class ActionAssetBase(AssetBase, ABC):
     def __iter__(self):
         return iter(self._data)
 
-    def filter(self, condition: Callable[[ActionComponentBase], bool]) -> list[ActionComponentBase]:
+    def filter(self, condition: Callable[[T], bool]) -> list[T]:
         """Get a list of components which matches the ``condition``."""
         return [data for data in self if condition(data)]

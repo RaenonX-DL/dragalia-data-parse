@@ -71,17 +71,17 @@ class MasterTextParser(MasterParserBase[TextEntry]):
     """Class to parse the master text label file."""
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> dict[int, TextEntry]:
+    def parse_file(cls, file_like: TextIO) -> dict[str, TextEntry]:
         entries = cls.get_entries_dict(file_like)
 
         return {key: TextEntry.parse_raw(value) for key, value in entries.items()}
 
 
-class CustomTextParser(CustomParserBase):
+class CustomTextParser(CustomParserBase[TextEntry]):
     """Class to parse the custom text label file."""
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> dict[int, TextEntry]:
+    def parse_file(cls, file_like: TextIO) -> dict[str, TextEntry]:
         entries = cls.get_entries_dict(file_like)
 
         return {key: TextEntry.parse_raw(value) for key, value in entries.items()}

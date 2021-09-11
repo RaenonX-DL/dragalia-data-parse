@@ -35,7 +35,7 @@ class WebsiteTextAsset(MultilingualAssetBase[WebsiteTextEntry]):
         return list(self._assets[lang_code].keys())
 
 
-class WebsiteTextParser(CustomParserBase):
+class WebsiteTextParser(CustomParserBase[WebsiteTextEntry]):
     """Class to parse the website text asset file."""
 
     @classmethod
