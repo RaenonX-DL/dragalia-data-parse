@@ -1,9 +1,10 @@
 """Classes for handling the unit story asset."""
+from collections import defaultdict
 from dataclasses import dataclass
 from typing import Optional, TextIO, Union
 
 from dlparse.mono.asset.base import GroupedStoryAssetBase, GroupedStoryEntryBase, MasterEntryBase, MasterParserBase
-from dlparse.mono.asset.extension import VariedEntry
+from dlparse.mono.asset.extension import VariationIdentifier, VariedEntry
 
 __all__ = ("UnitStoryEntry", "UnitStoryAsset")
 
@@ -28,11 +29,21 @@ class UnitStoryAsset(GroupedStoryAssetBase[UnitStoryEntry]):
 
     asset_file_name = "UnitStory.json"
 
+    def _init_lookup_by_var(self):
+        self._lookup_by_var: dict[VariationIdentifier, list[UnitStoryEntry]] = defaultdict(list)
+        for entry in self.data:
+            self._lookup_by_var[entry.var_identifier].append(entry)
+
     def __init__(
             self, file_location: Optional[str] = None, /,
             asset_dir: Optional[str] = None, file_like: Optional[TextIO] = None
     ):
         super().__init__(UnitStoryParser, file_location, asset_dir=asset_dir, file_like=file_like)
+
+        self._init_lookup_by_var()
+
+    def get_data_by_variation_identifier(self, var_identifier: VariationIdentifier) -> Optional[list[UnitStoryEntry]]:
+        return self._lookup_by_var.get(var_identifier)
 
 
 class UnitStoryParser(MasterParserBase[UnitStoryEntry]):

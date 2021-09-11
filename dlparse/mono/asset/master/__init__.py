@@ -18,10 +18,8 @@ from .ex_ability import ExAbilityAsset, ExAbilityEntry, ExAbilityVariantEntry
 from .player_action import PlayerActionInfoAsset, PlayerActionInfoEntry
 from .quest_data import QuestDataAsset, QuestDataEntry
 from .quest_story import QuestStoryAsset, QuestStoryEntry
-from .quest_story_group import QuestStoryGroupAsset, QuestStoryGroupEntry
 from .skill_data import SkillDataAsset, SkillDataEntry
 from .skill_data_chain import SkillChainAsset, SkillChainEntry
 from .text_label import TextAsset, TextAssetMultilingual, TextEntry
 from .unit_story import UnitStoryAsset, UnitStoryEntry
-from .unit_story_group import UnitStoryGroupAsset, UnitStoryGroupEntry
 from .weapon_type import WeaponTypeAsset, WeaponTypeEntry

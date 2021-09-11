@@ -8,10 +8,10 @@ from dlparse.transformer import (
     EnemyTransformer, InfoTransformer, QuestTransformer, SkillTransformer,
 )
 from .asset import (
-    AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionGrantAsset, ActionPartsListAsset,
-    BuffCountAsset, CharaDataAsset, CharaModeAsset, CharaUniqueComboAsset, DragonDataAsset, DungeonPlannerAsset,
-    EnemyDataAsset, EnemyParamAsset, ExAbilityAsset, HitAttrAsset, MotionSelectorWeapon,
-    PlayerActionInfoAsset, QuestDataAsset, SkillChainAsset, SkillDataAsset, TextAsset, TextAssetMultilingual,
+    AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionGrantAsset, ActionPartsListAsset, BuffCountAsset,
+    CastleStoryAsset, CharaDataAsset, CharaModeAsset, CharaUniqueComboAsset, DragonDataAsset, DungeonPlannerAsset,
+    EnemyDataAsset, EnemyParamAsset, ExAbilityAsset, HitAttrAsset, MotionSelectorWeapon, PlayerActionInfoAsset,
+    QuestDataAsset, QuestStoryAsset, SkillChainAsset, SkillDataAsset, TextAsset, TextAssetMultilingual, UnitStoryAsset,
     WeaponTypeAsset,
 )
 from .custom import WebsiteTextAsset
@@ -56,6 +56,11 @@ class AssetManager:
         # --- Actions
         self._asset_pa_info = PlayerActionInfoAsset(asset_dir=master_asset_dir)
         self._asset_action_list = ActionPartsListAsset(asset_dir=action_asset_dir)
+
+        # --- Story
+        self._asset_story_main = QuestStoryAsset(asset_dir=master_asset_dir)
+        self._asset_story_unit = UnitStoryAsset(asset_dir=master_asset_dir)
+        self._asset_story_castle = CastleStoryAsset(asset_dir=master_asset_dir)
 
         # --- Misc
         self._asset_text = TextAsset(asset_dir=master_asset_dir, custom_asset_dir=custom_asset_dir)
@@ -202,6 +207,23 @@ class AssetManager:
     def asset_action_list(self) -> ActionPartsListAsset:
         """Get the action parts list asset."""
         return self._asset_action_list
+
+    # --- Story
+
+    @property
+    def asset_story_main(self) -> QuestStoryAsset:
+        """Get the main quest story asset."""
+        return self._asset_story_main
+
+    @property
+    def asset_story_unit(self) -> UnitStoryAsset:
+        """Get the unit story asset."""
+        return self._asset_story_unit
+
+    @property
+    def asset_story_castle(self) -> CastleStoryAsset:
+        """Get the castle story asset."""
+        return self._asset_story_castle
 
     # --- Misc
 

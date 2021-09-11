@@ -31,7 +31,6 @@ class GroupedStoryAssetBase(Generic[T], MasterAssetBase[T], ABC):
     """Base class for an asset containing grouped story entries."""
 
     def _init_lookup_by_group_id(self):
-        self._lookup_by_group_id: dict[int, list[T]] = defaultdict(list)
         for entry in self:
             self._lookup_by_group_id[entry.group_id].append(entry)
 
@@ -41,5 +40,9 @@ class GroupedStoryAssetBase(Generic[T], MasterAssetBase[T], ABC):
     ):
         super().__init__(parser_cls, file_location, asset_dir=asset_dir, file_like=file_like)
 
-    def get_data_by_group_id(self, group_id: int) -> Optional[T]:
+        self._lookup_by_group_id: dict[int, list[T]] = defaultdict(list)
+        self._init_lookup_by_group_id()
+
+    def get_data_by_group_id(self, group_id: int) -> Optional[list[T]]:
+        """Get the story entries that is grouped under ``group_id``."""
         return self._lookup_by_group_id.get(group_id)
