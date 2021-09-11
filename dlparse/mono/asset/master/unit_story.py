@@ -31,7 +31,7 @@ class UnitStoryAsset(GroupedStoryAssetBase[UnitStoryEntry]):
 
     def _init_lookup_by_var(self):
         self._lookup_by_var: dict[VariationIdentifier, list[UnitStoryEntry]] = defaultdict(list)
-        for entry in self.data:
+        for entry in self.data.values():
             self._lookup_by_var[entry.var_identifier].append(entry)
 
     def __init__(
@@ -43,6 +43,7 @@ class UnitStoryAsset(GroupedStoryAssetBase[UnitStoryEntry]):
         self._init_lookup_by_var()
 
     def get_data_by_variation_identifier(self, var_identifier: VariationIdentifier) -> Optional[list[UnitStoryEntry]]:
+        """Get the story entries that has ``var_identifier`` as its variation identifier."""
         return self._lookup_by_var.get(var_identifier)
 
 
