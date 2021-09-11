@@ -7,4 +7,4 @@ from .named import DescribedNameEntry, UnitNameEntry
 from .skill import SkillEntry
 from .skill_discovery import SkillDiscoverableEntry, SkillIdEntry, SkillIdentifierLabel
 from .unit import SkillReverseSearchResult, UnitAsset, UnitEntry
-from .varied import VariedEntry
+from .varied import VariationIdentifier, VariedEntry
