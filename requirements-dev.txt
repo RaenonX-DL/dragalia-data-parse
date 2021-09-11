@@ -3,7 +3,8 @@ bandit
 pydocstyle
 flake8
 pylint
-coverage
+coverage[toml]
+mypy
 
 # Testing framework
 pytest
