@@ -3,11 +3,11 @@ from typing import Type, TypeVar
 
 from dlparse.enums import StoryCommandType
 from .command import (
-    RawCommand, StoryCommandBase, StoryCommandOutline, StoryCommandPrintText, StoryCommandRuby,
+    RawCommand, StoryCommandBase, StoryCommandHasContent, StoryCommandOutline, StoryCommandPrintText, StoryCommandRuby,
     StoryCommandThemeSwitch, StoryCommandUnknown,
 )
 
-__all__ = ("parse_raw_command",)
+__all__ = ("parse_raw_command", "has_story_content")
 
 T = TypeVar("T", bound=StoryCommandBase)
 
@@ -30,3 +30,8 @@ def parse_raw_command(raw_command: RawCommand) -> T:
     # False-negative as ``command_class`` is an instantiatable class
     # noinspection PyArgumentList
     return command_class(raw_command)
+
+
+def has_story_content(story_command: T) -> bool:
+    """Check if ``story_command`` has some story content."""
+    return isinstance(story_command, StoryCommandHasContent) and not isinstance(story_command, StoryCommandOutline)
