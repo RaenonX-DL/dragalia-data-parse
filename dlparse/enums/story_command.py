@@ -21,6 +21,21 @@ class StoryCommandType(Enum):
     PRINT = "print"
     """A single text entry."""
 
+    ADD_TEXT = "add_book_text"
+    """
+    Add text into a single screen. This is only used by JP. Contains Hiragana only.
+    Current known use case is for dragon unit history.
+    """
+
+    RUBY = "ruby"
+    """Add text into a single screen. This is only used by JP. Contains a word with its Furigana."""
+
+    WHITE_OUT = "WHITE_OUT_DEF"
+    """White out the scene. Used for scene switching."""
+
+    BLACK_OUT = "BLACK_OUT_DEF"
+    """Black out the scene. Used for scene switching."""
+
     @classmethod
     def _missing_(cls, value: Any) -> "StoryCommandType":
         return StoryCommandType.UNKNOWN
