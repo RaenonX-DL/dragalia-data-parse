@@ -23,6 +23,7 @@ from .quest_mode import QuestMode
 from .skill_idx import SkillIndex
 from .skill_num import SkillNumber
 from .status import Status
+from .story_command import StoryCommandType
 from .target import HitTarget, HitTargetSimple
 from .trans_image import get_image_path
 from .unit_type import UnitType

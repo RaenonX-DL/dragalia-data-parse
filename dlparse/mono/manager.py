@@ -16,7 +16,7 @@ from .asset import (
     WeaponTypeAsset,
 )
 from .custom import WebsiteTextAsset
-from .loader import ActionFileLoader, CharacterMotionLoader, DragonMotionLoader
+from .loader import ActionFileLoader, CharacterMotionLoader, DragonMotionLoader, StoryLoader
 
 __all__ = ("AssetManager",)
 
@@ -37,11 +37,13 @@ class AssetManager:
             master_asset_dir = f"{root_resources_dir}/master"
             chara_motion_asset_dir = f"{root_resources_dir}/characters/motion"
             dragon_motion_asset_dir = f"{root_resources_dir}/dragon/motion"
+            story_asset_dir = f"{root_resources_dir}/story"
         else:
             action_asset_dir = os.path.join(root_resources_dir, "actions")
             master_asset_dir = os.path.join(root_resources_dir, "master")
             chara_motion_asset_dir = os.path.join(root_resources_dir, "characters", "motion")
             dragon_motion_asset_dir = os.path.join(root_resources_dir, "dragon", "motion")
+            story_asset_dir = os.path.join(root_resources_dir, "story")
 
         # Master Assets
         # --- Battle-related (Player)
@@ -98,6 +100,7 @@ class AssetManager:
         self._loader_action = ActionFileLoader(self._asset_action_list, action_asset_dir)
         self._loader_chara_motion = CharacterMotionLoader(chara_motion_asset_dir)
         self._loader_dragon_motion = DragonMotionLoader(dragon_motion_asset_dir)
+        self._loader_story = StoryLoader(story_asset_dir)
 
         # Transformers
         self._transformer_ability = AbilityTransformer(self)
