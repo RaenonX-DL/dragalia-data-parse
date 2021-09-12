@@ -26,13 +26,13 @@ def test_load_local_file():
 
 @pytest.mark.slow
 def test_load_remote_dir():
-    asset = TextAsset(get_remote_dir_root_resources())
+    asset = TextAsset(asset_dir=get_remote_dir_root_resources() + "/master")
     assert "CHARA_NAME_19900001" in asset
 
 
 @pytest.mark.slow
 def test_load_remote_file():
-    asset = TextAsset(get_remote_dir_root_resources() + "master/TextLabel.json")
+    asset = TextAsset(get_remote_dir_root_resources() + "/master/TextLabel.json")
     assert "CHARA_NAME_19900001" in asset
 
 

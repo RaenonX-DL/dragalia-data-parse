@@ -12,5 +12,5 @@ def test_load_local_dir():
 
 @pytest.mark.slow
 def test_load_remote_dir():
-    manager = AssetManager(get_remote_dir_root_resources())
+    manager = AssetManager(get_remote_dir_root_resources(), is_network_source=True)
     assert "CHARA_NAME_19900001" in manager.asset_text

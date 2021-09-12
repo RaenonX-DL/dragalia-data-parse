@@ -17,6 +17,9 @@ def test_override_local():
 
 @pytest.mark.slow
 def test_override_mix():
-    asset_text = TextAsset(get_remote_dir_root_resources(), custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET)
+    asset_text = TextAsset(
+        asset_dir=get_remote_dir_root_resources() + "/master",
+        custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET
+    )
 
     assert asset_text.to_text("TEST_TEXT_LABEL") == "Test"
