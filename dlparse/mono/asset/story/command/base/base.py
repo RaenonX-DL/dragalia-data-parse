@@ -1,3 +1,4 @@
+"""Base class of a story command."""
 from abc import ABC
 from dataclasses import InitVar, dataclass, field
 
@@ -22,4 +23,6 @@ class StoryCommandBase(ABC):
         self.row = raw_command["row"]
         self.command = StoryCommandType(raw_command["command"])
         self.command_raw = raw_command["command"]
-        self.args = raw_command["args"]
+        # Remove newline characters in the argument list
+        # - Those newline characters are
+        self.args = [arg.replace("\\n", "") for arg in raw_command["args"]]

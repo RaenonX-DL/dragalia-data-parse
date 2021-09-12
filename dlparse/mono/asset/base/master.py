@@ -82,7 +82,7 @@ class MasterAssetBase(Generic[T], AssetBase[ParsedEntryDict], ABC):
         return item in self._data.keys()
 
     @property
-    def data(self) -> dict:
+    def data(self) -> ParsedEntryDict:
         return self._data
 
     @property

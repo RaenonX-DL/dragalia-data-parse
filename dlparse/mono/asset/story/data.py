@@ -1,9 +1,9 @@
-"""Class representing """
+"""Class representing a story data entity."""
 import json
 from typing import Optional, TextIO, TypeVar
 
 from dlparse.mono.asset.base import AssetBase, ParserBase
-from .command import StoryCommandBase, StoryCommandParser
+from .command import StoryCommandBase, StoryCommandParser, StoryCommandPrintText
 
 __all__ = ("StoryData",)
 

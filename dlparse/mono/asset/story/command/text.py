@@ -1,4 +1,4 @@
-"""Story command class for `print`3"""
+"""Story command class for `print`."""
 from dataclasses import dataclass
 
 from dlparse.enums import StoryCommandType
