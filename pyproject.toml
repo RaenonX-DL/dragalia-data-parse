@@ -67,18 +67,18 @@ ignore = "D102, D105, D107, D203, D212, D215, D401, D404, D406, D407, D408, D409
 [tool.coverage.run]
 # More precise result as this checks for the branch coverage
 # Doc: https://coverage.readthedocs.io/en/stable/branch.html#branch
-branch = "True"
+branch = true
 # Files to be included.
-source = "dlparse/"
+source = ["dlparse/"]
 
 [tool.coverage.report]
 # Regexes for lines to exclude from consideration
-# def __repr__:               debug-only
-# raise NotImplementedError:  ABC implementations
-exclude_lines = """
-    def __repr__
-    raise NotImplementedError
-"""
+exclude_lines = [
+    # debug-only
+    "def __repr__",
+    # ABC implementations
+    "raise NotImplementedError"
+]
 # Coverage percentage precision
 precision = 2
 # Emits exit code 2 if the coverage is below the threshold
