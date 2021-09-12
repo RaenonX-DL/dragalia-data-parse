@@ -1,8 +1,10 @@
 """Classes for handling the quest story asset."""
 from dataclasses import dataclass
-from typing import Optional, TextIO, Union
+from typing import Optional, TextIO, cast
 
-from dlparse.mono.asset.base import GroupedStoryAssetBase, GroupedStoryEntryBase, MasterEntryBase, MasterParserBase
+from dlparse.mono.asset.base import (
+    EntryDataType, GroupedStoryAssetBase, GroupedStoryEntryBase, MasterEntryBase, MasterParserBase, ParsedDictIdType,
+)
 
 __all__ = ("QuestStoryEntry", "QuestStoryAsset")
 
@@ -12,11 +14,11 @@ class QuestStoryEntry(GroupedStoryEntryBase, MasterEntryBase):
     """Single entry of a quest story data."""
 
     @staticmethod
-    def parse_raw(data: dict[str, Union[str, int]]) -> "QuestStoryEntry":
+    def parse_raw(data: EntryDataType) -> "QuestStoryEntry":
         return QuestStoryEntry(
-            id=data["_Id"],
-            title_label=data["_Title"],
-            group_id=data["_GroupId"]
+            id=cast(int, data["_Id"]),
+            title_label=cast(str, data["_Title"]),
+            group_id=cast(int, data["_GroupId"])
         )
 
 
@@ -36,7 +38,7 @@ class QuestStoryParser(MasterParserBase[QuestStoryEntry]):
     """Class to parse the quest story file."""
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> dict[int, QuestStoryEntry]:
+    def parse_file(cls, file_like: TextIO) -> dict[ParsedDictIdType, QuestStoryEntry]:
         entries = cls.get_entries_dict(file_like)
 
         return {key: QuestStoryEntry.parse_raw(value) for key, value in entries.items()}

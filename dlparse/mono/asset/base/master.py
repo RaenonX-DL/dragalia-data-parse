@@ -9,7 +9,7 @@ from .asset import AssetBase
 from .entry import EntryBase
 from .parser import ParserBase
 
-__all__ = ("MasterEntryBase", "MasterAssetBase", "MasterParserBase")
+__all__ = ("MasterEntryBase", "MasterAssetBase", "MasterParserBase", "ParsedDictIdType")
 
 
 @dataclass
@@ -20,7 +20,8 @@ class MasterEntryBase(EntryBase, ABC):
 
 
 T = TypeVar("T", bound=MasterEntryBase)
-ParsedEntryDict = dict[Union[int, str], T]
+ParsedDictIdType = Union[int, str]
+ParsedEntryDict = dict[ParsedDictIdType, T]
 
 
 class MasterParserBase(Generic[T], ParserBase[ParsedEntryDict], ABC):
