@@ -3,6 +3,9 @@
 
 # -------------------------- pylint --------------------------
 
+[tool.pylint.MASTER]
+ignore-patterns = "tests/**"
+
 [tool.pylint.BASIC]
 # Reason of the good names:
 # - _
@@ -100,5 +103,8 @@ markers = [
 
 # -------------------------- mypy --------------------------
 [tool.mypy]
-show_error_codes = "True"
+show_error_codes = true
 disable_error_code = "misc"
+disallow_untyped_defs = true
+disallow_untyped_decorators = true
+disallow_any_expr = true
