@@ -14,6 +14,9 @@ T = TypeVar("T", bound=StoryCommandBase)
 class StoryData(AssetBase[list[T]]):
     """A class containing a story."""
 
+    def __init__(self, file_location: Optional[str] = None) -> None:
+        super().__init__(StoryDataParser, file_location)
+
     def __iter__(self) -> list[T]:
         return self.data
 
