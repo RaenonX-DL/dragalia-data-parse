@@ -14,4 +14,5 @@ class StoryCommandHasContent(StoryCommandBase, ABC):
     @property
     @abstractmethod
     def content(self) -> str:
+        """Get the text content of the story command."""
         raise NotImplementedError()

@@ -4,7 +4,7 @@
 # -------------------------- pylint --------------------------
 
 [tool.pylint.MASTER]
-ignore-patterns = "tests/**"
+ignore-paths = "tests"
 
 [tool.pylint.BASIC]
 # Reason of the good names:

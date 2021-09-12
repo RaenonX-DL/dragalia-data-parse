@@ -3,7 +3,8 @@ import json
 from typing import Optional, TextIO, TypeVar
 
 from dlparse.mono.asset.base import AssetBase, ParserBase
-from .command import StoryCommandBase, StoryCommandParser, StoryCommandPrintText
+from .command import StoryCommandBase
+from .parse import parse_raw_command
 
 __all__ = ("StoryData",)
 
@@ -21,9 +22,13 @@ class StoryData(AssetBase[list[T]]):
 
 
 class StoryDataParser(ParserBase[list[T]]):
+    """Class to parse story data."""
+
+    # pylint: disable=too-few-public-methods
+
     @staticmethod
     def parse_file(file_like: TextIO) -> list[T]:
         data = json.load(file_like)
         raw_commands = data["functions"][0]["commandList"]
 
-        return [StoryCommandParser.parse_raw_command(raw_command) for raw_command in raw_commands]
+        return [parse_raw_command(raw_command) for raw_command in raw_commands]

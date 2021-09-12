@@ -31,6 +31,9 @@ class AssetManager:
             self, root_resources_dir: str, /,
             is_network_source: bool = False, custom_asset_dir: Optional[str] = None
     ):
+        # No need to categorize initializations. It's fine to leave all of them here
+        # pylint: disable=too-many-statements
+
         # Paths
         if is_network_source:
             action_asset_dir = f"{root_resources_dir}/actions"

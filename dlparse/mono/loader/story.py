@@ -18,6 +18,8 @@ _unit_type_path: dict[UnitType, str] = {
 class StoryLoader:
     """Class to load the story data."""
 
+    # pylint: disable=too-few-public-methods
+
     def __init__(self, story_dir: str) -> None:
         self._story_dir = story_dir
 

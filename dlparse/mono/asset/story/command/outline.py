@@ -1,7 +1,6 @@
 """Story command class for `outline`."""
 from dataclasses import dataclass
 
-from dlparse.enums import StoryCommandType
 from .base import StoryCommandHasContent
 
 __all__ = ("StoryCommandOutline",)
@@ -14,10 +13,6 @@ class StoryCommandOutline(StoryCommandHasContent):
 
     - 1st argument: outline content
     """
-
-    @staticmethod
-    def expected_type() -> StoryCommandType:
-        return StoryCommandType.OUTLINE
 
     @property
     def content(self) -> str:
