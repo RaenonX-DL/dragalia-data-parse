@@ -248,7 +248,7 @@ class AssetManager:
 
     # region Motion Assets
     @property
-    def motion_weapon(self):
+    def motion_weapon(self) -> MotionSelectorWeapon:
         """Get the character weapon motion asset."""
         return self._motion_weapon
 
@@ -286,6 +286,11 @@ class AssetManager:
     def loader_dragon_motion(self) -> DragonMotionLoader:
         """Get the dragon motion loader."""
         return self._loader_dragon_motion
+
+    @property
+    def loader_story(self) -> StoryLoader:
+        """Get the story data loader."""
+        return self._loader_story
 
     # endregion
 
