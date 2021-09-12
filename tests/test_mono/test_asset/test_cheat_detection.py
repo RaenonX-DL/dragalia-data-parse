@@ -1,11 +1,13 @@
 import os
 
 from dlparse.mono.asset import CheatDetectionAsset, CheatDetectionEntry
-from tests.static import PATH_LOCAL_DIR_MASTER_ASSET
+from tests.static import PATH_LOCAL_ROOT_RESOURCES
 
 
 def test_parse_cheat_detection_explicit_path():
-    cheat_detection = CheatDetectionAsset(os.path.join(PATH_LOCAL_DIR_MASTER_ASSET, "CheatDetectionParam.json"))
+    cheat_detection = CheatDetectionAsset(
+        os.path.join(PATH_LOCAL_ROOT_RESOURCES, "master", "CheatDetectionParam.json")
+    )
 
     entry = CheatDetectionEntry(
         id=1,
@@ -23,7 +25,7 @@ def test_parse_cheat_detection_explicit_path():
 
 
 def test_parse_cheat_detection_implicit_path():
-    cheat_detection = CheatDetectionAsset(asset_dir=PATH_LOCAL_DIR_MASTER_ASSET)
+    cheat_detection = CheatDetectionAsset(asset_dir=os.path.join(PATH_LOCAL_ROOT_RESOURCES, "master"))
 
     entry = CheatDetectionEntry(
         id=1,

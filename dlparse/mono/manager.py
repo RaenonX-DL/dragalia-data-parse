@@ -1,4 +1,5 @@
 """Classes for loading all the assets and loaders."""
+import os
 from typing import Optional
 
 from dlparse.enums import Language
@@ -27,10 +28,21 @@ class AssetManager:
     # Public methods are actually properties.
 
     def __init__(
-            self, action_asset_dir: str, master_asset_dir: str, chara_motion_asset_dir: str,
-            dragon_motion_asset_dir: str, /,
-            custom_asset_dir: Optional[str] = None
+            self, root_resources_dir: str, /,
+            is_network_source: bool = False, custom_asset_dir: Optional[str] = None
     ):
+        # Paths
+        if is_network_source:
+            action_asset_dir = f"{root_resources_dir}/actions"
+            master_asset_dir = f"{root_resources_dir}/master"
+            chara_motion_asset_dir = f"{root_resources_dir}/characters/motion"
+            dragon_motion_asset_dir = f"{root_resources_dir}/dragon/motion"
+        else:
+            action_asset_dir = os.path.join(root_resources_dir, "actions")
+            master_asset_dir = os.path.join(root_resources_dir, "master")
+            chara_motion_asset_dir = os.path.join(root_resources_dir, "characters", "motion")
+            dragon_motion_asset_dir = os.path.join(root_resources_dir, "dragon", "motion")
+
         # Master Assets
         # --- Battle-related (Player)
         self._asset_ability_data = AbilityAsset(asset_dir=master_asset_dir)
@@ -77,7 +89,7 @@ class AssetManager:
         self._motion_weapon = MotionSelectorWeapon(chara_motion_asset_dir)
 
         # Custom Assets
-        self._asset_text_website: WebsiteTextAsset = WebsiteTextAsset(
+        self._asset_text_website = WebsiteTextAsset(
             Language.get_all_available_codes(),
             asset_dir=custom_asset_dir
         ) if custom_asset_dir else None  # If custom asset directory is not provided, do not load the asset

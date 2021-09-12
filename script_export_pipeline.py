@@ -27,26 +27,18 @@ class FileExporter:
         config = ConfigParser()
         config.read(config_path)
 
-        dir_action = config.get("Asset", "Action")
-        dir_master = config.get("Asset", "Master")
-        dir_chara_motion = config.get("Asset", "CharaMotion")
-        dir_dragon_motion = config.get("Asset", "DragonMotion")
+        dir_resource = config.get("Asset", "Resource")
         dir_custom = config.get("Asset", "Custom")
 
         dir_export = config.get("Export", "Dir")
 
-        print(f"Action Asset Path: {dir_action}")
-        print(f"Master Asset Path: {dir_master}")
-        print(f"Character Motion Asset Path: {dir_chara_motion}")
+        print(f"Resource Root Path: {dir_resource}")
         print(f"Custom Asset Path: {dir_custom}")
         print()
         print(f"Export directory: {dir_export}")
         print()
 
-        self._asset_manager: AssetManager = AssetManager(
-            dir_action, dir_master, dir_chara_motion, dir_dragon_motion,
-            custom_asset_dir=dir_custom
-        )
+        self._asset_manager: AssetManager = AssetManager(dir_resource, custom_asset_dir=dir_custom)
         self._transformer_ability: AbilityTransformer = AbilityTransformer(self._asset_manager)
         self._dir_export: str = dir_export
 

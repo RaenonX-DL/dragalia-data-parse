@@ -5,16 +5,9 @@ from dlparse.transformer import (
     AbilityTransformer, AttackingActionTransformer,
     EnemyTransformer, InfoTransformer, QuestTransformer, SkillTransformer,
 )
-from tests.static import (
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET,
-    PATH_LOCAL_DIR_DRAGON_MOTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
-)
+from tests.static import PATH_LOCAL_DIR_CUSTOM_ASSET, PATH_LOCAL_ROOT_RESOURCES
 
-_asset_manager: AssetManager = AssetManager(
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
-    PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_DRAGON_MOTION_ASSET,
-    custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET
-)
+_asset_manager: AssetManager = AssetManager(PATH_LOCAL_ROOT_RESOURCES, custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET)
 
 
 # region Transformer fixtures

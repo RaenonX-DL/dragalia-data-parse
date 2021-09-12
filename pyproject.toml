@@ -103,6 +103,8 @@ markers = [
 
 # -------------------------- mypy --------------------------
 [tool.mypy]
+follow_imports = "skip"
+exclude = "(tests/|script_*)"
 show_error_codes = true
 disable_error_code = "misc"
 disallow_untyped_defs = true

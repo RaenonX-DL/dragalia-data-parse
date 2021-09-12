@@ -1,8 +1,5 @@
 from dlparse.mono.manager import AssetManager
-from tests.static import (
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET,
-    PATH_LOCAL_DIR_DRAGON_MOTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
-)
+from tests.static import PATH_LOCAL_ROOT_RESOURCES
 
 diff_str = """
 - 228020101
@@ -13,11 +10,7 @@ diff_str = """
 - 228021103
 """
 
-manager = AssetManager(
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
-    PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_DRAGON_MOTION_ASSET,
-    custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET
-)
+manager = AssetManager(PATH_LOCAL_ROOT_RESOURCES)
 
 
 def print_enemy_info(enemy_form, padding=0):

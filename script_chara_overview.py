@@ -1,14 +1,8 @@
 from dlparse.errors import HitDataUnavailableError
 from dlparse.mono.manager import AssetManager
-from tests.static import (
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_DRAGON_MOTION_ASSET,
-    PATH_LOCAL_DIR_MASTER_ASSET,
-)
+from tests.static import PATH_LOCAL_ROOT_RESOURCES
 
-_asset_manager: AssetManager = AssetManager(
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
-    PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_DRAGON_MOTION_ASSET
-)
+_asset_manager: AssetManager = AssetManager(PATH_LOCAL_ROOT_RESOURCES)
 
 
 def print_atk_data_entry(chara_data, skill_data, skill_entry):

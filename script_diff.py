@@ -2,26 +2,17 @@ from typing import TYPE_CHECKING
 
 from dlparse.mono.asset import CharaDataEntry, SkillDataEntry
 from dlparse.mono.manager import AssetManager
-from tests.static import (
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_CUSTOM_ASSET,
-    PATH_LOCAL_DIR_DRAGON_MOTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET, get_remote_dir_action_asset,
-    get_remote_dir_chara_motion_asset, get_remote_dir_dragon_motion_asset, get_remote_dir_master_asset,
-)
+from tests.static import PATH_LOCAL_DIR_CUSTOM_ASSET, PATH_LOCAL_ROOT_RESOURCES, get_remote_dir_root_resources
 
 if TYPE_CHECKING:
     from dlparse.mono.asset.base import MasterAssetBase
 
-version_tag = "2021.08.30-eaWO0TQ0xXWXOPoe"
+version_tag = "2021.07.19-JbCnfyd9iBDik8yD"
 
-manager_local = AssetManager(
-    PATH_LOCAL_DIR_ACTION_ASSET, PATH_LOCAL_DIR_MASTER_ASSET,
-    PATH_LOCAL_DIR_CHARA_MOTION_ASSET, PATH_LOCAL_DIR_DRAGON_MOTION_ASSET,
-    custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET
-)
+manager_local = AssetManager(PATH_LOCAL_ROOT_RESOURCES, custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET)
 manager_remote = AssetManager(
-    get_remote_dir_action_asset(version_tag), get_remote_dir_master_asset(version_tag),
-    get_remote_dir_chara_motion_asset(version_tag), get_remote_dir_dragon_motion_asset(version_tag),
-    custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET
+    get_remote_dir_root_resources(version_tag),
+    is_network_source=True, custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET
 )
 
 
