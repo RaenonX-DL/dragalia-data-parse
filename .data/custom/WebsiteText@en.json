@@ -284,6 +284,10 @@
     "text": "S2 (Manachewed)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s2_mode_113",
+    "text": "S2 (Dragon Drive)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_mode_21",
     "text": "S2 (Dragon Drive)"
   },
@@ -446,6 +450,10 @@
   {
     "id": "SKILL_IDENTIFIER_s1_mode_111",
     "text": "S1 (3 Gauges)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_113",
+    "text": "S1 (Dragon Drive)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_95",

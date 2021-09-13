@@ -284,8 +284,12 @@
     "text": "S2 (亢奮)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s2_mode_113",
+    "text": "S2 (爆能中)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_mode_21",
-    "text": "S2 (爆能)"
+    "text": "S2 (爆能中)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_22",
@@ -446,6 +450,10 @@
   {
     "id": "SKILL_IDENTIFIER_s1_mode_111",
     "text": "S1 (3 條)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_113",
+    "text": "S1 (爆能中)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_95",
