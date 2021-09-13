@@ -110,6 +110,17 @@ def print_skill_id_entry(chara_data, skill_id_entry):
         print(f"--- No supportive data available for this skill ---")
 
 
+def print_auto_info(auto_id):
+    info = _asset_manager.transformer_atk.transform_normal_attack_or_fs(auto_id)
+    for condition_comp in info.possible_conditions:
+        print(f"Condition: {condition_comp}")
+
+        combo_branch = info.with_condition(condition_comp)
+
+        for idx, combo in enumerate(combo_branch, start=1):
+            print(f"#{idx}: {sum(combo.mods):7.0%} {combo.mods}")
+
+
 def chara_skill_overview(chara_id):
     chara_data = _asset_manager.asset_chara_data.get_data_by_id(chara_id)
 
@@ -137,13 +148,17 @@ def chara_skill_overview(chara_id):
         print_skill_id_entry(chara_data, skill_id_entry)
         print("=" * 50)
 
+    auto_action_ids = [action_id for _, action_id in chara_data.get_normal_attack_variants(_asset_manager)]
+    for auto_id in auto_action_ids:
+        print_auto_info(auto_id)
+
 
 def main():
     # - 10150304 (Mona)
     # - 10350505 (Joker)
     # - 10450404 (Sophie)
     # - 10550104 (Panther)
-    chara_skill_overview(10750404)
+    chara_skill_overview(10350405)
 
 
 if __name__ == '__main__':
