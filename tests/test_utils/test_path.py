@@ -24,5 +24,5 @@ def test_localize_return_original_for_master():
 
 
 def test_localize_not_using_backslash_if_network():
-    localized = localize_asset_path(get_remote_dir_root_resources(), Language.EN, is_network_path=True)
+    localized = localize_asset_path(get_remote_dir_root_resources(), Language.EN)
     assert localized == f"{get_remote_dir_root()}/localized/en/assets/_gluonresources/resources"

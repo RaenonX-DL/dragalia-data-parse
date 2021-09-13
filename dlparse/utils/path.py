@@ -3,6 +3,7 @@ import os
 from typing import TYPE_CHECKING
 
 from dlparse.errors import PathUnlocalizableError
+from .string import is_url
 
 if TYPE_CHECKING:
     from dlparse.enums import Language
@@ -10,14 +11,18 @@ if TYPE_CHECKING:
 __all__ = ("localize_asset_path",)
 
 
-def localize_asset_path(master_path: str, lang: "Language", is_network_path: bool = False) -> str:
+def localize_asset_path(master_path: str, lang: "Language") -> str:
     """
     Convert ``master_path`` to its corresponding localized path.
+
+    This automatically determines if the path is a network path.
 
     This WON'T check if ``master_path`` is a master or localized path.
     """
     if lang.is_main:
         return master_path
+
+    is_network_path = is_url(master_path)
 
     path_parts: list[str]
     if is_network_path:
