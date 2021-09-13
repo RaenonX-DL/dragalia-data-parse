@@ -20,36 +20,6 @@ class StoryData(AssetBase[list[T]]):
     def __iter__(self) -> list[T]:
         return self.data
 
-    # def print_text_contents_cht_en(self) -> None:
-    #     for command in self.data:
-    #         if isinstance(command, StoryCommandPrintText):
-    #             print(f"{command.args[0]}:")
-    #             print(command.content)
-    #             print()
-    #
-    #         if isinstance(command, StoryCommandThemeSwitch):
-    #             print("-------------")
-    #             print()
-    #
-    # def print_text_contents_jp(self) -> None:
-    #     commands_by_row: dict[int, list[T]] = defaultdict(list)
-    #     for command in self.data:
-    #         commands_by_row[command.row].append(command)
-    #     grouped_commands = [commands for _, commands in sorted(commands_by_row.items(), key=lambda item: item[0])]
-    #
-    #     for command_same_row in grouped_commands:
-    #         text = ""
-    #
-    #         for command in command_same_row:
-    #             if isinstance(command, StoryCommandPrintText):
-    #                 text += command.content
-    #
-    #             if isinstance(command, StoryCommandRuby):
-    #                 text += command.content
-    #
-    #         if text:
-    #             print(text)
-
 
 class StoryDataParser(ParserBase[list[T]]):
     """Class to parse story data."""

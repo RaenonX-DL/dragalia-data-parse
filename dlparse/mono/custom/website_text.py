@@ -2,7 +2,9 @@
 from dataclasses import dataclass
 from typing import TextIO, Union
 
-from dlparse.mono.asset.base import CustomParserBase, MasterEntryBase, MultilingualAssetBase, TextEntryBase
+from dlparse.mono.asset.base import (
+    CustomParserBase, MasterEntryBase, MultilingualAssetBase, ParsedDictIdType, TextEntryBase,
+)
 
 __all__ = ("WebsiteTextEntry", "WebsiteTextAsset", "WebsiteTextParser")
 
@@ -24,8 +26,8 @@ class WebsiteTextEntry(TextEntryBase, MasterEntryBase):
 class WebsiteTextAsset(MultilingualAssetBase[WebsiteTextEntry]):
     """Website text asset class."""
 
-    def __init__(self, lang_codes: Union[list[str], dict[str, str]], asset_dir: str):
-        super().__init__(WebsiteTextParser, lang_codes, asset_dir, "WebsiteText")
+    def __init__(self, asset_dir: str):
+        super().__init__(WebsiteTextParser, asset_dir, "WebsiteText", is_custom=True)
 
     def get_all_ids(self, lang_code: str) -> list[str]:
         """Get all text entry IDs in ``lang_code``. If ``lang_code`` is unavailable, returns empty list."""
@@ -39,7 +41,7 @@ class WebsiteTextParser(CustomParserBase[WebsiteTextEntry]):
     """Class to parse the website text asset file."""
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> dict[str, WebsiteTextEntry]:
+    def parse_file(cls, file_like: TextIO) -> dict[ParsedDictIdType, WebsiteTextEntry]:
         entries = cls.get_entries_dict(file_like, key="id")
 
         return {key: WebsiteTextEntry.parse_raw(value) for key, value in entries.items()}

@@ -27,7 +27,7 @@ def test_single_effect_to_team(transformer_skill: SkillTransformer):
         BuffEffectInfo("BUF_ALL_ATK_SSR_30_LV02", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.2, 15, 0)
     }
     expected_buffs_lv_3 = {
-        BuffEffectInfo("BUF_ALL_ATK_SSR_30_LV03", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.25, 15, 0)
+        BuffEffectInfo("BUF_174_ATK_LV03", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.2, 15, 0)
     }
     expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
 

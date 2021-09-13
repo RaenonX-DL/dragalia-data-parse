@@ -12,7 +12,7 @@ def test_no_condition(transformer_skill: SkillTransformer):
 
     expected_buffs_lv_max = {
         ConditionComposite(): {
-            BuffEffectInfo("BUF_ALL_ATK_SSR_30_LV03", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.25, 15, 0)
+            BuffEffectInfo("BUF_174_ATK_LV03", HitTargetSimple.TEAM, BuffParameter.ATK_BUFF, 0.2, 15, 0)
         },
     }
 

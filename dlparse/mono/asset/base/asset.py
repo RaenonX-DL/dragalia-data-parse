@@ -2,12 +2,13 @@
 import io
 import os
 from abc import ABC, abstractmethod
-from typing import Any, Generic, Optional, TextIO, Type, TypeVar, Union, cast
+from typing import Any, Generic, Iterator, Optional, TextIO, Type, TypeVar, cast
 from urllib.error import HTTPError
 from urllib.request import urlopen
 
+from dlparse.enums import Language
 from dlparse.errors import ConfigError, LanguageAssetNotFoundError, TextLabelNotFoundError
-from dlparse.utils import is_url
+from dlparse.utils import is_url, localize_asset_path
 from .entry import TextEntryBase
 from .parser import ParserBase
 
@@ -105,17 +106,17 @@ class AssetBase(Generic[T], ABC):
         with file_like:
             self._data = parser_cls.parse_file(file_like)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self._data)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return repr(self)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<{self.__class__.__name__} at {self._file_path}>"
 
     @abstractmethod
-    def __iter__(self):
+    def __iter__(self) -> Iterator[T]:
         raise NotImplementedError()
 
     @property
@@ -134,31 +135,27 @@ class MultilingualAssetBase(Generic[XT], ABC):
     # pylint: disable=too-few-public-methods
 
     def __init__(
-            self, parser_cls: Type[ParserBase[ParsedTextEntryDict]], lang_codes: Union[list[str], dict[str, str]],
-            asset_dir: str, file_name: str
+            self, parser_cls: Type[ParserBase[ParsedTextEntryDict]], asset_dir: str, file_name: str, /,
+            is_custom: bool = False,
     ):
         """
         Initializes a multilingual text asset.
 
         Files to be loaded should be a json. ``file_name`` must **not** include the extension.
-
-        If ``lang_codes`` is a dict, its key will be the language code for loading the asset,
-        and the value is the language code to use for getting the entry.
-
-        An empty ``lang_code`` means to use the default file.
         """
         self._assets: dict[str, ParsedTextEntryDict] = {}
 
-        if isinstance(lang_codes, list):
-            # Force lang codes to be a `dict`. If it's a list, cast it to a dict
-            lang_codes = {lang_code: lang_code for lang_code in lang_codes}
-
-        for lang_code_file, lang_code_asset in lang_codes.items():
-            file_name_join = f"{file_name}@{lang_code_file}.json" if lang_code_file else f"{file_name}.json"
+        lang: Language
+        for lang in Language:
+            file_name_join = f"{file_name}.json" if lang.is_main else f"{file_name}@{lang.locale}.json"
             file_path = get_file_path(file_name_join, asset_dir=asset_dir)
+
+            if not lang.is_main and not is_custom:
+                file_path = localize_asset_path(file_path, lang)
+
             file_like = get_file_like(file_path)
 
-            self._assets[lang_code_asset] = cast(ParserBase[ParsedTextEntryDict], parser_cls).parse_file(file_like)
+            self._assets[lang.value] = cast(ParserBase[ParsedTextEntryDict], parser_cls).parse_file(file_like)
 
     def get_text(self, lang_code: str, label: str, on_not_found: Any = THROW_ERROR_ON_FAIL) -> str:
         """

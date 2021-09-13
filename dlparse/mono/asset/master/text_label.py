@@ -1,11 +1,11 @@
 """Classes for handling the text label asset."""
 from dataclasses import dataclass
-from typing import Optional, TextIO, Union
+from typing import Optional, TextIO, cast
 
 from dlparse.errors import TextLabelNotFoundError
 from dlparse.mono.asset.base import (
-    CustomParserBase, MasterAssetBase, MasterEntryBase, MasterParserBase, MultilingualAssetBase, TextEntryBase,
-    get_file_like, get_file_path,
+    CustomParserBase, EntryDataType, MasterAssetBase, MasterEntryBase, MasterParserBase, MultilingualAssetBase,
+    ParsedDictIdType, TextEntryBase, get_file_like, get_file_path,
 )
 
 __all__ = ("TextEntry", "TextAsset", "TextAssetMultilingual")
@@ -16,10 +16,10 @@ class TextEntry(TextEntryBase, MasterEntryBase):
     """Single entry of a text label."""
 
     @staticmethod
-    def parse_raw(data: dict[str, str]) -> "TextEntry":
+    def parse_raw(data: EntryDataType) -> "TextEntry":
         return TextEntry(
-            id=data["_Id"],
-            text=data["_Text"],
+            id=cast(str, data["_Id"]),
+            text=cast(str, data["_Text"]),
         )
 
 
@@ -71,7 +71,7 @@ class MasterTextParser(MasterParserBase[TextEntry]):
     """Class to parse the master text label file."""
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> dict[str, TextEntry]:
+    def parse_file(cls, file_like: TextIO) -> dict[ParsedDictIdType, TextEntry]:
         entries = cls.get_entries_dict(file_like)
 
         return {key: TextEntry.parse_raw(value) for key, value in entries.items()}
@@ -81,7 +81,7 @@ class CustomTextParser(CustomParserBase[TextEntry]):
     """Class to parse the custom text label file."""
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> dict[str, TextEntry]:
+    def parse_file(cls, file_like: TextIO) -> dict[ParsedDictIdType, TextEntry]:
         entries = cls.get_entries_dict(file_like)
 
         return {key: TextEntry.parse_raw(value) for key, value in entries.items()}
@@ -92,5 +92,5 @@ class TextAssetMultilingual(MultilingualAssetBase[TextEntry]):
 
     # pylint: disable=too-few-public-methods
 
-    def __init__(self, lang_codes: Union[list[str], dict[str, str]], asset_dir: str):
-        super().__init__(MasterTextParser, lang_codes, asset_dir, "TextLabel")
+    def __init__(self, asset_dir: str):
+        super().__init__(MasterTextParser, asset_dir, "TextLabel")

@@ -2,7 +2,6 @@
 import os
 from typing import Optional
 
-from dlparse.enums import Language
 from dlparse.errors import ConfigError
 from dlparse.transformer import (
     AbilityTransformer, AttackingActionTransformer,
@@ -82,22 +81,15 @@ class AssetManager:
         # --- Misc
         self._asset_text = TextAsset(asset_dir=master_asset_dir, custom_asset_dir=custom_asset_dir)
 
-        lang_code_mapping = {
-            "en": Language.EN.value,
-            "tw": Language.CHT.value,
-            "": Language.JP.value
-        }
-        self._asset_text_multi = TextAssetMultilingual(lang_code_mapping, master_asset_dir)
+        self._asset_text_multi = TextAssetMultilingual(master_asset_dir)
         self._asset_weapon_type = WeaponTypeAsset(asset_dir=master_asset_dir)
 
         # Motion Assets
         self._motion_weapon = MotionSelectorWeapon(chara_motion_asset_dir)
 
         # Custom Assets
-        self._asset_text_website = WebsiteTextAsset(
-            Language.get_all_available_codes(),
-            asset_dir=custom_asset_dir
-        ) if custom_asset_dir else None  # If custom asset directory is not provided, do not load the asset
+        # - If custom asset directory is not provided, do not load the asset
+        self._asset_text_website = WebsiteTextAsset(asset_dir=custom_asset_dir) if custom_asset_dir else None
 
         # Loaders
         self._loader_action = ActionFileLoader(self._asset_action_list, action_asset_dir)
