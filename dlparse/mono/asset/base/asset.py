@@ -17,6 +17,7 @@ __all__ = ("AssetBase", "MultilingualAssetBase", "get_file_path", "get_file_like
 THROW_ERROR_ON_FAIL = object()
 
 T = TypeVar("T")
+IT = TypeVar("IT")
 
 
 def get_file_like(file_location: str) -> TextIO:
@@ -82,7 +83,7 @@ def get_file_path(
     )
 
 
-class AssetBase(Generic[T], ABC):
+class AssetBase(Generic[T, IT], ABC):
     """Base class for the mono behavior assets."""
 
     asset_file_name: Optional[str] = None
@@ -116,7 +117,7 @@ class AssetBase(Generic[T], ABC):
         return f"<{self.__class__.__name__} at {self._file_path}>"
 
     @abstractmethod
-    def __iter__(self) -> Iterator[T]:
+    def __iter__(self) -> Iterator[IT]:
         raise NotImplementedError()
 
     @property

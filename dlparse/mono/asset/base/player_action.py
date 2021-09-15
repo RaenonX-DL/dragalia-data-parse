@@ -2,7 +2,7 @@
 import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Callable, Mapping, Optional, TextIO, Type, TypeVar, Union, cast
+from typing import Callable, Iterator, Mapping, Optional, TextIO, Type, TypeVar, Union, cast
 
 from dlparse.enums import ActionConditionType, Condition, ConditionCategories
 from dlparse.errors import AssetKeyMissingError, EnumConversionError
@@ -178,7 +178,7 @@ class ActionComponentHasHitLabels(ActionComponentBase, ABC):
         - :class:`ActionBulletFormation`
     """
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         # Some labels contain whitespaces, check the doc of the test ``test_label_has_whitespaces()``
         self.hit_labels = [label.strip() for label in self.hit_labels]
 
@@ -219,7 +219,7 @@ class ActionParserBase(ParserBase[list[T]], ABC):
         raise NotImplementedError()
 
 
-class ActionAssetBase(AssetBase[list[T]], ABC):
+class ActionAssetBase(AssetBase[list[T], T], ABC):
     """Base class for a player action mono behavior asset."""
 
     def __init__(
@@ -228,7 +228,7 @@ class ActionAssetBase(AssetBase[list[T]], ABC):
     ):
         super().__init__(parser_cls, file_location, asset_dir=asset_dir)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[T]:
         return iter(self._data)
 
     def filter(self, condition: Callable[[T], bool]) -> list[T]:

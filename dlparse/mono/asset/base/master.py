@@ -66,7 +66,7 @@ class MasterParserBase(Generic[T], ParserBase[ParsedEntryDict], ABC):
         raise NotImplementedError()
 
 
-class MasterAssetBase(Generic[T], AssetBase[ParsedEntryDict], ABC):
+class MasterAssetBase(Generic[T], AssetBase[ParsedEntryDict, T], ABC):
     """Base class for a master mono behavior asset."""
 
     def __init__(
@@ -78,7 +78,7 @@ class MasterAssetBase(Generic[T], AssetBase[ParsedEntryDict], ABC):
     def __iter__(self) -> Iterator[T]:
         return iter(self._data.values())
 
-    def __contains__(self, item):
+    def __contains__(self, item: ParsedDictIdType) -> bool:
         return item in self._data.keys()
 
     @property
