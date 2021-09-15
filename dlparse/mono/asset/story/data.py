@@ -1,6 +1,6 @@
 """Class representing a story data entity."""
 import json
-from typing import Optional, TextIO, TypeVar
+from typing import TextIO, TypeVar
 
 from dlparse.mono.asset.base import AssetBase, ParserBase
 from .command import StoryCommandBase
@@ -14,7 +14,7 @@ T = TypeVar("T", bound=StoryCommandBase)
 class StoryData(AssetBase[list[T]]):
     """A class containing a story."""
 
-    def __init__(self, file_location: Optional[str] = None) -> None:
+    def __init__(self, file_location: str) -> None:
         super().__init__(StoryDataParser, file_location)
 
     def __iter__(self) -> list[T]:
