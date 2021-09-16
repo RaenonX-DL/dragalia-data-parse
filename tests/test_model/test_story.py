@@ -1,5 +1,5 @@
 from dlparse.enums import Language, UnitType
-from dlparse.model.story.entry import StoryEntryConversation
+from dlparse.model import StoryEntryConversation
 from dlparse.model.story.parse import parse_story_commands_to_entries
 from dlparse.mono.manager import AssetManager
 
