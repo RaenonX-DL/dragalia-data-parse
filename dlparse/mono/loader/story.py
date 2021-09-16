@@ -4,7 +4,7 @@ from functools import cache
 
 from dlparse.enums import Language, UnitType
 from dlparse.errors import StoryUnavailableError
-from dlparse.mono.asset.story import StoryData
+from dlparse.mono.asset.story import StoryData, StoryNameAsset
 from dlparse.utils import localize_asset_path
 
 __all__ = ("StoryLoader",)
@@ -22,6 +22,7 @@ class StoryLoader:
 
     def __init__(self, story_dir: str) -> None:
         self._story_dir = story_dir
+        self._name_asset = StoryNameAsset(story_dir)
 
     @cache
     def _get_story_data(self, path_in_dir: str, lang: Language, story_id: int) -> StoryData:
