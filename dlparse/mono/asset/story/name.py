@@ -1,7 +1,8 @@
 """Implementations for managing the story code names."""
 import json
-from typing import Iterator, Optional, TextIO
+from typing import Iterator, TextIO
 
+from dlparse.errors import StorySpeakerNameNotFoundError
 from dlparse.mono.asset.base import AssetBase, ParserBase
 
 __all__ = ("StoryNameAsset",)
@@ -27,9 +28,22 @@ class StoryNameAsset(AssetBase[StoryNameMapping, tuple[str, str]]):
         # noinspection PyTypeChecker
         return iter(self.data.items())
 
-    def get_unit_jp_name(self, code_name: str) -> Optional[str]:
-        """Get the unit name in JP by its code name in story data."""
-        return self.data.get(code_name)
+    def get_unit_jp_name(self, code_name: str, on_not_found: str = "(throw)") -> str:
+        """
+        Get the unit name in JP by its code name in story data.
+
+        Raises :class:`StorySpeakerNameNotFoundError` if ``code_name`` does not have a corresponding speaker name
+        and ``on_not_found`` is "(throw)" or not specified.
+        """
+        ret = self.data.get(code_name)
+
+        if not ret:
+            if on_not_found == "(throw)":
+                raise StorySpeakerNameNotFoundError(code_name)
+
+            return on_not_found
+
+        return ret
 
 
 class StoryNameParser(ParserBase[StoryNameMapping]):

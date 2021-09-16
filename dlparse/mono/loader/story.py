@@ -26,7 +26,11 @@ class StoryLoader:
 
     @cache
     def _get_story_data(self, path_in_dir: str, lang: Language, story_id: int) -> StoryData:
-        return StoryData(localize_asset_path(os.path.join(self._story_dir, path_in_dir, f"{story_id}.json"), lang))
+        return StoryData(
+            localize_asset_path(os.path.join(self._story_dir, path_in_dir, f"{story_id}.json"), lang),
+            lang,
+            self._name_asset,
+        )
 
     def load_unit_story(self, lang: Language, unit_type: UnitType, story_id: int) -> StoryData:
         """Load the unit story given ``unit_type`` and ``story_id`` in ``lang``."""
