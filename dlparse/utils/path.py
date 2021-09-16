@@ -8,7 +8,7 @@ from .string import is_url
 if TYPE_CHECKING:
     from dlparse.enums import Language
 
-__all__ = ("localize_asset_path",)
+__all__ = ("localize_asset_path", "localize_path")
 
 
 def localize_asset_path(master_path: str, lang: "Language") -> str:
@@ -41,3 +41,8 @@ def localize_asset_path(master_path: str, lang: "Language") -> str:
         return "/".join(merged_parts)
 
     return os.path.join(*merged_parts)
+
+
+def localize_path(path: str, lang: "Language") -> str:
+    """Localize ``path`` for ``lang``."""
+    return os.path.join("localized", lang, path)
