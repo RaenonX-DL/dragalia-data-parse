@@ -168,7 +168,7 @@ class AbilityConditionEntryBase(ABC):
         raise self._condition_unconvertible()
 
     def _cond_self_in_dragon(self) -> Condition:
-        if self.val_1 == 0 or self.val_1 == 1:
+        if self.val_1 in (0, 1):
             return Condition.SELF_SHAPESHIFTED_1_TIME_IN_DRAGON
         if self.val_1 == 2:
             return Condition.SELF_SHAPESHIFTED_2_TIMES_IN_DRAGON
