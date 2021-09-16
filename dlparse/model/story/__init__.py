@@ -1,2 +1,3 @@
 """Story data model classes."""
-from .data import Story
+from .data import StoryModel
+from .entry import *  # noqa

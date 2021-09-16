@@ -2,7 +2,7 @@
 from collections import defaultdict
 
 from dlparse.enums import Language
-from dlparse.mono.asset.story import StoryCommandPrintText, StoryCommandThemeSwitch, StoryData, has_story_content
+from dlparse.mono.asset import StoryCommandPrintText, StoryCommandThemeSwitch, StoryData, has_story_content
 from .entry import StoryEntryBase, StoryEntryBreak, StoryEntryConversation
 
 __all__ = ("parse_story_commands_to_entries",)

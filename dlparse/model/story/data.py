@@ -2,16 +2,16 @@
 from dataclasses import dataclass, field
 
 from dlparse.enums import Language
-from dlparse.mono.asset.story import StoryData
+from dlparse.mono.asset import StoryData
 from .entry import StoryEntryBase
 from .parse import parse_story_commands_to_entries
 
-__all__ = ("Story",)
+__all__ = ("StoryModel",)
 
 
 @dataclass
-class Story:
-    """A story data."""
+class StoryModel:
+    """A story data model."""
 
     lang: Language
     story_data: StoryData
