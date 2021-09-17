@@ -22,10 +22,7 @@ class StoryCommandType(Enum):
     """A single text entry."""
 
     ADD_TEXT = "add_book_text"
-    """
-    Add text into a single screen. This is only used by JP. Contains Hiragana only.
-    Current known use case is for dragon unit history.
-    """
+    """Add text into a single screen. Current known use case is dragon story and poster-like message."""
 
     RUBY = "ruby"
     """Add text into a single screen. This is only used by JP. Contains a word with its Furigana."""
