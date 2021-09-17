@@ -7,12 +7,13 @@ from typing import Any, Callable, Optional, TypeVar, Union
 from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError, MotionDataNotFoundError
 from dlparse.export.entry import CsvExportableEntryBase, JsonExportableEntryBase, SkillExportEntryBase
 from dlparse.model import SkillDataBase
-from dlparse.mono.asset import CharaDataEntry, DragonDataEntry, SkillIdEntry, UnitEntry
+from dlparse.mono.asset import CharaDataEntry, DragonDataEntry, ParsedDictIdType, SkillIdEntry, UnitEntry
 from dlparse.mono.manager import AssetManager
 
 __all__ = (
     "export_as_csv", "export_as_json", "export_to_dir", "print_skipped_messages", "export_transform_skill_entries",
     "export_entries_merged", "export_each_chara_entries", "export_each_dragon_entries",
+    "CharaEntryParsingFunction", "DragonEntryParsingFunction", "UnitEntryParsingFunction",
 )
 
 CT = TypeVar("CT", bound=CsvExportableEntryBase)
@@ -87,14 +88,14 @@ def export_transform_skill_entries(
 def export_each_chara_entries(
         entry_parse_fn: CharaEntryParsingFunction, asset_manager: AssetManager, /,
         skip_unparsable: bool = True,
-) -> dict[int, list[JT]]:
+) -> dict[ParsedDictIdType, list[JT]]:
     """
     Parse each character to json-exportable entries.
 
     The key of the return is the character ID.
     To merge all entries into a single list, use ``export_entries_merged()`` instead.
     """
-    ret: dict[int, list[JT]] = {}
+    ret: dict[ParsedDictIdType, list[JT]] = {}
 
     skipped_messages: list[str] = []
 
@@ -112,13 +113,13 @@ def export_each_chara_entries(
 def export_each_dragon_entries(
         entry_parse_fn: DragonEntryParsingFunction, asset_manager: AssetManager, /,
         skip_unparsable: bool = True
-) -> dict[int, list[JT]]:
+) -> dict[ParsedDictIdType, list[JT]]:
     """
     Parse each dragon to json-exportable entries.
 
     The key of the return is the dragon ID.
     """
-    ret: dict[int, list[JT]] = {}
+    ret: dict[ParsedDictIdType, list[JT]] = {}
 
     skipped_messages: list[str] = []
 
@@ -148,7 +149,7 @@ def export_entries_merged(
     """
     ret: list[JT] = []
 
-    chara_entry_dict = export_each_chara_entries(
+    chara_entry_dict: dict[ParsedDictIdType, list[JT]] = export_each_chara_entries(
         unit_entry_parse_fn, asset_manager,
         skip_unparsable=skip_unparsable,
     )
@@ -156,7 +157,7 @@ def export_entries_merged(
         ret.extend(entries)
 
     if include_dragon:
-        dragon_entry_dict = export_each_dragon_entries(
+        dragon_entry_dict: dict[ParsedDictIdType, list[JT]] = export_each_dragon_entries(
             unit_entry_parse_fn, asset_manager,
             skip_unparsable=skip_unparsable
         )
@@ -166,7 +167,7 @@ def export_entries_merged(
     return ret
 
 
-def export_as_csv(entries: list[CT], csv_header: list[str], file_path: str):
+def export_as_csv(entries: list[CT], csv_header: list[str], file_path: str) -> None:
     """Export all ``entries`` as a csv file to ``file_path``."""
     with open(file_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.writer(f)
@@ -185,7 +186,7 @@ class JsonEntryEncoder(JSONEncoder):
         return super().default(o)
 
 
-def export_as_json(obj: Union[dict, list], file_path: str):
+def export_as_json(obj: Union[dict, list, JT], file_path: str) -> None:
     """
     Export ``obj`` as json to ``file_path``.
 
@@ -197,7 +198,7 @@ def export_as_json(obj: Union[dict, list], file_path: str):
         dump(obj, f, cls=JsonEntryEncoder, ensure_ascii=False, sort_keys=True)
 
 
-def export_to_dir(entry_dict: dict[Union[int, str], Union[JT, list[JT]]], file_dir: str):
+def export_to_dir(entry_dict: dict[ParsedDictIdType, Union[JT, list[JT]]], file_dir: str) -> None:
     """
     Export all entries in ``entry_dict`` to ``file_dir``.
 
@@ -208,7 +209,7 @@ def export_to_dir(entry_dict: dict[Union[int, str], Union[JT, list[JT]]], file_d
         export_as_json(info_entries, os.path.join(file_dir, f"{unit_id}.json"))
 
 
-def print_skipped_messages(skipped_messages: list[str]):
+def print_skipped_messages(skipped_messages: list[str]) -> None:
     """
     Placeholder method to keep track of where may have skipped messages to print.
 

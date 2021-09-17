@@ -11,16 +11,17 @@ from .parser import ParserBase
 
 __all__ = ("MasterEntryBase", "MasterAssetBase", "MasterParserBase", "ParsedDictIdType")
 
+ParsedDictIdType = Union[int, str]
+
 
 @dataclass
 class MasterEntryBase(EntryBase, ABC):
     """Base class for the entries in the master mono behavior asset."""
 
-    id: Union[int, str]  # pylint: disable=invalid-name
+    id: ParsedDictIdType  # pylint: disable=invalid-name
 
 
 T = TypeVar("T", bound=MasterEntryBase)
-ParsedDictIdType = Union[int, str]
 ParsedEntryDict = dict[ParsedDictIdType, T]
 
 
@@ -28,7 +29,7 @@ class MasterParserBase(Generic[T], ParserBase[ParsedEntryDict], ABC):
     """Base parser class for parsing the master asset files."""
 
     @staticmethod
-    def get_entries_dict(file_like: TextIO, key: str = "_Id") -> dict[Union[int, str], dict]:
+    def get_entries_dict(file_like: TextIO, key: str = "_Id") -> dict[ParsedDictIdType, dict]:
         """
         Get a dict of data entries to be further parsed.
 
@@ -86,7 +87,7 @@ class MasterAssetBase(Generic[T], AssetBase[ParsedEntryDict, T], ABC):
         return self._data
 
     @property
-    def all_ids(self) -> set[Union[int, str]]:
+    def all_ids(self) -> set[ParsedDictIdType]:
         """Get the set of all data IDs."""
         return set(self._data.keys())
 
@@ -94,6 +95,6 @@ class MasterAssetBase(Generic[T], AssetBase[ParsedEntryDict, T], ABC):
         """Get a list of data which matches the ``condition``."""
         return [data for data in self if condition(data)]
 
-    def get_data_by_id(self, data_id: Union[int, str], default: Optional[T] = None) -> Optional[T]:
+    def get_data_by_id(self, data_id: ParsedDictIdType, default: Optional[T] = None) -> Optional[T]:
         """Get a data by its ``data_id``. Return ``default`` if not found."""
         return self._data.get(data_id, default)

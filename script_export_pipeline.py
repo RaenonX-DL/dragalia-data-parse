@@ -10,7 +10,7 @@ from dlparse.export import (
     collect_chained_ex_ability_buff_param, collect_ex_ability_buff_param, export_advanced_info_as_json,
     export_atk_skill_as_json, export_chara_info_as_json, export_condition_as_json, export_dragon_info_as_json,
     export_elem_bonus_as_json, export_enums_json, export_ex_abilities_as_json, export_normal_attack_info_as_json,
-    export_simple_info_as_json, export_skill_identifiers_as_json,
+    export_simple_info_as_json, export_skill_identifiers_as_json, export_unit_story_as_json,
 )
 from dlparse.mono.manager import AssetManager
 from dlparse.transformer import AbilityTransformer
@@ -95,6 +95,13 @@ class FileExporter:
             skip_unparsable=True
         )
 
+    @time_exec(title="Story exporting time")
+    def _export_story(self):
+        export_unit_story_as_json(
+            os.path.join(self._dir_export, "story"), self._asset_manager,
+            skip_unparsable=True
+        )
+
     @time_exec(title="Total exporting time")
     def export(self):
         """Export the parsed assets."""
@@ -118,6 +125,9 @@ class FileExporter:
         # Info
         self._export_unit_info()
         self._export_normal_attack()
+
+        # Story
+        self._export_story()
 
         # Misc
         self._export_elem_bonus()

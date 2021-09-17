@@ -10,3 +10,4 @@ from .simple_info import SimpleUnitInfoEntry
 from .skill_atk import AttackingSkillEntry
 from .skill_identifier import SkillIdentifierEntry
 from .skill_sup import SupportiveSkillEntry
+from .story import *  # noqa

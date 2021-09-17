@@ -21,5 +21,5 @@ class StoryModel:
     def __post_init__(self) -> None:
         self.entries = parse_story_commands_to_entries(self.story_data)
 
-    def __repr__(self) -> str:
-        return "\n\n".join([repr(entry) for entry in self.entries])
+    def __str__(self) -> str:
+        return "\n\n".join([f"#{idx: 3}: {repr(entry)}" for idx, entry in enumerate(self.entries, start=1)])

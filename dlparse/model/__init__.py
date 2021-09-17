@@ -18,5 +18,5 @@ from .normal_attack import NormalAttackChain, NormalAttackCombo, NormalAttackCom
 from .quest_data import QuestData
 from .skill_atk import AttackingSkillData, AttackingSkillDataEntry
 from .skill_sup import SupportiveSkillData, SupportiveSkillEntry
-from .story import Story
+from .story import *  # noqa
 from .unit_cancel import SkillCancelActionUnit

@@ -1,5 +1,7 @@
 """Asset classes for mono behavior scripts."""
-from .base import ActionComponentBase, ActionComponentData, ActionComponentHasHitLabels, MultilingualAssetBase
+from .base import (
+    ActionComponentBase, ActionComponentData, ActionComponentHasHitLabels, MultilingualAssetBase, ParsedDictIdType,
+)
 from .extension import *  # noqa
 from .master import *  # noqa
 from .motion import *  # noqa
