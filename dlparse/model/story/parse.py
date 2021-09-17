@@ -22,9 +22,6 @@ def parse_story_commands_to_entries(story_data: StoryData) -> list[StoryEntryBas
         speaker = ""
         text = ""
 
-        # Handle conversation pause in the same row
-        is_in_conversation = False
-
         # Check each command in the same row according to its order defined in the data
         for command in command_same_row:
             if isinstance(command, StoryCommandThemeSwitch):
@@ -32,28 +29,27 @@ def parse_story_commands_to_entries(story_data: StoryData) -> list[StoryEntryBas
                 entries.append(StoryEntryBreak())
                 break
 
-            if isinstance(command, StoryCommandPrintText) and not is_in_conversation:
-                is_in_conversation = True  # Using `print` command, getting back into conversation
-
-                if not speaker:
-                    if story_data.lang == Language.JP:
-                        # For some reason, only JP is using this name mapping
-                        speaker = story_data.name_asset.get_unit_jp_name(
-                            command.speaker, on_not_found=command.speaker
-                        )
-                    else:
-                        speaker = command.speaker
-
-                if len(command.args) == 1 and story_data.name_asset.get_unit_jp_name(command.speaker, on_not_found=""):
-                    # Speaker from command validated to be a speaker, this only occurs in JP story
-                    continue
+            if isinstance(command, StoryCommandPrintText) and not speaker:
+                if story_data.lang == Language.JP:
+                    # For some reason, only JP is using this name mapping
+                    speaker = story_data.name_asset.get_unit_jp_name(
+                        command.speaker, on_not_found=command.speaker
+                    )
+                else:
+                    speaker = command.speaker
 
             if has_story_content(command):
                 # Command has some story content
+                if (
+                        story_data.lang == Language.JP
+                        and story_data.name_asset.get_unit_jp_name(command.content, on_not_found="")
+                ):
+                    # Turns out the content is the speaker
+                    # Only occur in JP story
+                    continue
+
                 text += command.content
                 continue
-
-            is_in_conversation = False
 
         if text:
             # `text` may be an empty string - story row is not a conversation
