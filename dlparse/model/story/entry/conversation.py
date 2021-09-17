@@ -3,7 +3,9 @@ from dataclasses import dataclass
 
 from .base import StoryEntryBase
 
-__all__ = ("StoryEntryConversation",)
+__all__ = ("StoryEntryConversation", "SPEAKER_NAME_SYS")
+
+SPEAKER_NAME_SYS = "SYS"
 
 
 @dataclass

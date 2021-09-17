@@ -34,6 +34,16 @@ def test_jp_story_speaker_same_row_pause(asset_manager: AssetManager):
     assert entry.conversation == "ふふっ、素直な子は好きでしてよ。ほら、ケットシー。謝罪を。"
 
 
+def test_jp_story_speaker_system_message(asset_manager: AssetManager):
+    # Summer Chelle Unit Story Ep. 1
+    story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 100015081)
+    story_entries = parse_story_commands_to_entries(story_data)
+
+    entry = story_entries[38]
+    assert isinstance(entry, StoryEntryConversation)
+    assert entry.conversation == "数日後"
+
+
 def test_jp_story_speaker_name_in_conversation(asset_manager: AssetManager):
     # Summer Chelle Unit Story Ep. 1
     story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 100015081)

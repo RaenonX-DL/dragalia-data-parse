@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from dlparse.enums import Language
 from dlparse.mono.asset import StoryCommandPrintText, StoryCommandThemeSwitch, StoryData, has_story_content
-from .entry import StoryEntryBase, StoryEntryBreak, StoryEntryConversation
+from .entry import SPEAKER_NAME_SYS, StoryEntryBase, StoryEntryBreak, StoryEntryConversation
 
 __all__ = ("parse_story_commands_to_entries",)
 
@@ -46,6 +46,10 @@ def parse_story_commands_to_entries(story_data: StoryData) -> list[StoryEntryBas
                 ):
                     # Turns out the content is the speaker
                     # Only occur in JP story
+                    continue
+
+                if command.content == SPEAKER_NAME_SYS:
+                    # Content is system message as speaker
                     continue
 
                 text += command.content
