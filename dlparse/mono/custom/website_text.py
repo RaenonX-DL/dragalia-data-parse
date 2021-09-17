@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import TextIO, Union
 
 from dlparse.mono.asset.base import (
-    CustomParserBase, MasterEntryBase, MultilingualAssetBase, ParsedDictIdType, TextEntryBase,
+    CustomParserBase, MasterAssetIdType, MasterEntryBase, MultilingualAssetBase, TextEntryBase,
 )
 
 __all__ = ("WebsiteTextEntry", "WebsiteTextAsset", "WebsiteTextParser")
@@ -41,7 +41,7 @@ class WebsiteTextParser(CustomParserBase[WebsiteTextEntry]):
     """Class to parse the website text asset file."""
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> dict[ParsedDictIdType, WebsiteTextEntry]:
+    def parse_file(cls, file_like: TextIO) -> dict[MasterAssetIdType, WebsiteTextEntry]:
         entries = cls.get_entries_dict(file_like, key="id")
 
         return {key: WebsiteTextEntry.parse_raw(value) for key, value in entries.items()}

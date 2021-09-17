@@ -7,7 +7,7 @@ from typing import Any, Callable, Optional, TypeVar, Union
 from dlparse.errors import ActionDataNotFoundError, HitDataUnavailableError, MotionDataNotFoundError
 from dlparse.export.entry import CsvExportableEntryBase, JsonExportableEntryBase, SkillExportEntryBase
 from dlparse.model import SkillDataBase
-from dlparse.mono.asset import CharaDataEntry, DragonDataEntry, ParsedDictIdType, SkillIdEntry, UnitEntry
+from dlparse.mono.asset import CharaDataEntry, DragonDataEntry, MasterAssetIdType, SkillIdEntry, UnitEntry
 from dlparse.mono.manager import AssetManager
 
 __all__ = (
@@ -88,14 +88,14 @@ def export_transform_skill_entries(
 def export_each_chara_entries(
         entry_parse_fn: CharaEntryParsingFunction, asset_manager: AssetManager, /,
         skip_unparsable: bool = True,
-) -> dict[ParsedDictIdType, list[JT]]:
+) -> dict[MasterAssetIdType, list[JT]]:
     """
     Parse each character to json-exportable entries.
 
     The key of the return is the character ID.
     To merge all entries into a single list, use ``export_entries_merged()`` instead.
     """
-    ret: dict[ParsedDictIdType, list[JT]] = {}
+    ret: dict[MasterAssetIdType, list[JT]] = {}
 
     skipped_messages: list[str] = []
 
@@ -113,13 +113,13 @@ def export_each_chara_entries(
 def export_each_dragon_entries(
         entry_parse_fn: DragonEntryParsingFunction, asset_manager: AssetManager, /,
         skip_unparsable: bool = True
-) -> dict[ParsedDictIdType, list[JT]]:
+) -> dict[MasterAssetIdType, list[JT]]:
     """
     Parse each dragon to json-exportable entries.
 
     The key of the return is the dragon ID.
     """
-    ret: dict[ParsedDictIdType, list[JT]] = {}
+    ret: dict[MasterAssetIdType, list[JT]] = {}
 
     skipped_messages: list[str] = []
 
@@ -149,7 +149,7 @@ def export_entries_merged(
     """
     ret: list[JT] = []
 
-    chara_entry_dict: dict[ParsedDictIdType, list[JT]] = export_each_chara_entries(
+    chara_entry_dict: dict[MasterAssetIdType, list[JT]] = export_each_chara_entries(
         unit_entry_parse_fn, asset_manager,
         skip_unparsable=skip_unparsable,
     )
@@ -157,7 +157,7 @@ def export_entries_merged(
         ret.extend(entries)
 
     if include_dragon:
-        dragon_entry_dict: dict[ParsedDictIdType, list[JT]] = export_each_dragon_entries(
+        dragon_entry_dict: dict[MasterAssetIdType, list[JT]] = export_each_dragon_entries(
             unit_entry_parse_fn, asset_manager,
             skip_unparsable=skip_unparsable
         )
@@ -198,7 +198,7 @@ def export_as_json(obj: Union[dict, list, JT], file_path: str) -> None:
         dump(obj, f, cls=JsonEntryEncoder, ensure_ascii=False, sort_keys=True)
 
 
-def export_to_dir(entry_dict: dict[ParsedDictIdType, Union[JT, list[JT]]], file_dir: str) -> None:
+def export_to_dir(entry_dict: dict[MasterAssetIdType, Union[JT, list[JT]]], file_dir: str) -> None:
     """
     Export all entries in ``entry_dict`` to ``file_dir``.
 

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Optional, TextIO, cast
 
 from dlparse.mono.asset.base import (
-    EntryDataType, GroupedStoryAssetBase, GroupedStoryEntryBase, MasterEntryBase, MasterParserBase, ParsedDictIdType,
+    EntryDataType, GroupedStoryAssetBase, GroupedStoryEntryBase, MasterAssetIdType, MasterEntryBase, MasterParserBase,
 )
 
 __all__ = ("QuestStoryEntry", "QuestStoryAsset")
@@ -38,7 +38,7 @@ class QuestStoryParser(MasterParserBase[QuestStoryEntry]):
     """Class to parse the quest story file."""
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> dict[ParsedDictIdType, QuestStoryEntry]:
+    def parse_file(cls, file_like: TextIO) -> dict[MasterAssetIdType, QuestStoryEntry]:
         entries = cls.get_entries_dict(file_like)
 
         return {key: QuestStoryEntry.parse_raw(value) for key, value in entries.items()}

@@ -4,8 +4,8 @@ from typing import Optional, TextIO, cast
 
 from dlparse.errors import TextLabelNotFoundError
 from dlparse.mono.asset.base import (
-    CustomParserBase, EntryDataType, MasterAssetBase, MasterEntryBase, MasterParserBase, MultilingualAssetBase,
-    ParsedDictIdType, TextEntryBase, get_file_like, get_file_path,
+    CustomParserBase, EntryDataType, MasterAssetBase, MasterAssetIdType, MasterEntryBase, MasterParserBase,
+    MultilingualAssetBase, TextEntryBase, get_file_like, get_file_path,
 )
 
 __all__ = ("TextEntry", "TextAsset", "TextAssetMultilingual")
@@ -71,7 +71,7 @@ class MasterTextParser(MasterParserBase[TextEntry]):
     """Class to parse the master text label file."""
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> dict[ParsedDictIdType, TextEntry]:
+    def parse_file(cls, file_like: TextIO) -> dict[MasterAssetIdType, TextEntry]:
         entries = cls.get_entries_dict(file_like)
 
         return {key: TextEntry.parse_raw(value) for key, value in entries.items()}
@@ -81,7 +81,7 @@ class CustomTextParser(CustomParserBase[TextEntry]):
     """Class to parse the custom text label file."""
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> dict[ParsedDictIdType, TextEntry]:
+    def parse_file(cls, file_like: TextIO) -> dict[MasterAssetIdType, TextEntry]:
         entries = cls.get_entries_dict(file_like)
 
         return {key: TextEntry.parse_raw(value) for key, value in entries.items()}

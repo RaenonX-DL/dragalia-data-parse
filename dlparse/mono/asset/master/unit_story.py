@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Optional, TextIO, cast
 
 from dlparse.mono.asset.base import (
-    EntryDataType, GroupedStoryAssetBase, GroupedStoryEntryBase, MasterEntryBase, MasterParserBase, ParsedDictIdType,
+    EntryDataType, GroupedStoryAssetBase, GroupedStoryEntryBase, MasterAssetIdType, MasterEntryBase, MasterParserBase,
 )
 from dlparse.mono.asset.extension import VariationIdentifier, VariedEntry
 
@@ -53,7 +53,7 @@ class UnitStoryParser(MasterParserBase[UnitStoryEntry]):
     """Class to parse the unit story file."""
 
     @classmethod
-    def parse_file(cls, file_like: TextIO) -> dict[ParsedDictIdType, UnitStoryEntry]:
+    def parse_file(cls, file_like: TextIO) -> dict[MasterAssetIdType, UnitStoryEntry]:
         entries = cls.get_entries_dict(file_like)
 
         return {key: UnitStoryEntry.parse_raw(value) for key, value in entries.items()}
