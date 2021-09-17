@@ -1,9 +1,9 @@
 """Implementations for managing the story code names."""
-import json
-from typing import Iterator, TextIO
+from typing import Iterator
 
 from dlparse.errors import StorySpeakerNameNotFoundError
-from dlparse.mono.asset.base import AssetBase, ParserBase
+from dlparse.mono.asset.base import AssetBase
+from .base import StoryAssetParser
 
 __all__ = ("StoryNameAsset",)
 
@@ -15,13 +15,13 @@ class StoryNameAsset(AssetBase[StoryNameMapping, tuple[str, str]]):
     Contains the code name mapping of the speaker of a story conversation.
 
     This is only used in JP story. CH/EN stories are not using this mechanism to map their names.
-    Instead, it's encoded in the story commands.
+    Instead, it's directly listed in the story commands.
     """
 
     asset_file_name = "function_namelist_notedit.json"
 
     def __init__(self, story_dir: str) -> None:
-        super().__init__(StoryNameParser, asset_dir=story_dir)
+        super().__init__(StoryAssetParser, asset_dir=story_dir)
 
     def __iter__(self) -> Iterator[tuple[str, str]]:
         # False-negative
@@ -44,19 +44,3 @@ class StoryNameAsset(AssetBase[StoryNameMapping, tuple[str, str]]):
             return on_not_found
 
         return ret
-
-
-class StoryNameParser(ParserBase[StoryNameMapping]):
-    """Parses the story name list asset."""
-
-    # pylint: disable=too-few-public-methods
-
-    @staticmethod
-    def parse_file(file_like: TextIO) -> StoryNameMapping:
-        data = json.load(file_like)
-        data = data["functions"][0]["variables"]
-
-        keys = data["entriesKey"]
-        values = data["entriesValue"]
-
-        return dict(zip(keys, values))

@@ -33,6 +33,12 @@ class StoryCommandType(Enum):
     BLACK_OUT = "BLACK_OUT_DEF"
     """Black out the scene. Used for scene switching."""
 
+    CHARA_SET = "CHARA_SET"
+    """Set the character image of the speaker."""
+
+    CHARA_SET_0 = "CHARA_SET_0"
+    """Set the character image of the speaker. Difference between this and ``CHARA_SET`` is unknown."""
+
     @classmethod
     def _missing_(cls, value: Any) -> "StoryCommandType":
         return StoryCommandType.UNKNOWN

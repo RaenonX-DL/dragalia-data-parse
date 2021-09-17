@@ -1,5 +1,6 @@
 """Class for story entry representing a single converstation."""
 from dataclasses import dataclass
+from typing import Optional
 
 from .base import StoryEntryBase
 
@@ -13,6 +14,7 @@ class StoryEntryConversation(StoryEntryBase):
     """A single story conversation."""
 
     speaker_name: str
+    speaker_image_name: Optional[str]
     conversation: str
 
     @property
@@ -21,4 +23,4 @@ class StoryEntryConversation(StoryEntryBase):
         return self.speaker_name == "SYS"
 
     def __repr__(self) -> str:
-        return f"{self.speaker_name}:\n{self.conversation}"
+        return f"{self.speaker_name} ({self.speaker_image_name}):\n{self.conversation}"
