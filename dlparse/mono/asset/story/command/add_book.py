@@ -12,4 +12,8 @@ class StoryCommandAddBook(StoryCommandHasContent):
 
     @property
     def content(self) -> str:
+        if not self.args:
+            # Args list could be empty for some reason, no known effect of returning an empty string
+            return ""
+
         return self.args[0]
