@@ -14,8 +14,6 @@ Developed under Python 3.9 (or higher).
 
 [DL-info]: https://dl.raenonx.cc
 
-[parser-repo]:  https://github.com/RaenonX-DL/dragalia-data-parse/
-
 [parser-ci]: https://github.com/RaenonX-DL/dragalia-data-parse/workflows/CI/badge.svg
 
 [parser-ci-link]: https://github.com/RaenonX-DL/dragalia-data-parse/actions?query=workflow%3ACI
