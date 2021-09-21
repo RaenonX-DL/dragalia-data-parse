@@ -51,8 +51,9 @@ class AnimatorController(AnimationControllerBase, EntryBase, ABC):
             clips[ctrl.path_id] = ctrl
 
         self.tos = {}
-        for tos in controller["m_TOS"]:
-            self.tos[tos["Value"]] = tos["Key"]
+        for tos_path_id, tos_name in controller["m_TOS"].items():
+            # `tos_path_id` stored as string in the data file
+            self.tos[tos_name] = int(tos_path_id)
 
         self.state_machine_ref = {}
         state_machine_array = controller["m_Controller"]["m_StateMachineArray"][0]["data"]["m_StateConstantArray"]
