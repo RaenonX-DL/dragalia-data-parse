@@ -25,4 +25,4 @@ class StoryCommandBase(ABC):
         self.command_raw = raw_command["command"]
         # Remove newline characters in the argument list
         # - Those newline characters are
-        self.args = [arg.replace("\\n", "") for arg in raw_command["args"]]
+        self.args = raw_command["args"]

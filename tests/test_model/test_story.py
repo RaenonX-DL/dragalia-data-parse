@@ -139,3 +139,13 @@ def test_story_conversation_player_name_replaced(asset_manager: AssetManager):
     assert isinstance(entry, StoryEntryConversation)
     assert "Euden" in entry.conversation
     assert "{player_name}" not in entry.conversation
+
+
+def test_newline_replacement_in_en_story(asset_manager: AssetManager):
+    story_data = asset_manager.loader_story.load_unit_story(Language.EN, UnitType.CHARACTER, 110335015)
+    story_entries = parse_story_commands_to_entries(story_data, asset_manager.asset_text_website)
+
+    entry = story_entries[6]
+    assert isinstance(entry, StoryEntryConversation)
+    assert "unable to" in entry.conversation
+    assert "unableto" not in entry.conversation

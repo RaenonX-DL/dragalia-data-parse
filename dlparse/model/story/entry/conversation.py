@@ -23,11 +23,19 @@ class StoryEntryConversation(StoryEntryBase):
     text_asset: InitVar[WebsiteTextAsset]
     lang: InitVar[Language]
 
-    def __post_init__(self, text_asset: WebsiteTextAsset, lang: Language):
+    def _init_replace_player_name_placeholder(self, text_asset: WebsiteTextAsset, lang: Language) -> None:
         # Replace `{player_name}` placeholder
         player_name = text_asset.get_text(lang, PLAYER_NAME_TEXT_LABEL)
         self.speaker_name = self.speaker_name.replace("{player_name}", player_name)
         self.conversation = self.conversation.replace("{player_name}", player_name)
+
+    def _init_replace_newline(self, lang: Language):
+        # For EN, replace with a space; otherwise, replace with an empty string
+        self.conversation = self.conversation.replace("\\n", " " if lang == Language.EN else "")
+
+    def __post_init__(self, text_asset: WebsiteTextAsset, lang: Language) -> None:
+        self._init_replace_player_name_placeholder(text_asset, lang)
+        self._init_replace_newline(lang)
 
     @property
     def is_speaker_system(self) -> bool:
