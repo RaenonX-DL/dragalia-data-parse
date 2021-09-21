@@ -1,3 +1,4 @@
+from dlparse.enums import Language
 from dlparse.errors import HitDataUnavailableError
 from dlparse.mono.manager import AssetManager
 from tests.static import PATH_LOCAL_ROOT_RESOURCES
@@ -77,7 +78,7 @@ def print_skill_id_entry(chara_data, skill_id_entry):
     skill_id = skill_id_entry.skill_id
 
     skill_data_sys = _asset_manager.asset_skill_data.get_data_by_id(skill_id)
-    skill_name = _asset_manager.asset_text.to_text(skill_data_sys.name_label)
+    skill_name = _asset_manager.asset_text_multi.get_text(Language.JP, skill_data_sys.name_label)
 
     print(f"{' / '.join(skill_id_entry.skill_identifier_labels)}: {skill_name} ({skill_id})")
     print("-" * 50)

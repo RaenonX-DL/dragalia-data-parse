@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 
+from dlparse.enums import Language
 from dlparse.mono.asset import CharaDataEntry, SkillDataEntry
 from dlparse.mono.manager import AssetManager
 from tests.static import PATH_LOCAL_DIR_CUSTOM_ASSET, PATH_LOCAL_ROOT_RESOURCES, get_remote_dir_root_resources
@@ -23,7 +24,7 @@ def check_diff_internal(left: "MasterAssetBase", right: "MasterAssetBase", title
         for diff_id in sorted(diff_ids):
             data = left.get_data_by_id(diff_id)
             if isinstance(data, SkillDataEntry):
-                print(f"- {diff_id} ({manager.asset_text.to_text(data.name_label)})")
+                print(f"- {diff_id} ({manager.asset_text_multi.get_text(Language.JP, data.name_label)})")
             elif isinstance(data, CharaDataEntry):
                 print(f"- {diff_id} ({data.get_name(manager.asset_text_multi)})")
             else:

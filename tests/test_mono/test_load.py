@@ -2,38 +2,38 @@ import os
 
 import pytest
 
-from dlparse.mono.asset import TextAsset
+from dlparse.mono.asset import CharaDataAsset
 from dlparse.mono.loader import ActionFileLoader
 from dlparse.mono.manager import AssetManager
 from tests.static import PATH_LOCAL_ROOT_RESOURCES, get_remote_dir_root_resources
 
 
 def test_load_file_like():
-    with open(os.path.join(PATH_LOCAL_ROOT_RESOURCES, "master", "TextLabel.json"), encoding="utf-8") as f:
-        asset = TextAsset(file_like=f)
-    assert "CHARA_NAME_19900001" in asset
+    with open(os.path.join(PATH_LOCAL_ROOT_RESOURCES, "master", "CharaData.json"), encoding="utf-8") as f:
+        asset = CharaDataAsset(file_like=f)
+    assert 10440501 in asset
 
 
 def test_load_local_dir():
-    asset = TextAsset(asset_dir=os.path.join(PATH_LOCAL_ROOT_RESOURCES, "master"))
-    assert "CHARA_NAME_19900001" in asset
+    asset = CharaDataAsset(asset_dir=os.path.join(PATH_LOCAL_ROOT_RESOURCES, "master"))
+    assert 10440501 in asset
 
 
 def test_load_local_file():
-    asset = TextAsset(os.path.join(PATH_LOCAL_ROOT_RESOURCES, "master", "TextLabel.json"))
-    assert "CHARA_NAME_19900001" in asset
+    asset = CharaDataAsset(os.path.join(PATH_LOCAL_ROOT_RESOURCES, "master", "CharaData.json"))
+    assert 10440501 in asset
 
 
 @pytest.mark.slow
 def test_load_remote_dir():
-    asset = TextAsset(asset_dir=get_remote_dir_root_resources() + "/master")
-    assert "CHARA_NAME_19900001" in asset
+    asset = CharaDataAsset(asset_dir=get_remote_dir_root_resources() + "/master")
+    assert 10440501 in asset
 
 
 @pytest.mark.slow
 def test_load_remote_file():
-    asset = TextAsset(get_remote_dir_root_resources() + "/master/TextLabel.json")
-    assert "CHARA_NAME_19900001" in asset
+    asset = CharaDataAsset(get_remote_dir_root_resources() + "/master/TextLabel.json")
+    assert 10440501 in asset
 
 
 def test_prefab_loader_local_dir(asset_manager: AssetManager):

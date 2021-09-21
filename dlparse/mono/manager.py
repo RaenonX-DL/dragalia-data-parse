@@ -11,7 +11,7 @@ from .asset import (
     AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionGrantAsset, ActionPartsListAsset, BuffCountAsset,
     CastleStoryAsset, CharaDataAsset, CharaModeAsset, CharaUniqueComboAsset, DragonDataAsset, DungeonPlannerAsset,
     EnemyDataAsset, EnemyParamAsset, ExAbilityAsset, HitAttrAsset, MotionSelectorWeapon, PlayerActionInfoAsset,
-    QuestDataAsset, QuestStoryAsset, SkillChainAsset, SkillDataAsset, TextAsset, TextAssetMultilingual, UnitStoryAsset,
+    QuestDataAsset, QuestStoryAsset, SkillChainAsset, SkillDataAsset, TextAssetMultilingual, UnitStoryAsset,
     WeaponTypeAsset,
 )
 from .custom import WebsiteTextAsset
@@ -79,8 +79,6 @@ class AssetManager:
         self._asset_story_castle = CastleStoryAsset(asset_dir=master_asset_dir)
 
         # --- Misc
-        self._asset_text = TextAsset(asset_dir=master_asset_dir, custom_asset_dir=custom_asset_dir)
-
         self._asset_text_multi = TextAssetMultilingual(master_asset_dir)
         self._asset_weapon_type = WeaponTypeAsset(asset_dir=master_asset_dir)
 
@@ -234,13 +232,6 @@ class AssetManager:
     def asset_story_castle(self) -> CastleStoryAsset:
         """Get the castle story asset."""
         return self._asset_story_castle
-
-    # --- Misc
-
-    @property
-    def asset_text(self) -> TextAsset:
-        """Get the text label asset."""
-        return self._asset_text
 
     # endregion
 
