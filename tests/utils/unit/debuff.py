@@ -11,7 +11,7 @@ from .base import BuffInfoBase, check_info_list_match
 __all__ = ("DebuffInfo", "check_debuff_unit_match")
 
 
-@dataclass
+@dataclass(eq=False)
 class DebuffInfo(BuffInfoBase):
     """A single debuff info entry."""
 
@@ -23,14 +23,22 @@ class DebuffInfo(BuffInfoBase):
 
     stackable: bool
 
-    def __hash__(self):
-        return hash((self.parameter, self.rate, self.probability_pct, self.duration, self.stackable, self.hit_label))
+    @property
+    def _comparer(self) -> tuple[Any, ...]:
+        return (
+            self.parameter,
+            int(round(self.rate * 1E5)),
+            self.probability_pct,
+            self.duration,
+            self.stackable,
+            self.hit_label
+        )
 
 
 def check_debuff_unit_match(
         actual_units: list[HitActionConditionEffectUnit], expected_info: list[DebuffInfo], /,
         message: Any = None
-):
+) -> None:
     """
     Check if the info of the debuff units match.
 

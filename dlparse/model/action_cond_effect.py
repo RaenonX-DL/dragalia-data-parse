@@ -1,5 +1,6 @@
 """Classes for the effects of an action condition."""
 from dataclasses import dataclass, field
+from typing import Any
 
 from .base import EffectUnitBase
 
@@ -15,17 +16,17 @@ class HitActionConditionEffectUnit(EffectUnitBase):
     hit_attr_label: str
     action_cond_id: int
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         # Same hit attribute label may be used multiple times at different time
         # Action condition ID not included because it's bound with hit attribute label
         # x 1E5 for handling floating errors
         return hash((int(self.time * 1E5), self.hit_attr_label))
 
-    def __lt__(self, other):
+    def __lt__(self, other: Any) -> bool:
         if not isinstance(other, self.__class__):
             raise ValueError(f"Cannot compare `HitActionConditionEffectUnit` with {type(other)}")
 
-        return self.time < other.time
+        return (self.time, self.hit_attr_label) < (other.time, other.hit_attr_label)
 
 
 @dataclass
@@ -35,7 +36,7 @@ class EnemyAfflictionEffectUnit(HitActionConditionEffectUnit):
     rate: float = field(init=False)
     duration_count: float = field(init=False)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         # Directly sets the default causes error
         self.rate = 0
         self.duration_count = 0

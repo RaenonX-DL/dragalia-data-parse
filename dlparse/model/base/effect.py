@@ -36,10 +36,10 @@ class EffectUnitBase(ABC):
     """
 
     @property
-    def stackable(self):
+    def stackable(self) -> bool:
         """Check if the effect unit is stackable."""
         return self.max_stack_count != 1
 
     @abstractmethod
-    def __hash__(self):
+    def __hash__(self) -> int:
         raise NotImplementedError()

@@ -40,7 +40,7 @@ class AbilityVariantEffectUnit(EffectUnitBase):
 
     def __hash__(self):
         # x 1E5 for handling floating errors
-        return hash((self.source_ability_id, self.condition_comp, self.parameter, int(self.rate * 1E5)))
+        return hash((self.source_ability_id, self.condition_comp, self.parameter, int(round(self.rate * 1E5))))
 
     def __lt__(self, other):
         if not isinstance(other, self.__class__):

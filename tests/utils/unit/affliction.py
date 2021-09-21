@@ -9,7 +9,7 @@ from .base import BuffInfoBase, check_info_list_match
 __all__ = ("AfflictionInfo", "check_affliction_unit_match")
 
 
-@dataclass
+@dataclass(eq=False)
 class AfflictionInfo(BuffInfoBase):
     """A single affliction info entry."""
 
@@ -23,14 +23,22 @@ class AfflictionInfo(BuffInfoBase):
 
     stackable: bool
 
-    def __hash__(self):
-        return hash((self.status, self.probability_pct, self.duration, self.interval, self.damage_mod, self.stackable))
+    @property
+    def _comparer(self) -> tuple[Any, ...]:
+        return (
+            self.status,
+            self.probability_pct,
+            self.duration,
+            int(round(self.interval * 1E5)),
+            int(round(self.damage_mod * 1E5)),
+            self.stackable
+        )
 
 
 def check_affliction_unit_match(
         actual_units: list[HitActionConditionEffectUnit], expected_info: list[AfflictionInfo], /,
         message: Any = None
-):
+) -> None:
     """Check if the info of the affliction units match."""
     actual_info = [
         AfflictionInfo(

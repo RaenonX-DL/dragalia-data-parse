@@ -1,60 +1,69 @@
 """Base functions for checking the units."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Iterable, TypeVar
+from itertools import zip_longest
+from typing import Any, Iterable, TypeVar, final
 
 __all__ = ("InfoBase", "BuffInfoBase", "AbilityInfoBase", "check_info_list_match")
 
 
-@dataclass
+@dataclass(eq=False)
 class InfoBase:
     """Base class for a partial info to match."""
 
+    @property
     @abstractmethod
-    def __hash__(self):
+    def _comparer(self) -> tuple[Any, ...]:
         raise NotImplementedError()
 
-    @abstractmethod
-    def __lt__(self, other):
-        raise NotImplementedError()
+    @final
+    def __hash__(self) -> int:
+        return hash(self._comparer)
 
-    def __eq__(self, other):
+    @final
+    def __lt__(self, other: Any) -> bool:
+        if not isinstance(other, self.__class__):
+            raise TypeError(f"Unable to compare {type(self.__class__)} with {type(other)}")
+
+        return self._comparer < other._comparer
+
+    @final
+    def __eq__(self, other: Any) -> bool:
         if not isinstance(other, self.__class__):
             return False
 
-        return hash(self) == hash(other)
+        return self._comparer == other._comparer
 
 
-@dataclass
+@dataclass(eq=False)
 class BuffInfoBase(InfoBase, ABC):
     """Base class for a buff info."""
 
     hit_label: str
 
-    def __lt__(self, other):
-        if not isinstance(other, self.__class__):
-            raise TypeError(f"Unable to compare {type(self.__class__)} with {type(other)}")
-
-        return self.hit_label < other.hit_label
+    @property
+    def _comparer(self) -> tuple[Any, ...]:
+        return self.hit_label,
 
 
-@dataclass
+@dataclass(eq=False)
 class AbilityInfoBase(InfoBase, ABC):
     """Base class for an ability info."""
 
     source_ability_id: int
 
-    def __lt__(self, other):
-        if not isinstance(other, self.__class__):
-            raise TypeError(f"Unable to compare {type(self.__class__)} with {type(other)}")
-
-        return self.source_ability_id < other.source_ability_id
+    @property
+    def _comparer(self) -> tuple[Any, ...]:
+        return self.source_ability_id,
 
 
 T = TypeVar("T", bound=InfoBase)
 
 
-def check_info_list_match(actual_info: Iterable[T], expected_info: Iterable[T], /, message: Any = None):
+def check_info_list_match(
+        actual_info: Iterable[T], expected_info: Iterable[T], /,
+        message: Any = None
+) -> None:
     """Check if both lists of the info match."""
     expected_info: list[T] = list(sorted(expected_info))
     actual_info: list[T] = list(sorted(actual_info))
@@ -68,4 +77,5 @@ def check_info_list_match(actual_info: Iterable[T], expected_info: Iterable[T], 
     if message is not None:
         assert_expr = f"{message}\n{assert_expr}"
 
-    assert actual_info == expected_info, assert_expr  # nosec
+    for idx, (actual, expected) in enumerate(zip_longest(actual_info, expected_info)):
+        assert actual == expected, f"{assert_expr}\nIndex #{idx} not equal"  # nosec

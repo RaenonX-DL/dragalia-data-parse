@@ -14,7 +14,7 @@ __all__ = (
 )
 
 
-@dataclass
+@dataclass(eq=False)
 class AbilityEffectInfo(AbilityInfoBase):
     """A single affliction info entry."""
 
@@ -31,35 +31,20 @@ class AbilityEffectInfo(AbilityInfoBase):
     duration_count: Optional[float] = None
     slip_interval_sec: Optional[float] = None
 
-    def __hash__(self):
-        # x 1E5 for error tolerance
-        return hash((self.condition_comp.conditions_sorted, self.parameter, int(self.rate * 1E5)))
-
-    def __lt__(self, other):
-        if not isinstance(other, self.__class__):
-            raise TypeError(f"Unable to compare {type(self.__class__)} with {type(other)}")
-
-        data_self = (
+    @property
+    def _comparer(self) -> tuple[Any, ...]:
+        return (
             self.source_ability_id,
             self.condition_comp.conditions_sorted,
             int(self.parameter.value),
-            self.rate
+            int(round(self.rate * 1E5))
         )
-
-        data_other = (
-            other.source_ability_id,
-            other.condition_comp.conditions_sorted,
-            int(other.parameter.value),
-            other.rate
-        )
-
-        return data_self < data_other
 
 
 def check_ability_effect_unit_match(
         actual_units: set[AbilityVariantEffectUnit], expected_info: set[AbilityEffectInfo], /,
         message: Any = None
-):
+) -> None:
     """Check if the info of the affliction units match."""
     # Explicit ``None`` checks because ``0`` is falsy
     has_probability = any(info.probability is not None for info in expected_info)
@@ -76,7 +61,8 @@ def check_ability_effect_unit_match(
         AbilityEffectInfo(
             source_ability_id=unit.source_ability_id,
             condition_comp=unit.condition_comp,
-            parameter=unit.parameter, rate=unit.rate,
+            parameter=unit.parameter,
+            rate=unit.rate,
             probability=unit.probability_pct if has_probability else None,
             cooldown_sec=unit.cooldown_sec if has_cooldown else None,
             max_occurrences=unit.max_occurrences if has_max_occurrences else None,
@@ -93,7 +79,7 @@ def check_ability_effect_unit_match(
     check_info_list_match(actual_info, expected_info, message=message)
 
 
-@dataclass
+@dataclass(eq=False)
 class UnknownAbilityData:
     """A single unknown ability data entry."""
 
@@ -108,10 +94,10 @@ class UnknownAbilityData:
     is_empty: bool = False
     not_effective_to_the_team: bool = False
 
-    def __str__(self):
+    def __str__(self) -> str:
         return repr(self)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         ret = f"- #{self.ability_id} ({self.chara_id})"
 
         for source_ab_id, condition_id in self.condition_ids.items():
@@ -141,14 +127,14 @@ class UnknownAbilityDataCollection:
 
     data: list[UnknownAbilityData] = field(init=False, default_factory=list)
 
-    def add_data(self, unknown_info: UnknownAbilityData):
+    def add_data(self, unknown_info: UnknownAbilityData) -> None:
         """Add ``unknown_info`` to the data to be printed later."""
         self.data.append(unknown_info)
 
     def add_data_if_needed(
             self, chara_data: CharaDataEntry, ability_id: int, ability_data: T, /,
             check_effective_for_team: bool = False
-    ):
+    ) -> None:
         """Record that ``ability_data`` has unknown data, if any."""
         # Check if any unknown elements exist but no error yielded
         if ability_data.has_unknown_elements:
@@ -174,7 +160,7 @@ class UnknownAbilityDataCollection:
                 variant_ids=ability_data.unknown_variant_ids
             ))
 
-    def print_and_fail_if_any(self, total_data_count: int):
+    def print_and_fail_if_any(self, total_data_count: int) -> None:
         """Print the unknown ability data and fail the test, if any of the unknown data is present"""
         if self.data:
             unknown_str = "\n".join([str(entry) for entry in self.data])

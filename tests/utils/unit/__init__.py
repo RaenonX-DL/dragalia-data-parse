@@ -6,4 +6,5 @@ from .ability import (
 )
 from .affliction import AfflictionInfo, check_affliction_unit_match
 from .buff import BuffEffectInfo, check_buff_unit_match
+from .cancel import CancelUnitInfo, check_cancel_unit_match
 from .debuff import DebuffInfo, check_debuff_unit_match
