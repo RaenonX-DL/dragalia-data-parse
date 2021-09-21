@@ -1,5 +1,9 @@
 [
   {
+    "id": "STORY_NAME_PLAYER",
+    "text": "Euden"
+  },
+  {
     "id": "SKILL_IDENTIFIER_helper",
     "text": "Helper"
   },

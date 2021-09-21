@@ -48,7 +48,8 @@ def export_story_of_lang(lang: Language) -> UnitEntryParsingFunction:
         for unit_story in unit_stories:
             try:
                 ret.append(Story(StoryModel(
-                    lang, asset_manager.loader_story.load_unit_story(lang, unit_entry.unit_type, unit_story.id)
+                    lang, asset_manager.loader_story.load_unit_story(lang, unit_entry.unit_type, unit_story.id),
+                    text_asset=asset_manager.asset_text_website
                 )))
             except (StoryUnavailableError, StorySpeakerNameNotFoundError) as ex:
                 if not skip_unparsable:

@@ -7,6 +7,7 @@ from dlparse.mono.asset import (
     StoryCommandHasContent, StoryCommandPrintText, StoryCommandSetChara, StoryCommandThemeSwitch, StoryData,
     has_story_content,
 )
+from dlparse.mono.custom import WebsiteTextAsset
 from .entry import SPEAKER_NAME_SYS, StoryEntryBase, StoryEntryBreak, StoryEntryConversation
 
 __all__ = ("parse_story_commands_to_entries",)
@@ -42,7 +43,10 @@ def get_content_from_command(story_data: StoryData, command: StoryCommandHasCont
     return command.content
 
 
-def parse_story_commands_to_entries(story_data: StoryData) -> list[StoryEntryBase]:
+def parse_story_commands_to_entries(
+        story_data: StoryData, /,
+        text_asset: WebsiteTextAsset
+) -> list[StoryEntryBase]:
     """Parse the commands in ``story_data`` into a list of story entry models."""
     # Group and sort the commands by its row
     commands_by_row = defaultdict(list)
@@ -86,7 +90,9 @@ def parse_story_commands_to_entries(story_data: StoryData) -> list[StoryEntryBas
             image_name = story_data.image_asset.get_image_name(speaker_image_code_dict.get(speaker))
 
             # `text` may be an empty string - story row is not a conversation
-            entries.append(StoryEntryConversation(speaker, image_name, text))
+            entries.append(StoryEntryConversation(
+                speaker, image_name, text, text_asset=text_asset, lang=story_data.lang
+            ))
             speaker_image_code = None  # Reset speaker image code
 
     return entries

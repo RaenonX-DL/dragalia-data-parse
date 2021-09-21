@@ -1,5 +1,9 @@
 [
   {
+    "id": "STORY_NAME_PLAYER",
+    "text": "尤蒂爾"
+  },
+  {
     "id": "SKILL_IDENTIFIER_helper",
     "text": "戰友"
   },
