@@ -21,7 +21,9 @@ def test_no_condition(transformer_skill: SkillTransformer):
     assert set(expected_max_total_mods.keys()) == {entry.condition_comp for entry in possible_entries}
 
     for entry in possible_entries:
-        assert entry.total_mod_at_max == expected_max_total_mods[entry.condition_comp], entry.condition_comp
+        assert \
+            entry.total_mod_at_max == pytest.approx(expected_max_total_mods[entry.condition_comp]), \
+            entry.condition_comp
         del expected_max_total_mods[entry.condition_comp]
 
     assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
@@ -156,7 +158,7 @@ def test_punisher_only(transformer_skill: SkillTransformer):
     assert set(expected_max_total_mods.keys()) == {entry.condition_comp for entry in possible_entries}
 
     for entry in possible_entries:
-        assert entry.total_mod_at_max == expected_max_total_mods[entry.condition_comp]
+        assert entry.total_mod_at_max == pytest.approx(expected_max_total_mods[entry.condition_comp])
         del expected_max_total_mods[entry.condition_comp]
 
     assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
@@ -178,7 +180,9 @@ def test_crisis_only(transformer_skill: SkillTransformer):
     assert set(expected_max_total_mods.keys()) == {entry.condition_comp for entry in possible_entries}
 
     for entry in possible_entries:
-        assert entry.total_mod_at_max == expected_max_total_mods[entry.condition_comp], entry.condition_comp
+        assert \
+            entry.total_mod_at_max == pytest.approx(expected_max_total_mods[entry.condition_comp]), \
+            entry.condition_comp
         del expected_max_total_mods[entry.condition_comp]
 
     assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"
@@ -243,7 +247,9 @@ def test_buff_count_direct(transformer_skill: SkillTransformer):
     assert set(expected_max_total_mods.keys()) == {entry.condition_comp for entry in possible_entries}
 
     for entry in possible_entries:
-        assert entry.total_mod_at_max == expected_max_total_mods[entry.condition_comp], entry.condition_comp
+        assert \
+            entry.total_mod_at_max == pytest.approx(expected_max_total_mods[entry.condition_comp]), \
+            entry.condition_comp
         del expected_max_total_mods[entry.condition_comp]
 
     assert len(expected_max_total_mods) == 0, f"Conditions not tested: {set(expected_max_total_mods.keys())}"

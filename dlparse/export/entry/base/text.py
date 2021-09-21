@@ -90,7 +90,6 @@ class TextEntry(JsonExportableEntryBase):
         self.text_dict = {}
         self._init_text_dict_fill_content(asset_text_website, labels)
         self._init_text_dict_replace_newlines()
-        self._init_text_dict_replace_newlines()
         self._init_text_dict_replacements(asset_text_website)
 
     @classmethod

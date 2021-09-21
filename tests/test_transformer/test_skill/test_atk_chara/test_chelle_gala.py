@@ -36,8 +36,8 @@ def test_s1(transformer_skill: SkillTransformer):
 
         # Checking the mods distribution here is sufficient because the additional hits were dealt at the same time
         for actual_mods_lv, expected_mods_lv in zip(skill_data.mods, expected_mods):
-            assert sorted(actual_mods_lv) == sorted(expected_mods_lv), condition
-        assert sorted(skill_data.mods_at_max) == sorted(expected_mods[-1]), condition
+            assert sorted(actual_mods_lv) == pytest.approx(sorted(expected_mods_lv)), condition
+        assert sorted(skill_data.mods_at_max) == pytest.approx(sorted(expected_mods[-1])), condition
 
         assert skill_data.total_mod == pytest.approx(expected_total_mods), condition
         assert skill_data.total_mod_at_max == pytest.approx(expected_total_mods[-1]), condition

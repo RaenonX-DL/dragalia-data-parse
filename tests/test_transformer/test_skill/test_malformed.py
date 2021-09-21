@@ -23,8 +23,8 @@ def test_label_has_whitespaces(transformer_skill: SkillTransformer):
     assert skill_data.hit_count_at_max == 3
     assert skill_data.total_mod == pytest.approx([4.906 * 3, 5.456 * 3, 5.566 * 3])
     assert skill_data.total_mod_at_max == pytest.approx(5.566 * 3)
-    assert skill_data.mods == [[4.906] * 3, [5.456] * 3, [5.566] * 3]
-    assert skill_data.mods_at_max == [5.566] * 3
+    assert skill_data.mods == approx_matrix([[4.906] * 3, [5.456] * 3, [5.566] * 3])
+    assert skill_data.mods_at_max == pytest.approx([5.566] * 3)
     assert skill_data.max_level == 3
 
     # With buffs
@@ -57,5 +57,5 @@ def test_label_has_whitespaces(transformer_skill: SkillTransformer):
             [5.456] * 3,
             [5.566 * boost_rate] * 3
         ])
-        assert skill_data.mods_at_max == [5.566 * boost_rate] * 3
+        assert skill_data.mods_at_max == pytest.approx([5.566 * boost_rate] * 3)
         assert skill_data.max_level == 3

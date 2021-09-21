@@ -2,6 +2,7 @@ import pytest
 
 from dlparse.enums import Condition, ConditionComposite
 from dlparse.transformer import SkillTransformer
+from tests.utils import approx_matrix
 
 
 def test_iter_entries_s2(transformer_skill: SkillTransformer):
@@ -46,12 +47,12 @@ def test_og_alex_s2(transformer_skill: SkillTransformer):
         2.01 * 3 + 4.02
     ])
     assert skill_data.total_mod_at_max == pytest.approx(2.01 * 3 + 4.02)
-    assert skill_data.mods == [
+    assert skill_data.mods == approx_matrix([
         [1.64] * 2 + [3.27] + [1.64],
         [1.82] * 2 + [3.62] + [1.82],
         [2.01] * 2 + [4.02] + [2.01]
-    ]
-    assert skill_data.mods_at_max == [2.01] * 2 + [4.02] + [2.01]
+    ])
+    assert skill_data.mods_at_max == pytest.approx([2.01] * 2 + [4.02] + [2.01])
     assert skill_data.max_level == 3
 
     # In BK
@@ -65,10 +66,10 @@ def test_og_alex_s2(transformer_skill: SkillTransformer):
         2.01 * 3 + 4.02
     ])
     assert skill_data.total_mod_at_max == pytest.approx(2.01 * 3 + 4.02)
-    assert skill_data.mods == [
+    assert skill_data.mods == approx_matrix([
         [3.28] * 2 + [6.54] + [3.28],
         [3.64] * 2 + [7.24] + [3.64],
         [2.01] * 2 + [4.02] + [2.01]
-    ]
-    assert skill_data.mods_at_max == [2.01] * 2 + [4.02] + [2.01]
+    ])
+    assert skill_data.mods_at_max == pytest.approx([2.01] * 2 + [4.02] + [2.01])
     assert skill_data.max_level == 3

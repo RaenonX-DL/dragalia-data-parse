@@ -1,3 +1,5 @@
+import pytest
+
 from dlparse.enums import Condition, ConditionComposite
 from dlparse.export.funcs.skill_atk import export_atk_skills
 from dlparse.mono.manager import AssetManager
@@ -13,4 +15,4 @@ def test_export_s1(asset_manager: AssetManager):
         None
     )
     # 6 hits w/ each hit dealing 309%, boosted by 2x by ability
-    assert skill_entry_2_gauges.skill_total_mods_max == 3.09 * 6 * 2
+    assert skill_entry_2_gauges.skill_total_mods_max == pytest.approx(3.09 * 6 * 2)

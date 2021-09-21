@@ -93,12 +93,12 @@ def test_s1_unmasked_no_affliction(transformer_skill: SkillTransformer):
         level_3_base_expected * hits_expected
     ])
     assert skill_data.total_mod_at_max == pytest.approx(level_3_base_expected * hits_expected)
-    assert skill_data.mods == [
+    assert skill_data.mods == approx_matrix([
         [level_1_base_expected] * hits_expected,
         [level_2_base_expected] * hits_expected,
         [level_3_base_expected] * hits_expected
-    ]
-    assert skill_data.mods_at_max == [level_3_base_expected] * hits_expected
+    ])
+    assert skill_data.mods_at_max == pytest.approx([level_3_base_expected] * hits_expected)
     assert skill_data.max_level == 3
 
     # Different bullet hit count
@@ -139,10 +139,10 @@ def test_s1_unmasked_no_affliction(transformer_skill: SkillTransformer):
                 for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
             ],
         ])
-        assert skill_data.mods_at_max == [
+        assert skill_data.mods_at_max == pytest.approx([
             level_3_base_expected * 0.55 ** deterioration
             for deterioration in range(bullet_hit_count) for _ in range(hits_expected)
-        ]
+        ])
         assert skill_data.max_level == 3
 
 

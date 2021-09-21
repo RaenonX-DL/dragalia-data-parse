@@ -55,7 +55,8 @@ def test_exported_entries(asset_manager: AssetManager):
         key = (entry.skill_internal_id, entry.condition_comp)
 
         if expected_effects := skill_info_missing.get(key):
-            expected_effects.remove((entry.target, entry.buff_parameter, entry.rate))
+            # `float(f"{entry.rate:.2f}")` for arithmetic float decimal issue
+            expected_effects.remove((entry.target, entry.buff_parameter, float(f"{entry.rate:.2f}")))
 
             if not expected_effects:
                 skill_info_missing.pop(key)
