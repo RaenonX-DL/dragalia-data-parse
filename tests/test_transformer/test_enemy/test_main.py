@@ -30,8 +30,8 @@ def test_lilith_enchroaching_shadow_expert_solo(transformer_enemy: EnemyTransfor
     assert enemy_data_form_2.base_od == 1468984
     assert enemy_data_form_2.base_bk == 3672460
     assert enemy_data_form_2.od_def_rate == 1.0
-    assert enemy_data_form_2.od_atk_rate == 1.2
-    assert enemy_data_form_2.bk_def_rate == 0.8
+    assert enemy_data_form_2.od_atk_rate == pytest.approx(1.2)
+    assert enemy_data_form_2.bk_def_rate == pytest.approx(0.8)
     assert enemy_data_form_2.bk_duration_sec == 10
 
     expected_parts_id = {228051204, 228051205}
@@ -64,8 +64,8 @@ def test_lilith_enchroaching_shadow_master_solo(transformer_enemy: EnemyTransfor
     assert enemy_data_form_1.base_od == 2556204
     assert enemy_data_form_1.base_bk == 6390512
     assert enemy_data_form_1.od_def_rate == 1.0
-    assert enemy_data_form_1.od_atk_rate == 1.2
-    assert enemy_data_form_1.bk_def_rate == 0.8
+    assert enemy_data_form_1.od_atk_rate == pytest.approx(1.2)
+    assert enemy_data_form_1.bk_def_rate == pytest.approx(0.8)
     assert enemy_data_form_1.bk_duration_sec == 10
 
     # Check form 1 part
@@ -115,7 +115,7 @@ def test_legend_ciella_solo(transformer_enemy: EnemyTransformer):
     assert enemy_data_form_1.initial_element == Element.WATER
     assert enemy_data_form_1.hp == 6714487
     assert enemy_data_form_1.defense == 10
-    assert enemy_data_form_1.od_atk_rate == 1.2
+    assert enemy_data_form_1.od_atk_rate == pytest.approx(1.2)
 
     # Check form 1 children
     expected_children_id_hp = {225031403: 13850, 225031404: 48759, 225031410: 15}
@@ -144,8 +144,8 @@ def test_legend_ciella_solo(transformer_enemy: EnemyTransformer):
     assert enemy_data_form_2.base_od == 3433744
     assert enemy_data_form_2.base_bk == 5722907
     assert enemy_data_form_2.od_def_rate == 1.0
-    assert enemy_data_form_2.od_atk_rate == 1.2
-    assert enemy_data_form_2.bk_def_rate == 0.8
+    assert enemy_data_form_2.od_atk_rate == pytest.approx(1.2)
+    assert enemy_data_form_2.bk_def_rate == pytest.approx(0.8)
     assert enemy_data_form_2.bk_duration_sec == 10
 
     # Check form 2 children
@@ -180,7 +180,7 @@ def test_legend_ciella_coop(transformer_enemy: EnemyTransformer):
     assert enemy_data_form_1.initial_element == Element.WATER
     assert enemy_data_form_1.hp == 9728658
     assert enemy_data_form_1.defense == 10
-    assert enemy_data_form_1.od_atk_rate == 1.2
+    assert enemy_data_form_1.od_atk_rate == pytest.approx(1.2)
 
     # Check form 1 children
     expected_children_id_hp = {225030403: 37560, 225030404: 48759, 225030410: 70}
@@ -209,8 +209,8 @@ def test_legend_ciella_coop(transformer_enemy: EnemyTransformer):
     assert enemy_data_form_2.base_od == 6537691
     assert enemy_data_form_2.base_bk == 8172130
     assert enemy_data_form_2.od_def_rate == 1.0
-    assert enemy_data_form_2.od_atk_rate == 1.2
-    assert enemy_data_form_2.bk_def_rate == 0.8
+    assert enemy_data_form_2.od_atk_rate == pytest.approx(1.2)
+    assert enemy_data_form_2.bk_def_rate == pytest.approx(0.8)
     assert enemy_data_form_2.bk_duration_sec == 10
 
     # Check form 2 children
