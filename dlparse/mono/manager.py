@@ -1,5 +1,4 @@
 """Classes for loading all the assets and loaders."""
-import os
 from typing import Optional
 
 from dlparse.errors import ConfigError
@@ -7,6 +6,7 @@ from dlparse.transformer import (
     AbilityTransformer, AttackingActionTransformer,
     EnemyTransformer, InfoTransformer, QuestTransformer, SkillTransformer,
 )
+from dlparse.utils import make_path
 from .asset import (
     AbilityAsset, AbilityLimitGroupAsset, ActionConditionAsset, ActionGrantAsset, ActionPartsListAsset, BuffCountAsset,
     CastleStoryAsset, CharaDataAsset, CharaModeAsset, CharaUniqueComboAsset, DragonDataAsset, DungeonPlannerAsset,
@@ -34,18 +34,11 @@ class AssetManager:
         # pylint: disable=too-many-statements
 
         # Paths
-        if is_network_source:
-            action_asset_dir = f"{root_resources_dir}/actions"
-            master_asset_dir = f"{root_resources_dir}/master"
-            chara_motion_asset_dir = f"{root_resources_dir}/characters/motion"
-            dragon_motion_asset_dir = f"{root_resources_dir}/dragon/motion"
-            story_asset_dir = f"{root_resources_dir}/story"
-        else:
-            action_asset_dir = os.path.join(root_resources_dir, "actions")
-            master_asset_dir = os.path.join(root_resources_dir, "master")
-            chara_motion_asset_dir = os.path.join(root_resources_dir, "characters", "motion")
-            dragon_motion_asset_dir = os.path.join(root_resources_dir, "dragon", "motion")
-            story_asset_dir = os.path.join(root_resources_dir, "story")
+        action_asset_dir = make_path(root_resources_dir, "actions", is_net=is_network_source)
+        master_asset_dir = make_path(root_resources_dir, "master", is_net=is_network_source)
+        chara_motion_asset_dir = make_path(root_resources_dir, "characters", "motion", is_net=is_network_source)
+        dragon_motion_asset_dir = make_path(root_resources_dir, "dragon", "motion", is_net=is_network_source)
+        story_asset_dir = make_path(root_resources_dir, "story", is_net=is_network_source)
 
         # Master Assets
         # --- Battle-related (Player)

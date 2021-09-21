@@ -8,7 +8,7 @@ from .string import is_url
 if TYPE_CHECKING:
     from dlparse.enums import Language
 
-__all__ = ("localize_asset_path", "localize_path")
+__all__ = ("localize_asset_path", "localize_path", "make_path")
 
 
 def localize_asset_path(master_path: str, lang: "Language") -> str:
@@ -46,3 +46,17 @@ def localize_asset_path(master_path: str, lang: "Language") -> str:
 def localize_path(path: str, lang: "Language") -> str:
     """Localize ``path`` for ``lang``."""
     return os.path.join("localized", lang, path)
+
+
+def make_path(*parts: str, is_net: bool):
+    """Make a path from ``parts``. The path format is based on ``is_net``."""
+    # Ensure path parts do not have joined parts inside
+    parts_processed = []
+    for part in parts:
+        parts_processed.extend(part.replace("\\", "/").split("/"))
+
+    # Join the path parts back
+    if is_net:
+        return "/".join(parts_processed)
+
+    return os.path.normpath(os.path.join(*parts_processed))
