@@ -95,7 +95,7 @@ class AssetManager:
         self._loader_action = ActionFileLoader(self._asset_action_list, action_asset_dir)
         self._loader_chara_motion = CharacterMotionLoader(chara_motion_asset_dir)
         self._loader_dragon_motion = DragonMotionLoader(dragon_motion_asset_dir)
-        self._loader_story = StoryLoader(story_asset_dir)
+        self._loader_story = StoryLoader(story_asset_dir, self)
 
         # Transformers
         self._transformer_ability = AbilityTransformer(self)

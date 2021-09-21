@@ -18,11 +18,13 @@ class StoryData(AssetBase[list[T], T]):
     """A class containing a story."""
 
     def __init__(
-            self, file_location: str, lang: Language, name_asset: StoryNameAsset, image_asset: StoryImageAsset
+            self, file_location: str, lang: Language, name: str,
+            name_asset: StoryNameAsset, image_asset: StoryImageAsset
     ) -> None:
         super().__init__(StoryDataParser, file_location)
 
         self._lang = lang
+        self._name = name
         self._name_asset = name_asset
         self._image_asset = image_asset
 
@@ -33,6 +35,11 @@ class StoryData(AssetBase[list[T], T]):
     def lang(self) -> Language:
         """Get the language of this story data."""
         return self._lang
+
+    @property
+    def title(self) -> str:
+        """Get the story title."""
+        return self._name
 
     @property
     def name_asset(self) -> StoryNameAsset:
