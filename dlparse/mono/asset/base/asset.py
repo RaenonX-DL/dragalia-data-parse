@@ -148,7 +148,13 @@ class MultilingualAssetBase(Generic[XT], ABC):
 
         lang: Language
         for lang in Language:
-            file_name_join = f"{file_name}.json" if lang.is_main else f"{file_name}@{lang.locale}.json"
+            if not lang.is_main and is_custom:
+                # Append locale suffix to the file name if it's custom asset and not the master locale
+                file_name_join = f"{file_name}@{lang.locale}.json"
+            else:
+                # No name change if either the asset is in the master locale or is not custom asset
+                file_name_join = f"{file_name}.json"
+
             file_path = get_file_path(file_name_join, asset_dir=asset_dir)
 
             if not lang.is_main and not is_custom:
