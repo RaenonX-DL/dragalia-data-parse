@@ -65,8 +65,8 @@ class LanguageAssetNotFoundError(EntryNotFoundError):
 class TextLabelNotFoundError(EntryNotFoundError):
     """Error to be raised if the text label is not found."""
 
-    def __init__(self, label: str):
-        super().__init__(f"Text of label {label} not found")
+    def __init__(self, label: str, lang: Optional[str] = None):
+        super().__init__(f"Text of label {label} not found{f' of language: {lang}' if lang else ''}")
 
 
 class AbilityLimitDataNotFoundError(EntryNotFoundError):

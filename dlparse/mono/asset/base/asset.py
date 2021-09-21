@@ -180,7 +180,7 @@ class MultilingualAssetBase(Generic[XT], ABC):
 
         if not (lang_entry := lang_asset.get(label)):
             if on_not_found is THROW_ERROR_ON_FAIL:
-                raise TextLabelNotFoundError(label)
+                raise TextLabelNotFoundError(label, lang_code)
 
             return on_not_found
 
