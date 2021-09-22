@@ -39,6 +39,9 @@ class StoryCommandType(Enum):
     CHARA_SET_0 = "CHARA_SET_0"
     """Set the character image of the speaker. Difference between this and ``CHARA_SET`` is unknown."""
 
+    PLAY_SOUND = "play_sound"
+    """Play the voice."""
+
     @classmethod
     def _missing_(cls, value: Any) -> "StoryCommandType":
         return StoryCommandType.UNKNOWN

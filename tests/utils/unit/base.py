@@ -43,7 +43,9 @@ class BuffInfoBase(InfoBase, ABC):
 
     @property
     def _comparer(self) -> tuple[Any, ...]:
-        return self.hit_label,
+        # Explicitly show that it's returning a tuple
+        # noinspection PyRedundantParentheses
+        return (self.hit_label,)
 
 
 @dataclass(eq=False)
@@ -54,7 +56,9 @@ class AbilityInfoBase(InfoBase, ABC):
 
     @property
     def _comparer(self) -> tuple[Any, ...]:
-        return self.source_ability_id,
+        # Explicitly show that it's returning a tuple
+        # noinspection PyRedundantParentheses
+        return (self.source_ability_id,)
 
 
 T = TypeVar("T", bound=InfoBase)

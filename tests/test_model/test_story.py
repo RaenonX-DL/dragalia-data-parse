@@ -149,3 +149,23 @@ def test_newline_replacement_in_en_story(asset_manager: AssetManager):
     assert isinstance(entry, StoryEntryConversation)
     assert "unable to" in entry.conversation
     assert "unableto" not in entry.conversation
+
+
+def test_story_audio_includes_voice_label(asset_manager: AssetManager):
+    # Summer Chelle Unit Story Ep. 1
+    story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 100015081)
+    story_entries = parse_story_commands_to_entries(story_data, asset_manager.asset_text_website)
+
+    entry = story_entries[48]
+    assert isinstance(entry, StoryEntryConversation)
+    assert entry.audio_paths == ["vo_chr_120062_story/VO_CHR_120062_STORY_0016.wav"]
+
+
+def test_story_audio_excludes_bgm(asset_manager: AssetManager):
+    # Summer Chelle Unit Story Ep. 1
+    story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 100015081)
+    story_entries = parse_story_commands_to_entries(story_data, asset_manager.asset_text_website)
+
+    entry = story_entries[49]
+    assert isinstance(entry, StoryEntryConversation)
+    assert entry.audio_paths == ["vo_chr_120062_story/VO_CHR_120062_STORY_0004.wav"]

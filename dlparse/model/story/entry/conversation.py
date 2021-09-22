@@ -20,6 +20,8 @@ class StoryEntryConversation(StoryEntryBase):
     speaker_image_path: Optional[str]
     conversation: str
 
+    audio_paths: list[str]
+
     text_asset: InitVar[WebsiteTextAsset]
     lang: InitVar[Language]
 
@@ -43,4 +45,5 @@ class StoryEntryConversation(StoryEntryBase):
         return self.speaker_name == "SYS"
 
     def __repr__(self) -> str:
-        return f"{self.speaker_name} ({self.speaker_image_path}):\n{self.conversation}"
+        return f"{self.speaker_name} ({self.speaker_image_path}) - {' / '.join(self.audio_paths)}:\n" \
+               f"{self.conversation}"

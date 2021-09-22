@@ -4,8 +4,8 @@ from typing import Optional
 
 from dlparse.enums import Language
 from dlparse.mono.asset import (
-    StoryCommandHasContent, StoryCommandPrintText, StoryCommandSetChara, StoryCommandThemeSwitch, StoryData,
-    has_story_content,
+    StoryCommandHasContent, StoryCommandPlaySound, StoryCommandPrintText, StoryCommandSetChara,
+    StoryCommandThemeSwitch, StoryData, has_story_content,
 )
 from dlparse.mono.custom import WebsiteTextAsset
 from .entry import SPEAKER_NAME_SYS, StoryEntryBase, StoryEntryBreak, StoryEntryConversation
@@ -43,7 +43,8 @@ def get_content_from_command(story_data: StoryData, command: StoryCommandHasCont
     return command.content
 
 
-def parse_story_commands_to_entries(
+# Disabling `C901` because this functions can't be de-coupled (too many cross-row variables)
+def parse_story_commands_to_entries(  # noqa: C901
         story_data: StoryData, /,
         text_asset: WebsiteTextAsset
 ) -> list[StoryEntryBase]:
@@ -56,11 +57,14 @@ def parse_story_commands_to_entries(
 
     # Parse the story commands in the same row into entry model
     entries: list[StoryEntryBase] = []
+
     # Command for setting the image will be in the different row from the conversation# Command for setting the
     # image will be in the different row from the conversation
     speaker_image_code = None
     # This mapping helps fixing the image of a speaker to be the same
     speaker_image_code_dict: dict[str, Optional[str]] = {}
+
+    audio_paths: list[str] = []
 
     for command_same_row in commands_sorted:
         speaker = ""
@@ -80,6 +84,10 @@ def parse_story_commands_to_entries(
             if isinstance(command, StoryCommandPrintText) and not speaker:
                 speaker = get_speaker_from_command(story_data, command)
 
+            if isinstance(command, StoryCommandPlaySound) and (audio_path := command.path):
+                audio_paths.append(audio_path)
+                continue
+
             if has_story_content(command):
                 text += get_content_from_command(story_data, command)
 
@@ -91,8 +99,9 @@ def parse_story_commands_to_entries(
 
             # `text` may be an empty string - story row is not a conversation
             entries.append(StoryEntryConversation(
-                speaker, image_path, text, text_asset=text_asset, lang=story_data.lang
+                speaker, image_path, text, audio_paths, text_asset=text_asset, lang=story_data.lang
             ))
             speaker_image_code = None  # Reset speaker image code
+            audio_paths = []  # Reset audio paths
 
     return entries
