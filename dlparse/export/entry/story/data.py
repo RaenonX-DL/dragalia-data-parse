@@ -31,14 +31,14 @@ class Story(JsonExportableEntryBase):
     @property
     def json_schema(cls) -> JsonSchema:
         return {
-            "id": int,
             "title": str,
             "conversations": [StoryConversationEntryBase],
+            "id": int,
         }
 
     def to_json_entry(self) -> dict[str, Any]:
         return {
-            "id": self.story_id,
             "title": self.title,
             "conversations": [entry.to_json_entry() for entry in self.entries],
+            "id": self.story_id,
         }
