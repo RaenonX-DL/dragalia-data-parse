@@ -4,8 +4,9 @@ exported/
 # Wakatime
 .wakatime-project
 
-# Test cache / coverage database
+# Cache / coverage database
 .pytest_cache
+.mypy_cache
 .coverage
 coverage.xml
 cobertura.xml
