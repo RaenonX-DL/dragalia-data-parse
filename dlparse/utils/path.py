@@ -1,6 +1,7 @@
 """Util functions for processing the paths."""
 import os
-from typing import TYPE_CHECKING
+from pathlib import Path
+from typing import Optional, TYPE_CHECKING
 
 from dlparse.errors import PathUnlocalizableError
 from .string import is_url
@@ -43,12 +44,37 @@ def localize_asset_path(master_path: str, lang: "Language") -> str:
     return os.path.join(*merged_parts)
 
 
-def localize_path(path: str, lang: "Language") -> str:
-    """Localize ``path`` for ``lang``."""
-    return os.path.join("localized", lang, path)
+def localize_path(base_path: str, lang: "Language", /, sub_path: Optional[str] = None) -> str:
+    """
+    Localize ``base_path`` for ``lang``. The return will be ``<base_path>/localized/<lang>/<sub_path>``.
+
+    Note that for this to handle ``base_path`` as a file, the file name must contain a dot ``.``.
+    """
+    base_name = os.path.basename(base_path)
+    if "." not in base_name:
+        # Base path is a directory
+        ret = os.path.join(base_path, "localized", lang)
+        if sub_path:
+            ret = os.path.join(ret, sub_path)
+
+        # Add back trailing slash if it had one
+        if base_path.endswith(os.sep):
+            ret += os.sep
+
+        return ret
+
+    # Base path is a file
+    path = Path(base_path)
+
+    return os.path.join(
+        str(path.parent),
+        "localized",
+        lang,
+        os.path.join(sub_path, path.name) if sub_path else path.name
+    )
 
 
-def make_path(*parts: str, is_net: bool):
+def make_path(*parts: str, is_net: bool) -> str:
     """Make a path from ``parts``. The path format is based on ``is_net``."""
     # Ensure path parts do not have joined parts inside
     parts_processed = []

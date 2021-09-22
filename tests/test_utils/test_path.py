@@ -30,14 +30,19 @@ def test_localize_not_using_backslash_if_network():
 
 def test_localize_path():
     localized = localize_path(os.path.join("a", "b"), Language.CHT)
-    assert localized == os.path.join("localized", Language.CHT, "a", "b")
+    assert localized == os.path.join("a", "b", "localized", Language.CHT)
 
 
 def test_localize_path_trailing_slash():
     localized = localize_path(os.path.join("a", "b") + os.sep, Language.CHT)
-    assert localized == os.path.join("localized", Language.CHT, "a", "b") + os.sep
+    assert localized == os.path.join("a", "b", "localized", Language.CHT) + os.sep
 
 
 def test_localize_path_file():
     localized = localize_path(os.path.join("a", "b", "c.json"), Language.CHT)
-    assert localized == os.path.join("localized", Language.CHT, "a", "b", "c.json")
+    assert localized == os.path.join("a", "b", "localized", Language.CHT, "c.json")
+
+
+def test_localize_path_file_with_sub_directory():
+    localized = localize_path(os.path.join("a", "b", "c.json"), Language.CHT, sub_path=os.path.join("d", "e"))
+    assert localized == os.path.join("a", "b", "localized", Language.CHT, "d", "e", "c.json")
