@@ -42,6 +42,9 @@ class StoryCommandType(Enum):
     CHARA_KAMITE_SE = "CHARA_KAMITE_SE"
     """Set the character image of the speaker with a SE."""
 
+    CHARA_SHIMOTE_SE = "CHARA_SHIMOTE_SE"
+    """Set the character image of the speaker with a SE."""
+
     PLAY_SOUND = "play_sound"
     """Play the voice."""
 

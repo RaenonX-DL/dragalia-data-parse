@@ -4,7 +4,7 @@ from dlparse.model.story.parse import parse_story_commands_to_entries
 from dlparse.mono.manager import AssetManager
 
 
-def test_missing_speaker_icon(asset_manager: AssetManager):
+def test_missing_speaker_icon_kamite_se(asset_manager: AssetManager):
     # OG!Chelle Unit Story Ep. 3
     story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 100015043)
     story_entries = parse_story_commands_to_entries(story_data, asset_manager.asset_text_website)
@@ -12,3 +12,13 @@ def test_missing_speaker_icon(asset_manager: AssetManager):
     entry = story_entries[0]
     assert isinstance(entry, StoryEntryConversation)
     assert entry.speaker_image_path == "story/chara/120040_01.png"
+
+
+def test_missing_speaker_icon_shimote_se(asset_manager: AssetManager):
+    # Farren Unit Story Ep. 1
+    story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 110393011)
+    story_entries = parse_story_commands_to_entries(story_data, asset_manager.asset_text_website)
+
+    entry = story_entries[2]
+    assert isinstance(entry, StoryEntryConversation)
+    assert entry.speaker_image_path == "story/chara/100001_01.png"

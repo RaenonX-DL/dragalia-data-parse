@@ -23,6 +23,7 @@ _command_class: dict[StoryCommandType, Type[StoryCommandBase]] = {
     StoryCommandType.CHARA_SET: StoryCommandSetChara,
     StoryCommandType.CHARA_SET_0: StoryCommandSetChara,
     StoryCommandType.CHARA_KAMITE_SE: StoryCommandSetChara,
+    StoryCommandType.CHARA_SHIMOTE_SE: StoryCommandSetChara,
     StoryCommandType.PLAY_SOUND: StoryCommandPlaySound,
 }
 
