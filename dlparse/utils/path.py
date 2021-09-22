@@ -59,4 +59,5 @@ def make_path(*parts: str, is_net: bool):
     if is_net:
         return "/".join(parts_processed)
 
-    return os.path.normpath(os.path.join(*parts_processed))
+    # `pylint` false-negative on `os.path.join`, no parameter for `a`
+    return os.path.normpath(os.path.join(*parts_processed))  # pylint: disable=no-value-for-parameter

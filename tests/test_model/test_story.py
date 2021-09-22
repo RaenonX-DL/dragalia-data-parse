@@ -61,7 +61,7 @@ def test_jp_story_speaker_icon_follow(asset_manager: AssetManager):
 
     entry = story_entries[7]
     assert isinstance(entry, StoryEntryConversation)
-    assert entry.speaker_image_path == "dragon/200013_01"
+    assert entry.speaker_image_path == "story/dragon/200013_01.png"
 
 
 def test_jp_story_speaker_icon_offset(asset_manager: AssetManager):

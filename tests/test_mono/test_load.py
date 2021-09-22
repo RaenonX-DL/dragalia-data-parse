@@ -32,7 +32,7 @@ def test_load_remote_dir():
 
 @pytest.mark.slow
 def test_load_remote_file():
-    asset = CharaDataAsset(get_remote_dir_root_resources() + "/master/TextLabel.json")
+    asset = CharaDataAsset(get_remote_dir_root_resources() + "/master/CharaData.json")
     assert 10440501 in asset
 
 
