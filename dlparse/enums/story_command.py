@@ -39,6 +39,9 @@ class StoryCommandType(Enum):
     CHARA_SET_0 = "CHARA_SET_0"
     """Set the character image of the speaker. Difference between this and ``CHARA_SET`` is unknown."""
 
+    CHARA_KAMITE_SE = "CHARA_KAMITE_SE"
+    """Set the character image of the speaker with a SE."""
+
     PLAY_SOUND = "play_sound"
     """Play the voice."""
 

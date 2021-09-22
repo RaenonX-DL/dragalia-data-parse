@@ -40,7 +40,7 @@ class StoryData(AssetBase[list[T], T]):
     @property
     def title(self) -> str:
         """Get the story title."""
-        return self._name
+        return f"{self._name} ({self._story_id})"
 
     @property
     def story_id(self) -> int:
