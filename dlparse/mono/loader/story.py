@@ -24,10 +24,10 @@ class StoryLoader:
 
     # pylint: disable=too-few-public-methods
 
-    def __init__(self, story_dir: str, asset_manager: "AssetManager") -> None:
+    def __init__(self, story_dir: str, story_img_dir: str, asset_manager: "AssetManager") -> None:
         self._story_dir = story_dir
         self._name_asset = StoryNameAsset(story_dir)
-        self._image_asset = StoryImageAsset(story_dir)
+        self._image_asset = StoryImageAsset(story_dir, story_img_dir)
         self._asset_manager = asset_manager
 
     @cache

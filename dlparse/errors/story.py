@@ -4,7 +4,7 @@ from typing import Any
 from .base import AppValueError
 
 __all__ = (
-    "StoryUnavailableError", "StorySpeakerNameNotFoundError", "StoryImageNotFoundError", "UnknownStoryTypeError"
+    "StoryUnavailableError", "StorySpeakerNameNotFoundError", "StoryImageUnavailableError", "UnknownStoryTypeError"
 )
 
 
@@ -16,7 +16,7 @@ class StorySpeakerNameNotFoundError(AppValueError):
     """Error to be raised if the story speaker name is unavailable."""
 
 
-class StoryImageNotFoundError(AppValueError):
+class StoryImageUnavailableError(AppValueError):
     """Error to be raised if the story image is unavailable."""
 
 

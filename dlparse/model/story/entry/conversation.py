@@ -17,7 +17,7 @@ class StoryEntryConversation(StoryEntryBase):
     """A single story conversation."""
 
     speaker_name: str
-    speaker_image_name: Optional[str]
+    speaker_image_path: Optional[str]
     conversation: str
 
     text_asset: InitVar[WebsiteTextAsset]
@@ -43,4 +43,4 @@ class StoryEntryConversation(StoryEntryBase):
         return self.speaker_name == "SYS"
 
     def __repr__(self) -> str:
-        return f"{self.speaker_name} ({self.speaker_image_name}):\n{self.conversation}"
+        return f"{self.speaker_name} ({self.speaker_image_path}):\n{self.conversation}"

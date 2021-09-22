@@ -39,6 +39,7 @@ class AssetManager:
         chara_motion_asset_dir = make_path(root_resources_dir, "characters", "motion", is_net=is_network_source)
         dragon_motion_asset_dir = make_path(root_resources_dir, "dragon", "motion", is_net=is_network_source)
         story_asset_dir = make_path(root_resources_dir, "story", is_net=is_network_source)
+        story_image_dir = make_path(root_resources_dir, "emotion", is_net=is_network_source)
 
         # Master Assets
         # --- Battle-related (Player)
@@ -86,7 +87,7 @@ class AssetManager:
         self._loader_action = ActionFileLoader(self._asset_action_list, action_asset_dir)
         self._loader_chara_motion = CharacterMotionLoader(chara_motion_asset_dir)
         self._loader_dragon_motion = DragonMotionLoader(dragon_motion_asset_dir)
-        self._loader_story = StoryLoader(story_asset_dir, self)
+        self._loader_story = StoryLoader(story_asset_dir, story_image_dir, self)
 
         # Transformers
         self._transformer_ability = AbilityTransformer(self)

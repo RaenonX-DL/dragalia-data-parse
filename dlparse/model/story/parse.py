@@ -87,11 +87,11 @@ def parse_story_commands_to_entries(
             if speaker not in speaker_image_code_dict:
                 speaker_image_code_dict[speaker] = speaker_image_code
 
-            image_name = story_data.image_asset.get_image_name(speaker_image_code_dict.get(speaker))
+            image_path = story_data.image_asset.get_image_path(speaker_image_code_dict.get(speaker))
 
             # `text` may be an empty string - story row is not a conversation
             entries.append(StoryEntryConversation(
-                speaker, image_name, text, text_asset=text_asset, lang=story_data.lang
+                speaker, image_path, text, text_asset=text_asset, lang=story_data.lang
             ))
             speaker_image_code = None  # Reset speaker image code
 
