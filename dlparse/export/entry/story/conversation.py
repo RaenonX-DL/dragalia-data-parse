@@ -58,11 +58,17 @@ class StoryConversation(StoryConversationEntryBase[StoryEntryConversation]):
     def json_schema(cls) -> JsonSchema:
         return cast(JsonSchema, super().json_schema) | {
             "speakerName": str,
+            "speakerIcon": str,
+            "isSys": bool,
             "content": str,
+            "audioPaths": [str],
         }
 
     def to_json_entry(self) -> dict[str, Any]:
         return super().to_json_entry() | {
             "speakerName": self.base.speaker_name,
+            "speakerIcon": self.base.speaker_image_path,
+            "isSys": self.base.is_speaker_system,
             "content": self.base.conversation,
+            "audioPaths": self.base.audio_paths,
         }

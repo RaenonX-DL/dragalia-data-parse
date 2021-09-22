@@ -46,8 +46,9 @@ class StoryLoader:
             localize_asset_path(os.path.join(self._story_dir, path_in_dir, f"{story_id}.json"), lang),
             lang,
             self._get_story_name(story_type, lang, story_id),
-            self._name_asset,
-            self._image_asset,
+            story_id,
+            name_asset=self._name_asset,
+            image_asset=self._image_asset,
         )
 
     def load_unit_story(self, lang: Language, unit_type: UnitType, story_id: MasterAssetIdType) -> StoryData:
