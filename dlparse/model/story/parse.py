@@ -4,7 +4,7 @@ from typing import Optional
 
 from dlparse.enums import Language
 from dlparse.mono.asset import (
-    StoryCommandHasContent, StoryCommandPlaySound, StoryCommandPrintText, StoryCommandSetChara,
+    StoryCommandHasContent, StoryCommandHasImage, StoryCommandPlaySound, StoryCommandPrintText,
     StoryCommandThemeSwitch, StoryData, has_story_content,
 )
 from dlparse.mono.custom import WebsiteTextAsset
@@ -62,7 +62,7 @@ def parse_story_commands_to_entries(  # noqa: C901
     # image will be in the different row from the conversation
     speaker_image_code = None
     # This mapping helps fixing the image of a speaker to be the same
-    speaker_image_code_dict: dict[str, Optional[str]] = {}
+    speaker_image_path_dict: dict[str, Optional[str]] = {}
 
     audio_paths: list[str] = []
 
@@ -77,7 +77,7 @@ def parse_story_commands_to_entries(  # noqa: C901
                 entries.append(StoryEntryBreak())
                 break
 
-            if isinstance(command, StoryCommandSetChara) and not speaker_image_code:
+            if isinstance(command, StoryCommandHasImage) and not speaker_image_code:
                 speaker_image_code = command.image_code
                 continue
 
@@ -92,10 +92,12 @@ def parse_story_commands_to_entries(  # noqa: C901
                 text += get_content_from_command(story_data, command)
 
         if text:
-            if speaker not in speaker_image_code_dict:
-                speaker_image_code_dict[speaker] = speaker_image_code
+            # Only add image code to dict if it's not in there and available
+            # - `speaker_image_code` could be `None`
+            if speaker not in speaker_image_path_dict and speaker_image_code:
+                speaker_image_path_dict[speaker] = story_data.image_asset.get_image_path(speaker_image_code)
 
-            image_path = story_data.image_asset.get_image_path(speaker_image_code_dict.get(speaker))
+            image_path = speaker_image_path_dict.get(speaker)
 
             # `text` may be an empty string - story row is not a conversation
             entries.append(StoryEntryConversation(
@@ -103,5 +105,13 @@ def parse_story_commands_to_entries(  # noqa: C901
             ))
             speaker_image_code = None  # Reset speaker image code
             audio_paths = []  # Reset audio paths
+
+    # Patch entries with images
+    for entry in entries:
+        if not isinstance(entry, StoryEntryConversation) or entry.speaker_image_path:
+            # Skip if the entry is not a conversation or already has an image
+            continue
+
+        entry.speaker_image_path = speaker_image_path_dict.get(entry.speaker_name)
 
     return entries

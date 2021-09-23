@@ -22,3 +22,39 @@ def test_missing_speaker_icon_shimote_se(asset_manager: AssetManager):
     entry = story_entries[2]
     assert isinstance(entry, StoryEntryConversation)
     assert entry.speaker_image_path == "story/chara/100001_01.png"
+
+
+def test_missing_speaker_icon_shimote_pos_d(asset_manager: AssetManager):
+    story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 100018075)
+    story_entries = parse_story_commands_to_entries(story_data, asset_manager.asset_text_website)
+
+    entry = story_entries[2]
+    assert isinstance(entry, StoryEntryConversation)
+    assert entry.speaker_image_path == "story/chara/110394_01.png"
+
+
+def test_missing_speaker_icon_chara_set_pos_0(asset_manager: AssetManager):
+    story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 110350011)
+    story_entries = parse_story_commands_to_entries(story_data, asset_manager.asset_text_website)
+
+    entry = story_entries[4]
+    assert isinstance(entry, StoryEntryConversation)
+    assert entry.speaker_image_path == "story/chara/110350_01.png"
+
+
+def test_missing_speaker_icon_custom_patch(asset_manager: AssetManager):
+    story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 110350011)
+    story_entries = parse_story_commands_to_entries(story_data, asset_manager.asset_text_website)
+
+    entry = story_entries[5]
+    assert isinstance(entry, StoryEntryConversation)
+    assert entry.speaker_image_path == "story/chara/110353_01.png"
+
+
+def test_missing_speaker_icon_chara_set_3(asset_manager: AssetManager):
+    story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 110379013)
+    story_entries = parse_story_commands_to_entries(story_data, asset_manager.asset_text_website)
+
+    entry = story_entries[36]
+    assert isinstance(entry, StoryEntryConversation)
+    assert entry.speaker_image_path == "story/chara/120038_01.png"

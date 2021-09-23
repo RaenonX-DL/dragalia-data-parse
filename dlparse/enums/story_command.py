@@ -39,11 +39,24 @@ class StoryCommandType(Enum):
     CHARA_SET_0 = "CHARA_SET_0"
     """Set the character image of the speaker. Difference between this and ``CHARA_SET`` is unknown."""
 
+    CHARA_SET_3 = "CHARA_SET3"
+    """Set 3 character images."""
+
     CHARA_KAMITE_SE = "CHARA_KAMITE_SE"
     """Set the character image of the speaker with a SE."""
 
     CHARA_SHIMOTE_SE = "CHARA_SHIMOTE_SE"
     """Set the character image of the speaker with a SE."""
+
+    CHARA_SHIMOTE_POS_D = "CHARA_SHIMOTE_POS_d"
+    """Set the character image of the speaker with some positional offset."""
+
+    CHARA_SET_POS_0 = "CHARA_SET_POS_0"
+    """
+    Set the character image of the speaker with some positional offset.
+    
+    Difference between ``CHARA_SHIMOTE_POS_D`` is unknown.
+    """
 
     PLAY_SOUND = "play_sound"
     """Play the voice."""

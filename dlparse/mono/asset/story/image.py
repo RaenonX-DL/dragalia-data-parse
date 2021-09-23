@@ -23,6 +23,7 @@ _PREFIX_SKIP: list[str] = [
     "raid",  # Raid event CG
     "common",  # Common CG
     "mainstory",  # Mainstory CG
+    "charastory",  # Charastory CG
     "facility",  # Facility event CG
 ]
 

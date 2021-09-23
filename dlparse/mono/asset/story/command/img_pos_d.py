@@ -1,24 +1,24 @@
-"""Story command class for ``CHARA_SET`` and ``CHARA_KAMITE_SE``."""
+"""Story command class for character image setting commands with offset."""
 from dataclasses import dataclass
 
 from .base import StoryCommandHasImage
 
-__all__ = ("StoryCommandSetChara",)
+__all__ = ("StoryCommandPosDiff",)
 
 
 @dataclass
-class StoryCommandSetChara(StoryCommandHasImage):
+class StoryCommandPosDiff(StoryCommandHasImage):
     """
     Story command that sets the character image.
 
-    The 4th argument is the image code.
+    The 5th argument is the image code.
 
     This is applicable for the following types of command:
-    - ``SET_CHARA``
-    - ``CHARA_KAMITE_SE``
+    - ``CHARA_SHIMOTE_POS_d``
+    - ``CHARA_SET_POS_0``
     """
 
     @property
     def image_code(self) -> str:
         """Image code of the speaker."""
-        return self.args[3]
+        return self.args[4]
