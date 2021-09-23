@@ -8,7 +8,7 @@ from dlparse.export.entry.story.conversation import StoryConversation
 from dlparse.mono.manager import AssetManager
 
 
-@pytest.mark.holistic
+@pytest.skip
 def test_exported_entries(asset_manager: AssetManager):
     entry_dict = export_unit_story_as_entry_dict(asset_manager, Language.CHT, skip_unparsable=False)
 
