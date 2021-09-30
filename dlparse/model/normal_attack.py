@@ -209,6 +209,15 @@ class NormalAttackChain:
         for combo in self.combos:
             conditions.update(combo.combo_info.keys())
 
+        # If "current mode" is a condition for combo chain,
+        # it should not have "no condition" as a possible condition
+        # because it will completely depends on the current mode
+        if any(
+                any(condition in ConditionCategories.current_mode for condition in condition_comp)
+                for condition_comp in conditions
+        ):
+            conditions.discard(ConditionComposite())
+
         self.possible_conditions = list(sorted(conditions))
 
     def with_condition(self, conditions: ConditionComposite = ConditionComposite()) -> list[NormalAttackComboBranch]:

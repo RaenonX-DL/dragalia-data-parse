@@ -42,8 +42,8 @@ class ActionConditionType(Enum):
     """The action component is effective only if it is executed to cancel the other action."""
     SEIMEI_SHIKIGAMI_LEVEL = 7
     """The action component effectiveness depends on Seimei's Shikigami level."""
-    MODE_SWITCHED = 18
-    """The action component depends on if the mode is switched."""
+    CURRENT_MODE = 18
+    """The action component depends on the current mode index."""
 
     @classmethod
     def _missing_(cls, _):

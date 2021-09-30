@@ -1256,11 +1256,19 @@
     "text": "ENTER_TEXT"
   },
   {
-    "id": "ENUM_COND_MODE_NOT_SWITCHED",
+    "id": "ENUM_COND_MODE_0",
     "text": "ENTER_TEXT"
   },
   {
-    "id": "ENUM_COND_MODE_SWITCHED",
+    "id": "ENUM_COND_MODE_1",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "ENUM_COND_MODE_2",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "ENUM_COND_MODE_3",
     "text": "ENTER_TEXT"
   },
   {

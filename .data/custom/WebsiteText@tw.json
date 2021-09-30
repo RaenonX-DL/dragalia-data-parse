@@ -1256,12 +1256,20 @@
     "text": "被動強化"
   },
   {
-    "id": "ENUM_COND_MODE_NOT_SWITCHED",
-    "text": "已切換模式"
+    "id": "ENUM_COND_MODE_0",
+    "text": "第一型態 (預設)"
   },
   {
-    "id": "ENUM_COND_MODE_SWITCHED",
-    "text": "未切換模式"
+    "id": "ENUM_COND_MODE_1",
+    "text": "第二型態"
+  },
+  {
+    "id": "ENUM_COND_MODE_2",
+    "text": "第三型態"
+  },
+  {
+    "id": "ENUM_COND_MODE_3",
+    "text": "第四型態"
   },
   {
     "id": "ENUM_COND_ON_BUFFED_DEF",

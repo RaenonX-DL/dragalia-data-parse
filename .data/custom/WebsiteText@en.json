@@ -1256,12 +1256,20 @@
     "text": "Enhanced by Passive"
   },
   {
-    "id": "ENUM_COND_MODE_NOT_SWITCHED",
-    "text": "Mode Switched"
+    "id": "ENUM_COND_MODE_0",
+    "text": "1st Form (Default)"
   },
   {
-    "id": "ENUM_COND_MODE_SWITCHED",
-    "text": "Mode not Switched"
+    "id": "ENUM_COND_MODE_1",
+    "text": "2nd Form"
+  },
+  {
+    "id": "ENUM_COND_MODE_2",
+    "text": "3rd Form"
+  },
+  {
+    "id": "ENUM_COND_MODE_3",
+    "text": "4th Form"
   },
   {
     "id": "ENUM_COND_ON_BUFFED_DEF",

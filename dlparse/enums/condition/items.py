@@ -282,8 +282,10 @@ class Condition(TranslatableEnumMixin, Enum):
     SELF_ENERGIZED = 490
     SELF_TEAM_AMP_UP = 491
     SELF_PASSIVE_ENHANCED = 492
-    MODE_NOT_SWITCHED = 493
-    MODE_SWITCHED = 494
+    MODE_0 = 493
+    MODE_1 = 494
+    MODE_2 = 495
+    MODE_3 = 496
     # endregion
     # endregion
 

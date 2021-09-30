@@ -43,7 +43,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_ACTION_COND_LV = auto()
     MULTIPLE_SHAPESHIFT_COUNT = auto()
     MULTIPLE_SHAPESHIFT_COUNT_IN_DRAGON = auto()
-    MULTIPLE_MODE_SWITCH = auto()
+    MULTIPLE_CURRENT_MODE = auto()
     MULTIPLE_TRIGGER = auto()
     MULTIPLE_TRIGGER_HIT_BY_AFFLICTION = auto()
     MULTIPLE_COMBO_COUNT_DIV = auto()
@@ -607,14 +607,16 @@ class ConditionCategories:
         "Self - shapeshift count (in dragon)",
         ConditionCheckResult.MULTIPLE_SHAPESHIFT_COUNT_IN_DRAGON
     )
-    mode_switched = ConditionCategory[bool](
+    current_mode = ConditionCategoryTargetNumber(
         {
-            Condition.MODE_SWITCHED: True,
-            Condition.MODE_NOT_SWITCHED: False,
+            Condition.MODE_0: 0,
+            Condition.MODE_1: 1,
+            Condition.MODE_2: 2,
+            Condition.MODE_3: 3,
         },
         ConditionMaxCount.SINGLE,
-        "Self - mode switched flag",
-        ConditionCheckResult.MULTIPLE_MODE_SWITCH
+        "Self - current mode",
+        ConditionCheckResult.MULTIPLE_CURRENT_MODE
     )
     # endregion
 

@@ -10,7 +10,7 @@ def test_normal(transformer_atk: AttackingActionTransformer):
     # - Unique Combo 72
     # - Action ID 202900
     # - Not summoned
-    conditions = ConditionComposite(Condition.MODE_NOT_SWITCHED)
+    conditions = ConditionComposite(Condition.MODE_0)
     data = transformer_atk.transform_normal_attack_or_fs(202900).with_condition(conditions)
 
     assert data[0].mods == pytest.approx([0.59])
@@ -29,7 +29,7 @@ def test_mode_switched(transformer_atk: AttackingActionTransformer):
     # - Mode 115: Normal
     # - Unique Combo 72
     # - Action ID 202900
-    conditions = ConditionComposite(Condition.MODE_SWITCHED)
+    conditions = ConditionComposite(Condition.MODE_1)
     data = transformer_atk.transform_normal_attack_or_fs(202900).with_condition(conditions)
 
     assert data[0].mods == pytest.approx([0.59])
