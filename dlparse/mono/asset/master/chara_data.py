@@ -349,10 +349,12 @@ class CharaDataEntry(UnitEntry, MasterEntryBase):
 
     @property
     def self_skill_id_entries(self) -> list[SkillIdEntry]:
-        return [
-            SkillIdEntry(self.skill_1_id, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
-            SkillIdEntry(self.skill_2_id, SkillNumber.S2, SkillIdentifierLabel.S2_BASE)
-        ]
+        ret = [SkillIdEntry(self.skill_1_id, SkillNumber.S1, SkillIdentifierLabel.S1_BASE)]
+
+        if self.skill_2_id:
+            ret.append(SkillIdEntry(self.skill_2_id, SkillNumber.S2, SkillIdentifierLabel.S2_BASE))
+
+        return ret
 
     def max_skill_level(self, skill_num: SkillNumber):
         if skill_num == SkillNumber.ABILITY:

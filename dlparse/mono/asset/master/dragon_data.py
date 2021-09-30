@@ -61,7 +61,12 @@ class DragonDataEntry(UnitEntry, MasterEntryBase):
 
     @property
     def self_skill_id_entries(self) -> list[SkillIdEntry]:
-        return [SkillIdEntry(self.skill_1_id, SkillNumber.S1_DRAGON, SkillIdentifierLabel.S1_DRAGON)]
+        ret = [SkillIdEntry(self.skill_1_id, SkillNumber.S1_DRAGON, SkillIdentifierLabel.S1_DRAGON)]
+
+        if self.skill_2_id:
+            ret.append(SkillIdEntry(self.skill_2_id, SkillNumber.S2_DRAGON, SkillIdentifierLabel.S2_DRAGON))
+
+        return ret
 
     @property
     def ability_ids_at_max_level(self) -> list[int]:

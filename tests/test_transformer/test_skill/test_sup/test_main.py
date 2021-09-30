@@ -426,12 +426,15 @@ def test_with_attack_one_time_use(transformer_skill: SkillTransformer):
     expected_buffs_lv_3 = {
         BuffEffectInfo("AXE_117_04_PLUS_BUF_LV03", HitTargetSimple.SELF, BuffParameter.SKILL_DAMAGE_BUFF, 0.2, 0, 1),
     }
+    expected_buffs_lv_4 = {
+        BuffEffectInfo("AXE_117_04_PLUS_BUF_LV04", HitTargetSimple.SELF, BuffParameter.SKILL_DAMAGE_BUFF, 0.2, 0, 1),
+    }
 
-    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3]
+    expected_base_buffs = [expected_buffs_lv_1, expected_buffs_lv_2, expected_buffs_lv_3, expected_buffs_lv_4]
 
     skill_data = skill_data_base.with_conditions()
 
-    check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_3)
+    check_buff_unit_match(skill_data.max_lv_buffs, expected_buffs_lv_4)
 
     for skill_lv in range(skill_data_base.max_level):
         expected_buffs = expected_base_buffs[skill_lv]

@@ -502,13 +502,12 @@ class SkillDiscoverableEntry(SkillEntry, MasterEntryBase, ABC):
 
         if is_dragon:
             ret.append(SkillIdEntry(self.skill_1_id, SkillNumber.S1_DRAGON, SkillIdentifierLabel.S1_BASE))
-            if self.skill_2_id:  # Dragon usually does not have S2
+            if self.skill_2_id:  # Dragon usually won't have S2
                 ret.append(SkillIdEntry(self.skill_2_id, SkillNumber.S2_DRAGON, SkillIdentifierLabel.S2_BASE))
         elif not self.has_mode_change or not self.change_on_start:
-            ret.extend([
-                SkillIdEntry(self.skill_1_id, SkillNumber.S1, SkillIdentifierLabel.S1_BASE),
-                SkillIdEntry(self.skill_2_id, SkillNumber.S2, SkillIdentifierLabel.S2_BASE)
-            ])
+            ret.append(SkillIdEntry(self.skill_1_id, SkillNumber.S1, SkillIdentifierLabel.S1_BASE))
+            if self.skill_2_id:  # Gala Zethia doesn't have S2
+                ret.append(SkillIdEntry(self.skill_2_id, SkillNumber.S2, SkillIdentifierLabel.S2_BASE))
 
         if self.ss_skill_id:
             ret.append(SkillIdEntry(self.ss_skill_id, self.ss_skill_num, SkillIdentifierLabel.SHARED))
