@@ -54,7 +54,7 @@ class StoryCommandType(Enum):
     CHARA_SET_POS_0 = "CHARA_SET_POS_0"
     """
     Set the character image of the speaker with some positional offset.
-    
+
     Difference between ``CHARA_SHIMOTE_POS_D`` is unknown.
     """
 
