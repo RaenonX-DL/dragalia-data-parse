@@ -1,7 +1,29 @@
 import pytest
 
 from dlparse.enums import Condition, ConditionComposite
+from dlparse.export.funcs.normal_attack import export_normal_attack_info_chara
+from dlparse.mono.manager import AssetManager
 from dlparse.transformer import AttackingActionTransformer
+
+
+def test_normal_attack_chain(asset_manager: AssetManager):
+    # Gala Zethia (10250504)
+    chains, skipped = export_normal_attack_info_chara(
+        asset_manager.asset_chara_data.get_data_by_id(10250504),
+        asset_manager, skip_unparsable=False
+    )
+
+    if skipped:
+        pytest.fail(f"Skipped message available: {skipped}")
+
+    if not chains:
+        pytest.fail("No chain available.")
+
+    # Normal, w/ Bahamut, Bahamut's normal
+    assert len(chains) == 3
+
+    if any(not chain.chain_branches for chain in chains):
+        pytest.fail("Chain branch unavailable.")
 
 
 def test_normal(transformer_atk: AttackingActionTransformer):
