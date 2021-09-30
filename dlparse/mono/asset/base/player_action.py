@@ -68,6 +68,11 @@ class ActionComponentCondition(EntryBase):
         return Condition.NONE
 
     @property
+    def _pre_condition_mode_switched(self) -> Condition:
+        # First appears in Gala Zethia (10250504 - 202900)
+        return Condition.MODE_SWITCHED if self.values[0] else Condition.MODE_NOT_SWITCHED
+
+    @property
     def skill_pre_condition(self) -> Condition:
         """Get the action executing pre-condition."""
         if self.condition_type == ActionConditionType.ACTION_CONDITION_COUNT:
@@ -76,6 +81,8 @@ class ActionComponentCondition(EntryBase):
             return self._pre_condition_shikigami_level
         if self.condition_type == ActionConditionType.ACTION_CANCEL:
             return ConditionCategories.skill_action_cancel.convert_reversed(self.values[0])
+        if self.condition_type == ActionConditionType.MODE_SWITCHED:
+            return self._pre_condition_mode_switched
 
         return Condition.NONE
 

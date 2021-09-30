@@ -1256,6 +1256,14 @@
     "text": "被動強化"
   },
   {
+    "id": "ENUM_COND_MODE_NOT_SWITCHED",
+    "text": "已切換模式"
+  },
+  {
+    "id": "ENUM_COND_MODE_SWITCHED",
+    "text": "未切換模式"
+  },
+  {
     "id": "ENUM_COND_ON_BUFFED_DEF",
     "text": "守護鍊"
   },

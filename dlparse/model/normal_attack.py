@@ -219,8 +219,15 @@ class NormalAttackChain:
 
         The order of the return is the same as ``combos``.
         """
-        return [
-            combo.combo_info[conditions]
-            for combo in self.combos
-            if conditions in combo.combo_info
-        ]
+        ret = []
+
+        for combo in self.combos:
+            if combo_info := combo.combo_info.get(conditions):
+                ret.append(combo_info)
+                continue
+
+            if combo_info := combo.combo_info.get(ConditionComposite()):
+                # Include combo info without any conditions if available
+                ret.append(combo_info)
+
+        return ret

@@ -112,6 +112,7 @@ def print_skill_id_entry(chara_data, skill_id_entry):
 
 
 def print_auto_info(auto_id):
+    print(f"Auto ID: {auto_id}")
     info = _asset_manager.transformer_atk.transform_normal_attack_or_fs(auto_id)
     for condition_comp in info.possible_conditions:
         print(f"Condition: {condition_comp}")
@@ -119,7 +120,7 @@ def print_auto_info(auto_id):
         combo_branch = info.with_condition(condition_comp)
 
         for idx, combo in enumerate(combo_branch, start=1):
-            print(f"#{idx}: {sum(combo.mods):7.0%} {combo.mods}")
+            print(f"#{idx}: ({len(combo.mods):2d}) {sum(combo.mods):7.0%} UTP +{combo.utp_gain:3d} {combo.mods}")
 
 
 def chara_skill_overview(chara_id):
@@ -145,9 +146,9 @@ def chara_skill_overview(chara_id):
         print("-" * 10 + " UNIQUE WIN FACE " + "-" * 10)
     print("=" * 50)
 
-    for skill_id_entry in skill_id_entries:
-        print_skill_id_entry(chara_data, skill_id_entry)
-        print("=" * 50)
+    # for skill_id_entry in skill_id_entries:
+    #     print_skill_id_entry(chara_data, skill_id_entry)
+    #     print("=" * 50)
 
     auto_action_ids = [action_id for _, action_id in chara_data.get_normal_attack_variants(_asset_manager)]
     for auto_id in auto_action_ids:
@@ -159,7 +160,7 @@ def main():
     # - 10350505 (Joker)
     # - 10450404 (Sophie)
     # - 10550104 (Panther)
-    chara_skill_overview(10350405)
+    chara_skill_overview(10250504)
 
 
 if __name__ == '__main__':

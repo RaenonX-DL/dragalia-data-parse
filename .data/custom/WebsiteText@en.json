@@ -1256,6 +1256,14 @@
     "text": "Enhanced by Passive"
   },
   {
+    "id": "ENUM_COND_MODE_NOT_SWITCHED",
+    "text": "Mode Switched"
+  },
+  {
+    "id": "ENUM_COND_MODE_SWITCHED",
+    "text": "Mode not Switched"
+  },
+  {
     "id": "ENUM_COND_ON_BUFFED_DEF",
     "text": "DEF Doublebuff"
   },

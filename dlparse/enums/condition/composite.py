@@ -82,6 +82,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     is_energized: bool = field(init=False)
     is_team_amp_up: bool = field(init=False)
     is_passive_enhanced: bool = field(init=False)
+    mode_switch: Optional[Condition] = field(init=False)
+    is_mode_switched: bool = field(init=False)
     # endregion
 
     # region Skill effect / animation
@@ -241,6 +243,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.gauge_filled = CondCat.self_gauge_filled.extract(conditions)
         self.shapeshift_count = CondCat.shapeshifted_count.extract(conditions)
         self.in_dragon_count = CondCat.in_dragon_count.extract(conditions)
+        self.mode_switch = CondCat.mode_switched.extract(conditions)
         self.is_energized = Condition.SELF_ENERGIZED in conditions
         self.is_team_amp_up = Condition.SELF_TEAM_AMP_UP in conditions
         self.is_passive_enhanced = Condition.SELF_PASSIVE_ENHANCED in conditions
@@ -285,6 +288,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.gauge_filled_converted = CondCat.self_gauge_filled.convert(self.gauge_filled, on_missing=0)
         self.shapeshift_count_converted = CondCat.shapeshifted_count.convert(self.shapeshift_count, on_missing=0)
         self.in_dragon_count_converted = CondCat.in_dragon_count.convert(self.in_dragon_count, on_missing=0)
+        self.is_mode_switched = CondCat.mode_switched.convert(self.mode_switch, on_missing=False)
         # endregion
 
         # region Skill effect / animation
@@ -372,6 +376,9 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
 
         if self.shapeshift_count:
             ret += (self.shapeshift_count,)
+
+        if self.mode_switch:
+            ret += (self.mode_switch,)
 
         if self.in_dragon_count:
             ret += (self.in_dragon_count,)
