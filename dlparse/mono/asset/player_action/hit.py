@@ -15,8 +15,16 @@ class ActionHit(ActionComponentHasHitLabels):
     def parse_raw(cls, data: dict[str, Union[str, float]]) -> "ActionHit":
         kwargs = cls.get_base_kwargs(data)
 
+        duration = kwargs["time_duration"]
+        interval = data["_collisionHitInterval"]
+
+        # +1 when interval is available for the initial hit
+        hit_count = int(duration / interval) + 1 if interval else 1
+
+        hit_label = data["_hitLabel"]
+
         return ActionHit(
-            hit_labels=[data["_hitLabel"]],
+            hit_labels=[data["_hitLabel"]] * hit_count,
             hit_range=data["_collisionParams_01"],
             **kwargs
         )

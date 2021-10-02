@@ -19,7 +19,7 @@ def test_og_ranzal_s1(transformer_skill: SkillTransformer):
 
     assert skill_data.dispel_buff == [False, False, False, True]
     assert skill_data.dispel_buff_at_max
-    assert skill_data.dispel_timings == [[], [], [], [0.0]]
+    assert skill_data.dispel_timings == [[], [], [], [0.0] * 3]
 
 
 def test_nadine_s1(transformer_skill: SkillTransformer):
