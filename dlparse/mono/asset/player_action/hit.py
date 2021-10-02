@@ -21,8 +21,6 @@ class ActionHit(ActionComponentHasHitLabels):
         # +1 when interval is available for the initial hit
         hit_count = int(duration / interval) + 1 if interval else 1
 
-        hit_label = data["_hitLabel"]
-
         return ActionHit(
             hit_labels=[data["_hitLabel"]] * hit_count,
             hit_range=data["_collisionParams_01"],
