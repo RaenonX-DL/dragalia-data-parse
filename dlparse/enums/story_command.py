@@ -33,6 +33,9 @@ class StoryCommandType(Enum):
     BLACK_OUT = "BLACK_OUT_DEF"
     """Black out the scene. Used for scene switching."""
 
+    CHARA_FADEOUT_DEF = "CHARA_FADEOUT_DEF"
+    """Fadeout a single adventurer."""
+
     CHARA_SET = "CHARA_SET"
     """Set the character image of the speaker."""
 

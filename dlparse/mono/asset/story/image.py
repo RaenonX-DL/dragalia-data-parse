@@ -40,7 +40,8 @@ def _translate_image_code(image_code: str) -> Optional[str]:
         return None
 
     image_code = image_code.replace(prefix, _ID_PREFIX[prefix])
-    return f"{image_code[:6]}_{image_code[6:]}"
+    # [6:8] for getting rid of the suffix - some image may have variants like n06001b
+    return f"{image_code[:6]}_{image_code[6:8]}"
 
 
 class StoryImageAsset(AssetBase[StoryImageMapping, tuple[str, str]]):

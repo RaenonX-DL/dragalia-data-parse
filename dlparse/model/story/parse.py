@@ -4,13 +4,15 @@ from typing import Optional
 
 from dlparse.enums import Language
 from dlparse.mono.asset import (
-    StoryCommandHasContent, StoryCommandHasImage, StoryCommandPlaySound, StoryCommandPrintText,
-    StoryCommandThemeSwitch, StoryData, has_story_content,
+    StoryCommandBase, StoryCommandHasContent, StoryCommandHasImage, StoryCommandImageClear, StoryCommandPlaySound,
+    StoryCommandPrintText, StoryCommandThemeSwitch, StoryCommandUnknown, StoryData, has_story_content,
 )
 from dlparse.mono.custom import WebsiteTextAsset
 from .entry import SPEAKER_NAME_SYS, StoryEntryBase, StoryEntryBreak, StoryEntryConversation
 
 __all__ = ("parse_story_commands_to_entries",)
+
+_FORCE_NO_IMAGE_SPEAKER_NAMES: set[str] = {"？？？", "???"}
 
 
 def get_speaker_from_command(story_data: StoryData, command: StoryCommandPrintText) -> str:
@@ -28,32 +30,72 @@ def get_content_from_command(story_data: StoryData, command: StoryCommandHasCont
 
     Returns empty string if the command does/should not have a content.
     """
-    if (
-            story_data.lang == Language.JP
-            and story_data.name_asset.get_unit_jp_name(command.content, on_not_found="")
-    ):
+    content = command.content
+
+    if story_data.lang == Language.JP and story_data.name_asset.get_unit_jp_name(content, on_not_found=""):
         # The command content is actually the speaker
         # For some reason, this only occurs in JP story
         return ""
 
-    if command.content == SPEAKER_NAME_SYS:
+    if content == SPEAKER_NAME_SYS:
         # Content is system message as speaker
         return ""
 
-    return command.content
+    return content
+
+
+def get_sorted_commands(story_data: StoryData) -> list[list[StoryCommandBase]]:
+    """
+    Get a list of commands in ``story_data`` sorted by its row.
+
+    Unknown story command will NOT be included in the return.
+    """
+    # Group and sort the commands by its row
+    commands_by_row = defaultdict(list)
+
+    for command in story_data.data:
+        if isinstance(command, StoryCommandUnknown):
+            continue  # Skip adding unknown command
+
+        commands_by_row[command.row].append(command)
+
+    return [commands for _, commands in sorted(commands_by_row.items(), key=lambda item: item[0])]
+
+
+def sanitize_and_patch_entries(
+        entries: list[StoryEntryBase],
+        speaker_image_path_dict: dict[str, Optional[str]]
+) -> list[StoryEntryBase]:
+    """Sanitize and patch ``entries`` in-place."""
+    for entry in entries:
+        if not isinstance(entry, StoryEntryConversation):
+            # Skip if the entry is not a conversation
+            continue
+
+        if entry.speaker_name in _FORCE_NO_IMAGE_SPEAKER_NAMES:
+            # Speaker name should not have assigned image icon
+            # - This has to be placed before checking if the speaker image exists
+            entry.speaker_image_path = None
+            continue
+
+        if entry.speaker_image_path:
+            # Skip if the conversation already has an image
+            continue
+
+        # Ensure the speaker image is deterministic
+        entry.speaker_image_path = speaker_image_path_dict.get(entry.speaker_name)
+
+    return entries
 
 
 # Disabling `C901` because this functions can't be de-coupled (too many cross-row variables)
+# C901 = function too complex
 def parse_story_commands_to_entries(  # noqa: C901
         story_data: StoryData, /,
         text_asset: WebsiteTextAsset
 ) -> list[StoryEntryBase]:
     """Parse the commands in ``story_data`` into a list of story entry models."""
-    # Group and sort the commands by its row
-    commands_by_row = defaultdict(list)
-    for command in story_data.data:
-        commands_by_row[command.row].append(command)
-    commands_sorted = [commands for _, commands in sorted(commands_by_row.items(), key=lambda item: item[0])]
+    commands_sorted = get_sorted_commands(story_data)
 
     # Parse the story commands in the same row into entry model
     entries: list[StoryEntryBase] = []
@@ -75,9 +117,15 @@ def parse_story_commands_to_entries(  # noqa: C901
             if isinstance(command, StoryCommandThemeSwitch):
                 # Command is a theme switch - consider it as a thematic break
                 entries.append(StoryEntryBreak())
+                speaker_image_code = None  # Reset speaker image code on break
                 break
 
-            if isinstance(command, StoryCommandHasImage) and not speaker_image_code:
+            if isinstance(command, StoryCommandImageClear):
+                # Command clears the current image
+                speaker_image_code = None  # Reset speaker image code on break
+                continue
+
+            if isinstance(command, StoryCommandHasImage):
                 speaker_image_code = command.image_code
                 continue
 
@@ -103,15 +151,8 @@ def parse_story_commands_to_entries(  # noqa: C901
             entries.append(StoryEntryConversation(
                 speaker, image_path, text, audio_paths, text_asset=text_asset, lang=story_data.lang
             ))
-            speaker_image_code = None  # Reset speaker image code
             audio_paths = []  # Reset audio paths
 
-    # Patch entries with images
-    for entry in entries:
-        if not isinstance(entry, StoryEntryConversation) or entry.speaker_image_path:
-            # Skip if the entry is not a conversation or already has an image
-            continue
-
-        entry.speaker_image_path = speaker_image_path_dict.get(entry.speaker_name)
+    sanitize_and_patch_entries(entries, speaker_image_path_dict)
 
     return entries

@@ -3,9 +3,9 @@ from typing import Type, TypeVar, cast
 
 from dlparse.enums import StoryCommandType
 from .command import (
-    RawCommand, StoryCommandAddBook, StoryCommandBase, StoryCommandHasContent, StoryCommandOutline,
-    StoryCommandPlaySound, StoryCommandPosDiff, StoryCommandPrintText, StoryCommandRuby, StoryCommandSetChara,
-    StoryCommandSetChara3, StoryCommandThemeSwitch, StoryCommandUnknown,
+    RawCommand, StoryCommandAddBook, StoryCommandBase, StoryCommandHasContent, StoryCommandImageClear,
+    StoryCommandOutline, StoryCommandPlaySound, StoryCommandPosDiff, StoryCommandPrintText, StoryCommandRuby,
+    StoryCommandSetChara, StoryCommandSetChara3, StoryCommandThemeSwitch, StoryCommandUnknown,
 )
 
 __all__ = ("parse_raw_command", "has_story_content")
@@ -19,6 +19,7 @@ _command_class: dict[StoryCommandType, Type[StoryCommandBase]] = {
     StoryCommandType.RUBY: StoryCommandRuby,
     StoryCommandType.BLACK_OUT: StoryCommandThemeSwitch,
     StoryCommandType.WHITE_OUT: StoryCommandThemeSwitch,
+    StoryCommandType.CHARA_FADEOUT_DEF: StoryCommandImageClear,
     StoryCommandType.ADD_TEXT: StoryCommandAddBook,
     StoryCommandType.CHARA_SET: StoryCommandSetChara,
     StoryCommandType.CHARA_SET_0: StoryCommandSetChara,

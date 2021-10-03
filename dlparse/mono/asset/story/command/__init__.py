@@ -1,6 +1,7 @@
 """Classes representing a story command entry."""
 from .add_book import StoryCommandAddBook
 from .base import *  # noqa
+from .image_clear import StoryCommandImageClear
 from .img_pos_d import StoryCommandPosDiff
 from .outline import StoryCommandOutline
 from .ruby import StoryCommandRuby

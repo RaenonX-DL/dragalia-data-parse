@@ -1,5 +1,3 @@
-import pytest
-
 from dlparse.enums import Language, UnitType
 from dlparse.model import StoryEntryConversation
 from dlparse.model.story.parse import parse_story_commands_to_entries
@@ -66,7 +64,6 @@ def test_jp_story_speaker_icon_follow(asset_manager: AssetManager):
     assert entry.speaker_image_path == "story/dragon/200013_01.png"
 
 
-@pytest.mark.skip
 def test_jp_story_speaker_icon_offset(asset_manager: AssetManager):
     # Summer Chelle Unit Story Ep. 1
     story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 100015081)
