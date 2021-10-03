@@ -17,6 +17,7 @@ class StoryCommandPrintText(StoryCommandHasContent):
 
     Note, in JP story, ``print`` command may have only 1 argument,
     which could either be a code-like string, or a part of a story content.
+    Also, the 2nd argument might be a voice label.
 
     Regardless the language, the 1st appearance of this command in the same row is the speaker name/identifier.
     For CH/EN story, this is always the unit name;
@@ -60,4 +61,8 @@ class StoryCommandPrintText(StoryCommandHasContent):
         if len(self.args) < 2:
             return self.args[0]
 
-        return self.args[1]
+        content = self.args[1]
+
+        # Check if `content` is a voice label or not
+        # If so, return the 1st argument; Otherwise, return the 2nd argument
+        return self.args[0] if content.startswith("VO") else content

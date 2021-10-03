@@ -58,3 +58,12 @@ def test_missing_speaker_icon_chara_set_3(asset_manager: AssetManager):
     entry = story_entries[36]
     assert isinstance(entry, StoryEntryConversation)
     assert entry.speaker_image_path == "story/chara/120038_01.png"
+
+
+def test_audio_label_contained_in_text(asset_manager: AssetManager):
+    story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 110011011)
+    story_entries = parse_story_commands_to_entries(story_data, asset_manager.asset_text_website)
+
+    entry = story_entries[0]
+    assert isinstance(entry, StoryEntryConversation)
+    assert "VO_CHR" not in entry.conversation
