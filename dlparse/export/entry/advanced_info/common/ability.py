@@ -52,8 +52,8 @@ class OfficialAbilityInfo(JsonExportableEntryBase):
     def __post_init__(self, asset_manager: AssetManager, ability_data: AT, unit_data: UT):
         self.icon_path = ability_data.ability_icon_name
         self.description = TextEntry(
-            asset_text_website=asset_manager.asset_text_website,
-            asset_text_multi=asset_manager.asset_text_multi,
+            asset_text_base=asset_manager.asset_text_website,
+            asset_text_additional=asset_manager.asset_text_multi,
             labels=ability_data.description_label,
             replacements=self._init_description_replacements(asset_manager, ability_data),
             replacement_ids=self._init_description_replacement_id(unit_data),

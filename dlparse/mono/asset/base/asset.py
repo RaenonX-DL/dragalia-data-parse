@@ -137,7 +137,7 @@ class MultilingualAssetBase(Generic[XT], ABC):
 
     def __init__(
             self, parser_cls: Type[ParserBase[ParsedTextEntryDict]], asset_dir: str, file_name: str, /,
-            is_custom: bool = False,
+            is_custom: bool = False, include_partial_support: bool = False,
     ):
         """
         Initializes a multilingual text asset.
@@ -148,6 +148,9 @@ class MultilingualAssetBase(Generic[XT], ABC):
 
         lang: Language
         for lang in Language:
+            if not include_partial_support and not lang.is_fully_supported:
+                continue
+
             if not lang.is_main and is_custom:
                 # Append locale suffix to the file name if it's custom asset and not the master locale
                 file_name_join = f"{file_name}@{lang.locale}.json"

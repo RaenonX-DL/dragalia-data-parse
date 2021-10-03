@@ -33,8 +33,8 @@ def export_enums_entries(
             ret[enum_name].append(enum_entry_class(
                 name=enum.name, code=enum.value, image_path=get_image_path(enum, on_not_found=None),
                 trans=TextEntry(
-                    asset_text_website=asset_manager.asset_text_website, labels=enum.translation_id,
-                    asset_text_multi=asset_manager.asset_text_multi
+                    asset_text_base=asset_manager.asset_text_website, labels=enum.translation_id,
+                    asset_text_additional=asset_manager.asset_text_multi
                 )
             ))
 

@@ -76,6 +76,11 @@ def export_unit_story_as_entry_dict(
 def export_unit_story_as_json(file_dir: str, asset_manager: "AssetManager", /, skip_unparsable: bool = True) -> None:
     """Export the stories of all characters and dragons as json to ``file_dir``."""
     for lang in Language:
+        lang: Language
+
+        if not lang.is_fully_supported:
+            continue  # Skip exporting story in partially supported language
+
         entries = export_unit_story_as_entry_dict(
             asset_manager, cast(Language, lang), skip_unparsable=skip_unparsable
         )

@@ -36,7 +36,11 @@ class UnitInfoEntryBase(Generic[T], JsonExportableEntryBase, ABC):
     unit_release_date: datetime = field(init=False)
 
     def __post_init__(self):
-        self.unit_name = TextEntry(self.asset_manager.asset_text_multi, self.unit_data.name_labels)
+        self.unit_name = TextEntry(
+            self.asset_manager.asset_text_multi,
+            self.unit_data.name_labels,
+            include_partial_support=True
+        )
         self.unit_icon_name = self.unit_data.icon_name
         self.unit_id = self.unit_data.id
         self.unit_element = self.unit_data.element

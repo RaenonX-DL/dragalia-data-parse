@@ -25,13 +25,13 @@ class OfficialSkillEntry(JsonExportableEntryBase):
     def __post_init__(self, asset_manager: AssetManager, max_level: int, skill_entry: SkillDataEntry):
         self.icon_path = skill_entry.get_icon_name_at_level(max_level)
         self.name = TextEntry(
-            asset_text_website=asset_manager.asset_text_website,
-            asset_text_multi=asset_manager.asset_text_multi,
+            asset_text_base=asset_manager.asset_text_website,
+            asset_text_additional=asset_manager.asset_text_multi,
             labels=skill_entry.name_label,
         )
         self.description = TextEntry(
-            asset_text_website=asset_manager.asset_text_website,
-            asset_text_multi=asset_manager.asset_text_multi,
+            asset_text_base=asset_manager.asset_text_website,
+            asset_text_additional=asset_manager.asset_text_multi,
             labels=skill_entry.get_description_label_at_level(max_level),
         )
 

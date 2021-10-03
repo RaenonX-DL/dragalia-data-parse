@@ -31,9 +31,9 @@ class SimpleUnitInfoEntry(JsonExportableEntryBase):
 
     def __post_init__(self):
         self.unit_name = TextEntry(
-            asset_text_website=self.asset_manager.asset_text_website,
-            asset_text_multi=self.asset_manager.asset_text_multi,
-            labels=self.unit_data.name_labels
+            self.asset_manager.asset_text_multi,
+            self.unit_data.name_labels,
+            include_partial_support=True,
         )
 
     @classmethod

@@ -30,20 +30,20 @@ class EffectUnitEntryBase(JsonExportableEntryBase, ABC):
 
     def __post_init__(self, asset_manager: AssetManager):
         self.status_trans = TextEntry(
-            asset_text_website=asset_manager.asset_text_website, labels=self.effect_unit.status.translation_id,
-            asset_text_multi=asset_manager.asset_text_multi
+            asset_text_base=asset_manager.asset_text_website, labels=self.effect_unit.status.translation_id,
+            asset_text_additional=asset_manager.asset_text_multi
         )
         self.target_trans = TextEntry(
-            asset_text_website=asset_manager.asset_text_website, labels=self.effect_unit.target.translation_id,
-            asset_text_multi=asset_manager.asset_text_multi
+            asset_text_base=asset_manager.asset_text_website, labels=self.effect_unit.target.translation_id,
+            asset_text_additional=asset_manager.asset_text_multi
         )
         self.buff_param_trans = TextEntry(
-            asset_text_website=asset_manager.asset_text_website, labels=self.effect_unit.parameter.translation_id,
-            asset_text_multi=asset_manager.asset_text_multi
+            asset_text_base=asset_manager.asset_text_website, labels=self.effect_unit.parameter.translation_id,
+            asset_text_additional=asset_manager.asset_text_multi
         )
         self.buff_unit_trans = TextEntry(
-            asset_text_website=asset_manager.asset_text_website,
-            asset_text_multi=asset_manager.asset_text_multi,
+            asset_text_base=asset_manager.asset_text_website,
+            asset_text_additional=asset_manager.asset_text_multi,
             labels=self.effect_unit.parameter.parameter_unit.translation_id
         )
 

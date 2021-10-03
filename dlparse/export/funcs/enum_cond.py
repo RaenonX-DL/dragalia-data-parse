@@ -133,8 +133,8 @@ def export_condition_entries(asset_manager: "AssetManager") -> dict[int, Conditi
             image_path=get_image_path(condition, on_not_found=None),
             color_theme=condition_theme.get(condition, default_theme),
             trans=TextEntry(
-                asset_text_website=asset_manager.asset_text_website, labels=condition.translation_id,
-                asset_text_multi=asset_manager.asset_text_multi
+                asset_text_base=asset_manager.asset_text_website, labels=condition.translation_id,
+                asset_text_additional=asset_manager.asset_text_multi
             )
         )
         for condition in Condition

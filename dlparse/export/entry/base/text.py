@@ -1,16 +1,14 @@
 """A text entry containing the text to be used on the website in different languages."""
 from dataclasses import InitVar, dataclass, field
-from typing import Any, Optional, TypeVar, Union
+from typing import Any, Optional, Union
 
 from dlparse.enums import Language
 from dlparse.errors import MissingTextError
-from dlparse.mono.asset import MultilingualAssetBase, TextAssetMultilingual
+from dlparse.mono.asset import MultilingualAssetBase
 from .entry import JsonExportableEntryBase
 from .type import JsonSchema
 
 __all__ = ("TextEntry",)
-
-T = TypeVar("T", bound=MultilingualAssetBase)
 
 THROW_ERROR = object()
 
@@ -19,17 +17,16 @@ THROW_ERROR = object()
 class TextEntry(JsonExportableEntryBase):
     """A text entry class containing the texts to be displayed on the website in different languages."""
 
-    asset_text_website: InitVar[T]
-    """Website text asset. The name of this is identical to the one in :class:`AssetManager` for convenience."""
+    asset_text_base: InitVar[MultilingualAssetBase]
+    """Base text asset to use for getting the actual text."""
 
     labels: InitVar[Union[str, list[str]]]
     """List of label to be checked. Only throws error if all the ``labels`` do not have the corresponding text."""
 
-    asset_text_multi: Optional[TextAssetMultilingual] = None
-    """
-    Official text asset in multi languages.
-    The name of this is identical to the one in :class:`AssetManager` for convenience.
-    """
+    include_partial_support: InitVar[bool] = False
+
+    asset_text_additional: Optional[MultilingualAssetBase] = None
+    """Additional text asset to use if the given text label is not found in ``asset_text_base``."""
 
     on_not_found: Optional[Any] = THROW_ERROR
     replacements: Optional[dict[str, str]] = None  # K = old string, V = new string
@@ -37,44 +34,54 @@ class TextEntry(JsonExportableEntryBase):
 
     text_dict: dict[str, str] = field(init=False)
 
-    def _init_get_text_of_label(self, asset_text_website: T, lang_code: Language, labels: Union[str, list[str]]):
+    def _init_get_text_of_label(
+            self, asset_text_base: MultilingualAssetBase, lang: Language, labels: Union[str, list[str]]
+    ):
+        lang_code = lang.value
+
         if isinstance(labels, str):
             labels = [labels]
 
         for label in labels:
-            text = asset_text_website.get_text(lang_code, label, on_not_found=None)
+            text = asset_text_base.get_text(lang_code, label, on_not_found=None)
             if text is not None:  # Explicit `None` check because empty string is also falsy
                 return text
 
-            if not self.asset_text_multi:
+            if not self.asset_text_additional:
                 continue  # Text asset not provided, continue to try the next lang code
 
-            text = self.asset_text_multi.get_text(lang_code, label, on_not_found=None)
+            text = self.asset_text_additional.get_text(lang_code, label, on_not_found=None)
             if text is not None:  # Explicit `None` check because empty string is also falsy
                 return text
 
         if self.on_not_found is THROW_ERROR:
             raise MissingTextError(
-                labels, lang_code, f"Text asset{' ' if self.asset_text_multi else ' not '}provided"
+                labels, lang_code, f"Text asset{' ' if self.asset_text_additional else ' not '}provided"
             )
 
         return self.on_not_found
 
-    def _init_text_dict_fill_content(self, asset_text_website: T, labels: Union[str, list[str]]):
-        for lang_code in Language.get_all_available_codes():
-            self.text_dict[lang_code] = self._init_get_text_of_label(asset_text_website, lang_code, labels)
+    def _init_text_dict_fill_content(
+            self, asset_text_base: MultilingualAssetBase, labels: Union[str, list[str]], include_partial_support: bool
+    ):
+        for lang in Language:
+            lang: Language
+            if not include_partial_support and not lang.is_fully_supported:
+                continue
+
+            self.text_dict[lang.value] = self._init_get_text_of_label(asset_text_base, lang, labels)
 
     def _init_text_dict_replace_newlines(self):
         self.text_dict = {lang: text.replace("\\n", "\n") for lang, text in self.text_dict.items()}
 
-    def _init_text_dict_replacements(self, asset_text_website: T):
+    def _init_text_dict_replacements(self, asset_text_base: MultilingualAssetBase):
         if not self.replacement_ids:
             return
 
         new_dict = {}
         for lang, text in self.text_dict.items():
             for old, label in self.replacement_ids.items():
-                text = text.replace(old, self._init_get_text_of_label(asset_text_website, Language(lang), label))
+                text = text.replace(old, self._init_get_text_of_label(asset_text_base, Language(lang), label))
 
             for old, new in self.replacements.items():
                 text = text.replace(old, new)
@@ -83,14 +90,16 @@ class TextEntry(JsonExportableEntryBase):
 
         self.text_dict = new_dict
 
-    def __post_init__(self, asset_text_website: T, labels: Union[str, list[str]]):
+    def __post_init__(
+            self, asset_text_base: MultilingualAssetBase, labels: Union[str, list[str]], include_partial_support: bool
+    ):
         if isinstance(labels, str):
             labels = [labels]
 
         self.text_dict = {}
-        self._init_text_dict_fill_content(asset_text_website, labels)
+        self._init_text_dict_fill_content(asset_text_base, labels, include_partial_support)
         self._init_text_dict_replace_newlines()
-        self._init_text_dict_replacements(asset_text_website)
+        self._init_text_dict_replacements(asset_text_base)
 
     @classmethod
     @property

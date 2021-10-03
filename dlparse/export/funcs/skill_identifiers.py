@@ -23,8 +23,8 @@ def export_skill_identifiers_as_entry_dict(asset_manager: "AssetManager") -> dic
         skill_identifier: SkillIdentifierEntry(
             skill_identifier,
             TextEntry(
-                asset_text_website=asset_manager.asset_text_website, labels=f"SKILL_IDENTIFIER_{skill_identifier}",
-                asset_text_multi=asset_manager.asset_text_multi
+                asset_text_base=asset_manager.asset_text_website, labels=f"SKILL_IDENTIFIER_{skill_identifier}",
+                asset_text_additional=asset_manager.asset_text_multi
             )
         ).to_json_entry()
         for skill_identifier in skill_identifiers

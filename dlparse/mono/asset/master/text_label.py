@@ -48,4 +48,4 @@ class TextAssetMultilingual(MultilingualAssetBase[TextEntry]):
     # pylint: disable=too-few-public-methods
 
     def __init__(self, asset_dir: str):
-        super().__init__(MasterTextParser, asset_dir, "TextLabel")
+        super().__init__(MasterTextParser, asset_dir, "TextLabel", include_partial_support=True)
