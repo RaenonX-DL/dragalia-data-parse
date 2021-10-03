@@ -59,6 +59,7 @@ def test_via_mode_1(asset_manager: AssetManager):
     actual_identifiers = chara_data.get_skill_id_entries(asset_manager)
 
     s1_labels_base = [
+        SkillIdentifierLabel.S1_BASE,
         SkillIdentifierLabel.of_mode(SkillNumber.S1, 26),
         SkillIdentifierLabel.of_mode(SkillNumber.S1, 27),
         SkillIdentifierLabel.of_mode(SkillNumber.S1, 28),
@@ -66,6 +67,7 @@ def test_via_mode_1(asset_manager: AssetManager):
     ]
 
     s2_labels_base = [
+        SkillIdentifierLabel.S2_BASE,
         SkillIdentifierLabel.SHARED,
         SkillIdentifierLabel.of_mode(SkillNumber.S2, 26)
     ]

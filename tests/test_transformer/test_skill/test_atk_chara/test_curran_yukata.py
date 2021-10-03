@@ -188,7 +188,8 @@ def test_s1_unmasked_paralyzed(transformer_skill: SkillTransformer):
 
     for condition, up_rate in dmg_up_rate.items():
         skill_data = skill_data_base.with_conditions(
-            ConditionComposite((Condition.TARGET_PARALYZED, condition)))
+            ConditionComposite((Condition.TARGET_PARALYZED, condition))
+        )
 
         bullet_hit_count = ConditionCategories.skill_bullet_hit.convert(condition)
         hits_conditioned = hits_expected * bullet_hit_count

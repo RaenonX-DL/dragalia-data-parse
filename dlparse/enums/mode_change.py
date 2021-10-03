@@ -25,7 +25,7 @@ class ModeChangeType(Enum):
     @property
     def change_on_start(self) -> bool:
         """If the mode change type indicates that any of the modes will be applied on start."""
-        return self in (ModeChangeType.BUTTON, ModeChangeType.BUFF_STACK)
+        return self in (ModeChangeType.BUTTON,)
 
     @property
     def is_effective(self) -> bool:
