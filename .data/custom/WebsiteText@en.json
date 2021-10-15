@@ -464,8 +464,32 @@
     "text": "S1 (Dragon Drive)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_116",
+    "text": "S1 (Close)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_117",
+    "text": "S1 (Ranged)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_118",
+    "text": "S1 (Sigil Released)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_mode_95",
     "text": "S2 (Dragon Drive)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_116",
+    "text": "S2 (Close)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_117",
+    "text": "S2 (Ranged)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_118",
+    "text": "S2 (Sigil Released)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_p2",
@@ -2214,6 +2238,26 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_115",
     "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_116",
+    "text": "Closed"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_117",
+    "text": "Ranged"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_118",
+    "text": "Sigil Released"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_119",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_120",
+    "text": "Heavenly Wings"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_122",

@@ -464,8 +464,32 @@
     "text": "S1 (爆能中)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_116",
+    "text": "S1 (近距)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_117",
+    "text": "S1 (遠距)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_118",
+    "text": "S1 (聖痕解放)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_mode_95",
     "text": "S2 (爆能中)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_116",
+    "text": "S2 (近距)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_117",
+    "text": "S2 (遠距)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_118",
+    "text": "S2 (聖痕解放)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_p2",
@@ -2214,6 +2238,26 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_115",
     "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_116",
+    "text": "近距"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_117",
+    "text": "遠距"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_118",
+    "text": "聖痕解放"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_119",
+    "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_120",
+    "text": "天翼解放"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_122",
