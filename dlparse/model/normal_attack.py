@@ -25,6 +25,17 @@ PRE_CONDITIONS_TO_OMIT: set[Condition] = {
 # despite the action may exist, such as `901001` as mentioned above.
 MISSING_ACTION_IDS: set[int] = {901201}
 
+# Dirty fix for forcing the next action ID
+# This is needed for Basileus (10750304) because
+# it branches to both closed and ranged variant of auto
+MANUAL_NEXT_ACTION_ID: dict[int, Optional[int]] = {
+    701400: 701401,
+    701401: 701402,
+    701402: 701403,
+    701403: 701404,
+    701404: None,
+}
+
 
 @dataclass
 class NormalAttackComboBranch:
@@ -104,6 +115,12 @@ class NormalAttackCombo:
 
             if cancel_action.action_id in MISSING_ACTION_IDS:
                 continue  # Check the notes for `MISSING_ACTION_IDS`
+
+            if self.action_prefab.action_id in MANUAL_NEXT_ACTION_ID:
+                # Not using assignment operator := because the assigned value might be falsy,
+                # Therefore making the condition check results in false-negative
+                self.next_combo_action_id = MANUAL_NEXT_ACTION_ID[self.action_prefab.action_id]
+                return
 
             self.next_combo_action_id = cancel_action.action_id
             return
