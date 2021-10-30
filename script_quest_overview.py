@@ -2,12 +2,12 @@ from dlparse.mono.manager import AssetManager
 from tests.static import PATH_LOCAL_ROOT_RESOURCES
 
 diff_str = """
-- 228020101
-- 228020102
-- 228020103
-- 228021101
-- 228021102
-- 228021103
+- 228030101
+- 228030102
+- 228030103
+- 228031101
+- 228031102
+- 228031103
 """
 
 manager = AssetManager(PATH_LOCAL_ROOT_RESOURCES)
@@ -16,7 +16,7 @@ manager = AssetManager(PATH_LOCAL_ROOT_RESOURCES)
 def print_enemy_info(enemy_form, padding=0):
     print(f"{' ' * padding}HP:          {enemy_form.hp:10,} | DEF:      {enemy_form.defense:10}")
     print(f"{' ' * padding}Base OD:     {enemy_form.base_od:10,} | Base BK:  {enemy_form.base_bk:10,}")
-    print(f"{' ' * padding}ATK @ OD:    {enemy_form.od_atk_rate:10,} | DEF @ BK: {enemy_form.bk_def_rate:10,}")
+    print(f"{' ' * padding}ATK @ OD:    {enemy_form.od_atk_rate:>10.2f} | DEF @ BK: {enemy_form.bk_def_rate:>10.2f}")
     print(f"{' ' * padding}BK Duration:      {enemy_form.bk_duration_sec:5} secs")
     print()
     for status, pct in enemy_form.affliction_resistance_pct.items():

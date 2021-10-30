@@ -23,7 +23,7 @@ PRE_CONDITIONS_TO_OMIT: set[Condition] = {
 # --------------------
 # No manual fix because it won't reflect the actual game playing data,
 # despite the action may exist, such as `901001` as mentioned above.
-MISSING_ACTION_IDS: set[int] = {901201}
+MISSING_ACTION_IDS: set[int] = {901201, 1016141}
 
 # Dirty fix for forcing the next action ID
 # This is needed for Basileus (10750304) because

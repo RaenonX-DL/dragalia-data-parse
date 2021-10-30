@@ -100,6 +100,22 @@
     "text": "S1 (After S2)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab2384",
+    "text": "S1 (After Skill Change)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab2384",
+    "text": "S2 (After Skill Change)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab2385",
+    "text": "S1 (After Skill Change)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab2385",
+    "text": "S2 (After Skill Change)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab963",
     "text": "Enhanced S1"
   },
@@ -854,6 +870,14 @@
   {
     "id": "ENUM_COND_COMBO_GTE_50",
     "text": "Self Combo >= 50"
+  },
+  {
+    "id": "ENUM_COND_COMBO_GTE_75",
+    "text": "Self Combo >= 75"
+  },
+  {
+    "id": "ENUM_COND_COMBO_GTE_100",
+    "text": "Self Combo >= 100"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_0",
@@ -2262,6 +2286,18 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_122",
     "text": "w/ Bahamut"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_125",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_127",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_128",
+    "text": "Clockworking"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_12",

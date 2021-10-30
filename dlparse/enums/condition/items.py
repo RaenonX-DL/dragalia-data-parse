@@ -124,6 +124,10 @@ class Condition(TranslatableEnumMixin, Enum):
     """User's combo count >= 30."""
     COMBO_GTE_50 = 247
     """User's combo count >= 50."""
+    COMBO_GTE_75 = 248
+    """User's combo count >= 75."""
+    COMBO_GTE_100 = 249
+    """User's combo count >= 100."""
     # endregion
 
     # region Buff count

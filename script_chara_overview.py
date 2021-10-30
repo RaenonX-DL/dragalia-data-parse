@@ -146,9 +146,9 @@ def chara_skill_overview(chara_id):
         print("-" * 10 + " UNIQUE WIN FACE " + "-" * 10)
     print("=" * 50)
 
-    # for skill_id_entry in skill_id_entries:
-    #     print_skill_id_entry(chara_data, skill_id_entry)
-    #     print("=" * 50)
+    for skill_id_entry in skill_id_entries:
+        print_skill_id_entry(chara_data, skill_id_entry)
+        print("=" * 50)
 
     auto_action_ids = [action_id for _, action_id in chara_data.get_normal_attack_variants(_asset_manager)]
     for auto_id in auto_action_ids:
@@ -160,7 +160,7 @@ def main():
     # - 10350505 (Joker)
     # - 10450404 (Sophie)
     # - 10550104 (Panther)
-    chara_skill_overview(10250504)
+    chara_skill_overview(10650505)
 
 
 if __name__ == '__main__':

@@ -100,6 +100,22 @@
     "text": "S1 (使用 S2 後)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab2384",
+    "text": "S1 (夢魘模式)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab2384",
+    "text": "S2 (夢魘模式)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab2385",
+    "text": "S1 (夢魘模式)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab2385",
+    "text": "S2 (夢魘模式)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab963",
     "text": "強化 S1"
   },
@@ -854,6 +870,14 @@
   {
     "id": "ENUM_COND_COMBO_GTE_50",
     "text": "自身 Combo >= 50"
+  },
+  {
+    "id": "ENUM_COND_COMBO_GTE_75",
+    "text": "自身 Combo >= 75"
+  },
+  {
+    "id": "ENUM_COND_COMBO_GTE_100",
+    "text": "自身 Combo >= 100"
   },
   {
     "id": "ENUM_COND_SELF_BUFF_0",
@@ -2261,6 +2285,18 @@
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_122",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_125",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_127",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_128",
     "text": "ENTER_TEXT"
   },
   {
