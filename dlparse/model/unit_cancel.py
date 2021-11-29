@@ -2,8 +2,8 @@
 from dataclasses import dataclass
 from typing import Optional, TYPE_CHECKING, TypeVar
 
-from dlparse.errors import MotionDataNotFoundError
 from dlparse.enums import ConditionComposite, SkillCancelAction, SkillCancelType
+from dlparse.errors import MotionDataNotFoundError
 from dlparse.mono.loader import MotionLoaderBase
 
 if TYPE_CHECKING:
@@ -43,7 +43,7 @@ class SkillCancelActionUnit:
             pre_conditions: ConditionComposite = ConditionComposite()
     ) -> list["SkillCancelActionUnit"]:
         """Get the skill cancel action units from ``prefab``."""
-        cancel_units: list[SkillCancelActionUnit] = []
+        cancel_units: list["SkillCancelActionUnit"] = []
 
         for cancel_action in prefab.cancel_actions:
             cancel_units.append(SkillCancelActionUnit(

@@ -131,10 +131,10 @@ class SkillIdEntry:
         for entry in entries:
             entries_to_be_processed[entry.skill_id].append(entry)
 
-        ret: list[SkillIdEntry] = []
+        ret: list["SkillIdEntry"] = []
 
         for _, entry_list in sorted(entries_to_be_processed.items(), key=lambda item: item[0]):
-            entry: SkillIdEntry = entry_list[0]
+            entry: "SkillIdEntry" = entry_list[0]
 
             for subsequent_entry in entry_list[1:]:
                 # Filter out duplicated entries while preserving its order
