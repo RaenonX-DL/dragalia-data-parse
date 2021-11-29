@@ -8,7 +8,7 @@ from tests.static import PATH_LOCAL_DIR_CUSTOM_ASSET, PATH_LOCAL_ROOT_RESOURCES,
 if TYPE_CHECKING:
     from dlparse.mono.asset.base import MasterAssetBase
 
-version_tag = "2021.10.28-P5vciqNVlQONmeQr"
+version_tag = "2021.11.26-jQeVlQVWj6XYS79u"
 
 manager_local = AssetManager(PATH_LOCAL_ROOT_RESOURCES, custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET)
 manager_remote = AssetManager(

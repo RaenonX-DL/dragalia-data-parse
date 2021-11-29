@@ -11,7 +11,7 @@ def test_lilith_enchroaching_shadow_expert_solo(transformer_quest: QuestTransfor
     assert quest_data.elements == [Element.SHADOW]
     assert quest_data.elements_limit == []
     assert quest_data.max_clear_time_sec == 600
-    assert quest_data.max_revive_allowed == 1
+    assert quest_data.max_revive_allowed == 2
     assert quest_data.area_1_name == "DIABOLOS_05_0101_01"
     assert quest_data.spawn_enemy_param_ids == [228050201]
 
@@ -25,7 +25,7 @@ def test_lilith_enchroaching_shadow_master_solo(transformer_quest: QuestTransfor
     assert quest_data.elements == [Element.SHADOW, Element.FLAME]
     assert quest_data.elements_limit == [Element.LIGHT, Element.WATER]
     assert quest_data.max_clear_time_sec == 600
-    assert quest_data.max_revive_allowed == 0
+    assert quest_data.max_revive_allowed == 1
     assert quest_data.area_1_name == "DIABOLOS_05_0111_02"
     assert quest_data.spawn_enemy_param_ids == [228051301]
 

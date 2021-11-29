@@ -116,6 +116,14 @@
     "text": "S2 (夢魘模式)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab2472",
+    "text": "TBA"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab2474",
+    "text": "TBA"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_enhanced_by_ab963",
     "text": "強化 S1"
   },
@@ -134,6 +142,14 @@
   {
     "id": "SKILL_IDENTIFIER_s1_mode_13",
     "text": "S1 (爆能中)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_130",
+    "text": "TBA"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_131",
+    "text": "TBA"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_15",
@@ -292,12 +308,36 @@
     "text": "S2 (龍化後)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab2473",
+    "text": "S2 (劍爪)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_enhanced_by_ab2475",
+    "text": "S2 (劍爪)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s2_enhanced_by_s1",
     "text": "S2 (S1 強化後)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_12",
     "text": "S2 (爆能中)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_129",
+    "text": "S2 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_130",
+    "text": "S2 (劍爪)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_131",
+    "text": "S2 (劍爪 - 連招)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_132",
+    "text": "S2 (聖痕解放)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_16",
@@ -2300,11 +2340,23 @@
     "text": "ENTER_TEXT"
   },
   {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_129",
+    "text": "ENTER_TEXT"
+  },
+  {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_12",
     "text": "ENTER_TEXT"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_13",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_130",
+    "text": "ENTER_TEXT"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_131",
     "text": "ENTER_TEXT"
   },
   {

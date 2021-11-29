@@ -2,12 +2,12 @@ from dlparse.mono.manager import AssetManager
 from tests.static import PATH_LOCAL_ROOT_RESOURCES
 
 diff_str = """
-- 228030101
-- 228030102
-- 228030103
-- 228031101
-- 228031102
-- 228031103
+- 227100101
+- 227100102
+- 227100103
+- 227100104
+- 227100105
+- 227100106
 """
 
 manager = AssetManager(PATH_LOCAL_ROOT_RESOURCES)
