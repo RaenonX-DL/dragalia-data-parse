@@ -152,6 +152,14 @@
     "text": "S1 (劍爪 - 連招)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_133",
+    "text": "S1 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_134",
+    "text": "S1 (龍化)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_mode_15",
     "text": "S1 (低輸出)"
   },
@@ -337,6 +345,14 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_132",
+    "text": "TBA"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_133",
+    "text": "TBA"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_134",
     "text": "TBA"
   },
   {
@@ -2358,6 +2374,18 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_131",
     "text": "劍爪 - 連招"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_133",
+    "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_134",
+    "text": "龍化"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_135",
+    "text": "一般"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",

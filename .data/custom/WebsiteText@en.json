@@ -152,6 +152,14 @@
     "text": "S1 (Skill Change - Combo)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_133",
+    "text": "S1 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_134",
+    "text": "S1 (Shapeshifted)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_mode_15",
     "text": "S1 (Low Power)"
   },
@@ -338,6 +346,14 @@
   {
     "id": "SKILL_IDENTIFIER_s2_mode_132",
     "text": "S2 (Sigil Released)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_133",
+    "text": "S2 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_134",
+    "text": "S2 (Shapeshifted)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_16",
@@ -2358,6 +2374,18 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_131",
     "text": "Skill Change - Combo"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_133",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_134",
+    "text": "Shapeshifted"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_135",
+    "text": "Normal"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",
