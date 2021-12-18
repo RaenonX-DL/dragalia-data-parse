@@ -153,11 +153,11 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_133",
-    "text": "S1 (Normal)"
+    "text": "S1 (Ayaha)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_134",
-    "text": "S1 (Shapeshifted)"
+    "text": "S1 (Otoha)"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_15",
@@ -349,11 +349,11 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_133",
-    "text": "S2 (Normal)"
+    "text": "S2 (Ayaha)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_134",
-    "text": "S2 (Shapeshifted)"
+    "text": "S2 (Otoha)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_16",
@@ -2377,11 +2377,11 @@
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_133",
-    "text": "Normal"
+    "text": "Ayaha"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_134",
-    "text": "Shapeshifted"
+    "text": "Otoha"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_135",
