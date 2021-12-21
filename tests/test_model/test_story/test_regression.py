@@ -67,3 +67,12 @@ def test_audio_label_contained_in_text(asset_manager: AssetManager):
     entry = story_entries[0]
     assert isinstance(entry, StoryEntryConversation)
     assert "VO_CHR" not in entry.conversation
+
+
+def test_speaker_reveal_market(asset_manager: AssetManager):
+    story_data = asset_manager.loader_story.load_unit_story(Language.JP, UnitType.CHARACTER, 110271011)
+    story_entries = parse_story_commands_to_entries(story_data, asset_manager.asset_text_website)
+
+    entry = story_entries[1]
+    assert isinstance(entry, StoryEntryConversation)
+    assert entry.speaker_name == "リナーシュ"

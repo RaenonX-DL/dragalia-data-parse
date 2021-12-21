@@ -46,11 +46,20 @@ class StoryCommandPrintText(StoryCommandHasContent):
         Also, for JP story, if the speaker name is an ID, it will NOT contain the story text.
         Otherwise, the speaker name will be the 1st argument (returned by this);
         part of the story conversation will be the 2nd argument (returned by ``content``).
+
+        Marking marker ``#`` might appear in the speaker name.
+        In this case, the actual name is the string after the ``#`` marker.
         """
         if not self.args:
             return ""
 
-        return self.args[0]
+        name = self.args[0]
+
+        if "#" in name:
+            name = name.split("#", 1)[1]
+
+        # Replaces reveal marker `#` in speaker name
+        return name
 
     @property
     def content(self) -> str:
