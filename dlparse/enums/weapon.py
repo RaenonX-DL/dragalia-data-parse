@@ -10,6 +10,8 @@ __all__ = ("Weapon",)
 class Weapon(TranslatableEnumMixin, Enum):
     """Enums for the weapons."""
 
+    UNKNOWN = -1
+
     NONE = 0
 
     SWD = 1  # Sword
@@ -50,7 +52,7 @@ class Weapon(TranslatableEnumMixin, Enum):
 
         This will **not** return ``Weapon.NONE`` as it serves as a sentinel value in the data only.
         """
-        return [enum for enum in cls if enum != Weapon.NONE]
+        return [enum for enum in cls if enum not in (Weapon.NONE, Weapon.UNKNOWN)]
 
     @staticmethod
     def from_str(weapon_str: str) -> "Weapon":
@@ -77,6 +79,10 @@ class Weapon(TranslatableEnumMixin, Enum):
     def get_all_translatable_members() -> list["Weapon"]:
         return Weapon.get_all_valid_weapons()
 
+    @classmethod
+    def _missing_(cls, _):
+        return cls.UNKNOWN
+
 
 _weapon_conv_dict: dict[Weapon, str] = {
     Weapon.SWD: "swd",
@@ -87,5 +93,5 @@ _weapon_conv_dict: dict[Weapon, str] = {
     Weapon.BOW: "bow",
     Weapon.ROD: "rod",
     Weapon.CAN: "can",
-    Weapon.GUN: "gun"
+    Weapon.GUN: "gun",
 }
