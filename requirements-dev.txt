@@ -3,6 +3,7 @@ bandit
 pydocstyle
 flake8
 pylint
+astroid==2.9.0
 coverage[toml]
 mypy
 
