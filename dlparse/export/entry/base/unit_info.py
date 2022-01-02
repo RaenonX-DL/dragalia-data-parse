@@ -1,4 +1,4 @@
-"""Entry of an unit info."""
+"""Entry of a unit info."""
 from abc import ABC
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -45,8 +45,18 @@ class UnitInfoEntryBase(Generic[T], JsonExportableEntryBase, ABC):
         self.unit_id = self.unit_data.id
         self.unit_element = self.unit_data.element
         self.unit_rarity = self.unit_data.rarity
-        self.unit_cv_en = TextEntry(self.asset_manager.asset_text_multi, self.unit_data.cv_en_label)
-        self.unit_cv_jp = TextEntry(self.asset_manager.asset_text_multi, self.unit_data.cv_jp_label)
+        self.unit_cv_en = TextEntry(
+            self.asset_manager.asset_text_multi,
+            # CV for dragon ID 2980000XX unavailable because presumably it's for Kaleidoscope
+            self.unit_data.cv_en_label,
+            on_not_found="N/A"
+        )
+        self.unit_cv_jp = TextEntry(
+            self.asset_manager.asset_text_multi,
+            self.unit_data.cv_jp_label,
+            # CV for dragon ID 2980000XX unavailable because presumably it's for Kaleidoscope
+            on_not_found="N/A"
+        )
         self.unit_release_date = self.unit_data.release_date
 
     @classmethod

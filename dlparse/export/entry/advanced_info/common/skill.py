@@ -33,6 +33,8 @@ class OfficialSkillEntry(JsonExportableEntryBase):
             asset_text_base=asset_manager.asset_text_website,
             asset_text_additional=asset_manager.asset_text_multi,
             labels=skill_entry.get_description_label_at_level(max_level),
+            # Skill for dragon ID 2980000XX doesn't have description because presumably it's for Kaleidoscope
+            on_not_found="N/A"
         )
 
     @classmethod

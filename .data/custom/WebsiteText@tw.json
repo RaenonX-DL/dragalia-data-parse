@@ -160,6 +160,30 @@
     "text": "S1 (乙羽)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_134",
+    "text": "S1 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_137",
+    "text": "S1 (鬥魂)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_138",
+    "text": "S1 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_139",
+    "text": "S1 (風林火山)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_140",
+    "text": "S1 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_141",
+    "text": "S1 (爆能)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_mode_15",
     "text": "S1 (低輸出)"
   },
@@ -354,6 +378,18 @@
   {
     "id": "SKILL_IDENTIFIER_s2_mode_134",
     "text": "S2 (乙羽)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_137",
+    "text": "S2 (鬥魂)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_140",
+    "text": "S2 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_141",
+    "text": "S2 (爆能)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_16",
@@ -2386,6 +2422,30 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_135",
     "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_136",
+    "text": "TBA"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_137",
+    "text": "鬥魂"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_136",
+    "text": "TBA"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_137",
+    "text": "鬥魂"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_138",
+    "text": "TBA"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_139",
+    "text": "風林火山"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",

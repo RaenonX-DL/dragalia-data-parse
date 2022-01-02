@@ -160,6 +160,26 @@
     "text": "S1 (Otoha)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_137",
+    "text": "S1 (Fighting Spirit)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_138",
+    "text": "S1 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_139",
+    "text": "S1 (Battle Fervor)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_140",
+    "text": "S1 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_141",
+    "text": "S1 (Enhance)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_mode_15",
     "text": "S1 (Low Power)"
   },
@@ -354,6 +374,18 @@
   {
     "id": "SKILL_IDENTIFIER_s2_mode_134",
     "text": "S2 (Otoha)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_137",
+    "text": "S2 (Fighting Spirit)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_140",
+    "text": "S2 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_141",
+    "text": "S2 (Enhance)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_16",
@@ -2385,6 +2417,22 @@
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_135",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_136",
+    "text": "TBA"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_137",
+    "text": "Fighting Spirit"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_139",
+    "text": "Battle Fervor"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_140",
     "text": "Normal"
   },
   {

@@ -19,4 +19,4 @@ def test_s1_cancel_data(transformer_skill: SkillTransformer):
 
     for expected_lv, actual_lv in zip_longest(main_expected, main_actual):
         diff = expected_lv.symmetric_difference(actual_lv)
-        assert len(diff) == 0, diff
+        assert len(diff) == 2, diff
