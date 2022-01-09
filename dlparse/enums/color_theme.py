@@ -8,23 +8,15 @@ class ColorTheme(str, Enum):
     """Color themes available on the website in enums."""
 
     # Bootstrap built-in
-    PRIMARY = "primary"
+    PRIMARY = "dark-primary"
     SECONDARY = "secondary"
-    SUCCESS = "success"
-    DANGER = "danger"
-    WARNING = "warning"
-    INFO = "info"
-    LIGHT = "light"
-    DARK = "dark"
+    SUCCESS = "dark-success"
+    DANGER = "dark-danger"
+    WARNING = "dark-warning"
+    INFO = "dark-info"
 
     # Custom
-    OM_DARK = "om-dark"
-    OM_LIGHT = "om-light"
-    SKYBLUE_LIGHT = "skyblue-light"
-    DARK_RED = "dark-red"
-    BLACK_32 = "black-32"
-    BLACK_50 = "black-50"
-    ORANGE = "orange"
+    ORANGE = "dark-orange"
 
     @classmethod
     def get_all_available_themes(cls) -> list[str]:

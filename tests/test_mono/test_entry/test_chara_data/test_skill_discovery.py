@@ -68,7 +68,6 @@ def test_via_mode_1(asset_manager: AssetManager):
 
     s2_labels_base = [
         SkillIdentifierLabel.S2_BASE,
-        SkillIdentifierLabel.SHARED,
         SkillIdentifierLabel.of_mode(SkillNumber.S2, 26)
     ]
 
@@ -78,7 +77,7 @@ def test_via_mode_1(asset_manager: AssetManager):
         SkillIdEntry(105502043, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, 27)),  # S2 @ 1 Stack
         SkillIdEntry(105502044, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, 28)),  # S2 @ 2 Stacks
         SkillIdEntry(105502045, SkillNumber.S2, SkillIdentifierLabel.of_mode(SkillNumber.S2, 29)),  # S2 @ 3 Stacks
-        SkillIdEntry(105502046, SkillNumber.S1, SkillIdentifierLabel.HELPER)  # S2 as helper
+        SkillIdEntry(105502046, SkillNumber.S2, [SkillIdentifierLabel.SHARED, SkillIdentifierLabel.HELPER])
     ]
 
     assert expected_identifiers == actual_identifiers

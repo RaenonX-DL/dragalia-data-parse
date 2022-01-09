@@ -15,7 +15,7 @@ expected_contained_info: dict[tuple[int, ConditionComposite], pytest.approx] = {
     # Euden S2
     (101401012, ConditionComposite()): pytest.approx(14.74),
     # Catherine S2 @ 3 Stacks
-    (105502045, ConditionComposite()): pytest.approx(0.54 * 37 + 1.22 * 37),
+    (105502045, ConditionComposite()): pytest.approx(0.6 * 37 + 1.3 * 37),
     # Yoshitsune S1 @ Not countered
     (109502021, ConditionComposite()): pytest.approx(10.65),
     # Yoshitsune S1 @ Countered
