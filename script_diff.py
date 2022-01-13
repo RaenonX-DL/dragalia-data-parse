@@ -48,9 +48,9 @@ def check_diff(old_asset: "MasterAssetBase", new_asset: "MasterAssetBase"):
 
 
 def main():
-    # check_diff(manager_remote.asset_hit_attr, manager_local.asset_hit_attr)
+    check_diff(manager_remote.asset_hit_attr, manager_local.asset_hit_attr)
     # check_diff(manager_remote.asset_skill_data, manager_local.asset_skill_data)
-    check_diff(manager_remote.asset_chara_data, manager_local.asset_chara_data)
+    # check_diff(manager_remote.asset_chara_data, manager_local.asset_chara_data)
     # check_diff(manager_remote.asset_enemy_param, manager_local.asset_enemy_param)
     # check_diff(manager_remote.asset_dragon_data, manager_local.asset_dragon_data)
     # check_diff(manager_remote.asset_chara_mode, manager_local.asset_chara_mode)
