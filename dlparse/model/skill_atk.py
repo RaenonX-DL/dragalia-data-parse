@@ -473,13 +473,12 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             (hit_data.is_depends_on_bullet_summoned for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv)
         )
         if depends_on_bullet_summoned:
-            # EXNOTE: Only Naveed uses this as of 2020/12/11.
             max_bullet_hit: int = max(
                 (hit_data.max_hit_count for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv)
             )
             cond_elems.append({
                 (bullet_on_map,) for bullet_on_map
-                in ConditionCategories.skill_bullets_on_map.get_members_lte(max_bullet_hit)
+                in ConditionCategories.skill_bullets_summoned.get_members_lte(max_bullet_hit)
             })
 
         # On-map bullet count dependent & available
@@ -487,9 +486,6 @@ class AttackingSkillData(SkillDataBase[DamagingHitData, AttackingSkillDataEntry]
             (hit_data.is_depends_on_bullet_on_map for hit_data_lv in self.hit_data_mtx for hit_data in hit_data_lv)
         )
         if depends_on_bullets_on_map:
-            # EXNOTE: Only Meene uses this as of 2020/12/11.
-            #   This has a limitation of the 9 butterflies limitation (not yet implemented).
-            #   The parser uses the limited enums to do the limitating work for now.
             cond_elems.append({
                 (bullet_on_map,) for bullet_on_map in ConditionCategories.skill_bullets_on_map.members
             })

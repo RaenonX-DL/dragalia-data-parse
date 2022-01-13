@@ -45,16 +45,16 @@ def test_meene_s2_6_butterflies_poison(transformer_skill: SkillTransformer):
     skill_data_base = transformer_skill.transform_attacking(106503036)
 
     expected_addl_at_max = {
-        ConditionComposite([Condition.BULLETS_ON_MAP_0]): 0,
-        ConditionComposite([Condition.BULLETS_ON_MAP_1]): 1,
-        ConditionComposite([Condition.BULLETS_ON_MAP_2]): 2,
-        ConditionComposite([Condition.BULLETS_ON_MAP_3]): 3,
-        ConditionComposite([Condition.BULLETS_ON_MAP_4]): 4,
-        ConditionComposite([Condition.BULLETS_ON_MAP_5]): 5,
-        ConditionComposite([Condition.BULLETS_ON_MAP_6]): 6,
-        ConditionComposite([Condition.BULLETS_ON_MAP_7]): 7,
-        ConditionComposite([Condition.BULLETS_ON_MAP_8]): 8,
-        ConditionComposite([Condition.BULLETS_ON_MAP_9]): 9,
+        ConditionComposite([Condition.BULLETS_SUMMONED_0]): 0,
+        ConditionComposite([Condition.BULLETS_SUMMONED_1]): 1,
+        ConditionComposite([Condition.BULLETS_SUMMONED_2]): 2,
+        ConditionComposite([Condition.BULLETS_SUMMONED_3]): 3,
+        ConditionComposite([Condition.BULLETS_SUMMONED_4]): 4,
+        ConditionComposite([Condition.BULLETS_SUMMONED_5]): 5,
+        ConditionComposite([Condition.BULLETS_SUMMONED_6]): 6,
+        ConditionComposite([Condition.BULLETS_SUMMONED_7]): 7,
+        ConditionComposite([Condition.BULLETS_SUMMONED_8]): 8,
+        ConditionComposite([Condition.BULLETS_SUMMONED_9]): 9,
     }
 
     for condition_comp, addl_hit in expected_addl_at_max.items():

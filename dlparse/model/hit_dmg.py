@@ -206,7 +206,13 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
 
             return [DamageUnit(self.action_time, mod, unit_affliction, units_debuff, hit_attr) for mod in mods]
 
-        if self.is_depends_on_bullet_summoned or self.is_depends_on_bullet_on_map:
+        # Damage dealt depends on the bullets summoned / bullets on the map
+        if self.is_depends_on_bullet_summoned:
+            return [
+                DamageUnit(self.action_time, hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
+                for _ in range(condition_comp.bullets_summoned_converted or 0)
+            ]
+        elif self.is_depends_on_bullet_on_map:
             # Damage dealt depends on the bullets summoned / bullets on the map
             return [
                 DamageUnit(self.action_time, hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
@@ -375,7 +381,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
     def _check_early_return(
             self, condition_comp: ConditionComposite, asset_action_condition: ActionConditionAsset
     ) -> Optional[list[DamageUnit]]:
-        # Has precondition
+        # Has pre-condition
         if self.pre_condition_comp:
             damage_units_pre_cond = self._check_early_return_pre_cond(condition_comp, asset_action_condition)
             # Explicit check to distinguish "not to early return" and "return an empty array"

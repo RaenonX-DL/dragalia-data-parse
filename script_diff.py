@@ -8,7 +8,7 @@ from tests.static import PATH_LOCAL_DIR_CUSTOM_ASSET, PATH_LOCAL_ROOT_RESOURCES,
 if TYPE_CHECKING:
     from dlparse.mono.asset.base import MasterAssetBase
 
-version_tag = "2021.12.27-XGHmpAfZ7EhrqU09"
+version_tag = "2022.01.05-ADAlv8Tvv8y2Mhyr"
 
 manager_local = AssetManager(PATH_LOCAL_ROOT_RESOURCES, custom_asset_dir=PATH_LOCAL_DIR_CUSTOM_ASSET)
 manager_remote = AssetManager(
@@ -48,9 +48,9 @@ def check_diff(old_asset: "MasterAssetBase", new_asset: "MasterAssetBase"):
 
 
 def main():
-    check_diff(manager_remote.asset_hit_attr, manager_local.asset_hit_attr)
+    # check_diff(manager_remote.asset_hit_attr, manager_local.asset_hit_attr)
     # check_diff(manager_remote.asset_skill_data, manager_local.asset_skill_data)
-    # check_diff(manager_remote.asset_chara_data, manager_local.asset_chara_data)
+    check_diff(manager_remote.asset_chara_data, manager_local.asset_chara_data)
     # check_diff(manager_remote.asset_enemy_param, manager_local.asset_enemy_param)
     # check_diff(manager_remote.asset_dragon_data, manager_local.asset_dragon_data)
     # check_diff(manager_remote.asset_chara_mode, manager_local.asset_chara_mode)

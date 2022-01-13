@@ -13,10 +13,10 @@ def test_seimei_s2_iter_entries(transformer_skill: SkillTransformer):
 
     # Bullet means Shikigami, no damage if Shikigami does not exist (expected)
     expected_max_total_mods = {
-        ConditionComposite([Condition.BULLETS_ON_MAP_0, Condition.SELF_SEIMEI_SHIKIGAMI_LV_1]): 0,
-        ConditionComposite([Condition.BULLETS_ON_MAP_1, Condition.SELF_SEIMEI_SHIKIGAMI_LV_1]): 15,
-        ConditionComposite([Condition.BULLETS_ON_MAP_0, Condition.SELF_SEIMEI_SHIKIGAMI_LV_2]): 0,
-        ConditionComposite([Condition.BULLETS_ON_MAP_1, Condition.SELF_SEIMEI_SHIKIGAMI_LV_2]): 25,
+        ConditionComposite([Condition.BULLETS_SUMMONED_0, Condition.SELF_SEIMEI_SHIKIGAMI_LV_1]): 0,
+        ConditionComposite([Condition.BULLETS_SUMMONED_1, Condition.SELF_SEIMEI_SHIKIGAMI_LV_1]): 15,
+        ConditionComposite([Condition.BULLETS_SUMMONED_0, Condition.SELF_SEIMEI_SHIKIGAMI_LV_2]): 0,
+        ConditionComposite([Condition.BULLETS_SUMMONED_1, Condition.SELF_SEIMEI_SHIKIGAMI_LV_2]): 25,
     }
 
     expected = set(expected_max_total_mods.keys())
@@ -42,7 +42,7 @@ def test_seimei_s2(transformer_skill: SkillTransformer):
 
     # Shikigami Level 1
     skill_data = skill_data_base.with_conditions(ConditionComposite(
-        [Condition.BULLETS_ON_MAP_1, Condition.SELF_SEIMEI_SHIKIGAMI_LV_1]
+        [Condition.BULLETS_SUMMONED_1, Condition.SELF_SEIMEI_SHIKIGAMI_LV_1]
     ))
 
     assert skill_data.hit_count == [1, 1, 0]
@@ -55,7 +55,7 @@ def test_seimei_s2(transformer_skill: SkillTransformer):
 
     # Shikigami Level 2
     skill_data = skill_data_base.with_conditions(ConditionComposite(
-        [Condition.BULLETS_ON_MAP_1, Condition.SELF_SEIMEI_SHIKIGAMI_LV_2]
+        [Condition.BULLETS_SUMMONED_1, Condition.SELF_SEIMEI_SHIKIGAMI_LV_2]
     ))
 
     assert skill_data.hit_count == [1, 1, 1]

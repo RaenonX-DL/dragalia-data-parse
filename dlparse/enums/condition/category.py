@@ -33,6 +33,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     MULTIPLE_BULLET_HIT = auto()
     MULTIPLE_TEAMMATE_COVERAGE = auto()
     MULTIPLE_BULLETS_ON_MAP = auto()
+    MULTIPLE_BULLETS_SUMMONED = auto()
     MULTIPLE_ADDL_INPUTS = auto()
     MULTIPLE_ACTION_CANCEL = auto()
     MULTIPLE_ACTION_MISC_VAR = auto()
@@ -63,6 +64,7 @@ class ConditionCheckResult(ConditionCheckResultMixin, Enum):
     INTERNAL_NOT_BULLET_HIT_COUNT = auto()
     INTERNAL_NOT_TEAMMATE_COVERAGE = auto()
     INTERNAL_NOT_BULLETS_ON_MAP = auto()
+    INTERNAL_NOT_BULLETS_SUMMONED = auto()
     INTERNAL_NOT_ADDL_INPUTS = auto()
     INTERNAL_NOT_ACTION_CANCEL = auto()
     INTERNAL_NOT_ACTION_CONDITION = auto()
@@ -488,6 +490,23 @@ class ConditionCategories:
         ConditionMaxCount.SINGLE,
         "Skill - bullets on map",
         ConditionCheckResult.MULTIPLE_BULLETS_ON_MAP
+    )
+    skill_bullets_summoned = ConditionCategoryTargetNumber(
+        {
+            Condition.BULLETS_SUMMONED_0: 0,
+            Condition.BULLETS_SUMMONED_1: 1,
+            Condition.BULLETS_SUMMONED_2: 2,
+            Condition.BULLETS_SUMMONED_3: 3,
+            Condition.BULLETS_SUMMONED_4: 4,
+            Condition.BULLETS_SUMMONED_5: 5,
+            Condition.BULLETS_SUMMONED_6: 6,
+            Condition.BULLETS_SUMMONED_7: 7,
+            Condition.BULLETS_SUMMONED_8: 8,
+            Condition.BULLETS_SUMMONED_9: 9,
+        },
+        ConditionMaxCount.SINGLE,
+        "Skill - bullets summoned",
+        ConditionCheckResult.MULTIPLE_BULLETS_SUMMONED
     )
     skill_addl_inputs = ConditionCategoryTargetNumber(
         {

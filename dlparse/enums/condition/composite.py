@@ -93,6 +93,8 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
     bullet_hit_count_converted: int = field(init=False)
     bullets_on_map: Optional[Condition] = field(init=False)
     bullets_on_map_converted: int = field(init=False)
+    bullets_summoned: Optional[Condition] = field(init=False)
+    bullets_summoned_converted: int = field(init=False)
     addl_inputs: Optional[Condition] = field(init=False)
     addl_inputs_converted: int = field(init=False)
     action_cancel: Optional[Condition] = field(init=False)
@@ -193,6 +195,10 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         if self.bullets_on_map and self.bullets_on_map not in CondCat.skill_bullets_on_map:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BULLETS_ON_MAP)
 
+        # Check `self.bullets_summoned`
+        if self.bullets_summoned and self.bullets_summoned not in CondCat.skill_bullets_summoned:
+            raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_BULLETS_SUMMONED)
+
         # Check `self.addl_inputs`
         if self.addl_inputs and self.addl_inputs not in CondCat.skill_addl_inputs:
             raise ConditionValidationFailedError(ConditionCheckResult.INTERNAL_NOT_ADDL_INPUTS)
@@ -253,6 +259,7 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         self.teammate_coverage = CondCat.skill_teammates_covered.extract(conditions)
         self.bullet_hit_count = CondCat.skill_bullet_hit.extract(conditions)
         self.bullets_on_map = CondCat.skill_bullets_on_map.extract(conditions)
+        self.bullets_summoned = CondCat.skill_bullets_summoned.extract(conditions)
         self.addl_inputs = CondCat.skill_addl_inputs.extract(conditions)
         self.action_cancel = CondCat.skill_action_cancel.extract(conditions)
         self.action_counter_red = Condition.COUNTER_RED_ATTACK in conditions
@@ -297,6 +304,9 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
         )
         self.bullet_hit_count_converted = CondCat.skill_bullet_hit.convert(self.bullet_hit_count, on_missing=None)
         self.bullets_on_map_converted = CondCat.skill_bullets_on_map.convert(self.bullets_on_map, on_missing=None)
+        self.bullets_summoned_converted = CondCat.skill_bullets_summoned.convert(
+            self.bullets_summoned, on_missing=None
+        )
         # 0 instead of 1 to trigger the error faster if attempting to compare when additional input is not available
         self.addl_inputs_converted = CondCat.skill_addl_inputs.convert(self.addl_inputs, on_missing=None)
         # endregion
@@ -405,6 +415,9 @@ class ConditionComposite(ConditionCompositeBase[Condition]):
 
         if self.bullets_on_map:
             ret += (self.bullets_on_map,)
+
+        if self.bullets_summoned:
+            ret += (self.bullets_summoned,)
 
         if self.addl_inputs:
             ret += (self.addl_inputs,)

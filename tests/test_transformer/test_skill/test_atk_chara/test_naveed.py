@@ -12,12 +12,12 @@ def test_naveed_s1(transformer_skill: SkillTransformer):
     possible_entries = skill_data.get_all_possible_entries()
 
     expected_addl_at_max = {
-        ConditionComposite(Condition.BULLETS_ON_MAP_0): 3.47 * 4 + 1.4 * 3 * 0,
-        ConditionComposite(Condition.BULLETS_ON_MAP_1): 3.47 * 4 + 1.4 * 3 * 1,
-        ConditionComposite(Condition.BULLETS_ON_MAP_2): 3.47 * 4 + 1.4 * 3 * 2,
-        ConditionComposite(Condition.BULLETS_ON_MAP_3): 3.47 * 4 + 1.4 * 3 * 3,
-        ConditionComposite(Condition.BULLETS_ON_MAP_4): 3.47 * 4 + 1.4 * 3 * 4,
-        ConditionComposite(Condition.BULLETS_ON_MAP_5): 3.47 * 4 + 1.4 * 3 * 5,
+        ConditionComposite(Condition.BULLETS_SUMMONED_0): 3.47 * 4 + 1.4 * 3 * 0,
+        ConditionComposite(Condition.BULLETS_SUMMONED_1): 3.47 * 4 + 1.4 * 3 * 1,
+        ConditionComposite(Condition.BULLETS_SUMMONED_2): 3.47 * 4 + 1.4 * 3 * 2,
+        ConditionComposite(Condition.BULLETS_SUMMONED_3): 3.47 * 4 + 1.4 * 3 * 3,
+        ConditionComposite(Condition.BULLETS_SUMMONED_4): 3.47 * 4 + 1.4 * 3 * 4,
+        ConditionComposite(Condition.BULLETS_SUMMONED_5): 3.47 * 4 + 1.4 * 3 * 5,
     }
 
     expected = set(expected_addl_at_max.keys())

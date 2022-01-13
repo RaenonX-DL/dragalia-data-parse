@@ -197,8 +197,6 @@ class Condition(TranslatableEnumMixin, Enum):
     # endregion
 
     # region Bullets left on the map
-    # EXNOTE: Only Meene uses this implementation for now, may be more in the future.
-    #   - Meene can only summon up to 9 butterflies on the map. This info has not yet been discovered by this parser.
     BULLETS_ON_MAP_0 = 330
     BULLETS_ON_MAP_1 = 331
     BULLETS_ON_MAP_2 = 332
@@ -209,6 +207,16 @@ class Condition(TranslatableEnumMixin, Enum):
     BULLETS_ON_MAP_7 = 337
     BULLETS_ON_MAP_8 = 338
     BULLETS_ON_MAP_9 = 339
+    BULLETS_SUMMONED_0 = 340
+    BULLETS_SUMMONED_1 = 341
+    BULLETS_SUMMONED_2 = 342
+    BULLETS_SUMMONED_3 = 343
+    BULLETS_SUMMONED_4 = 344
+    BULLETS_SUMMONED_5 = 345
+    BULLETS_SUMMONED_6 = 346
+    BULLETS_SUMMONED_7 = 347
+    BULLETS_SUMMONED_8 = 348
+    BULLETS_SUMMONED_9 = 349
     # endregion
 
     # region Additional inputs by user
