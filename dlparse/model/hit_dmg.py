@@ -212,7 +212,7 @@ class DamagingHitData(HitDataEffectConvertible[ActionComponentHasHitLabels]):
                 DamageUnit(self.action_time, hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
                 for _ in range(condition_comp.bullets_summoned_converted or 0)
             ]
-        elif self.is_depends_on_bullet_on_map:
+        if self.is_depends_on_bullet_on_map:
             # Damage dealt depends on the bullets summoned / bullets on the map
             return [
                 DamageUnit(self.action_time, hit_attr.damage_modifier, unit_affliction, units_debuff, hit_attr)
