@@ -1208,6 +1208,46 @@
     "text": "場中 9 彈"
   },
   {
+    "id": "ENUM_COND_BULLETS_SUMMONED_0",
+    "text": "召喚蝶 0 隻"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_1",
+    "text": "召喚蝶 1 隻"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_2",
+    "text": "召喚蝶 2 隻"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_3",
+    "text": "召喚蝶 3 隻"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_4",
+    "text": "召喚蝶 4 隻"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_5",
+    "text": "召喚蝶 5 隻"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_6",
+    "text": "召喚蝶 6 隻"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_7",
+    "text": "召喚蝶 7 隻"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_8",
+    "text": "召喚蝶 8 隻"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_9",
+    "text": "召喚蝶 9 隻"
+  },
+  {
     "id": "ENUM_COND_ADDL_INPUT_0",
     "text": "追加輸入 0 次"
   },
@@ -2446,6 +2486,10 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_139",
     "text": "風林火山"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_142",
+    "text": "一般"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",

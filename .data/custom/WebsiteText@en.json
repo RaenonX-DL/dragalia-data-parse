@@ -1204,6 +1204,46 @@
     "text": "9 bullets on field"
   },
   {
+    "id": "ENUM_COND_BULLETS_SUMMONED_0",
+    "text": "蝶 x 0"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_1",
+    "text": "1 butterfly on field"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_2",
+    "text": "2 butterflies on field"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_3",
+    "text": "3 butterflies on field"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_4",
+    "text": "4 butterflies on field"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_5",
+    "text": "5 butterflies on field"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_6",
+    "text": "6 butterflies on field"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_7",
+    "text": "7 butterflies on field"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_8",
+    "text": "8 butterflies on field"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_9",
+    "text": "9 butterflies on field"
+  },
+  {
     "id": "ENUM_COND_ADDL_INPUT_0",
     "text": "0 Additional Hits"
   },
@@ -2433,6 +2473,10 @@
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_140",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_142",
     "text": "Normal"
   },
   {
