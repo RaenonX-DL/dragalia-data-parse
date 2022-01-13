@@ -1165,43 +1165,83 @@
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_0",
-    "text": "0 bullets on field"
+    "text": "0 Bullets on Field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_1",
-    "text": "1 bullet on field"
+    "text": "1 Bullet on Field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_2",
-    "text": "2 bullets on field"
+    "text": "2 Bullets on Field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_3",
-    "text": "3 bullets on field"
+    "text": "3 Bullets on Field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_4",
-    "text": "4 bullets on field"
+    "text": "4 Bullets on Field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_5",
-    "text": "5 bullets on field"
+    "text": "5 Bullets on Field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_6",
-    "text": "6 bullets on field"
+    "text": "6 Bullets on Field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_7",
-    "text": "7 bullets on field"
+    "text": "7 Bullets on Field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_8",
-    "text": "8 bullets on field"
+    "text": "8 Bullets on Field"
   },
   {
     "id": "ENUM_COND_BULLETS_ON_MAP_9",
-    "text": "9 bullets on field"
+    "text": "9 Bullets on Field"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_0",
+    "text": "0 Bullets Summoned"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_1",
+    "text": "1 Bullets Summoned"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_2",
+    "text": "2 Bullets Summoned"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_3",
+    "text": "3 Bullets Summoned"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_4",
+    "text": "4 Bullets Summoned"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_5",
+    "text": "5 Bullets Summoned"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_6",
+    "text": "6 Bullets Summoned"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_7",
+    "text": "7 Bullets Summoned"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_8",
+    "text": "8 Bullets Summoned"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_9",
+    "text": "9 Bullets Summoned"
   },
   {
     "id": "ENUM_COND_ADDL_INPUT_0",
@@ -2436,9 +2476,14 @@
     "text": "Normal"
   },
   {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_142",
+    "text": "Normal"
+  },
+  {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",
     "text": "High Power"
   },
+
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_2",
     "text": "S1 Effective"

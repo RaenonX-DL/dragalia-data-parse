@@ -1204,6 +1204,46 @@
     "text": "場中 9 彈"
   },
   {
+    "id": "ENUM_COND_BULLETS_SUMMONED_0",
+    "text": "蝶 x 0"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_1",
+    "text": "蝶 x 1"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_2",
+    "text": "蝶 x 2"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_3",
+    "text": "蝶 x 3"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_4",
+    "text": "蝶 x 4"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_5",
+    "text": "蝶 x 5"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_6",
+    "text": "蝶 x 6"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_7",
+    "text": "蝶 x 7"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_8",
+    "text": "蝶 x 8"
+  },
+  {
+    "id": "ENUM_COND_BULLETS_SUMMONED_9",
+    "text": "蝶 x 9"
+  },
+  {
     "id": "ENUM_COND_ADDL_INPUT_0",
     "text": "追加輸入 0 次"
   },
@@ -2428,12 +2468,16 @@
     "text": "闘魂"
   },
   {
-    "id": "NORMAL_ATTACK_COMBO_CHAIN_138",
-    "text": "TBA"
+  "id": "NORMAL_ATTACK_COMBO_CHAIN_138",
+  "text": "TBA"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_139",
     "text": "風林火山"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_142",
+    "text": "通常"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",
