@@ -1,7 +1,12 @@
 import pytest
 
+from dlparse.enums import Language
 from dlparse.export import export_normal_attack_info_as_entry_dict
 from dlparse.mono.manager import AssetManager
+
+ALLOWED_EMPTY_AUTO_CHAIN = {
+    (10750204, "Unique Dragon"),
+}
 
 
 @pytest.mark.holistic
@@ -17,7 +22,10 @@ def test_no_empty_auto_chain(asset_manager: AssetManager):
             continue
 
         for entry in entries:
-            if not entry.chain_branches:
+            if (
+                    not entry.chain_branches
+                    and (unit_id, entry.chain_name.text_dict[Language.EN]) not in ALLOWED_EMPTY_AUTO_CHAIN
+            ):
                 unit_ids_empty_chain_branch.append(unit_id)
                 continue
 

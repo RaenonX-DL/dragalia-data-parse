@@ -13,6 +13,7 @@ This includes things like:
 """
 from typing import Optional, TYPE_CHECKING
 
+from dlparse.errors import ActionDataNotFoundError
 from dlparse.model import NormalAttackChain, NormalAttackCombo
 
 if TYPE_CHECKING:
@@ -35,12 +36,23 @@ class AttackingActionTransformer:
     def __init__(self, asset_manager: "AssetManager"):
         self._asset_manager: "AssetManager" = asset_manager
 
+    @staticmethod
+    def _is_allowed_empty_combo(action_id: int) -> bool:
+        return action_id in [10183140]
+
     def transform_normal_attack_or_fs(
             self, root_action_id: int, level: int = None, /,
             ability_ids: list[int] = None
     ) -> Optional[NormalAttackChain]:
         """Get the normal attack or FS info rooted from ``root_action_id``."""
-        current_prefab = self._asset_manager.loader_action.get_prefab(root_action_id)
+        try:
+            current_prefab = self._asset_manager.loader_action.get_prefab(root_action_id)
+        except ActionDataNotFoundError as ex:
+            if self._is_allowed_empty_combo(root_action_id):
+                return NormalAttackChain([])
+
+            raise ex
+
         parsed_action_ids = set()
         combos = []
 

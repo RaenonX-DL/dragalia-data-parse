@@ -12,10 +12,11 @@ def test_s2(transformer_skill: SkillTransformer):
     base_mods = [
         [11.535],
         [12.81],
-        [14.235]
+        [14.235],
+        [18]
     ]
-    per_buff_mods = [0.77, 0.85, 0.95]
-    per_buff_max = [7, 7, 7]
+    per_buff_mods = [0.77, 0.85, 0.95, 1.05]
+    per_buff_max = [7, 7, 7, 7]
 
     for buff_count in range(10):  # Arbitrarily chosen, should not give any errors
         buff_count_cond = ConditionCategories.self_buff_count.convert_reversed(buff_count)
@@ -38,4 +39,4 @@ def test_s2(transformer_skill: SkillTransformer):
             assert sorted(actual_mods_lv) == pytest.approx(sorted(expected_mods_lv))
         assert sorted(skill_data.mods_at_max) == pytest.approx(sorted(expected_mods[-1]))
 
-        assert skill_data.max_level == 3
+        assert skill_data.max_level == 4
