@@ -180,6 +180,10 @@
     "text": "S1 (Enhance)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_144",
+    "text": "S1"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_mode_145",
     "text": "S1 (Normal)"
   },
@@ -394,6 +398,10 @@
   {
     "id": "SKILL_IDENTIFIER_s2_mode_141",
     "text": "S2 (Enhance)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_144",
+    "text": "S2"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_145",

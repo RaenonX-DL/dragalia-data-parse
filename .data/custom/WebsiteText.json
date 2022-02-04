@@ -153,11 +153,11 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_133",
-    "text": "TBA"
+    "text": "アヤハ"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_134",
-    "text": "TBA"
+    "text": "オトハ"
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_137",
@@ -377,11 +377,11 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_133",
-    "text": "TBA"
+    "text": "アヤハ"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_134",
-    "text": "TBA"
+    "text": "オトハ"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_137",
@@ -394,6 +394,10 @@
   {
     "id": "SKILL_IDENTIFIER_s2_mode_141",
     "text": "S2 (エンハンス)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_144",
+    "text": "S2 (通常)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_145",
@@ -2505,7 +2509,7 @@
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_146",
-    "text": "エンハンス"
+    "text": "爆能"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",
