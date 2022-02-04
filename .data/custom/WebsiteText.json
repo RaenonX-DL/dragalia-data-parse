@@ -180,6 +180,14 @@
     "text": "S1 (エンハンス)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_145",
+    "text": "S1 (通常)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_146",
+    "text": "S1 (エンハンス)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_mode_15",
     "text": "S1 (低輸出)"
   },
@@ -385,6 +393,14 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_141",
+    "text": "S2 (エンハンス)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_145",
+    "text": "S2 (通常)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_146",
     "text": "S2 (エンハンス)"
   },
   {
@@ -2478,6 +2494,18 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_142",
     "text": "通常"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_144",
+    "text": "通常"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_145",
+    "text": "通常"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_146",
+    "text": "エンハンス"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",

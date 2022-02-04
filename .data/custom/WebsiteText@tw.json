@@ -184,6 +184,14 @@
     "text": "S1 (爆能)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_145",
+    "text": "S1 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_146",
+    "text": "S1 (爆能)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_mode_15",
     "text": "S1 (低輸出)"
   },
@@ -392,7 +400,15 @@
     "text": "S2 (爆能)"
   },
   {
-    "id": "SKILL_IDENTIFIER_s2_mode_16",
+    "id": "SKILL_IDENTIFIER_s2_mode_140",
+    "text": "S2 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_145",
+    "text": "S2 (爆能)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_146",
     "text": "S2 (高輸出)"
   },
   {
@@ -2490,6 +2506,18 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_142",
     "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_144",
+    "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_145",
+    "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_146",
+    "text": "爆能"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",

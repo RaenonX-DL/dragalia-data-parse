@@ -180,6 +180,14 @@
     "text": "S1 (Enhance)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_145",
+    "text": "S1 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_146",
+    "text": "S1 (Enhance)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_mode_15",
     "text": "S1 (Low Power)"
   },
@@ -385,6 +393,14 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_141",
+    "text": "S2 (Enhance)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_145",
+    "text": "S2 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_146",
     "text": "S2 (Enhance)"
   },
   {
@@ -2478,6 +2494,18 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_142",
     "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_144",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_145",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_146",
+    "text": "Dragondrive"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",
