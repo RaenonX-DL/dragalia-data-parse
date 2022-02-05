@@ -17,6 +17,7 @@ _ID_PREFIX: dict[str, str] = {
     "n": "120",
     "p": "110",
     "b": "210",
+    "e": "200",
 }
 
 _PREFIX_SKIP: list[str] = [
@@ -25,12 +26,6 @@ _PREFIX_SKIP: list[str] = [
     "mainstory",  # Mainstory CG
     "charastory",  # Charastory CG
     "facility",  # Facility event CG
-]
-
-# Known unresolved image code names
-_ALLOWED_NON_EXISTENT_CODE_NAMES: list[str] = [
-    "e00901",  # Added in the pool of Valyx, Phares / Michael (2022/02/04)
-    "e01401",  # Added in the pool of Valyx, Phares / Michael (2022/02/04)
 ]
 
 
@@ -104,9 +99,6 @@ class StoryImageAsset(AssetBase[StoryImageMapping, tuple[str, str]]):
         # One IRL case is `110267_02` (Hawk)
         if image_code in self.data.values():
             return image_code
-
-        if image_code in _ALLOWED_NON_EXISTENT_CODE_NAMES:
-            return None
 
         raise StoryImageUnavailableError(image_code)
 
