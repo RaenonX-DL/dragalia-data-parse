@@ -3,12 +3,12 @@ bandit
 pydocstyle
 flake8
 pylint
-astroid==2.9.0
-coverage[toml]
+astroid==2.9.3
+coverage[toml]==6.3.1
 mypy
 
 # Testing framework
-pytest
+pytest==7.0.0
 
 # Other necessary requirements
 -r requirements.txt
