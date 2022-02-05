@@ -164,6 +164,8 @@ class AbilityConditionEntryBase(ABC):
             return Condition.ON_HP_LT_40
         if self.val_1 == 60:
             return Condition.ON_HP_LT_60
+        if self.val_1 == 70:
+            return Condition.ON_HP_LT_70
 
         raise self._condition_unconvertible()
 

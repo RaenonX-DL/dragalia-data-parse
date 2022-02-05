@@ -60,6 +60,7 @@ class AbilityCondition(Enum):
     TRG_DODGE_SUCCESS = 96
     EFF_TEAM_AMP_UP = 103
     EFF_TEAM_AMP_UP_RES = 105
+    EFF_ABNORMAL_STATUS_ALLY = 119
 
     @property
     def is_shapeshifted_to_dragon(self) -> bool:

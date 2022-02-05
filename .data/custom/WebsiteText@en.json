@@ -180,6 +180,18 @@
     "text": "S1 (Enhance)"
   },
   {
+    "id": "SKILL_IDENTIFIER_s1_mode_144",
+    "text": "S1"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_145",
+    "text": "S1 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_146",
+    "text": "S1 (Dragondrive)"
+  },
+  {
     "id": "SKILL_IDENTIFIER_s1_mode_15",
     "text": "S1 (Low Power)"
   },
@@ -385,7 +397,15 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_141",
-    "text": "S2 (Enhance)"
+    "text": "S2 (Dragondrive)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_145",
+    "text": "S2 (Normal)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_146",
+    "text": "S2 (Dragondrive)"
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_16",
@@ -1488,6 +1508,10 @@
     "text": "Upon HP < 60%"
   },
   {
+    "id": "ENUM_COND_ON_HP_LT_70",
+    "text": "Upon HP < 70%"
+  },
+  {
     "id": "ENUM_COND_ON_HP_GTE_40",
     "text": "Upon HP >= 40%"
   },
@@ -1550,6 +1574,10 @@
   {
     "id": "ENUM_COND_ON_INFLICTED_SCORCHREND",
     "text": "Inflicted Scorchrend"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_ANY",
+    "text": "Inflicted Any Afflictions"
   },
   {
     "id": "ENUM_COND_ON_COMBO_GTE_10",
@@ -2478,6 +2506,18 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_142",
     "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_144",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_145",
+    "text": "Normal"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_146",
+    "text": "Dragondrive"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",

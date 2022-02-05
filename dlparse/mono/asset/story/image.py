@@ -27,6 +27,12 @@ _PREFIX_SKIP: list[str] = [
     "facility",  # Facility event CG
 ]
 
+# Known unresolved image code names
+_ALLOWED_NON_EXISTENT_CODE_NAMES: list[str] = [
+    "e00901",  # Added in the pool of Valyx, Phares / Michael (2022/02/04)
+    "e01401",  # Added in the pool of Valyx, Phares / Michael (2022/02/04)
+]
+
 
 def _translate_image_code(image_code: str) -> Optional[str]:
     """
@@ -98,6 +104,9 @@ class StoryImageAsset(AssetBase[StoryImageMapping, tuple[str, str]]):
         # One IRL case is `110267_02` (Hawk)
         if image_code in self.data.values():
             return image_code
+
+        if image_code in _ALLOWED_NON_EXISTENT_CODE_NAMES:
+            return None
 
         raise StoryImageUnavailableError(image_code)
 

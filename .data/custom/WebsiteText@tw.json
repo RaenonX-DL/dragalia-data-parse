@@ -160,10 +160,6 @@
     "text": "S1 (乙羽)"
   },
   {
-    "id": "SKILL_IDENTIFIER_s1_mode_134",
-    "text": "S1 (一般)"
-  },
-  {
     "id": "SKILL_IDENTIFIER_s1_mode_137",
     "text": "S1 (鬥魂)"
   },
@@ -181,6 +177,14 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s1_mode_141",
+    "text": "S1 (爆能)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_145",
+    "text": "S1 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s1_mode_146",
     "text": "S1 (爆能)"
   },
   {
@@ -389,6 +393,14 @@
   },
   {
     "id": "SKILL_IDENTIFIER_s2_mode_141",
+    "text": "S2 (爆能)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_145",
+    "text": "S2 (一般)"
+  },
+  {
+    "id": "SKILL_IDENTIFIER_s2_mode_146",
     "text": "S2 (爆能)"
   },
   {
@@ -1492,6 +1504,10 @@
     "text": "HP < 60% 時"
   },
   {
+    "id": "ENUM_COND_ON_HP_LT_70",
+    "text": "HP < 70% 時"
+  },
+  {
     "id": "ENUM_COND_ON_HP_GTE_40",
     "text": "HP >= 40% 時"
   },
@@ -1554,6 +1570,10 @@
   {
     "id": "ENUM_COND_ON_INFLICTED_SCORCHREND",
     "text": "劫火成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_ANY",
+    "text": "任意異常成功"
   },
   {
     "id": "ENUM_COND_ON_COMBO_GTE_10",
@@ -2490,6 +2510,18 @@
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_142",
     "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_144",
+    "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_145",
+    "text": "一般"
+  },
+  {
+    "id": "NORMAL_ATTACK_COMBO_CHAIN_146",
+    "text": "爆能"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",
