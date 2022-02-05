@@ -396,10 +396,6 @@
     "text": "S2 (エンハンス)"
   },
   {
-    "id": "SKILL_IDENTIFIER_s2_mode_144",
-    "text": "S2 (通常)"
-  },
-  {
     "id": "SKILL_IDENTIFIER_s2_mode_145",
     "text": "S2 (通常)"
   },
@@ -2517,7 +2513,7 @@
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_146",
-    "text": "爆能"
+    "text": "エンハンス"
   },
   {
     "id": "NORMAL_ATTACK_COMBO_CHAIN_16",
