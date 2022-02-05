@@ -1508,6 +1508,10 @@
     "text": "Upon HP < 60%"
   },
   {
+    "id": "ENUM_COND_ON_HP_LT_70",
+    "text": "TBA"
+  },
+  {
     "id": "ENUM_COND_ON_HP_GTE_40",
     "text": "HP >= 40% 時"
   },
@@ -1570,6 +1574,10 @@
   {
     "id": "ENUM_COND_ON_INFLICTED_SCORCHREND",
     "text": "劫火成功"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_ANY",
+    "text": "TBA"
   },
   {
     "id": "ENUM_COND_ON_COMBO_GTE_10",

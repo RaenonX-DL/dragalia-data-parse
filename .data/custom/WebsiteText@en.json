@@ -1512,6 +1512,10 @@
     "text": "Upon HP < 60%"
   },
   {
+    "id": "ENUM_COND_ON_HP_LT_70",
+    "text": "Upon HP < 70%"
+  },
+  {
     "id": "ENUM_COND_ON_HP_GTE_40",
     "text": "Upon HP >= 40%"
   },
@@ -1574,6 +1578,10 @@
   {
     "id": "ENUM_COND_ON_INFLICTED_SCORCHREND",
     "text": "Inflicted Scorchrend"
+  },
+  {
+    "id": "ENUM_COND_ON_INFLICTED_ANY",
+    "text": "Inflicted Any Afflictions"
   },
   {
     "id": "ENUM_COND_ON_COMBO_GTE_10",

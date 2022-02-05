@@ -316,6 +316,7 @@ class Condition(TranslatableEnumMixin, Enum):
     ON_HP_LT_30 = 810
     ON_HP_LT_40 = 811
     ON_HP_LT_60 = 812
+    ON_HP_LT_70 = 815
     ON_HP_GTE_40 = 813
     ON_HP_GTE_60 = 814
     # endregion
@@ -339,6 +340,7 @@ class Condition(TranslatableEnumMixin, Enum):
     ON_INFLICTED_STORMLASH = 843
     ON_INFLICTED_SHADOWBLIGHT = 844
     ON_INFLICTED_SCORCHREND = 845
+    ON_INFLICTED_ANY = 846
     # endregion
 
     # region Combo count
